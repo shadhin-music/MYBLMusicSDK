@@ -8,22 +8,8 @@ import com.shadhinmusiclibrary.R
 
 
 class MainActivity : AppCompatActivity() {
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        setContentView(binding.root)
-
-
-
-
-
-
+        setContentView(R.layout.activity_main)
     }
-
-
 }
