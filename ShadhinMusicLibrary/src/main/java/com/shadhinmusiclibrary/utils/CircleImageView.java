@@ -286,7 +286,6 @@ public class CircleImageView extends AppCompatImageView {
         if (mDisableCircularTransformation == disableCircularTransformation) {
             return;
         }
-
         mDisableCircularTransformation = disableCircularTransformation;
         initializeBitmap();
     }
@@ -390,7 +389,6 @@ public class CircleImageView extends AppCompatImageView {
         }
 
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
 
@@ -423,12 +421,9 @@ public class CircleImageView extends AppCompatImageView {
     private RectF calculateBounds() {
         int availableWidth = getWidth() - getPaddingLeft() - getPaddingRight();
         int availableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
-
         int sideLength = Math.min(availableWidth, availableHeight);
-
         float left = getPaddingLeft() + (availableWidth - sideLength) / 2f;
         float top = getPaddingTop() + (availableHeight - sideLength) / 2f;
-
         return new RectF(left, top, left + sideLength, top + sideLength);
     }
 
@@ -436,9 +431,7 @@ public class CircleImageView extends AppCompatImageView {
         float scale;
         float dx = 0;
         float dy = 0;
-
         mShaderMatrix.set(null);
-
         if (mBitmapWidth * mDrawableRect.height() > mDrawableRect.width() * mBitmapHeight) {
             scale = mDrawableRect.height() / (float) mBitmapHeight;
             dx = (mDrawableRect.width() - mBitmapWidth * scale) * 0.5f;
@@ -446,10 +439,8 @@ public class CircleImageView extends AppCompatImageView {
             scale = mDrawableRect.width() / (float) mBitmapWidth;
             dy = (mDrawableRect.height() - mBitmapHeight * scale) * 0.5f;
         }
-
         mShaderMatrix.setScale(scale, scale);
         mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
-
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
@@ -471,7 +462,5 @@ public class CircleImageView extends AppCompatImageView {
             mBorderRect.roundOut(bounds);
             outline.setRoundRect(bounds, bounds.width() / 2.0f);
         }
-
     }
-
 }
