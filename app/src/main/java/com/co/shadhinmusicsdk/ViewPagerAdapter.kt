@@ -1,7 +1,6 @@
 package com.co.shadhinmusicsdk
 
 
-
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -14,27 +13,18 @@ internal class ViewPagerAdapter(
     var context: Context,
     fm: FragmentManager,
     var totalTabs: Int
-) :
-    FragmentStatePagerAdapter(fm) {
-
-
-
+) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
 //        return  SearchFragment()
-
-        return  when (position) {
+        return when (position) {
             0 -> {
-
-             HomeFragment()
-
-
+                HomeFragment()
             }
             1 -> {
                 HomeFragment();
             }
             2 -> {
-
                 HomeFragment();
             }
             3 -> {
@@ -43,10 +33,10 @@ internal class ViewPagerAdapter(
             4 -> {
                 HomeFragment();
             }
-
             else -> getItem(position)
         }
     }
+
     override fun getCount(): Int {
         return totalTabs
     }
