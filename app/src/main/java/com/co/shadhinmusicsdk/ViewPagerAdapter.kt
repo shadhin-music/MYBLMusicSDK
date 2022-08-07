@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.shadhinmusiclibrary.fragments.AllFragment
 import com.shadhinmusiclibrary.fragments.HomeFragment
 
 
@@ -19,7 +20,7 @@ internal class ViewPagerAdapter(
 //        return  SearchFragment()
         return when (position) {
             0 -> {
-                HomeFragment()
+                AllFragment()
             }
             1 -> {
                 HomeFragment();

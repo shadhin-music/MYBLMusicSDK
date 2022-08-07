@@ -14,8 +14,6 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.ParentMusicAdapter
 
 class HomeFragment : Fragment() {
-    private lateinit var parentMusicAdapter: ParentMusicAdapter
-    private lateinit var rvAllHome: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -28,14 +26,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-//        rvAllHome = view.findViewById(R.id.rv_music)
-
-//        parentMusicAdapter = ParentMusicAdapter()
-//        rvAllHome.apply {
-//            layoutManager = LinearLayoutManager(requireContext())
-//            rvAllHome.adapter = parentMusicAdapter
-//        }
-
         return view
     }
 
