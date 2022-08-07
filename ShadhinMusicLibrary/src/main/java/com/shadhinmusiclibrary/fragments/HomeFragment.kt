@@ -5,8 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.ArtistAdapter
+import com.shadhinmusiclibrary.adapter.ParentAdapter
 
 class HomeFragment : Fragment() {
 
@@ -27,6 +31,9 @@ class HomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val recyclerView:RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+          recyclerView.adapter = ParentAdapter()
         }
     }
