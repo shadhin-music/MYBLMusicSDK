@@ -23,6 +23,7 @@
     <color name="colorBackground">#FAF8F8</color>
     <color name="home_content_background">#fafafa</color>
     <color name="icons">#fff</color>
+    <color name="colorGrey">#757575</color>
     <color name="list_item_divider">#507a99a5</color>
     <color name="listitem_background_normal">#fafafa</color>
     <color name="listitem_background_pressed">#eaeaea</color>

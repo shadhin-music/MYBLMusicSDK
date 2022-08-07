@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ParentMusicAdapter
+import com.shadhinmusiclibrary.adapter.ArtistAdapter
+import com.shadhinmusiclibrary.adapter.ParentAdapter
 
 class HomeFragment : Fragment() {
     private lateinit var parentMusicAdapter: ParentMusicAdapter
@@ -39,5 +40,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val recyclerView:RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+          recyclerView.adapter = ParentAdapter()
+        }
     }
-}
