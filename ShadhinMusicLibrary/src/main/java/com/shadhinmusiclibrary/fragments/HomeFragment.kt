@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
+import com.shadhinmusiclibrary.adapter.ParentMusicAdapter
 
 class HomeFragment : Fragment() {
     private lateinit var parentMusicAdapter: ParentMusicAdapter
@@ -27,13 +28,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        rvAllHome = view.findViewById(R.id.rv_all_home)
+//        rvAllHome = view.findViewById(R.id.rv_music)
 
-        parentMusicAdapter = ParentMusicAdapter()
-        rvAllHome.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            rvAllHome.adapter = parentMusicAdapter
-        }
+//        parentMusicAdapter = ParentMusicAdapter()
+//        rvAllHome.apply {
+//            layoutManager = LinearLayoutManager(requireContext())
+//            rvAllHome.adapter = parentMusicAdapter
+//        }
 
         return view
     }
