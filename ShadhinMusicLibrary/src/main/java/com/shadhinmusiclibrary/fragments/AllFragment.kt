@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllAdapter
-
+/**
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ **/
 class AllFragment : Fragment() {
     private lateinit var allAdapter: AllAdapter
     private lateinit var rvAllHome: RecyclerView

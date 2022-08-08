@@ -5,13 +5,17 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.shadhinmusiclibrary.fragments.HomeFragment
 
+/**
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ **/
 internal class AmerTunesVPAdapter(
     fm: FragmentManager,
     var totalTabs: Int
 ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getCount(): Int {
-        TODO("Not yet implemented")
+        return 0
     }
 
     override fun getItem(position: Int): Fragment {
