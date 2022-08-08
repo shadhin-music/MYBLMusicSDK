@@ -15,5 +15,4 @@ class PodcastFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_podcast, container, false)
     }
-
 }

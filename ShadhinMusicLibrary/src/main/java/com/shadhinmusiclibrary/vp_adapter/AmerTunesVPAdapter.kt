@@ -1,26 +1,23 @@
-package com.co.shadhinmusicsdk
+package com.shadhinmusiclibrary.vp_adapter
 
-
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.shadhinmusiclibrary.fragments.AllFragment
 import com.shadhinmusiclibrary.fragments.HomeFragment
 
-
-@Suppress("DEPRECATION")
-internal class ViewPagerAdapter(
-    var context: Context,
+internal class AmerTunesVPAdapter(
     fm: FragmentManager,
     var totalTabs: Int
-) : FragmentStatePagerAdapter(fm) {
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+    override fun getCount(): Int {
+        TODO("Not yet implemented")
+    }
 
     override fun getItem(position: Int): Fragment {
-//        return  SearchFragment()
         return when (position) {
             0 -> {
-                AllFragment()
+                HomeFragment()
             }
             1 -> {
                 HomeFragment();
@@ -36,9 +33,5 @@ internal class ViewPagerAdapter(
             }
             else -> getItem(position)
         }
-    }
-
-    override fun getCount(): Int {
-        return totalTabs
     }
 }

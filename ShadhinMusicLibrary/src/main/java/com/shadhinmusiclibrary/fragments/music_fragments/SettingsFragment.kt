@@ -5,18 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
-class LatestFragment : Fragment() {
-    private lateinit var rvLatestMusic: RecyclerView
+class SettingsFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_latest, container, false)
-        rvLatestMusic = viewRef.findViewById(R.id.rv_latest_music)
-
-        return viewRef;
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 }
