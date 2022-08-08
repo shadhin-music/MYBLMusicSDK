@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
-import com.shadhinmusiclibrary.utils.CircleImageView
 
 /**
  * Rezaul Khan
@@ -39,7 +38,7 @@ internal class MusicAdapter() : RecyclerView.Adapter<MusicAdapter.MusicVH>() {
         private val llMusicItemLayout: LinearLayout =
             itemView.findViewById(R.id.ll_music_item_layout)
         private val tvMusicItemTitle: TextView = itemView.findViewById(R.id.tv_music_item_title)
-        
+
         override fun onBind(position: Int) {
             super.onBind(position)
         }
