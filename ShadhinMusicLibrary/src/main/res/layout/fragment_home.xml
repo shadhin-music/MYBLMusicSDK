@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.HomeFragment"
+    android:id="@+id/container"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginTop="16dp">
@@ -53,11 +54,10 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_bar"
-        android:layout_marginTop="10dp"
-        android:id="@+id/recyclerView"/>
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>
-</layout>

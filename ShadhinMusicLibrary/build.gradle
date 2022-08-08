@@ -9,7 +9,6 @@ android {
     defaultConfig {
         minSdk 19
         targetSdk 30
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -27,9 +26,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        dataBinding = true
-    }
+//    buildFeatures {
+//        dataBinding = true
+//    }
 }
 
 dependencies {
@@ -39,6 +38,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
 
-    implementation 'androidx.databinding:viewbinding:4.2.2'
+
 
 }

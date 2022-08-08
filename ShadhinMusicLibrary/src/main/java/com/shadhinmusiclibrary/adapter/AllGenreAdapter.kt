@@ -1,23 +1,16 @@
 package com.shadhinmusiclibrary.adapter
 
-
-
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.DataModel
-import com.shadhinmusiclibrary.fragments.AllGenresDetailsFragment
 
-
-class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
+class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<DataModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
@@ -26,7 +19,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             VIEW_TOP_TRENDING -> R.layout.item_top_trending
             VIEW_BROWSE_ALL -> R.layout.item_browse_all_genre
             VIEW_AD -> R.layout.item_ad
-            VIEW_DOWNLOAD -> R.layout.item_my_fav
+           VIEW_DOWNLOAD -> R.layout.item_my_fav
             VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
             VIEW_POPULAR_BANDS -> R.layout.item_top_trending
             VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
@@ -34,7 +27,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
             VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
             VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
-            else -> throw IllegalArgumentException("Invalid view type")
+             else -> throw IllegalArgumentException("Invalid view type")
         }
 
         val view = LayoutInflater
@@ -66,7 +59,10 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
             is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
 
+            else -> {
+                throw IllegalArgumentException("Invalid view type")
 
+            }
         }
     }
 
@@ -78,13 +74,13 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
     }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-      val  context = itemView.getContext()
+
         private fun bindArtist() {
             Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView2)
             recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = ArtistAdapter()
+                GridLayoutManager(itemView.context,2)
+            recyclerView.adapter = BrowseAllGenresAdapter()
 
         }
 
@@ -106,20 +102,10 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
         private fun bindBrowseAll() {
-            val seeAll:TextView = itemView.findViewById(com.shadhinmusiclibrary.R.id.tvSeeALL)
-            seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                 manager
-                    .beginTransaction()
-                    .replace(R.id.container,AllGenresDetailsFragment.newInstance())
-                    .commitNow()
-
-            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = BrowseAllGenresAdapter()
-
             //Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 //            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
@@ -203,6 +189,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
                 is DataModel.TrendingMusicVideo -> bindTrendingMusic()
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
 
+                else -> {}
             }
         }
     }
@@ -222,14 +209,4 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         val VIEW_BL_MUSIC_OFFERS = 10
         val VIEW_TRENDING_MUSIC_VIDEO = 11
     }
-
 }
-
-
-
-
-
-
-
-
-
