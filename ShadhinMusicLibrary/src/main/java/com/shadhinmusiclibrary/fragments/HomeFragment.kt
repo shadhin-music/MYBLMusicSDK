@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
-import com.shadhinmusiclibrary.adapter.ParentMusicAdapter
 
 class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {

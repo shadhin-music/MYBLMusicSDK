@@ -24,7 +24,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_rounded_corner"
-                android:drawableStart="@drawable/ic_search_download"
                 android:drawablePadding="8dp"
                 android:ems="10"
                 android:hint="@string/search"

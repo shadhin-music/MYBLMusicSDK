@@ -8,25 +8,32 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
 
-internal class ParentMusicAdapter() :
-    RecyclerView.Adapter<ParentMusicAdapter.ParentMusicViewHolder>() {
+internal class AllAdapter() :
+    RecyclerView.Adapter<AllAdapter.AllViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentMusicViewHolder {
-        return ParentMusicViewHolder(
+    val VIEW_AMER_TUNES = 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllViewHolder {
+        return AllViewHolder(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.parent_music_view, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: ParentMusicViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AllViewHolder, position: Int) {
         holder.onBind(position);
+        holder.rvMusic.apply {
+            layoutManager =
+                LinearLayoutManager(holder.rvMusic.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = MusicAdapter()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +44,7 @@ internal class ParentMusicAdapter() :
 
     }
 
-    internal class ParentMusicViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    internal class AllViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val includeMusicLeftIconParent: LinearLayout =
             itemView.findViewById(R.id.include_music_left_icon_parent)
         val ivMusicParentIcon: ImageView =
@@ -66,15 +73,15 @@ internal class ParentMusicAdapter() :
         val ivMyTurnRightSeeAllIcon: ImageView =
             includeMyTurnRightSeeAll.findViewById(R.id.iv_see_all_icon)
 
-        private val cvThousandSongParent: CardView =
-            itemView.findViewById(R.id.cv_thousand_song_parent)
+        private val includeThousandSongLayout: CardView =
+            itemView.findViewById(R.id.include_thousand_song_layout)
         val tvThousandSongMessage1: TextView =
-            cvThousandSongParent.findViewById(R.id.tv_thousand_song_message1)
+            includeThousandSongLayout.findViewById(R.id.tv_thousand_song_message1)
         val tvThousandSongMessage2: TextView =
-            cvThousandSongParent.findViewById(R.id.tv_thousand_song_message2)
+            includeThousandSongLayout.findViewById(R.id.tv_thousand_song_message2)
         val tvThousandSongMessage3: TextView =
-            cvThousandSongParent.findViewById(R.id.tv_thousand_song_message3)
-        val btnExplore: Button = cvThousandSongParent.findViewById(R.id.btn_explore)
+            includeThousandSongLayout.findViewById(R.id.tv_thousand_song_message3)
+        val btnExplore: Button = includeThousandSongLayout.findViewById(R.id.btn_explore)
 
         private val includeRadioLeftTitle: LinearLayout =
             itemView.findViewById(R.id.include_radio_left_title)

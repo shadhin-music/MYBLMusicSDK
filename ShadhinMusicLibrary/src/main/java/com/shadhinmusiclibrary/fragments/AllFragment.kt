@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ParentMusicAdapter
+import com.shadhinmusiclibrary.adapter.AllAdapter
 
 class AllFragment : Fragment() {
-    private lateinit var parentMusicAdapter: ParentMusicAdapter
+    private lateinit var allAdapter: AllAdapter
     private lateinit var rvAllHome: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,10 +20,10 @@ class AllFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_all, container, false)
 
         rvAllHome = view.findViewById(R.id.rv_all_home)
-        parentMusicAdapter = ParentMusicAdapter()
+        allAdapter = AllAdapter()
         rvAllHome.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            rvAllHome.adapter = parentMusicAdapter
+            rvAllHome.adapter = allAdapter
         }
         return view
     }
