@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.fragments.music_fragments
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

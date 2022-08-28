@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/cardBiography"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="0dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp">
+
+            <TextView
+                android:id="@+id/tvBiography"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="1sp"
+                android:text="About Episode"
+                android:textSize="16sp" />
+
+            <com.shadhinmusiclibrary.utils.ExpandableTextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvBiography"
+                android:layout_marginTop="12dp"
+                android:maxLines="4"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien congue mattis sit volutpat posuere. Netus platea eget dignissim eget tellus. Id urna nunc diam."
+                app:animation_duration="750" />
+
+            <TextView
+                android:id="@+id/tvReadMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDescription"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:text="Read More"
+                android:textColor="@color/colorPrimary" />
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

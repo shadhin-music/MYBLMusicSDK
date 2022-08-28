@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
 class BrowseAllGenresAdapter() : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
@@ -23,18 +26,25 @@ class BrowseAllGenresAdapter() : RecyclerView.Adapter<BrowseAllGenresAdapter.Vie
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       // holder.bindItems(bannerList[position])
+       holder.bindItems()
 
 
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return 6
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val context = itemView.context
         fun bindItems() {
-
+            itemView.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , GenrePlaylistFragment.newInstance())
+                    .addToBackStack("GenrePlaylistFragment")
+                    .commit()
+            }
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)

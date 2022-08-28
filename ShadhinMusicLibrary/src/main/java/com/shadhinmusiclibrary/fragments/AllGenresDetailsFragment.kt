@@ -5,28 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.AllGenreAdapter
+import com.shadhinmusiclibrary.data.model.DataModel
+import com.shadhinmusiclibrary.data.model.GenreDataModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AllGenresDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AllGenresDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -34,26 +30,121 @@ class AllGenresDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_genres_details, container, false)
+        return inflater.inflate(R.layout.item_all_genres, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val dataAdapter = AllGenreAdapter()
+        dataAdapter.setData(getMockData())
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = dataAdapter
+
+
+        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
+        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+        button.setOnClickListener {
+            manager.popBackStack("AllGenresDetailsFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+           // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
+        }
+
+
+    }
+
+
+    private fun getMockData(): List<GenreDataModel> = listOf(
+
+       GenreDataModel.Artist(
+            name = "Artist"
+
+        ),
+
+        GenreDataModel.Artist(
+            name = "Ad"
+        ),
+        GenreDataModel.Artist(
+            name = "Ad"
+        ),
+//        DataModel.Download(
+//            name = "Download"
+//        ),
+//        DataModel.PopularAmarTunes(
+//            name = "PopularAmarTunes"
+//        ),
+//        DataModel.PopularBands(
+//            name = "PopularBands"
+//        ),
+//        DataModel.MadeForYou(
+//            name = "Download"
+//        ),
+//        DataModel.LatestRelease(
+//            name = "Download"
+//        ),
+//        DataModel.PopularPodcast(
+//            name = "Download"
+//        ),
+//        DataModel.BlOffers(
+//            name = "Download"
+//        ),
+//        DataModel.TrendingMusicVideo(
+//            name = "Download"
+//        )
+//        DataModel.Header(
+//            bgColor = resources.getColor(R.color.friend_bg),
+//            title = "My friends"
+//        ),
+//        DataModel.Friend(
+//            name = "My Friend one",
+//            gender = "Male"
+//        ),
+//        DataModel.Friend(
+//            name = "My Friend two",
+//            gender = "Female"
+//        ),
+//        DataModel.Friend(
+//            name = "My Friend three",
+//            gender = "Male"
+//        ),
+//        DataModel.Header(
+//            bgColor = resources.getColor(R.color.colleague_bg),
+//            title = "My colleagues"
+//        ),
+//        DataModel.Colleague(
+//            name = "Colleague 1",
+//            organization = "Org 1",
+//            designation = "Manager"
+//        ),
+//        DataModel.Colleague(
+//            name = "Colleague 2",
+//            organization = "Org 2",
+//            designation = "Software Eng"
+//        ),
+//        DataModel.Colleague(
+//            name = "Colleague 3",
+//            organization = "Org 3",
+//            designation = "Software Eng"
+//        ),
+//        DataModel.Colleague(
+//            name = "Colleague 4",
+//            organization = "Org 4",
+//            designation = "Sr Software Eng"
+//        ),
+//        DataModel.Colleague(
+//            name = "Colleague 5",
+//            organization = "Org 5",
+//            designation = "Sr Software Eng"
+//        ),
+    )
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AllGenresDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             AllGenresDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

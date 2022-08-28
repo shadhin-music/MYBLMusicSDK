@@ -1,21 +1,25 @@
-package com.shadhinmusiclibrary.fragments.music_fragments
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 /**
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class SettingsFragment : Fragment() {
-
+class LatestFragment : Fragment() {
+    private lateinit var rvLatestMusic: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        val viewRef = inflater.inflate(R.layout.fragment_latest, container, false)
+        rvLatestMusic = viewRef.findViewById(R.id.rv_latest_music)
+
+        return viewRef;
     }
 }

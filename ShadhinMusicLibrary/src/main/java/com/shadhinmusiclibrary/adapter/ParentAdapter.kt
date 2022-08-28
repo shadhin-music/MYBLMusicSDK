@@ -1,262 +1,300 @@
 package com.shadhinmusiclibrary.adapter
 
 
+
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
-
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.databinding.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.shadhinmusiclibrary.data.model.DataModel
+import com.shadhinmusiclibrary.fragments.*
 
-class ParentAdapter () : RecyclerView.Adapter<ParentAdapter.ViewHolder>() {
 
-    val VIEW_ARTIST = 0
-    val VIEW_TOP_TRENDING = 1
-    val VIEW_BROWSE_ALL = 2
-    val VIEW_AD = 3
-    val VIEW_DOWNLOAD = 4
-    val VIEW_POPULAR_AMAR_TUNES = 5
-    val VIEW_POPULAR_BANDS = 6
-    val VIEW_MADE_FOR_YOU = 7
-    val VIEW_LATEST_RELEASE = 8
-    val VIEW_POPULAR_PODCAST = 9
-    val VIEW_BL_MUSIC_OFFERS =10
-    val VIEW_TRENDING_MUSIC_VIDEO = 11
-    var scope = CoroutineScope(Dispatchers.IO)
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ParentAdapter.ViewHolder {
+class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
+    private val adapterData = mutableListOf<DataModel>()
 
-        val binding: ViewDataBinding
-
-        when (viewType) {
-            VIEW_ARTIST -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_artist,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemArtistBinding)
-            }
-            VIEW_TOP_TRENDING -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_top_trending,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemTopTrendingBinding)
-            }
-            VIEW_BROWSE_ALL -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_browse_all_genre,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemBrowseAllGenreBinding)
-            }
-            VIEW_AD -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_ad,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemAdBinding)
-            }
-            VIEW_DOWNLOAD -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_my_fav,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemMyFavBinding)
-            }
-            VIEW_POPULAR_AMAR_TUNES -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_popular_amar_tunes,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemPopularAmarTunesBinding)
-            }
-            VIEW_BL_MUSIC_OFFERS -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_my_bl_offers,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemMyBlOffersBinding)
-            }
-            VIEW_TRENDING_MUSIC_VIDEO -> {
-                binding = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_trending_music_videos,
-                    parent,
-                    false
-                )
-                return ViewHolder(binding as ItemTrendingMusicVideosBinding)
-            }
-            else -> {
-                throw IllegalStateException("Illegal view type")
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
+        val layout = when (viewType) {
+            VIEW_SEARCH-> R.layout.item_search
+            VIEW_ARTIST -> R.layout.item_artist
+            VIEW_TOP_TRENDING -> R.layout.item_top_trending
+            VIEW_BROWSE_ALL -> R.layout.item_browse_all_genre
+            VIEW_AD -> R.layout.item_ad
+            VIEW_DOWNLOAD -> R.layout.item_my_fav
+            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
+            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
+            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
+            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
+            VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
+            VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
+            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
+            else -> throw IllegalArgumentException("Invalid view type")
         }
+
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(layout, parent, false)
+
+        return DataAdapterViewHolder(view)
 
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        // holder.bindItems(albumsList[position])
-
-        holder.artistBinding?.let { binding ->
-            binding.recyclerView2.layoutManager =
-                LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerView2.adapter = ArtistAdapter()
-
-
-        }
-
-
-        holder.topTrendingBinding?.let { binding ->
-
-            binding.recyclerView.layoutManager =
-                LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-            binding.recyclerView.adapter = TopTrendingAdapter()
-
-
-        }
-
-        holder.browseAllGenreBinding.let { binding ->
-
-            binding?.recyclerView?.layoutManager =
-                LinearLayoutManager(binding?.root?.context, LinearLayoutManager.HORIZONTAL, false)
-            binding?.recyclerView?.adapter = BrowseAllGenresAdapter()
-
-
-        }
-        holder.blMusicOffersListBinding.let { binding ->
-
-            binding?.recyclerView?.layoutManager =
-                LinearLayoutManager(binding?.root?.context, LinearLayoutManager.HORIZONTAL, false)
-            binding?.recyclerView?.adapter = MyBLOffersAdapter()
-
-
-        }
-        holder.trendingMusicVideosBinding.let { binding ->
-
-            binding?.recyclerView?.layoutManager =
-                LinearLayoutManager(binding?.root?.context, LinearLayoutManager.HORIZONTAL, false)
-            binding?.recyclerView?.adapter = TopTrendingVideosAdapter()
-
-
-        }
-
+    override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
+        holder.bind(adapterData[position])
     }
 
-
-
-
-
-
-
-
-
-
-
-    override fun getItemCount(): Int {
-        return 12
-    }
-
+    override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> VIEW_ARTIST
-            1-> VIEW_TOP_TRENDING
-            2 -> VIEW_BROWSE_ALL
-            3-> VIEW_AD
-            4->VIEW_DOWNLOAD
-            5->VIEW_POPULAR_AMAR_TUNES
-            6->VIEW_ARTIST
-            7-> VIEW_TOP_TRENDING
-            8 ->VIEW_TOP_TRENDING
-            9->VIEW_TOP_TRENDING
-            10->VIEW_BL_MUSIC_OFFERS
-            11->VIEW_TRENDING_MUSIC_VIDEO
-            else->VIEW_ARTIST
+        return when (adapterData[position]) {
+            is DataModel.Search -> VIEW_SEARCH
+            is DataModel.Artist -> VIEW_ARTIST
+            is DataModel.TopTrending -> VIEW_TOP_TRENDING
+            is DataModel.BrowseAll -> VIEW_BROWSE_ALL
+            is DataModel.Ad -> VIEW_AD
+            is DataModel.Download -> VIEW_DOWNLOAD
+            is DataModel.PopularAmarTunes -> VIEW_POPULAR_AMAR_TUNES
+            is DataModel.PopularBands -> VIEW_POPULAR_BANDS
+            is DataModel.MadeForYou -> VIEW_MADE_FOR_YOU
+            is DataModel.LatestRelease -> VIEW_LATEST_RELEASE
+            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
+            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
+            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
+
+
         }
     }
 
-    inner class ViewHolder : RecyclerView.ViewHolder {
-
-        var artistBinding: ItemArtistBinding? = null
-
-
-        constructor(artistBinding: ItemArtistBinding) : super(artistBinding.root) {
-            this.artistBinding = artistBinding
+    fun setData(data: List<DataModel>) {
+        adapterData.apply {
+            clear()
+            addAll(data)
         }
+    }
 
-        var topTrendingBinding: ItemTopTrendingBinding? = null
+    class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+      val  context = itemView.getContext()
+        private fun bindArtist() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , PopularArtistsFragment.newInstance())
+                    .addToBackStack("Popular Artist")
+                    .commit()
 
-        constructor(topTrendingBinding: ItemTopTrendingBinding) : super(topTrendingBinding.root) {
-            this.topTrendingBinding =topTrendingBinding
-
-        }
-
-        var browseAllGenreBinding: ItemBrowseAllGenreBinding? = null
-
-        constructor(browseAllGenreBinding:ItemBrowseAllGenreBinding) : super(browseAllGenreBinding.root) {
-            this.browseAllGenreBinding =browseAllGenreBinding
-
-        }
-
-        var adBinding: ItemAdBinding? = null
-
-        constructor(adBinding: ItemAdBinding) : super(adBinding.root) {
-            this.adBinding =adBinding
-
-        }
-        var myFavBinding: ItemMyFavBinding? = null
-
-        constructor(myFavBinding: ItemMyFavBinding) : super(myFavBinding.root) {
-            this.myFavBinding =myFavBinding
-
-        }
-        var amarTunesBinding: ItemPopularAmarTunesBinding? = null
-
-        constructor(amarTunesBinding: ItemPopularAmarTunesBinding) : super(amarTunesBinding.root) {
-            this.amarTunesBinding =amarTunesBinding
-
-        }
-        var blMusicOffersListBinding: ItemMyBlOffersBinding? = null
-
-        constructor(blMusicOffersListBinding: ItemMyBlOffersBinding) : super(blMusicOffersListBinding.root) {
-            this.blMusicOffersListBinding =blMusicOffersListBinding
-
-        }
-        var trendingMusicVideosBinding: ItemTrendingMusicVideosBinding? = null
-
-        constructor(trendingMusicVideosBinding: ItemTrendingMusicVideosBinding) : super(trendingMusicVideosBinding.root) {
-            this.trendingMusicVideosBinding =trendingMusicVideosBinding
+            }
+            Log.d("Hello", "Loading")
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView2)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = ArtistAdapter()
 
         }
 
+
+        private fun bindTopTrending() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, TopTrendingFragment.newInstance())
+                    .addToBackStack("Top Trending")
+                    .commit()
+
+            }
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = TopTrendingAdapter()
+            //Do your view assignment here from the data model
+//            itemView.findViewById<AppCompatTextView>(R.id.tvName)?.text = item.name
+//            itemView.findViewById<AppCompatTextView>(R.id.tvOrganization)?.text = item.organization
+//            itemView.findViewById<AppCompatTextView>(R.id.tvDesignation)?.text = item.designation
+        }
+
+        //        private fun bindBrowseAll(item: DataModel.BrowseAll) {
+//            //Do your view assignment here from the data model
+////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
+////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+//        }
+        private fun bindBrowseAll() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .add(R.id.container ,AllGenresDetailsFragment.newInstance())
+                    .addToBackStack("AllGenresDetailsFragment")
+                    .commit()
+
+
+            }
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = BrowseAllGenresAdapter()
+
+            //Do your view assignment here from the data model
+//            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
+//            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+        }
+
+        private fun bindAd() {
+            //Do your view assignment here from the data model
+//            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
+//            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+        }
+
+        private fun bindDownload() {
+              val download: LinearLayout = itemView.findViewById(R.id.Download)
+            download.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .add(R.id.container ,DownloadFragment.newInstance())
+                    .addToBackStack("AllGenresDetailsFragment")
+                    .commit()
+
+            }
+        }
+
+        private fun bindPopularAmarTunes() {
+
+        }
+
+        private fun bindPopularBands() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , PopularBandsFragment.newInstance())
+                    .commit()
+
+            }
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Popular Bands"
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = ArtistAdapter()
+
+        }
+
+        private fun bindMadeForYou() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Made For You"
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = TopTrendingAdapter()
+
+        }
+
+        private fun bindLatestRelease() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Latest Release"
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = TopTrendingAdapter()
+
+        }
+
+        private fun bindPopularPodcast() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Popular Podcast"
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = TopTrendingAdapter()
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, PodcastFragment.newInstance())
+                    .addToBackStack("Fragment")
+                    .commit()
+
+
+            }
+            itemView.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, PodcastDetailsFragment.newInstance())
+                    .addToBackStack("Fragment")
+                    .commit()
+            }
+        }
+
+        private fun bindBlOffers() {
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = MyBLOffersAdapter()
+
+        }
+
+        private fun bindTrendingMusic() {
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = TopTrendingVideosAdapter()
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , MusicFragment.newInstance())
+                    .commit()
+
+            }
+        }
+        private fun bindSearch(){
+
+        }
+        fun bind(dataModel: DataModel) {
+            when (dataModel) {
+                is DataModel.Search -> bindSearch()
+                is DataModel.Artist -> bindArtist()
+                is DataModel.TopTrending -> bindTopTrending()
+                is DataModel.BrowseAll -> bindBrowseAll()
+                is DataModel.Ad -> bindAd()
+                is DataModel.Download -> bindDownload()
+                is DataModel.PopularAmarTunes -> bindPopularAmarTunes()
+                is DataModel.PopularBands -> bindPopularBands()
+                is DataModel.MadeForYou -> bindMadeForYou()
+                is DataModel.LatestRelease -> bindLatestRelease()
+                is DataModel.PopularPodcast -> bindPopularPodcast()
+                is DataModel.BlOffers -> bindBlOffers()
+                is DataModel.TrendingMusicVideo -> bindTrendingMusic()
+//                is DataModel.BlOffers -> bindBlOffers(dataModel)
+
+            }
+        }
     }
 
 
-
-
+    companion object {
+        val VIEW_SEARCH =0
+        val VIEW_ARTIST = 1
+        val VIEW_TOP_TRENDING = 2
+        val VIEW_BROWSE_ALL = 3
+        val VIEW_AD = 4
+        val VIEW_DOWNLOAD = 5
+        val VIEW_POPULAR_AMAR_TUNES = 6
+        val VIEW_POPULAR_BANDS = 7
+        val VIEW_MADE_FOR_YOU = 8
+        val VIEW_LATEST_RELEASE = 9
+        val VIEW_POPULAR_PODCAST = 10
+        val VIEW_BL_MUSIC_OFFERS = 11
+        val VIEW_TRENDING_MUSIC_VIDEO = 12
+    }
 
 }
 

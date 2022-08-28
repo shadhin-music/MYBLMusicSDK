@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.fragments.music_fragments
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,12 +10,12 @@ import com.shadhinmusiclibrary.R
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class MyTunesFragment : Fragment() {
+class MusicVideoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my_tunes, container, false)
+        return inflater.inflate(R.layout.fragment_music_video, container, false)
     }
 }

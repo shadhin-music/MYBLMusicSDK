@@ -11,4 +11,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="search">Search</string>
+    <string name="no_comment_found">No comment found</string>
+    <string name="see_all_comment_text">See all comments</string>
+    <string name="add_comment_hint">Write a comment</string>
 </resources>
