@@ -8,6 +8,9 @@ import com.shadhinmusiclibrary.R
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        internal var backPressCount = 0
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

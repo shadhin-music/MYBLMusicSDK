@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.DataModel
-import com.shadhinmusiclibrary.fragments.AllGenresDetailsFragment
+import com.shadhinmusiclibrary.fragments.*
 
 
 class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
@@ -22,6 +23,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
+            VIEW_SEARCH-> R.layout.item_search
             VIEW_ARTIST -> R.layout.item_artist
             VIEW_TOP_TRENDING -> R.layout.item_top_trending
             VIEW_BROWSE_ALL -> R.layout.item_browse_all_genre
@@ -53,6 +55,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
+            is DataModel.Search -> VIEW_SEARCH
             is DataModel.Artist -> VIEW_ARTIST
             is DataModel.TopTrending -> VIEW_TOP_TRENDING
             is DataModel.BrowseAll -> VIEW_BROWSE_ALL
@@ -80,6 +83,15 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val  context = itemView.getContext()
         private fun bindArtist() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , PopularArtistsFragment.newInstance())
+                    .addToBackStack("Popular Artist")
+                    .commit()
+
+            }
             Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView2)
             recyclerView.layoutManager =
@@ -90,6 +102,15 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 
 
         private fun bindTopTrending() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, TopTrendingFragment.newInstance())
+                    .addToBackStack("Top Trending")
+                    .commit()
+
+            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -106,13 +127,14 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
         private fun bindBrowseAll() {
-            val seeAll:TextView = itemView.findViewById(com.shadhinmusiclibrary.R.id.tvSeeALL)
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                 manager
-                    .beginTransaction()
-                    .replace(R.id.container,AllGenresDetailsFragment.newInstance())
-                    .commitNow()
+                manager.beginTransaction()
+                    .add(R.id.container ,AllGenresDetailsFragment.newInstance())
+                    .addToBackStack("AllGenresDetailsFragment")
+                    .commit()
+
 
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -132,7 +154,15 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         }
 
         private fun bindDownload() {
+              val download: LinearLayout = itemView.findViewById(R.id.Download)
+            download.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .add(R.id.container ,DownloadFragment.newInstance())
+                    .addToBackStack("AllGenresDetailsFragment")
+                    .commit()
 
+            }
         }
 
         private fun bindPopularAmarTunes() {
@@ -140,7 +170,16 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         }
 
         private fun bindPopularBands() {
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , PopularBandsFragment.newInstance())
+                    .commit()
 
+            }
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Popular Bands"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -149,6 +188,8 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         }
 
         private fun bindMadeForYou() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Made For You"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -157,6 +198,8 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         }
 
         private fun bindLatestRelease() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Latest Release"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -165,11 +208,29 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         }
 
         private fun bindPopularPodcast() {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = "Popular Podcast"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = TopTrendingAdapter()
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, PodcastFragment.newInstance())
+                    .addToBackStack("Fragment")
+                    .commit()
 
+
+            }
+            itemView.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, PodcastDetailsFragment.newInstance())
+                    .addToBackStack("Fragment")
+                    .commit()
+            }
         }
 
         private fun bindBlOffers() {
@@ -185,10 +246,21 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = TopTrendingVideosAdapter()
-        }
+            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container , MusicFragment.newInstance())
+                    .commit()
 
+            }
+        }
+        private fun bindSearch(){
+
+        }
         fun bind(dataModel: DataModel) {
             when (dataModel) {
+                is DataModel.Search -> bindSearch()
                 is DataModel.Artist -> bindArtist()
                 is DataModel.TopTrending -> bindTopTrending()
                 is DataModel.BrowseAll -> bindBrowseAll()
@@ -209,18 +281,19 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 
 
     companion object {
-        val VIEW_ARTIST = 0
-        val VIEW_TOP_TRENDING = 1
-        val VIEW_BROWSE_ALL = 2
-        val VIEW_AD = 3
-        val VIEW_DOWNLOAD = 4
-        val VIEW_POPULAR_AMAR_TUNES = 5
-        val VIEW_POPULAR_BANDS = 6
-        val VIEW_MADE_FOR_YOU = 7
-        val VIEW_LATEST_RELEASE = 8
-        val VIEW_POPULAR_PODCAST = 9
-        val VIEW_BL_MUSIC_OFFERS = 10
-        val VIEW_TRENDING_MUSIC_VIDEO = 11
+        val VIEW_SEARCH =0
+        val VIEW_ARTIST = 1
+        val VIEW_TOP_TRENDING = 2
+        val VIEW_BROWSE_ALL = 3
+        val VIEW_AD = 4
+        val VIEW_DOWNLOAD = 5
+        val VIEW_POPULAR_AMAR_TUNES = 6
+        val VIEW_POPULAR_BANDS = 7
+        val VIEW_MADE_FOR_YOU = 8
+        val VIEW_LATEST_RELEASE = 9
+        val VIEW_POPULAR_PODCAST = 10
+        val VIEW_BL_MUSIC_OFFERS = 11
+        val VIEW_TRENDING_MUSIC_VIDEO = 12
     }
 
 }

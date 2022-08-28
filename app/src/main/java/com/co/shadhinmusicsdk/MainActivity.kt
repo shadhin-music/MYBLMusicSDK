@@ -1,7 +1,7 @@
 package com.co.shadhinmusicsdk
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
@@ -44,8 +44,10 @@ class MainActivity : AppCompatActivity() {
 
 
 //       scope?.launch(Dispatchers.Main) {
-        viewPager.offscreenPageLimit = 4
+        viewPager.offscreenPageLimit = 2
         val selectedTabIndex = 1
         viewPager.setCurrentItem(selectedTabIndex, false)
     }
+
+
 }

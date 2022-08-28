@@ -5,7 +5,9 @@ import androidx.annotation.ColorInt
 
 
 sealed class DataModel {
-
+    data class Search(
+        val name: String
+    ) : DataModel()
     data class Artist(
         val name: String
     ) : DataModel()

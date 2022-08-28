@@ -5,11 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllGenreAdapter
 import com.shadhinmusiclibrary.data.model.DataModel
+import com.shadhinmusiclibrary.data.model.GenreDataModel
 
 
 class AllGenresDetailsFragment : Fragment() {
@@ -36,17 +41,32 @@ class AllGenresDetailsFragment : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
-    }
-    private fun getMockData(): List<DataModel> = listOf(
 
-        DataModel.Artist(
+
+        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
+        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+        button.setOnClickListener {
+            manager.popBackStack("AllGenresDetailsFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE)
+           // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
+        }
+
+
+    }
+
+
+    private fun getMockData(): List<GenreDataModel> = listOf(
+
+       GenreDataModel.Artist(
             name = "Artist"
 
         ),
-//       v
-//        DataModel.Ad(
-//            name = "Ad"
-//        ),
+
+        GenreDataModel.Artist(
+            name = "Ad"
+        ),
+        GenreDataModel.Artist(
+            name = "Ad"
+        ),
 //        DataModel.Download(
 //            name = "Download"
 //        ),

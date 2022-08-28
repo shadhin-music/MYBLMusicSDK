@@ -53,7 +53,8 @@
         android:orientation="vertical"
         android:gravity="center"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:id="@+id/Download">
         <com.shadhinmusiclibrary.utils.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"

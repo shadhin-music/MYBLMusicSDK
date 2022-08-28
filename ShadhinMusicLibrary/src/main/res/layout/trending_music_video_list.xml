@@ -8,7 +8,7 @@
     >
 
         <RelativeLayout
-            android:layout_width="200dp"
+            android:layout_width="176dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -16,34 +16,35 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="20dp">
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:src="@color/colorAccent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
-       />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:layout_below="@id/image">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Prithibir Joto shukh"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            />
-            <TextView
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image"
+                android:layout_width="176dp"
+                android:layout_height="99dp"
+                android:src="@color/colorPrimary"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Habib Wahid"
-                android:textSize="14sp"
-                />
-        </LinearLayout>
+                android:layout_below="@id/image"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Prithibir Joto shukh"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Habib Wahid"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </RelativeLayout>
 
 

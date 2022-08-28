@@ -26,7 +26,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Popular Artist"
+                        android:text="Browse All Genres"
                         android:layout_weight="5"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -41,11 +41,12 @@
                         android:textSize="14sp"
                         android:drawableEnd="@drawable/ic_arrow"/>
                 </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/linear"
-                    android:id="@+id/recyclerView"
 
                     />
             </RelativeLayout>

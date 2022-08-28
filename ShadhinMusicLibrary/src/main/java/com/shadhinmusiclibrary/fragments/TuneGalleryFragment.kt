@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.fragments.music_fragments
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
 
-class SettingsFragment : Fragment() {
+class TuneGalleryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.fragment_tune_gallery, container, false)
     }
 }

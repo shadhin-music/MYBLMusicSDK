@@ -36,6 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
                         android:text="See all"
+                        android:id="@+id/tvSeeALL"
                         android:layout_gravity="center"
                         android:textSize="14sp"
                         android:drawableEnd="@drawable/ic_arrow"/>
