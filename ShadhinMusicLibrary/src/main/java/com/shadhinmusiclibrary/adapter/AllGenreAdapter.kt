@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.GenreDataModel
-import com.shadhinmusiclibrary.data.model.GenreDataModel.*
+import com.shadhinmusiclibrary.data.model.Data
 
 class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<GenreDataModel>()
+   private val adapterData = mutableListOf<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -38,7 +37,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
 
-            is Artist -> VIEW_BROWSE_ALL
+           // is Artist -> VIEW_BROWSE_ALL
 
 
             else -> {
@@ -48,7 +47,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
         }
     }
 
-    fun setData(data: List<GenreDataModel>) {
+    fun setData(data: List<Data>) {
         adapterData.apply {
             clear()
             addAll(data)
@@ -84,12 +83,12 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
         }
 
 
-        fun bind(dataModel: GenreDataModel) {
+        fun bind(dataModel: Data) {
             when (dataModel) {
-                is Artist -> bindArtist()
-                is Artist2 -> bindArtist2()
-                is Artist3-> bindArtist2()
-                is Artist4 -> bindArtist2()
+//                is Artist -> bindArtist()
+//                is Artist2 -> bindArtist2()
+//                is Artist3-> bindArtist2()
+//                is Artist4 -> bindArtist2()
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
 
 

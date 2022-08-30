@@ -11,9 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.AllGenreAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
-import com.shadhinmusiclibrary.data.model.GenreDataModel
 
 class TopTrendingPlaylistFragment : Fragment() {
 
@@ -36,7 +34,7 @@ class TopTrendingPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dataAdapter = PlaylistAdapter()
-        dataAdapter.setData(getMockData())
+        //dataAdapter.setData(getMockData())
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -49,18 +47,18 @@ class TopTrendingPlaylistFragment : Fragment() {
         }
 
     }
-    private fun getMockData(): List<GenreDataModel> = listOf(
-
-        GenreDataModel.Artist(
-            name = "Artist"
-
-        ),
-
-        GenreDataModel.Artist2(
-            name = "Ad"
-        ),
-
-    )
+//    private fun getMockData(): List<GenreDataModel> = listOf(
+//
+//        GenreDataModel.Artist(
+//            name = "Artist"
+//
+//        ),
+//
+//        GenreDataModel.Artist2(
+//            name = "Ad"
+//        ),
+//
+//    )
     companion object {
 
 

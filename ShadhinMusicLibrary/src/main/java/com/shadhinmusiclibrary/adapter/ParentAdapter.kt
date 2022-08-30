@@ -2,8 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 
 
-import android.content.Context
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +12,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.DataModel
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.fragments.*
 
 
-class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<DataModel>()
+class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
+    private var homeData:HomeData?=null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-            VIEW_SEARCH-> R.layout.item_search
+//            VIEW_SEARCH-> R.layout.item_search
             VIEW_ARTIST -> R.layout.item_artist
             VIEW_TOP_TRENDING -> R.layout.item_top_trending
             VIEW_BROWSE_ALL -> R.layout.item_browse_all_genre
@@ -48,61 +49,71 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        holder.bind(adapterData[position])
+        holder.bind(homeData?.data?.get(position))
     }
 
-    override fun getItemCount(): Int = adapterData.size
+    override fun getItemCount(): Int = homeData?.data?.size?:0
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
-            is DataModel.Search -> VIEW_SEARCH
-            is DataModel.Artist -> VIEW_ARTIST
-            is DataModel.TopTrending -> VIEW_TOP_TRENDING
-            is DataModel.BrowseAll -> VIEW_BROWSE_ALL
-            is DataModel.Ad -> VIEW_AD
-            is DataModel.Download -> VIEW_DOWNLOAD
-            is DataModel.PopularAmarTunes -> VIEW_POPULAR_AMAR_TUNES
-            is DataModel.PopularBands -> VIEW_POPULAR_BANDS
-            is DataModel.MadeForYou -> VIEW_MADE_FOR_YOU
-            is DataModel.LatestRelease -> VIEW_LATEST_RELEASE
-            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
-            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
-            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
+
+        return when (homeData?.data?.get(position)?.Design) {
+               "Artist"-> VIEW_ARTIST
+               "Playlist"-> VIEW_TOP_TRENDING
+               "Release"-> VIEW_BROWSE_ALL
+                //adapterData[0].data[0].Design -> VIEW_ARTIST
+ //           is DataModel.Artist -> VIEW_ARTIST
+//            is DataModel.Search -> VIEW_SEARCH
+//            is DataModel.Artist -> VIEW_ARTIST
+//            is DataModel.TopTrending -> VIEW_TOP_TRENDING
+//            is DataModel.BrowseAll -> VIEW_BROWSE_ALL
+//            is DataModel.Ad -> VIEW_AD
+//            is DataModel.Download -> VIEW_DOWNLOAD
+//            is DataModel.PopularAmarTunes -> VIEW_POPULAR_AMAR_TUNES
+//            is DataModel.PopularBands -> VIEW_POPULAR_BANDS
+//            is DataModel.MadeForYou -> VIEW_MADE_FOR_YOU
+//            is DataModel.LatestRelease -> VIEW_LATEST_RELEASE
+//            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
+//            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
+//            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
 
 
+            else -> {
+                 0
+            }
         }
     }
 
-    fun setData(data: List<DataModel>) {
-        adapterData.apply {
-            clear()
-            addAll(data)
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(data:HomeData) {
+        this.homeData = data
+        notifyDataSetChanged()
     }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val  context = itemView.getContext()
-        private fun bindArtist() {
-            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
-            seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container , PopularArtistsFragment.newInstance())
-                    .addToBackStack("Popular Artist")
-                    .commit()
+        private fun bindArtist(data: Data) {
+//            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+//            seeAll.setOnClickListener {
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container , PopularArtistsFragment.newInstance())
+//                    .addToBackStack("Popular Artist")
+//                    .commit()
+//
+//            }
 
-            }
-            Log.d("Hello", "Loading")
-            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView2)
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView1)
             recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = ArtistAdapter()
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = ArtistAdapter(data)
 
         }
 
 
-        private fun bindTopTrending() {
+        private fun bindTopTrending(data: Data) {
             val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.setText(data.Name)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
@@ -114,7 +125,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter()
+            recyclerView.adapter = TopTrendingAdapter(data)
             //Do your view assignment here from the data model
 //            itemView.findViewById<AppCompatTextView>(R.id.tvName)?.text = item.name
 //            itemView.findViewById<AppCompatTextView>(R.id.tvOrganization)?.text = item.organization
@@ -126,8 +137,10 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
 ////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
-        private fun bindBrowseAll() {
+        private fun bindBrowseAll(data: Data) {
             val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+                val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.setText(data.Name)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
@@ -140,7 +153,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = BrowseAllGenresAdapter()
+            recyclerView.adapter = BrowseAllGenresAdapter(data)
 
             //Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
@@ -183,7 +196,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = ArtistAdapter()
+           // recyclerView.adapter = ArtistAdapter(data)
 
         }
 
@@ -193,7 +206,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter()
+          //  recyclerView.adapter = TopTrendingAdapter(data)
 
         }
 
@@ -203,7 +216,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter()
+           // recyclerView.adapter = TopTrendingAdapter(data)
 
         }
 
@@ -213,7 +226,7 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter()
+           // recyclerView.adapter = TopTrendingAdapter(data)
             val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -258,42 +271,48 @@ class ParentAdapter(requireContext: Context) : RecyclerView.Adapter<ParentAdapte
         private fun bindSearch(){
 
         }
-        fun bind(dataModel: DataModel) {
-            when (dataModel) {
-                is DataModel.Search -> bindSearch()
-                is DataModel.Artist -> bindArtist()
-                is DataModel.TopTrending -> bindTopTrending()
-                is DataModel.BrowseAll -> bindBrowseAll()
-                is DataModel.Ad -> bindAd()
-                is DataModel.Download -> bindDownload()
-                is DataModel.PopularAmarTunes -> bindPopularAmarTunes()
-                is DataModel.PopularBands -> bindPopularBands()
-                is DataModel.MadeForYou -> bindMadeForYou()
-                is DataModel.LatestRelease -> bindLatestRelease()
-                is DataModel.PopularPodcast -> bindPopularPodcast()
-                is DataModel.BlOffers -> bindBlOffers()
-                is DataModel.TrendingMusicVideo -> bindTrendingMusic()
-//                is DataModel.BlOffers -> bindBlOffers(dataModel)
-
+        fun bind(dataModel: Data?) {
+            when(dataModel?.Design){
+                "Artist" -> bindArtist(dataModel)
+                    "Playlist" -> bindTopTrending(dataModel)
+                "Release" ->bindBrowseAll(dataModel)
             }
+            /*when (dataModel) {
+                    dataModel-> bindArtist(dataModel!!)
+//                is DataModel.Search -> bindSearch()
+//                is DataModel.Artist -> bindArtist()
+//                is DataModel.TopTrending -> bindTopTrending()
+//                is DataModel.BrowseAll -> bindBrowseAll()
+//                is DataModel.Ad -> bindAd()
+//                is DataModel.Download -> bindDownload()
+//                is DataModel.PopularAmarTunes -> bindPopularAmarTunes()
+//                is DataModel.PopularBands -> bindPopularBands()
+//                is DataModel.MadeForYou -> bindMadeForYou()
+//                is DataModel.LatestRelease -> bindLatestRelease()
+//                is DataModel.PopularPodcast -> bindPopularPodcast()
+//                is DataModel.BlOffers -> bindBlOffers()
+//                is DataModel.TrendingMusicVideo -> bindTrendingMusic()
+////                is DataModel.BlOffers -> bindBlOffers(dataModel)
+
+            }*/
         }
     }
 
 
     companion object {
-        val VIEW_SEARCH =0
-        val VIEW_ARTIST = 1
-        val VIEW_TOP_TRENDING = 2
-        val VIEW_BROWSE_ALL = 3
-        val VIEW_AD = 4
-        val VIEW_DOWNLOAD = 5
-        val VIEW_POPULAR_AMAR_TUNES = 6
-        val VIEW_POPULAR_BANDS = 7
-        val VIEW_MADE_FOR_YOU = 8
-        val VIEW_LATEST_RELEASE = 9
-        val VIEW_POPULAR_PODCAST = 10
-        val VIEW_BL_MUSIC_OFFERS = 11
-        val VIEW_TRENDING_MUSIC_VIDEO = 12
+       // val VIEW_SEARCH =0
+        val VIEW_ARTIST = 0
+        val VIEW_TOP_TRENDING = 1
+        val VIEW_BROWSE_ALL = 2
+        val VIEW_AD = 3
+        val VIEW_DOWNLOAD = 4
+        val VIEW_POPULAR_AMAR_TUNES = 5
+        val VIEW_POPULAR_BANDS = 6
+        val VIEW_MADE_FOR_YOU = 7
+        val VIEW_LATEST_RELEASE = 8
+        val VIEW_POPULAR_PODCAST = 9
+        val VIEW_BL_MUSIC_OFFERS = 10
+        val VIEW_TRENDING_MUSIC_VIDEO = 11
     }
 
 }
