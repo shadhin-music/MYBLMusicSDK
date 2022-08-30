@@ -51,6 +51,8 @@ class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapt
             val textView:TextView = itemView.findViewById(R.id.txt_title)
             var url :String = data!!.Data[absoluteAdapterPosition].image
             textView.setText(data.Data[absoluteAdapterPosition].title)
+            val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
                 .load(url)

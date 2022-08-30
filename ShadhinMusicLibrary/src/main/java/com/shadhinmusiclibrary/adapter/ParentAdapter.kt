@@ -28,15 +28,15 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             VIEW_ARTIST -> R.layout.item_artist
             VIEW_TOP_TRENDING -> R.layout.item_top_trending
             VIEW_BROWSE_ALL -> R.layout.item_browse_all_genre
-            VIEW_AD -> R.layout.item_ad
-            VIEW_DOWNLOAD -> R.layout.item_my_fav
-            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
-            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
-            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
-            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
-            VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
-            VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
-            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
+//            VIEW_AD -> R.layout.item_ad
+//            VIEW_DOWNLOAD -> R.layout.item_my_fav
+//            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
+//            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
+//            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
+//            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
+//            VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
+//            VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
+//            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
@@ -92,6 +92,8 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val  context = itemView.getContext()
         private fun bindArtist(data: Data) {
+            val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.setText(data.Name)
 //            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

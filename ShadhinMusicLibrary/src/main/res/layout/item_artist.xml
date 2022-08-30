@@ -17,29 +17,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
+
                 <LinearLayout
+                    android:id="@+id/linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:id="@+id/linear"
                     android:padding="10dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Popular Artist"
                         android:layout_weight="5"
+                         android:id="@+id/tvTitle"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <TextView
+                        android:id="@+id/tvSeeALL"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
-                        android:text="See all"
-                        android:id="@+id/tvSeeALL"
                         android:layout_gravity="center"
-                        android:textSize="14sp"
-                        android:drawableEnd="@drawable/ic_arrow"/>
+                        android:layout_weight=".15"
+                        android:drawableEnd="@drawable/ic_arrow"
+                        android:text="See all"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

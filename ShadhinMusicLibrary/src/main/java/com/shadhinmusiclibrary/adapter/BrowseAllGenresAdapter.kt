@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,12 +50,14 @@ class BrowseAllGenresAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllGen
                     .commit()
             }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
-            //val textView:TextView = itemView.findViewById(R.id.txt_title)
+            val textView:TextView = itemView.findViewById(R.id.txt_title)
             var url :String = data!!.Data[absoluteAdapterPosition].image
-          //  textView.setText(data.Data[absoluteAdapterPosition].title)
-            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
+            textView.setText(data.Data[absoluteAdapterPosition].title)
+            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
-                .load(url)
+                .load( url.replace("<\$size\$>","300"))
                 .into(imageView)
 
 //
