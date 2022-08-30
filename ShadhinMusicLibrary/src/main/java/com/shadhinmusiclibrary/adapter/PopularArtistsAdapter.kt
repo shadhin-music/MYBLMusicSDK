@@ -33,8 +33,8 @@ internal class PopularArtistsAdapter() :
     }
 
     internal class PopularArtistsVH(itemView: View) : BaseViewHolder(itemView) {
-        val clCircleImageParent: ConstraintLayout =
-            itemView.findViewById(R.id.cl_circle_image_parent)
+//        val clCircleImageParent: ConstraintLayout =
+//            itemView.findViewById(R.id.cl_circle_image_parent)
         private val civPersonImage: CircleImageView = itemView.findViewById(R.id.civ_person_image)
         private val tvPersonName: TextView = itemView.findViewById(R.id.tv_person_name)
 

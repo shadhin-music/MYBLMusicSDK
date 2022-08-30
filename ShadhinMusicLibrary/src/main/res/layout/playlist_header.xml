@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="32dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_marginBottom="32dp">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/thumb_card"
         android:layout_width="200dp"
@@ -12,25 +12,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:cardElevation="36dp"
-      >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/thumb"
+            android:id="@+id/iv_thumb_current_play_item"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:src="@drawable/ic_artist" />
-
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/name"
-        android:layout_marginTop="16dp"
+        android:id="@+id/tv_name_current_play_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
@@ -38,20 +36,20 @@
         android:textColor="@color/colorBlack"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/thumb_card"/>
+        app:layout_constraintTop_toBottomOf="@id/thumb_card" />
 
     <TextView
-        android:id="@+id/desc"
+        android:id="@+id/tv_description_current_play_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:layout_marginTop="4dp"
         android:text="gghhhhhhhg"
         android:textColor="@color/colorBlack"
         android:textSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/name"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_name_current_play_item" />
 
     <LinearLayout
         android:id="@+id/actions"
@@ -66,17 +64,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/desc">
+        app:layout_constraintTop_toBottomOf="@id/tv_description_current_play_item">
 
         <ImageView
             android:id="@+id/favorite"
             android:layout_width="24dp"
             android:layout_height="24dp"
-             android:layout_gravity="center"
+            android:layout_gravity="center"
             android:layout_marginEnd="24dp"
             android:visibility="visible"
-            app:srcCompat="@drawable/ic_favorite_border"
-            />
+            app:srcCompat="@drawable/ic_favorite_border" />
 
         <ImageView
             android:id="@+id/play_btn"
@@ -92,10 +89,6 @@
             android:layout_gravity="center"
             android:layout_marginStart="24dp"
             android:visibility="visible"
-            app:srcCompat="@drawable/share"
-            />
-
+            app:srcCompat="@drawable/share" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

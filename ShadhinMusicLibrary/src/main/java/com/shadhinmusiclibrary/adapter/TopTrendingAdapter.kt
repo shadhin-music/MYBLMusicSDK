@@ -16,7 +16,8 @@ import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 class TopTrendingAdapter() : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+        val v =
+            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -32,14 +33,12 @@ class TopTrendingAdapter() : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.context
         fun bindItems() {
-
-
             itemView.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
-                    .replace(R.id.container , TopTrendingPlaylistFragment.newInstance())
+                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
                     .addToBackStack("Trending")
                     .commit()
             }

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.adapter.*
 
 class PodcastVideoFragment : Fragment() {
 
-    private lateinit var  parentAdapter:ConcatAdapter
+    private lateinit var parentAdapter: ConcatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,12 +34,11 @@ class PodcastVideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapters()
     }
+
     private fun setupAdapters() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val config = ConcatAdapter.Config.Builder().apply {
-            setIsolateViewTypes(false)
-        }.build()
+        val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
 
         val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
@@ -55,6 +54,7 @@ class PodcastVideoFragment : Fragment() {
         parentRecycler.setLayoutManager(layoutManager)
         parentRecycler.setAdapter(parentAdapter)
     }
+
     companion object {
 
         @JvmStatic

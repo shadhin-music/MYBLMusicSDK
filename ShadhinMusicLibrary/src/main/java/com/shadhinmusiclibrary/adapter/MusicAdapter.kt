@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
@@ -33,7 +34,7 @@ internal class MusicAdapter() : RecyclerView.Adapter<MusicAdapter.MusicVH>() {
     }
 
     internal class MusicVH(itemView: View) : BaseViewHolder(itemView) {
-        val cvMusicViewParent: ConstraintLayout =
+        val cvMusicViewParent: CardView =
             itemView.findViewById(R.id.cv_music_view_parent)
         private val llMusicItemLayout: LinearLayout =
             itemView.findViewById(R.id.ll_music_item_layout)
