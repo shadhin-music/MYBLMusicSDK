@@ -35,7 +35,7 @@ class PodcastMoreEpisodesAdapter : RecyclerView.Adapter<PodcastMoreEpisodesAdapt
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter(data)
+           // recyclerView.adapter = TopTrendingAdapter(data)
 
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView

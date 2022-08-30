@@ -38,7 +38,7 @@ class PopularAlbumFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-        recyclerView.adapter = TopTrendingAdapter(data)
+       // recyclerView.adapter = TopTrendingAdapter(data)
     }
     companion object {
 

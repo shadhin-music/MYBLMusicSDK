@@ -82,7 +82,7 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingAdapter(data)
+          //  recyclerView.adapter = TopTrendingAdapter(data)
 
 
         }
