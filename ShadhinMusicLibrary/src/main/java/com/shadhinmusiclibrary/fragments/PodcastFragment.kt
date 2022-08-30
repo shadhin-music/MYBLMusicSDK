@@ -15,8 +15,6 @@ import com.shadhinmusiclibrary.R
 
 import com.shadhinmusiclibrary.adapter.PopularPodcastAdapter
 
-import com.shadhinmusiclibrary.data.model.GenreDataModel
-
 class PodcastFragment : Fragment() {
 
     override fun onCreateView(
@@ -29,7 +27,7 @@ class PodcastFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dataAdapter = PopularPodcastAdapter()
-        dataAdapter.setData(getMockData())
+       // dataAdapter.setData(getMockData())
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -43,19 +41,19 @@ class PodcastFragment : Fragment() {
 
         }
     }
-    private fun getMockData(): List<GenreDataModel> = listOf(
-
-
-
-        GenreDataModel.Artist(
-            name = "Artist"
-
-        ),
-        GenreDataModel.Artist2(
-            name = "Artist"
-
-        ),
-    )
+//    private fun getMockData(): List<GenreDataModel> = listOf(
+//
+//
+//
+//        GenreDataModel.Artist(
+//            name = "Artist"
+//
+//        ),
+//        GenreDataModel.Artist2(
+//            name = "Artist"
+//
+//        ),
+//    )
     companion object {
 
         @JvmStatic

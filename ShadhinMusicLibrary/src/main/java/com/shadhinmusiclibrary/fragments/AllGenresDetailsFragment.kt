@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
@@ -13,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllGenreAdapter
-import com.shadhinmusiclibrary.data.model.DataModel
-import com.shadhinmusiclibrary.data.model.GenreDataModel
 
 
 class AllGenresDetailsFragment : Fragment() {
@@ -36,7 +33,7 @@ class AllGenresDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dataAdapter = AllGenreAdapter()
-        dataAdapter.setData(getMockData())
+        //dataAdapter.setData()
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -54,89 +51,89 @@ class AllGenresDetailsFragment : Fragment() {
     }
 
 
-    private fun getMockData(): List<GenreDataModel> = listOf(
-
-       GenreDataModel.Artist(
-            name = "Artist"
-
-        ),
-
-        GenreDataModel.Artist(
-            name = "Ad"
-        ),
-        GenreDataModel.Artist(
-            name = "Ad"
-        ),
-//        DataModel.Download(
-//            name = "Download"
+//    private fun getMockData(): List<GenreDataModel> = listOf(
+//
+//       GenreDataModel.Artist(
+//            name = "Artist"
+//
 //        ),
-//        DataModel.PopularAmarTunes(
-//            name = "PopularAmarTunes"
+//
+//        GenreDataModel.Artist(
+//            name = "Ad"
 //        ),
-//        DataModel.PopularBands(
-//            name = "PopularBands"
+//        GenreDataModel.Artist(
+//            name = "Ad"
 //        ),
-//        DataModel.MadeForYou(
-//            name = "Download"
-//        ),
-//        DataModel.LatestRelease(
-//            name = "Download"
-//        ),
-//        DataModel.PopularPodcast(
-//            name = "Download"
-//        ),
-//        DataModel.BlOffers(
-//            name = "Download"
-//        ),
-//        DataModel.TrendingMusicVideo(
-//            name = "Download"
-//        )
-//        DataModel.Header(
-//            bgColor = resources.getColor(R.color.friend_bg),
-//            title = "My friends"
-//        ),
-//        DataModel.Friend(
-//            name = "My Friend one",
-//            gender = "Male"
-//        ),
-//        DataModel.Friend(
-//            name = "My Friend two",
-//            gender = "Female"
-//        ),
-//        DataModel.Friend(
-//            name = "My Friend three",
-//            gender = "Male"
-//        ),
-//        DataModel.Header(
-//            bgColor = resources.getColor(R.color.colleague_bg),
-//            title = "My colleagues"
-//        ),
-//        DataModel.Colleague(
-//            name = "Colleague 1",
-//            organization = "Org 1",
-//            designation = "Manager"
-//        ),
-//        DataModel.Colleague(
-//            name = "Colleague 2",
-//            organization = "Org 2",
-//            designation = "Software Eng"
-//        ),
-//        DataModel.Colleague(
-//            name = "Colleague 3",
-//            organization = "Org 3",
-//            designation = "Software Eng"
-//        ),
-//        DataModel.Colleague(
-//            name = "Colleague 4",
-//            organization = "Org 4",
-//            designation = "Sr Software Eng"
-//        ),
-//        DataModel.Colleague(
-//            name = "Colleague 5",
-//            organization = "Org 5",
-//            designation = "Sr Software Eng"
-//        ),
-    )
+////        DataModel.Download(
+////            name = "Download"
+////        ),
+////        DataModel.PopularAmarTunes(
+////            name = "PopularAmarTunes"
+////        ),
+////        DataModel.PopularBands(
+////            name = "PopularBands"
+////        ),
+////        DataModel.MadeForYou(
+////            name = "Download"
+////        ),
+////        DataModel.LatestRelease(
+////            name = "Download"
+////        ),
+////        DataModel.PopularPodcast(
+////            name = "Download"
+////        ),
+////        DataModel.BlOffers(
+////            name = "Download"
+////        ),
+////        DataModel.TrendingMusicVideo(
+////            name = "Download"
+////        )
+////        DataModel.Header(
+////            bgColor = resources.getColor(R.color.friend_bg),
+////            title = "My friends"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend one",
+////            gender = "Male"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend two",
+////            gender = "Female"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend three",
+////            gender = "Male"
+////        ),
+////        DataModel.Header(
+////            bgColor = resources.getColor(R.color.colleague_bg),
+////            title = "My colleagues"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 1",
+////            organization = "Org 1",
+////            designation = "Manager"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 2",
+////            organization = "Org 2",
+////            designation = "Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 3",
+////            organization = "Org 3",
+////            designation = "Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 4",
+////            organization = "Org 4",
+////            designation = "Sr Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 5",
+////            organization = "Org 5",
+////            designation = "Sr Software Eng"
+////        ),
+//    )
     companion object {
 
 

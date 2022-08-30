@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.GenreDataModel
+import com.shadhinmusiclibrary.data.model.Data
 
 class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<GenreDataModel>()
+    private val adapterData = mutableListOf<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -40,10 +40,10 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
 
-            is GenreDataModel.Artist -> VIEW_TRENDING_PODCAST
-            is GenreDataModel.Artist2 -> VIEW_VIDEO_PODCASTS
-            is GenreDataModel.Artist3 -> VIEW_BHOOT
-            is GenreDataModel.Artist4 -> VIEW_POPULAR_SHOWS
+//            is GenreDataModel.Artist -> VIEW_TRENDING_PODCAST
+//            is GenreDataModel.Artist2 -> VIEW_VIDEO_PODCASTS
+//            is GenreDataModel.Artist3 -> VIEW_BHOOT
+//            is GenreDataModel.Artist4 -> VIEW_POPULAR_SHOWS
 
             else -> {
                 throw IllegalArgumentException("Invalid view type")
@@ -52,12 +52,12 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
         }
     }
 
-    fun setData(data: List<GenreDataModel>) {
-        adapterData.apply {
-            clear()
-            addAll(data)
-        }
-    }
+//    fun setData(data: List<GenreDataModel>) {
+//        adapterData.apply {
+//            clear()
+//            addAll(data)
+//        }
+//    }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -65,7 +65,7 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
             Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false )
-            recyclerView.adapter = TopTrendingAdapter()
+          //  recyclerView.adapter = TopTrendingAdapter(data)
 
         }
 
@@ -91,12 +91,12 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
         }
 
 
-        fun bind(dataModel: GenreDataModel) {
+        fun bind(dataModel: Data) {
             when (dataModel) {
-                is GenreDataModel.Artist -> bindArtist()
-                is GenreDataModel.Artist2 -> bindArtist2()
-                is GenreDataModel.Artist3 -> bindArtist2()
-                is GenreDataModel.Artist4 -> bindArtist2()
+//                is GenreDataModel.Artist -> bindArtist()
+//                is GenreDataModel.Artist2 -> bindArtist2()
+//                is GenreDataModel.Artist3 -> bindArtist2()
+//                is GenreDataModel.Artist4 -> bindArtist2()
 
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
 
