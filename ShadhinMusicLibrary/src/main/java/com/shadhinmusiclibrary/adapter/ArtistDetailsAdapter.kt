@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.GenreDataModel
+import com.shadhinmusiclibrary.data.model.Data
 
 class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<GenreDataModel>()
+    private val adapterData = mutableListOf<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -39,10 +39,10 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
 
-            is GenreDataModel.Artist -> VIEW_ARTIST_HEADER
-            is GenreDataModel.Artist2 -> VIEW_DOWNLOAD
-            is GenreDataModel.Artist3 -> VIEW_ALBUM
-            is GenreDataModel.Artist4 -> VIEW_YOU_MIGHT_LIKE
+//            is GenreDataModel.Artist -> VIEW_ARTIST_HEADER
+//            is GenreDataModel.Artist2 -> VIEW_DOWNLOAD
+//            is GenreDataModel.Artist3 -> VIEW_ALBUM
+//            is GenreDataModel.Artist4 -> VIEW_YOU_MIGHT_LIKE
 
             else -> {
                 throw IllegalArgumentException("Invalid view type")
@@ -51,12 +51,12 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
         }
     }
 
-    fun setData(data: List<GenreDataModel>) {
-        adapterData.apply {
-            clear()
-            addAll(data)
-        }
-    }
+//    fun setData(data: List<>) {
+//        adapterData.apply {
+//            clear()
+//            addAll(data)
+//        }
+//    }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -96,12 +96,12 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
         }
 
 
-        fun bind(dataModel: GenreDataModel) {
+        fun bind(dataModel: Data) {
             when (dataModel) {
-                is GenreDataModel.Artist -> bindArtist()
-                is GenreDataModel.Artist2 -> bindArtist2()
-                is GenreDataModel.Artist3 -> bindArtist3()
-                is GenreDataModel.Artist4 -> bindArtist4()
+//                is GenreDataModel.Artist -> bindArtist()
+//                is GenreDataModel.Artist2 -> bindArtist2()
+//                is GenreDataModel.Artist3 -> bindArtist3()
+//                is GenreDataModel.Artist4 -> bindArtist4()
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
 
 

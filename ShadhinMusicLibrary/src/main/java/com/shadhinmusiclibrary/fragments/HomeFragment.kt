@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,11 +13,9 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 
 
-import com.shadhinmusiclibrary.data.model.DataModel
 import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.rest.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,92 +74,92 @@ class HomeFragment : Fragment() {
             }
         })
     }
-    private fun getMockData(): List<DataModel> = listOf(
-        DataModel.Search(
-            name = "Search"
-
-        ),
-        DataModel.Artist(
-            name = "Artist"
-
-        ),
-        DataModel.TopTrending(
-            name = "TopTrending"
-        ),
-       DataModel.BrowseAll(
-            name = "BrowseAll"
-        ),
-        DataModel.Ad(
-            name = "Ad"
-        ),
-        DataModel.Download(
-            name = "Download"
-        ),
-        DataModel.PopularAmarTunes(
-            name = "PopularAmarTunes"
-        ),
-        DataModel.PopularBands(
-            name = "PopularBands"
-        ),
-        DataModel.MadeForYou(
-            name = "Download"
-        ),
-        DataModel.LatestRelease(
-            name = "Download"
-        ),
-        DataModel.PopularPodcast(
-            name = "Download"
-        ),
-        DataModel.BlOffers(
-            name = "Download"
-        ),
-        DataModel.TrendingMusicVideo(
-            name = "Download"
-        )
-//        DataModel.Header(
-//            bgColor = resources.getColor(R.color.friend_bg),
-//            title = "My friends"
+//    private fun getMockData(): List<DataModel> = listOf(
+//        DataModel.Search(
+//            name = "Search"
+//
 //        ),
-//        DataModel.Friend(
-//            name = "My Friend one",
-//            gender = "Male"
+//        DataModel.Artist(
+//            name = "Artist"
+//
 //        ),
-//        DataModel.Friend(
-//            name = "My Friend two",
-//            gender = "Female"
+//        DataModel.TopTrending(
+//            name = "TopTrending"
 //        ),
-//        DataModel.Friend(
-//            name = "My Friend three",
-//            gender = "Male"
+//       DataModel.BrowseAll(
+//            name = "BrowseAll"
 //        ),
-//        DataModel.Header(
-//            bgColor = resources.getColor(R.color.colleague_bg),
-//            title = "My colleagues"
+//        DataModel.Ad(
+//            name = "Ad"
 //        ),
-//        DataModel.Colleague(
-//            name = "Colleague 1",
-//            organization = "Org 1",
-//            designation = "Manager"
+//        DataModel.Download(
+//            name = "Download"
 //        ),
-//        DataModel.Colleague(
-//            name = "Colleague 2",
-//            organization = "Org 2",
-//            designation = "Software Eng"
+//        DataModel.PopularAmarTunes(
+//            name = "PopularAmarTunes"
 //        ),
-//        DataModel.Colleague(
-//            name = "Colleague 3",
-//            organization = "Org 3",
-//            designation = "Software Eng"
+//        DataModel.PopularBands(
+//            name = "PopularBands"
 //        ),
-//        DataModel.Colleague(
-//            name = "Colleague 4",
-//            organization = "Org 4",
-//            designation = "Sr Software Eng"
+//        DataModel.MadeForYou(
+//            name = "Download"
 //        ),
-//        DataModel.Colleague(
-//            name = "Colleague 5",
-//            organization = "Org 5",
-//            designation = "Sr Software Eng"
+//        DataModel.LatestRelease(
+//            name = "Download"
 //        ),
-    )
+//        DataModel.PopularPodcast(
+//            name = "Download"
+//        ),
+//        DataModel.BlOffers(
+//            name = "Download"
+//        ),
+//        DataModel.TrendingMusicVideo(
+//            name = "Download"
+//        )
+////        DataModel.Header(
+////            bgColor = resources.getColor(R.color.friend_bg),
+////            title = "My friends"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend one",
+////            gender = "Male"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend two",
+////            gender = "Female"
+////        ),
+////        DataModel.Friend(
+////            name = "My Friend three",
+////            gender = "Male"
+////        ),
+////        DataModel.Header(
+////            bgColor = resources.getColor(R.color.colleague_bg),
+////            title = "My colleagues"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 1",
+////            organization = "Org 1",
+////            designation = "Manager"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 2",
+////            organization = "Org 2",
+////            designation = "Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 3",
+////            organization = "Org 3",
+////            designation = "Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 4",
+////            organization = "Org 4",
+////            designation = "Sr Software Eng"
+////        ),
+////        DataModel.Colleague(
+////            name = "Colleague 5",
+////            organization = "Org 5",
+////            designation = "Sr Software Eng"
+////        ),
+//    )
     }

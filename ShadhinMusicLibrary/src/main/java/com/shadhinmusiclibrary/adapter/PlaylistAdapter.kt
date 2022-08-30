@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.GenreDataModel
+import com.shadhinmusiclibrary.data.model.Data
 
 
 class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<GenreDataModel>()
+    private val adapterData = mutableListOf<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -42,8 +42,8 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
     override fun getItemViewType(position: Int): Int {
         return when (adapterData[position]) {
 
-            is GenreDataModel.Artist -> VIEW_BROWSE_ALL
-            is GenreDataModel.Artist2 -> VIEW_BROWSE_ALL2
+//            is GenreDataModel.Artist -> VIEW_BROWSE_ALL
+//            is GenreDataModel.Artist2 -> VIEW_BROWSE_ALL2
 
             else -> {
                 throw IllegalArgumentException("Invalid view type")
@@ -52,12 +52,12 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         }
     }
 
-    fun setData(data: List<GenreDataModel>) {
-        adapterData.apply {
-            clear()
-            addAll(data)
-        }
-    }
+//    fun setData(data: List<GenreDataModel>) {
+//        adapterData.apply {
+//            clear()
+//            addAll(data)
+//        }
+//    }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -92,12 +92,12 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         }
 
 
-        fun bind(dataModel: GenreDataModel) {
+        fun bind(dataModel: Data) {
             when (dataModel) {
-                is GenreDataModel.Artist -> bindArtist()
-                is GenreDataModel.Artist2 -> bindArtist2()
-                is GenreDataModel.Artist3 -> bindArtist()
-                is GenreDataModel.Artist4 -> bindArtist2()
+//                is GenreDataModel.Artist -> bindArtist()
+//                is GenreDataModel.Artist2 -> bindArtist2()
+//                is GenreDataModel.Artist3 -> bindArtist()
+//                is GenreDataModel.Artist4 -> bindArtist2()
 
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
 

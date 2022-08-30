@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.Data
@@ -48,6 +49,13 @@ class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapt
             }
             val imageView:ShapeableImageView = itemView.findViewById(R.id.image)
             val textView:TextView = itemView.findViewById(R.id.txt_title)
+            var url :String = data!!.Data[absoluteAdapterPosition].image
+            textView.setText(data.Data[absoluteAdapterPosition].title)
+            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Glide.with(context)
+                .load(url)
+                .into(imageView)
+
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)

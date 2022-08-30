@@ -59,6 +59,7 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         return when (homeData?.data?.get(position)?.Design) {
                "Artist"-> VIEW_ARTIST
                "Playlist"-> VIEW_TOP_TRENDING
+               "Release"-> VIEW_BROWSE_ALL
                 //adapterData[0].data[0].Design -> VIEW_ARTIST
  //           is DataModel.Artist -> VIEW_ARTIST
 //            is DataModel.Search -> VIEW_SEARCH
@@ -111,6 +112,8 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
 
         private fun bindTopTrending(data: Data) {
             val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.setText(data.Name)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
@@ -134,8 +137,10 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
 ////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
-        private fun bindBrowseAll() {
+        private fun bindBrowseAll(data: Data) {
             val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+                val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.setText(data.Name)
             seeAll.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
@@ -148,7 +153,7 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = BrowseAllGenresAdapter()
+            recyclerView.adapter = BrowseAllGenresAdapter(data)
 
             //Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
@@ -270,6 +275,7 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             when(dataModel?.Design){
                 "Artist" -> bindArtist(dataModel)
                     "Playlist" -> bindTopTrending(dataModel)
+                "Release" ->bindBrowseAll(dataModel)
             }
             /*when (dataModel) {
                     dataModel-> bindArtist(dataModel!!)

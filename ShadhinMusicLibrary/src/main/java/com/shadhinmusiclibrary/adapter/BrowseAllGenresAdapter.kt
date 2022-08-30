@@ -11,11 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllGenresAdapter() : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
+class BrowseAllGenresAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
 
 
 
@@ -32,7 +35,7 @@ class BrowseAllGenresAdapter() : RecyclerView.Adapter<BrowseAllGenresAdapter.Vie
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return data.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,6 +48,16 @@ class BrowseAllGenresAdapter() : RecyclerView.Adapter<BrowseAllGenresAdapter.Vie
                     .addToBackStack("GenrePlaylistFragment")
                     .commit()
             }
+            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
+            //val textView:TextView = itemView.findViewById(R.id.txt_title)
+            var url :String = data!!.Data[absoluteAdapterPosition].image
+          //  textView.setText(data.Data[absoluteAdapterPosition].title)
+            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Glide.with(context)
+                .load(url)
+                .into(imageView)
+
+//
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
