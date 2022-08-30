@@ -2,14 +2,11 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.shadhinmusiclibrary.fragments.AllFragment
 import com.shadhinmusiclibrary.fragments.DownloadDetailsFragment
-import com.shadhinmusiclibrary.fragments.HomeFragment
+import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
 
 @Suppress("DEPRECATION")
