@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.rest
 
+import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.utils.AppConstantUtils.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

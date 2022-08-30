@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shadhinmusiclibrary">
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <application>
+    <application android:name=".di.ShadhinApp">
         <activity
             android:name=".activities.MainActivity"
             android:exported="false"
