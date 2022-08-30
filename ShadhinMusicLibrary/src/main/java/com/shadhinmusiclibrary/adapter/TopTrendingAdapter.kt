@@ -4,16 +4,19 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 
 
-class TopTrendingAdapter() : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
+class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
@@ -28,7 +31,7 @@ class TopTrendingAdapter() : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return data?.Data!!.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,6 +46,8 @@ class TopTrendingAdapter() : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>
                     .addToBackStack("Trending")
                     .commit()
             }
+            val imageView:ShapeableImageView = itemView.findViewById(R.id.image)
+            val textView:TextView = itemView.findViewById(R.id.txt_title)
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)

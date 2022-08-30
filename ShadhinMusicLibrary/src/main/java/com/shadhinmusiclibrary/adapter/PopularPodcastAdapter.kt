@@ -65,7 +65,7 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
             Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false )
-            recyclerView.adapter = TopTrendingAdapter()
+            recyclerView.adapter = TopTrendingAdapter(data)
 
         }
 

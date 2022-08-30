@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.DataX
 import com.shadhinmusiclibrary.fragments.PlaylistFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter() : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
 
 
@@ -32,7 +38,7 @@ class ArtistAdapter() : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return data?.Data!!.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,8 +47,17 @@ class ArtistAdapter() : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
+
+
+            var url :String = data!!.Data[absoluteAdapterPosition].image
+                  //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Glide.with(context)
+                .load(url.replace("<\$size\$>","300"))
+                .into(imageView2)
+
+            textViewName.setText(data.Data[absoluteAdapterPosition].Artist)
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                val manager: FragmentManager = (context  as AppCompatActivity).supportFragmentManager
 
                 manager.beginTransaction()
                     .replace(R.id.container , PlaylistFragment.newInstance())

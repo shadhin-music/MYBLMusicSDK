@@ -1,11 +1,8 @@
 package com.shadhinmusiclibrary.player.data.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity
+
 public class MusicPosition {
-    @PrimaryKey(autoGenerate = true)
     private int id;
     private String mediaId;
     private long position;
