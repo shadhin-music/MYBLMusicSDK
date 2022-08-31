@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.data.remote
 
-import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,7 +17,7 @@ interface ApiService {
     fun getAlbumContent(
         @Query("id") pageNumber: Int
     ): Call<APIResponse<List<Content>>>
-    ): HomeData
+
 
     //@Get()
 }

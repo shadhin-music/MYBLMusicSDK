@@ -54,9 +54,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/linear"
+                    android:clipToPadding="false"
                     android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:clipToPadding="false"/>
+                    android:paddingEnd="16dp" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

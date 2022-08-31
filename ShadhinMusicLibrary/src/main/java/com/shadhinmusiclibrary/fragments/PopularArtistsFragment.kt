@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.SortDescription
+
 
 class PopularArtistsFragment : Fragment() {
-  lateinit var data1:Data
+  lateinit var data1:SortDescription
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,7 +27,7 @@ class PopularArtistsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          arguments.let {
-             data1 = it?.getSerializable("data") as Data
+             data1 = it?.getSerializable("data") as SortDescription
          }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +47,7 @@ class PopularArtistsFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(data: Data) =
+        fun newInstance(data: SortDescription) =
             PopularArtistsFragment().apply {
                 arguments = Bundle().apply {
                     arguments?.putSerializable("data", data)

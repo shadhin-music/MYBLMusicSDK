@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 
 
-import com.shadhinmusiclibrary.data.model.HomeData
+
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.rest.RetroClient
@@ -57,17 +57,17 @@ class HomeFragment : Fragment() , FragmentEntryPoint {
 
     private fun observeData() {
         viewModel.fetchHomeData(1,false)
-        viewModel.homeContent.observe(viewLifecycleOwner){ viewDataInRecyclerView(it)}
+//        viewModel.homeContent.observe(viewLifecycleOwner){ viewDataInRecyclerView(it)}
     }
 
-    private fun viewDataInRecyclerView(homeData: HomeData?) {
-        val dataAdapter = ParentAdapter()
-        val recyclerView:RecyclerView = view?.findViewById(R.id.recyclerView)!!
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
-        homeData?.let { dataAdapter.setData(it) }
-    }
+//    private fun viewDataInRecyclerView(homeData: List<SortDescription>) {
+//        val dataAdapter = ParentAdapter(this)
+//        val recyclerView:RecyclerView = view?.findViewById(R.id.recyclerView)!!
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        recyclerView.adapter = dataAdapter
+//        homeData?.let { dataAdapter.setData(it) }
+//    }
 
 
     /*private fun getHomeData() {

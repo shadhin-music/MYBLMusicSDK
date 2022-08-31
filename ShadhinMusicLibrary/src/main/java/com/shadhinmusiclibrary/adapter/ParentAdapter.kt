@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.SortDescription
+
 import com.shadhinmusiclibrary.fragments.*
 
 
@@ -91,9 +92,9 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         notifyDataSetChanged()
     }
 
-    class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+   inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val  context = itemView.getContext()
-        private fun bindArtist(data: Data) {
+        private fun bindArtist(data: SortDescription) {
 //            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -104,9 +105,9 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //
 //            }
 
-            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView1)
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
-                LinearLayoutManager(mContextRef, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = ArtistAdapter(data)
 
         }
@@ -171,7 +172,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             download.setOnClickListener {
                 val manager: FragmentManager =
-                    (mContextRef as AppCompatActivity).supportFragmentManager
+                    (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .add(R.id.container, DownloadFragment.newInstance())
                     .addToBackStack("AllGenresDetailsFragment")
@@ -239,7 +240,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             }
             itemView.setOnClickListener {
                 val manager: FragmentManager =
-                    (mContextRef as AppCompatActivity).supportFragmentManager
+                    (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, PodcastDetailsFragment.newInstance())
                     .addToBackStack("Fragment")
@@ -262,7 +263,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 val manager: FragmentManager =
-                    (mContextRef as AppCompatActivity).supportFragmentManager
+                    (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, MusicFragment.newInstance())
                     .commit()
