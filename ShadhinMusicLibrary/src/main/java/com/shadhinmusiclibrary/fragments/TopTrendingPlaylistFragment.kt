@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
+import com.shadhinmusiclibrary.data.model.APIResponse
+import com.shadhinmusiclibrary.data.model.Content
+import com.shadhinmusiclibrary.data.model.DataDetails
+import com.shadhinmusiclibrary.rest.ApiService
+import com.shadhinmusiclibrary.rest.RetroClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TopTrendingPlaylistFragment : Fragment() {
-
+    private lateinit var playListAdapter: PlaylistAdapter
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,25 +42,53 @@ class TopTrendingPlaylistFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_playlist, container, false)
+        navController = findNavController()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = PlaylistAdapter()
+        fetchOnlineData()
+
         //dataAdapter.setData(getMockData())
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
+
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         button.setOnClickListener {
             manager.popBackStack("Trending", FragmentManager.POP_BACK_STACK_INCLUSIVE)
             // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
         }
-
     }
-//    private fun getMockData(): List<GenreDataModel> = listOf(
+
+    private fun fetchOnlineData() {
+        val api: ApiService = RetroClient.getApiShadhinMusicService()
+        val call = api.getAlbumContent(21132)
+        call.enqueue(object : Callback<APIResponse<List<Content>>> {
+            override fun onResponse(
+                call: Call<APIResponse<List<Content>>>,
+                response: Response<APIResponse<List<Content>>>
+            ) {
+                if (response.isSuccessful) {
+                    Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
+                    playListAdapter = PlaylistAdapter()
+                    playListAdapter.setData(response.body()!!.data)
+
+                    val recyclerView: RecyclerView = view!!.findViewById(R.id.recyclerView)
+                    recyclerView.layoutManager =
+                        LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
+                    recyclerView.adapter = playListAdapter
+                }
+            }
+
+            override fun onFailure(call: Call<APIResponse<List<Content>>>, t: Throwable) {
+            }
+        })
+    }
+
+    //    private fun getMockData(): List<GenreDataModel> = listOf(
 //
 //        GenreDataModel.Artist(
 //            name = "Artist"

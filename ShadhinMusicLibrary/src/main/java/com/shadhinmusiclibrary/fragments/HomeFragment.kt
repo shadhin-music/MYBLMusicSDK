@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,7 +14,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 
 
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.APIResponse
+import com.shadhinmusiclibrary.data.model.SortDescription
 import com.shadhinmusiclibrary.rest.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
 import retrofit2.Call
@@ -36,41 +38,41 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            // dataAdapter.setData(getHomeData())
+        // dataAdapter.setData(getHomeData())
 
-          getHomeData()
+        getHomeData()
 
-        }
+    }
+
     private fun getHomeData() {
 
         val api: ApiService = RetroClient.getApiService()!!
-        val call = api.getHomeData(1,false)
-        call.enqueue(object : Callback<HomeData> {
+        val call = api.getHomeData(1, false)
+        call.enqueue(object : Callback<APIResponse<List<SortDescription>>> {
             override fun onResponse(
-                call: Call<HomeData>,
-                response: Response<HomeData>
+                call: Call<APIResponse<List<SortDescription>>>,
+                response: Response<APIResponse<List<SortDescription>>>
             ) {
                 if (response.isSuccessful && response.code() == 200) {
                     val dataAdapter = ParentAdapter()
-                    val recyclerView:RecyclerView = view?.findViewById(R.id.recyclerView)!!
+                    val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
                     recyclerView.layoutManager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                     recyclerView.adapter = dataAdapter
-                    response.body()?.let { dataAdapter.setData(it) }
+                    response.body()?.let { dataAdapter.setData(it.data) }
 
-                    Log.d("TAG", "DATA :"+ response.body()!!.data[0].Design)
+                    Log.d("TAG", "DATA :" + response.body()!!.data[0].Design)
 
                 }
             }
 
-            override fun onFailure(call: Call<HomeData>, t: Throwable) {
+            override fun onFailure(call: Call<APIResponse<List<SortDescription>>>, t: Throwable) {
             }
         })
     }
@@ -162,4 +164,4 @@ class HomeFragment : Fragment() {
 ////            designation = "Sr Software Eng"
 ////        ),
 //    )
-    }
+}

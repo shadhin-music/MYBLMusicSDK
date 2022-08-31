@@ -1,8 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
-data class HomeData(
-
-    val `data`: List<Data>,
+data class APIResponse<ResultType>(
+    val data: ResultType,
     val fav: Any,
     val follow: Any,
     val image: Any,

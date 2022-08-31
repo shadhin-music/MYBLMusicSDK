@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model
 
-data class DataX(
+data class DataDetails(
     val AlbumId: String,
     val AlbumImage: Any,
     val AlbumName: Any,
