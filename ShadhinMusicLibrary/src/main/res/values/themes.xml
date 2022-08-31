@@ -8,9 +8,11 @@
     <style name="Theme.ShadhinMusicSDK.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ShadhinMusicSDK.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
         <item name="cornerSize">10%</item>
     </style>
+
     <style name="buttonShape">
         <item name="cornerFamily">rounded</item>
     </style>
@@ -21,6 +23,7 @@
     <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
+
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/dialog_bg</item>
     </style>
@@ -36,6 +39,7 @@
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/colorWhite</item>
     </style>
+
     <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textSize">14sp</item>
