@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.vp_adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.shadhinmusiclibrary.fragments.HomeFragment
+import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
 /**
  * Rezaul Khan

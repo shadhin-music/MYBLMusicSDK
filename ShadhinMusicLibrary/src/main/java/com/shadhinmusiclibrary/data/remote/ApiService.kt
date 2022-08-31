@@ -9,8 +9,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("HomeContent/GetHomeContent?")
-    fun getHomeData(
+    @GET("HomeContent/GetHomeContent")
+    suspend fun getHomeData(
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?
     ): Call<APIResponse<List<SortDescription>>>
