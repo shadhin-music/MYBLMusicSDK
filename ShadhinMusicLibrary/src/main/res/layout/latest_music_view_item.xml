@@ -70,14 +70,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_baseline_music_note_24" />
+                    android:src="@drawable/ic_baseline_music_note_24"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/iv_song_menu_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_more_vert" />
+                    android:src="@drawable/ic_more_vert"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

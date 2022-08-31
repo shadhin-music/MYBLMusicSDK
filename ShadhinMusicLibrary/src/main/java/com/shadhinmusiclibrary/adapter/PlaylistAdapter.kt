@@ -99,16 +99,6 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
             }
         }
 
-        fun bind(dataModel: Content) {
-//            Log.e("PLA", ": $dataModel")
-//            if (viewItem.id == VIEW_ALBUM) {
-//
-//            }
-//            if (viewItem.id == VIEW_TRACK_ITEM) {
-//                tvSongName.text = dataModel.title
-//            }
-        }
-
         private fun showBottomSheetDialog(context: Context) {
             val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
             val contentView =
@@ -123,11 +113,9 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         }
     }
 
-
     companion object {
         const val VIEW_ALBUM = 0
         const val VIEW_TRACK_ITEM = 1
         val VIEW_BROWSE_ALL3 = 3
     }
-
 }
