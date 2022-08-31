@@ -1,21 +1,18 @@
 package com.co.shadhinmusicsdk
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
-class AppActivity(contentLayoutId: Int) : FragmentActivity(contentLayoutId) {
+class AppActivity() : AppCompatActivity() {
 
-    lateinit var tabLayout: TabLayout
-    lateinit var viewPager: ViewPager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.app_activity)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getHomeFragment(this))
+        transaction.commit()
 
-       setContentView(R.layout.app_activity)
 //        Handler().postDelayed({
 //            startActivity(Intent(this, com.shadhinmusiclibrary.activities.MainActivity::class.java))
 //            finish()
@@ -57,6 +54,5 @@ class AppActivity(contentLayoutId: Int) : FragmentActivity(contentLayoutId) {
 //        val selectedTabIndex = 1
 //        viewPager.setCurrentItem(selectedTabIndex, false)
 //    }
-
     }
 }
