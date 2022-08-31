@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.SortDescription
 import com.shadhinmusiclibrary.fragments.*
 
 
-class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
+class ParentAdapter(val homeCallBack: HomeCallBack) :
+    RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
     private var data: List<SortDescription>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
@@ -48,6 +50,7 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
         holder.bind(data?.get(position))
+        homeCallBack.onClickItem()
     }
 
     override fun getItemCount(): Int = data?.size ?: 0
@@ -87,8 +90,8 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         notifyDataSetChanged()
     }
 
-    class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val context = itemView.getContext()
+    inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val mContextRef = itemView.context
         private fun bindArtist(data: SortDescription) {
 //            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
@@ -97,28 +100,27 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
 //                    .replace(R.id.container , PopularArtistsFragment.newInstance())
 //                    .addToBackStack("Popular Artist")
 //                    .commit()
-//
+//            homeCallBack.onClickSeeAll()
 //            }
 
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView1)
             recyclerView.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(mContextRef, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = ArtistAdapter(data)
-
         }
 
 
         private fun bindTopTrending(data: SortDescription) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-            tvTitle.setText(data.Name)
+            tvTitle.text = data.Name
             seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, TopTrendingFragment.newInstance())
-                    .addToBackStack("Top Trending")
-                    .commit()
-
+                homeCallBack.onClickSeeAll()
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, TopTrendingFragment.newInstance())
+//                    .addToBackStack("Top Trending")
+//                    .commit()
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
@@ -138,15 +140,14 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         private fun bindBrowseAll(data: SortDescription) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-            tvTitle.setText(data.Name)
+            tvTitle.text = data.Name
             seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .add(R.id.container, AllGenresDetailsFragment.newInstance())
-                    .addToBackStack("AllGenresDetailsFragment")
-                    .commit()
-
-
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .add(R.id.container, AllGenresDetailsFragment.newInstance())
+//                    .addToBackStack("AllGenresDetailsFragment")
+//                    .commit()
+                homeCallBack.onClickSeeAll()
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
@@ -167,7 +168,8 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         private fun bindDownload() {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             download.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                val manager: FragmentManager =
+                    (mContextRef as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .add(R.id.container, DownloadFragment.newInstance())
                     .addToBackStack("AllGenresDetailsFragment")
@@ -183,11 +185,11 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         private fun bindPopularBands() {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, PopularBandsFragment.newInstance())
-                    .commit()
-
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, PopularBandsFragment.newInstance())
+//                    .commit()
+                homeCallBack.onClickSeeAll()
             }
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = "Popular Bands"
@@ -215,7 +217,6 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             // recyclerView.adapter = TopTrendingAdapter(data)
-
         }
 
         private fun bindPopularPodcast() {
@@ -227,16 +228,16 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             // recyclerView.adapter = TopTrendingAdapter(data)
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, PodcastFragment.newInstance())
-                    .addToBackStack("Fragment")
-                    .commit()
-
-
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, PodcastFragment.newInstance())
+//                    .addToBackStack("Fragment")
+//                    .commit()
+                homeCallBack.onClickSeeAll()
             }
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                val manager: FragmentManager =
+                    (mContextRef as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, PodcastDetailsFragment.newInstance())
                     .addToBackStack("Fragment")
@@ -249,7 +250,6 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = MyBLOffersAdapter()
-
         }
 
         private fun bindTrendingMusic() {
@@ -259,16 +259,16 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
             recyclerView.adapter = TopTrendingVideosAdapter()
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+                val manager: FragmentManager =
+                    (mContextRef as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, MusicFragment.newInstance())
                     .commit()
-
+                homeCallBack.onClickSeeAll()
             }
         }
 
         private fun bindSearch() {
-
         }
 
         fun bind(dataModel: SortDescription?) {
@@ -277,6 +277,7 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
                 "Playlist" -> bindTopTrending(dataModel)
                 "Release" -> bindBrowseAll(dataModel)
             }
+
             /*when (dataModel) {
                     dataModel-> bindArtist(dataModel!!)
 //                is DataModel.Search -> bindSearch()
@@ -298,7 +299,6 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         }
     }
 
-
     companion object {
         // val VIEW_SEARCH =0
         val VIEW_ARTIST = 0
@@ -314,7 +314,6 @@ class ParentAdapter() : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder
         val VIEW_BL_MUSIC_OFFERS = 10
         val VIEW_TRENDING_MUSIC_VIDEO = 11
     }
-
 }
 
 

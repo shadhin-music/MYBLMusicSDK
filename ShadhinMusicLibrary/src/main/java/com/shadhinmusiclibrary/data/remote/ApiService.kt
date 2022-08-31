@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.rest
+package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.Content
@@ -10,10 +10,10 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("HomeContent/GetHomeContent")
-    suspend fun getHomeData(
+    suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?
-    ): Call<APIResponse<List<SortDescription>>>
+    ): APIResponse<List<SortDescription>>
 
     @GET("v5/Album/GetAlbumContent")
     fun getAlbumContent(

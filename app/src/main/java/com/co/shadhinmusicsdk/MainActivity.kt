@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
                 viewPager.currentItem = tab.position
 
 
-
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {

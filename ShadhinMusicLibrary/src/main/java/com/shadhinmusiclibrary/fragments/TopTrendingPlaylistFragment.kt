@@ -14,12 +14,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.Content
-import com.shadhinmusiclibrary.data.model.DataDetails
-import com.shadhinmusiclibrary.rest.ApiService
+import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
 import retrofit2.Call
 import retrofit2.Callback
