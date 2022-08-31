@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.utils
 
 import android.content.Context
 import android.content.Intent
-import com.shadhinmusiclibrary.activities.MainActivity
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 
 object ShadhinSdkCore {
     //    private lateinit var funfff = FirebaseException
@@ -10,7 +10,7 @@ object ShadhinSdkCore {
         context.startActivity(
             Intent(
                 context,
-                MainActivity::class.java
+                SDKMainActivity::class.java
             ).apply {
                 putExtra(AppConstantUtils.requestType, requestType)
             }

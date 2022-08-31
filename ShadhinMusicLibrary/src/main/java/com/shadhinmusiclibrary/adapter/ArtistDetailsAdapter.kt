@@ -7,18 +7,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.SortDescription
 
 class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<Data>()
+    private val adapterData = mutableListOf<SortDescription>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-
-            VIEW_ARTIST_HEADER ->  R.layout.artist_details_header
+            VIEW_ARTIST_HEADER -> R.layout.artist_details_header
             VIEW_DOWNLOAD -> R.layout.latest_music_view_item
             VIEW_ALBUM -> R.layout.item_top_trending
-            VIEW_YOU_MIGHT_LIKE-> R.layout.item_you_might_like
+            VIEW_YOU_MIGHT_LIKE -> R.layout.item_you_might_like
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
@@ -68,6 +67,7 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
 //            recyclerView.adapter = GenresAdapter()
 
         }
+
         private fun bindArtist2() {
             Log.d("Hello", "Loading")
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -86,6 +86,7 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
 
 
         }
+
         private fun bindArtist4() {
             Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -96,7 +97,7 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
         }
 
 
-        fun bind(dataModel: Data) {
+        fun bind(dataModel: SortDescription) {
             when (dataModel) {
 //                is GenreDataModel.Artist -> bindArtist()
 //                is GenreDataModel.Artist2 -> bindArtist2()

@@ -5,9 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
@@ -15,11 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.SortDescription
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllGenresAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
+class BrowseAllGenresAdapter(val data: SortDescription) : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
 
 
 

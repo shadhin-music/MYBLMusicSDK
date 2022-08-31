@@ -15,20 +15,15 @@ import com.shadhinmusiclibrary.adapter.TopTrendingAdapter
 
 
 class TopTrendingFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_top_trending, container, false)
 
-        return inflater.inflate(R.layout.fragment_top_trending, container, false)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +32,7 @@ class TopTrendingFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-        //recyclerView.adapter = TopTrendingAdapter()
+        //  recyclerView.adapter = TopTrendingAdapter(data)
 
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -46,6 +41,7 @@ class TopTrendingFragment : Fragment() {
             // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
         }
     }
+
     companion object {
 
         @JvmStatic

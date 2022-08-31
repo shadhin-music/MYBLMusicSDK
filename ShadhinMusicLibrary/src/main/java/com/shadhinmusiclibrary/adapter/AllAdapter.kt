@@ -13,21 +13,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
-
+/**
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ **/
 internal class AllAdapter() :
-    RecyclerView.Adapter<AllAdapter.AllViewHolder>() {
+    RecyclerView.Adapter<AllAdapter.AllVH>() {
 
     val VIEW_AMER_TUNES = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllViewHolder {
-        return AllViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllVH {
+        return AllVH(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.parent_music_view, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: AllViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AllVH, position: Int) {
         holder.onBind(position);
         holder.rvMusic.apply {
             layoutManager =
@@ -44,7 +47,7 @@ internal class AllAdapter() :
 
     }
 
-    internal class AllViewHolder(itemView: View) : BaseViewHolder(itemView) {
+    internal class AllVH(itemView: View) : BaseViewHolder(itemView) {
         private val includeMusicLeftIconParent: LinearLayout =
             itemView.findViewById(R.id.include_music_left_icon_parent)
         val ivMusicParentIcon: ImageView =

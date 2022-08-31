@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
-
+/**
+ * Rezaul Khan
+ * https://github.com/rezaulkhan111
+ **/
 class SettingsFragment : Fragment() {
 
     override fun onCreateView(

@@ -5,8 +5,8 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.fragments.AllFragment
-import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
 
 @Suppress("DEPRECATION")
@@ -23,7 +23,7 @@ internal class ViewPagerAdapter(
                 AllFragment()
             }
             1 -> {
-                HomeFragment();
+                ShadhinMusicSdkCore.getHomeFragment(context)
             }
 //            2 -> {
 //

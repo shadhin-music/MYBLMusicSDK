@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,8 @@ import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+        val v =
+            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -39,22 +39,18 @@ class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapt
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
         fun bindItems() {
-
-
             itemView.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
-                    .replace(R.id.container , TopTrendingPlaylistFragment.newInstance())
+                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
                     .addToBackStack("Trending")
                     .commit()
             }
-            val imageView:ShapeableImageView = itemView.findViewById(R.id.image)
-            val textView:TextView = itemView.findViewById(R.id.txt_title)
-            var url :String = data!!.Data[absoluteAdapterPosition].image
-            textView.setText(data.Data[absoluteAdapterPosition].title)
-            val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
+            val textView: TextView = itemView.findViewById(R.id.txt_title)
+            val url: String = data.Data[absoluteAdapterPosition].image
+            textView.text = data.Data[absoluteAdapterPosition].title
+            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))
                 .into(imageView)
