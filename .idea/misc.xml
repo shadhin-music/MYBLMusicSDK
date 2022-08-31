@@ -3,13 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/drawable/ic_arrow.xml" value="0.1105" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/activity_main.xml" value="0.10040160642570281" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/all_genre_list.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/artist_list.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/browse_all_genre.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/fragment_home.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/fragment_my_playlist_list.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/fragment_playlist.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/item_artist.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/item_browse_all_genre.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/item_search.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/item_top_trending.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/library_action_bar.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/top_trending_list.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/app/src/main/res/layout/activity_main.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/app/src/main/res/layout/app_activity.xml" value="0.19114583333333332" />
       </map>
     </option>
   </component>

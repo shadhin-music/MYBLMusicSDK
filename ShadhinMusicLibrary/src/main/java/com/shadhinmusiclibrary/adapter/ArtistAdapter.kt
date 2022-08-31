@@ -23,8 +23,6 @@ import com.shadhinmusiclibrary.utils.CircleImageView
 
 class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)
         return ViewHolder(v)

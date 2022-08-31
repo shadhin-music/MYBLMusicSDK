@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
+import com.shadhinmusiclibrary.data.model.Data
 
 class PopularArtistsFragment : Fragment() {
-
+  lateinit var data1:Data
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,13 +23,18 @@ class PopularArtistsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_popular_artists, container, false)
     }
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+         arguments.let {
+             data1 = it?.getSerializable("data") as Data
+         }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = PopularArtistAdapter()
+        recyclerView.adapter = PopularArtistAdapter(data1)
         val back:ImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         back.setOnClickListener {
@@ -40,10 +46,11 @@ class PopularArtistsFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(data: Data) =
             PopularArtistsFragment().apply {
                 arguments = Bundle().apply {
-
+                    arguments?.putSerializable("data", data)
+                   // data1 = arguments.(data.toString())
                 }
             }
     }

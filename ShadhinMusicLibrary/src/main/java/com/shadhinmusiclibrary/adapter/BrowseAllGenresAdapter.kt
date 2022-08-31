@@ -49,12 +49,12 @@ class BrowseAllGenresAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllGen
                     .addToBackStack("GenrePlaylistFragment")
                     .commit()
             }
-            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
-            val textView:TextView = itemView.findViewById(R.id.txt_title)
+            val imageView: ImageView = itemView.findViewById(R.id.image)
+           // val textView:TextView = itemView.findViewById(R.id.txt_title)
             var url :String = data!!.Data[absoluteAdapterPosition].image
-            val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            textView.setText(data.Data[absoluteAdapterPosition].title)
+           // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
+           // textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
                 .load( url.replace("<\$size\$>","300"))

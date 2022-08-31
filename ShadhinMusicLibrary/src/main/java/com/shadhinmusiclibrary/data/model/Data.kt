@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
+import java.io.Serializable
+
 data class Data(
     val Code: String,
     val ContentType: String,
@@ -8,4 +10,4 @@ data class Data(
     val Name: String,
     val Sort: Int,
     val Total: Int
-)
+) : Serializable

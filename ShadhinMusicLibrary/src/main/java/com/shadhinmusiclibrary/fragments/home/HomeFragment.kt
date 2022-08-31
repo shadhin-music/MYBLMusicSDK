@@ -32,6 +32,7 @@ class HomeFragment : Fragment() , FragmentEntryPoint {
 
         }
 
+
     }
 
     override fun onCreateView(

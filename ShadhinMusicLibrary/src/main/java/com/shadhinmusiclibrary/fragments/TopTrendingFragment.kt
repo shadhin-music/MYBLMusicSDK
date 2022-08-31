@@ -37,7 +37,7 @@ class TopTrendingFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-      //  recyclerView.adapter = TopTrendingAdapter(data)
+        //recyclerView.adapter = TopTrendingAdapter()
 
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

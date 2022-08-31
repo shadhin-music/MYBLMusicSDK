@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,9 +54,9 @@ class TopTrendingAdapter(val data: Data) : RecyclerView.Adapter<TopTrendingAdapt
             textView.setText(data.Data[absoluteAdapterPosition].title)
             val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
-                .load(url)
+                .load(url.replace("<\$size\$>","300"))
                 .into(imageView)
 
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)

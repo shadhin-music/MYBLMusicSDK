@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.fragments.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter() : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
+class PopularArtistAdapter(val data1: Data) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_circle_image_view, parent, false)
@@ -20,7 +21,7 @@ class PopularArtistAdapter() : RecyclerView.Adapter<PopularArtistAdapter.ViewHol
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems()
+         holder.bindItems(data1.Data.size)
 
 
     }
@@ -31,10 +32,11 @@ class PopularArtistAdapter() : RecyclerView.Adapter<PopularArtistAdapter.ViewHol
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems() {
+        fun bindItems(size: Int) {
 
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
+            textViewName.setText(data1.Data[0].Artist)
             itemView.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()

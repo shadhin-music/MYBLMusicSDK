@@ -24,7 +24,7 @@ class PopularBandsFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = PopularArtistAdapter()
+        //recyclerView.adapter = PopularArtistAdapter(data1)
     }
     companion object {
 
