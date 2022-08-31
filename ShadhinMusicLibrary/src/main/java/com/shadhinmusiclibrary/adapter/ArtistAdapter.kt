@@ -12,12 +12,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.fragments.PlaylistFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter(val data: SortDescription?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)

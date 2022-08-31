@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments.home
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
+import com.shadhinmusiclibrary.data.model.HomeData
 
 
-
-import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.rest.RetroClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragment : Fragment() , FragmentEntryPoint {
 
@@ -57,17 +51,17 @@ class HomeFragment : Fragment() , FragmentEntryPoint {
 
     private fun observeData() {
         viewModel.fetchHomeData(1,false)
-//        viewModel.homeContent.observe(viewLifecycleOwner){ viewDataInRecyclerView(it)}
+        viewModel.homeContent.observe(viewLifecycleOwner){ viewDataInRecyclerView(it)}
     }
 
-//    private fun viewDataInRecyclerView(homeData: List<SortDescription>) {
-//        val dataAdapter = ParentAdapter(this)
-//        val recyclerView:RecyclerView = view?.findViewById(R.id.recyclerView)!!
-//        recyclerView.layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        recyclerView.adapter = dataAdapter
-//        homeData?.let { dataAdapter.setData(it) }
-//    }
+    private fun viewDataInRecyclerView(homeData: HomeData?) {
+        val dataAdapter = ParentAdapter(this)
+        val recyclerView:RecyclerView = view?.findViewById(R.id.recyclerView)!!
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = dataAdapter
+        homeData?.let { dataAdapter.setData(it.data) }
+    }
 
 
     /*private fun getHomeData() {

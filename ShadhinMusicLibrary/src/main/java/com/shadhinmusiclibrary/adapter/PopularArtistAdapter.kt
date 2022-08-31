@@ -8,12 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.Data
+
 
 import com.shadhinmusiclibrary.fragments.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter(val data1: SortDescription) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
+class PopularArtistAdapter(val data1: Data) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_circle_image_view, parent, false)

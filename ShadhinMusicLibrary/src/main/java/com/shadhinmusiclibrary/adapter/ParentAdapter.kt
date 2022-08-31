@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomeData
+
 
 import com.shadhinmusiclibrary.fragments.*
+import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
 
-class ParentAdapter(val homeCallBack: HomeCallBack) :
+class ParentAdapter(val homeCallBack: HomeFragment) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-    private var data: List<SortDescription>? = null
+    private var data: List<Data>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -87,14 +90,14 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<SortDescription>) {
+    fun setData(data: List<Data>) {
         this.data = data
         notifyDataSetChanged()
     }
 
    inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val  context = itemView.getContext()
-        private fun bindArtist(data: SortDescription) {
+        private fun bindArtist(data: Data) {
 //            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -113,7 +116,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         }
 
 
-        private fun bindTopTrending(data: SortDescription) {
+        private fun bindTopTrending(data: Data) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = data.Name
@@ -141,7 +144,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 ////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
-        private fun bindBrowseAll(data: SortDescription) {
+        private fun bindBrowseAll(data: Data) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = data.Name
@@ -274,7 +277,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         private fun bindSearch() {
         }
 
-        fun bind(dataModel: SortDescription?) {
+        fun bind(dataModel: Data?) {
             when (dataModel?.Design) {
                 "Artist" -> bindArtist(dataModel)
                 "Playlist" -> bindTopTrending(dataModel)
