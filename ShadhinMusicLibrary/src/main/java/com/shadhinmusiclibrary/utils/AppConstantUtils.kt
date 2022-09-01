@@ -10,7 +10,8 @@ internal object AppConstantUtils {
     var BASE_URL_API_shadhinmusic = "https://api.shadhinmusic.com/api/"
 
 
-    const val singleDataItem = "singleDataItem"
-    const val seeAllData = "seeAllData"
+    const val SingleDataItem = "single_data_item"
+    const val PatchItem = "patch_item"
     const val commonData = "data"
+    const val SelectedPatchIndex = "selected_patch_index"
 }

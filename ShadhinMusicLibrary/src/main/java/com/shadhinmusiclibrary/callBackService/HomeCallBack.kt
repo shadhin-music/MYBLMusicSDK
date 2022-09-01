@@ -1,8 +1,9 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.DataDetails
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 interface HomeCallBack {
-    fun onClickItemAndAllItem(dataDetails: DataDetails, listDataDetail: List<DataDetails>)
-    fun onClickSeeAll(listDataDetail: List<DataDetails>)
+    fun onClickItemAndAllItem(itemPosition: Int, patch: HomePatchItem)
+    fun onClickSeeAll(patch: HomePatchItem)
 }

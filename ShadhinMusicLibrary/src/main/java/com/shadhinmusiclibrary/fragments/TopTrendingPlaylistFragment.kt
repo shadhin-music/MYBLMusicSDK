@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.PlaylistAdapter
+import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.remote.ApiService
@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TopTrendingPlaylistFragment : Fragment() {
-    private lateinit var playListAdapter: PlaylistAdapter
+    private lateinit var playListAdapter: AlbumAdapter
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class TopTrendingPlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
+        return inflater.inflate(R.layout.fragment_album, container, false)
         navController = findNavController()
     }
 
@@ -67,7 +67,7 @@ class TopTrendingPlaylistFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
-                    playListAdapter = PlaylistAdapter()
+                    playListAdapter = AlbumAdapter()
                     playListAdapter.setData(response.body()!!.data)
 
                     val recyclerView: RecyclerView = view!!.findViewById(R.id.recyclerView)

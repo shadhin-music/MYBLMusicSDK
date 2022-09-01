@@ -13,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 
 
-class ReleaseAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
+class ReleaseAdapter(val homePatchItem: HomePatchItem, val homeCallBack: HomeCallBack) :
+    RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -30,8 +32,9 @@ class ReleaseAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<Rel
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-
-
+        holder.itemView.setOnClickListener {
+            homeCallBack.onClickItemAndAllItem(position, homePatchItem)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,14 +42,14 @@ class ReleaseAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<Rel
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
         fun bindItems() {
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
-                    .addToBackStack("Trending")
-                    .commit()
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
+//                    .addToBackStack("Trending")
+//                    .commit()
             }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
@@ -54,7 +57,7 @@ class ReleaseAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<Rel
             textView.text = homePatchItem.Data[absoluteAdapterPosition].title
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
-                .load(url.replace("<\$size\$>","300"))
+                .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
 
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)

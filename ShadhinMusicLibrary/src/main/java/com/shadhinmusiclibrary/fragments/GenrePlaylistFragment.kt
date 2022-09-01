@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.PlaylistAdapter
+import com.shadhinmusiclibrary.adapter.AlbumAdapter
 
 class GenrePlaylistFragment : Fragment() {
 
@@ -28,12 +28,12 @@ class GenrePlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
+        return inflater.inflate(R.layout.fragment_album, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = PlaylistAdapter()
+        val dataAdapter = AlbumAdapter()
        // dataAdapter.setData(getMockData())
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =

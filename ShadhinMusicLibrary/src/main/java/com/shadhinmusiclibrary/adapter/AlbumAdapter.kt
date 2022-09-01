@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 
-class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHolder>() {
+class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
@@ -36,7 +36,7 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
         Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
-            0 -> holder.bindRoot(dataSongDetail[position])
+            0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
         }
 //        holder.bind(dataContent[position])
@@ -66,6 +66,7 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         Log.e("PLA", ": $dataSongDetail")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setRootData(data: HomePatchDetail) {
         this.rootDataContent = data
         notifyDataSetChanged()
@@ -82,19 +83,19 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         private lateinit var ivPlayBtn: ImageView
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(mSongDetail: SongDetail) {
+        fun bindRoot(root: HomePatchDetail) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(mSongDetail.image.replace("<\$size\$>", "300"))
+                .load(root.image.replace("<\$size\$>", "300"))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = mSongDetail.title
+            tvCurrentAlbumName.text = root.title
 
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = mSongDetail.artist
+            tvArtistName.text = root.Artist
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
@@ -102,7 +103,6 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         }
 
         fun bindTrackItem(mSongDetail: SongDetail) {
-//            private lateinit var ivSongTypeIcon: ImageView
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
                 .load(mSongDetail.image.replace("<\$size\$>", "300"))
@@ -115,12 +115,9 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = mSongDetail.duration
-
-//            ivSongTypeIcon = viewItem.findViewById(R.id.iv_song_type_icon)
-
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                showBottomSheetDialog(viewItem.context)
+//                showBottomSheetDialog(viewItem.context)
             }
         }
 
@@ -129,18 +126,12 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
             val contentView =
                 View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
             bottomSheetDialog.setContentView(contentView)
-            //  bottomSheetDialog.setContentView(R.layout.bottomsheet_three_dot_menu_layout)
-            //bottomSheetDialog.setBackgroundColor(getResources().getColor(android.R.color.transparent))
-            //contentView.setBackgroundResource(R.drawable.dialog_bg)
-
-            //(contentView.parent as View).setBackgroundColor(context.getResources().getColor(android.R.color.transparent))
             bottomSheetDialog.show()
         }
     }
 
-    companion object {
+    private companion object {
         const val VIEW_ALBUM = 0
         const val VIEW_TRACK_ITEM = 1
-        val VIEW_BROWSE_ALL3 = 3
     }
 }

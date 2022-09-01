@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.activities
 
-import android.app.UiModeManager.MODE_NIGHT_NO
 import android.os.Bundle
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
@@ -27,21 +26,59 @@ internal class SDKMainActivity : AppCompatActivity() {
             .findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
         //Will received data from Home Fragment from MYBLL App
-        val receivedData = intent.extras!!.getBundle(AppConstantUtils.commonData)!!
-            .getSerializable(AppConstantUtils.commonData) as List<HomePatchDetail>
-        if (receivedData.size > 1) {
+        val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
+            .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
+        var selectedPatchIndex : Int? = null
+        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
+            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        }
+        routeData(patch, selectedPatchIndex)
+//        if (receivedData.size > 1) {
 //            val inflater = navHostFragment.navController.navInflater
 //            val navGraph = inflater.inflate(R.navigation.nav_graph_latest_release)
 //            navController.graph = navGraph
-        } else {
-            setupNavGraphAndArg(R.navigation.nav_graph_latest_release,
+//        }
+/*        Log.e("SDKMA", "onCreate: position $selectItemPosition data: $receivedData")
+        if (selectItemPosition > 0 && receivedData.isNotEmpty()) {
+            setupNavGraphAndArg(R.navigation.nav_graph_album_details,
                 Bundle().apply {
                     putSerializable(
                         AppConstantUtils.singleDataItem,
-                        receivedData[0] as Serializable
+                        receivedData as Serializable
                     )
                 })
+        }*/
+    }
+
+    private fun routeData(patch: HomePatchItem, selectedIndex: Int?){
+        if (selectedIndex != null){
+            val itemToShowDetails = patch.Data[selectedIndex]
+            when(itemToShowDetails.ContentType.uppercase()){
+                "R" ->{
+                    //open album details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.SingleDataItem,
+                                itemToShowDetails as Serializable
+                            )
+                        })
+                }
+                "A" ->{
+                    //open artist details
+                }
+                "P" ->{
+                    //open playlist
+                }
+                "S" ->{
+                    //open songs
+                }
+                else ->{
+
+                }
+            }
         }
+
     }
 
     private fun setupNavGraph(@NavigationRes graphResId: Int) {

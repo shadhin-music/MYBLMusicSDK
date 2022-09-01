@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 class TopTrendingFragment : Fragment() {
     private lateinit var navController: NavController
-    var homePatchItem:HomePatchItem?= null
+    var homePatchItem: HomePatchItem? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -29,21 +29,23 @@ class TopTrendingFragment : Fragment() {
 
         return view
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             homePatchItem = it.getSerializable("data") as HomePatchItem?
-            Log.d("TAG","DATA: "+ homePatchItem)
+            Log.d("TAG", "DATA: " + homePatchItem)
         }
 
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-         recyclerView.adapter = homePatchItem?.let { ReleaseAdapter(it) }
+//         recyclerView.adapter = homePatchItem?.let { ReleaseAdapter(it,this) }
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)

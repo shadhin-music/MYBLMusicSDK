@@ -4,21 +4,21 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.PlaylistFragment
+import com.shadhinmusiclibrary.fragments.AlbumFragment
 
 
-class PodcastEpisodesAdapter : RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
+class PodcastEpisodesAdapter :
+    RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastEpisodesViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.video_podcast_epi_single_item, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
         return PodcastEpisodesViewHolder(v)
     }
 
@@ -28,21 +28,22 @@ class PodcastEpisodesAdapter : RecyclerView.Adapter<PodcastEpisodesAdapter.Podca
 
 
     }
+
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
         return 10
     }
 
     inner class PodcastEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
         fun bindItems() {
 
 
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container , PlaylistFragment.newInstance())
-                    .commit()
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container , AlbumFragment.newInstance())
+//                    .commit()
             }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
@@ -56,6 +57,7 @@ class PodcastEpisodesAdapter : RecyclerView.Adapter<PodcastEpisodesAdapter.Podca
         }
 
     }
+
     companion object {
         const val VIEW_TYPE = 2
     }

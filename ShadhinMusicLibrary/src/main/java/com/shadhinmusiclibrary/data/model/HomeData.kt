@@ -1,7 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
 data class HomeData(
-    val `data`: List<HomePatchItem>,
+    val data: List<HomePatchItem>,
     val fav: Any,
     val follow: Any,
     val image: Any,

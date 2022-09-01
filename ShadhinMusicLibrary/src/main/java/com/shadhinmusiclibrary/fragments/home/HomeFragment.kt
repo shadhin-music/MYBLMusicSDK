@@ -14,7 +14,12 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.utils.AppConstantUtils
+import java.io.Serializable
 
 class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
@@ -64,34 +69,31 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         homeData.let { it?.data?.let { it1 -> dataAdapter.setData(it1) } }
     }
 
-    override fun onClickItemAndAllItem(
-        dataDetails: DataDetails,
-        listDataDetail: List<DataDetails>
-    ) {
+    override fun onClickItemAndAllItem(itemPosition: Int, patch: HomePatchItem) {
         val data = Bundle()
-        val listData = mutableListOf<DataDetails>().apply {
-            add(dataDetails)
-        }
         data.putSerializable(
-            AppConstantUtils.commonData,
-            listData as Serializable
+            AppConstantUtils.PatchItem,
+            patch as Serializable
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
-                putExtra(AppConstantUtils.commonData, data)
+                putExtra(AppConstantUtils.PatchItem, data)
+                putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
             })
     }
 
-    override fun onClickSeeAll(listDataDetail: List<DataDetails>) {
-        // got to list page
-//        val data = Bundle()
-//        data.putSerializable(AppConstantUtils.commonData, listDataDetail as Serializable)
-//        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-//            .apply {
-//                putExtra(AppConstantUtils.commonData, data)
-//            })
-    }
+    override fun onClickSeeAll(patch: HomePatchItem) {
+        val data = Bundle()
 
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            patch as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
 
     /*private fun getHomeData() {
 

@@ -4,16 +4,13 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
-import com.shadhinmusiclibrary.fragments.PlaylistFragment
 
 
 class GenresAdapter() : RecyclerView.Adapter<GenresAdapter.ViewHolder>() {

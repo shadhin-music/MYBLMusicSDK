@@ -16,7 +16,7 @@
     <!--    </fragment>-->
     <fragment
         android:id="@+id/PlaylistFragment"
-        android:name="com.shadhinmusiclibrary.fragments.PlaylistFragment"
+        android:name="com.shadhinmusiclibrary.fragments.AlbumFragment"
         android:label="Details"
-        tools:layout="@layout/fragment_playlist" />
+        tools:layout="@layout/fragment_album" />
 </navigation>
