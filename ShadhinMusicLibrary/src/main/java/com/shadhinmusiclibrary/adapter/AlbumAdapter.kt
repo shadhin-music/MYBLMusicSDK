@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.utils.TimeParser
 
 
 class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
@@ -114,7 +115,7 @@ class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() 
             tvSingerName.text = mSongDetail.artist
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = mSongDetail.duration
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
 //                showBottomSheetDialog(viewItem.context)

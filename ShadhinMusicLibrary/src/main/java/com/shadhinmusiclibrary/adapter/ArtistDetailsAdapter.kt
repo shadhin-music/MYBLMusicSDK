@@ -13,7 +13,8 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 
-class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
+class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
+    RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<HomePatchDetail>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
@@ -35,14 +36,14 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
         holder.bind(adapterData[position])
-       // holder.bind()
+        // holder.bind()
     }
 
     override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
         return when (homePatchItem?.Design) {
-               "Artist" -> VIEW_ARTIST_HEADER
+            "Artist" -> VIEW_ARTIST_HEADER
 //            is GenreDataModel.Artist -> VIEW_ARTIST_HEADER
 //            is GenreDataModel.Artist2 -> VIEW_DOWNLOAD
 //            is GenreDataModel.Artist3 -> VIEW_ALBUM
@@ -69,14 +70,14 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Ada
         private fun bindArtist(dataModel: HomePatchDetail) {
 
             Log.d("Hello", "Loading")
-            val imageView:ImageView = itemView.findViewById(R.id.thumb)
-            var url :String = dataModel.image
+            val imageView: ImageView = itemView.findViewById(R.id.thumb)
+            var url: String = dataModel.image
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
-                .load( url.replace("<\$size\$>","300"))
+                .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
 
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -100,7 +101,7 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Ada
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-          //  recyclerView.adapter = TopTrendingAdapter(data)
+            //  recyclerView.adapter = TopTrendingAdapter(data)
 
 
         }
@@ -110,14 +111,14 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Ada
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-           // recyclerView.adapter = ArtistAdapter(data)
+            // recyclerView.adapter = ArtistAdapter(data)
 
         }
 
 
         fun bind(dataModel: HomePatchDetail) {
             when (dataModel.ArtistId) {
-                dataModel.ArtistId  -> bindArtist(dataModel)
+                dataModel.ArtistId -> bindArtist(dataModel)
 //                is GenreDataModel.Artist -> bindArtist()
 //                is GenreDataModel.Artist2 -> bindArtist2()
 //                is GenreDataModel.Artist3 -> bindArtist3()
