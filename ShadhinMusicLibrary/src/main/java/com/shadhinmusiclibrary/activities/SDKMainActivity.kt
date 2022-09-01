@@ -19,10 +19,7 @@ internal class SDKMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
         setContentView(R.layout.activity_sdk_main)
-
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
@@ -34,21 +31,6 @@ internal class SDKMainActivity : AppCompatActivity() {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
         }
         routeData(patch, selectedPatchIndex)
-//        if (receivedData.size > 1) {
-//            val inflater = navHostFragment.navController.navInflater
-//            val navGraph = inflater.inflate(R.navigation.nav_graph_latest_release)
-//            navController.graph = navGraph
-//        }
-/*        Log.e("SDKMA", "onCreate: position $selectItemPosition data: $receivedData")
-        if (selectItemPosition > 0 && receivedData.isNotEmpty()) {
-            setupNavGraphAndArg(R.navigation.nav_graph_album_details,
-                Bundle().apply {
-                    putSerializable(
-                        AppConstantUtils.singleDataItem,
-                        receivedData as Serializable
-                    )
-                })
-        }*/
     }
 
     private fun routeData(patch: HomePatchItem, selectedIndex: Int?) {
@@ -79,7 +61,6 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun setupNavGraph(@NavigationRes graphResId: Int) {
@@ -92,5 +73,11 @@ internal class SDKMainActivity : AppCompatActivity() {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
+    }
+
+    override fun onBackPressed() {
+        if (!navController.navigateUp()) {
+            super.onBackPressed()
+        }
     }
 }
