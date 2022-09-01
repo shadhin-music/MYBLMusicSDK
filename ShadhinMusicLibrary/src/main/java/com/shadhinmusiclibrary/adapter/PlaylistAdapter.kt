@@ -14,9 +14,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.Content
+import com.shadhinmusiclibrary.data.model.DataDetails
 
 
 class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHolder>() {
+    private var rootDataContent: DataDetails?=null
     private var dataContent: List<Content> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
@@ -32,14 +34,21 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
+        Log.e("PLA", "onBindViewHolder: $dataContent")
         when (holder.itemViewType) {
-            0 -> holder.bindAlbum()
+            0 -> holder.bindRoot(dataContent[position])
             1 -> holder.bindTrackItem(dataContent[position - 1])
         }
 //        holder.bind(dataContent[position])
     }
 
-    override fun getItemCount(): Int = 1 + dataContent.size
+    override fun getItemCount(): Int{
+        var count = dataContent.size
+        if (rootDataContent != null) {
+            count += 1
+        }
+        return count
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -57,24 +66,40 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         Log.e("PLA", ": $dataContent")
     }
 
+    fun setRootData(data: DataDetails){
+        this.rootDataContent = data
+        notifyDataSetChanged()
+    }
+
     inner class DataAdapterViewHolder(private val viewItem: View) :
         RecyclerView.ViewHolder(viewItem) {
         val mContext = viewItem.context
         private lateinit var ivThumbCurrentPlayItem: ImageView
-        private lateinit var tvNameCurrentPlayItem: TextView
-        private lateinit var ivFavorite: ImageView
+        private lateinit var tvCurrentAlbumName: TextView
+        private lateinit var tvArtistName: TextView
+
+        //        private lateinit var ivFavorite: ImageView
         private lateinit var ivPlayBtn: ImageView
-        private lateinit var ivShareBtnFab: ImageView
-        fun bindAlbum() {
+
+        //        private lateinit var ivShareBtnFab: ImageView
+        fun bindRoot(mContent: Content) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
-            tvNameCurrentPlayItem =
-                viewItem.findViewById(R.id.tv_name_current_play_item)
-            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
-            ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
-            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
-        }
+            Glide.with(mContext)
+                .load(mContent.image.replace("<\$size\$>", "300"))
+                .into(ivThumbCurrentPlayItem)
+            tvCurrentAlbumName =
+                viewItem.findViewById(R.id.tv_current_album_name)
+            tvCurrentAlbumName.text = mContent.title
 
+            tvArtistName =
+                viewItem.findViewById(R.id.tv_artist_name)
+            tvArtistName.text = mContent.artist
+
+//            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
+            ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
+//            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
+        }
 
         fun bindTrackItem(mContent: Content) {
 //            private lateinit var ivSongTypeIcon: ImageView

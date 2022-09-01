@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
+import java.io.Serializable
+
 data class DataDetails(
     val AlbumId: String,
     val AlbumImage: Any,
@@ -30,4 +32,4 @@ data class DataDetails(
     val image: String,
     val imageWeb: Any,
     val title: String
-)
+) : Serializable

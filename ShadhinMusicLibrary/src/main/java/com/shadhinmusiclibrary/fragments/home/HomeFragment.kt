@@ -14,8 +14,11 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.DataDetails
 import com.shadhinmusiclibrary.data.model.SortDescription
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.utils.AppConstantUtils
+import java.io.Serializable
 
 class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
@@ -65,11 +68,32 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         homeData.let { dataAdapter.setData(it) }
     }
 
-    override fun onClickItem() {
+    override fun onClickItemAndAllItem(
+        dataDetails: DataDetails,
+        listDataDetail: List<DataDetails>
+    ) {
+        val data = Bundle()
+        val listData = mutableListOf<DataDetails>().apply {
+            add(dataDetails)
+        }
+        data.putSerializable(
+            AppConstantUtils.commonData,
+            listData as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(AppConstantUtils.commonData, data)
+            })
     }
 
-    override fun onClickSeeAll() {
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java))
+    override fun onClickSeeAll(listDataDetail: List<DataDetails>) {
+        // got to list page
+//        val data = Bundle()
+//        data.putSerializable(AppConstantUtils.commonData, listDataDetail as Serializable)
+//        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+//            .apply {
+//                putExtra(AppConstantUtils.commonData, data)
+//            })
     }
 
 

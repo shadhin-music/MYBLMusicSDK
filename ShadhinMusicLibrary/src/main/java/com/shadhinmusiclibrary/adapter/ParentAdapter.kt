@@ -1,8 +1,8 @@
 package com.shadhinmusiclibrary.adapter
 
 
-
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +52,6 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
         holder.bind(data?.get(position))
-        homeCallBack.onClickItem()
     }
 
     override fun getItemCount(): Int = data?.size ?: 0
@@ -92,8 +91,8 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         notifyDataSetChanged()
     }
 
-   inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-      val  context = itemView.getContext()
+    inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val context = itemView.getContext()
         private fun bindArtist(data: SortDescription) {
 //            val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
@@ -118,7 +117,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = data.Name
             seeAll.setOnClickListener {
-                homeCallBack.onClickSeeAll()
+                homeCallBack.onClickSeeAll(data.Data)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container, TopTrendingFragment.newInstance())
@@ -142,6 +141,9 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
         private fun bindBrowseAll(data: SortDescription) {
+            /**
+             * Latest Release
+             */
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = data.Name
@@ -151,12 +153,12 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                    .add(R.id.container, AllGenresDetailsFragment.newInstance())
 //                    .addToBackStack("AllGenresDetailsFragment")
 //                    .commit()
-                homeCallBack.onClickSeeAll()
+                homeCallBack.onClickSeeAll(data.Data)
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter =BrowseAllGenresAdapter(data)
+            recyclerView.adapter = BrowseAllGenresAdapter(data, homeCallBack)
             //Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 //            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
@@ -192,7 +194,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                manager.beginTransaction()
 //                    .replace(R.id.container, PopularBandsFragment.newInstance())
 //                    .commit()
-                homeCallBack.onClickSeeAll()
+//                homeCallBack.onClickSeeAll(data.Data)
             }
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = "Popular Bands"
@@ -236,7 +238,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                    .replace(R.id.container, PodcastFragment.newInstance())
 //                    .addToBackStack("Fragment")
 //                    .commit()
-                homeCallBack.onClickSeeAll()
+//                homeCallBack.onClickSeeAll()
             }
             itemView.setOnClickListener {
                 val manager: FragmentManager =
@@ -267,7 +269,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
                 manager.beginTransaction()
                     .replace(R.id.container, MusicFragment.newInstance())
                     .commit()
-                homeCallBack.onClickSeeAll()
+//                homeCallBack.onClickSeeAll()
             }
         }
 
