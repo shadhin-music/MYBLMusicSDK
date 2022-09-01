@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.Data
 
 
 class PopularArtistsFragment : Fragment() {
-  lateinit var data1:SortDescription
+  var data:Data?= null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,31 +27,34 @@ class PopularArtistsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         arguments.let {
-             data1 = it?.getSerializable("data") as SortDescription
+         arguments?.let {
+             data = it.getSerializable("data") as Data?
+             Log.d("TAG","DATA: "+ data)
          }
+
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = PopularArtistAdapter(data1)
-        val back:ImageView = view.findViewById(R.id.imageBack)
+        recyclerView.adapter = data?.let { PopularArtistAdapter(it) }
+        val back:ImageView = requireView().findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         back.setOnClickListener {
             manager.popBackStack("Popular Artist", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         }
-
     }
     companion object {
 
         @JvmStatic
-        fun newInstance(data: SortDescription) =
+        fun newInstance(data: Data) =
             PopularArtistsFragment().apply {
                 arguments = Bundle().apply {
-                    arguments?.putSerializable("data", data)
+                    putSerializable("data", data)
+
                    // data1 = arguments.(data.toString())
                 }
             }

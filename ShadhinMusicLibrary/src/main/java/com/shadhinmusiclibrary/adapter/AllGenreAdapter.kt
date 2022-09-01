@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.HomeData
+
 
 class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHolder>() {
-   private val adapterData = mutableListOf<SortDescription>()
+   private val adapterData = mutableListOf<HomeData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -35,7 +36,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
     override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
+        return when (adapterData[position].data) {
 
            // is Artist -> VIEW_BROWSE_ALL
 
@@ -47,7 +48,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
         }
     }
 
-    fun setData(data: List<SortDescription>) {
+    fun setData(data: List<HomeData>) {
         adapterData.apply {
             clear()
             addAll(data)
@@ -83,7 +84,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
         }
 
 
-        fun bind(dataModel: SortDescription) {
+        fun bind(dataModel: HomeData) {
             when (dataModel) {
 //                is Artist -> bindArtist()
 //                is Artist2 -> bindArtist2()

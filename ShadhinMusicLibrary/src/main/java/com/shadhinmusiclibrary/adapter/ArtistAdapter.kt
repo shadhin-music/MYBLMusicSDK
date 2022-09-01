@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SortDescription
-import com.shadhinmusiclibrary.fragments.PlaylistFragment
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter(val data: SortDescription?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)
@@ -44,7 +45,7 @@ class ArtistAdapter(val data: SortDescription?) : RecyclerView.Adapter<ArtistAda
 
 
             var url :String = data!!.Data[absoluteAdapterPosition].image
-                  //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+                  Log.d("TAG","ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))
                 .into(imageView2)
@@ -54,7 +55,7 @@ class ArtistAdapter(val data: SortDescription?) : RecyclerView.Adapter<ArtistAda
                 val manager: FragmentManager = (context  as AppCompatActivity).supportFragmentManager
 
                 manager.beginTransaction()
-                    .replace(R.id.container , PlaylistFragment.newInstance())
+                    .replace(R.id.container , ArtistDetailsFragment.newInstance(data,data.Data[absoluteAdapterPosition]))
                     .addToBackStack("Fragment")
                     .commit()
             }

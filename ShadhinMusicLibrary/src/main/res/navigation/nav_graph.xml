@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/artist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.ArtistDetailsFragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="fragment_artist_details"
         tools:layout="@layout/fragment_artist_details">
 

@@ -19,12 +19,12 @@ import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllGenresAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllGenresAdapter.ViewHolder>() {
+class BrowseAllPlaylistAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.browse_all_genre, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
         return ViewHolder(v)
     }
 

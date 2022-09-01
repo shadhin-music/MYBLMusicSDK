@@ -81,7 +81,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="24dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/ic_favorite_border" />
 
                 <ImageView
@@ -97,7 +97,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="24dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/share" />
 
             </LinearLayout>
@@ -134,8 +134,8 @@
             android:layout_below="@id/tvBiography"
             android:layout_marginTop="12dp"
             android:maxLines="4"
-            app:animation_duration="750"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien congue mattis sit volutpat posuere. Netus platea eget dignissim eget tellus. Id urna nunc diam." />
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien congue mattis sit volutpat posuere. Netus platea eget dignissim eget tellus. Id urna nunc diam."
+            app:animation_duration="750" />
 
         <TextView
             android:id="@+id/tvReadMore"
