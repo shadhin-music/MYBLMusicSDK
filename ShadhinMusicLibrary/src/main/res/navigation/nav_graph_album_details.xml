@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/PlaylistFragment">
+    app:startDestination="@id/AlbumFragment">
 
     <!--    <fragment-->
     <!--        android:id="@+id/TopTrendingFragment"-->
@@ -15,7 +15,7 @@
     <!--            app:destination="@id/PlaylistFragment" />-->
     <!--    </fragment>-->
     <fragment
-        android:id="@+id/PlaylistFragment"
+        android:id="@+id/AlbumFragment"
         android:name="com.shadhinmusiclibrary.fragments.AlbumFragment"
         android:label="Details"
         tools:layout="@layout/fragment_album" />
