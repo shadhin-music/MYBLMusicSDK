@@ -107,7 +107,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                    .replace(R.id.container , PopularArtistsFragment.newInstance(data))
 //                    .addToBackStack("Popular Artist")
 //                    .commit()
-//
+
 //                Log.e("dataget","$data")
 //
             }

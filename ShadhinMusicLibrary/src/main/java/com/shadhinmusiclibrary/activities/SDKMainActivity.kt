@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -33,6 +35,7 @@ internal class SDKMainActivity : AppCompatActivity() {
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
         }
+        Log.e("SDKMA", "routeData: "+patch )
         routeData(patch, selectedPatchIndex)
 //        if (receivedData.size > 1) {
 //            val inflater = navHostFragment.navController.navInflater
@@ -67,9 +70,60 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
+
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                itemToShowDetails as Serializable
+                            )
+                        })
+//                    navController.navigate(R.id.popular_artist_fragment)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
+                }
+                DataContentType.CONTENT_TYPE_S -> {
+                    //open songs
+                }
+                else -> {
+
+                }
+            }
+        }else{
+            val itemToShowDetails = patch
+            when (itemToShowDetails.ContentType.uppercase()) {
+                DataContentType.CONTENT_TYPE_R -> {
+                    //open album details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.SingleDataItem,
+                                itemToShowDetails as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_A -> {
+                    //open artist details
+
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                itemToShowDetails as Serializable
+                            )
+                        })
+//                    navController.navigate(R.id.popular_artist_fragment)
+                }
+                DataContentType.CONTENT_TYPE_P -> {
+                    //open playlist
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                itemToShowDetails as Serializable
+                            )
+                        })
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
@@ -92,5 +146,20 @@ internal class SDKMainActivity : AppCompatActivity() {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (!navController.navigateUp()) {
+            super.onBackPressed()
+        }
     }
 }
