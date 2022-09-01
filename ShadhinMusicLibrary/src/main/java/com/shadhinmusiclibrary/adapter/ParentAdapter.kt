@@ -116,7 +116,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = ArtistAdapter(homePatchItem)
+            recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack)
 
 
         }

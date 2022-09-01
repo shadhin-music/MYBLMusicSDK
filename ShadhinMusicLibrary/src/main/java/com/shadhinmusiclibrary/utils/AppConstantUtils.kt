@@ -12,6 +12,7 @@ internal object AppConstantUtils {
 
     const val SingleDataItem = "single_data_item"
     const val PatchItem = "patch_item"
+    const val PatchDetail = "patch_detail"
     const val commonData = "data"
     const val SelectedPatchIndex = "selected_patch_index"
 }

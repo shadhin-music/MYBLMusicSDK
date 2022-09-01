@@ -1,4 +1,4 @@
- package com.shadhinmusiclibrary.fragments.artist
+package com.shadhinmusiclibrary.fragments.artist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,17 +14,18 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ArtistDetailsAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
- class ArtistDetailsFragment : Fragment() {
-     var homePatchItem:HomePatchItem?= null
-     var position:HomePatchDetail ?= null
+class ArtistDetailsFragment : Fragment() {
+    var homePatchItem: HomePatchItem? = null
+    var homePatchDetail: HomePatchDetail? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            homePatchItem = it.getSerializable("data") as HomePatchItem?
-            position = it.getSerializable("dataX") as HomePatchDetail?
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            homePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
         }
     }
 
@@ -32,19 +33,18 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         return inflater.inflate(R.layout.fragment_artist_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dataAdapter = ArtistDetailsAdapter(homePatchItem)
-       dataAdapter.setData(position)
+        dataAdapter.setData(homePatchDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
-        val back: ImageView? = view?.findViewById(R.id.imageBack)
+        val back: ImageView? = view.findViewById(R.id.imageBack)
 
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         back?.setOnClickListener {
@@ -52,7 +52,8 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
         }
     }
-//     private fun getMockData(): List<GenreDataModel> = listOf(
+
+    //     private fun getMockData(): List<GenreDataModel> = listOf(
 //
 //         GenreDataModel.Artist(
 //             name = "Artist"
@@ -145,7 +146,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
             ArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("data", homePatchItem)
-                    putSerializable("dataX",homePatchDetail)
+                    putSerializable("dataX", homePatchDetail)
                 }
             }
     }

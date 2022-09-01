@@ -1,11 +1,9 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shadhinmusiclibrary.R
@@ -35,28 +33,31 @@ internal class SDKMainActivity : AppCompatActivity() {
         routeData(patch, selectedPatchIndex)
     }
 
-    private fun routeData(patch: HomePatchItem, selectedIndex: Int?) {
+    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
-            val itemToShowDetails = patch.Data[selectedIndex]
-            when (itemToShowDetails.ContentType.uppercase()) {
+            val homePatchDetail = homePatchItem.Data[selectedIndex]
+            when (homePatchDetail.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
                     setupNavGraphAndArg(R.navigation.nav_graph_album_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.SingleDataItem,
-                                itemToShowDetails as Serializable
+                                homePatchDetail as Serializable
                             )
                         })
                 }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
-                                itemToShowDetails as Serializable
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
                             )
                         })
 //                    navController.navigate(R.id.popular_artist_fragment)
@@ -71,38 +72,36 @@ internal class SDKMainActivity : AppCompatActivity() {
 
                 }
             }
-        }else{
-            val itemToShowDetails = patch
-            when (itemToShowDetails.ContentType.uppercase()) {
+        } else {
+            when (homePatchItem.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
                     setupNavGraphAndArg(R.navigation.nav_graph_album_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.SingleDataItem,
-                                itemToShowDetails as Serializable
+                                homePatchItem as Serializable
                             )
                         })
                 }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
-                                itemToShowDetails as Serializable
+                                homePatchItem as Serializable
                             )
                         })
 //                    navController.navigate(R.id.popular_artist_fragment)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
-                                itemToShowDetails as Serializable
+                                homePatchItem as Serializable
                             )
                         })
                 }
