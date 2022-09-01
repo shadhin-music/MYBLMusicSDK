@@ -1,62 +1,67 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
+import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
-import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
+
+class HomeContentPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.Adapter<HomeContentPlaylistAdapter.ViewHolder>() {
 
 
-class TopTrendingAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.browse_all_genre, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems()
+       holder.bindItems()
 
 
     }
 
     override fun getItemCount(): Int {
-        return homePatchItem?.Data!!.size
+        return homePatchItem.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.context
         fun bindItems() {
             itemView.setOnClickListener {
                 val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
-                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
-                    .addToBackStack("Trending")
+                    .replace(R.id.container , GenrePlaylistFragment.newInstance())
+                    .addToBackStack("GenrePlaylistFragment")
                     .commit()
             }
-            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
-            val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = homePatchItem.Data[absoluteAdapterPosition].image
-            textView.text = homePatchItem.Data[absoluteAdapterPosition].title
-            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            val imageView: ImageView = itemView.findViewById(R.id.image)
+           // val textView:TextView = itemView.findViewById(R.id.txt_title)
+            var url :String = homePatchItem!!.Data[absoluteAdapterPosition].image
+           // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
+           // textView.setText(data.Data[absoluteAdapterPosition].title)
+            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
-                .load(url.replace("<\$size\$>","300"))
+                .load( url.replace("<\$size\$>","300"))
                 .into(imageView)
 
+//
+//            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
+//            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
