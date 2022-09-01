@@ -94,13 +94,13 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindArtist(homePatchItem: HomePatchItem) {
+        fun bindArtist(homePatchItem: HomePatchItem, homeCallBack: HomeCallBack) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
-//           seeAll.setOnClickListener {
-//               homeCallBack.onClickSeeAll()
-            // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                homeCallBack.onClickSeeAll(homePatchItem)
+                // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
@@ -110,7 +110,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //
 //                Log.e("dataget","$data")
 //
-//            }
+            }
             // }
 
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -280,7 +280,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
-                "Artist" -> bindArtist(homePatchItemModel)
+                "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
             }
