@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
-import com.shadhinmusiclibrary.data.model.Content
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.DataDetails
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
@@ -22,7 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class PlaylistFragment : Fragment() {
-    private var listData: MutableList<Content>? = null
+    private var listData: MutableList<SongDetail>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,10 +73,10 @@ class PlaylistFragment : Fragment() {
     private fun fetchOnlineData(contentId: Int) {
         val api: ApiService = RetroClient.getApiShadhinMusicService()
         val call = api.getAlbumContent(contentId)
-        call.enqueue(object : Callback<APIResponse<List<Content>>> {
+        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
             override fun onResponse(
-                call: Call<APIResponse<List<Content>>>,
-                response: Response<APIResponse<List<Content>>>
+                call: Call<APIResponse<List<SongDetail>>>,
+                response: Response<APIResponse<List<SongDetail>>>
             ) {
                 if (response.isSuccessful) {
                     listData!!.clear()
@@ -85,7 +85,7 @@ class PlaylistFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<APIResponse<List<Content>>>, t: Throwable) {
+            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
             }
         })
     }

@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model
 
-data class Content(
+data class SongDetail(
     val ContentID: String,
     val image: String,
     val title: String,

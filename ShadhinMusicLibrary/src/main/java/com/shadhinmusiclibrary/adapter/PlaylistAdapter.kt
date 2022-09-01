@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Content
-import com.shadhinmusiclibrary.data.model.DataDetails
+import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 
 class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHolder>() {
-    private var rootDataContent: DataDetails?=null
-    private var dataContent: List<Content> = mutableListOf()
+    private var rootDataContent: HomePatchDetail? = null
+    private var dataSongDetail: List<SongDetail> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -34,16 +34,16 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        Log.e("PLA", "onBindViewHolder: $dataContent")
+        Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
-            0 -> holder.bindRoot(dataContent[position])
-            1 -> holder.bindTrackItem(dataContent[position - 1])
+            0 -> holder.bindRoot(dataSongDetail[position])
+            1 -> holder.bindTrackItem(dataSongDetail[position - 1])
         }
 //        holder.bind(dataContent[position])
     }
 
-    override fun getItemCount(): Int{
-        var count = dataContent.size
+    override fun getItemCount(): Int {
+        var count = dataSongDetail.size
         if (rootDataContent != null) {
             count += 1
         }
@@ -60,13 +60,13 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<Content>) {
-        this.dataContent = data
+    fun setData(data: List<SongDetail>) {
+        this.dataSongDetail = data
         notifyDataSetChanged()
-        Log.e("PLA", ": $dataContent")
+        Log.e("PLA", ": $dataSongDetail")
     }
 
-    fun setRootData(data: DataDetails){
+    fun setRootData(data: HomePatchDetail) {
         this.rootDataContent = data
         notifyDataSetChanged()
     }
@@ -82,39 +82,39 @@ class PlaylistAdapter() : RecyclerView.Adapter<PlaylistAdapter.DataAdapterViewHo
         private lateinit var ivPlayBtn: ImageView
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(mContent: Content) {
+        fun bindRoot(mSongDetail: SongDetail) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(mContent.image.replace("<\$size\$>", "300"))
+                .load(mSongDetail.image.replace("<\$size\$>", "300"))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = mContent.title
+            tvCurrentAlbumName.text = mSongDetail.title
 
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = mContent.artist
+            tvArtistName.text = mSongDetail.artist
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
 //            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
         }
 
-        fun bindTrackItem(mContent: Content) {
+        fun bindTrackItem(mSongDetail: SongDetail) {
 //            private lateinit var ivSongTypeIcon: ImageView
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mContent.image.replace("<\$size\$>", "300"))
+                .load(mSongDetail.image.replace("<\$size\$>", "300"))
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName.text = mContent.title
+            tvSongName.text = mSongDetail.title
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mContent.artist
+            tvSingerName.text = mSongDetail.artist
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = mContent.duration
+            tvSongLength.text = mSongDetail.duration
 
 //            ivSongTypeIcon = viewItem.findViewById(R.id.iv_song_type_icon)
 

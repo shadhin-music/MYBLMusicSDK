@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.DataDetails
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
@@ -28,7 +28,7 @@ internal class SDKMainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         //Will received data from Home Fragment from MYBLL App
         val receivedData = intent.extras!!.getBundle(AppConstantUtils.commonData)!!
-            .getSerializable(AppConstantUtils.commonData) as List<DataDetails>
+            .getSerializable(AppConstantUtils.commonData) as List<HomePatchDetail>
         if (receivedData.size > 1) {
 //            val inflater = navHostFragment.navController.navInflater
 //            val navGraph = inflater.inflate(R.navigation.nav_graph_latest_release)

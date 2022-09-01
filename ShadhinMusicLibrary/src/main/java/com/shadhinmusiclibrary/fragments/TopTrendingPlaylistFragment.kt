@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
-import com.shadhinmusiclibrary.data.model.Content
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
 import retrofit2.Call
@@ -60,10 +60,10 @@ class TopTrendingPlaylistFragment : Fragment() {
     private fun fetchOnlineData() {
         val api: ApiService = RetroClient.getApiShadhinMusicService()
         val call = api.getAlbumContent(21132)
-        call.enqueue(object : Callback<APIResponse<List<Content>>> {
+        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
             override fun onResponse(
-                call: Call<APIResponse<List<Content>>>,
-                response: Response<APIResponse<List<Content>>>
+                call: Call<APIResponse<List<SongDetail>>>,
+                response: Response<APIResponse<List<SongDetail>>>
             ) {
                 if (response.isSuccessful) {
                     Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
@@ -81,7 +81,7 @@ class TopTrendingPlaylistFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<APIResponse<List<Content>>>, t: Throwable) {
+            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
             }
         })
     }
