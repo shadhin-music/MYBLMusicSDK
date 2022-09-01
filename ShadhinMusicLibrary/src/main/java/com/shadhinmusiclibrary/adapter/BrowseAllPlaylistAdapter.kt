@@ -13,13 +13,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllPlaylistAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
+class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 
 
@@ -36,7 +35,7 @@ class BrowseAllPlaylistAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllP
     }
 
     override fun getItemCount(): Int {
-        return data.Data.size
+        return homePatchItem.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,7 +50,7 @@ class BrowseAllPlaylistAdapter(val data: Data) : RecyclerView.Adapter<BrowseAllP
             }
             val imageView: ImageView = itemView.findViewById(R.id.image)
            // val textView:TextView = itemView.findViewById(R.id.txt_title)
-            var url :String = data!!.Data[absoluteAdapterPosition].image
+            var url :String = homePatchItem!!.Data[absoluteAdapterPosition].image
            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
            // textView.setText(data.Data[absoluteAdapterPosition].title)

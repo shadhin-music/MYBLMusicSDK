@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 class PopularArtistsFragment : Fragment() {
-  var data:Data?= null
+  var homePatchItem:HomePatchItem?= null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +28,8 @@ class PopularArtistsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          arguments?.let {
-             data = it.getSerializable("data") as Data?
-             Log.d("TAG","DATA: "+ data)
+             homePatchItem = it.getSerializable("data") as HomePatchItem?
+             Log.d("TAG","DATA: "+ homePatchItem)
          }
 
     }
@@ -39,7 +39,7 @@ class PopularArtistsFragment : Fragment() {
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = data?.let { PopularArtistAdapter(it) }
+        recyclerView.adapter = homePatchItem?.let { PopularArtistAdapter(it) }
         val back:ImageView = requireView().findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         back.setOnClickListener {
@@ -50,10 +50,10 @@ class PopularArtistsFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(data: Data) =
+        fun newInstance(homePatchItem: HomePatchItem) =
             PopularArtistsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", data)
+                    putSerializable("data", homePatchItem)
 
                    // data1 = arguments.(data.toString())
                 }

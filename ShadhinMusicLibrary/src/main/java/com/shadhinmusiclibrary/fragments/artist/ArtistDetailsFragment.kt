@@ -12,19 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ArtistDetailsAdapter
-import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.DataX
+import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 
  class ArtistDetailsFragment : Fragment() {
-     var data:Data?= null
-     var position:DataX ?= null
+     var homePatchItem:HomePatchItem?= null
+     var position:HomePatchDetail ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            data = it.getSerializable("data") as Data?
-            position = it.getSerializable("dataX") as DataX?
+            homePatchItem = it.getSerializable("data") as HomePatchItem?
+            position = it.getSerializable("dataX") as HomePatchDetail?
         }
     }
 
@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.data.model.DataX
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = ArtistDetailsAdapter(data)
+        val dataAdapter = ArtistDetailsAdapter(homePatchItem)
        dataAdapter.setData(position)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -141,11 +141,11 @@ import com.shadhinmusiclibrary.data.model.DataX
     companion object {
 
         @JvmStatic
-        fun newInstance(data: Data, dataX: DataX) =
+        fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
             ArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", data)
-                    putSerializable("dataX",dataX)
+                    putSerializable("data", homePatchItem)
+                    putSerializable("dataX",homePatchDetail)
                 }
             }
     }

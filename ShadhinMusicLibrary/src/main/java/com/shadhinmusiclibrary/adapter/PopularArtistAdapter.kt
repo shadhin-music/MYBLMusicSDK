@@ -5,18 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter(val data1: Data) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
+class PopularArtistAdapter(val homePatchItem1: HomePatchItem) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_circle_image_view, parent, false)
@@ -25,13 +22,13 @@ class PopularArtistAdapter(val data1: Data) : RecyclerView.Adapter<PopularArtist
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems(data1.Data.size)
+         holder.bindItems(homePatchItem1.Data.size)
 
 
     }
 
     override fun getItemCount(): Int {
-        return data1.Data.size
+        return homePatchItem1.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -40,13 +37,13 @@ class PopularArtistAdapter(val data1: Data) : RecyclerView.Adapter<PopularArtist
 
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-            var url :String = data1!!.Data[absoluteAdapterPosition].image
+            var url :String = homePatchItem1!!.Data[absoluteAdapterPosition].image
             Log.d("TAG","ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))
                 .into(imageView)
 
-            textViewName.setText(data1.Data[absoluteAdapterPosition].Artist)
+            textViewName.setText(homePatchItem1.Data[absoluteAdapterPosition].Artist)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()

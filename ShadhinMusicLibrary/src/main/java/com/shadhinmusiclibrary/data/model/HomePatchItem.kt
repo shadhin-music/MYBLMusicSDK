@@ -2,10 +2,10 @@ package com.shadhinmusiclibrary.data.model
 
 import java.io.Serializable
 
-data class Data(
+data class HomePatchItem(
     val Code: String,
     val ContentType: String,
-    val Data: List<DataX>,
+    val Data: List<HomePatchDetail>,
     val Design: String,
     val Name: String,
     val Sort: Int,
