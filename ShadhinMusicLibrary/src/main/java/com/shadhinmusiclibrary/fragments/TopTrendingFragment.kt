@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.TopTrendingAdapter
+import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
@@ -43,7 +43,7 @@ class TopTrendingFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-         recyclerView.adapter = homePatchItem?.let { TopTrendingAdapter(it) }
+         recyclerView.adapter = homePatchItem?.let { ReleaseAdapter(it) }
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)

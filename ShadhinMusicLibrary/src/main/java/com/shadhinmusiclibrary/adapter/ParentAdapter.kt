@@ -138,7 +138,7 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
            recyclerView.layoutManager =
                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-           recyclerView.adapter = TopTrendingAdapter(homePatchItem)
+           recyclerView.adapter = ReleaseAdapter(homePatchItem)
 
            //Do your view assignment here from the data model
 //            itemView.findViewById<AppCompatTextView>(R.id.tvName)?.text = item.name
@@ -166,8 +166,8 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
            recyclerView.layoutManager =
                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-           recyclerView.adapter = BrowseAllGenresAdapter(homePatchItem)
-          
+           recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem)
+
        }
 
        private fun bindAd() {
