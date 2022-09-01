@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.data.model
 
 import java.io.Serializable
 
-data class DataX(
+data class HomePatchDetail(
     val AlbumId: String,
     val AlbumImage: Any,
     val AlbumName: Any,

@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
 
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 import com.shadhinmusiclibrary.fragments.*
@@ -25,7 +24,7 @@ import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
 class ParentAdapter(val homeCallBack: HomeFragment) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-    private var data: List<Data>? = null
+    private var data: List<HomePatchItem>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -90,17 +89,17 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<Data>) {
+    fun setData(data: List<HomePatchItem>) {
         this.data = data
         notifyDataSetChanged()
     }
 
    inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
        val context = itemView.getContext()
-       fun bindArtist(data: Data) {
+       fun bindArtist(homePatchItem: HomePatchItem) {
            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-           tvTitle.text = data.Name
+           tvTitle.text = homePatchItem.Name
 //           seeAll.setOnClickListener {
 //               homeCallBack.onClickSeeAll()
            // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
@@ -119,15 +118,15 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
                val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
                recyclerView.layoutManager =
                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-               recyclerView.adapter = ArtistAdapter(data)
+               recyclerView.adapter = ArtistAdapter(homePatchItem)
 
 
        }
 
-       fun bindRelease(data: Data) {
+       fun bindRelease(homePatchItem: HomePatchItem) {
            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-           tvTitle.text = data.Name
+           tvTitle.text = homePatchItem.Name
 //           seeAll.setOnClickListener {
 //             // homeCallBack.onClickSeeAll()
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -139,7 +138,7 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
            recyclerView.layoutManager =
                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-           recyclerView.adapter = TopTrendingAdapter(data)
+           recyclerView.adapter = TopTrendingAdapter(homePatchItem)
 
            //Do your view assignment here from the data model
 //            itemView.findViewById<AppCompatTextView>(R.id.tvName)?.text = item.name
@@ -152,10 +151,10 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
 ////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 //        }
-       private fun bindPlaylist(data: Data) {
+       private fun bindPlaylist(homePatchItem: HomePatchItem) {
            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-           tvTitle.text = data.Name
+           tvTitle.text = homePatchItem.Name
 //           seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
@@ -167,10 +166,8 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
            recyclerView.layoutManager =
                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-           recyclerView.adapter = BrowseAllGenresAdapter(data)
-           //Do your view assignment here from the data model
-//            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
-//            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+           recyclerView.adapter = BrowseAllGenresAdapter(homePatchItem)
+          
        }
 
        private fun bindAd() {
@@ -283,11 +280,11 @@ class ParentAdapter(val homeCallBack: HomeFragment) :
        }
 
 
-       fun bind(dataModel: Data?) {
-           when (dataModel?.Design) {
-               "Artist" -> bindArtist(dataModel)
-               "Playlist" ->bindPlaylist(dataModel)
-               "Release" ->bindRelease(dataModel)
+       fun bind(homePatchItemModel: HomePatchItem?) {
+           when (homePatchItemModel?.Design) {
+               "Artist" -> bindArtist(homePatchItemModel)
+               "Playlist" ->bindPlaylist(homePatchItemModel)
+               "Release" ->bindRelease(homePatchItemModel)
            }
 
            /*when (dataModel) {

@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 
 
-class TopTrendingAdapter(val data:Data) : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
+class TopTrendingAdapter(val homePatchItem:HomePatchItem) : RecyclerView.Adapter<TopTrendingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -35,7 +35,7 @@ class TopTrendingAdapter(val data:Data) : RecyclerView.Adapter<TopTrendingAdapte
     }
 
     override fun getItemCount(): Int {
-        return data?.Data!!.size
+        return homePatchItem?.Data!!.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,8 +50,8 @@ class TopTrendingAdapter(val data:Data) : RecyclerView.Adapter<TopTrendingAdapte
             }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = data.Data[absoluteAdapterPosition].image
-            textView.text = data.Data[absoluteAdapterPosition].title
+            val url: String = homePatchItem.Data[absoluteAdapterPosition].image
+            textView.text = homePatchItem.Data[absoluteAdapterPosition].title
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))

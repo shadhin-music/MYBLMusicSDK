@@ -11,18 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.AllGenreAdapter
 import com.shadhinmusiclibrary.adapter.BrowseAllPlaylistAdapter
-import com.shadhinmusiclibrary.adapter.TopTrendingAdapter
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 class AllGenresDetailsFragment : Fragment() {
 
-    var data:Data?= null
+    var homePatchItem:HomePatchItem?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,8 +30,8 @@ class AllGenresDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            data = it.getSerializable("data") as Data?
-            Log.d("TAG","DATA: "+ data)
+            homePatchItem = it.getSerializable("data") as HomePatchItem?
+            Log.d("TAG","DATA: "+ homePatchItem)
         }
 
     }
@@ -43,7 +40,7 @@ class AllGenresDetailsFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 2)
-        recyclerView.adapter = data?.let { BrowseAllPlaylistAdapter(it) }
+        recyclerView.adapter = homePatchItem?.let { BrowseAllPlaylistAdapter(it) }
 
 //        val dataAdapter = BrowseAllPlaylistAdapter()
 //        //dataAdapter.setData()
@@ -53,7 +50,7 @@ class AllGenresDetailsFragment : Fragment() {
 //        recyclerView.adapter = dataAdapter
 
         val title:TextView= view.findViewById(R.id.tvTitle)
-        title.setText(data!!.Name)
+        title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         button.setOnClickListener {
@@ -152,10 +149,10 @@ class AllGenresDetailsFragment : Fragment() {
 
 
         @JvmStatic
-        fun newInstance(data: Data) =
+        fun newInstance(homePatchItem: HomePatchItem) =
             AllGenresDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", data)
+                    putSerializable("data", homePatchItem)
                 }
             }
     }

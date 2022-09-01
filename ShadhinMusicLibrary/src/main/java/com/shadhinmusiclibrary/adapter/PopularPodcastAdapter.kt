@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.data.model.HomeData
 
 

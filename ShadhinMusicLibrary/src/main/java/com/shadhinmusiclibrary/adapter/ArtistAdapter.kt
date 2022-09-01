@@ -13,12 +13,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+class ArtistAdapter(val homePatchItem: HomePatchItem?) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)
@@ -33,7 +33,7 @@ class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHo
     }
 
     override fun getItemCount(): Int {
-        return data?.Data!!.size
+        return homePatchItem?.Data!!.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,18 +44,18 @@ class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHo
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
 
-            var url :String = data!!.Data[absoluteAdapterPosition].image
+            var url :String = homePatchItem!!.Data[absoluteAdapterPosition].image
                   Log.d("TAG","ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))
                 .into(imageView2)
 
-            textViewName.setText(data.Data[absoluteAdapterPosition].Artist)
+            textViewName.setText(homePatchItem.Data[absoluteAdapterPosition].Artist)
             itemView.setOnClickListener {
                 val manager: FragmentManager = (context  as AppCompatActivity).supportFragmentManager
 
                 manager.beginTransaction()
-                    .replace(R.id.container , ArtistDetailsFragment.newInstance(data,data.Data[absoluteAdapterPosition]))
+                    .replace(R.id.container , ArtistDetailsFragment.newInstance(homePatchItem,homePatchItem.Data[absoluteAdapterPosition]))
                     .addToBackStack("Fragment")
                     .commit()
             }

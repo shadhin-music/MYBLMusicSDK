@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.TopTrendingAdapter
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 class TopTrendingFragment : Fragment() {
     private lateinit var navController: NavController
-    var data:Data?= null
+    var homePatchItem:HomePatchItem?= null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -32,8 +32,8 @@ class TopTrendingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            data = it.getSerializable("data") as Data?
-            Log.d("TAG","DATA: "+ data)
+            homePatchItem = it.getSerializable("data") as HomePatchItem?
+            Log.d("TAG","DATA: "+ homePatchItem)
         }
 
     }
@@ -43,9 +43,9 @@ class TopTrendingFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-         recyclerView.adapter = data?.let { TopTrendingAdapter(it) }
+         recyclerView.adapter = homePatchItem?.let { TopTrendingAdapter(it) }
         val title: TextView = view.findViewById(R.id.tvTitle)
-        title.setText(data!!.Name)
+        title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         button.setOnClickListener {
@@ -57,10 +57,10 @@ class TopTrendingFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(data: Data) =
+        fun newInstance(homePatchItem: HomePatchItem) =
             TopTrendingFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", data)
+                    putSerializable("data", homePatchItem)
                 }
             }
     }
