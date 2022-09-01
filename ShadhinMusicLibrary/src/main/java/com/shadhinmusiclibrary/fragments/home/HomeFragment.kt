@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.SortDescription
+import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 
 class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
@@ -56,13 +56,13 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         viewModel.homeContent.observe(viewLifecycleOwner) { viewDataInRecyclerView(it) }
     }
 
-    private fun viewDataInRecyclerView(homeData: List<SortDescription>) {
+    private fun viewDataInRecyclerView(homeData: HomeData?) {
         val dataAdapter = ParentAdapter(this)
         val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
-        homeData.let { dataAdapter.setData(it) }
+        homeData.let { it?.data?.let { it1 -> dataAdapter.setData(it1) } }
     }
 
     override fun onClickItem() {

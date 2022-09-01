@@ -4,14 +4,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.DataX
 
 
-class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<HomeData>()
+class ArtistDetailsAdapter(val data: Data?) : RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
+    private val adapterData = mutableListOf<DataX>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -32,13 +35,14 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
         holder.bind(adapterData[position])
+       // holder.bind()
     }
 
     override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
-
+        return when (data?.Design) {
+               "Artist" -> VIEW_ARTIST_HEADER
 //            is GenreDataModel.Artist -> VIEW_ARTIST_HEADER
 //            is GenreDataModel.Artist2 -> VIEW_DOWNLOAD
 //            is GenreDataModel.Artist3 -> VIEW_ALBUM
@@ -51,17 +55,30 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
         }
     }
 
-//    fun setData(data: List<>) {
-//        adapterData.apply {
-//            clear()
-//            addAll(data)
-//        }
-//    }
+    fun setData(data: DataX?) {
+        adapterData.apply {
+            clear()
+            if (data != null) {
+                add(data)
+            }
+        }
+    }
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val context = itemView.getContext()
+        private fun bindArtist(dataModel: DataX) {
 
-        private fun bindArtist() {
             Log.d("Hello", "Loading")
+            val imageView:ImageView = itemView.findViewById(R.id.thumb)
+            var url :String = dataModel.image
+            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
+            // textView.setText(data.Data[absoluteAdapterPosition].title)
+            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            Glide.with(context)
+                .load( url.replace("<\$size\$>","300"))
+                .into(imageView)
+
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
 //            recyclerView.layoutManager =
 //                GridLayoutManager(itemView.context,2)
@@ -98,8 +115,9 @@ class ArtistDetailsAdapter() : RecyclerView.Adapter<ArtistDetailsAdapter.DataAda
         }
 
 
-        fun bind(dataModel: HomeData) {
-            when (dataModel) {
+        fun bind(dataModel: DataX) {
+            when (dataModel.ArtistId) {
+                dataModel.ArtistId  -> bindArtist(dataModel)
 //                is GenreDataModel.Artist -> bindArtist()
 //                is GenreDataModel.Artist2 -> bindArtist2()
 //                is GenreDataModel.Artist3 -> bindArtist3()

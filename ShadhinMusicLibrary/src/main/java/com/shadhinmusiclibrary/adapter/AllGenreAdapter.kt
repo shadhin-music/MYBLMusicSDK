@@ -36,7 +36,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
     override fun getItemCount(): Int = adapterData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (adapterData[position]) {
+        return when (adapterData[position].data) {
 
            // is Artist -> VIEW_BROWSE_ALL
 

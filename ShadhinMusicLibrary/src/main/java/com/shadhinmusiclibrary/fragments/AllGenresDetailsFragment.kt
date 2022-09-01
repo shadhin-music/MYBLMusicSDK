@@ -1,27 +1,28 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllGenreAdapter
+import com.shadhinmusiclibrary.adapter.BrowseAllPlaylistAdapter
+import com.shadhinmusiclibrary.adapter.TopTrendingAdapter
+import com.shadhinmusiclibrary.data.model.Data
 
 
 class AllGenresDetailsFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+    var data:Data?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,17 +30,30 @@ class AllGenresDetailsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.item_all_genres, container, false)
     }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            data = it.getSerializable("data") as Data?
+            Log.d("TAG","DATA: "+ data)
+        }
 
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = AllGenreAdapter()
-        //dataAdapter.setData()
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
+            GridLayoutManager(requireContext(), 2)
+        recyclerView.adapter = data?.let { BrowseAllPlaylistAdapter(it) }
 
+//        val dataAdapter = BrowseAllPlaylistAdapter()
+//        //dataAdapter.setData()
+//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        recyclerView.adapter = dataAdapter
 
+        val title:TextView= view.findViewById(R.id.tvTitle)
+        title.setText(data!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         button.setOnClickListener {
@@ -138,10 +152,10 @@ class AllGenresDetailsFragment : Fragment() {
 
 
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(data: Data) =
             AllGenresDetailsFragment().apply {
                 arguments = Bundle().apply {
-
+                    putSerializable("data", data)
                 }
             }
     }

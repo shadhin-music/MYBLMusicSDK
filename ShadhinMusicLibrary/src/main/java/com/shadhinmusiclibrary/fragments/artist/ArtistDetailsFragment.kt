@@ -1,4 +1,4 @@
- package com.shadhinmusiclibrary.fragments
+ package com.shadhinmusiclibrary.fragments.artist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,14 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ArtistDetailsAdapter
+import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.DataX
 
 
  class ArtistDetailsFragment : Fragment() {
+     var data:Data?= null
+     var position:DataX ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            data = it.getSerializable("data") as Data?
+            position = it.getSerializable("dataX") as DataX?
         }
     }
 
@@ -33,8 +38,8 @@ import com.shadhinmusiclibrary.adapter.ArtistDetailsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = ArtistDetailsAdapter()
-       // dataAdapter.setData()
+        val dataAdapter = ArtistDetailsAdapter(data)
+       dataAdapter.setData(position)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -136,10 +141,11 @@ import com.shadhinmusiclibrary.adapter.ArtistDetailsAdapter
     companion object {
 
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(data: Data, dataX: DataX) =
             ArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
-
+                    putSerializable("data", data)
+                    putSerializable("dataX",dataX)
                 }
             }
     }

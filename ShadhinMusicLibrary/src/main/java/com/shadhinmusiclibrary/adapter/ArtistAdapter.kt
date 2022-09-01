@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.HomeData
-import com.shadhinmusiclibrary.fragments.PlaylistFragment
+import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
@@ -45,7 +45,7 @@ class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHo
 
 
             var url :String = data!!.Data[absoluteAdapterPosition].image
-                  //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+                  Log.d("TAG","ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>","300"))
                 .into(imageView2)
@@ -55,7 +55,7 @@ class ArtistAdapter(val data: Data?) : RecyclerView.Adapter<ArtistAdapter.ViewHo
                 val manager: FragmentManager = (context  as AppCompatActivity).supportFragmentManager
 
                 manager.beginTransaction()
-                    .replace(R.id.container , PlaylistFragment.newInstance())
+                    .replace(R.id.container , ArtistDetailsFragment.newInstance(data,data.Data[absoluteAdapterPosition]))
                     .addToBackStack("Fragment")
                     .commit()
             }
