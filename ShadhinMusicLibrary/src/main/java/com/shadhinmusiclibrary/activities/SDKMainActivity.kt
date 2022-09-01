@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.DataContentType
 import java.io.Serializable
 
 
@@ -28,7 +29,7 @@ internal class SDKMainActivity : AppCompatActivity() {
         //Will received data from Home Fragment from MYBLL App
         val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
             .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
-        var selectedPatchIndex : Int? = null
+        var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
         }
@@ -50,11 +51,11 @@ internal class SDKMainActivity : AppCompatActivity() {
         }*/
     }
 
-    private fun routeData(patch: HomePatchItem, selectedIndex: Int?){
-        if (selectedIndex != null){
+    private fun routeData(patch: HomePatchItem, selectedIndex: Int?) {
+        if (selectedIndex != null) {
             val itemToShowDetails = patch.Data[selectedIndex]
-            when(itemToShowDetails.ContentType.uppercase()){
-                "R" ->{
+            when (itemToShowDetails.ContentType.uppercase()) {
+                DataContentType.CONTENT_TYPE_R -> {
                     //open album details
                     setupNavGraphAndArg(R.navigation.nav_graph_album_details,
                         Bundle().apply {
@@ -64,16 +65,16 @@ internal class SDKMainActivity : AppCompatActivity() {
                             )
                         })
                 }
-                "A" ->{
+                DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                 }
-                "P" ->{
+                DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
                 }
-                "S" ->{
+                DataContentType.CONTENT_TYPE_S -> {
                     //open songs
                 }
-                else ->{
+                else -> {
 
                 }
             }
