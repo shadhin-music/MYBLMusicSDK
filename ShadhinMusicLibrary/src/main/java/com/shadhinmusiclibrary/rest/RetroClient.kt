@@ -1,8 +1,10 @@
 package com.shadhinmusiclibrary.rest
 
 import com.shadhinmusiclibrary.data.remote.ApiService
+import com.shadhinmusiclibrary.fragments.artist.LastFmApiKeyInterceptor
 import com.shadhinmusiclibrary.utils.AppConstantUtils.BASE_URL
 import com.shadhinmusiclibrary.utils.AppConstantUtils.BASE_URL_API_shadhinmusic
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -29,5 +31,6 @@ class RetroClient {
         fun getApiShadhinMusicService(): ApiService {
             return getRetrofitAPIShadhinMusicInstance().create(ApiService::class.java)
         }
+
     }
 }

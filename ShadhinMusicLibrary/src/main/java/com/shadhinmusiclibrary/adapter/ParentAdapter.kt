@@ -78,6 +78,8 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
 //            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
 //            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
+
+
             else -> {
                 0
             }
@@ -98,31 +100,39 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             tvTitle.text = homePatchItem.Name
             seeAll.setOnClickListener {
                 homeCallBack.onClickSeeAll(homePatchItem)
+                // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container , PopularArtistsFragment.newInstance(data))
 //                    .addToBackStack("Popular Artist")
 //                    .commit()
+
+//                Log.e("dataget","$data")
+//
             }
+            // }
+
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack)
+
+
         }
 
-        private fun bindRelease(homePatchItem: HomePatchItem) {
+        fun bindRelease(homePatchItem: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
-//           seeAll.setOnClickListener {
-//             // homeCallBack.onClickSeeAll()
+           seeAll.setOnClickListener {
+              homeCallBack.onClickSeeAll(homePatchItem)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container, TopTrendingFragment.newInstance(data))
 //                    .addToBackStack("Top Trending")
 //                    .commit()
-//           }
+           }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -132,27 +142,29 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            itemView.findViewById<AppCompatTextView>(R.id.tvOrganization)?.text = item.organization
 //            itemView.findViewById<AppCompatTextView>(R.id.tvDesignation)?.text = item.designation
         }
+
         //        private fun bindBrowseAll(item: DataModel.BrowseAll) {
 //            //Do your view assignment here from the data model
-//            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
-//            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
-//        }
+////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
+////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+
         private fun bindPlaylist(homePatchItem: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
-//           seeAll.setOnClickListener {
+           seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .add(R.id.container, AllGenresDetailsFragment.newInstance(data))
 //                    .addToBackStack("AllGenresDetailsFragment")
 //                    .commit()
-//              // homeCallBack.onClickSeeAll()
-//           }
+               homeCallBack.onClickSeeAll(homePatchItem)
+           }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem, homeCallBack)
+            recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem,homeCallBack)
+
         }
 
         private fun bindAd() {
@@ -264,6 +276,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             }
         }
 
+
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
@@ -290,12 +303,15 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
              }*/
         }
+
+
     }
 
     private companion object {
         // val VIEW_SEARCH =0
         val VIEW_ARTIST = 0
         val VIEW_RELEASE = 1
+
         val VIEW_PLAYLIST = 2
         val VIEW_AD = 3
         val VIEW_DOWNLOAD = 4

@@ -26,7 +26,7 @@ class PopularAlbumFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_top_trending, container, false)
+        return inflater.inflate(R.layout.fragment_release_list, container, false)
     }
 
 

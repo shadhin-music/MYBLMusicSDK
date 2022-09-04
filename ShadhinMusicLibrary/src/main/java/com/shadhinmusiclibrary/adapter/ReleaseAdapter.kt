@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -32,7 +35,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
     }
 
     override fun getItemCount(): Int {
-        return homePatchItem.Data.size
+        return homePatchItem?.Data!!.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -53,14 +56,20 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
+
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
+
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
+
+
         }
+
     }
+
 }
 
 

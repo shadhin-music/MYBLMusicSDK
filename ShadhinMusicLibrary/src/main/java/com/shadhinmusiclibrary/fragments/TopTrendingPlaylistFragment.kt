@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
@@ -26,7 +28,8 @@ import retrofit2.Response
 class TopTrendingPlaylistFragment : Fragment() {
     private lateinit var playListAdapter: AlbumAdapter
     private lateinit var navController: NavController
-
+    var homePatchItem: HomePatchItem? = null
+    var homePatchDetail: HomePatchDetail? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
