@@ -8,4 +8,7 @@ class ArtistContentRepository(private val apiService: ApiService) {
     suspend fun fetchArtistBiogrphyData(artist: String) = safeApiCall {
         apiService.fetchArtistBiography(artist)
     }
+    suspend fun fetchArtistBannerData(id: Int) = safeApiCall {
+        apiService.fetchArtistBannerData(id)
+    }
 }

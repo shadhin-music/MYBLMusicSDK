@@ -45,10 +45,13 @@ object Module {
     val artistViewModelFactory: ArtistViewModelFactory
      get()= ArtistViewModelFactory(artistContentRepository)
 
+    private val artistBannerApiService:ApiService = RetroClient.getAPIArtistBannerService()
     private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()
+    private val artistBannerContentRepository:ArtistContentRepository= ArtistContentRepository(
+        artistBannerApiService)
     private val albumContentRepository: AlbumContentRepository =
         AlbumContentRepository(apiServiceAlbum)
     val albumViewModelFactory: AlbumViewModelFactory
         get() = AlbumViewModelFactory(albumContentRepository)
-
+   // val
 }
