@@ -9,15 +9,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.GenresAdapter
+import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
 class MyPlaylistListFragment : Fragment() {
 
-
+    var homePatchItem: HomePatchItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
         }
     }
 
@@ -35,7 +37,7 @@ class MyPlaylistListFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(),2)
-        recyclerView.adapter = GenresAdapter()
+        recyclerView.adapter = GenresAdapter(homePatchItem!!)
     }
     companion object {
 

@@ -15,4 +15,9 @@ internal object AppConstantUtils {
     const val PatchDetail = "patch_detail"
     const val commonData = "data"
     const val SelectedPatchIndex = "selected_patch_index"
+    const val LAST_FM_MIN_BIO_CHAR = 100
+    const val LAST_FM_API_URL = "http://ws.audioscrobbler.com/2.0/"
+    const val LAST_FM_API_KEY = "55dd9a0fd0790ee3219022141a8cdf39"
+    const val LAST_FM_CONTENT_TYPE_JSON = "json"
+
 }

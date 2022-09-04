@@ -13,6 +13,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.rest.RetroClient
@@ -24,7 +25,8 @@ import retrofit2.Response
 class AlbumFragment : Fragment() {
     private lateinit var adapter: AlbumAdapter
     private var listData: MutableList<SongDetail>? = null
-
+    var homePatchItem: HomePatchItem? = null
+    var homePatchDetail: HomePatchDetail? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,

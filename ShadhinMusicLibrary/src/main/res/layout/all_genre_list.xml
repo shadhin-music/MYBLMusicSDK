@@ -17,19 +17,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <ImageView
             android:id="@+id/image"
             android:layout_width="160dp"
-            android:layout_height="88dp"
-            android:src="@color/colorPrimary"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+            android:layout_height="88dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="60dp"
-            android:text="Happy Mix"
             android:textColor="@color/colorWhite"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>

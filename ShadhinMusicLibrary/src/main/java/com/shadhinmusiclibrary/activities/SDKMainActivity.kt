@@ -46,6 +46,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 homePatchDetail as Serializable
                             )
                         })
+
                 }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
@@ -75,14 +76,23 @@ internal class SDKMainActivity : AppCompatActivity() {
         } else {
             when (homePatchItem.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_R -> {
-                    //open album details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                    //open artist details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_list,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.SingleDataItem,
-                                homePatchItem as Serializable
+                                AppConstantUtils.PatchItem,
+                                homePatchItem
                             )
+
                         })
+                    //open album details
+//                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+//                        Bundle().apply {
+//                            putSerializable(
+//                                AppConstantUtils.SingleDataItem,
+//                                homePatchItem as Serializable
+//                            )
+//                        })
                 }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
@@ -97,7 +107,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
+                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_list,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,

@@ -14,48 +14,53 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     android:layout_marginBottom="20dp">
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cardImage"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="8dp">
-    <ImageView
-        android:id="@+id/ib_play_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_baseline_play_circle_filled_24" />
 
-        <com.google.android.material.imageview.ShapeableImageView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImage"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardCornerRadius="8dp">
+
+        <ImageView
+            android:id="@+id/ib_play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_play_circle_filled_24"
+            android:visibility="gone" />
+
+        <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+            android:layout_height="120dp"
+            android:scaleType="fitXY" />
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/cardImage"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:layout_below="@id/cardImage">
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Prithibir Joto shukh"
-            android:textSize="14sp"
             android:fontFamily="@font/roboto"
+            android:text="Prithibir Joto shukh"
             android:textColor="#212121"
+            android:textSize="14sp"
             android:textStyle="bold"
-            />
+            android:visibility="gone"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Habib Wahid"
-            android:textSize="10sp"
             android:layout_marginTop="4dp"
+            android:text="Habib Wahid"
             android:textColor="#212121"
-            />
+            android:textSize="10sp"
+            android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>
 

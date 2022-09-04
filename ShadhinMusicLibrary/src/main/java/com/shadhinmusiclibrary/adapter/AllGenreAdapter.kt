@@ -62,7 +62,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 GridLayoutManager(itemView.context,2)
-            recyclerView.adapter = GenresAdapter()
+          //  recyclerView.adapter = GenresAdapter(homePatchItem!!)
 
         }
 
@@ -71,7 +71,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 GridLayoutManager(itemView.context,2)
-            recyclerView.adapter = GenresAdapter()
+         //   recyclerView.adapter = GenresAdapter(homePatchItem!!)
 
         }
         private fun bindArtist3() {
@@ -79,7 +79,7 @@ class AllGenreAdapter() : RecyclerView.Adapter<AllGenreAdapter.DataAdapterViewHo
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 GridLayoutManager(itemView.context,2)
-            recyclerView.adapter = GenresAdapter()
+          //  recyclerView.adapter = GenresAdapter(homePatchItem!!)
 
         }
 

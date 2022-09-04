@@ -15,17 +15,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
-class TopTrendingFragment : Fragment() {
+class ReleaseListFragment : Fragment() {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
+    var homePatchDetail: HomePatchDetail? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_top_trending, container, false)
+        val view = inflater.inflate(R.layout.fragment_release_list, container, false)
 
         return view
     }
@@ -33,8 +36,8 @@ class TopTrendingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            homePatchItem = it.getSerializable("data") as HomePatchItem?
-            Log.d("TAG", "DATA: " + homePatchItem)
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            //homePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
         }
 
     }
@@ -45,7 +48,7 @@ class TopTrendingFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-//         recyclerView.adapter = homePatchItem?.let { ReleaseAdapter(it,this) }
+         recyclerView.adapter =ReleaseAdapter(homePatchItem!!)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -60,7 +63,7 @@ class TopTrendingFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(homePatchItem: HomePatchItem) =
-            TopTrendingFragment().apply {
+            ReleaseListFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable("data", homePatchItem)
                 }

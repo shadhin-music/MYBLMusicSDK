@@ -15,10 +15,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
+class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
@@ -68,7 +69,7 @@ class AlbumAdapter : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() 
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRootData(data: HomePatchDetail) {
+    fun setRootData(data: HomePatchDetail?) {
         this.rootDataContent = data
         notifyDataSetChanged()
     }

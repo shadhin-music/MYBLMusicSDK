@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.TopTrendingPlaylistFragment
 
 
-class ReleaseAdapter(val homePatchItem: HomePatchItem, val homeCallBack: HomeCallBack) :
+class ReleaseAdapter(val homePatchItem: HomePatchItem) :
     RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +33,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, val homeCallBack: HomeCal
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
-            homeCallBack.onClickItemAndAllItem(position, homePatchItem)
+          //  homeCallBack.onClickItemAndAllItem(position, homePatchItem)
         }
     }
 

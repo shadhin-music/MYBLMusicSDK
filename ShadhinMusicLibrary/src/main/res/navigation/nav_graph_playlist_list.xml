@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/playlist_list">
+
+
+    <fragment
+        android:id="@+id/playlist_list"
+        android:name="com.shadhinmusiclibrary.fragments.MyPlaylistListFragment"
+        android:label="fragment_playlist_list"
+        tools:layout="@layout/fragment_my_playlist_list">
+
+        <action
+            android:id="@+id/action_MyPlaylistListFragment_to_GenrePlaylistFragment"
+            app:destination="@id/playlist_details" />
+    </fragment>
+    <fragment
+    android:id="@+id/playlist_details"
+    android:name="com.shadhinmusiclibrary.fragments.GenrePlaylistFragment"
+    android:label="Playlist Details"
+    tools:layout="@layout/fragment_album" />
+</navigation>
