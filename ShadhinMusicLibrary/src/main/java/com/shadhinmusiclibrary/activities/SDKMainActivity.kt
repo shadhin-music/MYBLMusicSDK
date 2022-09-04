@@ -83,6 +83,18 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
+                    //Temporary set the view
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
                 }
                 else -> {
 
