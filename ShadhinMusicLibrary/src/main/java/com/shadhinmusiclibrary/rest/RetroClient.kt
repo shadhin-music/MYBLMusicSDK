@@ -15,7 +15,7 @@ class RetroClient {
                 .build()
         }
 
-        fun getApiService(): ApiService? {
+        fun getApiService(): ApiService {
             return getRetrofitInstance().create(ApiService::class.java)
         }
 

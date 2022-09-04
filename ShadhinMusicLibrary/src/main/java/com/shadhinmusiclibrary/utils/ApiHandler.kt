@@ -1,7 +1,9 @@
 package com.shadhinmusiclibrary.utils
 
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -11,20 +13,34 @@ enum class Status {
     SUCCESS,
     ERROR,
 }
-data class ApiResponse<out T>(val status: Status, val data: T?, val message: String?, val errorCode:Int?=null) {
-    companion object {
-        fun <T> success(data: T): ApiResponse<T> = ApiResponse(status = Status.SUCCESS, data = data, message = null)
 
-        fun <T> error(data: T?, message: String,errorCode:Int?=null): ApiResponse<T> =
-            ApiResponse(status = Status.ERROR, data = data, message = message,errorCode = errorCode)
+data class ApiResponse<out T>(
+    val status: Status,
+    val data: T?,
+    val message: String?,
+    val errorCode: Int? = null
+) {
+    companion object {
+        fun <T> success(data: T): ApiResponse<T> =
+            ApiResponse(status = Status.SUCCESS, data = data, message = null)
+
+        fun <T> error(data: T?, message: String, errorCode: Int? = null): ApiResponse<T> =
+            ApiResponse(
+                status = Status.ERROR,
+                data = data,
+                message = message,
+                errorCode = errorCode
+            )
     }
-    fun ifSuccess(callback:(T)->Unit) {
-        if(status == Status.SUCCESS && data !=null){
+
+    fun ifSuccess(callback: (T) -> Unit) {
+        if (status == Status.SUCCESS && data != null) {
             callback.invoke(data)
         }
     }
-    fun ifError(callback:(message:String?)->Unit) {
-        if(status != Status.SUCCESS){
+
+    fun ifError(callback: (message: String?) -> Unit) {
+        if (status != Status.SUCCESS) {
             callback.invoke(message)
         }
     }
@@ -35,24 +51,55 @@ suspend inline fun <T> safeApiCall(crossinline responseFunction: suspend () -> T
         try {
             val response = responseFunction.invoke()
             ApiResponse.success(response)
-        }catch (e:HttpException){
-            val errorResponse = kotlin.runCatching {  e.response()?.errorBody()?.string()}.getOrNull()
-            val error = errorResponse?.let { JSONObject(it) }
+        } catch (e: HttpException) {
+            /* val errorResponse = kotlin.runCatching {  e.response()?.errorBody()?.string()}.getOrNull()
+             val error = errorResponse?.let { JSONObject(it) }
 
-            val message = if(error?.has("Message") == true) {
-                error.get("Message").toString()
-            }else{
-                e.message()
-            }
-            ApiResponse.error(null, message.toString(), e.code())
-        }
-        catch(e: UnknownHostException){
+             val message = if(error?.has("Message") == true) {
+                 error.get("Message").toString()
+             }else{
+                 e.message()
+             }*/
+            Log.e("AH", "safeApiCall: $e")
+            ApiResponse.error(null, e.toString(), e.code())
+        } catch (e: UnknownHostException) {
             ApiResponse.error(null, "Please check your internet connection")
-        }
-        catch (e: Exception ) {
+        } catch (e: Exception) {
             ApiResponse.error(null, e.message.toString())
         }
     }
+}
+
+//inline fun <ResultType, RequestType> networkBoundResource(
+//    //*Internet call*//
+//    crossinline fetch: suspend () -> RequestType,
+//    crossinline saveFetchResult: suspend (RequestType) -> Unit,
+//    crossinline shouldFetch: (ResultType) -> Boolean = { true }
+//) = flow {
+//    val data = query().first()
+//    val flow = if (shouldFetch(data)) {
+//        emit(Resource.Loading(data))
+//        try {
+//            saveFetchResult(fetch())
+//            query().map { Resource.Success(it) }
+//        } catch (throwable: Throwable) {
+////            throwable.fillInStackTrace().
+//            query().map { Resource.Error(throwable, it) }
+//        }
+//    } else {
+//        query().map { Resource.Success(it) }
+//    }
+//    emitAll(flow)
+//}
+
+sealed class Resource<T>(
+    val status: Status,
+    val data: T,
+    val error: Throwable? = null
+) {
+    class Success<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
+    class Loading<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
+    class Error<T>(throwable: Throwable, data: T) : Resource<T>(Status.ERROR, data, throwable)
 }
 
 

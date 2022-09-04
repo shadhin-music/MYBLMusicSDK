@@ -10,11 +10,10 @@ interface ApiService {
     suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?
-    ):HomeData
+    ): HomeData
 
     @GET("v5/Album/GetAlbumContent")
-    fun getAlbumContent(
-        @Query("id") pageNumber: Int
-    ): Call<APIResponse<List<SongDetail>>>
-
+    suspend fun fetchAlbumContent(
+        @Query("id") contentId: Int
+    ): APIResponse<MutableList<SongDetail>>
 }

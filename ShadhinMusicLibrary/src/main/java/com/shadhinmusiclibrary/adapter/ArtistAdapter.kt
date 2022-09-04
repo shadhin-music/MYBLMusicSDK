@@ -40,23 +40,21 @@ class ArtistAdapter(val homePatchItem: HomePatchItem?, val homeCallBack: HomeCal
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val context = itemView.getContext()
+        private val mContext = itemView.context
         fun bindItems() {
-
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
-
-            var url: String = homePatchItem!!.Data[absoluteAdapterPosition].image
+            val url: String = homePatchItem!!.Data[absoluteAdapterPosition].image
             Log.d("TAG", "ImageUrl: " + url)
-            Glide.with(context)
+            Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView2)
 
             textViewName.setText(homePatchItem.Data[absoluteAdapterPosition].Artist)
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-
+                val manager: FragmentManager =
+                    (mContext as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(
                         R.id.container,
@@ -68,12 +66,8 @@ class ArtistAdapter(val homePatchItem: HomePatchItem?, val homeCallBack: HomeCal
                     .addToBackStack("Fragment")
                     .commit()
             }
-
-
         }
-
     }
-
 }
 
 

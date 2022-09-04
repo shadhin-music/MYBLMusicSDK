@@ -5,12 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.AlbumFragment
 
 
 class PodcastEpisodesAdapter :
