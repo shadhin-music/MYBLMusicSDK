@@ -15,12 +15,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
-class ReleaseListFragment : Fragment() {
+class ReleaseListFragment : Fragment(),HomeCallBack {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var homePatchDetail: HomePatchDetail? = null
@@ -48,7 +49,7 @@ class ReleaseListFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-         recyclerView.adapter =ReleaseAdapter(homePatchItem!!)
+         recyclerView.adapter =ReleaseAdapter(homePatchItem!!, this)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -68,5 +69,13 @@ class ReleaseListFragment : Fragment() {
                     putSerializable("data", homePatchItem)
                 }
             }
+    }
+
+    override fun onClickItemAndAllItem(itemPosition: Int, patch: HomePatchItem) {
+
+    }
+
+    override fun onClickSeeAll(patch: HomePatchItem) {
+
     }
 }

@@ -115,7 +115,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack)
 
 
@@ -125,14 +125,14 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
-//           seeAll.setOnClickListener {
-//             // homeCallBack.onClickSeeAll()
+           seeAll.setOnClickListener {
+              homeCallBack.onClickSeeAll(homePatchItem)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container, TopTrendingFragment.newInstance(data))
 //                    .addToBackStack("Top Trending")
 //                    .commit()
-//           }
+           }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -147,23 +147,23 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            //Do your view assignment here from the data model
 ////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 ////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
-//        }
+
         private fun bindPlaylist(homePatchItem: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
-//           seeAll.setOnClickListener {
+           seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .add(R.id.container, AllGenresDetailsFragment.newInstance(data))
 //                    .addToBackStack("AllGenresDetailsFragment")
 //                    .commit()
-//              // homeCallBack.onClickSeeAll()
-//           }
+               homeCallBack.onClickSeeAll(homePatchItem)
+           }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem)
+            recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem,homeCallBack)
 
         }
 
@@ -245,7 +245,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             }
             itemView.setOnClickListener {
                 val manager: FragmentManager =
-                    (context as AppCompatActivity).supportFragmentManager
+                    (mContext as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, PodcastDetailsFragment.newInstance())
                     .addToBackStack("Fragment")
@@ -268,7 +268,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 val manager: FragmentManager =
-                    (context as AppCompatActivity).supportFragmentManager
+                    (mContext as AppCompatActivity).supportFragmentManager
                 manager.beginTransaction()
                     .replace(R.id.container, MusicFragment.newInstance())
                     .commit()

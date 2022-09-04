@@ -1,9 +1,12 @@
 package com.shadhinmusiclibrary.di
 
 import com.shadhinmusiclibrary.data.remote.ApiService
+import com.shadhinmusiclibrary.data.repository.AlbumContentRepository
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
 import com.shadhinmusiclibrary.data.repository.HomeContentRepository
+import com.shadhinmusiclibrary.fragments.artist.ArtistViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.LastFmApiKeyInterceptor
+import com.shadhinmusiclibrary.fragments.home.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.rest.RetroClient
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -39,7 +42,7 @@ object Module {
 
     val homeViewModelFactory:HomeViewModelFactory
         get() = HomeViewModelFactory(homeContentRepository)
-    val artistViewModelFactory:ArtistViewModelFactory
+    val artistViewModelFactory: ArtistViewModelFactory
      get()= ArtistViewModelFactory(artistContentRepository)
 
     private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()

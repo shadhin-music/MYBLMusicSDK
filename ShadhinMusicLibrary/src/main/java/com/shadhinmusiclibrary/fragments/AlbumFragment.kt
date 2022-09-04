@@ -42,7 +42,7 @@ class AlbumFragment : Fragment() {
         listData = mutableListOf()
         adapter = AlbumAdapter()
         ///read data from online
-        fetchOnlineData(singleDetails.ContentID.toInt())
+       // fetchOnlineData(singleDetails.ContentID.toInt())
         adapter.setRootData(singleDetails)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -57,22 +57,22 @@ class AlbumFragment : Fragment() {
         }
     }
 
-    private fun fetchOnlineData(contentId: Int) {
-        val api: ApiService = RetroClient.getApiShadhinMusicService()
-        val call = api.getAlbumContent(contentId)
-        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
-            override fun onResponse(
-                call: Call<APIResponse<List<SongDetail>>>,
-                response: Response<APIResponse<List<SongDetail>>>
-            ) {
-                if (response.isSuccessful) {
-                    adapter.setData(response.body()!!.data)
-                    Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
-                }
-            }
-
-            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
-            }
-        })
-    }
+//    private fun fetchOnlineData(contentId: Int) {
+//        val api: ApiService = RetroClient.getApiShadhinMusicService()
+//        val call = api.getAlbumContent(contentId)
+//        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
+//            override fun onResponse(
+//                call: Call<APIResponse<List<SongDetail>>>,
+//                response: Response<APIResponse<List<SongDetail>>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    adapter.setData(response.body()!!.data)
+//                    Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
+//            }
+//        })
+//    }
 }

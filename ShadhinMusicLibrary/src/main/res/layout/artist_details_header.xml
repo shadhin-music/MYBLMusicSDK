@@ -178,38 +178,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
            android:background="@drawable/gradient_background">
-        <com.shadhinmusiclibrary.utils.CircleImageView
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_artist"
-            android:id="@+id/imageArtist"/>
+
+            <com.shadhinmusiclibrary.utils.CircleImageView
+                android:id="@+id/imageArtist"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/ic_artist" />
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_toRightOf="@id/imageArtist"
                 android:text="Listen to"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp"
-                android:id="@+id/tvTitle"/>
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvTitle"
                 android:layout_toRightOf="@id/imageArtist"
-                android:text="Listen to"
                 android:textColor="@color/colorWhite"
                 android:textSize="26sp" />
+
             <TextView
                 android:id="@+id/tvfav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvName"
                 android:layout_toRightOf="@id/imageArtist"
-                android:text="Listen to"
+                android:text="Favourite song"
                 android:textColor="@color/colorWhite"
                 android:textSize="12sp" />
         </RelativeLayout>

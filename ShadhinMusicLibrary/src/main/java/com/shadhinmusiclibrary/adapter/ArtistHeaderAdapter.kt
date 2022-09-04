@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.provider.Settings.Global.getString
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.PodcastHeaderViewHolder>() {
@@ -38,6 +41,19 @@ class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView
 
         val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
         textView?.text = bio?.artist?.bio?.summary
+       // textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
+//        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
+//        if (moreText != null) {
+//            moreText.setOnClickListener { e ->
+//                if (textView?.isExpanded() == true) {
+//                    textView.collapse()
+//                    moreText.text ="Read More"
+//                } else {
+//                    textView?.isExpanded()
+//                   moreText.text ="Show less"
+//                }
+//            }
+//        }
     }
 
     inner class PodcastHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,7 +66,18 @@ class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             textView?.text = bio?.artist?.bio?.summary
+          //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
+            val moreText:TextView?= itemView?.findViewById(R.id.tvReadMore)
 
+             moreText?.setOnClickListener {
+                  if(textView!!.isExpanded){
+                      textView.collapse()
+                      moreText.text ="Read More"
+                  }else{
+                      textView.expand()
+                      moreText.text ="Less"
+                  }
+             }
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
