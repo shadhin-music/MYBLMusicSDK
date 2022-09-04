@@ -104,6 +104,18 @@ internal class SDKMainActivity : AppCompatActivity() {
         } else {
             //See All Item Click event
             when (homePatchItem.ContentType.uppercase()) {
+
+                DataContentType.CONTENT_TYPE_A -> {
+                    //open artist details
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
+//                    navController.navigate(R.id.popular_artist_fragment)
+                }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_album_list,
@@ -122,17 +134,6 @@ internal class SDKMainActivity : AppCompatActivity() {
 //                                homePatchItem as Serializable
 //                            )
 //                        })
-                }
-                DataContentType.CONTENT_TYPE_A -> {
-                    //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                        })
-//                    navController.navigate(R.id.popular_artist_fragment)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist

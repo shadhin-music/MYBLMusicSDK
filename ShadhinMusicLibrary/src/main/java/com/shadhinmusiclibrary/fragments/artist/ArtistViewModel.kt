@@ -13,8 +13,19 @@ class ArtistViewModel (private val artistContentRepository: ArtistContentReposit
 
     private val _artistBioContent: MutableLiveData<LastFmResult> = MutableLiveData()
     val artistBioContent: MutableLiveData<LastFmResult> = _artistBioContent
+    private val  _artistBannerContent: MutableLiveData<ArtistBanner> = MutableLiveData()
+     val artistBannerContent:MutableLiveData<ArtistBanner> = _artistBannerContent
 
     fun fetchArtistBioData(artist: String) = viewModelScope.launch {
+        val response = artistContentRepository.fetchArtistBiogrphyData(artist)
+        if (response.status == Status.SUCCESS) {
+            _artistBioContent.postValue(response.data)
+            Log.d("dfsfdsdfsdf","DATA :"+ response.data.toString())
+        }
+        Log.i("dfsfdsdfsdf", "fetchArtistBioData: ${response.message}")
+    }
+
+    fun fetchArtistBannerData(artist: String) = viewModelScope.launch {
         val response = artistContentRepository.fetchArtistBiogrphyData(artist)
         if (response.status == Status.SUCCESS) {
             _artistBioContent.postValue(response.data)
