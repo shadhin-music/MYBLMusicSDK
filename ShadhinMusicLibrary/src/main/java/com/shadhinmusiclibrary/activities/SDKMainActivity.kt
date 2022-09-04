@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
@@ -35,19 +36,9 @@ internal class SDKMainActivity : AppCompatActivity() {
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
+            //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
             when (homePatchDetail.ContentType.uppercase()) {
-                DataContentType.CONTENT_TYPE_R -> {
-                    //open album details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.SingleDataItem,
-                                homePatchDetail as Serializable
-                            )
-                        })
-
-                }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
@@ -61,10 +52,35 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 homePatchDetail as Serializable
                             )
                         })
-//                    navController.navigate(R.id.popular_artist_fragment)
+                }
+                DataContentType.CONTENT_TYPE_R -> {
+                    //open album details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
@@ -74,6 +90,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
             }
         } else {
+            //See All Item Click event
             when (homePatchItem.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_R -> {
                     //open artist details

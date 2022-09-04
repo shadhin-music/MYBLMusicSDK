@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,23 +14,30 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
-class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
+class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
+    FragmentEntryPoint, HomeCallBack {
 
     private lateinit var rvAllHome: RecyclerView
-    private lateinit var viewModel: HomeViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
+//    private lateinit var viewModel: HomeViewModel
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//
+//        }
+//    }
 
-        }
+    override fun getViewModel(): Class<HomeViewModel> {
+        return HomeViewModel::class.java
+    }
 
-
+    override fun getViewModelFactory(): HomeViewModelFactory {
+        return injector.homeViewModelFactory
     }
 
     override fun onCreateView(
@@ -43,11 +49,10 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
+//        setupViewModel()
         observeData()
         // dataAdapter.setData(getHomeData())
         // getHomeData()
-
     }
 
     private fun setupViewModel() {
@@ -56,8 +61,8 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     }
 
     private fun observeData() {
-        viewModel.fetchHomeData(1, false)
-        viewModel.homeContent.observe(viewLifecycleOwner) { viewDataInRecyclerView(it) }
+        viewModel!!.fetchHomeData(1, false)
+        viewModel!!.homeContent.observe(viewLifecycleOwner) { viewDataInRecyclerView(it) }
     }
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
@@ -84,7 +89,6 @@ class HomeFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
     override fun onClickSeeAll(patch: HomePatchItem) {
         val data = Bundle()
-
         data.putSerializable(
             AppConstantUtils.PatchItem,
             patch as Serializable

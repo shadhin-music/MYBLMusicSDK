@@ -3,20 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/AlbumFragment">
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/TopTrendingFragment"-->
-    <!--        android:name="com.shadhinmusiclibrary.fragments.TopTrendingFragment"-->
-    <!--        android:label="Featured Playlist"-->
-    <!--        tools:layout="@layout/fragment_top_trending" >-->
-    <!--        <action-->
-    <!--            android:id="@+id/action_TopTrendingFragment_to_PlaylistFragment"-->
-    <!--            app:destination="@id/PlaylistFragment" />-->
-    <!--    </fragment>-->
+    app:startDestination="@id/album_fragment">
     <fragment
-        android:id="@+id/AlbumFragment"
-        android:name="com.shadhinmusiclibrary.fragments.AlbumFragment"
+        android:id="@+id/album_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumFragment"
         android:label="Details"
         tools:layout="@layout/fragment_album" />
 </navigation>

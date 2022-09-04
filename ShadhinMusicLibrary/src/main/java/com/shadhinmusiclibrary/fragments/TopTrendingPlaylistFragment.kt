@@ -62,31 +62,31 @@ class TopTrendingPlaylistFragment : Fragment() {
 
     private fun fetchOnlineData() {
         val api: ApiService = RetroClient.getApiShadhinMusicService()
-        val call = api.getAlbumContent(21132)
-        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
-            override fun onResponse(
-                call: Call<APIResponse<List<SongDetail>>>,
-                response: Response<APIResponse<List<SongDetail>>>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
-                    playListAdapter = AlbumAdapter()
-                    playListAdapter.setData(response.body()!!.data)
-
-                    val recyclerView: RecyclerView = view!!.findViewById(R.id.recyclerView)
-                    recyclerView.layoutManager =
-                        LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.VERTICAL,
-                            false
-                        )
-                    recyclerView.adapter = playListAdapter
-                }
-            }
-
-            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
-            }
-        })
+//        val call = api.getAlbumContent(21132)
+//        call.enqueue(object : Callback<APIResponse<List<SongDetail>>> {
+//            override fun onResponse(
+//                call: Call<APIResponse<List<SongDetail>>>,
+//                response: Response<APIResponse<List<SongDetail>>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    Log.e("TTPLF", "onResponse: " + response.body()!!.data.toString())
+//                    playListAdapter = AlbumAdapter()
+//                    playListAdapter.setData(response.body()!!.data)
+//
+//                    val recyclerView: RecyclerView = view!!.findViewById(R.id.recyclerView)
+//                    recyclerView.layoutManager =
+//                        LinearLayoutManager(
+//                            requireContext(),
+//                            LinearLayoutManager.VERTICAL,
+//                            false
+//                        )
+//                    recyclerView.adapter = playListAdapter
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<APIResponse<List<SongDetail>>>, t: Throwable) {
+//            }
+//        })
     }
 
     //    private fun getMockData(): List<GenreDataModel> = listOf(
