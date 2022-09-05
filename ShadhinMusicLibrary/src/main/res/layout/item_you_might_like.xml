@@ -27,6 +27,7 @@
                 android:layout_weight="5"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:id="@+id/tvTitle"
                 />
             <TextView
                 android:layout_width="wrap_content"

@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.data.repository.ArtistBannerContentRepository
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
+import com.shadhinmusiclibrary.data.repository.ArtistSongContentRepository
 
 
-class ArtistViewModelFactory(private val artistContentRepository: ArtistContentRepository) : ViewModelProvider.Factory{
+class ArtistContentViewModelFactory(private val artistSongContentRepository: ArtistSongContentRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-       return ArtistViewModel(artistContentRepository) as T
+       return ArtistContentViewModel(artistSongContentRepository) as T
     }
 }

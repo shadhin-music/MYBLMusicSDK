@@ -6,19 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
+import com.shadhinmusiclibrary.data.repository.ArtistSongContentRepository
 import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
-class ArtistViewModel (private val artistContentRepository: ArtistContentRepository): ViewModel() {
+class ArtistContentViewModel (private val artistContentRepository: ArtistSongContentRepository): ViewModel() {
 
-    private val _artistBioContent: MutableLiveData<LastFmResult> = MutableLiveData()
-    val artistBioContent: MutableLiveData<LastFmResult> = _artistBioContent
+    private val _artistSongContent: MutableLiveData<ArtistContent> = MutableLiveData()
+    val artistSongContent: MutableLiveData<ArtistContent> = _artistSongContent
 
 
-    fun fetchArtistBioData(artist: String) = viewModelScope.launch {
-        val response = artistContentRepository.fetchArtistBiogrphyData(artist)
+    fun fetchArtistSongData(artist: Int) = viewModelScope.launch {
+        val response = artistContentRepository.fetchArtistSongData(artist)
         if (response.status == Status.SUCCESS) {
-            _artistBioContent.postValue(response.data)
+            _artistSongContent.postValue(response.data)
             Log.d("dfsfdsdfsdf","DATA :"+ response.data.toString())
         }
         Log.i("dfsfdsdfsdf", "fetchArtistBioData: ${response.message}")
