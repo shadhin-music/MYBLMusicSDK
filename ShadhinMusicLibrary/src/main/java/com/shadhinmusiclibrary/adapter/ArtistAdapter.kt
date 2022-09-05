@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter(val homePatchItem: HomePatchItem?, val homeCallBack: HomeCallBack) :
+class ArtistAdapter(val homePatchItem: HomePatchItem?, private val homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

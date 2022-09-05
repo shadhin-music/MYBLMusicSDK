@@ -26,7 +26,6 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
@@ -35,7 +34,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
     }
 
     override fun getItemCount(): Int {
-        return homePatchItem?.Data!!.size
+        return homePatchItem.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -56,20 +55,14 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
-
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
-
 }
 
 

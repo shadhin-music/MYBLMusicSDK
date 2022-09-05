@@ -87,11 +87,11 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
             })
     }
 
-    override fun onClickSeeAll(patch: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
-            patch as Serializable
+            selectedHomePatchItem as Serializable
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {

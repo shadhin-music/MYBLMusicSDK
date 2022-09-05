@@ -24,7 +24,8 @@ object Module {
             )
             .build()
     }
-    private val baseRetrofit:Retrofit = Retrofit.Builder()
+
+    private val baseRetrofit: Retrofit = Retrofit.Builder()
         .baseUrl(AppConstantUtils.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -34,24 +35,29 @@ object Module {
         .addConverterFactory(GsonConverterFactory.create())
         .client(getClient())
         .build()
-    private val apiServiceHome: ApiService = RetroClient.getApiService()!!
-   // private val apiService:ApiService = baseRetrofit.create(ApiService::class.java)
+    private val apiServiceHome: ApiService = RetroClient.getApiService()
+
     private val homeContentRepository: HomeContentRepository = HomeContentRepository(apiServiceHome)
-    private val apiServiceArtistBio:ApiService = artistBioRetrofit.create(ApiService::class.java)
-    private val artistContentRepository: ArtistContentRepository = ArtistContentRepository(apiServiceArtistBio)
+    private val apiServiceArtistBio: ApiService = artistBioRetrofit.create(ApiService::class.java)
+    private val artistContentRepository: ArtistContentRepository =
+        ArtistContentRepository(apiServiceArtistBio)
 
-    val homeViewModelFactory:HomeViewModelFactory
+    val homeViewModelFactory: HomeViewModelFactory
         get() = HomeViewModelFactory(homeContentRepository)
-    val artistViewModelFactory: ArtistViewModelFactory
-     get()= ArtistViewModelFactory(artistContentRepository)
 
-    private val artistBannerApiService:ApiService = RetroClient.getAPIArtistBannerService()
+    val artistViewModelFactory: ArtistViewModelFactory
+        get() = ArtistViewModelFactory(artistContentRepository)
+
+    private val artistBannerApiService: ApiService = RetroClient.getAPIArtistBannerService()
     private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()
-    private val artistBannerContentRepository:ArtistContentRepository= ArtistContentRepository(
-        artistBannerApiService)
+    private val artistBannerContentRepository: ArtistContentRepository = ArtistContentRepository(
+        artistBannerApiService
+    )
+
     private val albumContentRepository: AlbumContentRepository =
         AlbumContentRepository(apiServiceAlbum)
     val albumViewModelFactory: AlbumViewModelFactory
         get() = AlbumViewModelFactory(albumContentRepository)
-   // val
+
+
 }
