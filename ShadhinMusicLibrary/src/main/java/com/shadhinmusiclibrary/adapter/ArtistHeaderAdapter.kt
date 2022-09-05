@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.content.Context
 import android.provider.Settings.Global.getString
 import android.text.Html
 import android.util.Log
@@ -13,12 +14,14 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.PodcastHeaderViewHolder>() {
 
     var bio: LastFmResult? = null
+    var banner: ArtistBanner?= null
     private var parentView:View?=null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
         parentView = LayoutInflater.from(parent.context).inflate(R.layout.artist_details_header, parent, false)
@@ -56,6 +59,17 @@ class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView
 //        }
     }
 
+    fun artistBanner(banner: ArtistBanner?, context: Context?) {
+        this.banner= banner
+        val imageView:ImageView = parentView!!.findViewById(R.id.imageArtist)
+        if (context != null) {
+            Glide.with(context)
+                .load(banner?.image)
+                .into(imageView)
+        }
+
+    }
+
     inner class PodcastHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
         fun bindItems(homePatchDetail: HomePatchDetail?) {
@@ -66,7 +80,16 @@ class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             textView?.text = bio?.artist?.bio?.summary
-          //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
+            val tvName:TextView = itemView?.findViewById(R.id.tvName)!!
+            tvName.text =homePatchDetail.Artist+"'s"
+            val imageArtist:ImageView = itemView!!.findViewById(R.id.imageArtist)
+            if (context != null) {
+                Glide.with(context)
+                    .load(banner?.image)
+                    .into(imageArtist)
+            }
+
+            //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
             val moreText:TextView?= itemView?.findViewById(R.id.tvReadMore)
 
              moreText?.setOnClickListener {

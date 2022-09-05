@@ -32,14 +32,14 @@ class RetroClient {
         fun getApiShadhinMusicService(): ApiService {
             return getRetrofitAPIShadhinMusicInstance().create(ApiService::class.java)
         }
-     private  fun getRetrofitAPIV5Instance(): Retrofit{
-         return Retrofit.Builder()
-             .baseUrl(BASE_URL_V5)
-             .addConverterFactory(GsonConverterFactory.create())
-             .build()
-     }
-        fun getAPIArtistBannerService():ApiService{
-            return getRetrofitAPIV5Instance().create(ApiService::class.java)
-        }
+//     private  fun getRetrofitAPIV5Instance(): Retrofit{
+//         return Retrofit.Builder()
+//             .baseUrl(BASE_URL_V5)
+//             .addConverterFactory(GsonConverterFactory.create())
+//             .build()
+//     }
+//        fun getAPIArtistBannerService():ApiService{
+//            return getRetrofitAPIV5Instance().create(ApiService::class.java)
+//        }
     }
 }

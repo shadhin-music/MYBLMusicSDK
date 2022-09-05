@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class HomePatchItem(
     val Code: String,
-    val ContentType: String,
+    var ContentType: String,
     val Data: List<HomePatchDetail>,
     val Design: String,
     val Name: String,

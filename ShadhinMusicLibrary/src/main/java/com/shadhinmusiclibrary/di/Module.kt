@@ -1,9 +1,9 @@
 package com.shadhinmusiclibrary.di
 
 import com.shadhinmusiclibrary.data.remote.ApiService
-import com.shadhinmusiclibrary.data.repository.AlbumContentRepository
-import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
-import com.shadhinmusiclibrary.data.repository.HomeContentRepository
+import com.shadhinmusiclibrary.data.repository.*
+import com.shadhinmusiclibrary.fragments.artist.ArtistBannerViewModelFactory
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.ArtistViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.LastFmApiKeyInterceptor
 import com.shadhinmusiclibrary.fragments.home.AlbumViewModelFactory
@@ -29,7 +29,10 @@ object Module {
         .baseUrl(AppConstantUtils.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
+    private val artistBannerRetrofit:Retrofit = Retrofit.Builder()
+        .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
     private val artistBioRetrofit: Retrofit = Retrofit.Builder()
         .baseUrl(AppConstantUtils.LAST_FM_API_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -48,6 +51,24 @@ object Module {
     val artistViewModelFactory: ArtistViewModelFactory
         get() = ArtistViewModelFactory(artistContentRepository)
 
+    private val artistBannerApiService:ApiService = artistBannerRetrofit.create(ApiService::class.java)
+    private val artistSongApiService:ApiService = artistBannerRetrofit.create(ApiService::class.java)
+    private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()
+    private val artistBannerContentRepository:ArtistBannerContentRepository= ArtistBannerContentRepository(artistBannerApiService)
+    private val artistSongContentRepository:ArtistSongContentRepository = ArtistSongContentRepository(
+        artistSongApiService)
+    private val albumContentRepository: AlbumContentRepository =
+        AlbumContentRepository(apiServiceAlbum)
+    val albumViewModelFactory: AlbumViewModelFactory
+        get() = AlbumViewModelFactory(albumContentRepository)
+
+     val artistBannerViewModelFactory:ArtistBannerViewModelFactory
+     get() = ArtistBannerViewModelFactory(artistBannerContentRepository)
+
+    val artistSongViewModelFactory:ArtistContentViewModelFactory
+        get() = ArtistContentViewModelFactory(artistSongContentRepository)
+
+
     private val artistBannerApiService: ApiService = RetroClient.getAPIArtistBannerService()
     private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()
     private val artistBannerContentRepository: ArtistContentRepository = ArtistContentRepository(
@@ -58,6 +79,5 @@ object Module {
         AlbumContentRepository(apiServiceAlbum)
     val albumViewModelFactory: AlbumViewModelFactory
         get() = AlbumViewModelFactory(albumContentRepository)
-
 
 }

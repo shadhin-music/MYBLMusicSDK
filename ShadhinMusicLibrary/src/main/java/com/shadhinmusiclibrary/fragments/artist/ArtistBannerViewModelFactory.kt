@@ -6,8 +6,8 @@ import com.shadhinmusiclibrary.data.repository.ArtistBannerContentRepository
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
 
 
-class ArtistViewModelFactory(private val artistContentRepository: ArtistContentRepository) : ViewModelProvider.Factory{
+class ArtistBannerViewModelFactory(private val artistBannerContentRepository: ArtistBannerContentRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-       return ArtistViewModel(artistContentRepository) as T
+       return ArtistBannerViewModel(artistBannerContentRepository) as T
     }
 }
