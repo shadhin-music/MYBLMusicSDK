@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.ChildCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class PopularArtistsFragment : Fragment(), ChildCallback {
+class PopularArtistsFragment : Fragment(), HomeCallBack {
     var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
 
@@ -48,7 +49,7 @@ class PopularArtistsFragment : Fragment(), ChildCallback {
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, homePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         navController.navigate(
             R.id.action_PopularArtistFragment_to_ArtistDetailsFragment,
             Bundle().apply {
@@ -57,5 +58,9 @@ class PopularArtistsFragment : Fragment(), ChildCallback {
                     homePatchItem as Serializable
                 )
             })
+    }
+
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+
     }
 }

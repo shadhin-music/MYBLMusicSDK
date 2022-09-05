@@ -50,11 +50,9 @@ class ReleaseListFragment : Fragment(), HomeCallBack {
         recyclerView.adapter = ReleaseAdapter(homePatchItem!!, this)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.text = homePatchItem!!.Name
-        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
-//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-        button.setOnClickListener {
-//            manager.popBackStack("Top Trending", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            navController.popBackStack()
         }
     }
 
