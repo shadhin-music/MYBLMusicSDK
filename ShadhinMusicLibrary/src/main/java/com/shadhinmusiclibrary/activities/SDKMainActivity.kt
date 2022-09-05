@@ -84,6 +84,18 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
+                    //Temporary set the view
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
                 }
                 else -> {
 
@@ -92,7 +104,6 @@ internal class SDKMainActivity : AppCompatActivity() {
         } else {
             //See All Item Click event
             when (homePatchItem.ContentType.uppercase()) {
-
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
@@ -102,7 +113,6 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 homePatchItem as Serializable
                             )
                         })
-//                    navController.navigate(R.id.popular_artist_fragment)
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open artist details
@@ -112,16 +122,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 AppConstantUtils.PatchItem,
                                 homePatchItem
                             )
-
                         })
-                    //open album details
-//                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
-//                        Bundle().apply {
-//                            putSerializable(
-//                                AppConstantUtils.SingleDataItem,
-//                                homePatchItem as Serializable
-//                            )
-//                        })
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist

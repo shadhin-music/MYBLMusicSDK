@@ -8,23 +8,29 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter(val homePatchItem1: HomePatchItem) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
+class PopularArtistAdapter(
+    val homePatchItem1: HomePatchItem,
+    private val childCallback: ChildCallback
+) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_circle_image_view, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.layout_circle_image_view, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems(homePatchItem1.Data.size)
-
-
+        holder.bindItems(homePatchItem1.Data.size)
+        holder.itemView.setOnClickListener {
+            childCallback.onClickItemAndAllItem(position, homePatchItem1)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -32,18 +38,17 @@ class PopularArtistAdapter(val homePatchItem1: HomePatchItem) : RecyclerView.Ada
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.context
         fun bindItems(size: Int) {
-
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-            var url :String = homePatchItem1!!.Data[absoluteAdapterPosition].image
-            Log.d("TAG","ImageUrl: " + url)
+            val url: String = homePatchItem1.Data[absoluteAdapterPosition].image
+            Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
-                .load(url.replace("<\$size\$>","300"))
+                .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
 
-            textViewName.setText(homePatchItem1.Data[absoluteAdapterPosition].Artist)
+            textViewName.text = homePatchItem1.Data[absoluteAdapterPosition].Artist
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
@@ -54,13 +59,9 @@ class PopularArtistAdapter(val homePatchItem1: HomePatchItem) : RecyclerView.Ada
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }
