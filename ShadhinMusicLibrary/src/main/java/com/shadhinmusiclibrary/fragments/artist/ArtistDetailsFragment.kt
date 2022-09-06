@@ -26,11 +26,15 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     var homePatchDetail: HomePatchDetail? = null
     var artistContent:ArtistContent?= null
     private lateinit var viewModel: ArtistViewModel
-    private lateinit var viewModel2: ArtistBannerViewModel
-    private lateinit var viewModel3: ArtistContentViewModel
+    private lateinit var viewModelArtistBanner: ArtistBannerViewModel
+    private lateinit var viewModelArtistSong: ArtistContentViewModel
+    private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter:ArtistHeaderAdapter
+    private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
     private lateinit var artistSongAdapter:ArtistSongsAdapter
+    private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+    private lateinit var parentRecycler:RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,9 +52,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAdapters()
-        setupViewModel()
-        observeData()
+        initialize()
 //        val dataAdapter = ArtistDetailsAdapter(homePatchItem)
 //        dataAdapter.setData(homePatchDetail)
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -65,31 +67,41 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 //
 //        }
     }
+
+    private  fun initialize(){
+        setupAdapters()
+        setupViewModel()
+        observeData()
+    }
     private fun setupAdapters() {
+
+         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-
-        val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
-
         artistHeaderAdapter = ArtistHeaderAdapter(homePatchDetail)
         artistSongAdapter= ArtistSongsAdapter()
+        artistAlbumsAdapter= ArtistAlbumsAdapter(homePatchItem,this)
+        artistsYouMightLikeAdapter = ArtistsYouMightLikeAdapter(homePatchItem,this,homePatchDetail?.ArtistId)
         parentAdapter = ConcatAdapter(
             config,
             artistHeaderAdapter,
             HeaderAdapter(),
             artistSongAdapter,
-            ArtistAlbumsAdapter(homePatchItem,this),
-            ArtistsYouMightLikeAdapter(homePatchItem,this)
+            artistAlbumsAdapter,
+            ArtistsYouMightLikeAdapter(homePatchItem,this,homePatchDetail?.ArtistId)
         )
+        parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
         parentRecycler.setAdapter(parentAdapter)
     }
+
     private fun setupViewModel() {
         viewModel =
             ViewModelProvider(this, injector.artistViewModelFactory)[ArtistViewModel::class.java]
-         viewModel2 = ViewModelProvider(this,injector.artistBannerViewModelFactory)[ArtistBannerViewModel::class.java]
-        viewModel3 = ViewModelProvider(this,injector.artistSongViewModelFactory)[ArtistContentViewModel::class.java]
+        viewModelArtistBanner = ViewModelProvider(this,injector.artistBannerViewModelFactory)[ArtistBannerViewModel::class.java]
+        viewModelArtistSong = ViewModelProvider(this,injector.artistSongViewModelFactory)[ArtistContentViewModel::class.java]
+        viewModelArtistAlbum = ViewModelProvider(this,injector.artistAlbumViewModelFactory)[ArtistAlbumsViewModel::class.java]
     }
 
     private fun observeData() {
@@ -101,20 +113,31 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
             //Log.e("TAG","DATA: "+ it.artist)
         }
         homePatchDetail.let {
-            viewModel2.fetchArtistBannerData(it!!.ArtistId.toInt())
-            viewModel2.artistBannerContent.observe(viewLifecycleOwner) {
+            it?.ArtistId?.let { it1 -> it1?.toInt()
+                ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) } }
+            viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) {
                 artistHeaderAdapter.artistBanner(it,context)
-                Log.e("TAG","DATA: "+ it)
+                Log.e("TAG","DATA123: "+ it)
             }
         }
         homePatchDetail.let {
-            viewModel3.fetchArtistSongData(it!!.ArtistId.toInt())
-            viewModel3.artistSongContent.observe(viewLifecycleOwner) {
+            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
+            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) {
                 //artistHeaderAdapter.artistBanner(it,context)
                 artistSongAdapter.artistContent(it)
                 Log.e("TAG","DATA: "+ it)
             }
         }
+        homePatchDetail.let {
+            viewModelArtistAlbum.fetchArtistAlbum("r", it?.ArtistId?.toInt()!!)
+            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) {
+                //artistHeaderAdapter.artistBanner(it,context)
+               // artistSongAdapter.artistContent(it)
+                 artistAlbumsAdapter.setData(it)
+                Log.e("TAG","DATAALBUM: "+ it)
+            }
+        }
+        Log.e("TAG","ARTISTID: "+ homePatchDetail?.ArtistId)
     }
 //    private fun prepareBiographyView() {
 //        val biographyMain:ExpandableTextView = requireView().findViewById(R.id.tvDescription)
@@ -248,7 +271,19 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, patch: HomePatchItem) {
-        TODO("Not yet implemented")
+        Log.e("TAG","DATA ARtist: "+ patch)
+        //  setAdapter(patch)
+        homePatchDetail = patch.Data[itemPosition]
+
+        artistHeaderAdapter.setData(homePatchDetail!!)
+        artistsYouMightLikeAdapter.adapter!!.artistIDtoSkip = homePatchDetail!!.ArtistId
+       // artistsYouMightLikeAdapter.adapter!!.initialize()
+        artistsYouMightLikeAdapter.notifyDataSetChanged()
+       // artistsYouMightLikeAdapter.adapter!!.notifyDataSetChanged()
+
+        observeData()
+        parentAdapter.notifyDataSetChanged()
+        parentRecycler.scrollToPosition(0)
     }
 
     override fun onClickSeeAll(patch: HomePatchItem) {

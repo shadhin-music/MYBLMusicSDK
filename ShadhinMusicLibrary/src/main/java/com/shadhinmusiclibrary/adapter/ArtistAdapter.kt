@@ -19,8 +19,25 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class ArtistAdapter(val homePatchItem: HomePatchItem?, private val homeCallBack: HomeCallBack) :
+class ArtistAdapter(var homePatchItem: HomePatchItem?, private val homeCallBack: HomeCallBack, var artistIDtoSkip: String? = null) :
     RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+
+    private var filteredHomePatchItem:HomePatchItem? = null
+
+    init {
+        initialize()
+    }
+
+    fun initialize(){
+        var items = homePatchItem?.Data
+        items = items?.filter { it.ArtistId != artistIDtoSkip }
+        filteredHomePatchItem = homePatchItem?.copy()
+        if (items != null) {
+            filteredHomePatchItem?.Data = items
+        }
+    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)
@@ -28,15 +45,18 @@ class ArtistAdapter(val homePatchItem: HomePatchItem?, private val homeCallBack:
     }
 
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
-            homeCallBack.onClickItemAndAllItem(position, homePatchItem!!)
+            val artistID = filteredHomePatchItem!!.Data[position].ArtistId
+            val index = homePatchItem!!.Data.indexOfFirst { it.ArtistId == artistID }
+            homeCallBack.onClickItemAndAllItem(index, homePatchItem!!)
         }
     }
 
     override fun getItemCount(): Int {
-        return homePatchItem?.Data!!.size
+        return filteredHomePatchItem?.Data?.size?:0
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,27 +65,14 @@ class ArtistAdapter(val homePatchItem: HomePatchItem?, private val homeCallBack:
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
-            val url: String = homePatchItem!!.Data[absoluteAdapterPosition].image
-            Log.d("TAG", "ImageUrl: " + url)
+            val url: String = filteredHomePatchItem!!.Data[absoluteAdapterPosition].image
+            Log.d("TAG", "ImageUrl: $url")
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView2)
 
-            textViewName.setText(homePatchItem.Data[absoluteAdapterPosition].Artist)
-            itemView.setOnClickListener {
-                val manager: FragmentManager =
-                    (mContext as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(
-                        R.id.container,
-                        ArtistDetailsFragment.newInstance(
-                            homePatchItem,
-                            homePatchItem.Data[absoluteAdapterPosition]
-                        )
-                    )
-                    .addToBackStack("Fragment")
-                    .commit()
-            }
+            textViewName.setText(filteredHomePatchItem!!.Data[absoluteAdapterPosition].Artist)
+
         }
     }
 }

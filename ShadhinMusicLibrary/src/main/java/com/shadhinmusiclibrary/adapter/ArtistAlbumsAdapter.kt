@@ -1,10 +1,6 @@
 package com.shadhinmusiclibra
 
-import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
-
-
 
 
 import android.view.LayoutInflater
@@ -16,14 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.ArtistAlbumListAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 
 
 class ArtistAlbumsAdapter(
     var homePatchItem: HomePatchItem?,
    val homeCallBack: HomeCallBack) : RecyclerView.Adapter<ArtistAlbumsAdapter.ViewHolder>() {
-
+  var artistAlbumModel:ArtistAlbumModel?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
         return ViewHolder(v)
@@ -31,7 +29,7 @@ class ArtistAlbumsAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(homePatchItem)
+        holder.bindItems(homePatchItem,artistAlbumModel)
 
 
     }
@@ -40,16 +38,20 @@ class ArtistAlbumsAdapter(
         return 1
     }
 
+    fun setData(artistAlbumModel: ArtistAlbumModel?) {
+         this.artistAlbumModel=artistAlbumModel
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?) {
+        fun bindItems(homePatchItem: HomePatchItem?,artistAlbumModel: ArtistAlbumModel?) {
 
            val tvTitle:TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text ="Albums"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-              recyclerView.adapter = ReleaseAdapter(homePatchItem!!, homeCallBack = homeCallBack)
+              recyclerView.adapter = ArtistAlbumListAdapter(homePatchItem!!,artistAlbumModel, homeCallBack = homeCallBack)
 
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView

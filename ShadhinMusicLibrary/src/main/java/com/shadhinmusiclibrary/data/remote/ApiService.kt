@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import retrofit2.Call
@@ -28,11 +29,16 @@ interface ApiService {
     @GET("v5/Artist/ArtistPlayList")
     suspend fun fetchArtistBannerData(
         @Query("id") id: Int?,
-
     ): ArtistBanner
+
     @GET("v5/Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
         @Query("id") id: Int?,
-
         ): ArtistContent
+
+    @GET("v5/Artist/ArtistAlbumsbyidtype")
+    suspend fun fetchArtistAlbum(
+        @Query("type") type:String,
+        @Query("id") id: Int?,
+        ): ArtistAlbumModel
 }

@@ -19,8 +19,11 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 class ArtistsYouMightLikeAdapter(
-    var homePatchItem: HomePatchItem?,
-    val homeCallBack: HomeCallBack) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+     var homePatchItem: HomePatchItem?,
+    val homeCallBack: HomeCallBack,
+    val artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+
+    var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
@@ -29,6 +32,7 @@ class ArtistsYouMightLikeAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         holder.bindItems(homePatchItem)
 
 
@@ -42,11 +46,11 @@ class ArtistsYouMightLikeAdapter(
         val  context = itemView.getContext()
         fun bindItems(homePatchItem: HomePatchItem?) {
 
-
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-              recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack)
+            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack,artistIDToSkip)
+            recyclerView.adapter = adapter
 
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView

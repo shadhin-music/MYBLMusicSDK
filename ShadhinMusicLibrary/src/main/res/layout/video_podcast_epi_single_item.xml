@@ -42,7 +42,8 @@
                     android:layout_height="wrap_content"
                     android:text="Ami Bhabi Tumi"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:maxLines="1"/>
 
                 <TextView
                     android:id="@+id/tv_singer_name"

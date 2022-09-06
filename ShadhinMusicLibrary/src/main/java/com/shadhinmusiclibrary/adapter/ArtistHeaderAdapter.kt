@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.PodcastHeaderViewHolder>() {
+class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.PodcastHeaderViewHolder>() {
 
     var bio: LastFmResult? = null
     var banner: ArtistBanner?= null
@@ -39,12 +39,17 @@ class ArtistHeaderAdapter( val homePatchDetail: HomePatchDetail?) : RecyclerView
         return 1
     }
 
+    fun setData( homePatchDetail: HomePatchDetail){
+        this.homePatchDetail = homePatchDetail
+        notifyDataSetChanged()
+    }
+
     fun artistBio(bio: LastFmResult?) {
         this.bio = bio
 
         val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
-        textView?.text = bio?.artist?.bio?.summary
-       // textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
+       // textView?.text = bio?.artist?.bio?.summary
+        textView?.setText(Html.fromHtml(bio?.artist?.bio?.summary))
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
 //            moreText.setOnClickListener { e ->

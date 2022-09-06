@@ -6,6 +6,8 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp">
 
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,8 +15,9 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="Songs"
-        android:textSize="20sp"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorText"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

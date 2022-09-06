@@ -44,7 +44,6 @@
         android:layout_marginBottom="10dp"
         android:gravity="left"
         android:maxLines="1"
-        android:text="Habib Wahid"
         android:textColor="@color/colorGrey"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

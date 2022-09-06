@@ -24,6 +24,6 @@ class ArtistContentViewModel (private val artistContentRepository: ArtistSongCon
         }
         Log.i("dfsfdsdfsdf", "fetchArtistBioData: ${response.message}")
     }
-
+//
 
 }

@@ -49,12 +49,17 @@ class PopularArtistsFragment : Fragment(), ChildCallback {
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, homePatchItem: HomePatchItem) {
+        val homePatchDetail = homePatchItem.Data[itemPosition]
         navController.navigate(
             R.id.action_PopularArtistFragment_to_ArtistDetailsFragment,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    homePatchItem as Serializable
+                    homePatchItem
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    homePatchDetail as Serializable
                 )
             })
     }
