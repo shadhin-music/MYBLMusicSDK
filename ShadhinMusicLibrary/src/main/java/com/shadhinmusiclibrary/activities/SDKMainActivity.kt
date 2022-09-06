@@ -1,8 +1,6 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -144,25 +142,10 @@ internal class SDKMainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupNavGraph(@NavigationRes graphResId: Int) {
-        val inflater = navHostFragment.navController.navInflater
-        val navGraph = inflater.inflate(graphResId)
-        navController.graph = navGraph
-    }
-
     private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {

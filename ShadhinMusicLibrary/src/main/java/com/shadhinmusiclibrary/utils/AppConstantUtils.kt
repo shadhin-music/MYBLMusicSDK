@@ -7,8 +7,8 @@ internal object AppConstantUtils {
 
     // public static final String API_URL = "http://api.shadhin.co/api/";
     var BASE_URL = "https://shadhinmusic.com/api/"
-    var BASE_URL_API_shadhinmusic = "https://api.shadhinmusic.com/api/"
-    var BASE_URL_V5 = "https://api.shadhinmusic.com/api/v5/"
+    var BASE_URL_API_shadhinmusic = "https://api.shadhinmusic.com/api/v5/"
+    const val LAST_FM_API_URL = "http://ws.audioscrobbler.com/2.0/"
 
     const val SingleDataItem = "single_data_item"
     const val PatchItem = "patch_item"
@@ -16,7 +16,6 @@ internal object AppConstantUtils {
     const val commonData = "data"
     const val SelectedPatchIndex = "selected_patch_index"
     const val LAST_FM_MIN_BIO_CHAR = 100
-    const val LAST_FM_API_URL = "http://ws.audioscrobbler.com/2.0/"
     const val LAST_FM_API_KEY = "55dd9a0fd0790ee3219022141a8cdf39"
     const val LAST_FM_CONTENT_TYPE_JSON = "json"
 

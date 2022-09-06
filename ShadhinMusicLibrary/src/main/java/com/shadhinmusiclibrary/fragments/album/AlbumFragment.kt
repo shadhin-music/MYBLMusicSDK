@@ -5,19 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.fragments.home.AlbumViewModelFactory
 
 class AlbumFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
     FragmentEntryPoint {
 
+    private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
     private var listData: MutableList<SongDetail>? = null
 
@@ -26,7 +29,7 @@ class AlbumFragment :
     }
 
     override fun getViewModelFactory(): AlbumViewModelFactory {
-        return injector.albumViewModelFactory
+        return injector.factoryAlbumVM
     }
 
     override fun onCreateView(
@@ -34,6 +37,8 @@ class AlbumFragment :
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_album, container, false)
+        navController = findNavController()
+
         return viewRef
     }
 
@@ -43,18 +48,20 @@ class AlbumFragment :
         adapter = AlbumAdapter()
 
         ///read data from online
-        fetchOnlineData(homePatchDetail!!.ContentID.toInt())
-        adapter.setRootData(homePatchDetail!!)
+        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
+        adapter.setRootData(argHomePatchDetail!!)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
-        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
-//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-        button.setOnClickListener {
-//            manager.popBackStack("Fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            } else {
+                navController.popBackStack()
+            }
         }
     }
 

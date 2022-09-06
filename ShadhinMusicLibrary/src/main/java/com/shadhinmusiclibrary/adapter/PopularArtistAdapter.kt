@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.ChildCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-
-
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 class PopularArtistAdapter(
     val homePatchItem1: HomePatchItem,
-    private val childCallback: ChildCallback
+    private val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +28,7 @@ class PopularArtistAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(homePatchItem1.Data.size)
         holder.itemView.setOnClickListener {
-            childCallback.onClickItemAndAllItem(position, homePatchItem1)
+            homeCallBack.onClickItemAndAllItem(position, homePatchItem1)
         }
     }
 
@@ -58,8 +57,8 @@ class PopularArtistAdapter(
             }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
-            //getActorName(entityId!!)
-//            //textViewName.setText(banner.name)
+//            getActorName(entityId!!)
+//            textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
         }

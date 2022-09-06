@@ -15,7 +15,6 @@
             android:id="@+id/action_playlist_list_to_playlist_details"
             app:destination="@id/playlist_details" />
     </fragment>
-
     <fragment
         android:id="@+id/playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumFragment"
