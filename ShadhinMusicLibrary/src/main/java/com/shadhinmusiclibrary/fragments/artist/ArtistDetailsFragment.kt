@@ -87,9 +87,9 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     }
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.artistViewModelFactory)[ArtistViewModel::class.java]
-         viewModel2 = ViewModelProvider(this,injector.artistBannerViewModelFactory)[ArtistBannerViewModel::class.java]
-        viewModel3 = ViewModelProvider(this,injector.artistSongViewModelFactory)[ArtistContentViewModel::class.java]
+            ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
+         viewModel2 = ViewModelProvider(this,injector.factoryArtistBannerVM)[ArtistBannerViewModel::class.java]
+        viewModel3 = ViewModelProvider(this,injector.factoryArtistSongVM)[ArtistContentViewModel::class.java]
     }
 
     private fun observeData() {

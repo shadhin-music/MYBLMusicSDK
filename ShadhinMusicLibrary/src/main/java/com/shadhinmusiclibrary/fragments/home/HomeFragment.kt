@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -20,24 +21,17 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
-class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
+internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
     FragmentEntryPoint, HomeCallBack {
 
     private lateinit var rvAllHome: RecyclerView
-//    private lateinit var viewModel: HomeViewModel
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//
-//        }
-//    }
 
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
 
     override fun getViewModelFactory(): HomeViewModelFactory {
-        return injector.homeViewModelFactory
+        return injector.factoryHomeVM
     }
 
     override fun onCreateView(
@@ -57,7 +51,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
 
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.homeViewModelFactory)[HomeViewModel::class.java]
+            ViewModelProvider(this, injector.factoryHomeVM)[HomeViewModel::class.java]
     }
 
     private fun observeData() {
@@ -74,11 +68,12 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
         homeData.let { it?.data?.let { it1 -> dataAdapter.setData(it1) } }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, patch: HomePatchItem) {
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
-            patch as Serializable
+            selectedHomePatchItem as Serializable
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
@@ -88,6 +83,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -98,113 +94,4 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
                 putExtra(AppConstantUtils.PatchItem, data)
             })
     }
-
-    /*private fun getHomeData() {
-
-        val api: ApiService = RetroClient.getApiService()!!
-        val call = api.getHomeData(1,false)
-        call.enqueue(object : Callback<HomeData> {
-            override fun onResponse(
-                call: Call<HomeData>,
-                response: Response<HomeData>
-            ) {
-                if (response.isSuccessful && response.code() == 200) {
-
-
-                }
-            }
-
-            override fun onFailure(call: Call<HomeData>, t: Throwable) {
-
-            }
-        })
-    }*/
-    /* private fun getMockData(): List<DataModel> = listOf(
-         DataModel.Search(
-             name = "Search"
-
-         ),
-         DataModel.Artist(
-             name = "Artist"
-
-         ),
-         DataModel.TopTrending(
-             name = "TopTrending"
-         ),
-        DataModel.BrowseAll(
-             name = "BrowseAll"
-         ),
-         DataModel.Ad(
-             name = "Ad"
-         ),
-         DataModel.Download(
-             name = "Download"
-         ),
-         DataModel.PopularAmarTunes(
-             name = "PopularAmarTunes"
-         ),
-         DataModel.PopularBands(
-             name = "PopularBands"
-         ),
-         DataModel.MadeForYou(
-             name = "Download"
-         ),
-         DataModel.LatestRelease(
-             name = "Download"
-         ),
-         DataModel.PopularPodcast(
-             name = "Download"
-         ),
-         DataModel.BlOffers(
-             name = "Download"
-         ),
-         DataModel.TrendingMusicVideo(
-             name = "Download"
-         )
- //        DataModel.Header(
- //            bgColor = resources.getColor(R.color.friend_bg),
- //            title = "My friends"
- //        ),
- //        DataModel.Friend(
- //            name = "My Friend one",
- //            gender = "Male"
- //        ),
- //        DataModel.Friend(
- //            name = "My Friend two",
- //            gender = "Female"
- //        ),
- //        DataModel.Friend(
- //            name = "My Friend three",
- //            gender = "Male"
- //        ),
- //        DataModel.Header(
- //            bgColor = resources.getColor(R.color.colleague_bg),
- //            title = "My colleagues"
- //        ),
- //        DataModel.Colleague(
- //            name = "Colleague 1",
- //            organization = "Org 1",
- //            designation = "Manager"
- //        ),
- //        DataModel.Colleague(
- //            name = "Colleague 2",
- //            organization = "Org 2",
- //            designation = "Software Eng"
- //        ),
- //        DataModel.Colleague(
- //            name = "Colleague 3",
- //            organization = "Org 3",
- //            designation = "Software Eng"
- //        ),
- //        DataModel.Colleague(
- //            name = "Colleague 4",
- //            organization = "Org 4",
- //            designation = "Sr Software Eng"
- //        ),
- //        DataModel.Colleague(
- //            name = "Colleague 5",
- //            organization = "Org 5",
- //            designation = "Sr Software Eng"
- //        ),
-     )*/
 }

@@ -15,7 +15,7 @@ interface ApiService {
         @Query("isPaid") isPaid: Boolean?
     ): HomeData
 
-    @GET("v5/Album/GetAlbumContent")
+    @GET("Album/GetAlbumContent")
     suspend fun fetchAlbumContent(
         @Query("id") contentId: Int
     ): APIResponse<MutableList<SongDetail>>
@@ -25,12 +25,13 @@ interface ApiService {
         @Query("artist") artist: String?,
     ): LastFmResult
 
-    @GET("v5/Artist/ArtistPlayList")
+    @GET("Artist/ArtistPlayList")
     suspend fun fetchArtistBannerData(
         @Query("id") id: Int?,
 
-    ): ArtistBanner
-    @GET("v5/Artist/GetArtistContent")
+        ): ArtistBanner
+
+    @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
         @Query("id") id: Int?,
 

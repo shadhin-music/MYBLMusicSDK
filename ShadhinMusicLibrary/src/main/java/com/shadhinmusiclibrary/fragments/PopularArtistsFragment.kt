@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
-import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -20,7 +21,7 @@ import java.io.Serializable
 
 
 class PopularArtistsFragment : Fragment(), HomeCallBack {
-    var homePatchItem: HomePatchItem? = null
+    //    var argHomePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -35,27 +36,29 @@ class PopularArtistsFragment : Fragment(), HomeCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val homePatchItem =
+        val argHomePatchItem =
             arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = homePatchItem.let { PopularArtistAdapter(it, this) }
-        val back: ImageView = requireView().findViewById(R.id.imageBack)
-//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-        back.setOnClickListener {
-//            manager.popBackStack("Popular Artist", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        recyclerView.adapter = argHomePatchItem.let { PopularArtistAdapter(it, this) }
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            }
         }
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
         navController.navigate(
             R.id.action_PopularArtistFragment_to_ArtistDetailsFragment,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    homePatchItem as Serializable
+                    selectedHomePatchItem as Serializable
                 )
             })
     }
