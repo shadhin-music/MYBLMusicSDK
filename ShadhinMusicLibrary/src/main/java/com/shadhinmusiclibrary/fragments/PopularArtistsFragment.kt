@@ -53,12 +53,17 @@ class PopularArtistsFragment : Fragment(), HomeCallBack {
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         ShadhinMusicSdkCore.pressCountIncrement()
+        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
             R.id.action_PopularArtistFragment_to_ArtistDetailsFragment,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
                     selectedHomePatchItem as Serializable
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    homePatchDetail as Serializable
                 )
             })
     }

@@ -5,14 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibra.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -22,6 +26,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
 class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
+    private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var homePatchDetail: HomePatchDetail? = null
     var artistContent:ArtistContent?= null
@@ -47,12 +52,22 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_artist_details, container, false)
+        val viewRef= inflater.inflate(R.layout.fragment_artist_details, container, false)
+        navController = findNavController()
+        return  viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initialize()
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            } else {
+                navController.popBackStack()
+            }
+        }
 //        val dataAdapter = ArtistDetailsAdapter(homePatchItem)
 //        dataAdapter.setData(homePatchDetail)
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -97,10 +112,11 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     }
 
     private fun setupViewModel() {
+
         viewModel =
-            ViewModelProvider(this, injector.artistViewModelFactory)[ArtistViewModel::class.java]
-        viewModelArtistBanner = ViewModelProvider(this,injector.artistBannerViewModelFactory)[ArtistBannerViewModel::class.java]
-        viewModelArtistSong = ViewModelProvider(this,injector.artistSongViewModelFactory)[ArtistContentViewModel::class.java]
+            ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
+        viewModelArtistBanner = ViewModelProvider(this,injector.factoryArtistBannerVM)[ArtistBannerViewModel::class.java]
+        viewModelArtistSong = ViewModelProvider(this,injector.factoryArtistSongVM)[ArtistContentViewModel::class.java]
         viewModelArtistAlbum = ViewModelProvider(this,injector.artistAlbumViewModelFactory)[ArtistAlbumsViewModel::class.java]
     }
 
@@ -131,133 +147,13 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         homePatchDetail.let {
             viewModelArtistAlbum.fetchArtistAlbum("r", it?.ArtistId?.toInt()!!)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) {
-                //artistHeaderAdapter.artistBanner(it,context)
-               // artistSongAdapter.artistContent(it)
+
                  artistAlbumsAdapter.setData(it)
                 Log.e("TAG","DATAALBUM: "+ it)
             }
         }
         Log.e("TAG","ARTISTID: "+ homePatchDetail?.ArtistId)
     }
-//    private fun prepareBiographyView() {
-//        val biographyMain:ExpandableTextView = requireView().findViewById(R.id.tvDescription)
-//        biographyMain.setInterpolator(OvershootInterpolator())
-//        biographyMain.setExpandInterpolator(OvershootInterpolator())
-//        biographyMain.setCollapseInterpolator(OvershootInterpolator())
-//    }
-
-//    private fun setBiographyData(lastFmResult: LastFmResult?) {
-//        val biographyMain:ExpandableTextView = requireView().findViewById(R.id.tvDescription)
-//        if (lastFmResult != null && lastFmResult.getArtist() != null && lastFmResult.getArtist()
-//                .getBio() != null && lastFmResult.getArtist().getBio()
-//                .getSummary() != null && lastFmResult.getArtist().getBio().getSummary()
-//                .length > AppConstantUtils.LAST_FM_MIN_BIO_CHAR
-//        ) {
-//            val bio: String = lastFmResult.getArtist().getBio().getSummary()
-//            biographyMain.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio)))
-//            biographyMain.setClickable(true)
-//            biographyMain.setMovementMethod(LinkMovementMethod.getInstance())
-//            //showArtistDes()
-//        }
-//    }
-
-//    private fun showArtistDes() {
-//        val descriptionLayout:RelativeLayout = requireView().findViewById(R.id.descriptionLayout)
-//        val anim = AnimationUtils.loadAnimation(activity, R.anim.fade_in_frag)
-//        if (descriptionLayout.getVisibility() !== View.VISIBLE) {
-//            descriptionLayout.setVisibility(View.VISIBLE)
-//            biographyHeader.setVisibility(View.VISIBLE)
-//            descriptionLayout.startAnimation(anim)
-//            biographyHeader.startAnimation(anim)
-//        }
-//    }
-
-    //     private fun getMockData(): List<GenreDataModel> = listOf(
-//
-//         GenreDataModel.Artist(
-//             name = "Artist"
-//
-//         ),
-//
-//         GenreDataModel.Artist2(
-//             name = "Ad"
-//         ),
-//         GenreDataModel.Artist3(
-//             name = "Ad"
-//         ),
-//         GenreDataModel.Artist4(
-//             name = "Ad"
-//         ),
-////        DataModel.Download(
-////            name = "Download"
-////        ),
-////        DataModel.PopularAmarTunes(
-////            name = "PopularAmarTunes"
-////        ),
-////        DataModel.PopularBands(
-////            name = "PopularBands"
-////        ),
-////        DataModel.MadeForYou(
-////            name = "Download"
-////        ),
-////        DataModel.LatestRelease(
-////            name = "Download"
-////        ),
-////        DataModel.PopularPodcast(
-////            name = "Download"
-////        ),
-////        DataModel.BlOffers(
-////            name = "Download"
-////        ),
-////        DataModel.TrendingMusicVideo(
-////            name = "Download"
-////        )
-////        DataModel.Header(
-////            bgColor = resources.getColor(R.color.friend_bg),
-////            title = "My friends"
-////        ),
-////        DataModel.Friend(
-////            name = "My Friend one",
-////            gender = "Male"
-////        ),
-////        DataModel.Friend(
-////            name = "My Friend two",
-////            gender = "Female"
-////        ),
-////        DataModel.Friend(
-////            name = "My Friend three",
-////            gender = "Male"
-////        ),
-////        DataModel.Header(
-////            bgColor = resources.getColor(R.color.colleague_bg),
-////            title = "My colleagues"
-////        ),
-////        DataModel.Colleague(
-////            name = "Colleague 1",
-////            organization = "Org 1",
-////            designation = "Manager"
-////        ),
-////        DataModel.Colleague(
-////            name = "Colleague 2",
-////            organization = "Org 2",
-////            designation = "Software Eng"
-////        ),
-////        DataModel.Colleague(
-////            name = "Colleague 3",
-////            organization = "Org 3",
-////            designation = "Software Eng"
-////        ),
-////        DataModel.Colleague(
-////            name = "Colleague 4",
-////            organization = "Org 4",
-////            designation = "Sr Software Eng"
-////        ),
-////        DataModel.Colleague(
-////            name = "Colleague 5",
-////            organization = "Org 5",
-////            designation = "Sr Software Eng"
-////        ),
-//     )
     companion object {
 
         @JvmStatic

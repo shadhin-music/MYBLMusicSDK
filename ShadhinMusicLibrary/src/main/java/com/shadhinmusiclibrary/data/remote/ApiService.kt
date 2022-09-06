@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import retrofit2.Call
@@ -15,7 +16,7 @@ interface ApiService {
         @Query("isPaid") isPaid: Boolean?
     ): HomeData
 
-    @GET("v5/Album/GetAlbumContent")
+    @GET("Album/GetAlbumContent")
     suspend fun fetchAlbumContent(
         @Query("id") contentId: Int
     ): APIResponse<MutableList<SongDetail>>
@@ -37,7 +38,7 @@ interface ApiService {
 
         ): ArtistContent
 
-    @GET("v5/Artist/ArtistAlbumsbyidtype")
+    @GET("Artist/ArtistAlbumsbyidtype")
     suspend fun fetchArtistAlbum(
         @Query("type") type:String,
         @Query("id") id: Int?,

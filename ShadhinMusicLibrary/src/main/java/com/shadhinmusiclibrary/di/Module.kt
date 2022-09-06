@@ -2,8 +2,8 @@ package com.shadhinmusiclibrary.di
 
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
-import com.shadhinmusiclibrary.fragments.home.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.rest.RetroClient
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -55,16 +55,8 @@ object Module {
     private fun getFMService(): ApiService {
         return getFMClient().create(ApiService::class.java)
     }
-    private val artistAlbumApiService:ApiService = artistBannerRetrofit.create(ApiService::class.java)
-
-    //    private val apiServiceHome: ApiService = RetroClient.getHomeApiService()
-//    private val apiServiceArtistBio: ApiService = artistBioRetrofit.create(ApiService::class.java)
-//    private val artistBannerApiService: ApiService =
-//        artistBannerRetrofit.create(ApiService::class.java)
-//    private val artistSongApiService: ApiService =
-//        artistBannerRetrofit.create(ApiService::class.java)
-//    private val apiServiceAlbum: ApiService = getApiShadhinMusicService()
-
+    private val artistAlbumApiService:ApiService = getApiShadhinMusicService()
+    
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
@@ -99,14 +91,6 @@ object Module {
         get() = ArtistAlbumViewModelFactory(
         artistAlbumContentRepository)
 }
-//    private val artistBannerApiService: ApiService = RetroClient.getAPIArtistBannerService()
-//    private val apiServiceAlbum: ApiService = RetroClient.getApiShadhinMusicService()
-//    private val artistBannerContentRepository: ArtistContentRepository = ArtistContentRepository(
-//        artistBannerApiService
-//    )
-//    private val albumContentRepository: AlbumContentRepository =
-//        AlbumContentRepository(apiServiceAlbum)
-//    val albumViewModelFactory: AlbumViewModelFactory
-//        get() = AlbumViewModelFactory(albumContentRepository)
 
-}
+
+
