@@ -56,7 +56,7 @@ object Module {
         return getFMClient().create(ApiService::class.java)
     }
     private val artistAlbumApiService:ApiService = getApiShadhinMusicService()
-    
+
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =

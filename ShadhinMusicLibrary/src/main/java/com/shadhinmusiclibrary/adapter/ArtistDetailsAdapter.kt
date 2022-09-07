@@ -21,7 +21,7 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         val layout = when (viewType) {
             VIEW_ARTIST_HEADER -> R.layout.artist_details_header
             VIEW_DOWNLOAD -> R.layout.latest_music_view_item
-            VIEW_ALBUM -> R.layout.item_top_trending
+            VIEW_ALBUM -> R.layout.item_release_patch
             VIEW_YOU_MIGHT_LIKE -> R.layout.item_you_might_like
             else -> throw IllegalArgumentException("Invalid view type")
         }

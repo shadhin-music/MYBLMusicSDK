@@ -13,30 +13,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/cardHeader">
-            <androidx.cardview.widget.CardView
-                android:id="@+id/thumb_card"
+            <RelativeLayout
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
+                android:id="@+id/cardRelative"
+                android:background="@drawable/shadow_backgroud">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/thumb_card"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-
+                app:cardElevation="0dp"
                 >
 
                 <ImageView
                     android:id="@+id/thumb"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    android:src="@drawable/ic_artist" />
+                    android:src="@drawable/ic_artist"
+                    />
 
             </androidx.cardview.widget.CardView>
-
+            </RelativeLayout>
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/thumb_card"
+                android:layout_below="@id/cardRelative"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:paddingStart="8dp"
@@ -172,6 +177,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
         android:id="@+id/cardListen"
+        android:visibility="gone"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="16dp">
         <RelativeLayout

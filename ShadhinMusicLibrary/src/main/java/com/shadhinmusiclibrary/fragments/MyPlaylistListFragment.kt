@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -46,7 +47,8 @@ class MyPlaylistListFragment : Fragment(), HomeCallBack {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         recyclerView.adapter = GenresAdapter(homePatchItem!!, this)
-
+         val textTitle:TextView= requireView().findViewById(R.id.tvTitle)
+        textTitle.text= homePatchItem!!.Name
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()

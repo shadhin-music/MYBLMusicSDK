@@ -1,14 +1,18 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.content.Context
+import android.nfc.cardemulation.CardEmulation
 import android.provider.Settings.Global.getString
 import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
@@ -18,18 +22,18 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.PodcastHeaderViewHolder>() {
+class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.HeaderViewHolder>() {
 
     var bio: LastFmResult? = null
     var banner: ArtistBanner?= null
     private var parentView:View?=null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context).inflate(R.layout.artist_details_header, parent, false)
-        return PodcastHeaderViewHolder(parentView!!)
+        return HeaderViewHolder(parentView!!)
     }
 
 
-    override fun onBindViewHolder(holder:PodcastHeaderViewHolder, position: Int) {
+    override fun onBindViewHolder(holder:HeaderViewHolder, position: Int) {
          holder.bindItems(homePatchDetail)
 
 
@@ -66,16 +70,26 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
 
     fun artistBanner(banner: ArtistBanner?, context: Context?) {
         this.banner= banner
-        val imageView:ImageView = parentView!!.findViewById(R.id.imageArtist)
-        if (context != null) {
-            Glide.with(context)
-                .load(banner?.image)
-                .into(imageView)
-        }
 
+        if(banner?.image?.isEmpty() == false) {
+            val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
+            cardListen.visibility = VISIBLE
+            val imageView:ImageView = parentView!!.findViewById(R.id.imageArtist)
+            if (context != null) {
+                Glide.with(context)
+                    .load(banner?.image)
+                    .into(imageView)
+            }
+        }
+//       if(banner==null) {
+//
+//               val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
+//               cardListen.visibility = GONE
+//
+//       }
     }
 
-    inner class PodcastHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
         fun bindItems(homePatchDetail: HomePatchDetail?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
@@ -88,12 +102,15 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
             val tvName:TextView = itemView?.findViewById(R.id.tvName)!!
             tvName.text =homePatchDetail.Artist+"'s"
             val imageArtist:ImageView = itemView!!.findViewById(R.id.imageArtist)
-            if (context != null) {
-                Glide.with(context)
-                    .load(banner?.image)
-                    .into(imageArtist)
+            if(banner?.image?.isEmpty() == false) {
+                val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
+                cardListen.visibility = VISIBLE
+                if (context != null) {
+                    Glide.with(context)
+                        .load(banner?.image)
+                        .into(imageArtist)
+                }
             }
-
             //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
             val moreText:TextView?= itemView?.findViewById(R.id.tvReadMore)
 

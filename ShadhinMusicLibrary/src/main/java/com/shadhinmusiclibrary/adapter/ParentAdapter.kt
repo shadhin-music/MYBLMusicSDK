@@ -29,8 +29,8 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         val layout = when (viewType) {
 //            VIEW_SEARCH-> R.layout.item_search
             VIEW_ARTIST -> R.layout.item_artist
-            VIEW_PLAYLIST -> R.layout.item_browse_all_genre
-            VIEW_RELEASE -> R.layout.item_top_trending
+            VIEW_PLAYLIST -> R.layout.item_playlist
+            VIEW_RELEASE -> R.layout.item_release_patch
 //            VIEW_AD -> R.layout.item_ad
 //            VIEW_DOWNLOAD -> R.layout.item_my_fav
 //            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
@@ -136,28 +136,17 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = ReleaseAdapter(homePatchItem, homeCallBack)
-            //Do your view assignment here from the data model
-//            itemView.findViewById<AppCompatTextView>(R.id.tvName)?.text = item.name
-//            itemView.findViewById<AppCompatTextView>(R.id.tvOrganization)?.text = item.organization
-//            itemView.findViewById<AppCompatTextView>(R.id.tvDesignation)?.text = item.designation
+            recyclerView.adapter = HomeReleaseAdapter(homePatchItem, homeCallBack)
+
         }
 
-        //        private fun bindBrowseAll(item: DataModel.BrowseAll) {
-//            //Do your view assignment here from the data model
-////            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
-////            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
 
         private fun bindPlaylist(homePatchItem: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
            seeAll.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .add(R.id.container, AllGenresDetailsFragment.newInstance(data))
-//                    .addToBackStack("AllGenresDetailsFragment")
-//                    .commit()
+
                homeCallBack.onClickSeeAll(homePatchItem)
            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
