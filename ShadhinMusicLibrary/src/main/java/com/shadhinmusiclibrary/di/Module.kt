@@ -5,13 +5,11 @@ import com.shadhinmusiclibrary.data.repository.*
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
-import com.shadhinmusiclibrary.rest.RetroClient
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object Module {
     private fun getRetrofitInstance(): Retrofit {
@@ -25,15 +23,15 @@ object Module {
         return getRetrofitInstance().create(ApiService::class.java)
     }
 
-    private fun getRetrofitAPIShadhinMusicInstance(): Retrofit {
+    private fun getRetrofitAPIShadhinMusicInstanceV5(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun getApiShadhinMusicService(): ApiService {
-        return getRetrofitAPIShadhinMusicInstance().create(ApiService::class.java)
+    private fun getApiShadhinMusicServiceV5(): ApiService {
+        return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
 
     private fun getClient(): OkHttpClient {
@@ -55,20 +53,20 @@ object Module {
     private fun getFMService(): ApiService {
         return getFMClient().create(ApiService::class.java)
     }
-    private val artistAlbumApiService:ApiService = getApiShadhinMusicService()
+    private val artistAlbumApiService:ApiService = getApiShadhinMusicServiceV5()
     
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
         HomeContentRepository(getHomeApiService())
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
-        ArtistBannerContentRepository(getApiShadhinMusicService())
+        ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistSongContent: ArtistSongContentRepository =
         ArtistSongContentRepository(
-            getApiShadhinMusicService()
+            getApiShadhinMusicServiceV5()
         )
     private val repositoryAlbumContent: AlbumContentRepository =
-        AlbumContentRepository(getApiShadhinMusicService())
+        AlbumContentRepository(getApiShadhinMusicServiceV5())
 
     val factoryHomeVM: HomeViewModelFactory
         get() = HomeViewModelFactory(repositoryHomeContent)

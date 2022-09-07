@@ -13,37 +13,43 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.ReleaseAdapter
+import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
+class PlaylistListFragment : Fragment(), HomeCallBack {
+    var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_release_list, container, false)
+        val viewRef = inflater.inflate(R.layout.fragment_playlist_list, container, false)
         navController = findNavController()
 
-        return view
+        return viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-        recyclerView.adapter = ReleaseAdapter(argHomePatchItem!!, this)
-        val title: TextView = view.findViewById(R.id.tvTitle)
-        title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        val tvTitle: TextView = view.findViewById(R.id.tvTitle)
+        tvTitle.text = homePatchItem!!.Name
+        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        recyclerView.adapter = GenresAdapter(homePatchItem!!, this)
+
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
@@ -52,9 +58,10 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
-            R.id.action_release_list_fragment_to_album_details_fragment,
+            R.id.action_playlist_list_to_playlist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

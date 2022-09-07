@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
@@ -43,15 +42,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setupViewModel()
         observeData()
-        // dataAdapter.setData(getHomeData())
-        // getHomeData()
-    }
-
-    private fun setupViewModel() {
-        viewModel =
-            ViewModelProvider(this, injector.factoryHomeVM)[HomeViewModel::class.java]
     }
 
     private fun observeData() {

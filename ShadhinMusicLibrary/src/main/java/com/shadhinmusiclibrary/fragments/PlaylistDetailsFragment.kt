@@ -1,6 +1,7 @@
-package com.shadhinmusiclibrary.fragments.album
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
-class AlbumFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
+class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
     FragmentEntryPoint {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
-    private var listData: MutableList<SongDetail>? = null
 
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
@@ -34,9 +34,9 @@ class AlbumFragment :
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album, container, false)
+        val viewRef = inflater.inflate(R.layout.fragment_playlist_details, container, false)
         navController = findNavController()
 
         return viewRef
@@ -44,7 +44,6 @@ class AlbumFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listData = mutableListOf()
         adapter = AlbumAdapter()
 
         ///read data from online
@@ -66,7 +65,7 @@ class AlbumFragment :
     }
 
     private fun fetchOnlineData(contentId: Int) {
-        viewModel!!.fetchAlbumContent(contentId)
+        viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) {
             adapter.setData(it)
         }

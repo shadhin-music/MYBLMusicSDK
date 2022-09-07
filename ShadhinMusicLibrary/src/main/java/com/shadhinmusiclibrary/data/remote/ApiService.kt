@@ -40,7 +40,12 @@ interface ApiService {
 
     @GET("Artist/ArtistAlbumsbyidtype")
     suspend fun fetchArtistAlbum(
-        @Query("type") type:String,
+        @Query("type") type: String,
         @Query("id") id: Int?,
-        ): ArtistAlbumModel
+    ): ArtistAlbumModel
+
+    @GET("Playlist/GetPlaylistContentById")
+    suspend fun fetchGetPlaylistContentById(
+        @Query("id") id: Int
+    ): APIResponse<MutableList<SongDetail>>
 }

@@ -24,7 +24,7 @@ class TopTrendingPlaylistFragment : CommonBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album, container, false)
+        val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
         navController = findNavController()
 
         return viewRef
