@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/playlist_list"
-        android:name="com.shadhinmusiclibrary.fragments.MyPlaylistListFragment"
+        android:name="com.shadhinmusiclibrary.fragments.PlaylistListFragment"
         android:label="fragment_playlist_list"
-        tools:layout="@layout/fragment_my_playlist_list">
+        tools:layout="@layout/fragment_playlist_list">
 
         <action
             android:id="@+id/action_playlist_list_to_playlist_details"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlist_details"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumFragment"
+        android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
         android:label="Playlist Details"
-        tools:layout="@layout/fragment_album" />
+        tools:layout="@layout/fragment_playlist_details" />
 </navigation>

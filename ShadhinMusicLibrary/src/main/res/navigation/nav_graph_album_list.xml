@@ -9,15 +9,15 @@
         android:id="@+id/release_list_fragment"
         android:name="com.shadhinmusiclibrary.fragments.ReleaseListFragment"
         android:label="fragment_relese_list"
-        tools:layout="@layout/fragment_album">
+        tools:layout="@layout/fragment_release_list">
 
         <action
-            android:id="@+id/action_ReleaseListFragment_to_AlbumFragment"
-            app:destination="@id/album_fragment" />
+            android:id="@+id/action_release_list_fragment_to_album_details_fragment"
+            app:destination="@id/album_details_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/album_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumFragment"
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Album Details"
-        tools:layout="@layout/fragment_album" />
+        tools:layout="@layout/fragment_album_details" />
 </navigation>

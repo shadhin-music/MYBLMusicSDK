@@ -12,7 +12,6 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 open class CommonBaseFragment : Fragment() {
     var argHomePatchItem: HomePatchItem? = null
     var argHomePatchDetail: HomePatchDetail? = null
-    var imageBackBtn: AppCompatImageView? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

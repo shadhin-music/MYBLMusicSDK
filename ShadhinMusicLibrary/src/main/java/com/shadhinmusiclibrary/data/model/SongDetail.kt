@@ -13,4 +13,6 @@ data class SongDetail(
     val releaseDate: String,
     val fav: String,
     val ArtistId: String,
+    val albumId: String,
+    val userPlayListId: String
 )

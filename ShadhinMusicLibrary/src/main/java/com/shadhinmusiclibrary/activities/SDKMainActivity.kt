@@ -68,7 +68,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
@@ -82,8 +82,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
-                    //Temporary set the view
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
@@ -94,9 +93,6 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 homePatchDetail as Serializable
                             )
                         })
-                }
-                else -> {
-
                 }
             }
         } else {
@@ -134,6 +130,13 @@ internal class SDKMainActivity : AppCompatActivity() {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
+                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
                 }
                 else -> {
 

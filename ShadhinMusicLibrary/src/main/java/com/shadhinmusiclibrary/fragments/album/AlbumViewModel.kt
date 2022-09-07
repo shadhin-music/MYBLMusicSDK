@@ -19,4 +19,11 @@ class AlbumViewModel(private val albumContentRepository: AlbumContentRepository)
             _albumContent.postValue(response.data!!.data)
         }
     }
+
+    fun fetchPlaylistContent(contentId: Int) = viewModelScope.launch {
+        val response = albumContentRepository.fetchPlaylistContent(contentId)
+        if (response.status == Status.SUCCESS) {
+            _albumContent.postValue(response.data!!.data)
+        }
+    }
 }
