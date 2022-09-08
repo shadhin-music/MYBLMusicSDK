@@ -1,34 +1,38 @@
-package com.shadhinmusiclibrary.fragments.album
+package com.shadhinmusiclibrary.fragments.artist
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.adapter.ArtistSpecificAlbumAdapter
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.CreatePlaylistFragment
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 
-class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint {
 
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     private lateinit var navController: NavController
-    private lateinit var adapter: AlbumAdapter
-
-    override fun getViewModel(): Class<AlbumViewModel> {
-        return AlbumViewModel::class.java
-    }
-
-    override fun getViewModelFactory(): AlbumViewModelFactory {
-        return injector.factoryAlbumVM
+    private lateinit var adapter:ArtistSpecificAlbumAdapter
+    private var param1:ArtistAlbumModel? = null
+    private var param2: ArtistAlbumModelData? = null
+    private lateinit var viewModel: AlbumViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.get(ARG_PARAM1) as ArtistAlbumModel?
+            param2 = it.get(ARG_PARAM2) as ArtistAlbumModelData?
+        }
     }
 
     override fun onCreateView(
@@ -43,11 +47,11 @@ class AlbumDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = AlbumAdapter()
-
+        adapter = ArtistSpecificAlbumAdapter()
+           setupViewModel()
         ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
-        adapter.setRootData(argHomePatchDetail!!)
+        fetchOnlineData(param2!!.ContentID.toInt())
+        adapter.setRootData(param2)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -62,6 +66,12 @@ class AlbumDetailsFragment :
             }
         }
     }
+    private fun setupViewModel() {
+
+
+        viewModel= ViewModelProvider(this,
+            injector.factoryAlbumVM)[AlbumViewModel::class.java]
+    }
 
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchAlbumContent(contentId)
@@ -72,11 +82,12 @@ class AlbumDetailsFragment :
     companion object {
 
         @JvmStatic
-        fun newInstance() =
-           AlbumDetailsFragment.apply {
-              //  arguments = Bundle().apply {
-
-                //}
+        fun newInstance(param1: ArtistAlbumModel?, param2: ArtistAlbumModelData) =
+            ArtistAlbumsDetails2Fragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(ARG_PARAM1, param1)
+                    putSerializable(ARG_PARAM2,param2)
+                }
             }
     }
 }

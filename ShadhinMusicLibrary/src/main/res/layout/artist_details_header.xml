@@ -5,43 +5,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="8dp"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/cardHeader"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/cardHeader">
-            <RelativeLayout
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:id="@+id/cardRelative"
-                android:background="@drawable/shadow_backgroud">
+          >
+
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/thumb_card"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
+                app:cardElevation="36dp"
+                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true"
                 >
-
                 <ImageView
                     android:id="@+id/thumb"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:src="@drawable/ic_artist"
+
                     />
 
             </androidx.cardview.widget.CardView>
-            </RelativeLayout>
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cardRelative"
+                android:layout_below="@id/thumb_card"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:paddingStart="8dp"
@@ -118,7 +125,9 @@
                     app:srcCompat="@drawable/share" />
 
             </LinearLayout>
+
         </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

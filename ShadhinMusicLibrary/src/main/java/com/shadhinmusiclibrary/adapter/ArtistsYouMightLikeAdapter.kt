@@ -21,7 +21,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 class ArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
     val homeCallBack: HomeCallBack,
-    val artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+    var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
 
     var adapter: ArtistAdapter? = null
 

@@ -12,12 +12,13 @@
         tools:layout="@layout/fragment_popular_artists">
 
         <action
-            android:id="@+id/action_PopularArtistFragment_to_ArtistDetailsFragment"
+            android:id="@+id/action_popular_artist_fragment_to_artist_details_fragment"
             app:destination="@id/artist_details_fragment" />
     </fragment>
     <fragment
         android:id="@+id/artist_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="Artist Details"
+        android:label="fragment_artist_details"
         tools:layout="@layout/fragment_artist_details" />
+
 </navigation>
