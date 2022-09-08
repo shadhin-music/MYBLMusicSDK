@@ -237,56 +237,56 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     }
 
 
-//    override fun onArtistAlbumClick(
-//        itemPosition: Int,
-//        artistAlbumModelData: List<ArtistAlbumModelData>,
-//    ) {
-//
-//            val mArtAlbumMod = artistAlbumModelData[itemPosition]
-//            navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
-//                Bundle().apply {
-//                    putSerializable(
-//                        AppConstantUtils.PatchItem,
-//                        HomePatchItem("", "", listOf(), "", "", 0, 0)
-//                    )
-//                    putSerializable(
-//                        AppConstantUtils.PatchDetail,
-//                        HomePatchDetail(
-//                            AlbumId = mArtAlbumMod.AlbumId,
-//                            ArtistId = mArtAlbumMod.ArtistId,
-//                            ContentID = mArtAlbumMod.ContentID,
-//                            ContentType = mArtAlbumMod.ContentType,
-//                            PlayUrl = mArtAlbumMod.PlayUrl,
-//                            AlbumName = "",
-//                            AlbumImage = "",
-//                            fav = mArtAlbumMod.fav,
-//                            Banner = "",
-//                            Duration = mArtAlbumMod.duration,
-//                            TrackType = "",
-//                            image = mArtAlbumMod.image,
-//                            ArtistImage = "",
-//                            Artist = mArtAlbumMod.artistname,
-//                            CreateDate = "",
-//                            Follower = "",
-//                            imageWeb = "",
-//                            IsPaid = false,
-//                            NewBanner = "",
-//                            PlayCount = 0,
-//                            PlayListId = "",
-//                            PlayListImage = "",
-//                            PlayListName = "",
-//                            RootId = "",
-//                            RootType = "",
-//                            Seekable = false,
-//                            TeaserUrl = "",
-//                            title = "",
-//                            Type = ""
-//
-//                        ) as Serializable
-//                    )
-//                })
-//
-//    }
+    override fun onArtistAlbumClick(
+        itemPosition: Int,
+        artistAlbumModelData: List<ArtistAlbumModelData>,
+    ) {
+
+            val mArtAlbumMod = artistAlbumModelData[itemPosition]
+            navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+                Bundle().apply {
+                    putSerializable(
+                        AppConstantUtils.PatchItem,
+                        HomePatchItem("", "", listOf(), "", "", 0, 0)
+                    )
+                    putSerializable(
+                        AppConstantUtils.PatchDetail,
+                        HomePatchDetail(
+                            AlbumId = mArtAlbumMod.AlbumId,
+                            ArtistId = mArtAlbumMod.ArtistId,
+                            ContentID = mArtAlbumMod.ContentID,
+                            ContentType = mArtAlbumMod.ContentType,
+                            PlayUrl = mArtAlbumMod.PlayUrl,
+                            AlbumName = "",
+                            AlbumImage = "",
+                            fav = mArtAlbumMod.fav,
+                            Banner = "",
+                            Duration = mArtAlbumMod.duration,
+                            TrackType = "",
+                            image = mArtAlbumMod.image,
+                            ArtistImage = "",
+                            Artist = mArtAlbumMod.artistname,
+                            CreateDate = "",
+                            Follower = "",
+                            imageWeb = "",
+                            IsPaid = false,
+                            NewBanner = "",
+                            PlayCount = 0,
+                            PlayListId = "",
+                            PlayListImage = "",
+                            PlayListName = "",
+                            RootId = "",
+                            RootType = "",
+                            Seekable = false,
+                            TeaserUrl = "",
+                            title = "",
+                            Type = ""
+
+                        ) as Serializable
+                    )
+                })
+
+    }
 
 //    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =
 //        try { navigate(resId, args) }

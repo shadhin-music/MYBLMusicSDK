@@ -15,6 +15,7 @@ import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.CreatePlaylistFragment
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.utils.Status
 
 class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -65,8 +66,15 @@ class AlbumDetailsFragment :
 
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) {
-            adapter.setData(it)
+
+        viewModel!!.albumContent.observe(requireActivity()) {res->
+              if(res.status ==Status.SUCCESS){
+                  adapter.setData(res.data!!.data)
+              }
+            else{
+
+            }
+
         }
     }
     companion object {

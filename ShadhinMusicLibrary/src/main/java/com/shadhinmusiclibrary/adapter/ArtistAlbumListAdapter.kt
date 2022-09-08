@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
+
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -43,12 +44,12 @@ class ArtistAlbumListAdapter(val homePatchItem: HomePatchItem, val artistAlbumMo
         private val mContext = itemView.context
         fun bindItems(artistAlbumModel: ArtistAlbumModel?) {
             itemView.setOnClickListener {
-                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
-               manager.beginTransaction()
-                    .replace(R.id.container, ArtistAlbumsDetails2Fragment.newInstance(artistAlbumModel,
-                        artistAlbumModel!!.data[absoluteAdapterPosition]))
-                    .addToBackStack("Trending")
-                    .commit()
+//                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
+//               manager.beginTransaction()
+//                    .replace(R.id.container, ArtistAlbumsDetails2Fragment.newInstance(artistAlbumModel,
+//                        artistAlbumModel!!.data[absoluteAdapterPosition]))
+//                    .addToBackStack("Trending")
+//                    .commit()
             }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
