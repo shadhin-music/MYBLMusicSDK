@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\79ab044fef397530a64a72e983986f7f\\core-1.0.1\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\79ab044fef397530a64a72e983986f7f\\core-1.0.1\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\79ab044fef397530a64a72e983986f7f\\core-1.0.1\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\79ab044fef397530a64a72e983986f7f\\core-1.0.1\\res\\layout-v21\\notification_action.xml"
+    }
+]

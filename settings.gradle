@@ -12,7 +12,15 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+gradle.ext.exoplayerRoot = settingsDir
+
+def modulePrefix = ':'
+if (gradle.ext.has('exoplayerModulePrefix')) {
+    modulePrefix += gradle.ext.exoplayerModulePrefix
+}
+apply from: 'core_settings.gradle'
+
 rootProject.name = "ShadhinMusicSDK"
 include ':app'
-
 include ':ShadhinMusicLibrary'

@@ -1,0 +1,70 @@
+[
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_shuffle_off.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_shuffle_off.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_repeat_all.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_repeat_all.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_previous.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_previous.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_rewind.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_rewind.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_stop.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_stop.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_vr.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_vr.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_pause.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_pause.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_repeat_off.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_repeat_off.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_fullscreen_enter.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_fullscreen_enter.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_play.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_play.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_repeat_one.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_repeat_one.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_shuffle_on.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_shuffle_on.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_edit_mode_logo.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_edit_mode_logo.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_fullscreen_exit.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_fullscreen_exit.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_next.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_next.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_circular_play.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_circular_play.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldpi-v4\\exo_icon_fastforward.png",
+        "source": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\library\\ui\\buildout\\intermediates\\packaged_res\\release\\drawable-ldpi-v4\\exo_icon_fastforward.png"
+    }
+]

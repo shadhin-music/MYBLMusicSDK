@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-v21\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\notification_action_background.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\79ab044fef397530a64a72e983986f7f\\core-1.0.1\\res\\drawable-v21\\notification_action_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-v21\\abc_edit_text_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\abc_dialog_material_background.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-v21\\abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\abc_action_bar_item_background_material.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-v21\\abc_list_divider_material.xml",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-v21\\abc_list_divider_material.xml"
+    }
+]

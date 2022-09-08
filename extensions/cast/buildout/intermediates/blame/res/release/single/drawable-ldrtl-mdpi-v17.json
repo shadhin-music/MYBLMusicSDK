@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldrtl-mdpi-v17\\abc_ic_menu_copy_mtrl_am_alpha.png",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-ldrtl-mdpi-v17\\abc_ic_menu_copy_mtrl_am_alpha.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldrtl-mdpi-v17\\abc_spinner_mtrl_am_alpha.9.png",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-ldrtl-mdpi-v17\\abc_spinner_mtrl_am_alpha.9.png"
+    },
+    {
+        "merged": "C:\\Users\\GakkMedia\\AndroidStudioProjects\\ExoPlayer-r2.11.4\\ExoPlayer-r2.11.4\\extensions\\cast\\buildout\\intermediates\\res\\merged\\release\\drawable-ldrtl-mdpi-v17\\abc_ic_menu_cut_mtrl_alpha.png",
+        "source": "C:\\Users\\GakkMedia\\.gradle\\caches\\transforms-2\\files-2.1\\7b5ac2113da3bd99878a5dfdd92524db\\appcompat-1.0.0\\res\\drawable-ldrtl-mdpi-v17\\abc_ic_menu_cut_mtrl_alpha.png"
+    }
+]
