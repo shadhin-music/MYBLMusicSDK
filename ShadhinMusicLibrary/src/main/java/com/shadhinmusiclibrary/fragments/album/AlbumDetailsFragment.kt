@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -35,7 +36,12 @@ class AlbumDetailsFragment :
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
+        val btnCheck: Button = viewRef.findViewById(R.id.btnCheck)
         navController = findNavController()
+
+        btnCheck.setOnClickListener {
+            navController.navigate(R.id.action_album_details_fragment_to_music_play_bs)
+        }
 
         return viewRef
     }
