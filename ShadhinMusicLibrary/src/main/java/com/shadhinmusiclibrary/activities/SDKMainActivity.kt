@@ -50,6 +50,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                                 homePatchDetail as Serializable
                             )
                         })
+
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details

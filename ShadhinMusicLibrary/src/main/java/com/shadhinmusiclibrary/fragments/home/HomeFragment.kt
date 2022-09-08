@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
@@ -18,6 +21,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
@@ -46,8 +50,17 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     }
 
     private fun observeData() {
+        val progressBar:ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchHomeData(1, false)
-        viewModel!!.homeContent.observe(viewLifecycleOwner) { viewDataInRecyclerView(it) }
+        viewModel!!.homeContent.observe(viewLifecycleOwner) {res->
+            if(res.status==Status.SUCCESS){
+                progressBar.visibility = GONE
+                viewDataInRecyclerView(res.data)
+            }
+            else{
+                progressBar.visibility = VISIBLE
+            }
+            }
     }
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {

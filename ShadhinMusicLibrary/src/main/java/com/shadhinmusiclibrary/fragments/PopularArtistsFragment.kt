@@ -55,7 +55,7 @@ class PopularArtistsFragment : Fragment(), HomeCallBack {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
-            R.id.action_PopularArtistFragment_to_ArtistDetailsFragment,
+            R.id.action_popular_artist_fragment_to_artist_details_fragment,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
