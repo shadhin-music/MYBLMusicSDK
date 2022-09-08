@@ -22,28 +22,31 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<ArtistHeaderAdapter.HeaderViewHolder>() {
+class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
+    RecyclerView.Adapter<ArtistHeaderAdapter.HeaderViewHolder>() {
 
     var bio: LastFmResult? = null
-    var banner: ArtistBanner?= null
-    private var parentView:View?=null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):HeaderViewHolder {
-        parentView = LayoutInflater.from(parent.context).inflate(R.layout.artist_details_header, parent, false)
+    var banner: ArtistBanner? = null
+    private var parentView: View? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
+        parentView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.artist_details_header, parent, false)
         return HeaderViewHolder(parentView!!)
     }
 
 
-    override fun onBindViewHolder(holder:HeaderViewHolder, position: Int) {
-         holder.bindItems(homePatchDetail)
+    override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+        holder.bindItems(homePatchDetail)
 
 
     }
+
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
         return 1
     }
 
-    fun setData( homePatchDetail: HomePatchDetail){
+    fun setData(homePatchDetail: HomePatchDetail) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -52,7 +55,7 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
         this.bio = bio
 
         val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
-       // textView?.text = bio?.artist?.bio?.summary
+        // textView?.text = bio?.artist?.bio?.summary
         textView?.setText(Html.fromHtml(bio?.artist?.bio?.summary))
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
@@ -68,42 +71,25 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
 //        }
     }
 
-    fun artistBanner(banner: ArtistBanner?, context: Context?) {
-        this.banner= banner
-
-        if(banner?.image?.isEmpty() == false) {
-            val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
-            cardListen.visibility = VISIBLE
-            val imageView:ImageView = parentView!!.findViewById(R.id.imageArtist)
-            if (context != null) {
-                Glide.with(context)
-                    .load(banner?.image)
-                    .into(imageView)
-            }
-        }
-//       if(banner==null) {
-//
-//               val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
-//               cardListen.visibility = GONE
-//
-//       }
+    fun artistBanner(banner: ArtistBanner?) {
+        this.banner = banner
     }
 
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
         fun bindItems(homePatchDetail: HomePatchDetail?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
             var url: String = homePatchDetail!!.image
-             val textArtist: TextView = itemView.findViewById(R.id.name)
+            val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             textView?.text = bio?.artist?.bio?.summary
-            val tvName:TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text =homePatchDetail.Artist+"'s"
-            val imageArtist:ImageView = itemView!!.findViewById(R.id.imageArtist)
-            if(banner?.image?.isEmpty() == false) {
-                val cardListen:CardView = parentView!!.findViewById(R.id.cardListen)
+            val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
+            tvName.text = homePatchDetail.Artist + "'s"
+            val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
+            if (banner?.image?.isEmpty() == false) {
+                val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)
                 cardListen.visibility = VISIBLE
                 if (context != null) {
                     Glide.with(context)
@@ -112,17 +98,17 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
                 }
             }
             //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
-            val moreText:TextView?= itemView?.findViewById(R.id.tvReadMore)
+            val moreText: TextView? = itemView?.findViewById(R.id.tvReadMore)
 
-             moreText?.setOnClickListener {
-                  if(textView!!.isExpanded){
-                      textView.collapse()
-                      moreText.text ="Read More"
-                  }else{
-                      textView.expand()
-                      moreText.text ="Less"
-                  }
-             }
+            moreText?.setOnClickListener {
+                if (textView!!.isExpanded) {
+                    textView.collapse()
+                    moreText.text = "Read More"
+                } else {
+                    textView.expand()
+                    moreText.text = "Less"
+                }
+            }
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
@@ -149,6 +135,7 @@ class ArtistHeaderAdapter( var homePatchDetail: HomePatchDetail?) : RecyclerView
         }
 
     }
+
     companion object {
         const val VIEW_TYPE = 1
     }

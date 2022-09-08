@@ -67,7 +67,7 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) {
-            adapter.setData(it)
+            adapter.setData(it.data!!.data)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.CreatePlaylistFragment
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -38,12 +40,7 @@ class AlbumDetailsFragment :
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
-        val btnCheck: Button = viewRef.findViewById(R.id.btnCheck)
         navController = findNavController()
-
-        btnCheck.setOnClickListener {
-            navController.navigate(R.id.action_album_details_fragment_to_music_play_bs)
-        }
 
         return viewRef
     }
@@ -72,25 +69,12 @@ class AlbumDetailsFragment :
 
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchAlbumContent(contentId)
-
-        viewModel!!.albumContent.observe(requireActivity()) {res->
-              if(res.status ==Status.SUCCESS){
-                  adapter.setData(res.data!!.data)
-              }
-            else{
-
+        viewModel!!.albumContent.observe(requireActivity()) { res ->
+            if (res.status == Status.SUCCESS) {
+                adapter.setData(res.data!!.data)
+            } else {
+                adapter.setData(mutableListOf())
             }
-
         }
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-           AlbumDetailsFragment.apply {
-              //  arguments = Bundle().apply {
-
-                //}
-            }
     }
 }

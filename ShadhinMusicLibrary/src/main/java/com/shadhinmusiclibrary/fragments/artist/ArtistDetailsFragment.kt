@@ -68,6 +68,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("Check", "yes iam called")
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -126,12 +127,18 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
         viewModel =
             ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
-        viewModelArtistBanner = ViewModelProvider(this,
-            injector.factoryArtistBannerVM)[ArtistBannerViewModel::class.java]
-        viewModelArtistSong = ViewModelProvider(this,
-            injector.factoryArtistSongVM)[ArtistContentViewModel::class.java]
-        viewModelArtistAlbum = ViewModelProvider(this,
-            injector.artistAlbumViewModelFactory)[ArtistAlbumsViewModel::class.java]
+        viewModelArtistBanner = ViewModelProvider(
+            this,
+            injector.factoryArtistBannerVM
+        )[ArtistBannerViewModel::class.java]
+        viewModelArtistSong = ViewModelProvider(
+            this,
+            injector.factoryArtistSongVM
+        )[ArtistContentViewModel::class.java]
+        viewModelArtistAlbum = ViewModelProvider(
+            this,
+            injector.artistAlbumViewModelFactory
+        )[ArtistAlbumsViewModel::class.java]
     }
 
     private fun observeData() {
@@ -158,7 +165,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
                     progressBar.visibility = GONE
-                    artistHeaderAdapter.artistBanner(response.data, context)
+                    artistHeaderAdapter.artistBanner(response.data)
                 } else {
                     progressBar.visibility = VISIBLE
                 }
@@ -241,51 +248,50 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         itemPosition: Int,
         artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val mArtAlbumMod = artistAlbumModelData[itemPosition]
+        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetail(
+                        AlbumId = mArtAlbumMod.AlbumId,
+                        ArtistId = mArtAlbumMod.ArtistId,
+                        ContentID = mArtAlbumMod.ContentID,
+                        ContentType = mArtAlbumMod.ContentType,
+                        PlayUrl = mArtAlbumMod.PlayUrl,
+                        AlbumName = "",
+                        AlbumImage = "",
+                        fav = mArtAlbumMod.fav,
+                        Banner = "",
+                        Duration = mArtAlbumMod.duration,
+                        TrackType = "",
+                        image = mArtAlbumMod.image,
+                        ArtistImage = "",
+                        Artist = mArtAlbumMod.artistname,
+                        CreateDate = "",
+                        Follower = "",
+                        imageWeb = "",
+                        IsPaid = false,
+                        NewBanner = "",
+                        PlayCount = 0,
+                        PlayListId = "",
+                        PlayListImage = "",
+                        PlayListName = "",
+                        RootId = "",
+                        RootType = "",
+                        Seekable = false,
+                        TeaserUrl = "",
+                        title = "",
+                        Type = ""
 
-            val mArtAlbumMod = artistAlbumModelData[itemPosition]
-            navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
-                Bundle().apply {
-                    putSerializable(
-                        AppConstantUtils.PatchItem,
-                        HomePatchItem("", "", listOf(), "", "", 0, 0)
-                    )
-                    putSerializable(
-                        AppConstantUtils.PatchDetail,
-                        HomePatchDetail(
-                            AlbumId = mArtAlbumMod.AlbumId,
-                            ArtistId = mArtAlbumMod.ArtistId,
-                            ContentID = mArtAlbumMod.ContentID,
-                            ContentType = mArtAlbumMod.ContentType,
-                            PlayUrl = mArtAlbumMod.PlayUrl,
-                            AlbumName = "",
-                            AlbumImage = "",
-                            fav = mArtAlbumMod.fav,
-                            Banner = "",
-                            Duration = mArtAlbumMod.duration,
-                            TrackType = "",
-                            image = mArtAlbumMod.image,
-                            ArtistImage = "",
-                            Artist = mArtAlbumMod.artistname,
-                            CreateDate = "",
-                            Follower = "",
-                            imageWeb = "",
-                            IsPaid = false,
-                            NewBanner = "",
-                            PlayCount = 0,
-                            PlayListId = "",
-                            PlayListImage = "",
-                            PlayListName = "",
-                            RootId = "",
-                            RootType = "",
-                            Seekable = false,
-                            TeaserUrl = "",
-                            title = "",
-                            Type = ""
-
-                        ) as Serializable
-                    )
-                })
-
+                    ) as Serializable
+                )
+            })
     }
 
 //    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =
@@ -295,6 +301,5 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 //        }
 
     override fun onClickSeeAll(patch: HomePatchItem) {
-        TODO("Not yet implemented")
     }
 }

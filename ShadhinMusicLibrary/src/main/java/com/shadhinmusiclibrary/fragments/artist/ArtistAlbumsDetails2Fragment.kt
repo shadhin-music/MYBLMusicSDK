@@ -23,8 +23,8 @@ private const val ARG_PARAM2 = "param2"
 
 class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     private lateinit var navController: NavController
-    private lateinit var adapter:ArtistSpecificAlbumAdapter
-    private var param1:ArtistAlbumModel? = null
+    private lateinit var adapter: ArtistSpecificAlbumAdapter
+    private var param1: ArtistAlbumModel? = null
     private var param2: ArtistAlbumModelData? = null
     private lateinit var viewModel: AlbumViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = ArtistSpecificAlbumAdapter()
-           setupViewModel()
+        setupViewModel()
         ///read data from online
         fetchOnlineData(param2!!.ContentID.toInt())
         adapter.setRootData(param2)
@@ -66,19 +66,23 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
             }
         }
     }
+
     private fun setupViewModel() {
 
 
-        viewModel= ViewModelProvider(this,
-            injector.factoryAlbumVM)[AlbumViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            injector.factoryAlbumVM
+        )[AlbumViewModel::class.java]
     }
 
     private fun fetchOnlineData(contentId: Int) {
-        viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) {
-            adapter.setData(it)
+        viewModel.fetchAlbumContent(contentId)
+        viewModel.albumContent.observe(requireActivity()) {
+            adapter.setData(it.data!!.data)
         }
     }
+
     companion object {
 
         @JvmStatic
@@ -86,7 +90,7 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
             ArtistAlbumsDetails2Fragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_PARAM1, param1)
-                    putSerializable(ARG_PARAM2,param2)
+                    putSerializable(ARG_PARAM2, param2)
                 }
             }
     }
