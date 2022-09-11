@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -68,11 +71,14 @@ class AlbumDetailsFragment :
     }
 
     private fun fetchOnlineData(contentId: Int) {
+        val progressBar:ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
             if (res.status == Status.SUCCESS) {
+                 progressBar.visibility = GONE
                 adapter.setData(res.data!!.data)
             } else {
+                progressBar.visibility = VISIBLE
                 adapter.setData(mutableListOf())
             }
         }

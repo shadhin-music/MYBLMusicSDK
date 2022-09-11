@@ -29,9 +29,16 @@ object Module {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(getBaseClient())
             .build()
     }
-
+    private fun getBaseClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+               HeaderInterceptor()
+            )
+            .build()
+    }
     private fun getApiShadhinMusicServiceV5(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
