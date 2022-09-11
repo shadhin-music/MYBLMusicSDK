@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.fragments.*
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-    private var data: List<HomePatchItem>? = null
+    private var homeListData: MutableList<HomePatchItem> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -52,17 +52,18 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        holder.bind(data?.get(position))
+        holder.bind(homeListData?.get(position))
     }
 
-    override fun getItemCount(): Int = data?.size ?: 0
+    override fun getItemCount(): Int = homeListData?.size ?: 0
 
     override fun getItemViewType(position: Int): Int {
 
-        return when (data?.get(position)?.Design) {
+        return when (homeListData?.get(position)?.Design) {
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
+            "Track" -> VIEW_RELEASE
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
 //            is DataModel.Search -> VIEW_SEARCH
@@ -88,8 +89,12 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItem>) {
-        this.data = data
-        notifyDataSetChanged()
+        var size = this.homeListData.size
+        this.homeListData.addAll(data)
+        var sizeNew = this.homeListData.size
+        notifyItemRangeChanged(size, sizeNew)
+//        this.homeListData.addAll(data)
+//        notifyDataSetChanged()
     }
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -271,6 +276,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
+                "Track" -> bindRelease(homePatchItemModel)
             }
 
             /*when (dataModel) {
@@ -300,7 +306,6 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         // val VIEW_SEARCH =0
         val VIEW_ARTIST = 0
         val VIEW_RELEASE = 1
-
         val VIEW_PLAYLIST = 2
         val VIEW_AD = 3
         val VIEW_DOWNLOAD = 4
