@@ -5,13 +5,16 @@ import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
+import com.shadhinmusiclibrary.rest.RetroClient
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("HomeContent/GetHomeContent")
+    @GET("ClientHomeContent/GetHomeContent")
     suspend fun fetchHomeData(
+        @Header("Client") client: Int,
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?
     ): HomeData
