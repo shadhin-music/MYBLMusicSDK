@@ -53,7 +53,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Home", "onViewCreated Message: " + pageNum)
-        viewModel!!.fetchHomeData(2, pageNum, false)
+        viewModel!!.fetchHomeData( pageNum,false)
         observeData()
     }
 
@@ -93,7 +93,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                             //Log.e("TAG", "pagenumber: " + pageNum++)
                             //pageNum++
                             isLoading = true
-                            viewModel!!.fetchHomeData(2, ++pageNum, false)
+                            viewModel!!.fetchHomeData(++pageNum, false)
                             //observeData()
                         }
 

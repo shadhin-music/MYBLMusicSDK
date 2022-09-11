@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -39,10 +40,12 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         super.onViewCreated(view, savedInstanceState)
 //        val argHomePatchItem =
 //            arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
-
+       val tvTitle:TextView = requireView().findViewById(R.id.tvTitle)
+        tvTitle.text = argHomePatchItem?.Name
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
+
         recyclerView.adapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {

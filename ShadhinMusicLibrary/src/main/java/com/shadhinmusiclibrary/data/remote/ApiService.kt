@@ -14,7 +14,6 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("ClientHomeContent/GetHomeContent")
     suspend fun fetchHomeData(
-        @Header("Client") client: Int,
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?
     ): HomeData
