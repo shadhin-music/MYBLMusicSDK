@@ -21,9 +21,9 @@ object Module {
             .build()
     }
 
-    private fun getHomeApiService(): ApiService {
-        return getRetrofitInstance().create(ApiService::class.java)
-    }
+//    private fun getHomeApiService(): ApiService {
+//        return getRetrofitInstance().create(ApiService::class.java)
+//    }
 
     private fun getRetrofitAPIShadhinMusicInstanceV5(): Retrofit {
         return Retrofit.Builder()
@@ -60,7 +60,7 @@ object Module {
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
-        HomeContentRepository(getHomeApiService())
+        HomeContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
         ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistSongContent: ArtistSongContentRepository =

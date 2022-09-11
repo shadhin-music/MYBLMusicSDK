@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +17,9 @@ class HomeViewModel(private val homeContentRepository: HomeContentRepository): V
     private val _homeContent:MutableLiveData<ApiResponse<HomeData>> = MutableLiveData()
     val homeContent:LiveData<ApiResponse<HomeData>> = _homeContent
 
-    fun fetchHomeData(pageNumber: Int?, isPaid: Boolean?) = viewModelScope.launch {
-        val response = homeContentRepository.fetchHomeData(pageNumber, isPaid)
+    fun fetchHomeData(client:Int?,pageNumber: Int?, isPaid: Boolean?) = viewModelScope.launch {
+        Log.e("HOME", "PAGE CALLED "+pageNumber)
+        val response = homeContentRepository.fetchHomeData(client!!,pageNumber, isPaid)
 
             _homeContent.postValue(response)
 
