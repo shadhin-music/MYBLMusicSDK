@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
@@ -22,15 +20,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 class STypeListFragment : CommonBaseFragment(), HomeCallBack {
-    //    var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
