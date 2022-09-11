@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.bottom_sheet
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -139,5 +142,11 @@ class MusicPlayBS : Fragment() {
         ibtnQueueMusic.setOnClickListener { }
 
         ibtnDownload.setOnClickListener { }
+    }
+
+    private fun aaa(resId: Int) {
+        var d: Drawable = VectorDrawableCompat.create(resources, resId, null)!!
+        d = DrawableCompat.wrap(d);
+//        DrawableCompat.setTint(d, headerTitleColor);
     }
 }
