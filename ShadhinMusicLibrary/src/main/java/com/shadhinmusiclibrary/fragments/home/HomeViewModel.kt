@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.model.HomeData
 
 import com.shadhinmusiclibrary.data.repository.HomeContentRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
-import com.shadhinmusiclibrary.utils.Status
+
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val homeContentRepository: HomeContentRepository): ViewModel() {
@@ -17,9 +17,9 @@ class HomeViewModel(private val homeContentRepository: HomeContentRepository): V
     private val _homeContent:MutableLiveData<ApiResponse<HomeData>> = MutableLiveData()
     val homeContent:LiveData<ApiResponse<HomeData>> = _homeContent
 
-    fun fetchHomeData(client:Int?,pageNumber: Int?, isPaid: Boolean?) = viewModelScope.launch {
+    fun fetchHomeData(pageNumber: Int?, isPaid: Boolean?) = viewModelScope.launch {
         Log.e("HOME", "PAGE CALLED "+pageNumber)
-        val response = homeContentRepository.fetchHomeData(client!!,pageNumber, isPaid)
+        val response = homeContentRepository.fetchHomeData(pageNumber, isPaid)
 
             _homeContent.postValue(response)
 

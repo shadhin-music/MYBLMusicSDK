@@ -94,6 +94,20 @@ internal class SDKMainActivity : AppCompatActivity() {
                             )
                         })
                 }
+                DataContentType.CONTENT_TYPE_PD -> {
+                    //open songs
+                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem as Serializable
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
             }
         } else {
             //See All Item Click event
@@ -131,6 +145,16 @@ internal class SDKMainActivity : AppCompatActivity() {
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
+                        Bundle().apply {
+                            putSerializable(
+                                AppConstantUtils.PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_PD -> {
+                    //open songs
+                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_podcast_list_fragment"
+    app:startDestination="@id/podcast_list_fragment">
+
+    <fragment
+        android:id="@+id/podcast_list_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastFragment"
+        android:label="fragment_podcast_list"
+        tools:layout="@layout/fragment_podcast">
+        <action
+            android:id="@+id/action_podcast_list_fragment_to_podcast_details_fragment"
+            app:destination="@id/podcast_details_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/podcast_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
+        android:label="Podcast Details"
+        tools:layout="@layout/fragment_artist_details" />
+</navigation>
