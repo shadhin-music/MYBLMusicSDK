@@ -1,28 +1,41 @@
 package com.shadhinmusiclibrary.bottom_sheet
 
-import android.graphics.drawable.Drawable
+import android.R.attr.bitmap
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.graphics.drawable.DrawableCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import androidx.palette.graphics.Palette
+import androidx.palette.graphics.Palette.Swatch
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
+import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
+import java.io.IOException
+import java.net.URL
 
-class MusicPlayBS : Fragment() {
 
+class MusicPlayBS : Fragment(),
+    DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
+    DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH>,
+    ChildCallback {
+
+    private lateinit var clMainMusicPlayerParent: ConstraintLayout
     private lateinit var acivMinimizePlayerBtn: AppCompatImageView
-    private lateinit var tvTitle: AppCompatImageView
+    private lateinit var tvTitle: TextView
     private lateinit var acivMenu: AppCompatImageView
     private lateinit var dsvCurrentPlaySongsThumb: DiscreteScrollView
     private lateinit var tvSongName: TextView
@@ -41,6 +54,8 @@ class MusicPlayBS : Fragment() {
     private lateinit var ibtnQueueMusic: ImageButton
     private lateinit var ibtnDownload: ImageButton
 
+    private lateinit var listData: MutableList<HomePatchDetail>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,8 +70,9 @@ class MusicPlayBS : Fragment() {
     }
 
     private fun initUI(viewRef: View) {
+        clMainMusicPlayerParent = viewRef.findViewById(R.id.cl_main_music_player_parent)
         acivMinimizePlayerBtn = viewRef.findViewById(R.id.aciv_minimize_player_btn)
-        tvTitle = viewRef.findViewById(R.id.tvTitle)
+        tvTitle = viewRef.findViewById(R.id.tv_title)
         acivMenu = viewRef.findViewById(R.id.aciv_menu)
         dsvCurrentPlaySongsThumb = viewRef.findViewById(R.id.dsv_current_play_songs_thumb)
         tvSongName = viewRef.findViewById(R.id.tv_song_name)
@@ -77,8 +93,8 @@ class MusicPlayBS : Fragment() {
     }
 
     private fun setMusicBannerAdapter() {
-        val adapter = MusicPlayAdapter()
-        val listData = mutableListOf<HomePatchDetail>()
+        val adapter = MusicPlayAdapter(requireContext(), this)
+        listData = mutableListOf()
         for (i in 1..3) {
             listData.add(
                 HomePatchDetail(
@@ -113,6 +129,39 @@ class MusicPlayBS : Fragment() {
                     ""
                 )
             )
+            listData.add(
+                HomePatchDetail(
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/AlbumPreviewImageFile/PremTumiKi_AyubBachchu_300.jpg",
+                    "",
+                    ""
+                )
+            )
         }
         adapter.setMusicData(listData)
 
@@ -122,31 +171,113 @@ class MusicPlayBS : Fragment() {
         dsvCurrentPlaySongsThumb.setOffscreenItems(2)
         dsvCurrentPlaySongsThumb.setItemTransitionTimeMillis(150)
         dsvCurrentPlaySongsThumb.itemAnimator = null
+
+        dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
+        dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
     }
 
     private fun uiFunctionality() {
-        ibtnShuffle.setOnClickListener { }
+        ibtnShuffle.setOnClickListener {
+            setControlColor(ibtnShuffle)
+//            R.color.vector_image_control.set
+        }
 
-        ibtnSkipPrevious.setOnClickListener { }
+        ibtnSkipPrevious.setOnClickListener {
 
-        ibtnPlayPause.setOnClickListener { }
+        }
+
+        ibtnPlayPause.setOnClickListener {
+            setControlColor(ibtnPlayPause)
+        }
 
         ibtnSkipNext.setOnClickListener { }
 
-        ibtnRepeatSong.setOnClickListener { }
+        ibtnRepeatSong.setOnClickListener {
+            setControlColor(ibtnRepeatSong)
+        }
 
-        ibtnVolume.setOnClickListener { }
+        ibtnVolume.setOnClickListener {
+            setControlColor(ibtnVolume)
+        }
 
-        ibtnLibraryAdd.setOnClickListener { }
+        ibtnLibraryAdd.setOnClickListener {
+            setControlColor(ibtnLibraryAdd)
+        }
 
-        ibtnQueueMusic.setOnClickListener { }
+        ibtnQueueMusic.setOnClickListener {
+            setControlColor(ibtnQueueMusic)
+        }
 
-        ibtnDownload.setOnClickListener { }
+        ibtnDownload.setOnClickListener {
+            setControlColor(ibtnDownload)
+        }
     }
 
-    private fun aaa(resId: Int) {
-        var d: Drawable = VectorDrawableCompat.create(resources, resId, null)!!
-        d = DrawableCompat.wrap(d);
-//        DrawableCompat.setTint(d, headerTitleColor);
+    private fun setControlColor(ibtnControl: ImageButton) {
+        ibtnControl.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorAccent
+            ), PorterDuff.Mode.SRC_IN
+        )
+    }
+
+    override fun onCurrentItemChanged(
+        viewHolder: MusicPlayAdapter.MusicPlayVH?,
+        adapterPosition: Int
+    ) {
+        if (viewHolder != null) {
+            setPaletteGrdientColor(getBitmapFromVH(viewHolder))
+        }
+    }
+
+    override fun onScrollStart(
+        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+        adapterPosition: Int
+    ) {
+    }
+
+    override fun onScrollEnd(
+        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+        adapterPosition: Int
+    ) {
+    }
+
+    override fun onScroll(
+        scrollPosition: Float,
+        currentPosition: Int,
+        newPosition: Int,
+        currentHolder: MusicPlayAdapter.MusicPlayVH?,
+        newCurrent: MusicPlayAdapter.MusicPlayVH?
+    ) {
+        if (currentHolder != null) {
+            setPaletteGrdientColor(getBitmapFromVH(currentHolder))
+        }
+    }
+
+    private fun setPaletteGrdientColor(imBitmapData: Bitmap) {
+        val palette: Palette = Palette.from(imBitmapData).generate()
+        val vibrant: Swatch = palette.vibrantSwatch!!
+
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(
+                ContextCompat.getColor(requireContext(), R.color.shadinRequiredColor),
+                vibrant.rgb
+            )
+        );
+        gradientDrawable.cornerRadius = 0f;
+//        clMainMusicPlayerParent.setBackgroundColor(vibrant.rgb)
+        clMainMusicPlayerParent.background = gradientDrawable
+    }
+
+    private fun getBitmapFromVH(currentItemHolder: MusicPlayAdapter.MusicPlayVH): Bitmap {
+        val imageV = currentItemHolder.ivCurrentPlayImage
+        val traDaw = imageV.drawable
+        return (traDaw.toBitmap())
+    }
+
+    override fun onClickItemAndAllItem(currentBitmap: Bitmap) {
+        Log.e("MPBS", "onClickItemAndAllItem: $currentBitmap")
     }
 }

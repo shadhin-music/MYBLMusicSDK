@@ -41,4 +41,7 @@
     <color name="main_color">#00aff5</color>
     <color name="blue_progress_background_secondary">#1e5b74</color>
     <color name="subscription_title_font_30_opacity">#77db3879</color>
+
+
+    <color name="vector_image_control">#ffffff</color>
 </resources>

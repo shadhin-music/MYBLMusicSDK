@@ -59,11 +59,12 @@ class AlbumDetailsFragment :
         recyclerView.adapter = adapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }
+            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                 requireActivity().finish()
+             } else {
+                 navController.popBackStack()
+             }*/
+            navController.navigate(R.id.action_album_details_fragment_to_music_play_bs)
         }
     }
 

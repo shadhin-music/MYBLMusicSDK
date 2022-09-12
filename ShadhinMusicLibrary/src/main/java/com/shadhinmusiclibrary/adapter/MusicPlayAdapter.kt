@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.content.Context
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +14,23 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
+import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.utils.UtilHelper
 
-class MusicPlayAdapter() : RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {
+
+class MusicPlayAdapter(
+    private val parentContext: Context,
+    private val childCallback: ChildCallback
+) :
+    RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {
     private var listMusicData: MutableList<HomePatchDetail>? = null
+    private var finalWidth = 0
+
+    init {
+        determinePhoneWidth()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicPlayVH {
         return MusicPlayVH(
@@ -31,7 +45,27 @@ class MusicPlayAdapter() : RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() 
         notifyDataSetChanged()
     }
 
+    private fun determinePhoneWidth() {
+        val x: Int = UtilHelper.getScreenHeightWidth(parentContext, 0)
+        finalWidth = if (!isTablet()) {
+            val y = x / 100
+            val v = y * 30
+            x - v
+        } else {
+            val fivePercent = x / 5
+            fivePercent * 2
+        }
+    }
+
+    private fun isTablet(): Boolean {
+        return ((parentContext.resources.configuration.screenLayout
+                and Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE)
+    }
+
     override fun onBindViewHolder(holder: MusicPlayVH, position: Int) {
+        holder.ivCurrentPlayImage.layoutParams.width = finalWidth
+        holder.ivCurrentPlayImage.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
         holder.onBind(position)
     }
 
@@ -42,7 +76,7 @@ class MusicPlayAdapter() : RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() 
     inner class MusicPlayVH(itemView: View) : BaseViewHolder(itemView) {
         val cvBannerParent: CardView =
             itemView.findViewById(R.id.cv_banner_parent)
-        private val ivCurrentPlayImage: ImageView =
+        val ivCurrentPlayImage: ImageView =
             itemView.findViewById(R.id.iv_current_play_image)
 
         override fun onBind(position: Int) {
