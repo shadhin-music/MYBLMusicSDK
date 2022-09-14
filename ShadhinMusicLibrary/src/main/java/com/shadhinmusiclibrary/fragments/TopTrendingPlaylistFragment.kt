@@ -8,13 +8,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 class TopTrendingPlaylistFragment : CommonBaseFragment() {
-    private lateinit var playListAdapter: AlbumAdapter
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var homePatchDetail: HomePatchDetail? = null

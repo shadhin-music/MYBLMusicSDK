@@ -14,14 +14,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
-import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class MusicPlayAdapter(
-    private val parentContext: Context,
-    private val childCallback: ChildCallback
+    private val parentContext: Context
 ) :
     RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {
     private var listMusicData: MutableList<HomePatchDetail>? = null
@@ -78,10 +76,11 @@ class MusicPlayAdapter(
             itemView.findViewById(R.id.cv_banner_parent)
         val ivCurrentPlayImage: ImageView =
             itemView.findViewById(R.id.iv_current_play_image)
+        lateinit var sMusicData: HomePatchDetail
 
         override fun onBind(position: Int) {
             super.onBind(position)
-            val sMusicData = listMusicData!![position]
+            sMusicData = listMusicData!![position]
 
             Glide.with(itemView.context)
                 .load(sMusicData.image)

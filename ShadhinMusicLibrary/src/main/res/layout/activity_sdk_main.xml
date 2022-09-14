@@ -1,9 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SDKMainActivity">
+    android:orientation="vertical">
 
-    <include layout="@layout/content_main" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sl_custom_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:gravity="bottom"
+        android:visibility="visible"
+        app:umanoDragView="@id/panel_parent"
+        app:umanoInitialState="hidden"
+        app:umanoParallaxOffset="100dp"
+        app:umanoScrollableView="@id/fcv_navigation_host"
+        app:umanoShadowHeight="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <RelativeLayout
+                android:id="@+id/rl_content_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fcv_navigation_host"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/panel_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_dark">
+
+            <include
+                android:id="@+id/include_mini_music_player"
+                layout="@layout/mini_music_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/include_main_music_player"
+                layout="@layout/main_music_player2" />
+        </RelativeLayout>
+    </com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout>
+
+    <!--    <include-->
+    <!--        android:id="@+id/include_content_main"-->
+    <!--        android:layout_above="@+id/rl_panel_parent"-->
+    <!--        layout="@layout/content_main" />-->
+
+
+    <!--    <RelativeLayout
+            android:id="@+id/rl_panel_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <include
+                android:id="@+id/include_main_music_player"
+                layout="@layout/main_music_player2"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/include_mini_player"
+                layout="@layout/mini_music_player"
+                android:visibility="gone" />
+        </RelativeLayout>-->
+    <!--    <include layout="@layout/music_player_motion_layout" />-->
+</FrameLayout>

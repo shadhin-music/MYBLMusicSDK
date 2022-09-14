@@ -1,16 +1,16 @@
 package com.shadhinmusiclibrary.bottom_sheet
 
-import android.R.attr.bitmap
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Bitmap
+import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -20,18 +20,14 @@ import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Palette.Swatch
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
-import com.shadhinmusiclibrary.callBackService.ChildCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
-import java.io.IOException
-import java.net.URL
 
 
 class MusicPlayBS : Fragment(),
     DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
-    DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH>,
-    ChildCallback {
+    DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
 
     private lateinit var clMainMusicPlayerParent: ConstraintLayout
     private lateinit var acivMinimizePlayerBtn: AppCompatImageView
@@ -70,7 +66,7 @@ class MusicPlayBS : Fragment(),
     }
 
     private fun initUI(viewRef: View) {
-        clMainMusicPlayerParent = viewRef.findViewById(R.id.cl_main_music_player_parent)
+        clMainMusicPlayerParent = viewRef.findViewById(R.id.cl_main_music_player)
         acivMinimizePlayerBtn = viewRef.findViewById(R.id.aciv_minimize_player_btn)
         tvTitle = viewRef.findViewById(R.id.tv_title)
         acivMenu = viewRef.findViewById(R.id.aciv_menu)
@@ -93,15 +89,15 @@ class MusicPlayBS : Fragment(),
     }
 
     private fun setMusicBannerAdapter() {
-        val adapter = MusicPlayAdapter(requireContext(), this)
+        val adapter = MusicPlayAdapter(requireContext())
         listData = mutableListOf()
         for (i in 1..3) {
             listData.add(
                 HomePatchDetail(
                     "",
                     "",
-                    "",
-                    "",
+                    "test 11111",
+                    "Habib",
                     "",
                     "",
                     "",
@@ -133,8 +129,8 @@ class MusicPlayBS : Fragment(),
                 HomePatchDetail(
                     "",
                     "",
-                    "",
-                    "",
+                    "test 2222",
+                    "Balam",
                     "",
                     "",
                     "",
@@ -227,6 +223,9 @@ class MusicPlayBS : Fragment(),
         adapterPosition: Int
     ) {
         if (viewHolder != null) {
+            viewHolder.sMusicData.Artist
+            tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
+            tvSingerName.text = viewHolder.sMusicData.Artist
             setPaletteGrdientColor(getBitmapFromVH(viewHolder))
         }
     }
@@ -275,9 +274,5 @@ class MusicPlayBS : Fragment(),
         val imageV = currentItemHolder.ivCurrentPlayImage
         val traDaw = imageV.drawable
         return (traDaw.toBitmap())
-    }
-
-    override fun onClickItemAndAllItem(currentBitmap: Bitmap) {
-        Log.e("MPBS", "onClickItemAndAllItem: $currentBitmap")
     }
 }

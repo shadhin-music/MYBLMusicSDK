@@ -1,8 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 
-
-class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
-    RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
+class GenrePlaylistAdapter:
+    RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenrePlaylistVH {
         val layout = when (viewType) {
             VIEW_ALBUM -> R.layout.playlist_header
             VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
@@ -34,10 +28,10 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
-        return DataAdapterViewHolder(view)
+        return GenrePlaylistVH(view)
     }
 
-    override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GenrePlaylistVH, position: Int) {
         Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
@@ -47,8 +41,8 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 
         holder.itemView.setOnClickListener {
             if (holder.itemViewType == VIEW_TRACK_ITEM) {
-                val mSongDetItem = dataSongDetail[position - 1]
-                itemClickCB.onClickItem(mSongDetItem)
+                val mSongDetItem = dataSongDetail[position]
+
             }
         }
     }
@@ -83,7 +77,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    inner class DataAdapterViewHolder(private val viewItem: View) :
+    inner class GenrePlaylistVH(private val viewItem: View) :
         RecyclerView.ViewHolder(viewItem) {
         val mContext = viewItem.context
         private lateinit var ivThumbCurrentPlayItem: ImageView
@@ -131,14 +125,6 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 //                showBottomSheetDialog(viewItem.context)
             }
         }
-
-//        private fun showBottomSheetDialog(context: Context) {
-//            val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
-//            val contentView =
-//                View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
-//            bottomSheetDialog.setContentView(contentView)
-//            bottomSheetDialog.show()
-//        }
     }
 
     private companion object {

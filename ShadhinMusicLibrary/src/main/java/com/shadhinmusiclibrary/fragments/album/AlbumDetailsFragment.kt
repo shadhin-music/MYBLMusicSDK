@@ -7,9 +7,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,18 +17,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.cviewModel.MusicPlayerVM
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.CreatePlaylistFragment
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.Status
 
 class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint {
+    FragmentEntryPoint, OnItemClickCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
+//    private lateinit var vmMusicPlayer: MusicPlayerVM
 
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
@@ -44,13 +46,14 @@ class AlbumDetailsFragment :
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
         navController = findNavController()
+//        vmMusicPlayer = ViewModelProvider(this).get(MusicPlayerVM::class.java)
 
         return viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = AlbumAdapter()
+        adapter = AlbumAdapter(this)
 
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
@@ -62,26 +65,30 @@ class AlbumDetailsFragment :
         recyclerView.adapter = adapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                 requireActivity().finish()
-             } else {
-                 navController.popBackStack()
-             }*/
-            navController.navigate(R.id.action_album_details_fragment_to_music_play_bs)
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            } else {
+                navController.popBackStack()
+            }
         }
     }
 
     private fun fetchOnlineData(contentId: Int) {
-        val progressBar:ProgressBar = requireView().findViewById(R.id.progress_bar)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
             if (res.status == Status.SUCCESS) {
-                 progressBar.visibility = GONE
+                progressBar.visibility = GONE
                 adapter.setData(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE
                 adapter.setData(mutableListOf())
             }
         }
+    }
+
+    override fun onClickItem(mSongDet: SongDetail) {
+        playItem(mSongDet)
+//        vmMusicPlayer.setPlayMusic(mSongDet)
     }
 }
