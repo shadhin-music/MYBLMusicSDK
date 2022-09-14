@@ -30,7 +30,7 @@
 //import com.gm.shadhin.player.data.model.Music
 //import com.shadhinmusiclibrary.player.data.source.ShadhinDataSourceFactory
 //import com.shadhinmusiclibrary.player.utils.makeValidMp4Url
-//import com.shadhinmusiclibrary.player.utils.toMusic
+//import com.shadhinmusiclibrary.player.utils.convater.toMusic
 //import com.gm.shadhin.util.Constants.FILE_BASE_URL
 //import com.gm.shadhin.util.fuska.BfcUtils
 //import com.gm.shadhin.util.fuska.BrainFuska

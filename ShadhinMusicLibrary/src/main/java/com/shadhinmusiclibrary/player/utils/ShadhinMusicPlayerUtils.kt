@@ -198,7 +198,7 @@ fun preloadBitmapClear(){
 fun preLoadBitmap(playlist: MusicPlayList, context: Context){
 
     playlist.list.forEach { music ->
-        bitmapFromUri(context, Uri.parse(music.displayIconUrl),200){
+        bitmapFromUri(context, runCatching { Uri.parse(music.displayIconUrl) }.getOrNull(),200){
             bitmapHasMap[music.mediaId.toString()] = it
         }
     }

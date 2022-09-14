@@ -10,6 +10,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -44,7 +45,7 @@ class ShadhinMusicServiceConnection (
     private val _repeatModeLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _shuffleLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _playerErrorLiveData: MutableLiveData<ErrorMessage> by lazy { MutableLiveData<ErrorMessage>() }
-    private var connectionScope:CoroutineScope?=null
+
     val currentPlayingMusicLiveData: LiveData<Music?> = _currentPlayingSong
     val playerErrorLiveData:LiveData<ErrorMessage> = _playerErrorLiveData
     val playListLiveData: LiveData<MusicPlayList> = _musicListLiveData
@@ -68,6 +69,7 @@ class ShadhinMusicServiceConnection (
     ).apply {
         connect()
     }
+
     val controller: MusicServiceController
         get() = this
 
@@ -96,7 +98,7 @@ class ShadhinMusicServiceConnection (
         }
 
     override fun subscribe(playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int){
-        connectionScope = CoroutineScope(Dispatchers.IO)
+        Log.i("music_payer", "subscribe: ${playlist.toString()}")
         preloadBitmapClear()
         preLoadBitmap(playlist,context)
         // playlist.decodePlayUrl()
@@ -144,7 +146,6 @@ class ShadhinMusicServiceConnection (
     override fun unSubscribe(){
         sendCommand(Command.UNSUBSCRIBE)
         mediaBrowser.unsubscribe(Constants.ROOT_ID_PLAYLIST, subscriptionCallback)
-        connectionScope?.cancel()
     }
     override fun addPlayList(playlist: MusicPlayList, responseFunc: ((size: Int?) -> Unit)?) {
         /*connectionScope?.asyncCallback({margeWithLocalUrl(playlist)}){
@@ -162,6 +163,7 @@ class ShadhinMusicServiceConnection (
     }
     override fun connect() = mediaBrowser.connect()
     override fun disconnect(){
+        Log.i("music_payer", "disconnect: ")
         mediaControllerCompat?.unregisterCallback(mediaControllerCallback)
 
         mediaBrowser.disconnect()

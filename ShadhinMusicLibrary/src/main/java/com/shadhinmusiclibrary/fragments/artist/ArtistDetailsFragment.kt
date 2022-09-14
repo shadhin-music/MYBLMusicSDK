@@ -22,6 +22,9 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.player.utils.convater.MusicConverterFactory.Companion.toMusic
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
@@ -34,6 +37,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
+    private lateinit var playerViewModel: PlayerViewModel
 
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter:ArtistHeaderAdapter
@@ -119,6 +123,13 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         viewModelArtistBanner = ViewModelProvider(this,injector.factoryArtistBannerVM)[ArtistBannerViewModel::class.java]
         viewModelArtistSong = ViewModelProvider(this,injector.factoryArtistSongVM)[ArtistContentViewModel::class.java]
         viewModelArtistAlbum = ViewModelProvider(this,injector.artistAlbumViewModelFactory)[ArtistAlbumsViewModel::class.java]
+
+        playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
+
+
+
+
+
     }
 
     private fun observeData() {
@@ -137,12 +148,21 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
                 Log.e("TAG","DATA123: "+ it)
             }
         }
-        homePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
-            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) {
-                //artistHeaderAdapter.artistBanner(it,context)
-                artistSongAdapter.artistContent(it)
-                Log.e("TAG","DATA: "+ it)
+        homePatchDetail?.let {
+            viewModelArtistSong.fetchArtistSongData(it.ArtistId.toInt())
+            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { artistContent ->
+
+
+
+                playerViewModel.subscribe(
+                    MusicPlayList(artistContent.data.map { d -> d.toMusic() },
+                        0
+                    ),
+                    true,0
+                )
+
+                artistSongAdapter.artistContent(artistContent)
+                Log.e("TAG","DATA: "+ it + artistContent)
             }
         }
         homePatchDetail.let {
@@ -154,6 +174,11 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
             }
         }
         Log.e("TAG","ARTISTID: "+ homePatchDetail?.ArtistId)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playerViewModel.disconnect()
     }
     companion object {
 

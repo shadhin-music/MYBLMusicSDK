@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
@@ -73,7 +74,7 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         mediaSessionConnector?.setQueueNavigator(shadhinMusicQueueNavigator)
         mediaSessionConnector?.setPlayer(exoPlayer)
         mediaSessionConnector?.setPlaybackPreparer(musicPlaybackPreparer)
-
+        shadhinMusicNotificationManager?.showNotification(exoPlayer)
 
     }
     private fun exoPlayer(): SimpleExoPlayer {
@@ -129,8 +130,8 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         isPlayWhenReady: Boolean = false,
         defaultPosition: Int
     ) {
+        Log.i("music_payer", "sendData: showNotification")
 
-        shadhinMusicNotificationManager?.showNotification(exoPlayer)
         if(musicPlayList.isValidPlayList()){
             //musicPlayList.loadAllImage(this)
             musicPlaybackPreparer?.defaultPosition = defaultPosition

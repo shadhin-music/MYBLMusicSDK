@@ -8,6 +8,7 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
+import com.shadhinmusiclibrary.player.ui.PlayerViewModelFactory
 import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
@@ -60,8 +61,7 @@ class Module(private val applicationContext: Context) {
         AlbumContentRepository(getApiShadhinMusicService())
 
 
-    val musicServiceConnection: ShadhinMusicServiceConnection
-        get() = ShadhinMusicServiceConnection(applicationContext)
+
 
 
 
@@ -85,6 +85,12 @@ class Module(private val applicationContext: Context) {
     val artistAlbumViewModelFactory: ArtistAlbumViewModelFactory
         get() = ArtistAlbumViewModelFactory(
         artistAlbumContentRepository)
+
+    private val musicServiceConnection: ShadhinMusicServiceConnection
+        get() = ShadhinMusicServiceConnection(applicationContext)
+
+    val playerViewModelFactory:PlayerViewModelFactory
+        get() = PlayerViewModelFactory(musicServiceConnection)
 
 
 

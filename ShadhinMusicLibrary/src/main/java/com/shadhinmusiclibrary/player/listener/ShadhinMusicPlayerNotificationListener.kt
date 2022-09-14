@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.player.listener
 
 import android.app.Notification
 import android.content.Intent
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_ID
@@ -15,6 +16,7 @@ class ShadhinMusicPlayerNotificationListener(
 
 
     override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
+        Log.i("music_payer", "onNotificationCancelled: ")
         musicService.apply {
             exH {
                 stopForeground(true)
@@ -31,17 +33,17 @@ class ShadhinMusicPlayerNotificationListener(
         ongoing: Boolean
     ) {
 
+        Log.i("music_payer", "onNotificationPosted: ")
         musicService.apply {
 
             if (ongoing && !isForegroundService) {
-               exH {
+
                    ContextCompat.startForegroundService(
                        this,
                        Intent(applicationContext, this::class.java)
                    )
                    startForeground(MUSIC_NOTIFICATION_ID, notification)
                    isForegroundService = true
-               }
             }
         }
     }

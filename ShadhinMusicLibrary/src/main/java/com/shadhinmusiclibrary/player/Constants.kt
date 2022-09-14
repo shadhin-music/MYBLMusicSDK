@@ -6,11 +6,11 @@ object Constants {
     const val ROOT_ID_PLAYLIST = "some_real_playlist"
     const val ROOT_ID_PLAYLIST_ADD = "add_some_real_playlist"
     const val ROOT_ID_EMPTY = "empty_media"
-    const val MEDIA_SESSION_TAG = "shadhin_music_service_session"
+    const val MEDIA_SESSION_TAG = "shadhinsdk_service_session"
     const val PENDING_INTENT_KEY = "pending_intent"
     const val PENDING_INTENT_REQUEST_CODE = 101
-    const val MUSIC_NOTIFICATION_CHANNEL_ID = "com.gm.shadhin.music_notification"
-    const val MUSIC_NOTIFICATION_ID = 833
+    const val MUSIC_NOTIFICATION_CHANNEL_ID = "com.gm.shadhinmusicsdk.music_notification"
+    const val MUSIC_NOTIFICATION_ID = 834
     const val MUSIC_NOTIFICATION_NAME = "Music"
     const val MUSIC_NOTIFICATION_DESCRIPTION = "MediaSession and MediaPlayer"
     const val COMMON_KEY = "serializable_key"
