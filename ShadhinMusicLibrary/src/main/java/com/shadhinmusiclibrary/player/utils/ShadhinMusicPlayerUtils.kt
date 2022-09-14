@@ -20,6 +20,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_DESCRIPTION
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_NAME
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import java.io.ByteArrayOutputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
@@ -194,14 +195,14 @@ private val bitmapHasMap:HashMap<String,Bitmap?> = HashMap()
 fun preloadBitmapClear(){
     bitmapHasMap.clear()
 }
-/*fun preLoadBitmap(playlist: MusicPlayList, context: Context){
+fun preLoadBitmap(playlist: MusicPlayList, context: Context){
 
     playlist.list.forEach { music ->
         bitmapFromUri(context, Uri.parse(music.displayIconUrl),200){
             bitmapHasMap[music.mediaId.toString()] = it
         }
     }
-}*/
+}
 fun getPreloadBitmap(mediaId:String):Bitmap?{
     return bitmapHasMap[mediaId.toString()]
 }

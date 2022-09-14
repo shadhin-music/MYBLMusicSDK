@@ -13,8 +13,11 @@ import android.support.v4.media.session.PlaybackStateCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.PlayerProgress
+import com.shadhinmusiclibrary.player.utils.*
 
 import com.shadhinmusiclibrary.utils.asyncCallback
 import com.shadhinmusiclibrary.utils.exH
@@ -28,14 +31,10 @@ import kotlin.math.absoluteValue
 
 typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
 class ShadhinMusicServiceConnection (
-/*
-@Inject constructor(
-    @ApplicationContext private val  context: Context,
-    private val downloadAccess: OfflineDownloadDaoAccess,
-    private val cacheRepository: CacheRepository
-*/
-) {
- /*   private var mediaControllerCompat: MediaControllerCompat?=null
+    val  context: Context,
+
+):MusicServiceController {
+    private var mediaControllerCompat: MediaControllerCompat?=null
     var transportControls:MediaControllerCompat.TransportControls? = null
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback()
     private val subscriptionCallback: ShadhinMusicSubscriptionCallback by lazy{ ShadhinMusicSubscriptionCallback()}
@@ -99,25 +98,23 @@ class ShadhinMusicServiceConnection (
 
     override fun subscribe(playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int){
         connectionScope = CoroutineScope(Dispatchers.IO)
-        connectionScope?.asyncCallback({margeWithLocalUrl(playlist)}){
-            preloadBitmapClear()
-            preLoadBitmap(playlist,context)
-           // playlist.decodePlayUrl()
-            playListUpdate{ isReady ->
-                if(isReady){
-                    val bundle = playlist.toBundle(Command.SUBSCRIBE.dataKey).apply {
-                        putBoolean(Constants.PLAY_WHEN_READY_KEY, isPlayWhenReady)
-                        putInt(Constants.DEFAULT_POSITION_KEY, position)
-                    }
-                    mediaBrowser.subscribe(Constants.ROOT_ID_PLAYLIST, bundle, subscriptionCallback)
+        preloadBitmapClear()
+        preLoadBitmap(playlist,context)
+        // playlist.decodePlayUrl()
+        playListUpdate{ isReady ->
+            if(isReady){
+                val bundle = playlist.toBundle(Command.SUBSCRIBE.dataKey).apply {
+                    putBoolean(Constants.PLAY_WHEN_READY_KEY, isPlayWhenReady)
+                    putInt(Constants.DEFAULT_POSITION_KEY, position)
                 }
+                mediaBrowser.subscribe(Constants.ROOT_ID_PLAYLIST, bundle, subscriptionCallback)
             }
-            receiveErrorMessage()
         }
+        receiveErrorMessage()
     }
     private suspend fun margeWithLocalUrl(playlist: MusicPlayList) {
 
-        printExeTime("margeWithLocalUrl"){
+       /* printExeTime("margeWithLocalUrl"){
             playlist.list.map { music->
                 val mainUrl = music.mediaUrl
                 val newUrl =  when {
@@ -129,11 +126,11 @@ class ShadhinMusicServiceConnection (
                 }
                 music.mediaUrl = newUrl
             }
-        }
+        }*/
     }
-    private fun localUrl(mediaId: String?): String? = exH {
+   /* private fun localUrl(mediaId: String?): String? = exH {
         downloadAccess.findDownloadByContentId(mediaId,cacheRepository.getUserCode())?.track?.playUrl
-    }
+    }*/
 
     override fun subscribeAsync(
         scope: CoroutineScope,
@@ -151,14 +148,15 @@ class ShadhinMusicServiceConnection (
         connectionScope?.cancel()
     }
     override fun addPlayList(playlist: MusicPlayList, responseFunc: ((size: Int?) -> Unit)?) {
-        connectionScope?.asyncCallback({margeWithLocalUrl(playlist)}){
-            preLoadBitmap(playlist,context)
-            val command = Command.ADD_PLAYLIST
-            playlist.let {
-                sendCommand(command.tag, it.toBundle(command)) {
-                    val size = it?.getInt(command.dataKey)
-                    responseFunc?.invoke(size)
-                }
+        /*connectionScope?.asyncCallback({margeWithLocalUrl(playlist)}){
+
+        }*/
+        preLoadBitmap(playlist,context)
+        val command = Command.ADD_PLAYLIST
+        playlist.let {
+            sendCommand(command.tag, it.toBundle(command)) {
+                val size = it?.getInt(command.dataKey)
+                responseFunc?.invoke(size)
             }
         }
 
@@ -344,8 +342,8 @@ class ShadhinMusicServiceConnection (
 
 
 
-    }*/
-    /*inner class MediaControllerCallback: MediaControllerCompat.Callback() {
+    }
+    inner class MediaControllerCallback: MediaControllerCompat.Callback() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
 
@@ -374,7 +372,7 @@ class ShadhinMusicServiceConnection (
 
 
 
-    }*/
+    }
     enum class Command(val tag: String, isNeedCallBack: Boolean){
         ADD_PLAYLIST("add_play_list", true),
         CHANGE_MUSIC("set_play_position", false),
