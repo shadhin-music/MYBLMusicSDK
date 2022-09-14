@@ -36,7 +36,7 @@
 ////    @SuppressLint("UnsafeOptInUsageError")
 ////    private fun initialization() {
 ////        isDataSourceError = false
-//////        val client = OkHttpClient()
+//////        val client = SingleOkHttpClient()
 //////            .newBuilder()
 //////            .addInterceptor(PlayerInterceptor())
 //////            .build()

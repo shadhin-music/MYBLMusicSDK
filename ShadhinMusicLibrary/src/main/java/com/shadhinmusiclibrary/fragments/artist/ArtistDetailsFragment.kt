@@ -34,6 +34,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
+
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter:ArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter

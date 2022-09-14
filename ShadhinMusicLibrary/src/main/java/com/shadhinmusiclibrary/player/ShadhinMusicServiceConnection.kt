@@ -32,7 +32,6 @@ import kotlin.math.absoluteValue
 typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
 class ShadhinMusicServiceConnection (
     val  context: Context,
-
 ):MusicServiceController {
     private var mediaControllerCompat: MediaControllerCompat?=null
     var transportControls:MediaControllerCompat.TransportControls? = null
