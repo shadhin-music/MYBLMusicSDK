@@ -8,32 +8,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibra.ArtistAlbumsAdapter
-import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Data
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.utils.Status
 
 
 class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var navController: NavController
 //    var homePatchItem: HomePatchItem? = null
 //    var homePatchDetail: HomePatchDetail? = null
-
+      private lateinit var viewModel:PodcastViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var podcastHeaderAdapter: PodcastHeaderAdapter
     private lateinit var podcastEpisodesAdapter: PodcastEpisodesAdapter
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
+    var data: Data?= null
+     var episode:List<Episode>?=null
+
+    var podcastType: String = ""
+    var contentType: String = ""
+    var selectedEpisodeID: Int = 0
+
   //  private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +64,15 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Check", "yes iam called")
+        argHomePatchDetail?.let {
+            val Type:String = it.ContentType
+            podcastType=  Type.take(2)
+            contentType = Type.takeLast(2)
+            selectedEpisodeID = it.AlbumId.toInt()
+            //  Log.d("TAG", "PODCAST DATA: " + contentType + podcastType+it.AlbumId+false)
+            //viewModel.fetchPodcastContent(podcastType,it.AlbumId.toInt(),contentType,false)
+        }
+       // Log.e("Check", "yes iam called")
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -65,25 +82,12 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
                 navController.popBackStack()
             }
         }
-//        val dataAdapter = ArtistDetailsAdapter(homePatchItem)
-//        dataAdapter.setData(homePatchDetail)
-//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-//        recyclerView.layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        recyclerView.adapter = dataAdapter
-//        val back: ImageView? = view.findViewById(R.id.imageBack)
-//
-//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//        back?.setOnClickListener {
-//            manager.popBackStack("Artist Fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
-//        }
     }
 
     private fun initialize() {
         setupAdapters()
         setupViewModel()
-       // observeData()
+        observeData()
     }
 
     private fun setupAdapters() {
@@ -92,15 +96,15 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastHeaderAdapter = PodcastHeaderAdapter(argHomePatchDetail)
-        podcastEpisodesAdapter = PodcastEpisodesAdapter()
-        podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter()
+        podcastHeaderAdapter = PodcastHeaderAdapter(episode)
+        podcastEpisodesAdapter = PodcastEpisodesAdapter(data)
+        podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data,this)
 //        artistsYouMightLikeAdapter =
 //            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
         parentAdapter = ConcatAdapter(
             config,
             podcastHeaderAdapter,
-            HeaderAdapter(),
+            PodcastTrackHeaderAdapter(),
             podcastEpisodesAdapter,
             podcastMoreEpisodesAdapter
 
@@ -112,82 +116,33 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 
     private fun setupViewModel() {
 
-//        viewModel =
-//            ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
-//        viewModelArtistBanner = ViewModelProvider(
-//            this,
-//            injector.factoryArtistBannerVM
-//        )[ArtistBannerViewModel::class.java]
-//        viewModelArtistSong = ViewModelProvider(
-//            this,
-//            injector.factoryArtistSongVM
-//        )[ArtistContentViewModel::class.java]
-//        viewModelArtistAlbum = ViewModelProvider(
-//            this,
-//            injector.artistAlbumViewModelFactory
-//        )[ArtistAlbumsViewModel::class.java]
+        viewModel =
+            ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
     }
 
-//    private fun observeData() {
-////        argHomePatchDetail?.let { viewModel.fetchArtistBioData(it.Artist) }
-////        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-////        viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
-////            if (response.status == Status.SUCCESS) {
-////                artistHeaderAdapter.artistBio(response.data)
-////                progressBar.visibility = GONE
-////            } else {
-////                progressBar.visibility = VISIBLE
-////                showDialog()
-////            }
-//
-////            ArtistHeaderAdapter(it)
-//            // viewDataInRecyclerView(it)
-//            //Log.e("TAG","DATA: "+ it.artist)
-//        }
-//        argHomePatchDetail.let {
-////            it?.ArtistId?.let { it1 ->
-////                it1?.toInt()
-////                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
-////            }
-////            viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
-////                if (response.status == Status.SUCCESS) {
-////                    progressBar.visibility = GONE
-////                    artistHeaderAdapter.artistBanner(response.data)
-////                } else {
-////                    progressBar.visibility = VISIBLE
-////                }
-////
-////                Log.e("TAG", "DATA123: " + it)
-////            }
-//        }
-//        argHomePatchDetail.let {
-////            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
-////            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
-////                if (res.status == Status.SUCCESS) {
-////                    artistSongAdapter.artistContent(res.data)
-////                } else {
-////                    showDialog()
-////                }
-//////                progressBar.visibility= GONE
-//////                artistSongAdapter.artistContent(it)
-//////                Log.e("TAG","DATA: "+ it)
-////            }
-//        }
-//        argHomePatchDetail.let {
-////            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
-////            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-////
-////                if (res.status == Status.SUCCESS) {
-////                    artistAlbumsAdapter.setData(res.data)
-////                } else {
-////                    showDialog()
-////                }
-//
-//
-//          //  }
-//        }
-//        Log.e("TAG", "ARTISTID: " + argHomePatchDetail?.ArtistId)
-//    }
+    private fun observeData() {
+        viewModel.fetchPodcastContent(podcastType,selectedEpisodeID,contentType,false)
+        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+
+                response?.data?.data?.EpisodeList?.let { podcastHeaderAdapter.setHeader(it) }
+                response.data?.data?.EpisodeList?.get(0)?.let { podcastEpisodesAdapter.setData(it.TrackList) }
+                response.data?.data?.let { it?.EpisodeList?.let { it1 ->
+                    podcastMoreEpisodesAdapter.setData(it1 as MutableList<Episode>)
+                } }
+                Log.e("TAG", "DATA: " + response.data)
+            }
+
+            else {
+               Log.e("TAG", "DATA: " + response.message)
+
+            }
+
+//            ArtistHeaderAdapter(it)
+            // viewDataInRecyclerView(it)
+            //Log.e("TAG","DATA: "+ it.artist)
+        }
+    }
 
     private fun showDialog() {
         AlertDialog.Builder(requireContext()) //set icon
@@ -226,9 +181,6 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 
     }
 
-    fun loadNewArtist(patchDetails: HomePatchDetail) {
-        Log.e("Check", "loadNewArtist")
-    }
 
 
 //    override fun onArtistAlbumClick(
@@ -288,5 +240,24 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 //        }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+        Log.d("TAG", "DATA ARtist: " + selectedEpisode)
+        val episode = selectedEpisode[itemPosition]
+        selectedEpisodeID = episode.Id
+        observeData()
+
+
+        //podcastHeaderAdapter.setHeader(data)
+
+        // podcastEpisodesAdapter.setData
+//        artistHeaderAdapter.setData(argHomePatchDetail!!)
+//        observeData()
+//        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+        //    parentAdapter.notifyDataSetChanged()
+//        parentRecycler.scrollToPosition(0)
+        parentAdapter.notifyDataSetChanged()
+        parentRecycler.scrollToPosition(0)
     }
 }

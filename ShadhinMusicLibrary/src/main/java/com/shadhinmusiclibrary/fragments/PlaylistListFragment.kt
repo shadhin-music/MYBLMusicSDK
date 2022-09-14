@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
@@ -77,5 +78,9 @@ class PlaylistListFragment : Fragment(), HomeCallBack {
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
 
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+        TODO("Not yet implemented")
     }
 }

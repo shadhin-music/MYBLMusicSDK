@@ -5,6 +5,7 @@ import com.shadhinmusiclibrary.data.repository.*
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
+import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
 import com.shadhinmusiclibrary.rest.RetroClient
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
@@ -63,7 +64,7 @@ object Module {
         return getFMClient().create(ApiService::class.java)
     }
     private val artistAlbumApiService:ApiService = getApiShadhinMusicServiceV5()
-    
+    private val podcastApiService:ApiService = getApiShadhinMusicServiceV5()
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
@@ -97,6 +98,11 @@ object Module {
     val artistAlbumViewModelFactory: ArtistAlbumViewModelFactory
         get() = ArtistAlbumViewModelFactory(
         artistAlbumContentRepository)
+
+    private val podcastRepository: PodcastRepository get() = PodcastRepository(
+        podcastApiService)
+    val podcastViewModelFactory:PodcastViewModelFactory
+        get() = PodcastViewModelFactory(podcastRepository)
 }
 
 

@@ -54,9 +54,7 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
     fun artistBio(bio: LastFmResult?) {
         this.bio = bio
 
-        val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
-        // textView?.text = bio?.artist?.bio?.summary
-        textView?.setText(Html.fromHtml(bio?.artist?.bio?.summary))
+
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
 //            moreText.setOnClickListener { e ->
@@ -84,7 +82,10 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-            textView?.text = bio?.artist?.bio?.summary
+            val bio :String  = bio?.artist?.bio?.summary.toString()
+             val updatedbio = Html.fromHtml(bio).toString()
+            // textView?.text = bio?.artist?.bio?.summary
+            textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
             tvName.text = homePatchDetail.Artist + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)

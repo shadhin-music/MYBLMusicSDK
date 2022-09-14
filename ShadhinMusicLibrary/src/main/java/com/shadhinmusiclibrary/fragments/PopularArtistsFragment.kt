@@ -1,11 +1,9 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
@@ -17,6 +15,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
@@ -74,5 +73,9 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
 
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+        TODO("Not yet implemented")
     }
 }

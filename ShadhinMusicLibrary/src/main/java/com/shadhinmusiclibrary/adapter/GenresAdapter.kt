@@ -38,7 +38,7 @@ class GenresAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: 
             val url: String = homePatchItem.Data[absoluteAdapterPosition].image
             val imageView = itemView.findViewById(R.id.image) as ImageView
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url.replace(".jpg","_mybl.jpg"))
                 .into(imageView)
 
             itemView.setOnClickListener {
