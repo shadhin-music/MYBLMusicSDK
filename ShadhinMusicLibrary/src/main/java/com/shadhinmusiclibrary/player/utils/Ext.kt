@@ -29,8 +29,8 @@
 //import com.gm.shadhin.data.storage.db.download.OfflineDownload
 //import com.gm.shadhin.player.data.model.Music
 //import com.shadhinmusiclibrary.player.data.source.ShadhinDataSourceFactory
-//import com.gm.shadhin.player.utils.makeValidMp4Url
-//import com.gm.shadhin.player.utils.toMusic
+//import com.shadhinmusiclibrary.player.utils.makeValidMp4Url
+//import com.shadhinmusiclibrary.player.utils.toMusic
 //import com.gm.shadhin.util.Constants.FILE_BASE_URL
 //import com.gm.shadhin.util.fuska.BfcUtils
 //import com.gm.shadhin.util.fuska.BrainFuska

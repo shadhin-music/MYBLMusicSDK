@@ -8,13 +8,13 @@
 //
 //
 //import com.shadhinmusiclibrary.player.Constants.userAgent
-//import com.gm.shadhin.player.MediaContext
-//import com.gm.shadhin.player.ShadhinMusicPlayerContext
+//import com.shadhinmusiclibrary.player.MediaContext
+//import com.shadhinmusiclibrary.player.ShadhinMusicPlayerContext
 //import com.shadhinmusiclibrary.player.data.model.Music
 //import com.gm.shadhin.player.singleton.DataSourceInfo.dataSourceErrorCode
 //import com.gm.shadhin.player.singleton.DataSourceInfo.dataSourceErrorMessage
 //import com.gm.shadhin.player.singleton.DataSourceInfo.isDataSourceError
-//import com.gm.shadhin.player.utils.isLocalUrl
+//import com.shadhinmusiclibrary.player.utils.isLocalUrl
 //
 //import kotlinx.coroutines.runBlocking
 //

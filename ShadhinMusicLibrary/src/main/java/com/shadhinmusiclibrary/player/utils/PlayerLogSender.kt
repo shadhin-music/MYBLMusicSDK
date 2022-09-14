@@ -4,8 +4,8 @@
 //import com.gm.shadhin.data.rest.kotlin.RestRepositoryKt
 //import com.gm.shadhin.data.storage.LocalStorage
 //import com.shadhinmusiclibrary.player.data.model.Music
-//import com.gm.shadhin.util.SubStatus
-//import com.gm.shadhin.util.getToken
+//import com.shadhinmusiclibrary.utils.SubStatus
+//import com.shadhinmusiclibrary.utils.getToken
 //import com.google.android.exoplayer2.MediaItem
 //import com.google.firebase.analytics.FirebaseAnalytics
 //import com.google.firebase.analytics.ktx.analytics
