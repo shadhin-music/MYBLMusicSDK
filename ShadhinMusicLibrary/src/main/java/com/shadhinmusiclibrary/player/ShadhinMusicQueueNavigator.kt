@@ -6,20 +6,22 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+import com.shadhinmusiclibrary.player.data.model.Music
+import com.shadhinmusiclibrary.player.utils.toServiceMediaItemList
 
 
-class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
-    TimelineQueueNavigator(sessionCompat) {
+class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat,private val music:List<Music>?): TimelineQueueNavigator(sessionCompat) {
+
     override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
 
 
         musicIndex = windowIndex
-        val playerItem =
-            (player as SimpleExoPlayer)
+       /* val playerItem =
+           *//* (player as SimpleExoPlayer)
                 .getMediaItemAt(windowIndex)
-                .toServiceMediaItem()
+                .toServiceMediaItem()*/
 
-        return playerItem.description
+        return  music?.toServiceMediaItemList()?.get(windowIndex)?.description!!
 
     }
 

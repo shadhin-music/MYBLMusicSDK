@@ -6,19 +6,17 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
-
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.player.Constants.MEDIA_SESSION_TAG
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_KEY
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_REQUEST_CODE
 import com.shadhinmusiclibrary.player.Constants.ROOT_ID_EMPTY
 import com.shadhinmusiclibrary.player.Constants.ROOT_ID_PLAYLIST
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.listener.ShadhinMusicPlayerNotificationListener
+import com.shadhinmusiclibrary.player.utils.toServiceMediaItemMutableList
 import com.shadhinmusiclibrary.utils.exH
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,19 +41,13 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
 
     override var exoPlayer: SimpleExoPlayer?=null
     override var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?=null
-
-
     override var scope:CoroutineScope?=null
-
-
     var isForegroundService = false
 
     override fun onCreate() {
         super.onCreate()
         scope = CoroutineScope(Dispatchers.IO)
-        scope?.launch(Dispatchers.Main) {
-            exH {initialization()}
-        }
+        scope?.launch(Dispatchers.Main) { exH {initialization()} }
 
     }
 
@@ -65,7 +57,6 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         mediaSession = MediaSessionCompat(this, MEDIA_SESSION_TAG).apply {
             setSessionActivity(pendingIntent())
             isActive = true
-
         }
         sessionToken = mediaSession?.sessionToken
         musicPlayerNotificationListener =
@@ -78,7 +69,7 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         )
         musicPlaybackPreparer =
             ShadhinMusicPlaybackPreparer(this@ShadhinMusicPlayer, exoPlayer)
-        shadhinMusicQueueNavigator = mediaSession?.let { ShadhinMusicQueueNavigator(it) }
+        shadhinMusicQueueNavigator = mediaSession?.let { ShadhinMusicQueueNavigator(it,musicPlaybackPreparer?.playlist) }
         mediaSessionConnector?.setQueueNavigator(shadhinMusicQueueNavigator)
         mediaSessionConnector?.setPlayer(exoPlayer)
         mediaSessionConnector?.setPlaybackPreparer(musicPlaybackPreparer)
@@ -104,33 +95,11 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
     }
 
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-
-
-        musicPlaybackPreparer?.removeTimerHandler()
-        exoPlayer?.stop(true)
-        shadhinMusicNotificationManager?.hideNotification()
-
-        super.onTaskRemoved(rootIntent)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-
-
-        musicPlaybackPreparer?.removeTimerHandler()
-        mediaSession?.release()
-        exoPlayer?.release()
-        exoPlayer = null
-        scope?.cancel()
-
-    }
     override fun onGetRoot(
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
     ): BrowserRoot {
-
-      //  startForeground()
         return if (clientPackageName == applicationContext.packageName)
           return  BrowserRoot(ROOT_ID_PLAYLIST, null)
         else BrowserRoot(ROOT_ID_EMPTY, null)
@@ -178,5 +147,23 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ){
         result.sendResult(mutableListOf())
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+
+
+        musicPlaybackPreparer?.removeTimerHandler()
+        exoPlayer?.stop(true)
+        shadhinMusicNotificationManager?.hideNotification()
+
+        super.onTaskRemoved(rootIntent)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        musicPlaybackPreparer?.removeTimerHandler()
+        mediaSession?.release()
+        exoPlayer?.release()
+        exoPlayer = null
+        scope?.cancel()
     }
 }

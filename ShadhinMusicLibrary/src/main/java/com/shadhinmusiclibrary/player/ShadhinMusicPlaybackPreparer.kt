@@ -4,16 +4,21 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
 import com.google.android.exoplayer2.*
-import com.shadhinmusiclibrary.utils.exH
-import com.shadhinmusiclibrary.utils.normalize
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import java.util.*
+
+import com.shadhinmusiclibrary.player.data.model.ErrorMessage
+import com.shadhinmusiclibrary.player.data.model.Music
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.PlayerProgress
+import com.shadhinmusiclibrary.player.utils.toMediaSourceList
+import com.shadhinmusiclibrary.utils.exH
+import com.shadhinmusiclibrary.utils.normalize
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection.*
+import java.util.*
 
 typealias PlayListUpdateFunc = (position:Int) -> Unit
 typealias ErrorCallbackFunc = (isDataSourceError:Boolean,message:String?,errorCode:Int?,currentMusic: Music?) -> Unit
@@ -26,7 +31,9 @@ class ShadhinMusicPlaybackPreparer(
     private var playListUpdateFunc: PlayListUpdateFunc? = null
     private var unsubscribeFunc: UnsubscribeFunc? = null
     private var errorCallbackFunc: ErrorCallbackFunc?= null
-    private val playList: MutableList<Music> = ArrayList()
+    private val _playList: MutableList<Music> = ArrayList()
+    public val playlist:List<Music>
+        get() = _playList
     private var timerHandler:Handler? = null
     var defaultPosition:Int = 0
     private var sleepTimeMillis:Long = Long.MAX_VALUE
@@ -71,7 +78,7 @@ class ShadhinMusicPlaybackPreparer(
     }
 
     private fun setSleepTime(extras: Bundle?) {
-        val isStart = extras?.getBoolean(Command.SLEEP_TIMER.tag2)
+       /* val isStart = extras?.getBoolean(Command.SLEEP_TIMER.tag2)
         val time = extras?.getLong(Command.SLEEP_TIMER.tag)?:0L
         removeTimerHandler()
         if (timerHandler == null){
@@ -86,7 +93,7 @@ class ShadhinMusicPlaybackPreparer(
                 this.sleepTimeMillis = -1
             }, time)
             this.sleepTimeMillis = time
-        }
+        }*/
 
     }
     fun removeTimerHandler(){
@@ -96,15 +103,15 @@ class ShadhinMusicPlaybackPreparer(
     }
 
     private fun setPlayerSpeed(extras: Bundle?) {
-        val speed = extras?.getFloat(Command.PLAYER_SPEED.dataKey)
+       /* val speed = extras?.getFloat(Command.PLAYER_SPEED.dataKey)
         val param = PlaybackParameters(speed?:1.0f)
-        exoPlayer?.playbackParameters = param
+        exoPlayer?.playbackParameters = param*/
     }
 
     private fun commandPlayListGet(cb: ResultReceiver?) {
         val command = Command.GET_PLAYLIST
         playListUpdateFunc = { position ->
-            cb?.send(command.resultCode, MusicPlayList(playList,position).toBundle(command))
+            cb?.send(command.resultCode, MusicPlayList(_playList,position).toBundle(command))
         }
         cb?.send(command.resultCode, null)
     }
@@ -119,8 +126,8 @@ class ShadhinMusicPlaybackPreparer(
 
     fun stop(){
         removeTimerHandler()
-        exoPlayer?.clearMediaItems()
-        exoPlayer?.stop()
+       // exoPlayer?.clearMediaItems()
+        exoPlayer?.stop(true)
     }
     private fun progressRequestCommand(resultReceiver: ResultReceiver?) {
         val command = Command.MUSIC_PROGRESS_REQUEST
@@ -141,7 +148,7 @@ class ShadhinMusicPlaybackPreparer(
             if(serializable.isValidPlayList()){
                 addPlaylist(serializable)
                 cb?.send(command.resultCode, Bundle().apply {
-                    putInt(command.dataKey, playList.size)
+                    putInt(command.dataKey, _playList.size)
                 })
             }
         }
@@ -162,80 +169,72 @@ class ShadhinMusicPlaybackPreparer(
 
     fun restartPlayer(){
 
-        if(!playList.isNullOrEmpty()) {
+       /* if(!playList.isNullOrEmpty()) {
             concatenatingMediaSource.clear()
             concatenatingMediaSource.addMediaSources(playList.toMediaSourceList(context))
             exoPlayer?.clearMediaItems()
             exoPlayer?.addMediaSource(concatenatingMediaSource)
             exoPlayer?.seekToDefaultPosition(defaultPosition)
             onPrepare(true)
-        }
+        }*/
     }
-    fun isLive(): Boolean {
+   /* fun isLive(): Boolean {
       return  exoPlayer?.currentMediaItem?.toMusic()?.isLive() == true
-    }
+    }*/
     fun initPlayList(playlist: MusicPlayList){
-        playList.clear()
-        playList.addAll(playlist.list)
+        _playList.clear()
+        _playList.addAll(playlist.list)
         concatenatingMediaSource.clear()
-        concatenatingMediaSource.addMediaSources(playList.toMediaSourceList(context))
-        exoPlayer?.clearMediaItems()
+        concatenatingMediaSource.addMediaSources(_playList.toMediaSourceList(context))
+    /*    exoPlayer?.clearMediaItems()
 
-        exoPlayer?.addMediaSource(concatenatingMediaSource) //todo This line make memory leak when app is destroy
-        exH{ if(defaultPosition !=-1) { exoPlayer?.seekToDefaultPosition(defaultPosition) } }
+        exoPlayer?.addMediaSource(concatenatingMediaSource) */
+
     }
     override fun onPrepare(playWhenReady: Boolean) {
-        exoPlayer?.prepare()
+        exoPlayer?.prepare(concatenatingMediaSource)
+        exH{ if(defaultPosition !=-1) { exoPlayer?.seekToDefaultPosition(defaultPosition) } }
         exoPlayer?.playWhenReady = true
         playListUpdateFunc?.invoke(defaultPosition)
     }
 
-    override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle) {
-        TODO("Not yet implemented")
-    }
 
-    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle) {
-        TODO("Not yet implemented")
-    }
 
     fun addPlaylist(playlist: MusicPlayList) {
         concatenatingMediaSource.addMediaSources(playlist.list.toMediaSourceList(context))
-        playList.addAll(playlist.list)
+        _playList.addAll(playlist.list)
         //playlist.loadAllImage(context)
-        exoPlayer?.currentMediaItemIndex?.let {  playListUpdateFunc?.invoke(it)}
+      //  exoPlayer?.currentMediaItemIndex?.let {  playListUpdateFunc?.invoke(it)}
 
     }
 
-    override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
-        val index = playList.indexOfFirst { song -> song.mediaId == mediaId}
+    override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle) {
+        val index = _playList.indexOfFirst { song -> song.mediaId == mediaId}
         exoPlayer?.seekTo(index, 0L)
         exoPlayer?.playWhenReady = true
     }
 
-    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) = Unit
-    override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
+    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle) = Unit
+    override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle) = Unit
     fun seekToDefaultPositionAndPrepare() {
        exoPlayer?.seekToDefaultPosition()
-       exoPlayer?.prepare()
+       exoPlayer?.prepare(concatenatingMediaSource)
     }
 
     fun seekTo(l: Long) {
         exoPlayer?.seekTo(l)
     }
-    fun currentMusic(): Music? {
+  /*  fun currentMusic(): Music? {
+        exoPlayer?.metadataComponent?.anyToMusic()
         return exoPlayer?.currentMediaItem?.toMusic()
-    }
+    }*/
     fun playerProgress(): PlayerProgress?{
        return exoPlayer?.let { PlayerProgress.fromPlayer(it) }
     }
 
-    fun musicAt(windowIndex: Int): Music? {
+ /*   fun musicAt(windowIndex: Int): Music? {
        return exoPlayer?.getMediaItemAt(windowIndex)?.toMusic()
-    }
+    }*/
 
     fun sendError(isDataSourceError: Boolean, errorMessage: String?,errorCode: Int?,currentMusic: Music?) {
         errorCallbackFunc?.invoke(isDataSourceError,errorMessage,errorCode,currentMusic)

@@ -7,10 +7,15 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.core.net.toUri
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
 import com.shadhinmusiclibrary.utils.randomString
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.*
+import com.shadhinmusiclibrary.utils.exH
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,12 +27,14 @@ fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMediaItemLi
 
 fun List<Music>.toMediaSourceList(context: Context): List<ProgressiveMediaSource> {
 
-    val isInternetConnected = isConnectedToInternet(context)
+  //  val isInternetConnected = isConnectedToInternet(context)
     val sources = this.map { song ->
-        val pla = song.toPlayerMediaItem()
-        val dataSource = ShadhinDataSourceFactory.buildWithCache(context,song,isInternetConnected)
+       // val pla = song.toPlayerMediaItem()
+
+        //val dataSource = ShadhinDataSourceFactory.buildWithCache(context,song,isInternetConnected)
+        val dataSource = DefaultDataSourceFactory(context,Constants.userAgent)
         ProgressiveMediaSource.Factory(dataSource)
-            .createMediaSource(pla)
+            .createMediaSource(song.mediaUrl?.toUri())
     }.toList()
 
     return sources
@@ -45,7 +52,7 @@ fun List<Music>.toMediaSourceList(context: Context): List<ProgressiveMediaSource
     return concatenatingMediaSource
 }*/
 
-public fun MediaItem.toMusic(): Music {
+/*public fun MediaItem.toMusic(): Music {
     val others = this.mediaMetadata.extras?.toMusicMetaData()
    return Music(
        mediaId = this.mediaId.ifEmpty { randomString(8) },
@@ -65,10 +72,10 @@ public fun MediaItem.toMusic(): Music {
        trackType = others?.trackType,
        isPaid = others?.isPaid,
    ).applyRootInfo(others)
-}
-fun MediaItem.toServiceMediaItem(): MediaBrowserCompat.MediaItem {
+}*/
+/*fun MediaItem.toServiceMediaItem(): MediaBrowserCompat.MediaItem {
   return this.toMusic().toServiceMediaItem()
-}
+}*/
 fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
     val description = MediaDescriptionCompat.Builder()
         .setMediaUri(Uri.parse(music.mediaUrl))
@@ -145,7 +152,7 @@ fun MediaBrowserCompat.MediaItem.toMusic(): Music {
         seekable = meta?.seekable,
     ).applyRootInfo(meta)
 }
-fun ArtistContents.Data.toMusic() = Music(
+/*fun ArtistContents.Data.toMusic() = Music(
     mediaId = contentID,
     title = title,
     displayIconUrl = CharParser.getImageFromTypeUrl(image, Constants.CONTENT_TYPE_ARTIST),
@@ -156,9 +163,9 @@ fun ArtistContents.Data.toMusic() = Music(
     contentType = contentType,
 
 
-)
+)*/
 
-fun ArtistContents.Data.copy(): ArtistContents.Data {
+/*fun ArtistContents.Data.copy(): ArtistContents.Data {
     val data = ArtistContents.Data()
         data.artistname    = this.artistname
         data.contentID     = this.contentID
@@ -176,9 +183,9 @@ fun ArtistContents.Data.copy(): ArtistContents.Data {
         data.isPlaying     = this.isPlaying
         data.isRBT         = this.isRBT
    return data
-}
+}*/
 
-fun PlaylistContents.Data.copy(): PlaylistContents.Data {
+/*fun PlaylistContents.Data.copy(): PlaylistContents.Data {
     val data = PlaylistContents.Data()
     data.artist        = this.artist
     data.contentID     = this.contentID
@@ -196,8 +203,8 @@ fun PlaylistContents.Data.copy(): PlaylistContents.Data {
     data.isPlaying     = this.isPlaying
     data.isRBT         = this.isRBT
     return data
-}
-fun AlbumContents.Data.copy(): AlbumContents.Data {
+}*/
+/*fun AlbumContents.Data.copy(): AlbumContents.Data {
     val data = AlbumContents.Data()
     data.artist        = this.artist
     data.contentID     = this.contentID
@@ -247,7 +254,8 @@ fun CategoryContents.Data.copy(): CategoryContents.Data {
 
 
     return data
-}
+}*/
+/*
 fun PodcastShowModel.TrackList.copy():PodcastShowModel.TrackList{
     val data = PodcastShowModel.TrackList()
     data.id           = this.id
@@ -293,9 +301,10 @@ fun PlaylistData.copy():PlaylistData{
     return  data
 }
 
+*/
 
 
-fun List<PlaylistContents.Data>?.playListAddItem(index:Int,newData: PlaylistContents.Data?): List<PlaylistContents.Data> {
+/*fun List<PlaylistContents.Data>?.playListAddItem(index:Int,newData: PlaylistContents.Data?): List<PlaylistContents.Data> {
 
     if(newData == null && this!= null){
         return this
@@ -598,13 +607,13 @@ fun List<CategoryContents.Data>.copyList(): MutableList<CategoryContents.Data> {
         newList.add(data.copy())
     }
     return newList
-}
-fun List<*>.toCategoryContentsList(): List<CategoryContents.Data?> {
+}*/
+/*fun List<*>.toCategoryContentsList(): List<CategoryContents.Data?> {
     return map { data ->
         if(data is Music) data.toCategoryContentsData() else null
     }
-}
-fun PlaylistData.toMusic(): Music {
+}*/
+/*fun PlaylistData.toMusic(): Music {
     return Music(
         mediaId = contentID,
         title = title,
@@ -616,7 +625,7 @@ fun PlaylistData.toMusic(): Music {
         contentType = contentType,
         userPlayListId = userPlayListId,
     )
-}
+}*/
 fun List<*>.toMusicPlayList(rootId:String?=null,rootType:String?=null,rootTitle:String?=null,rootImage:String?=null): MusicPlayList {
     val list = this.map { song ->
         val music = song.anyToMusic()
@@ -634,23 +643,23 @@ fun Any?.anyToMusic(): Music {
         return  Music()
     }
     return when(this){
-        is ArtistContents.Data -> this.toMusic()
+        /*is ArtistContents.Data -> this.toMusic()
         is PodcastShowModel.TrackList -> this.toMusic()
         is PodcastExplore.InsideData -> this.toMusic()
         is AlbumContents.Data -> this.toMusic()
         is PlaylistContents.Data -> this.toMusic()
         is CategoryContents.Data -> this.toMusic()
-        is PlaylistData -> this.toMusic()
+        is PlaylistData -> this.toMusic()*/
         is MediaBrowserCompat.MediaItem -> this.toMusic()
         is MediaMetadataCompat -> this.toMusic() ?: Music()
-        is RecommendedSongsContents.RecommendedSong -> this.toMusic()
+        /*is RecommendedSongsContents.RecommendedSong -> this.toMusic()*/
         else -> Music()
     }
 }
 
-private fun RecommendedSongsContents.RecommendedSong.toMusic(): Music {
+/*private fun RecommendedSongsContents.RecommendedSong.toMusic(): Music {
   return  convertToCategoryContent(this).toMusic()
-}
+}*/
 
 fun Bundle.toMusicPlayList(command: ShadhinMusicServiceConnection.Command): MusicPlayList? {
     val serializable = this.getSerializable(command.dataKey)
@@ -710,7 +719,7 @@ fun Long.toDateTimeString(): String {
     return format.format(date)
 }
 
-fun newDownloadedSong(oldDownload:List<CategoryContents.Data>, newDownlaod:List<CategoryContents.Data>): List<CategoryContents.Data> {
+/*fun newDownloadedSong(oldDownload:List<CategoryContents.Data>, newDownlaod:List<CategoryContents.Data>): List<CategoryContents.Data> {
     if(oldDownload.isNullOrEmpty()){
         return newDownlaod
     }
@@ -764,7 +773,7 @@ fun String.makeValidMp4Url(): String {
         this.isMp4Url() -> "${Constants.FILE_BASE_URL}${this}"
         else -> this
     }
-}
+}*/
 
 
 

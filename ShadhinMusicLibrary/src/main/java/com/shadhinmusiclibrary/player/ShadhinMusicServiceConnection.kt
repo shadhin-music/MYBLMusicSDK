@@ -27,12 +27,15 @@ import java.util.*
 import kotlin.math.absoluteValue
 
 typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
-class ShadhinMusicServiceConnection @Inject constructor(
+class ShadhinMusicServiceConnection (
+/*
+@Inject constructor(
     @ApplicationContext private val  context: Context,
     private val downloadAccess: OfflineDownloadDaoAccess,
     private val cacheRepository: CacheRepository
-): MusicServiceController {
-    private var mediaControllerCompat: MediaControllerCompat?=null
+*/
+) {
+ /*   private var mediaControllerCompat: MediaControllerCompat?=null
     var transportControls:MediaControllerCompat.TransportControls? = null
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback()
     private val subscriptionCallback: ShadhinMusicSubscriptionCallback by lazy{ ShadhinMusicSubscriptionCallback()}
@@ -341,8 +344,8 @@ class ShadhinMusicServiceConnection @Inject constructor(
 
 
 
-    }
-    inner class MediaControllerCallback: MediaControllerCompat.Callback() {
+    }*/
+    /*inner class MediaControllerCallback: MediaControllerCompat.Callback() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
 
@@ -371,7 +374,7 @@ class ShadhinMusicServiceConnection @Inject constructor(
 
 
 
-    }
+    }*/
     enum class Command(val tag: String, isNeedCallBack: Boolean){
         ADD_PLAYLIST("add_play_list", true),
         CHANGE_MUSIC("set_play_position", false),
