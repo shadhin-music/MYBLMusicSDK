@@ -163,8 +163,8 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
             PodcastDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", homePatchItem)
-                    putSerializable("dataX", homePatchDetail)
+                    putSerializable("homePatchItem", homePatchItem)
+                    putSerializable("homePatchDetail", homePatchDetail)
                 }
             }
     }

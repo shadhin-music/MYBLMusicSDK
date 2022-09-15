@@ -1,8 +1,11 @@
 package com.shadhinmusiclibrary.activities
 
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.NavigationRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.shadhinmusiclibrary.R
@@ -16,12 +19,14 @@ internal class SDKMainActivity : AppCompatActivity() {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sdk_main)
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
+
         //Will received data from Home Fragment from MYBLL App
         val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
             .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
