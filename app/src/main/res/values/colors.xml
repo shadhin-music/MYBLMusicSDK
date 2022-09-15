@@ -11,8 +11,8 @@
     <color name="colorPrimary">#FF5757</color>
     <color name="bufferColor">#8000AFF5</color>
     <color name="timeBarBgColor">#4000AFF5</color>
-    <color name="colorPrimaryDark">#009ddd</color>
-    <color name="colorAccent">#00aff5</color>
+    <color name="colorPrimaryDark">#CDFD3333</color>
+    <color name="colorAccent">#CDFD3333</color>
     <color name="colorTransparent">#9FFFFFFF</color>
     <color name="colorText">#37484E</color>
     <color name="colorSubText">#7a99a5</color>

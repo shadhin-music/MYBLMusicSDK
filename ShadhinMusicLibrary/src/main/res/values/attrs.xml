@@ -133,7 +133,6 @@
             <enum name="vertical" value="1" />
         </attr>
     </declare-styleable>
-
     <declare-styleable name="SlidingUpPanelLayout">
         <attr name="umanoPanelHeight" format="dimension" />
         <attr name="umanoShadowHeight" format="dimension" />
