@@ -4,10 +4,9 @@
     package="com.shadhinmusiclibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:name=".di.ShadhinApp"
-        android:usesCleartextTraffic="true"
-
-        >
+    <application
+        android:name=".di.ShadhinApp"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".activities.SDKMainActivity"
             android:exported="false"

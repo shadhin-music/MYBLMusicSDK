@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
@@ -35,8 +35,8 @@ class GenrePlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = AlbumAdapter()
-       // dataAdapter.setData(getMockData())
+        val dataAdapter = GenrePlaylistAdapter()
+        // dataAdapter.setData(getMockData())
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -48,28 +48,5 @@ class GenrePlaylistFragment : Fragment() {
             // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
         }
 
-    }
-//    private fun getMockData(): List<GenreDataModel> = listOf(
-//
-//        GenreDataModel.Artist(
-//            name = "Artist"
-//
-//        ),
-//
-//        GenreDataModel.Artist2(
-//            name = "Ad"
-//        ),
-//
-//    )
-    companion object {
-
-
-        @JvmStatic
-        fun newInstance() =
-            GenrePlaylistFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }
