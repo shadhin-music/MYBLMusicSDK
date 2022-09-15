@@ -1,5 +1,9 @@
 package com.shadhinmusiclibrary.activities
 
+import android.graphics.Bitmap
+import android.graphics.PorterDuff
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,15 +12,21 @@ import androidx.annotation.NavigationRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -26,14 +36,15 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import java.io.Serializable
 
 
-internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlideListener {
+internal class SDKMainActivity : BaseActivity(),
+    DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
+    DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var isPlayOrPause = false
-//    private lateinit var fcvNavigationHost: FragmentContainerView
-
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
 
+    //mini music player
     private lateinit var cvMiniPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
     private lateinit var tvSongNameMini: TextView
@@ -68,6 +79,8 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
     private lateinit var ibtnQueueMusic: ImageButton
     private lateinit var ibtnDownload: ImageButton
 
+
+    private lateinit var listData: MutableList<HomePatchDetail>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sdk_main)
@@ -90,11 +103,13 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
         }
         routeData(patch, selectedPatchIndex)
 
-//        viewModelMusicPlayer.homeContent.observe(this) {
-//            Log.e("SDKA", "onClickItem: $it")
-//            setMiniMusicPlayerData(it)
-//        }
+        slCustomBShOnMaximized()
 
+        setMusicBannerAdapter()
+        uiFunctionality()
+    }
+
+    private fun miniPlayerShowHide() {
         //at fast show
         slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(64, this)
         slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
@@ -112,7 +127,6 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
     }
 
     private fun uiInitMainMusicPlayer() {
-
         clMainMusicPlayer = findViewById(R.id.include_main_music_player)
         acivMinimizePlayerBtn = findViewById(R.id.aciv_minimize_player_btn)
         tvTitle = findViewById(R.id.tv_title)
@@ -133,6 +147,96 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
         ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
         ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
         ibtnDownload = findViewById(R.id.ibtn_download)
+    }
+
+    private fun slCustomBShOnMaximized() {
+        //when music player up side then mini player hide and big player show.
+        //and when big player hide mini player show
+        slCustomBottomSheet.addPanelSlideListener(object :
+            SlidingUpPanelLayout.PanelSlideListener {
+            override fun onPanelSlide(panel: View?, slideOffset: Float) {
+                cvMiniPlayer.alpha = (1 - slideOffset)
+                clMainMusicPlayer.alpha = slideOffset
+                Log.e("SDKMA", "onPanelSlide: $slideOffset")
+                if (slideOffset == 1f) {
+                    playerMode = PlayerMode.MAXIMIZED
+                    cvMiniPlayer.visibility = View.GONE
+                } else {
+                    playerMode = PlayerMode.MINIMIZED
+                    cvMiniPlayer.visibility = View.VISIBLE
+                }
+                val params = RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT
+                )
+                rlContentMain.layoutParams = params
+            }
+
+            override fun onPanelStateChanged(
+                panel: View?,
+                previousState: SlidingUpPanelLayout.PanelState?,
+                newState: SlidingUpPanelLayout.PanelState?
+            ) {
+            }
+        })
+    }
+
+    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
+        val inflater = navHostFragment.navController.navInflater
+        val navGraph = inflater.inflate(graphResId)
+        navController.setGraph(navGraph, bundleData)
+    }
+
+    fun setMiniMusicPlayerData(mSongDet: SongDetail) {
+        cvMiniPlayer.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(mSongDet.image.replace("<\$size\$>", "300"))
+            .transition(DrawableTransitionOptions().crossFade(500))
+            .fitCenter()
+            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
+            .placeholder(R.drawable.ic_rectangle_music)
+            .error(R.drawable.ic_rectangle_music)
+            .into(ivSongThumbMini)
+        tvSongNameMini.text = mSongDet.title
+        tvSingerNameMini.text = mSongDet.labelname
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
+
+/*        ibtnSkipPreviousMini.setOnClickListener {
+        }
+
+        ibtnPlayPauseMini.setOnClickListener {
+            if (!isPlayOrPause) {
+                isPlayOrPause = true
+                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
+            } else {
+                isPlayOrPause = false
+                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
+            }
+        }
+        ibtnSkipNextMini.setOnClickListener {
+
+        }*/
+    }
+
+    override fun changePlayerView(playerMode: PlayerMode?) {
+        when (playerMode) {
+            PlayerMode.MINIMIZED -> toggleMiniPlayerView(true)
+            PlayerMode.MAXIMIZED -> toggleMiniPlayerView(false)
+            PlayerMode.CLOSED -> {}
+            else -> {}
+        }
+    }
+
+    private fun toggleMiniPlayerView(isVisible: Boolean) {
+        if (isVisible) {
+            playerMode = PlayerMode.MINIMIZED
+            cvMiniPlayer.visibility = View.VISIBLE
+            slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        } else {
+            playerMode = PlayerMode.MAXIMIZED
+            slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+            cvMiniPlayer.visibility = View.INVISIBLE
+        }
     }
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
@@ -167,24 +271,7 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
                                 homePatchDetail as Serializable
                             )
                         })
-                    /*  setMiniMusicPlayerData(
-                          SongDetail(
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              "",
-                              ""
-                          )
-                      )*/
+                    miniPlayerShowHide()
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
@@ -199,6 +286,7 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
                                 homePatchDetail as Serializable
                             )
                         })
+                    miniPlayerShowHide()
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
@@ -286,65 +374,183 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
         }
     }
 
-    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
-        val inflater = navHostFragment.navController.navInflater
-        val navGraph = inflater.inflate(graphResId)
-        navController.setGraph(navGraph, bundleData)
+    private fun setMusicBannerAdapter() {
+        val adapter = MusicPlayAdapter(this)
+        listData = mutableListOf()
+        for (i in 1..3) {
+            listData.add(
+                HomePatchDetail(
+                    "",
+                    "",
+                    "test 11111",
+                    "Habib",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "https://s3-alpha-sig.figma.com/img/c1e6/aa8d/9b7ead647d0f62b68e0aea77f737cab7?Expires=1663545600&Signature=EstkpW5-lhvXiOaA6kQ7Sr-1u-MsXUlvrTVGUywsoi4bVVt-9h3KnFqiUNvnX40IhPv9HEg7Ff9iIy7DA53n865d~ZA~~XO5uwAlC2hW3omZ6iFL-a05wCB1NR-1LOcRbacDtv-tUojhpy~VfA1JYN49aDLRw5g8agQJKhlBve5CvWLlOhnFoah~WJhXmbBOGqCb44uuFbfKVSDHvffTqJFFdulFjDIUuwZ7YPAIWb9nDE0xhS9TsQqweycuq8IRS0GKgM2E5nRgLCvVUyy-mXc4ECrvrGpCC1GzyQZVKzTKxMHuh6IMl83VefTt4EY~CqsGjeAUUnmUQ2eiD~lk8g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+                    "",
+                    ""
+                )
+            )
+            listData.add(
+                HomePatchDetail(
+                    "",
+                    "",
+                    "test 2222",
+                    "Balam",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/AlbumPreviewImageFile/PremTumiKi_AyubBachchu_300.jpg",
+                    "",
+                    ""
+                )
+            )
+        }
+        adapter.setMusicData(listData)
+
+        dsvCurrentPlaySongsThumb.adapter = adapter
+        dsvCurrentPlaySongsThumb.setOrientation(DSVOrientation.HORIZONTAL)
+        dsvCurrentPlaySongsThumb.setSlideOnFling(true)
+        dsvCurrentPlaySongsThumb.setOffscreenItems(2)
+        dsvCurrentPlaySongsThumb.setItemTransitionTimeMillis(150)
+        dsvCurrentPlaySongsThumb.itemAnimator = null
+
+        dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
+        dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
     }
 
-    fun setMiniMusicPlayerData(mSongDet: SongDetail) {
-        cvMiniPlayer.visibility = View.VISIBLE
-        Glide.with(this)
-            .load(mSongDet.image.replace("<\$size\$>", "300"))
-            .transition(DrawableTransitionOptions().crossFade(500))
-            .fitCenter()
-            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.ic_rectangle_music)
-            .error(R.drawable.ic_rectangle_music)
-            .into(ivSongThumbMini)
-        tvSongNameMini.text = mSongDet.title
-        tvSingerNameMini.text = mSongDet.labelname
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
+    private fun uiFunctionality() {
+        ibtnShuffle.setOnClickListener {
+            setControlColor(ibtnShuffle)
+//            R.color.vector_image_control.set
+        }
 
-//        ibtnSkipPreviousMini.setOnClickListener {
-//
-//        }
-//
-//        ibtnPlayPauseMini.setOnClickListener {
-//            if (!isPlayOrPause) {
-//                isPlayOrPause = true
-//                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
-//            } else {
-//                isPlayOrPause = false
-//                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
-//            }
-//        }
-//
-//        ibtnSkipNextMini.setOnClickListener {
-//
-//        }
-    }
+        ibtnSkipPrevious.setOnClickListener {
 
-    override fun changePlayerView(playerMode: PlayerMode?) {
-        when (playerMode) {
-            PlayerMode.MINIMIZED -> toggleMiniPlayerView(true)
-            PlayerMode.MAXIMIZED -> toggleMiniPlayerView(false)
-            PlayerMode.CLOSED -> {}
-            else -> {}
+        }
+
+        ibtnPlayPause.setOnClickListener {
+            setControlColor(ibtnPlayPause)
+        }
+
+        ibtnSkipNext.setOnClickListener { }
+
+        ibtnRepeatSong.setOnClickListener {
+            setControlColor(ibtnRepeatSong)
+        }
+
+        ibtnVolume.setOnClickListener {
+            setControlColor(ibtnVolume)
+        }
+
+        ibtnLibraryAdd.setOnClickListener {
+            setControlColor(ibtnLibraryAdd)
+        }
+
+        ibtnQueueMusic.setOnClickListener {
+            setControlColor(ibtnQueueMusic)
+        }
+
+        ibtnDownload.setOnClickListener {
+            setControlColor(ibtnDownload)
         }
     }
 
-    private fun toggleMiniPlayerView(isVisible: Boolean) {
-        Log.e("SDKMA", "toggleMiniPlayerView: " + isVisible)
-        if (isVisible) {
-            playerMode = PlayerMode.MINIMIZED
-            cvMiniPlayer.visibility = View.VISIBLE
-            slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-        } else {
-            playerMode = PlayerMode.MAXIMIZED
-            slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-            cvMiniPlayer.visibility = View.INVISIBLE
+    override fun onCurrentItemChanged(
+        viewHolder: MusicPlayAdapter.MusicPlayVH?,
+        adapterPosition: Int
+    ) {
+        if (viewHolder != null) {
+            viewHolder.sMusicData.Artist
+            tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
+            tvSingerName.text = viewHolder.sMusicData.Artist
+            setPaletteGrdientColor(getBitmapFromVH(viewHolder))
         }
+    }
+
+    override fun onScrollStart(
+        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+        adapterPosition: Int
+    ) {
+    }
+
+    override fun onScrollEnd(
+        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+        adapterPosition: Int
+    ) {
+    }
+
+    override fun onScroll(
+        scrollPosition: Float,
+        currentPosition: Int,
+        newPosition: Int,
+        currentHolder: MusicPlayAdapter.MusicPlayVH?,
+        newCurrent: MusicPlayAdapter.MusicPlayVH?
+    ) {
+        if (currentHolder != null) {
+            setPaletteGrdientColor(getBitmapFromVH(currentHolder))
+        }
+    }
+
+    private fun setPaletteGrdientColor(imBitmapData: Bitmap) {
+        val palette: Palette = Palette.from(imBitmapData).generate()
+        val vibrant: Palette.Swatch = palette.vibrantSwatch!!
+
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(
+                ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                vibrant.rgb
+            )
+        );
+        gradientDrawable.cornerRadius = 0f;
+//        clMainMusicPlayerParent.setBackgroundColor(vibrant.rgb)
+        clMainMusicPlayer.background = gradientDrawable
+    }
+
+    private fun getBitmapFromVH(currentItemHolder: MusicPlayAdapter.MusicPlayVH): Bitmap {
+        val imageV = currentItemHolder.ivCurrentPlayImage
+        val traDaw = imageV.drawable
+        return (traDaw.toBitmap())
     }
 
     override fun onBackPressed() {
@@ -359,30 +565,5 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
                 super.onBackPressed()
             }
         }
-    }
-
-    override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        cvMiniPlayer.alpha = (1 - slideOffset)
-        clMainMusicPlayer.alpha = slideOffset
-        Log.e("SDKMA", "onPanelSlide: $slideOffset")
-        if (slideOffset == 1f) {
-            playerMode = PlayerMode.MAXIMIZED
-            cvMiniPlayer.visibility = View.GONE
-        } else {
-            playerMode = PlayerMode.MINIMIZED
-            cvMiniPlayer.visibility = View.VISIBLE
-        }
-        val params = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.MATCH_PARENT
-        )
-        rlContentMain.layoutParams = params
-    }
-
-    override fun onPanelStateChanged(
-        panel: View?,
-        previousState: SlidingUpPanelLayout.PanelState?,
-        newState: SlidingUpPanelLayout.PanelState?
-    ) {
     }
 }
