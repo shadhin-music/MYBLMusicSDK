@@ -19,14 +19,5 @@
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Album Details"
-        tools:layout="@layout/fragment_album_details">
-        <action
-            android:id="@+id/action_album_details_fragment_to_music_play_bs"
-            app:destination="@id/music_play_bs" />
-    </fragment>
-    <fragment
-        android:id="@+id/music_play_bs"
-        android:name="com.shadhinmusiclibrary.bottom_sheet.MusicPlayBS"
-        android:label="Album Details"
-        tools:layout="@layout/main_music_player2" />
+        tools:layout="@layout/fragment_album_details" />
 </navigation>

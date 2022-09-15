@@ -660,7 +660,6 @@ class DiscreteScrollLayoutManager extends RecyclerView.LayoutManager {
     }
 
     public int getCurrentPosition() {
-        Log.e("TAGGY", "" + currentPosition);
         return currentPosition;
     }
 

@@ -21,15 +21,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 class STypeListFragment : CommonBaseFragment(), HomeCallBack {
-    //    var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

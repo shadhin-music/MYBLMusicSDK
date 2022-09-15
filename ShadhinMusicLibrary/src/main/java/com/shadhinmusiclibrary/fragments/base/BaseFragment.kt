@@ -5,8 +5,10 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
@@ -29,5 +31,9 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
 
         viewModel = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
 //        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModel())
+    }
+
+    fun playItem(mSongDet: SongDetail){
+        (activity as? SDKMainActivity)?.setMiniMusicPlayerData(mSongDet)
     }
 }
