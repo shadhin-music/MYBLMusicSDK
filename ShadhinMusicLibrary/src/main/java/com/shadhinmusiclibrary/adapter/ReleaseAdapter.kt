@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
         fun bindItems() {
+            Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String = homePatchItem.Data[absoluteAdapterPosition].image

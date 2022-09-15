@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,21 +55,22 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         recyclerView.adapter = ReleaseAdapter(argHomePatchItem!!, this)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.text = argHomePatchItem!!.Name
+        Log.d("TAG","CLICK ITEM123: "+ argHomePatchItem)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
             }
         }
-        val button:Button = requireView().findViewById(R.id.btn)
-        button.setOnClickListener {
+//        val button:Button = requireView().findViewById(R.id.btn)
+//        button.setOnClickListener {
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager.beginTransaction()
 //                .replace(R.id.parentRelative, AmartunesWebviewFragment.newInstance())
 //                .addToBackStack("Fragment")
 //                .commit()
-        }
+//        }
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {

@@ -69,6 +69,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             podcastType=  Type.take(2)
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
+            Log.e("TAG", "DATA ARtist: " + selectedEpisodeID)
             //  Log.d("TAG", "PODCAST DATA: " + contentType + podcastType+it.AlbumId+false)
             //viewModel.fetchPodcastContent(podcastType,it.AlbumId.toInt(),contentType,false)
         }
