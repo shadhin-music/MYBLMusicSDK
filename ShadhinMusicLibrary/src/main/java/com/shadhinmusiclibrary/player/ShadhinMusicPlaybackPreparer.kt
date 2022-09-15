@@ -6,18 +6,22 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 
 import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
-import com.shadhinmusiclibrary.player.utils.toMediaSourceList
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.normalize
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection.*
+import com.shadhinmusiclibrary.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.player.data.source.MediaSources
+import com.shadhinmusiclibrary.player.data.source.ShadhinMediaSources
 import java.util.*
 
 typealias PlayListUpdateFunc = (position:Int) -> Unit
@@ -25,9 +29,12 @@ typealias ErrorCallbackFunc = (isDataSourceError:Boolean,message:String?,errorCo
 typealias UnsubscribeFunc = ()->Unit
 class ShadhinMusicPlaybackPreparer(
     private val context: Context,
-    private val exoPlayer: SimpleExoPlayer?
+    private val exoPlayer: SimpleExoPlayer?,
+    private val exoplayerCache: SimpleCache,
+    private val musicRepository: MusicRepository
 ): MediaSessionConnector.PlaybackPreparer {
     private val concatenatingMediaSource = ConcatenatingMediaSource()
+
     private var playListUpdateFunc: PlayListUpdateFunc? = null
     private var unsubscribeFunc: UnsubscribeFunc? = null
     private var errorCallbackFunc: ErrorCallbackFunc?= null
@@ -48,6 +55,7 @@ class ShadhinMusicPlaybackPreparer(
         extras: Bundle?,
         cb: ResultReceiver?
     ): Boolean {
+        Log.i("music_payer", "onCommand: received $command")
         when(command){
             Command.ADD_PLAYLIST.tag -> addPlayListCommand(extras, cb)
             Command.CHANGE_MUSIC.tag -> changeMusicCommand(extras)
@@ -109,6 +117,7 @@ class ShadhinMusicPlaybackPreparer(
     }
 
     private fun commandPlayListGet(cb: ResultReceiver?) {
+        Log.i("music_payer", "commandPlayListGet: ")
         val command = Command.GET_PLAYLIST
         playListUpdateFunc = { position ->
             cb?.send(command.resultCode, MusicPlayList(_playList,position).toBundle(command))
@@ -185,9 +194,9 @@ class ShadhinMusicPlaybackPreparer(
         _playList.clear()
         _playList.addAll(playlist.list)
         concatenatingMediaSource.clear()
-        concatenatingMediaSource.addMediaSources(_playList.toMediaSourceList(context))
+        val mediaSources: MediaSources = ShadhinMediaSources(context,_playList,exoplayerCache,musicRepository)
+        concatenatingMediaSource.addMediaSources(mediaSources.createSources())
     /*    exoPlayer?.clearMediaItems()
-
         exoPlayer?.addMediaSource(concatenatingMediaSource) */
 
     }
@@ -200,8 +209,14 @@ class ShadhinMusicPlaybackPreparer(
 
 
 
-    fun addPlaylist(playlist: MusicPlayList) {
-        concatenatingMediaSource.addMediaSources(playlist.list.toMediaSourceList(context))
+    private fun addPlaylist(playlist: MusicPlayList) {
+        val mediaSources: MediaSources = ShadhinMediaSources(
+            context,
+            playlist.list,
+            exoplayerCache,
+            musicRepository
+        )
+        concatenatingMediaSource.addMediaSources(mediaSources.createSources())
         _playList.addAll(playlist.list)
         //playlist.loadAllImage(context)
       //  exoPlayer?.currentMediaItemIndex?.let {  playListUpdateFunc?.invoke(it)}

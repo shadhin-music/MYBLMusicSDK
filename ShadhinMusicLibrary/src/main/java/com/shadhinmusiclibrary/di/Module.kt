@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.di
 
 import android.content.Context
+import com.gm.shadhin.player.singleton.PlayerCache
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
 import com.shadhinmusiclibrary.di.single.*
@@ -8,6 +10,9 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
+import com.shadhinmusiclibrary.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
+import com.shadhinmusiclibrary.player.data.rest.ShadhinMusicRepository
 import com.shadhinmusiclibrary.player.ui.PlayerViewModelFactory
 import okhttp3.OkHttpClient
 
@@ -86,11 +91,21 @@ class Module(private val applicationContext: Context) {
         get() = ArtistAlbumViewModelFactory(
         artistAlbumContentRepository)
 
+
+    val exoplayerCache: SimpleCache
+        get() = PlayerCache.getInstance(applicationContext)
+
+    private val playerApiService:PlayerApiService
+        get() = SinglePlayerApiService.getInstance(getRetrofitInstance())
+
+    val musicRepository:MusicRepository = ShadhinMusicRepository(playerApiService)
+
     private val musicServiceConnection: ShadhinMusicServiceConnection
         get() = ShadhinMusicServiceConnection(applicationContext)
 
     val playerViewModelFactory:PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceConnection)
+
 
 
 

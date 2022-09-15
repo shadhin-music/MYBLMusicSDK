@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.fragments.artist
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -154,12 +156,15 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
 
 
-                playerViewModel.subscribe(
-                    MusicPlayList(artistContent.data.map { d -> d.toMusic() },
-                        0
-                    ),
-                    true,0
-                )
+                Handler(Looper.getMainLooper()).postDelayed({
+                    playerViewModel.subscribe(
+                        MusicPlayList(artistContent.data.map { d -> d.toMusic() },
+                            0
+                        ),
+                        true,0
+                    )
+                },1000)
+
 
                 artistSongAdapter.artistContent(artistContent)
                 Log.e("TAG","DATA: "+ it + artistContent)

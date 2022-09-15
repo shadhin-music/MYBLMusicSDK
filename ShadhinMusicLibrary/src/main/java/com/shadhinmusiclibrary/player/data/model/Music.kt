@@ -7,9 +7,10 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
+import com.shadhinmusiclibrary.player.Constants
 
 import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
-
+import com.shadhinmusiclibrary.utils.exH
 
 
 import java.io.Serializable
@@ -161,19 +162,19 @@ data class Music(
         }
         return null
     }
-    fun isLive():Boolean{
+   /* fun isLive():Boolean{
        return trackType.equals("LM",true)
     }
-//    fun fileName(): String? {
-//        return mediaUrl?.find(regexMp3Url)?.first()?.trim()
-//    }
-//    fun filePath(): String? {
-//        return exH {  mediaUrl?.replace(FILE_BASE_URL,"")} ?:mediaUrl
-//    }
-//
-//    override fun toString(): String {
-//        return "Music(mediaId=$mediaId, title=$title , contentType = $contentType mediaUrl = $mediaUrl)"
-//    }
+    fun fileName(): String? {
+        return mediaUrl?.find(regexMp3Url)?.first()?.trim()
+    }*/
+    fun filePath(): String? {
+        return exH {  mediaUrl?.replace(Constants.FILE_BASE_URL,"")} ?:mediaUrl
+    }
+
+    override fun toString(): String {
+        return "Music(mediaId=$mediaId, title=$title , contentType = $contentType mediaUrl = $mediaUrl)"
+    }
 
     companion object{
         const val USER_PLAYLIST_ID       = "user_playlist_id"

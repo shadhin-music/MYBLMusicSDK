@@ -10,6 +10,7 @@ import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.di.ServiceEntryPoint
 import com.shadhinmusiclibrary.player.Constants.MEDIA_SESSION_TAG
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_KEY
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_REQUEST_CODE
@@ -19,10 +20,6 @@ import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.listener.ShadhinMusicPlayerNotificationListener
 import com.shadhinmusiclibrary.player.utils.toServiceMediaItemMutableList
 import com.shadhinmusiclibrary.utils.exH
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 
 /**
@@ -31,29 +28,24 @@ import kotlinx.coroutines.launch
  */
 private const val TAG = "ShadhinMusicPlayer"
 
-class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContext{
-
+class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ServiceEntryPoint {
 
     private  var mediaSession: MediaSessionCompat?=null
     private  var mediaSessionConnector: MediaSessionConnector?=null
     private  var shadhinMusicNotificationManager:ShadhinMusicNotificationManager?=null
     private  var shadhinMusicQueueNavigator:ShadhinMusicQueueNavigator?=null
     private  var musicPlayerNotificationListener: ShadhinMusicPlayerNotificationListener?=null
-
-    override var exoPlayer: SimpleExoPlayer?=null
-    override var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?=null
-    override var scope:CoroutineScope?=null
+    private var exoPlayer: SimpleExoPlayer?=null
+    private var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?=null
     var isForegroundService = false
 
     override fun onCreate() {
         super.onCreate()
-        scope = CoroutineScope(Dispatchers.IO)
-        scope?.launch(Dispatchers.Main) { exH {initialization()} }
-
+        initialization()
     }
 
 
-    private suspend fun initialization() {
+    private  fun initialization() {
         exoPlayer = exoPlayer()
         mediaSession = MediaSessionCompat(this, MEDIA_SESSION_TAG).apply {
             setSessionActivity(pendingIntent())
@@ -68,8 +60,7 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
             mediaSession?.sessionToken,
             musicPlayerNotificationListener
         )
-        musicPlaybackPreparer =
-            ShadhinMusicPlaybackPreparer(this@ShadhinMusicPlayer, exoPlayer)
+        musicPlaybackPreparer = ShadhinMusicPlaybackPreparer(this@ShadhinMusicPlayer, exoPlayer,injector.exoplayerCache,injector.musicRepository)
         shadhinMusicQueueNavigator = mediaSession?.let { ShadhinMusicQueueNavigator(it,musicPlaybackPreparer?.playlist) }
         mediaSessionConnector?.setQueueNavigator(shadhinMusicQueueNavigator)
         mediaSessionConnector?.setPlayer(exoPlayer)
@@ -83,7 +74,7 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
     }
 
 
-    private suspend fun pendingIntent(): PendingIntent? {
+    private  fun pendingIntent(): PendingIntent? {
         val intent = Intent(this, SDKMainActivity::class.java)
         intent.putExtra(PENDING_INTENT_KEY, true)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -165,6 +156,6 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() ,ShadhinMusicPlayerContex
         mediaSession?.release()
         exoPlayer?.release()
         exoPlayer = null
-        scope?.cancel()
+
     }
 }

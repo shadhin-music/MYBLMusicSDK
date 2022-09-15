@@ -1,4 +1,4 @@
-package com.gm.shadhin.player
+package com.shadhinmusiclibrary.player
 
 import android.app.PendingIntent
 import android.content.Context

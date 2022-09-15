@@ -51,6 +51,7 @@ dependencies {
     implementation project(path: ':library-ui')
     implementation project(path: ':library')
     implementation project(path: ':extension-mediasession')
+    implementation project(path: ':extension-okhttp')
 
 
     /*implementation 'com.google.android.exoplayer:exoplayer:2.17.1'

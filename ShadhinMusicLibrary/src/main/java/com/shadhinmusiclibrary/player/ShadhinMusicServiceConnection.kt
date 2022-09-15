@@ -103,6 +103,7 @@ class ShadhinMusicServiceConnection (
         preLoadBitmap(playlist,context)
         // playlist.decodePlayUrl()
         playListUpdate{ isReady ->
+            Log.i("music_payer", "isReady: $isReady")
             if(isReady){
                 val bundle = playlist.toBundle(Command.SUBSCRIBE.dataKey).apply {
                     putBoolean(Constants.PLAY_WHEN_READY_KEY, isPlayWhenReady)
@@ -163,10 +164,10 @@ class ShadhinMusicServiceConnection (
     }
     override fun connect() = mediaBrowser.connect()
     override fun disconnect(){
-        Log.i("music_payer", "disconnect: ")
+      /*  Log.i("music_payer", "disconnect: ")
         mediaControllerCompat?.unregisterCallback(mediaControllerCallback)
 
-        mediaBrowser.disconnect()
+        mediaBrowser.disconnect()*/
     }
     override fun addToQueue(music: Music) = addPlayList(MusicPlayList(listOf(music)))
     override fun addPlayList(playlist: MusicPlayList) {
@@ -307,6 +308,7 @@ class ShadhinMusicServiceConnection (
         inputBundle: Bundle? = null,
         resultCallbackFunc: BundleCallbackFunc? = null
     ){
+        Log.i("music_payer", "sendCommand: ${command}")
         mediaControllerCompat?.sendCommand(
             command,
             inputBundle,
@@ -336,13 +338,11 @@ class ShadhinMusicServiceConnection (
     inner class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback() {
         override fun onConnected() {
             super.onConnected()
+            Log.i("music_payer", "onConnected: ")
             mediaControllerCompat = MediaControllerCompat(context, mediaBrowser.sessionToken)
             transportControls = mediaControllerCompat?.transportControls
             mediaControllerCompat?.registerCallback(mediaControllerCallback)
         }
-
-
-
     }
     inner class MediaControllerCallback: MediaControllerCompat.Callback() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
