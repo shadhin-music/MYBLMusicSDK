@@ -90,20 +90,26 @@ class Module(private val applicationContext: Context) {
         get() = ArtistAlbumViewModelFactory(
         artistAlbumContentRepository)
 
+    private val podcastRepository: PodcastRepository get() = PodcastRepository(
+        getApiShadhinMusicService())
+    val podcastViewModelFactory:PodcastViewModelFactory
+        get() = PodcastViewModelFactory(podcastRepository)
 
-   /* val exoplayerCache: SimpleCache
-        get() = PlayerCache.getInstance(applicationContext)
 
-    private val playerApiService:PlayerApiService
-        get() = SinglePlayerApiService.getInstance(getRetrofitInstance())
 
-    val musicRepository:MusicRepository = ShadhinMusicRepository(playerApiService)
+    /* val exoplayerCache: SimpleCache
+         get() = PlayerCache.getInstance(applicationContext)
 
-    private val musicServiceConnection: ShadhinMusicServiceConnection
-        get() = ShadhinMusicServiceConnection(applicationContext)
+     private val playerApiService:PlayerApiService
+         get() = SinglePlayerApiService.getInstance(getRetrofitInstance())
 
-    val playerViewModelFactory:PlayerViewModelFactory
-        get() = PlayerViewModelFactory(musicServiceConnection)*/
+     val musicRepository:MusicRepository = ShadhinMusicRepository(playerApiService)
+
+     private val musicServiceConnection: ShadhinMusicServiceConnection
+         get() = ShadhinMusicServiceConnection(applicationContext)
+
+     val playerViewModelFactory:PlayerViewModelFactory
+         get() = PlayerViewModelFactory(musicServiceConnection)*/
 
 
 }
