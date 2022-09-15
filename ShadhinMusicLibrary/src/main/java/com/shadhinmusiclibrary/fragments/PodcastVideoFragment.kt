@@ -42,17 +42,16 @@ class PodcastVideoFragment : Fragment() {
 
         val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
-        parentAdapter = ConcatAdapter(
-            config,
-            VideoPodcastHeaderAdapter(),
-            HeaderAdapter(),
-            PodcastEpisodesAdapter(),
-            PodcastMoreEpisodesAdapter(),
-            PodcastCommentAdapter()
-
-        )
-        parentRecycler.setLayoutManager(layoutManager)
-        parentRecycler.setAdapter(parentAdapter)
+//        parentAdapter = ConcatAdapter(
+//            config,
+//            VideoPodcastHeaderAdapter(),
+//            HeaderAdapter(),
+//            PodcastMoreEpisodesAdapter(data),
+//            PodcastCommentAdapter()
+//
+//        )
+//        parentRecycler.setLayoutManager(layoutManager)
+//        parentRecycler.setAdapter(parentAdapter)
     }
 
     companion object {

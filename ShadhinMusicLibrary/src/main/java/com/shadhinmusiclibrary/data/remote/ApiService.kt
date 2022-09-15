@@ -2,13 +2,11 @@ package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.rest.RetroClient
-import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ApiService {
@@ -50,4 +48,12 @@ interface ApiService {
     suspend fun fetchGetPlaylistContentById(
         @Query("id") id: Int
     ): APIResponse<MutableList<SongDetail>>
+
+    @GET("Podcast/PodcastbyepisodeIdV3")
+    suspend fun fetchPodcastByID(
+        @Query("podType") podType:String,
+        @Query("episodeId") episodeId:Int,
+        @Query("contentTYpe") contentTYpe:String,
+        @Query("isPaid") isPaid:Boolean
+    ): PodcastModel
 }

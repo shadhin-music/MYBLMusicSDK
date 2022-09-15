@@ -1,29 +1,31 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class PodcastHeaderAdapter( val argHomePatchDetail: HomePatchDetail?) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderViewHolder>() {
-
+class PodcastHeaderAdapter(val episodeData: List<Episode>?) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderViewHolder>() {
+   //var episode: List<Episode> = emptyList()
+var episode:List<Episode> ?= null
+    private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.podcast_header_layout, parent, false)
-        return PodcastHeaderViewHolder(v)
+        parentView = LayoutInflater.from(parent.context).inflate(R.layout.podcast_header_layout, parent, false)
+        return PodcastHeaderViewHolder(parentView!!)
     }
 
 
     override fun onBindViewHolder(holder:PodcastHeaderViewHolder, position: Int) {
-         holder.bindItems()
-
+         holder.bindItems(position)
+       // Log.d("TAG", "Url: " + data!!.EpisodeList[position].Name)
 
     }
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -31,21 +33,43 @@ class PodcastHeaderAdapter( val argHomePatchDetail: HomePatchDetail?) : Recycler
         return 1
     }
 
+    fun setHeader(episode: List<Episode>) {
+        this.episode = episode
+        notifyDataSetChanged()
+//       val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
+//////         textView?.text = bio?.artist?.bio?.summary
+//        textView?.setText(Html.fromHtml(episode.))
+
+
+    }
+
     inner class PodcastHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems() {
+        fun bindItems(position: Int) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            var url: String = argHomePatchDetail!!.image
-            val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.setText(argHomePatchDetail.title)
-            val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-//            textView?.text = bio?.artist?.bio?.summary
+            var url: String? = episode?.get(0)?.ImageUrl
+            var textArtist: TextView? = itemView.findViewById(R.id.name)
+            val details:String=  episode?.get(position)?.Details.toString()
+            val result = Html.fromHtml(details).toString()
+            textArtist?.text= episode?.get(position)?.Name.toString()
+            val textView: ExpandableTextView? =itemView.findViewById(R.id.tvDescription)
+            val moreText: TextView? = itemView?.findViewById(R.id.tvReadMore)
+            textView?.setText(result)
+            moreText?.setOnClickListener {
+                if (textView!!.isExpanded) {
+                    textView.collapse()
+                    moreText.text = "Read More"
+                } else {
+                    textView.expand()
+                    moreText.text = "Less"
+                }
+            }
 //            val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
 //            tvName.text = argHomePatchDetail.Artist + "'s"
            // val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
-            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
+            Log.d("TAG", "Url: " + episode?.get(0)?.ImageUrl)
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url?.replace("<\$size\$>", "300"))
                 .into(imageView)
 
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView

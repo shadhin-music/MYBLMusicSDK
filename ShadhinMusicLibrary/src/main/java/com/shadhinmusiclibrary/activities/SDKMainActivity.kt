@@ -96,7 +96,7 @@ internal class SDKMainActivity : AppCompatActivity() {
                         })
                 }
                 DataContentType.CONTENT_TYPE_PD -> {
-                    //open songs
+                    //open podcast
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
                         Bundle().apply {
                             putSerializable(

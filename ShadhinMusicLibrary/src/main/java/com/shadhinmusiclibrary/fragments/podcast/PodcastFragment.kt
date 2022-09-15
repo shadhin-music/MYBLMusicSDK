@@ -1,28 +1,23 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
-import com.shadhinmusiclibrary.adapter.PopularPodcastAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
@@ -66,6 +61,27 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
+        val homePatchItem =selectedHomePatchItem
+        navController.navigate(R.id.action_podcast_list_fragment_to_podcast_details_fragment,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    homePatchItem as Serializable
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    homePatchDetail as Serializable
+                )
+            })
+    }
+
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+//        TODO("Not yet implemented")
+    }
 //        navController.navigate(
 //            R.id.action_s_type_list_fragment_to_S_type_details_fragment,
 //            Bundle().apply {
@@ -78,9 +94,7 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
 //                    homePatchDetail as Serializable
 //                )
 //            })
-    }
+    
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-    }
 
 }

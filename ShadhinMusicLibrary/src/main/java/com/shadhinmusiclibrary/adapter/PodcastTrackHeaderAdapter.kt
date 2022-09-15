@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
+class PodcastTrackHeaderAdapter() : RecyclerView.Adapter<PodcastTrackHeaderAdapter.ViewHolder>() {
 
 
 
@@ -23,7 +23,7 @@ class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       // holder.bindItems(bannerList[position])
+        holder.bindItems()
 
 
     }
@@ -34,9 +34,9 @@ class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems() {
-
             val textView= itemView.findViewById(R.id.tvTitle) as TextView
-               textView.text ="Songs"
+            textView.text ="Episodes"
+//            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId

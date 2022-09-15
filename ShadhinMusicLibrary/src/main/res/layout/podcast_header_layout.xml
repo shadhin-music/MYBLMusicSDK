@@ -110,6 +110,8 @@
         android:id="@+id/cardBiography"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="10dp"
         app:cardElevation="0dp"
@@ -136,7 +138,7 @@
                 android:layout_below="@id/tvBiography"
                 android:layout_marginTop="12dp"
                 android:maxLines="4"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien congue mattis sit volutpat posuere. Netus platea eget dignissim eget tellus. Id urna nunc diam."
+                android:text=""
                 app:animation_duration="750" />
 
             <TextView

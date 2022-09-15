@@ -37,12 +37,12 @@ class DownloadDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = PodcastEpisodesAdapter()
+       // val dataAdapter = PodcastEpisodesAdapter()
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
-        recyclerView.adapter = dataAdapter
+       // recyclerView.adapter = dataAdapter
        // val back: ImageView = view.findViewById(R.id.imageBack)
 
 

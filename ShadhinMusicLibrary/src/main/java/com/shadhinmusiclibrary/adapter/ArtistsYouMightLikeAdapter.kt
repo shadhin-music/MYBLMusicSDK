@@ -10,6 +10,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -45,7 +46,8 @@ class ArtistsYouMightLikeAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
         fun bindItems(homePatchItem: HomePatchItem?) {
-
+           val textView:TextView = itemView.findViewById(R.id.tvTitle)
+            textView.text= "You might like also"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
