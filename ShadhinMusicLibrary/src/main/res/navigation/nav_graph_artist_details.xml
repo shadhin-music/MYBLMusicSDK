@@ -8,5 +8,15 @@
         android:id="@+id/artist_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="Artist Details"
-        tools:layout="@layout/fragment_artist_details" />
+        tools:layout="@layout/fragment_artist_details">
+        <action
+            android:id="@+id/action_artist_details_fragment_to_album_details_fragment"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/fragment_album_details" />
 </navigation>

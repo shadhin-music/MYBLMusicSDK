@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp">
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
 
     <com.shadhinmusiclibrary.utils.CircleImageView
         android:id="@+id/civ_person_image"
@@ -12,7 +13,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         android:src="@drawable/ic_artist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,11 +22,9 @@
         android:id="@+id/tv_person_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
+        android:gravity="center|top"
         android:maxLines="2"
-        android:text="Habib\n Wahid"
+        android:paddingTop="2dp"
         android:textColor="@color/colorGrey"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"

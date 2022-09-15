@@ -7,4 +7,8 @@ class AlbumContentRepository(private val apiService: ApiService) {
     suspend fun fetchAlbumContent(contentId: Int) = safeApiCall {
         apiService.fetchAlbumContent(contentId)
     }
+
+    suspend fun fetchPlaylistContent(contentId: Int) = safeApiCall {
+        apiService.fetchGetPlaylistContentById(contentId)
+    }
 }

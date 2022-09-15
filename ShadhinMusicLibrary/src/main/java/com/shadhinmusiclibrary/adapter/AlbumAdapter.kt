@@ -13,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
+class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
+    RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
@@ -41,7 +43,14 @@ class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>(
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
         }
-//        holder.bind(dataContent[position])
+
+
+        holder.itemView.setOnClickListener {
+            if (holder.itemViewType == VIEW_TRACK_ITEM) {
+                val mSongDetItem = dataSongDetail[position - 1]
+                itemClickCB.onClickItem(mSongDetItem)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -123,13 +132,13 @@ class AlbumAdapter() : RecyclerView.Adapter<AlbumAdapter.DataAdapterViewHolder>(
             }
         }
 
-        private fun showBottomSheetDialog(context: Context) {
-            val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
-            val contentView =
-                View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
-            bottomSheetDialog.setContentView(contentView)
-            bottomSheetDialog.show()
-        }
+//        private fun showBottomSheetDialog(context: Context) {
+//            val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
+//            val contentView =
+//                View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+//            bottomSheetDialog.setContentView(contentView)
+//            bottomSheetDialog.show()
+//        }
     }
 
     private companion object {

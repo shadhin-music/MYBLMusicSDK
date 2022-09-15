@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.fragments.album
+package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,32 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
-class AlbumFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint {
-
+class STypeDetailsFragment : CommonBaseFragment() {
     private lateinit var navController: NavController
-    private lateinit var adapter: AlbumAdapter
-    private var listData: MutableList<SongDetail>? = null
-
-    override fun getViewModel(): Class<AlbumViewModel> {
-        return AlbumViewModel::class.java
-    }
-
-    override fun getViewModelFactory(): AlbumViewModelFactory {
-        return injector.factoryAlbumVM
-    }
+    private lateinit var adapter: GenrePlaylistAdapter
+    private lateinit var listSongDetail: MutableList<SongDetail>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album, container, false)
+        val viewRef = inflater.inflate(R.layout.fragment_s_type_details, container, false)
         navController = findNavController()
 
         return viewRef
@@ -44,13 +32,31 @@ class AlbumFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listData = mutableListOf()
-        adapter = AlbumAdapter()
+        listSongDetail = mutableListOf()
+        argHomePatchDetail!!.apply {
+            listSongDetail.add(
+                SongDetail(
+                    ContentID,
+                    image,
+                    title,
+                    ContentType,
+                    PlayUrl,
+                    Artist,
+                    Duration,
+                    copyright = "",
+                    labelname = "",
+                    releaseDate = "",
+                    fav,
+                    ArtistId,
+                    albumId = "",
+                    userPlayListId = ""
+                )
+            )
+        }
 
-        ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
+        adapter = GenrePlaylistAdapter()
         adapter.setRootData(argHomePatchDetail!!)
-
+        adapter.setData(listSongDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -62,13 +68,6 @@ class AlbumFragment :
             } else {
                 navController.popBackStack()
             }
-        }
-    }
-
-    private fun fetchOnlineData(contentId: Int) {
-        viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) {
-            adapter.setData(it)
         }
     }
 }

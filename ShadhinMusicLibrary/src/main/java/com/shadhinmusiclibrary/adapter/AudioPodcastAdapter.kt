@@ -33,12 +33,12 @@ class AudioPodcastAdapter() : RecyclerView.Adapter<AudioPodcastAdapter.ViewHolde
 
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-            itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container ,PodcastDetailsFragment.newInstance())
-                    .commit()
-            }
+//            itemView.setOnClickListener {
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container ,PodcastDetailsFragment.newInstance())
+//                    .commit()
+//            }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)

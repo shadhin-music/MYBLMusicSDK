@@ -11,7 +11,7 @@ import java.net.UnknownHostException
 
 enum class Status {
     SUCCESS,
-    ERROR,
+    ERROR, LOADING
 }
 
 data class ApiResponse<out T>(
@@ -31,6 +31,7 @@ data class ApiResponse<out T>(
                 message = message,
                 errorCode = errorCode
             )
+
     }
 
     fun ifSuccess(callback: (T) -> Unit) {

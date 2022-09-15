@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.fragments.artist
 
+import java.io.Serializable
+
 data class ArtistAlbumModelData(
     val AlbumId: String,
     val ArtistId: String,
@@ -15,4 +17,4 @@ data class ArtistAlbumModelData(
     val labelname: String,
     val releaseDate: String,
     val title: String
-)
+):Serializable

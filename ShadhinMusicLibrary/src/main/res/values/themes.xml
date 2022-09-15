@@ -2,6 +2,7 @@
 
     <style name="light_theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
@@ -47,7 +48,9 @@
         <item name="android:textColor">#80FFFFFF</item>
         <item name="textAllCaps">false</item>
     </style>
-
+    <style name="ProgressBarTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>

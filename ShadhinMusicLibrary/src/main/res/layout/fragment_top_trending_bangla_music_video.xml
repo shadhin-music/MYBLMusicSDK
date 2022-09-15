@@ -24,15 +24,15 @@
 
             >
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_arrow_back"
+                android:padding="12dp"
                 app:layout_constraintBottom_toBottomOf="@id/parentRelative"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/parentRelative"
                 android:layout_marginEnd="10dp"
                 android:id="@+id/imageBack"
-
                 />
             <TextView
                 android:layout_width="wrap_content"

@@ -42,11 +42,11 @@ class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.
         val context = itemView.context
         fun bindItems() {
             itemView.setOnClickListener {
-                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container , GenrePlaylistFragment.newInstance())
-                    .addToBackStack("GenrePlaylistFragment")
-                    .commit()
+//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container , GenrePlaylistFragment.newInstance())
+//                    .addToBackStack("GenrePlaylistFragment")
+//                    .commit()
             }
             val imageView: ImageView = itemView.findViewById(R.id.image)
            // val textView:TextView = itemView.findViewById(R.id.txt_title)

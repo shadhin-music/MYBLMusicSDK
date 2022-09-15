@@ -1,48 +1,65 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.data.model.podcast.Data
+import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 
 
-class PodcastEpisodesAdapter :
+class PodcastEpisodesAdapter(val data: Data?) :
     RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
+     var tracks: List<Track> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastEpisodesViewHolder {
-        val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
+       val  v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.podcast_episodes_item, parent, false)
         return PodcastEpisodesViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: PodcastEpisodesViewHolder, position: Int) {
-        holder.bindItems()
+        holder.bindItems(position)
 
 
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
-        return 10
+        return tracks.size
     }
+
+    fun setData(data: List<Track>) {
+        Log.d("TAG", "Url1234 : " + data)
+        tracks =  data
+        notifyDataSetChanged()
+
+   }
 
     inner class PodcastEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems() {
+        fun bindItems(position: Int) {
 
-
-            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , AlbumFragment.newInstance())
-//                    .commit()
-            }
+            val image: ShapeableImageView =itemView.findViewById(R.id.siv_song_icon)
+            val textArtistName:TextView = itemView.findViewById(R.id.tv_song_length)
+            textArtistName.text = tracks[position].Duration
+            val url: String = tracks[position].ImageUrl
+            Glide.with(context)
+                .load(url.replace("<\$size\$>", "300"))
+                .into(image)
+            val textView:TextView = itemView.findViewById(R.id.tv_song_name)
+            textView.text = tracks[position].Name
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
+//            entityId = banner.entityIdo
             //getActorName(entityId!!)
 
 //            //textViewName.setText(banner.name)

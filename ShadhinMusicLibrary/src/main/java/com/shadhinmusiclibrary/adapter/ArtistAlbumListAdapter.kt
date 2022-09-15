@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
+
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -16,9 +17,14 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsDetails2Fragment
 
 
-class ArtistAlbumListAdapter(val homePatchItem: HomePatchItem, val artistAlbumModel: ArtistAlbumModel?, private val homeCallBack: HomeCallBack) :
+class ArtistAlbumListAdapter(
+    val homePatchItem: HomePatchItem,
+    val artistAlbumModel: ArtistAlbumModel?,
+    private val homeCallBack: HomeCallBack
+) :
     RecyclerView.Adapter<ArtistAlbumListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,9 +34,9 @@ class ArtistAlbumListAdapter(val homePatchItem: HomePatchItem, val artistAlbumMo
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems()
+        holder.bindItems(artistAlbumModel)
         holder.itemView.setOnClickListener {
-            homeCallBack.onClickItemAndAllItem(position, homePatchItem)
+            homeCallBack.onArtistAlbumClick(position, artistAlbumModel!!.data)
         }
     }
 
@@ -40,20 +46,24 @@ class ArtistAlbumListAdapter(val homePatchItem: HomePatchItem, val artistAlbumMo
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
-        fun bindItems() {
+        fun bindItems(artistAlbumModel: ArtistAlbumModel?) {
 //            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
+//                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
+//               manager.beginTransaction()
+//                    .replace(R.id.container, ArtistAlbumsDetails2Fragment.newInstance(artistAlbumModel,
+//                        artistAlbumModel!!.data[absoluteAdapterPosition]))
 //                    .addToBackStack("Trending")
 //                    .commit()
 //            }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String =artistAlbumModel?.data?.get(absoluteAdapterPosition)?.image.toString()
-            textView.text = artistAlbumModel?.data!![absoluteAdapterPosition]?.title
-            val textViewArtist:TextView = itemView.findViewById(R.id.txt_name)
-               textViewArtist.text = artistAlbumModel.data.get(absoluteAdapterPosition).artistname
+            val url: String =
+                this@ArtistAlbumListAdapter.artistAlbumModel?.data?.get(absoluteAdapterPosition)?.image.toString()
+            textView.text =
+                this@ArtistAlbumListAdapter.artistAlbumModel?.data!![absoluteAdapterPosition]?.title
+            val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
+            textViewArtist.text =
+                this@ArtistAlbumListAdapter.artistAlbumModel.data.get(absoluteAdapterPosition).artistname
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
@@ -66,6 +76,7 @@ class ArtistAlbumListAdapter(val homePatchItem: HomePatchItem, val artistAlbumMo
 //            textViewName.tag = banner.entityId
         }
     }
+
 }
 
 

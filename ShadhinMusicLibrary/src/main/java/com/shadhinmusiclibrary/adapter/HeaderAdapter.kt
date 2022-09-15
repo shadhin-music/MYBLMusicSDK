@@ -35,7 +35,8 @@ class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems() {
 
-//            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
+            val textView= itemView.findViewById(R.id.tvTitle) as TextView
+               textView.text ="Songs"
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId

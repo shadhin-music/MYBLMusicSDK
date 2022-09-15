@@ -10,6 +10,9 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 
+import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
+import com.shadhinmusiclibrary.rest.RetroClient
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit

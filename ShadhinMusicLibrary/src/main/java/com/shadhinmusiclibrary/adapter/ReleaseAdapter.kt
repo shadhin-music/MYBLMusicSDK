@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -22,7 +19,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.release_item_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -40,27 +37,16 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
         fun bindItems() {
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, TopTrendingPlaylistFragment.newInstance())
-//                    .addToBackStack("Trending")
-//                    .commit()
-//            }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String = homePatchItem.Data[absoluteAdapterPosition].image
             textView.text = homePatchItem.Data[absoluteAdapterPosition].title
-            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            val textViewArtist: TextView= itemView.findViewById(R.id.txt_name)
+             textViewArtist.text = homePatchItem.Data[absoluteAdapterPosition].Artist
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
-            //getActorName(entityId!!)
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
+
         }
     }
 }
