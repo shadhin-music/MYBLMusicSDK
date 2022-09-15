@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
@@ -334,6 +335,7 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
     }
 
     private fun toggleMiniPlayerView(isVisible: Boolean) {
+        Log.e("SDKMA", "toggleMiniPlayerView: " + isVisible)
         if (isVisible) {
             playerMode = PlayerMode.MINIMIZED
             cvMiniPlayer.visibility = View.VISIBLE
@@ -348,16 +350,21 @@ internal class SDKMainActivity : BaseActivity(), SlidingUpPanelLayout.PanelSlide
     override fun onBackPressed() {
         if (playerMode === PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
-        }
-        if (!navController.navigateUp()) {
-            super.onBackPressed()
+
+            if (!navController.navigateUp()) {
+                super.onBackPressed()
+            }
+        } else {
+            if (!navController.navigateUp()) {
+                super.onBackPressed()
+            }
         }
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
         cvMiniPlayer.alpha = (1 - slideOffset)
         clMainMusicPlayer.alpha = slideOffset
-
+        Log.e("SDKMA", "onPanelSlide: $slideOffset")
         if (slideOffset == 1f) {
             playerMode = PlayerMode.MAXIMIZED
             cvMiniPlayer.visibility = View.GONE
