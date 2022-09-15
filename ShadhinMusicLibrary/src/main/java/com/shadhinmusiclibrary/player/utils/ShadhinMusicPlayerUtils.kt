@@ -1,4 +1,4 @@
-package com.gm.shadhin.player.utils
+package com.shadhinmusiclibrary.player.utils
 
 import android.app.ActivityManager
 import android.app.NotificationChannel

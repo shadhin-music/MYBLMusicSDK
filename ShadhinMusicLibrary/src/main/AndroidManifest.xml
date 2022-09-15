@@ -13,5 +13,13 @@
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/light_theme" />
+        <service
+            android:name=".player.ShadhinMusicPlayer"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
     </application>
 </manifest>

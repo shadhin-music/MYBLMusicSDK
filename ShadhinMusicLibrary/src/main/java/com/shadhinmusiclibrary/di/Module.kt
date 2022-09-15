@@ -25,8 +25,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class Module(private val applicationContext: Context) {
-
-    /*private fun getRetrofitInstance(): Retrofit {
+/*
+    private fun getRetrofitInstance(): Retrofit {
         return  RetrofitClient.getInstance()
     }
 
@@ -108,12 +108,12 @@ class Module(private val applicationContext: Context) {
 
 
 
-    private fun getRetrofitInstance(): Retrofit {
+    /*private fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
+    }*/
 
 //    private fun getHomeApiService(): ApiService {
 //        return getRetrofitInstance().create(ApiService::class.java)
@@ -203,6 +203,9 @@ class Module(private val applicationContext: Context) {
     val exoplayerCache: SimpleCache
         get() = PlayerCache.getInstance(applicationContext)
 
+    private fun getRetrofitInstance(): Retrofit {
+        return  RetrofitClient.getInstance()
+    }
     private val playerApiService: PlayerApiService
         get() = SinglePlayerApiService.getInstance(getRetrofitInstance())
 

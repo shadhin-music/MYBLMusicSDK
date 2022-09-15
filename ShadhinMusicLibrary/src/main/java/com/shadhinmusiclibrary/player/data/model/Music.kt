@@ -6,7 +6,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import com.shadhinmusiclibrary.player.Constants
-import com.gm.shadhin.player.utils.getPreloadBitmap
+import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
 
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata

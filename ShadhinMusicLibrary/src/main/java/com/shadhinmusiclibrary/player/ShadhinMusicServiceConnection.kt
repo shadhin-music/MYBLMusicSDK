@@ -18,14 +18,10 @@ import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.gm.shadhin.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
-import com.gm.shadhin.player.utils.*
-import com.shadhinmusiclibrary.player.Constants.FILE_BASE_URL
 import com.shadhinmusiclibrary.player.utils.*
-import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.toDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.absoluteValue

@@ -9,9 +9,9 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_ID
-import com.gm.shadhin.player.utils.bitmapFromUri
-import com.gm.shadhin.player.utils.getPreloadBitmap
-import com.gm.shadhin.player.utils.nullFix
+import com.shadhinmusiclibrary.player.utils.bitmapFromUri
+import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
+import com.shadhinmusiclibrary.player.utils.nullFix
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.R

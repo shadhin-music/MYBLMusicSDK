@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.di
 
 import android.app.Application
+import com.shadhinmusiclibrary.player.utils.createMusicNotificationChannel
 
 
 class ShadhinApp: Application() {
@@ -11,6 +12,6 @@ class ShadhinApp: Application() {
     override fun onCreate() {
         super.onCreate()
         _module = Module(applicationContext)
-       // createMusicNotificationChannel(applicationContext)
+        createMusicNotificationChannel(applicationContext)
     }
 }

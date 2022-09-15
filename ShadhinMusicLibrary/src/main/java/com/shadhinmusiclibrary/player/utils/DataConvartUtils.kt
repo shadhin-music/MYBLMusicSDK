@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.player.utils
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -9,15 +8,12 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
 import com.gm.shadhin.player.data.model.*
-import com.gm.shadhin.player.utils.isConnectedToInternet
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.player.data.model.regexMp3Url
 import com.shadhinmusiclibrary.player.data.model.regexMp4Url
-import com.shadhinmusiclibrary.player.data.source.ShadhinDataSourceFactory
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.randomString
 import java.text.SimpleDateFormat

@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gm.shadhin.player.data.model.MusicPlayList
 import com.shadhinmusiclibra.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
@@ -32,6 +33,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.player.utils.convater.MusicConverterFactory.Companion.toMusic
 
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -148,6 +150,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
+
+        playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
+
+
+
+
     }
 
     private fun observeData() {
@@ -183,10 +191,25 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 Log.e("TAG", "DATA123: " + it)
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
+        argHomePatchDetail?.let {
+            viewModelArtistSong.fetchArtistSongData(it.ArtistId.toInt())
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
+
+
+
+                    //TODO this is only for test . so this code will remove
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        playerViewModel.subscribe(
+                            MusicPlayList(res.data?.data?.map { d -> d.toMusic() }!!,
+                                0
+                            ),
+                            true,0
+                        )
+                    },1000)
+
+
+
                     artistSongAdapter.artistContent(res.data)
                 } else {
                     showDialog()
@@ -213,7 +236,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun showDialog() {
-        AlertDialog.Builder(requireContext()) //set icon
+        /*AlertDialog.Builder(requireContext()) //set icon
             .setIcon(android.R.drawable.ic_dialog_alert) //set title
             .setTitle("An Error Happend") //set message
             .setMessage("Go back to previous page") //set positive button
@@ -222,7 +245,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
                 })
 
-            .show()
+            .show()*/
     }
 
     companion object {

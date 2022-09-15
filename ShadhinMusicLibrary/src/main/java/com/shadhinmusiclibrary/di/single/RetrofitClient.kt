@@ -15,7 +15,7 @@ class RetrofitClient private constructor() {
 
         private fun newInstance():Retrofit{
             return Retrofit.Builder()
-                .baseUrl(AppConstantUtils.BASE_URL)
+                .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
