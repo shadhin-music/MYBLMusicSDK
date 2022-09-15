@@ -12,6 +12,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
@@ -39,12 +40,12 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
         fun bindItems() {
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = homePatchItem.Data[absoluteAdapterPosition].image
+            val url: String = homePatchItem.Data[absoluteAdapterPosition].getImageUrl300Size()
             textView.text = homePatchItem.Data[absoluteAdapterPosition].title
-            val textViewArtist: TextView= itemView.findViewById(R.id.txt_name)
-             textViewArtist.text = homePatchItem.Data[absoluteAdapterPosition].Artist
+            val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
+            textViewArtist.text = homePatchItem.Data[absoluteAdapterPosition].Artist
             Glide.with(mContext)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url)
                 .into(imageView)
 
         }

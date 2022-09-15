@@ -13,6 +13,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class GenrePlaylistAdapter:
     RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
@@ -92,7 +93,7 @@ class GenrePlaylistAdapter:
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(root.image.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(root.image))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
@@ -110,7 +111,7 @@ class GenrePlaylistAdapter:
         fun bindTrackItem(mSongDetail: SongDetail) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.image.replace("<\$size\$>", "300"))
+                .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
             tvSongName.text = mSongDetail.title

@@ -107,7 +107,7 @@ class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAda
         fun bindTrackItem(mSongDetail: SongDetail) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.image.replace("<\$size\$>", "300"))
+                .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
             tvSongName.text = mSongDetail.title

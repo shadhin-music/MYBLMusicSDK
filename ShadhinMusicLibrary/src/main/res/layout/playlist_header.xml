@@ -6,42 +6,39 @@
     android:layout_marginBottom="16dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/cardHeader"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent">
 
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_thumb_card"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="36dp"
-                android:layout_marginTop="16dp"
                 android:layout_centerHorizontal="true"
-                >
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="36dp">
+
                 <ImageView
                     android:id="@+id/iv_thumb_current_play_item"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    android:src="@drawable/ic_artist"
-
-                    />
-
+                    android:src="@drawable/ic_artist" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -69,9 +66,9 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text=""
-                android:visibility="gone"
                 android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <View
                 android:id="@+id/view"

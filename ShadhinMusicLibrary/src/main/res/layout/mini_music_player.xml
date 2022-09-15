@@ -4,12 +4,11 @@
     android:id="@+id/cv_mini_music_player"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@android:color/transparent"
-    app:cardCornerRadius="10dp"
     android:visibility="visible"
-    app:cardElevation="2dp"
-    app:cardPreventCornerOverlap="false"
-    app:cardUseCompatPadding="false">
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:id="@+id/layout_parent"
@@ -22,7 +21,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_margin="7dp"
             android:layout_weight=".50"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
@@ -31,8 +30,7 @@
                 android:id="@+id/iv_song_thumb_mini"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_rectangle_music" />
+                android:src="@drawable/ic_asif_300" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

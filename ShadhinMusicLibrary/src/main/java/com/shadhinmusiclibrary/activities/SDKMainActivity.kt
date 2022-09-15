@@ -1,9 +1,7 @@
 package com.shadhinmusiclibrary.activities
 
 import android.graphics.Bitmap
-import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -28,6 +26,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
+import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.DataContentType
@@ -110,8 +109,10 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun miniPlayerShowHide() {
-        //at fast show
-        slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(64, this)
+        //at fast show mini player
+        // getDPfromPX paramerer pass pixel. how many height layout show.
+        // this mini player height 72dp thats why i set 73dp view show
+        slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(73, this)
         slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
     }
 
@@ -190,12 +191,12 @@ internal class SDKMainActivity : BaseActivity(),
     fun setMiniMusicPlayerData(mSongDet: SongDetail) {
         cvMiniPlayer.visibility = View.VISIBLE
         Glide.with(this)
-            .load(mSongDet.image.replace("<\$size\$>", "300"))
+            .load(mSongDet.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.ic_rectangle_music)
-            .error(R.drawable.ic_rectangle_music)
+            .placeholder(R.drawable.ic_asif_300)
+            .error(R.drawable.ic_asif_300)
             .into(ivSongThumbMini)
         tvSongNameMini.text = mSongDet.title
         tvSingerNameMini.text = mSongDet.labelname
@@ -406,7 +407,7 @@ internal class SDKMainActivity : BaseActivity(),
                     "",
                     "",
                     "",
-                    "https://s3-alpha-sig.figma.com/img/c1e6/aa8d/9b7ead647d0f62b68e0aea77f737cab7?Expires=1663545600&Signature=EstkpW5-lhvXiOaA6kQ7Sr-1u-MsXUlvrTVGUywsoi4bVVt-9h3KnFqiUNvnX40IhPv9HEg7Ff9iIy7DA53n865d~ZA~~XO5uwAlC2hW3omZ6iFL-a05wCB1NR-1LOcRbacDtv-tUojhpy~VfA1JYN49aDLRw5g8agQJKhlBve5CvWLlOhnFoah~WJhXmbBOGqCb44uuFbfKVSDHvffTqJFFdulFjDIUuwZ7YPAIWb9nDE0xhS9TsQqweycuq8IRS0GKgM2E5nRgLCvVUyy-mXc4ECrvrGpCC1GzyQZVKzTKxMHuh6IMl83VefTt4EY~CqsGjeAUUnmUQ2eiD~lk8g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
+                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/ArtistPreviewImageFile/HridoyKhan_<\$size\$>.jpg",
                     "",
                     ""
                 )
@@ -439,7 +440,7 @@ internal class SDKMainActivity : BaseActivity(),
                     "",
                     "",
                     "",
-                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/AlbumPreviewImageFile/PremTumiKi_AyubBachchu_300.jpg",
+                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/ArtistPreviewImageFile/Asif_<\$size\$>.jpg",
                     "",
                     ""
                 )
@@ -453,7 +454,12 @@ internal class SDKMainActivity : BaseActivity(),
         dsvCurrentPlaySongsThumb.setOffscreenItems(2)
         dsvCurrentPlaySongsThumb.setItemTransitionTimeMillis(150)
         dsvCurrentPlaySongsThumb.itemAnimator = null
-
+        dsvCurrentPlaySongsThumb.setItemTransformer(
+            ScaleTransformer.Builder()
+                .setMaxScale(1.095f)
+                .setMinScale(0.95f)
+                .build()
+        )
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
     }
@@ -503,7 +509,7 @@ internal class SDKMainActivity : BaseActivity(),
             viewHolder.sMusicData.Artist
             tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
             tvSingerName.text = viewHolder.sMusicData.Artist
-            setPaletteGrdientColor(getBitmapFromVH(viewHolder))
+            setPaletteGradientColor(getBitmapFromVH(viewHolder))
         }
     }
 
@@ -527,24 +533,24 @@ internal class SDKMainActivity : BaseActivity(),
         newCurrent: MusicPlayAdapter.MusicPlayVH?
     ) {
         if (currentHolder != null) {
-            setPaletteGrdientColor(getBitmapFromVH(currentHolder))
+            setPaletteGradientColor(getBitmapFromVH(currentHolder))
         }
     }
 
-    private fun setPaletteGrdientColor(imBitmapData: Bitmap) {
+    private fun setPaletteGradientColor(imBitmapData: Bitmap) {
         val palette: Palette = Palette.from(imBitmapData).generate()
-        val vibrant: Palette.Swatch = palette.vibrantSwatch!!
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TOP_BOTTOM,
-            intArrayOf(
-                ContextCompat.getColor(this, R.color.shadinRequiredColor),
-                vibrant.rgb
+        val vibrantSwatch: Palette.Swatch? = palette.vibrantSwatch
+        if (vibrantSwatch != null) {
+            val gradientDrawable = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(
+                    ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                    vibrantSwatch.rgb
+                )
             )
-        );
-        gradientDrawable.cornerRadius = 0f;
-//        clMainMusicPlayerParent.setBackgroundColor(vibrant.rgb)
-        clMainMusicPlayer.background = gradientDrawable
+            gradientDrawable.cornerRadius = 0f
+            clMainMusicPlayer.background = gradientDrawable
+        }
     }
 
     private fun getBitmapFromVH(currentItemHolder: MusicPlayAdapter.MusicPlayVH): Bitmap {
