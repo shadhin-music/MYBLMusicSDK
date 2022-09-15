@@ -24,9 +24,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.player.data.model.MusicPlayList
-import com.shadhinmusiclibrary.player.ui.PlayerViewModel
-import com.shadhinmusiclibrary.player.utils.convater.MusicConverterFactory.Companion.toMusic
+
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
@@ -39,7 +37,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
-    private lateinit var playerViewModel: PlayerViewModel
+    //private lateinit var playerViewModel: PlayerViewModel
 
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter:ArtistHeaderAdapter
@@ -126,7 +124,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
         viewModelArtistSong = ViewModelProvider(this,injector.factoryArtistSongVM)[ArtistContentViewModel::class.java]
         viewModelArtistAlbum = ViewModelProvider(this,injector.artistAlbumViewModelFactory)[ArtistAlbumsViewModel::class.java]
 
-        playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
+       // playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
 
 
 
@@ -156,14 +154,14 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
 
 
-                Handler(Looper.getMainLooper()).postDelayed({
+               /* Handler(Looper.getMainLooper()).postDelayed({
                     playerViewModel.subscribe(
                         MusicPlayList(artistContent.data.map { d -> d.toMusic() },
                             0
                         ),
                         true,0
                     )
-                },1000)
+                },1000)*/
 
 
                 artistSongAdapter.artistContent(artistContent)
@@ -183,7 +181,7 @@ class ArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        playerViewModel.disconnect()
+        //playerViewModel.disconnect()
     }
     companion object {
 

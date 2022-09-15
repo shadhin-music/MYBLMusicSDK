@@ -47,18 +47,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
 
-    implementation project(path: ':library-core')
-    implementation project(path: ':library-ui')
-    implementation project(path: ':library')
-    implementation project(path: ':extension-mediasession')
-    implementation project(path: ':extension-okhttp')
-
-
-    /*implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.17.1'
-    implementation 'com.google.android.exoplayer:extension-okhttp:2.17.1'
-    implementation "com.google.android.exoplayer:extension-mediasession:2.17.1"*/
+  /*  implementation 'com.google.android.exoplayer:extension-okhttp:2.17.1'*/
+    implementation "com.google.android.exoplayer:extension-mediasession:2.17.1"
 
 
     testImplementation 'junit:junit:4.12'
