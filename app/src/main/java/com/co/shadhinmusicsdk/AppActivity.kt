@@ -60,7 +60,7 @@ class AppActivity() : AppCompatActivity() {
 
 //       scope?.launch(Dispatchers.Main) {
         viewPager.offscreenPageLimit = 2
-        val selectedTabIndex = 1
+        val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
     }
 
