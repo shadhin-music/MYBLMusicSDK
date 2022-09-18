@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
 import com.shadhinmusiclibrary.fragments.*
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
@@ -32,7 +34,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             VIEW_PLAYLIST -> R.layout.item_playlist
             VIEW_RELEASE -> R.layout.item_release_patch
             VIEW_POPULAR_PODCAST -> R.layout.item_release_patch
-//            VIEW_AD -> R.layout.item_ad
+          // VIEW_AD -> R.layout.item_ad
 //            VIEW_DOWNLOAD -> R.layout.item_my_fav
 //            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
@@ -66,6 +68,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             "Release" -> VIEW_RELEASE
             "Track" -> VIEW_RELEASE
             "Podcast"-> VIEW_POPULAR_PODCAST
+//            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
 //            is DataModel.Search -> VIEW_SEARCH
@@ -172,7 +175,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 homeCallBack.onClickSeeAll(homePatchItem)
-
+               Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
 //            itemView.setOnClickListener {
 //                val manager: FragmentManager =
@@ -184,9 +187,17 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            }
         }
         private fun bindAd() {
-            //Do your view assignment here from the data model
+          //  Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 //            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
+//            itemView.setOnClickListener {
+//                val manager: FragmentManager =
+//                    (mContext as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, AmartunesWebviewFragment.newInstance())
+//                    .addToBackStack("Fragment")
+//                    .commit()
+//            }
         }
 
         private fun bindDownload() {
@@ -276,6 +287,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
                 "Release" -> bindRelease(homePatchItemModel)
                 "Track" -> bindRelease(homePatchItemModel)
                 "Podcast" ->bindPopularPodcast(homePatchItemModel)
+//                "Artist" ->bindAd()
             }
 
             /*when (dataModel) {

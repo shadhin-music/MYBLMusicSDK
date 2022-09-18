@@ -1,8 +1,8 @@
 package com.shadhinmusiclibrary.fragments.artist
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +12,13 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibra.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
@@ -29,6 +30,9 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.player.utils.convater.MusicConverterFactory.Companion.toMusic
+
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
@@ -43,6 +47,11 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
+
+    private lateinit var playerViewModel:PlayerViewModel
+
+    //private lateinit var playerViewModel: PlayerViewModel
+
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
@@ -139,6 +148,22 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
+
+        playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
+        playerViewModel.connect()
+        playerViewModel.playerProgress.observe(viewLifecycleOwner, Observer {
+            Log.i("music_payer", "setupViewModel: ${it.toString()}")
+        })
+
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+
+
+
+
+
+
+
+
     }
 
     private fun observeData() {
@@ -174,10 +199,28 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 Log.e("TAG", "DATA123: " + it)
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
+        argHomePatchDetail?.let {
+            viewModelArtistSong.fetchArtistSongData(it.ArtistId.toInt())
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
+
+
+                    if(!playerViewModel.isPlaying) {
+
+                        //TODO this is only for test . so this code will remove
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            playerViewModel.subscribe(
+                                MusicPlayList(
+                                    res.data?.data?.map { d -> d.toMusic() }!!,
+                                    0
+                                ),
+                                true, 0
+                            )
+                        }, 1000)
+                    }
+
+
+
                     artistSongAdapter.artistContent(res.data)
                 } else {
                     showDialog()
@@ -204,7 +247,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun showDialog() {
-        AlertDialog.Builder(requireContext()) //set icon
+        /*AlertDialog.Builder(requireContext()) //set icon
             .setIcon(android.R.drawable.ic_dialog_alert) //set title
             .setTitle("An Error Happend") //set message
             .setMessage("Go back to previous page") //set positive button
@@ -213,7 +256,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
                 })
 
-            .show()
+            .show()*/
     }
 
     companion object {
@@ -296,7 +339,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+    //    TODO("Not yet implemented")
     }
 
 //    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =
@@ -306,5 +349,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 //        }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playerViewModel.disconnect()
     }
 }

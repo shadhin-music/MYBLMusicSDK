@@ -29,6 +29,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.ImageSizeParser
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -362,13 +363,14 @@ internal class SDKMainActivity : BaseActivity(),
                         })
                 }
                 DataContentType.CONTENT_TYPE_PD -> {
-                    //open songs
+                    //open podcast
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
                         Bundle().apply {
                             putSerializable(
                                 AppConstantUtils.PatchItem,
                                 homePatchItem as Serializable
                             )
+                            Log.d("TAG","CLICK ITEM123: "+ PatchItem)
                         })
                 }
             }

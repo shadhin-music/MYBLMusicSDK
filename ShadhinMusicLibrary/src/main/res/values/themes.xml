@@ -5,6 +5,7 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#D8F83E3E</item>
     </style>
 
     <style name="Theme.ShadhinMusicSDK.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -48,11 +49,15 @@
         <item name="android:textColor">#80FFFFFF</item>
         <item name="textAllCaps">false</item>
     </style>
+
     <style name="ProgressBarTheme" parent="Theme.AppCompat">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+
+
 </resources>

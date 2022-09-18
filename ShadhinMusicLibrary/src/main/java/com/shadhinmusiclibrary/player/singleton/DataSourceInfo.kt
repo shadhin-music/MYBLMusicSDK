@@ -1,4 +1,4 @@
-package com.gm.shadhin.player.singleton
+package com.shadhinmusiclibrary.player.singleton
 
 object DataSourceInfo {
     var isDataSourceError:Boolean = false
