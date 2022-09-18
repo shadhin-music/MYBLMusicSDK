@@ -22,9 +22,9 @@ class LatestReleaseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-//        recyclerView.layoutManager =
-//            LinearLayoutManager(requireContext(),)
-        //recyclerView.adapter = PopularArtistAdapter(data1)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
+      //  recyclerView.adapter = Popu
     }
     companion object {
 

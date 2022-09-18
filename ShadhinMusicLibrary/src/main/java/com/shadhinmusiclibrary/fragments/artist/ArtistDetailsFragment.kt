@@ -222,8 +222,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
             ArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("data", homePatchItem)
-                    putSerializable("dataX", homePatchDetail)
+                    putSerializable("homePatchItem", homePatchItem)
+                    putSerializable("homePatchDetail", homePatchDetail)
                 }
             }
     }
