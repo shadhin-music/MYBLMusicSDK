@@ -211,8 +211,8 @@ class Module(private val applicationContext: Context) {
 
     val musicRepository: MusicRepository = ShadhinMusicRepository(playerApiService)
 
-    private val musicServiceConnection: ShadhinMusicServiceConnection
-        get() = ShadhinMusicServiceConnection(applicationContext)
+    val musicServiceConnection: ShadhinMusicServiceConnection
+        get() = SingleMusicServiceConnection.getInstance(applicationContext)//ShadhinMusicServiceConnection(applicationContext)
 
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceConnection)

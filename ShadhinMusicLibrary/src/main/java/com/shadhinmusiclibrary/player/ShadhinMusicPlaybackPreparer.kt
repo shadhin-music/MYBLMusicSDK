@@ -10,7 +10,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection.Command
 import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
-import com.gm.shadhin.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.player.utils.toMusic
 

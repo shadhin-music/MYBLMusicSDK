@@ -1,10 +1,10 @@
-package com.gm.shadhin.player.data.model
+package com.shadhinmusiclibrary.player.data.model
 
 import android.os.Bundle
 
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
+import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection
 import com.shadhinmusiclibrary.player.utils.makeValidUrl
-import com.shadhinmusiclibrary.player.data.model.Music
 import java.io.Serializable
 
 

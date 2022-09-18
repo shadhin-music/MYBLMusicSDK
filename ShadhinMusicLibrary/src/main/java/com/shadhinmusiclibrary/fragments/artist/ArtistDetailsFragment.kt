@@ -1,7 +1,5 @@
 package com.shadhinmusiclibrary.fragments.artist
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gm.shadhin.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibra.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
@@ -152,7 +150,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         )[ArtistAlbumsViewModel::class.java]
 
         playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
-
+        playerViewModel.connect()
+        playerViewModel.currentPlayingMusic.observe(viewLifecycleOwner){
+            Log.i("music_payer", "setupViewModel: $it")
+        }
 
 
 
@@ -197,16 +198,19 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 if (res.status == Status.SUCCESS) {
 
 
+                    if(!playerViewModel.isPlaying) {
 
-                    //TODO this is only for test . so this code will remove
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        playerViewModel.subscribe(
-                            MusicPlayList(res.data?.data?.map { d -> d.toMusic() }!!,
-                                0
-                            ),
-                            true,0
-                        )
-                    },1000)
+                        //TODO this is only for test . so this code will remove
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            playerViewModel.subscribe(
+                                MusicPlayList(
+                                    res.data?.data?.map { d -> d.toMusic() }!!,
+                                    0
+                                ),
+                                true, 0
+                            )
+                        }, 1000)
+                    }
 
 
 
@@ -338,5 +342,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 //        }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playerViewModel.disconnect()
     }
 }

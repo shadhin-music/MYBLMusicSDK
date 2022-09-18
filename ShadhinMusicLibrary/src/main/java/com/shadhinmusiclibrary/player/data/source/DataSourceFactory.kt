@@ -6,6 +6,7 @@ import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.shadhinmusiclibrary.player.Constants
@@ -41,6 +42,13 @@ open class ShadhinDataSourceFactory private constructor(
     }
     override fun createDataSource(): DataSource {
 
+       /* return CacheDataSource.Factory()
+            .apply {
+                setUpstreamDataSourceFactory(factory)
+                cache?.let { setCache(it) }
+                setFlags( CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+
+            }.createDataSource()*/
         return  factory.createDataSource()
       /*  return CacheDataSourceFactory(
             cache,

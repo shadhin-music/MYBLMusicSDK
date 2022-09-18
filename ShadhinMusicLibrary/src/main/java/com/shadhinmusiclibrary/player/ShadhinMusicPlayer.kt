@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_REQUEST_CODE
 import com.shadhinmusiclibrary.player.Constants.ROOT_ID_EMPTY
 import com.shadhinmusiclibrary.player.Constants.ROOT_ID_PLAYLIST
 
-import com.gm.shadhin.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.listener.ShadhinMusicPlayerNotificationListener
 import com.shadhinmusiclibrary.player.listener.ShadhinPlayerListener
 import com.shadhinmusiclibrary.player.utils.toServiceMediaItemMutableList

@@ -1,12 +1,12 @@
-package com.gm.shadhin.player
+package com.shadhinmusiclibrary.player.connection
 
 import com.shadhinmusiclibrary.player.data.model.Music
-import com.gm.shadhin.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import kotlinx.coroutines.CoroutineScope
 import java.util.*
 
 typealias CurrentMusicCallbackFunc = (music: Music?)->Unit
-interface MusicServiceController {
+interface MusicServiceActions {
     val currentMusic: Music?
     val musicList:List<Music>?
     val musicIndex: Int
@@ -15,7 +15,7 @@ interface MusicServiceController {
     val isPrepare:Boolean
     val isBuffering:Boolean
     fun subscribe(playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
-    fun subscribeAsync(scope:CoroutineScope,playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
+    fun subscribeAsync(scope:CoroutineScope, playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
     fun unSubscribe()
     fun connect()
     fun disconnect()

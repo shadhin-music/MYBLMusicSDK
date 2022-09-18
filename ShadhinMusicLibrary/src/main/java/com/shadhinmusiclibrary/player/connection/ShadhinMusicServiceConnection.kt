@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.player
+package com.shadhinmusiclibrary.player.connection
 
 import android.content.ComponentName
 import android.content.Context
@@ -10,13 +10,15 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.gm.shadhin.player.MusicServiceController
+import com.shadhinmusiclibrary.player.Constants
+import com.shadhinmusiclibrary.player.ShadhinMusicPlayer
 import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
-import com.gm.shadhin.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.player.utils.*
 import com.shadhinmusiclibrary.utils.toDate
@@ -39,10 +41,13 @@ class ShadhinMusicServiceConnection(
     private val mediaControllerCallback: MediaControllerCallback =  MediaControllerCallback()
     private val _playbackState: MutableLiveData<PlaybackStateCompat> by lazy { MutableLiveData<PlaybackStateCompat>() }
     private val _currentPlayingSong: MutableLiveData<Music?> =  MutableLiveData<Music?>(null)
+
     private val _musicListLiveData: MutableLiveData<MusicPlayList> by lazy { MutableLiveData<MusicPlayList>() }
     private val _repeatModeLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _shuffleLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _playerErrorLiveData: MutableLiveData<ErrorMessage> by lazy { MutableLiveData<ErrorMessage>() }
+
+
 
     val currentPlayingMusicLiveData: LiveData<Music?> = _currentPlayingSong
     val playerErrorLiveData:LiveData<ErrorMessage> = _playerErrorLiveData
@@ -65,9 +70,9 @@ class ShadhinMusicServiceConnection(
         mediaBrowserConnectionCallback,
         null
     ).apply {
-        connect()
+       // connect()
     }
-    val controller: MusicServiceController
+    val controller: MusicServiceActions
         get() = this
 
     override val currentMusic: Music?
@@ -335,6 +340,7 @@ class ShadhinMusicServiceConnection(
     inner class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback() {
         override fun onConnected() {
             super.onConnected()
+            Log.i("music_payer", "onConnected: ")
             mediaControllerCompat = MediaControllerCompat(context, mediaBrowser.sessionToken)
             transportControls = mediaControllerCompat?.transportControls
             mediaControllerCompat?.registerCallback(mediaControllerCallback)

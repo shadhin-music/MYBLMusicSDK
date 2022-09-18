@@ -7,13 +7,9 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
-import com.gm.shadhin.player.data.model.*
 import com.google.android.exoplayer2.MediaItem
 import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.model.Music
-import com.shadhinmusiclibrary.player.data.model.PlayerProgress
-import com.shadhinmusiclibrary.player.data.model.regexMp3Url
-import com.shadhinmusiclibrary.player.data.model.regexMp4Url
+import com.shadhinmusiclibrary.player.data.model.*
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.randomString
 import java.text.SimpleDateFormat
