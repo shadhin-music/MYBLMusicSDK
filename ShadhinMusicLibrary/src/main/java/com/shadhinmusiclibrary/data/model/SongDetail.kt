@@ -15,4 +15,8 @@ data class SongDetail(
     val ArtistId: String,
     val albumId: String,
     val userPlayListId: String
-)
+) {
+    fun getImageUrl300Size(): String {
+        return this.image.replace("<\$size\$>", "300")
+    }
+}

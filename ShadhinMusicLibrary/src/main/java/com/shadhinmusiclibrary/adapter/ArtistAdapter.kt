@@ -17,18 +17,23 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class ArtistAdapter(var homePatchItem: HomePatchItem?, private val homeCallBack: HomeCallBack, var artistIDtoSkip: String? = null) :
+class ArtistAdapter(
+    var homePatchItem: HomePatchItem?,
+    private val homeCallBack: HomeCallBack,
+    var artistIDtoSkip: String? = null
+) :
     RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
-    private var filteredHomePatchItem:HomePatchItem? = null
+    private var filteredHomePatchItem: HomePatchItem? = null
 
     init {
         initialize()
     }
 
-    fun initialize(){
+    fun initialize() {
         var items = homePatchItem?.Data
         items = items?.filter { it.ArtistId != artistIDtoSkip }
         filteredHomePatchItem = homePatchItem?.copy()
@@ -38,12 +43,10 @@ class ArtistAdapter(var homePatchItem: HomePatchItem?, private val homeCallBack:
     }
 
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.artist_list, parent, false)
         return ViewHolder(v)
     }
-
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -56,7 +59,7 @@ class ArtistAdapter(var homePatchItem: HomePatchItem?, private val homeCallBack:
     }
 
     override fun getItemCount(): Int {
-        return filteredHomePatchItem?.Data?.size?:0
+        return filteredHomePatchItem?.Data?.size ?: 0
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -65,10 +68,10 @@ class ArtistAdapter(var homePatchItem: HomePatchItem?, private val homeCallBack:
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
-            val url: String = filteredHomePatchItem!!.Data[absoluteAdapterPosition].image
+            val url: String = filteredHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
             Log.d("TAG", "ImageUrl: $url")
             Glide.with(mContext)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url)
                 .into(imageView2)
 
             textViewName.setText(filteredHomePatchItem!!.Data[absoluteAdapterPosition].Artist)

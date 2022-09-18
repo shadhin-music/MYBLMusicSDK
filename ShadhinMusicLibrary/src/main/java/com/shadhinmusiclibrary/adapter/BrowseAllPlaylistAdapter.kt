@@ -18,8 +18,8 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
-
+class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
+    RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +29,7 @@ class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.bindItems()
+        holder.bindItems()
 
 
     }
@@ -49,14 +49,13 @@ class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) : RecyclerView.
 //                    .commit()
             }
             val imageView: ImageView = itemView.findViewById(R.id.image)
-           // val textView:TextView = itemView.findViewById(R.id.txt_title)
-            var url :String = homePatchItem!!.Data[absoluteAdapterPosition].image
-           // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+            // val textView:TextView = itemView.findViewById(R.id.txt_title)
+            val url: String = homePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
+            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-           // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
+            // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
-                .load( url.replace("<\$size\$>","300"))
+                .load(url)
                 .into(imageView)
 
 //

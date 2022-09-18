@@ -18,6 +18,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
@@ -38,7 +39,6 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
@@ -74,7 +74,6 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
     fun setData(data: List<SongDetail>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
-        Log.e("PLA", ": $dataSongDetail")
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -98,7 +97,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(root.image.replace("<\$size\$>", "300"))
+                .load(root.getImageUrl300Size())
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
@@ -116,7 +115,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
         fun bindTrackItem(mSongDetail: SongDetail) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.image.replace("<\$size\$>", "300"))
+                .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
             tvSongName.text = mSongDetail.title

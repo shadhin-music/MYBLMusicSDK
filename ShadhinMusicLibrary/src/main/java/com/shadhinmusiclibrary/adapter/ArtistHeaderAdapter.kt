@@ -78,12 +78,12 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
         fun bindItems(homePatchDetail: HomePatchDetail?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
-            var url: String = homePatchDetail!!.image
+            var url: String = homePatchDetail!!.getImageUrl300Size()
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-            val bio :String  = bio?.artist?.bio?.summary.toString()
-             val updatedbio = Html.fromHtml(bio).toString()
+            val bio: String = bio?.artist?.bio?.summary.toString()
+            val updatedbio = Html.fromHtml(bio).toString()
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
@@ -111,9 +111,8 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
                 }
             }
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url)
                 .into(imageView)
 
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView

@@ -17,4 +17,8 @@ object UtilHelper {
             height
         }
     }
+
+    fun getImageUrlSize300(imageUrl: String): String {
+        return imageUrl.replace("<\$size\$>", "300")
+    }
 }

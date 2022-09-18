@@ -62,8 +62,9 @@ class MusicPlayAdapter(
     }
 
     override fun onBindViewHolder(holder: MusicPlayVH, position: Int) {
-        holder.ivCurrentPlayImage.layoutParams.width = finalWidth
-        holder.ivCurrentPlayImage.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        holder.cvBannerParent.layoutParams.width = finalWidth
+        holder.cvBannerParent.layoutParams.height = finalWidth
+
         holder.onBind(position)
     }
 
@@ -83,12 +84,11 @@ class MusicPlayAdapter(
             sMusicData = listMusicData!![position]
 
             Glide.with(itemView.context)
-                .load(sMusicData.image)
+                .load(sMusicData.getImageUrl300Size())
                 .transition(DrawableTransitionOptions().crossFade(500))
-                .fitCenter()
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-                .placeholder(R.drawable.ic_rectangle_music)
-                .error(R.drawable.ic_rectangle_music)
+                .placeholder(R.drawable.ic_asif_300)
+                .error(R.drawable.ic_asif_300)
                 .into(ivCurrentPlayImage)
         }
     }
