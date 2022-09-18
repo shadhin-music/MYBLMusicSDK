@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.player.connection
 
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import kotlinx.coroutines.CoroutineScope
 import java.util.*
 
@@ -15,7 +16,7 @@ interface MusicServiceActions {
     val isPrepare:Boolean
     val isBuffering:Boolean
     fun subscribe(playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
-    fun subscribeAsync(scope:CoroutineScope, playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
+
     fun unSubscribe()
     fun connect()
     fun disconnect()
@@ -41,5 +42,7 @@ interface MusicServiceActions {
     fun seekTo(progress: Long)
     fun sleepTimer(isStart:Boolean, timeMillis:Long)
     fun sleepTime(callback:(startTime:Date?, duration:Long)->Unit)
+    fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit)
+    suspend fun playerProgress():PlayerProgress
     fun receiveErrorMessage()
 }

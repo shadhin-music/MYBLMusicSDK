@@ -20,7 +20,6 @@ private const val TAG = "DataSourceFactory"
 open class ShadhinDataSourceFactory private constructor(
     private val context: Context,
     private val music: Music,
-    private val cache: SimpleCache,
     private val musicRepository: MusicRepository
 ) :DataSource.Factory {
     private lateinit var factory: DataSource.Factory
@@ -41,21 +40,7 @@ open class ShadhinDataSourceFactory private constructor(
         factory =  DefaultDataSource.Factory(context,networkFactory)
     }
     override fun createDataSource(): DataSource {
-
-       /* return CacheDataSource.Factory()
-            .apply {
-                setUpstreamDataSourceFactory(factory)
-                cache?.let { setCache(it) }
-                setFlags( CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-
-            }.createDataSource()*/
         return  factory.createDataSource()
-      /*  return CacheDataSourceFactory(
-            cache,
-            factory,
-            CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR
-        )
-            .createDataSource()*/
     }
     companion object{
         @JvmStatic
@@ -65,8 +50,16 @@ open class ShadhinDataSourceFactory private constructor(
             cache: SimpleCache,
             musicRepository: MusicRepository
         ): DataSource.Factory {
-            return ShadhinDataSourceFactory(context,music,cache,musicRepository)
+
+            return CacheDataSource.Factory()
+                .setCache(cache)
+                .setUpstreamDataSourceFactory(
+                    ShadhinDataSourceFactory(context,music,musicRepository)
+                )
+                .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+
         }
+
 
     }
 }

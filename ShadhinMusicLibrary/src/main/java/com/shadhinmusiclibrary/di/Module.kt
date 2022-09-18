@@ -11,13 +11,12 @@ import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
-import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
+import com.shadhinmusiclibrary.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
 import com.shadhinmusiclibrary.player.data.rest.ShadhinMusicRepository
 import com.shadhinmusiclibrary.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.player.ui.PlayerViewModelFactory
-import com.shadhinmusiclibrary.rest.RetroClient
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
 
@@ -211,11 +210,11 @@ class Module(private val applicationContext: Context) {
 
     val musicRepository: MusicRepository = ShadhinMusicRepository(playerApiService)
 
-    val musicServiceConnection: ShadhinMusicServiceConnection
+    val musicServiceController: MusicServiceController
         get() = SingleMusicServiceConnection.getInstance(applicationContext)//ShadhinMusicServiceConnection(applicationContext)
 
     val playerViewModelFactory: PlayerViewModelFactory
-        get() = PlayerViewModelFactory(musicServiceConnection)
+        get() = PlayerViewModelFactory(musicServiceController)
 
 
 

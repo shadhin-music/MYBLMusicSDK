@@ -6,9 +6,10 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection
+
 import com.google.android.exoplayer2.MediaItem
 import com.shadhinmusiclibrary.player.Constants
+import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection
 import com.shadhinmusiclibrary.player.data.model.*
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.randomString

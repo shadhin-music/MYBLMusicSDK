@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
@@ -151,9 +151,16 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
         playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
         playerViewModel.connect()
-        playerViewModel.currentPlayingMusic.observe(viewLifecycleOwner){
-            Log.i("music_payer", "setupViewModel: $it")
-        }
+        playerViewModel.playerProgress.observe(viewLifecycleOwner, Observer {
+            Log.i("music_payer", "setupViewModel: ${it.toString()}")
+        })
+
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+
+
+
+
+
 
 
 

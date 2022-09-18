@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
-import com.shadhinmusiclibrary.player.ShadhinMusicServiceConnection.Command
+
 import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
@@ -20,11 +20,13 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.player.data.source.MediaSources
 import com.shadhinmusiclibrary.player.data.source.ShadhinMediaSources
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.normalize
+import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection.*
 import java.util.*
 
 typealias PlayListUpdateFunc = (position:Int) -> Unit

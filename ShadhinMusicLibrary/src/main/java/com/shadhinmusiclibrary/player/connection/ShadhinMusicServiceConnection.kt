@@ -22,10 +22,9 @@ import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.player.utils.*
 import com.shadhinmusiclibrary.utils.toDate
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
 
 typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
@@ -34,32 +33,35 @@ class ShadhinMusicServiceConnection(
     /*private val downloadAccess: OfflineDownloadDaoAccess,
     private val cacheRepository: CacheRepository*/
 ): MusicServiceController {
+
     private var mediaControllerCompat: MediaControllerCompat?=null
     var transportControls:MediaControllerCompat.TransportControls? = null
     private val mediaBrowserConnectionCallback = MediaBrowserConnectionCallback()
+    private var playbackStateListeners: PlaybackStateListeners?=null
     private val subscriptionCallback: ShadhinMusicSubscriptionCallback by lazy{ ShadhinMusicSubscriptionCallback()}
     private val mediaControllerCallback: MediaControllerCallback =  MediaControllerCallback()
+
     private val _playbackState: MutableLiveData<PlaybackStateCompat> by lazy { MutableLiveData<PlaybackStateCompat>() }
     private val _currentPlayingSong: MutableLiveData<Music?> =  MutableLiveData<Music?>(null)
-
     private val _musicListLiveData: MutableLiveData<MusicPlayList> by lazy { MutableLiveData<MusicPlayList>() }
     private val _repeatModeLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _shuffleLiveData: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
     private val _playerErrorLiveData: MutableLiveData<ErrorMessage> by lazy { MutableLiveData<ErrorMessage>() }
 
+    override val currentMusicLiveData: LiveData<Music?> = _currentPlayingSong
+    override val playerErrorLiveData:LiveData<ErrorMessage> = _playerErrorLiveData
+    override val playListLiveData: LiveData<MusicPlayList> = _musicListLiveData
+    override val playbackStateLiveData: LiveData<PlaybackStateCompat> = _playbackState
+    override val repeatModeLiveData:LiveData<Int> = _repeatModeLiveData
+    override val shuffleLiveData:LiveData<Int> = _shuffleLiveData
 
 
-    val currentPlayingMusicLiveData: LiveData<Music?> = _currentPlayingSong
-    val playerErrorLiveData:LiveData<ErrorMessage> = _playerErrorLiveData
-    val playListLiveData: LiveData<MusicPlayList> = _musicListLiveData
-    val playbackStateLiveData: LiveData<PlaybackStateCompat> = _playbackState
-    val musicIndexLiveData:LiveData<Int> = Transformations.map(currentPlayingMusicLiveData){ cMusic ->
+    override val musicIndexLiveData:LiveData<Int> = Transformations.map(currentMusicLiveData){ cMusic ->
         val musicList  = _musicListLiveData.value?.list
         if(!musicList.isNullOrEmpty()) musicList.indexOfFirst { music -> music.mediaId == cMusic?.mediaId } else 0
     }
 
-    val repeatModeLiveData:LiveData<Int> = _repeatModeLiveData
-    val shuffleLiveData:LiveData<Int> = _shuffleLiveData
+
 
     private val mediaBrowser = MediaBrowserCompat(
         context,
@@ -69,9 +71,7 @@ class ShadhinMusicServiceConnection(
         ),
         mediaBrowserConnectionCallback,
         null
-    ).apply {
-       // connect()
-    }
+    )
     val controller: MusicServiceActions
         get() = this
 
@@ -117,37 +117,7 @@ class ShadhinMusicServiceConnection(
             receiveErrorMessage()
 
     }
-  /*  private suspend fun margeWithLocalUrl(playlist: MusicPlayList) {
 
-
-            playlist.list.map { music->
-                val mainUrl = music.mediaUrl
-                val newUrl =  when {
-                    mainUrl.isNullOrEmpty() -> FILE_BASE_URL
-                    music.contentType.equals("LAF",true) -> mainUrl
-                    mainUrl.isLocalUrl() -> mainUrl
-                   // mainUrl.isEncryptedUrl() -> mainUrl?.decryptStr()?:mainUrl
-                    //else -> localUrl(music.mediaId)?:"${FILE_BASE_URL}${mainUrl}"
-
-                }
-                music.mediaUrl = newUrl
-            }
-
-    }*/
-   /* private fun localUrl(mediaId: String?): String? = exH {
-        downloadAccess.findDownloadByContentId(mediaId,cacheRepository.getUserCode())?.track?.playUrl
-    }*/
-
-    override fun subscribeAsync(
-        scope: CoroutineScope,
-        playlist: MusicPlayList,
-        isPlayWhenReady: Boolean,
-        position: Int
-    ) {
-        scope.launch(Dispatchers.Main) {
-            subscribe(playlist,isPlayWhenReady,position)
-        }
-    }
     override fun unSubscribe(){
         sendCommand(Command.UNSUBSCRIBE)
         mediaBrowser.unsubscribe(Constants.ROOT_ID_PLAYLIST, subscriptionCallback)
@@ -284,6 +254,10 @@ class ShadhinMusicServiceConnection(
         sendCommand(Command.SLEEP_TIMER,bundle)
     }
 
+    override fun playbackState(playbackStateListeners: PlaybackStateListeners) {
+        this.playbackStateListeners = playbackStateListeners
+    }
+
     override fun sleepTime(callback: (startTime: Date?, duration: Long) -> Unit) {
         sendCommand(Command.GET_SLEEP_TIME){
             val duration = it?.getLong(Command.GET_SLEEP_TIME.dataKey)
@@ -292,8 +266,12 @@ class ShadhinMusicServiceConnection(
         }
     }
 
-
-    fun requestToUpdateMusicPosition(playerProgressCallbackFunc: (PlayerProgress) -> Unit){
+    override suspend fun playerProgress(): PlayerProgress  = suspendCoroutine<PlayerProgress> { coro ->
+        playerProgress {
+            coro.resume(it)
+        }
+    }
+    override fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit) {
         sendCommand(Command.MUSIC_PROGRESS_REQUEST){
             val playerProgress = it?.toPlayerProgress(Command.MUSIC_PROGRESS_REQUEST.dataKey)
             playerProgress?.let { it1 -> playerProgressCallbackFunc(it1) }
@@ -352,8 +330,8 @@ class ShadhinMusicServiceConnection(
     inner class MediaControllerCallback: MediaControllerCompat.Callback() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
-
             _playbackState.postValue(state)
+            playbackStateListeners?.stateChange(state)
         }
 
 
