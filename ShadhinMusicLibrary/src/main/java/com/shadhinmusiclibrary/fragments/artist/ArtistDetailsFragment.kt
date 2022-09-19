@@ -40,7 +40,8 @@ import java.io.Serializable
 
 class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var navController: NavController
-//    var homePatchItem: HomePatchItem? = null
+
+    //    var homePatchItem: HomePatchItem? = null
 //    var homePatchDetail: HomePatchDetail? = null
     var artistContent: ArtistContent? = null
     private lateinit var viewModel: ArtistViewModel
@@ -48,9 +49,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
 
-    private lateinit var playerViewModel:PlayerViewModel
-
-    //private lateinit var playerViewModel: PlayerViewModel
+    private lateinit var playerViewModel: PlayerViewModel
 
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
@@ -149,19 +148,19 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
 
-        playerViewModel = ViewModelProvider(requireActivity(),injector.playerViewModelFactory)[PlayerViewModel::class.java]
-        playerViewModel.connect()
+        playerViewModel = ViewModelProvider(
+            requireActivity(),
+            injector.playerViewModelFactory
+        )[PlayerViewModel::class.java]
+
         playerViewModel.playerProgress.observe(viewLifecycleOwner, Observer {
             Log.i("music_payer", "setupViewModel: ${it.toString()}")
         })
 
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-
-
-
-
-
-
+        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
+            it.currentPositionTimeLabel()
+        }
 
 
     }
@@ -175,7 +174,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
-                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error happened!", Toast.LENGTH_SHORT).show()
                 showDialog()
             }
 
@@ -205,7 +204,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 if (res.status == Status.SUCCESS) {
 
 
-                    if(!playerViewModel.isPlaying) {
+                    if (!playerViewModel.isPlaying) {
 
                         //TODO this is only for test . so this code will remove
                         Handler(Looper.getMainLooper()).postDelayed({
@@ -339,7 +338,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-    //    TODO("Not yet implemented")
+        //    TODO("Not yet implemented")
     }
 
 //    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =

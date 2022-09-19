@@ -1,9 +1,7 @@
 package com.shadhinmusiclibrary.player.ui
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.shadhinmusiclibrary.player.connection.MusicServiceController
-import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import kotlinx.coroutines.Job
