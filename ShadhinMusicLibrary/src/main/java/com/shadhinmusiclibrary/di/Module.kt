@@ -196,7 +196,10 @@ class Module(private val applicationContext: Context) {
     val podcastViewModelFactory:PodcastViewModelFactory
         get() = PodcastViewModelFactory(podcastRepository)
 
-
+    val popularArtistRepository:PopularArtistRepository get() = PopularArtistRepository(
+        artistAlbumApiService)
+    val popularArtistViewModelFactory: PopularArtistViewModelFactory get()= PopularArtistViewModelFactory(
+        popularArtistRepository)
 
 
     val exoplayerCache: SimpleCache

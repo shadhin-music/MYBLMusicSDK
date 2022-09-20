@@ -7,7 +7,7 @@ import com.shadhinmusiclibrary.data.repository.ArtistAlbumContentRepository
 
 
 
-class ArtistAlbumViewModelFactory(private val artistAlbumContentRepository: ArtistAlbumContentRepository ) : ViewModelProvider.Factory{
+class ArtistAlbumViewModelFactory(private val artistAlbumContentRepository: ArtistAlbumContentRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
        return ArtistAlbumsViewModel(artistAlbumContentRepository) as T
     }

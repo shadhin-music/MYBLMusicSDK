@@ -56,4 +56,7 @@ interface ApiService {
         @Query("contentTYpe") contentTYpe:String,
         @Query("isPaid") isPaid:Boolean
     ): PodcastModel
+
+    @GET("artist/getpopularartist")
+     suspend fun fetchPopularArtist():PopularArtistModel
 }

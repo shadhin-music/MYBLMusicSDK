@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>() {
+class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),FragmentEntryPoint {
 
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
@@ -67,17 +67,17 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
-            updateAndSetAdapter(res?.data?.data!!)
+            //updateAndSetAdapter(res?.data?.data!!)
         }
     }
 
-    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
-        updatedSongList = mutableListOf()
-        for (songItem in songList) {
-            updatedSongList.add(
-                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
-            )
-        }
-        adapter.setSongData(updatedSongList)
-    }
+//    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+//        updatedSongList = mutableListOf()
+//        for (songItem in songList) {
+//            updatedSongList.add(
+//                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
+//            )
+//        }
+//        adapter.setSongData(updatedSongList)
+//    }
 }

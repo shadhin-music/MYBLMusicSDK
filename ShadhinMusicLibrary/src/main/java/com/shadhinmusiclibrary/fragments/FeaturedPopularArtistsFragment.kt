@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,7 +23,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class FeaturedPopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
+class FeaturedPopularArtistsFragment : Fragment(), HomeCallBack {
 //        override var argHomePatchItem: HomePatchItem? = null
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +48,12 @@ class FeaturedPopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 //        val argHomePatchItem =
 //            arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
        val tvTitle:TextView = requireView().findViewById(R.id.tvTitle)
-        tvTitle.text = argHomePatchItem?.Name
+//        tvTitle.text = argHomePatchItem?.Name
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 4)
-          Log.e("TAG","ID: "+ argHomePatchItem)
-        recyclerView.adapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
+//          Log.e("TAG","ID: "+ argHomePatchItem)
+//        recyclerView.adapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
@@ -84,5 +85,16 @@ class FeaturedPopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         TODO("Not yet implemented")
+    }
+    companion object{
+
+
+//        @JvmStatic
+//        fun newInstance() =
+//            FeaturedPopularArtistsFragment.apply {
+//                arguments = Bundle().apply {
+//
+//                }
+//            }
     }
 }
