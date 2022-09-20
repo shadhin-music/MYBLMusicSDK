@@ -19,6 +19,7 @@ object Constants {
     const val PLAYLIST_UPDATE = "playlist_update"
     const val REQUEST_CODE_KEY = "request_key"
     const val PLAYER_DATABASE = "player_database"
-    const val userAgent = "ShadhinMusicSDK"
+    const val userAgent = "ShadhinSDK"
+    const val FILE_BASE_URL = "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/"
 }
 

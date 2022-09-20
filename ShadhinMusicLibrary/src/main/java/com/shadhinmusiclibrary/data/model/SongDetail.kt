@@ -12,11 +12,20 @@ data class SongDetail(
     val labelname: String,
     val releaseDate: String,
     val fav: String,
-    val ArtistId: String,
-    val albumId: String,
-    val userPlayListId: String
+    val ArtistId: String?,
+    val albumId: String?,
+    val userPlayListId: String?,
+    val rootType: String?,
+
+    val rootContentID: String,
+    val rootImage: String,
+    val rootContentType: String
 ) {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
+    }
+
+    fun getRootImageUrl300Size(): String {
+        return this.rootImage.replace("<\$size\$>", "300")
     }
 }

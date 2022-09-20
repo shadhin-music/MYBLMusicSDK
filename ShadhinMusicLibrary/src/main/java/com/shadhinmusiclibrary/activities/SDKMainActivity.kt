@@ -12,6 +12,9 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -24,19 +27,25 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
+import com.shadhinmusiclibrary.player.Constants
+import com.shadhinmusiclibrary.player.data.model.Music
+import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.ImageSizeParser
-import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class SDKMainActivity : BaseActivity(),
+internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
     DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
     DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
     private lateinit var navHostFragment: NavHostFragment
@@ -79,6 +88,7 @@ internal class SDKMainActivity : BaseActivity(),
     private lateinit var ibtnQueueMusic: ImageButton
     private lateinit var ibtnDownload: ImageButton
 
+    private lateinit var playerViewModel: PlayerViewModel
 
     private lateinit var listData: MutableList<HomePatchDetail>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +99,8 @@ internal class SDKMainActivity : BaseActivity(),
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
+        createPlayerVM()
 
-//        viewModelMusicPlayer = ViewModelProvider(this).get(MusicPlayerVM::class.java)
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
 
@@ -103,18 +113,42 @@ internal class SDKMainActivity : BaseActivity(),
         }
         routeData(patch, selectedPatchIndex)
 
+        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
+            if (itMus != null) {
+                playerViewModel.musicIndexLiveData.observe(
+                    this,
+                    Observer { itCurrPlayingVPosition ->
+                        setMiniMusicPlayerData(
+                            mutableListOf<SongDetail>().apply {
+                                add(UtilHelper.getSongDetailToMusic(itMus))
+                            },
+                            itCurrPlayingVPosition
+                        )
+                    })
+            }
+        })
+
         slCustomBShOnMaximized()
 
         setMusicBannerAdapter()
-        uiFunctionality()
+        mainMusicPlayerUiFunctionality()
     }
 
-    private fun miniPlayerShowHide() {
+    private fun createPlayerVM() {
+        playerViewModel = ViewModelProvider(
+            this, injector.playerViewModelFactory
+        )[PlayerViewModel::class.java]
+        playerViewModel.connect()
+    }
+
+    private fun miniPlayerShowHide(playing: Boolean) {
         //at fast show mini player
         // getDPfromPX paramerer pass pixel. how many height layout show.
         // this mini player height 72dp thats why i set 73dp view show
-        slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(73, this)
-        slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        if (playing) {
+            slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(73, this)
+            slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        }
     }
 
     private fun uiInitMiniMusicPlayer() {
@@ -159,7 +193,6 @@ internal class SDKMainActivity : BaseActivity(),
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
                 cvMiniPlayer.alpha = (1 - slideOffset)
                 clMainMusicPlayer.alpha = slideOffset
-                Log.e("SDKMA", "onPanelSlide: $slideOffset")
                 if (slideOffset == 1f) {
                     playerMode = PlayerMode.MAXIMIZED
                     cvMiniPlayer.visibility = View.GONE
@@ -189,35 +222,58 @@ internal class SDKMainActivity : BaseActivity(),
         navController.setGraph(navGraph, bundleData)
     }
 
-    fun setMiniMusicPlayerData(mSongDet: SongDetail) {
-        cvMiniPlayer.visibility = View.VISIBLE
+    fun setMiniMusicPlayerData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+//        playerViewModel.unSubscribe()
+        val musicPlaylist = MusicPlayList(
+            UtilHelper.getMusicListToSongDetailList(mSongDetails),
+            0
+        )
+        playerViewModel.subscribe(
+            musicPlaylist,
+            false,
+            clickItemPosition
+        )
         Glide.with(this)
-            .load(mSongDet.getImageUrl300Size())
+            .load(mSongDetails[clickItemPosition].getRootImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
             .placeholder(R.drawable.ic_asif_300)
             .error(R.drawable.ic_asif_300)
             .into(ivSongThumbMini)
-        tvSongNameMini.text = mSongDet.title
-        tvSingerNameMini.text = mSongDet.labelname
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
+        tvSongNameMini.text = mSongDetails[clickItemPosition].title
+        tvSingerNameMini.text = mSongDetails[clickItemPosition].artist
+//        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
+        playerViewModel.startObservePlayerProgress(this)
+        cvMiniPlayer.visibility = View.VISIBLE
+        playerViewModel.playerProgress.observe(this, Observer {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
+        })
 
-/*        ibtnSkipPreviousMini.setOnClickListener {
+        playerViewModel.playbackStateLiveData.observe(this, Observer {
+            playPauseState(it.isPlaying)
+            miniPlayerShowHide(it.isPlaying)
+        })
+
+        ibtnSkipPreviousMini.setOnClickListener {
+            playerViewModel.skipToPrevious()
         }
 
         ibtnPlayPauseMini.setOnClickListener {
-            if (!isPlayOrPause) {
-                isPlayOrPause = true
-                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
-            } else {
-                isPlayOrPause = false
-                ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
-            }
+            playerViewModel.togglePlayPause()
         }
-        ibtnSkipNextMini.setOnClickListener {
 
-        }*/
+        ibtnSkipNextMini.setOnClickListener {
+            playerViewModel.skipToNext()
+        }
+    }
+
+    private fun playPauseState(playing: Boolean) {
+        if (playing) {
+            ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
+        } else {
+            ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
+        }
     }
 
     override fun changePlayerView(playerMode: PlayerMode?) {
@@ -273,7 +329,6 @@ internal class SDKMainActivity : BaseActivity(),
                                 homePatchDetail as Serializable
                             )
                         })
-                    miniPlayerShowHide()
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
@@ -288,7 +343,6 @@ internal class SDKMainActivity : BaseActivity(),
                                 homePatchDetail as Serializable
                             )
                         })
-                    miniPlayerShowHide()
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
@@ -370,7 +424,7 @@ internal class SDKMainActivity : BaseActivity(),
                                 AppConstantUtils.PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG","CLICK ITEM123: "+ PatchItem)
+                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
             }
@@ -466,10 +520,9 @@ internal class SDKMainActivity : BaseActivity(),
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
     }
 
-    private fun uiFunctionality() {
+    private fun mainMusicPlayerUiFunctionality() {
         ibtnShuffle.setOnClickListener {
             setControlColor(ibtnShuffle)
-//            R.color.vector_image_control.set
         }
 
         ibtnSkipPrevious.setOnClickListener {
@@ -573,5 +626,10 @@ internal class SDKMainActivity : BaseActivity(),
                 super.onBackPressed()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        playerViewModel.disconnect()
     }
 }

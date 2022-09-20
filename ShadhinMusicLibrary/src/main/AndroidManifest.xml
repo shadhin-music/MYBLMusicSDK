@@ -4,13 +4,22 @@
     package="com.shadhinmusiclibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <application
-        android:name=".di.ShadhinApp"
-        android:usesCleartextTraffic="true">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <application android:name=".di.ShadhinApp"
+        android:usesCleartextTraffic="true"
+        >
         <activity
             android:name=".activities.SDKMainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/light_theme" />
+        <service
+            android:name=".player.ShadhinMusicPlayer"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
     </application>
 </manifest>

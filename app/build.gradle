@@ -3,13 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.co.shadhinmusicsdk"
         minSdk 19
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -46,12 +47,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-//    //Exoplayer
-//    implementation 'com.google.android.exoplayer:exoplayer:2.11.4'
-//    implementation 'com.google.android.exoplayer:exoplayer-core:2.11.4'
-//    implementation 'com.google.android.exoplayer:exoplayer-dash:2.11.4'
-//    implementation 'com.google.android.exoplayer:exoplayer-ui:2.11.4'
-//    implementation 'com.google.android.exoplayer:extension-okhttp:2.11.4'
-//    implementation "com.google.android.exoplayer:extension-mediasession:2.11.4"
-//    implementation 'androidx.media:media:1.5.0'
 }

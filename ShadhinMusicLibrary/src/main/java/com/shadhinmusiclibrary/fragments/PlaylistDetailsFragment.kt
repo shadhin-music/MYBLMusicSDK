@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.utils.UtilHelper
 
-class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint {
+class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>() {
 
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
@@ -66,7 +67,17 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
-            adapter.setData(res?.data?.data!!)
+            updateAndSetAdapter(res?.data?.data!!)
         }
+    }
+
+    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+        updatedSongList = mutableListOf()
+        for (songItem in songList) {
+            updatedSongList.add(
+                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
+            )
+        }
+        adapter.setSongData(updatedSongList)
     }
 }
