@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.VideoActivity
-import com.shadhinmusiclibrary.data.fake.FAKE_VIDEO_LIST
+import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
@@ -28,13 +28,13 @@ class FeaturedHomeFragment : CommonBaseFragment() {
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
 
 
-        val typeToken = object:TypeToken<Array<Video>>(){}.type
 
-        val videos :Array<Video> = Gson().fromJson(FAKE_VIDEO_LIST,typeToken)
  
         view.findViewById<Button>(R.id.button).setOnClickListener {
 
             val intent = Intent(requireContext(), VideoActivity::class.java)
+            val typeToken = object:TypeToken<ArrayList<Video>>(){}.type
+            val videos :ArrayList<Video> = Gson().fromJson(VideoJOSN,typeToken)
             intent.putExtra(VideoActivity.INTENT_KEY_POSITION, 0)
             intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
             startActivity(intent)
