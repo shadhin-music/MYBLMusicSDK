@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.album
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,14 +26,14 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint, OnItemClickCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
-    private lateinit var playerViewModel: PlayerViewModel
+//    private lateinit var playerViewModel: PlayerViewModel
 
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
@@ -48,15 +49,13 @@ class AlbumDetailsFragment :
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
         navController = findNavController()
-        createPlayerVM()
-//        vmMusicPlayer = ViewModelProvider(this).get(MusicPlayerVM::class.java)
 
         return viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+//        createPlayerVM()
         adapter = AlbumAdapter(this)
 
         ///read data from online
@@ -77,20 +76,12 @@ class AlbumDetailsFragment :
         }
     }
 
-    private fun playPauseState(playing: Boolean, ivPlayPause: ImageView) {
-        if (playing) {
-            ivPlayPause.setImageResource(R.drawable.ic_pause_circle_filled)
-        } else {
-            ivPlayPause.setImageResource(R.drawable.ic_play_linear)
-        }
-    }
-
-    private fun createPlayerVM() {
-        playerViewModel = ViewModelProvider(
-            requireActivity(),
-            injector.playerViewModelFactory
-        )[PlayerViewModel::class.java]
-    }
+//    private fun createPlayerVM() {
+//        playerViewModel = ViewModelProvider(
+//            requireActivity(),
+//            injector.playerViewModelFactory
+//        )[PlayerViewModel::class.java]
+//    }
 
     private fun fetchOnlineData(contentId: Int) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
@@ -98,7 +89,7 @@ class AlbumDetailsFragment :
         viewModel!!.albumContent.observe(requireActivity()) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-                adapter.setSongData(res.data!!.data)
+                updateAndSetAdapter(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE
                 adapter.setSongData(mutableListOf())
@@ -106,31 +97,41 @@ class AlbumDetailsFragment :
         }
     }
 
-    override fun onClickItem(mSongDet: SongDetail) {
-//        playerViewModel.currentMusicLiveData.observe(this, Observer { itMusic ->
-//            if ((itMusic!!.contentType!! == adapter.getCurrentItem().ContentType)
-//                    .and(itMusic.mediaId!! == adapter.getCurrentItem().ContentID)
-//            ) {
-//                playItem(mSongDet)
-//            }
-//        })
-        playItem(mSongDet)
-//        vmMusicPlayer.setPlayMusic(mSongDet)
+    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+        updatedSongList = mutableListOf()
+        for (songItem in songList) {
+            updatedSongList.add(
+                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
+            )
+        }
+        adapter.setSongData(updatedSongList)
     }
 
-    override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mSongDet: SongDetail) {
+    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        playItem(mSongDetails, clickItemPosition)
+    }
+
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        songDetails: MutableList<SongDetail>
+    ) {
         val albumVH = currentVH as AlbumAdapter.AlbumVH
-        if (albumVH.ivPlayBtn != null) {
-            playerViewModel.currentMusicLiveData.observe(this, Observer { itMusic ->
-                if ((itMusic!!.contentType!! == mSongDet.ContentType)
-                        .and(itMusic.mediaId!! == mSongDet.ContentID)
-                ) {
-                    playerViewModel.playbackStateLiveData.observe(this, Observer {
-                        playPauseState(it.isPlaying, albumVH.ivPlayBtn!!)
-                    })
+        if (songDetails.size > 0) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer {
+                if (it != null) {
+                    if ((it.rootType!! == songDetails[0].rootContentType)
+                        && (it.mediaId!! == songDetails[0].ContentID)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        }
+
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                            albumVH.itemView.setBackgroundColor(Color.BLUE)
+                        }
+                    }
                 }
             })
-
         }
     }
 }

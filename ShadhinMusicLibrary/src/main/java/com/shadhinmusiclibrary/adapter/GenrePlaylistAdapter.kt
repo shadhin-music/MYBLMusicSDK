@@ -66,7 +66,7 @@ class GenrePlaylistAdapter:
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<SongDetail>) {
+    fun setSongData(data: List<SongDetail>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
         Log.e("PLA", ": $dataSongDetail")

@@ -49,14 +49,18 @@ class STypeDetailsFragment : CommonBaseFragment() {
                     fav,
                     ArtistId,
                     albumId = "",
-                    userPlayListId = ""
+                    userPlayListId = "",
+                    rootType = "",
+                    rootContentID = "",
+                    rootImage = "",
+                    rootContentType = ""
                 )
             )
         }
 
         adapter = GenrePlaylistAdapter()
         adapter.setRootData(argHomePatchDetail!!)
-        adapter.setData(listSongDetail)
+//        adapter.setData(listSongDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -2,12 +2,12 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
@@ -20,7 +20,8 @@ import com.shadhinmusiclibrary.utils.TimeParser
 class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
     RecyclerView.Adapter<AlbumAdapter.AlbumVH>() {
     private var rootDataContent: HomePatchDetail? = null
-    private var dataSongDetail: List<SongDetail> = mutableListOf()
+    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    private var isPlaying = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumVH {
         val layout = when (viewType) {
@@ -36,29 +37,42 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 
     override fun onBindViewHolder(holder: AlbumVH, position: Int) {
         when (holder.itemViewType) {
-            0 -> holder.bindRoot(position)
-            1 -> holder.bindTrackItem(position - 1)
+            0 -> holder.bindRoot(rootDataContent!!)
+            1 -> holder.bindTrackItem(dataSongDetail[position - 1])
         }
 
-//        when (holder.itemViewType) {
-//            0 -> holder.bindRoot(rootDataContent!!)
-//            1 -> holder.bindTrackItem(dataSongDetail[position - 1])
-//        }
+        if (dataSongDetail.isNotEmpty()) {
+            // val mSongDetItem = dataSongDetail[position-1]
+            when (holder.itemViewType) {
+                0 -> {
+                    itemClickCB.getCurrentVH(holder, dataSongDetail)
+                    holder.ivPlayBtn?.setOnClickListener {
+                        /*
+                        if player.state == playing && player.rootid == this.rootId{
+                            player.pause
+                        }else if player.state = paused && player.rootid == this.rootId{
+                            player.play
+                        }else{
+                            this.startPlaying(trackArray, index = 0)
+                        }
+                         */
+//                        itemClickCB.onClickItem(mSongDetItem)
+                    }
+                }
+                1 -> {
+                    holder.itemView.setOnClickListener {
+                        if (holder.itemViewType == VIEW_TRACK_ITEM) {
+                            val mSongDetItem = dataSongDetail[position - 1]
+                            itemClickCB.onClickItem(dataSongDetail, (position - 1))
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-//        itemClickCB.getCurrentVH(holder, dataSongDetail[position - 1])
-//        holder.ivPlayBtn?.setOnClickListener {
-//            if (holder.itemViewType == VIEW_TRACK_ITEM) {
-//                val mSongDetItem = dataSongDetail[position - 1]
-//                itemClickCB.onClickItem(mSongDetItem)
-//            }
-//        }
-//
-//        holder.itemView.setOnClickListener {
-//            if (holder.itemViewType == VIEW_TRACK_ITEM) {
-//                val mSongDetItem = dataSongDetail[position - 1]
-//                itemClickCB.onClickItem(mSongDetItem)
-//            }
-//        }
+    fun setCurrentPlayingState(isPlayingState: Boolean) {
+        isPlaying = isPlayingState
     }
 
     override fun getItemCount(): Int {
@@ -79,7 +93,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongData(data: List<SongDetail>) {
+    fun setSongData(data: MutableList<SongDetail>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
     }
@@ -105,9 +119,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
         var ivPlayBtn: ImageView? = null
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(position: Int) {
-            val mSongDetail = dataSongDetail[position]
-            val root = rootDataContent!!
+        fun bindRoot(root: HomePatchDetail) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
@@ -123,15 +135,16 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
+
+//            if (isPlaying) {
+//                ivPlayBtn!!.setImageResource(R.drawable.ic_pause_circle_filled)
+//            } else {
+//                ivPlayBtn!!.setImageResource(R.drawable.ic_play_linear)
+//            }
 //            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
-            ivPlayBtn!!.setOnClickListener {
-                itemClickCB.onClickItem(mSongDetail)
-            }
         }
 
-        fun bindTrackItem(position: Int) {
-            val mSongDetail = dataSongDetail[position]
-            val cvSongItem: CardView = viewItem.findViewById(R.id.cv_song_item)
+        fun bindTrackItem(mSongDetail: SongDetail) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
                 .load(mSongDetail.getImageUrl300Size())
@@ -145,10 +158,6 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
-
-            cvSongItem.setOnClickListener {
-                itemClickCB.onClickItem(mSongDetail)
-            }
         }
 
 //        private fun showBottomSheetDialog(context: Context) {

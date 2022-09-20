@@ -113,9 +113,18 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         routeData(patch, selectedPatchIndex)
 
-        playerViewModel.currentMusicLiveData.observe(this, Observer {
-            if (it != null) {
-                setMiniMusicPlayerData(UtilHelper.getSongDetailToMusic(it))
+        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
+            if (itMus != null) {
+                playerViewModel.musicIndexLiveData.observe(
+                    this,
+                    Observer { itCurrPlayingVPosition ->
+                        setMiniMusicPlayerData(
+                            mutableListOf<SongDetail>().apply {
+                                add(UtilHelper.getSongDetailToMusic(itMus))
+                            },
+                            itCurrPlayingVPosition
+                        )
+                    })
             }
         })
 
@@ -213,27 +222,27 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         navController.setGraph(navGraph, bundleData)
     }
 
-    fun setMiniMusicPlayerData(mSongDet: SongDetail) {
-        playerViewModel.subscribe(
-            MusicPlayList(
-                mutableListOf<Music>().apply {
-                    add(UtilHelper.getMusicToSongDetail(mSongDet))
-                },
-                0
-            ),
-            false,
+    fun setMiniMusicPlayerData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+//        playerViewModel.unSubscribe()
+        val musicPlaylist = MusicPlayList(
+            UtilHelper.getMusicListToSongDetailList(mSongDetails),
             0
         )
+        playerViewModel.subscribe(
+            musicPlaylist,
+            false,
+            clickItemPosition
+        )
         Glide.with(this)
-            .load(mSongDet.getImageUrl300Size())
+            .load(mSongDetails[clickItemPosition].getRootImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
             .placeholder(R.drawable.ic_asif_300)
             .error(R.drawable.ic_asif_300)
             .into(ivSongThumbMini)
-        tvSongNameMini.text = mSongDet.title
-        tvSingerNameMini.text = mSongDet.artist
+        tvSongNameMini.text = mSongDetails[clickItemPosition].title
+        tvSingerNameMini.text = mSongDetails[clickItemPosition].artist
 //        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
         playerViewModel.startObservePlayerProgress(this)
         cvMiniPlayer.visibility = View.VISIBLE
