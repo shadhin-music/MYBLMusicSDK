@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -106,6 +107,24 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),true)
             }*/
         }
+
+
+       /* fun setVideoTitle(textView: TextView, data: Video?) {
+            textView.text = ""
+            if (data != null) {
+                textView.setText(data.getTitle())
+                if (data.isPlaying()) {
+                    textView.setTextColor(textView.context.resources.getColor(R.color.colorPrimary))
+                } else {
+                    textView.setTextColor(
+                        UtilHelper.getColFromAttr(
+                            textView.context,
+                            R.attr.down_item_title
+                        )
+                    )
+                }
+            }
+        }*/
     }
     inner class GridViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind(item: Video){
