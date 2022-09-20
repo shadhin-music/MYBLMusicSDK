@@ -76,13 +76,6 @@ class AlbumDetailsFragment :
         }
     }
 
-//    private fun createPlayerVM() {
-//        playerViewModel = ViewModelProvider(
-//            requireActivity(),
-//            injector.playerViewModelFactory
-//        )[PlayerViewModel::class.java]
-//    }
-
     private fun fetchOnlineData(contentId: Int) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
@@ -92,7 +85,7 @@ class AlbumDetailsFragment :
                 updateAndSetAdapter(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE
-                adapter.setSongData(mutableListOf())
+                updateAndSetAdapter(mutableListOf())
             }
         }
     }

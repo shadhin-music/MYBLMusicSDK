@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -32,16 +31,12 @@ import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
-import com.shadhinmusiclibrary.utils.DataContentType
-import com.shadhinmusiclibrary.utils.ImageSizeParser
-import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
@@ -115,16 +110,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
             if (itMus != null) {
-                playerViewModel.musicIndexLiveData.observe(
-                    this,
-                    Observer { itCurrPlayingVPosition ->
-                        setMiniMusicPlayerData(
-                            mutableListOf<SongDetail>().apply {
-                                add(UtilHelper.getSongDetailToMusic(itMus))
-                            },
-                            itCurrPlayingVPosition
-                        )
-                    })
+//                playerViewModel.musicIndexLiveData.observe(
+//                    this,
+//                    Observer { itCurrPlayingVPosition ->
+//                        setMusicPlayerInitData(
+//                            mutableListOf<SongDetail>().apply {
+//                                add(UtilHelper.getSongDetailToMusic(itMus))
+//                            },
+//                            itCurrPlayingVPosition
+//                        )
+                setupMiniMusicPlayer(UtilHelper.getSongDetailToMusic(itMus))
+//                    })
             }
         })
 
@@ -222,28 +218,34 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         navController.setGraph(navGraph, bundleData)
     }
 
-    fun setMiniMusicPlayerData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-//        playerViewModel.unSubscribe()
-        val musicPlaylist = MusicPlayList(
-            UtilHelper.getMusicListToSongDetailList(mSongDetails),
-            0
+    fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        Log.e(
+            "SDKMA",
+            "setMiniMusicPlayerData: size: " + mSongDetails.size + " itemPosition: " + clickItemPosition
         )
+        playerViewModel.unSubscribe()
         playerViewModel.subscribe(
-            musicPlaylist,
+            MusicPlayList(
+                UtilHelper.getMusicListToSongDetailList(mSongDetails),
+                0
+            ),
             false,
             clickItemPosition
         )
+    }
+
+    fun setupMiniMusicPlayer(mSongDetails: SongDetail) {
         Glide.with(this)
-            .load(mSongDetails[clickItemPosition].getRootImageUrl300Size())
+            .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
             .placeholder(R.drawable.ic_asif_300)
             .error(R.drawable.ic_asif_300)
             .into(ivSongThumbMini)
-        tvSongNameMini.text = mSongDetails[clickItemPosition].title
-        tvSingerNameMini.text = mSongDetails[clickItemPosition].artist
-//        tvTotalDurationMini.text = TimeParser.secToMin(mSongDet.duration)
+        tvSongNameMini.text = mSongDetails.title
+        tvSingerNameMini.text = mSongDetails.artist
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         playerViewModel.startObservePlayerProgress(this)
         cvMiniPlayer.visibility = View.VISIBLE
         playerViewModel.playerProgress.observe(this, Observer {
