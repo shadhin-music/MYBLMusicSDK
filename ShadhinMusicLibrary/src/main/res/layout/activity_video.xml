@@ -45,12 +45,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </FrameLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/parent_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/down_background"
 
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,132 +59,91 @@
                 tools:context=".ui.video.VideoActivity">
 
 
-                <FrameLayout
-                    android:id="@+id/emptyLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@color/black1"
-                    android:clickable="true"
-                    android:focusable="true"
-
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </FrameLayout>
-
-                <View
+                <LinearLayout
                     android:id="@+id/videoDescBackground"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="-24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:background="@drawable/video_lay_background"
-                    app:layout_constraintBottom_toBottomOf="@+id/settingsLayout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emptyLayout" />
+                 >
+                    <TextView
+                        android:id="@+id/videoTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:textColor="@color/down_title"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/emptyLayout"
+                        android:text="God’s Plan" />
 
+                    <TextView
+                        android:id="@+id/videoDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="1"
+                        android:textColor="@color/down_item_desc"
 
-
-
-
-                <View
-                    android:id="@+id/titleBackground"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="-12dp"
-                    android:background="@drawable/video_lay_background"
-                    android:clickable="true"
-                    app:layout_constraintBottom_toBottomOf="@+id/videoDesc"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emptyLayout" />
-
-                <TextView
-                    android:id="@+id/videoTitle"
-                    android:layout_width="0dp"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/videoTitle"
+                        android:text="The cat is a domestic species of small carnivorous mammal. It is the only domesticated species in the family Felidae and is often referred to as the domestic cat to distinguish it from the wild members of the family." />
+                </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:orientation="horizontal"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
+                   >
 
-                    android:lines="1"
+                    <TextView
+                        android:id="@+id/listText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="You Might Like"
+                        android:textColor="@color/down_title"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                    tools:text="God’s Plan"
-                    android:textColor="@color/down_title"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toStartOf="@+id/arrowToggleButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emptyLayout" />
+                    <ImageButton
+                        android:id="@+id/layoutToggle"
+                        android:layout_width="wrap_content"
 
-                <TextView
-                    android:id="@+id/videoDesc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="8dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_grid_view"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    android:lines="1"
-
-                    tools:text="The cat is a domestic species of small carnivorous mammal. It is the only domesticated species in the family Felidae and is often referred to as the domestic cat to distinguish it from the wild members of the family."
-                    android:textColor="@color/down_item_desc"
-
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toStartOf="@+id/arrowToggleButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoTitle" />
-
-
-                <TextView
-                    android:id="@+id/listText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-
-                    android:text="you_might_like"
-                    android:textColor="@color/down_title"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoDescBackground" />
-
-                <ImageButton
-                    android:id="@+id/layoutToggle"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginEnd="16dp"
-                    android:background="?selectableItemBackgroundBorderless"
-
-                    android:src="@drawable/ic_grid_view"
-                    app:layout_constraintBottom_toBottomOf="@+id/listText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/listText" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/videoRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="match_parent"
                     android:clickable="false"
                     android:clipToPadding="false"
                     android:fillViewport="true"
                     android:paddingTop="8dp"
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/listText"
                     app:spanCount="2"
                     tools:listitem="@layout/row_video_gr">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
 
         </LinearLayout>
