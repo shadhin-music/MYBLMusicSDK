@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.VideoActivity
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 class FeaturedHomeFragment : CommonBaseFragment() {
@@ -24,6 +26,13 @@ class FeaturedHomeFragment : CommonBaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
+
+
+        view.findViewById<Button>(R.id.button).setOnClickListener {
+            startActivity(Intent(requireContext(), VideoActivity::class.java))
+        }
+
+
 //        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
 //        btnPopularArtist.setOnClickListener {
 //            val manager: FragmentManager =

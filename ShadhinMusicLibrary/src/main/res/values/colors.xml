@@ -46,4 +46,17 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="black1">#000000</color>
+    <color name="black2">#666666</color>
+    <color name="black3">#999999</color>
+    <color name="v2_background_dark">#2A2D36</color>
+    <color name="v2_background_light">#F2F2F2</color>
+    <color name="buffer_color">#282a30</color>
+    <color name="text_color_hint_Light">#CCCCCC</color>
+    <color name="text_color_hint_dark">#757575</color>
+    <color name="white">#FFFFFF</color>
+    <color name="down_title">#2A2D36</color>
+    <color name="down_item_desc">#757575</color>
+    <color name="down_background">#F2F2F2</color>
+    <color name="bottom_bar_bg_dark">#212121</color>
 </resources>
