@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,12 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
-import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -114,6 +110,7 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
                         }
 
                         playerViewModel.musicIndexLiveData.observe(requireActivity()) { itSelectedPosition ->
+
                             Log.e(
                                 "PLDF",
                                 "getCurrentVH: Position " + itSelectedPosition + " itemViewType " + albumVH.itemViewType
@@ -127,4 +124,5 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
             })
         }
     }
+
 }

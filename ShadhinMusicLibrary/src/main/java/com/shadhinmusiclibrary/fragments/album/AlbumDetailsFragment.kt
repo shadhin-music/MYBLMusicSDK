@@ -120,7 +120,7 @@ class AlbumDetailsFragment :
                         }
 
                         playerViewModel.musicIndexLiveData.observe(requireActivity()) {
-                            albumVH.itemView.setBackgroundColor(Color.BLUE)
+//                            albumVH.itemView.setBackgroundColor(Color.BLUE)
                         }
                     }
                 }
