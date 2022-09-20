@@ -34,29 +34,31 @@ class STypeDetailsFragment : CommonBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         listSongDetail = mutableListOf()
         argHomePatchDetail!!.apply {
-            listSongDetail.add(
-                SongDetail(
-                    ContentID,
-                    image,
-                    title,
-                    ContentType,
-                    PlayUrl,
-                    Artist,
-                    Duration,
-                    copyright = "",
-                    labelname = "",
-                    releaseDate = "",
-                    fav,
-                    ArtistId,
-                    albumId = "",
-                    userPlayListId = ""
-                )
-            )
+//            listSongDetail.add(
+//                SongDetail(
+//                    ContentID,
+//                    image,
+//                    title,
+//                    ContentType,
+//                    PlayUrl,
+//                    Artist,
+//                    Duration,
+//                    copyright = "",
+//                    labelname = "",
+//                    releaseDate = "",
+//                    fav,
+//                    ArtistId,
+//                    albumId = "",
+//                    userPlayListId = "",
+//                    RootType="",
+//                    roo
+//                )
+//            )
         }
 
         adapter = GenrePlaylistAdapter()
         adapter.setRootData(argHomePatchDetail!!)
-        adapter.setData(listSongDetail)
+//        adapter.setData(listSongDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
