@@ -53,7 +53,7 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
     }
 
     fun playItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        (activity as? SDKMainActivity)?.setMiniMusicPlayerData(mSongDetails, clickItemPosition)
+        (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 
     fun playPauseState(playing: Boolean, ivPlayPause: ImageView) {

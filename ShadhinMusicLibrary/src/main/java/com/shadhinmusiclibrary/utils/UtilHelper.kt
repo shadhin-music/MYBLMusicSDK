@@ -83,6 +83,48 @@ object UtilHelper {
         return musicList
     }
 
+    fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (musicItem in musicList) {
+            musicItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = mediaId!!,
+                        image = displayIconUrl!!,
+                        title = title!!,
+                        ContentType = if (contentType != null) {
+                            contentType!!
+                        } else {
+                            ""
+                        },
+                        PlayUrl = mediaUrl!!,
+                        artist = artistName!!,
+                        duration = date!!,
+                        copyright = "",
+                        labelname = "",
+                        releaseDate = "",
+                        fav = "",
+
+                        ArtistId = "",
+                        albumId = "",
+                        userPlayListId = if (userPlayListId != null) {
+                            userPlayListId!!
+                        } else {
+                            ""
+                        },
+                        rootType = rootType!!,
+
+                        rootContentID = rootId!!,
+                        rootContentType = rootType!!,
+                        rootImage = rootImage!!
+                    )
+                )
+            }
+        }
+
+        return songDetailList
+    }
+
     fun getSongDetailToMusic(mMusic: Music): SongDetail {
         mMusic.apply {
             return SongDetail(
