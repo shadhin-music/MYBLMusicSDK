@@ -4,7 +4,6 @@
     android:id="@+id/cl_main_music_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGreen"
     android:visibility="visible">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +63,8 @@
         android:id="@+id/ll_control_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -88,6 +89,7 @@
                     android:id="@+id/tv_song_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="Ami Bhabi Tumi"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
@@ -104,6 +106,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
+                android:clickable="false"
                 android:padding="6dp"
                 android:src="@drawable/ic_baseline_favorite_border_24" />
         </LinearLayout>

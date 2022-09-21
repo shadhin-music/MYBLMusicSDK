@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.activities
 
 import android.graphics.Bitmap
+import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
@@ -425,9 +426,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                 .setMinScale(0.95f)
                 .build()
         )
+        dsvCurrentPlaySongsThumb.scrollToPosition(clickItemPosition)
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
-        dsvCurrentPlaySongsThumb.scrollToPosition(clickItemPosition)
 
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
@@ -445,6 +446,21 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             } else {
                 "0:00"
             }
+            sbCurrentPlaySongStatus.secondaryProgress = it.bufferPosition?.toInt()!!
+        })
+
+        sbCurrentPlaySongStatus.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                sbCurrentPlaySongStatus.progress = p0!!.progress
+                playerViewModel.seekTo(p1.toLong())
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
         })
 
         playerViewModel.playbackStateLiveData.observe(this, Observer {
@@ -452,7 +468,31 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         })
 
         playerViewModel.repeatModeLiveData.observe(this, Observer {
-            setRepeatOneControlColor(it, ibtnRepeatSong)
+            when (it) {
+                PlaybackStateCompat.REPEAT_MODE_NONE -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_24)
+                    ibtnShuffle.isEnabled = true
+                    ibtnShuffle.setColorFilter(0)
+//                setControlColor(false, ibtnControl)
+                }
+                PlaybackStateCompat.REPEAT_MODE_ONE -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_one_on_24)
+                    ibtnShuffle.isEnabled = false
+                    ibtnShuffle.setColorFilter(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.colorTransparent
+                        ), PorterDuff.Mode.SRC_IN
+                    )
+//                setControlColor(true, ibtnControl)
+                }
+                PlaybackStateCompat.REPEAT_MODE_ALL -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_on_24)
+//                setControlColor(true, ibtnControl)
+                    ibtnShuffle.isEnabled = true
+                    ibtnShuffle.setColorFilter(0)
+                }
+            }
         })
 
         playerViewModel.shuffleLiveData.observe(this, Observer {
@@ -470,7 +510,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         ibtnShuffle.setOnClickListener {
             playerViewModel.shuffleToggle()
-//            setControlColor(true, ibtnShuffle)
         }
 
         ibtnSkipPrevious.setOnClickListener {
@@ -520,6 +559,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
 
+        setPaletteGradientColor(getBitmapFromIV(ivSongThumbMini))
+
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
@@ -541,48 +582,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             playerViewModel.skipToNext()
         }
     }
-
-//    private fun mainMusicPlayerUiFunctionality() {
-//        playerViewModel.playbackStateLiveData.observe(this, Observer {
-//            mainPlayerPlayPauseState(it.isPlaying)
-//        })
-//
-//        ibtnShuffle.setOnClickListener {
-//            setControlColor(false, ibtnShuffle)
-//        }
-//
-//        ibtnSkipPrevious.setOnClickListener {
-//            playerViewModel.skipToPrevious()
-//        }
-//
-//        ibtnPlayPause.setOnClickListener {
-//            playerViewModel.togglePlayPause()
-//        }
-//
-//        ibtnSkipNext.setOnClickListener {
-//            playerViewModel.skipToNext()
-//        }
-//
-//        ibtnRepeatSong.setOnClickListener {
-//            setControlColor(false, ibtnRepeatSong)
-//        }
-//
-//        ibtnVolume.setOnClickListener {
-//            setControlColor(false, ibtnVolume)
-//        }
-//
-//        ibtnLibraryAdd.setOnClickListener {
-//            setControlColor(false, ibtnLibraryAdd)
-//        }
-//
-//        ibtnQueueMusic.setOnClickListener {
-//            setControlColor(false, ibtnQueueMusic)
-//        }
-//
-//        ibtnDownload.setOnClickListener {
-//            setControlColor(false, ibtnDownload)
-//        }
-//    }
 
     override fun onCurrentItemChanged(
         viewHolder: MusicPlayAdapter.MusicPlayVH?,
@@ -646,6 +645,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
     private fun getBitmapFromVH(currentItemHolder: MusicPlayAdapter.MusicPlayVH): Bitmap {
         val imageV = currentItemHolder.ivCurrentPlayImage
         val traDaw = imageV.drawable
+        return (traDaw.toBitmap())
+    }
+
+    private fun getBitmapFromIV(ivCurrentPlayImage: ImageView): Bitmap {
+        val traDaw = ivCurrentPlayImage.drawable
         return (traDaw.toBitmap())
     }
 

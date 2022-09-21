@@ -25,6 +25,7 @@ class MusicPlayAdapter(
     RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {
     private var listMusicData: MutableList<SongDetail>? = null
     private var finalWidth = 0
+    private var mpHolder: MusicPlayVH? = null
 
     init {
         determinePhoneWidth()
@@ -67,10 +68,15 @@ class MusicPlayAdapter(
         holder.cvBannerParent.layoutParams.height = finalWidth
 
         holder.onBind(position)
+        mpHolder = holder
     }
 
     override fun getItemCount(): Int {
         return listMusicData!!.size
+    }
+
+    fun getViewHolder(): MusicPlayVH? {
+        return mpHolder
     }
 
     inner class MusicPlayVH(itemView: View) : BaseViewHolder(itemView) {

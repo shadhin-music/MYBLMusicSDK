@@ -30,20 +30,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun setRepeatOneControlColor(it: Int, ibtnControl: ImageButton) {
-        when (it) {
-            PlaybackStateCompat.REPEAT_MODE_NONE -> {
-                ibtnControl.setImageResource(R.drawable.ic_baseline_repeat_24)
-//                setControlColor(false, ibtnControl)
-            }
-            PlaybackStateCompat.REPEAT_MODE_ONE -> {
-                ibtnControl.setImageResource(R.drawable.ic_baseline_repeat_one_on_24)
-//                setControlColor(true, ibtnControl)
-            }
-            PlaybackStateCompat.REPEAT_MODE_ALL -> {
-                ibtnControl.setImageResource(R.drawable.ic_baseline_repeat_on_24)
-//                setControlColor(true, ibtnControl)
-            }
-        }
+    fun setResource(ibtnControl: ImageButton, resId: Int) {
+        ibtnControl.setImageResource(resId)
     }
 }
