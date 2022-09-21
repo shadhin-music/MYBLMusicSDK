@@ -10,12 +10,14 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +35,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
-import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
 import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -143,7 +144,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
     }
 
 
-
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
@@ -154,7 +154,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
-                                 PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -182,7 +182,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
                         Bundle().apply {
                             putSerializable(
-                              PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -196,7 +196,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -210,7 +210,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                             putSerializable(
@@ -258,7 +258,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                         })
@@ -289,6 +289,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             this, injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
         playerViewModel.connect()
+        playerViewModel.startObservePlayerProgress(this)
     }
 
     private fun miniPlayerHideShow(playing: Boolean) {
@@ -376,6 +377,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             false,
             clickItemPosition
         )
+
         miniPlayerHideShow(true)
         setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
     }
@@ -438,24 +440,22 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
 
-        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
             sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
             sbCurrentPlaySongStatus.max = it.duration?.toInt() ?: 0
             tvCurrentPlayDuration.text = it.currentPositionTimeLabel()
-            tvCurrentPlayDuration.text = if (it.currentPosition?.toInt()!! >= 0) {
-                it.currentPositionTimeLabel()
-            } else {
-                "0:00"
-            }
-//            tvTotalPlayDuration.text = it.durationTimeLabel()
-            tvTotalPlayDuration.text = if (it.duration?.toInt()!! >= 0) {
+            tvTotalPlayDuration.text = if (it.durationTimeLabel() != "-153722867280912:0-55") {
                 it.durationTimeLabel()
             } else {
                 "0:00"
             }
+            Log.e(
+                "SDKMA",
+                "setup: " + it.currentPositionTimeLabel()!! + " duration: " + it.durationTimeLabel()!!
+            )
             sbCurrentPlaySongStatus.secondaryProgress = it.bufferPosition?.toInt()!!
         })
+//        playerViewModel.startObservePlayerProgress(this)
 
         sbCurrentPlaySongStatus.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -567,9 +567,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
 
-        setPaletteGradientColor(getBitmapFromIV(ivSongThumbMini))
+        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
-        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         })
@@ -599,7 +598,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             viewHolder.sMusicData.artist
             tvSongName.text = viewHolder.sMusicData.title
             tvSingerName.text = viewHolder.sMusicData.artist
-            setPaletteGradientColor(getBitmapFromVH(viewHolder))
+            setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
         }
     }
 
@@ -622,31 +621,28 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentHolder: MusicPlayAdapter.MusicPlayVH?,
         newCurrent: MusicPlayAdapter.MusicPlayVH?
     ) {
-        Log.e(
-            "SDKMA", "scrollPosition: " + scrollPosition +
-                    " currentPosition: " + currentPosition +
-                    " newPosition: " + newPosition
-        )
         if (currentHolder != null) {
-            setPaletteGradientColor(getBitmapFromVH(currentHolder))
+            setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
 
             playerViewModel.skipToQueueItem(newPosition)
         }
     }
 
-    private fun setPaletteGradientColor(imBitmapData: Bitmap) {
+    private fun setMainPlayerBackgroundColor(imBitmapData: Bitmap) {
         val palette: Palette = Palette.from(imBitmapData).generate()
         val vibrantSwatch: Palette.Swatch? = palette.vibrantSwatch
         if (vibrantSwatch != null) {
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(
-                    ContextCompat.getColor(this, R.color.shadinRequiredColor),
-                    vibrantSwatch.rgb
+            if (vibrantSwatch.rgb.red > 0.90 && vibrantSwatch.rgb.green > 0.90 && vibrantSwatch.rgb.blue > 0.90) {
+                val gradientDrawable = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(
+                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                        vibrantSwatch.rgb
+                    )
                 )
-            )
-            gradientDrawable.cornerRadius = 0f
-            clMainMusicPlayer.background = gradientDrawable
+                gradientDrawable.cornerRadius = 0f
+                clMainMusicPlayer.background = gradientDrawable
+            }
         }
     }
 
@@ -679,15 +675,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         super.onDestroy()
         playerViewModel.disconnect()
     }
-  fun showBottomSheetDialog(context: Context, mSongDetails: SongDetail) {
+
+    fun showBottomSheetDialog(context: Context, mSongDetails: SongDetail) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
-        val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        val constraintAlbum: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(context,mSongDetails)
+            gotoArtist(context, mSongDetails)
 
         }
     }
@@ -698,7 +696,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails))
             .addToBackStack("Fragment")
             .commit()
-        Log.e("TAGGY","SONGDETAILS: "+ mSongDetails)
+        Log.e("TAGGY", "SONGDETAILS: " + mSongDetails)
     }
 
 }
