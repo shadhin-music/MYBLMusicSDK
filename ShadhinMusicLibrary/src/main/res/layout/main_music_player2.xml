@@ -112,7 +112,7 @@
             android:id="@+id/sb_current_play_song_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:progressTint="@color/colorPrimary"
@@ -169,7 +169,7 @@
                     android:layout_gravity="start"
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="20dp"
-                    android:src="@drawable/ic_shuffle_30" />
+                    android:src="@drawable/ic_baseline_shuffle_24" />
             </LinearLayout>
 
             <LinearLayout
@@ -228,7 +228,7 @@
                     android:layout_gravity="end"
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="20dp"
-                    android:src="@drawable/ic_repeat_30" />
+                    android:src="@drawable/ic_baseline_repeat_24" />
             </LinearLayout>
         </LinearLayout>
 

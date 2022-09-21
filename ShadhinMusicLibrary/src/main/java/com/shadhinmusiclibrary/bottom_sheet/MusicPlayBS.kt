@@ -91,75 +91,6 @@ class MusicPlayBS : Fragment(),
     private fun setMusicBannerAdapter() {
         val adapter = MusicPlayAdapter(requireContext())
         listData = mutableListOf()
-        for (i in 1..3) {
-            listData.add(
-                HomePatchDetail(
-                    "",
-                    "",
-                    "test 11111",
-                    "Habib",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "https://s3-alpha-sig.figma.com/img/c1e6/aa8d/9b7ead647d0f62b68e0aea77f737cab7?Expires=1663545600&Signature=EstkpW5-lhvXiOaA6kQ7Sr-1u-MsXUlvrTVGUywsoi4bVVt-9h3KnFqiUNvnX40IhPv9HEg7Ff9iIy7DA53n865d~ZA~~XO5uwAlC2hW3omZ6iFL-a05wCB1NR-1LOcRbacDtv-tUojhpy~VfA1JYN49aDLRw5g8agQJKhlBve5CvWLlOhnFoah~WJhXmbBOGqCb44uuFbfKVSDHvffTqJFFdulFjDIUuwZ7YPAIWb9nDE0xhS9TsQqweycuq8IRS0GKgM2E5nRgLCvVUyy-mXc4ECrvrGpCC1GzyQZVKzTKxMHuh6IMl83VefTt4EY~CqsGjeAUUnmUQ2eiD~lk8g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA",
-                    "",
-                    ""
-                )
-            )
-            listData.add(
-                HomePatchDetail(
-                    "",
-                    "",
-                    "test 2222",
-                    "Balam",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/AlbumPreviewImageFile/PremTumiKi_AyubBachchu_300.jpg",
-                    "",
-                    ""
-                )
-            )
-        }
-        adapter.setMusicData(listData)
 
         dsvCurrentPlaySongsThumb.adapter = adapter
         dsvCurrentPlaySongsThumb.setOrientation(DSVOrientation.HORIZONTAL)
@@ -223,10 +154,10 @@ class MusicPlayBS : Fragment(),
         adapterPosition: Int
     ) {
         if (viewHolder != null) {
-            viewHolder.sMusicData.Artist
-            tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
-            tvSingerName.text = viewHolder.sMusicData.Artist
-            setPaletteGrdientColor(getBitmapFromVH(viewHolder))
+//            viewHolder.sMusicData.Artist
+//            tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
+//            tvSingerName.text = viewHolder.sMusicData.Artist
+//            setPaletteGrdientColor(getBitmapFromVH(viewHolder))
         }
     }
 
