@@ -7,12 +7,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -22,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
@@ -48,6 +43,8 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private lateinit var mainLayout:FrameLayout
     private lateinit var adapter: VideoAdapter
     private lateinit var videoRecyclerView: RecyclerView
+    private lateinit var videoTitleTextView: TextView
+    private lateinit var videoDescTextView: TextView
     private lateinit var layoutToggle:ImageButton
     private lateinit var backButton:ImageButton
     private lateinit var fullscreenToggleButton:ImageButton
@@ -85,6 +82,9 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private fun setupUI() {
         mainLayout = findViewById(R.id.main)
         videoRecyclerView = findViewById(R.id.videoRecyclerView)
+        videoTitleTextView = findViewById(R.id.videoTitle)
+        videoDescTextView = findViewById(R.id.videoDesc)
+
         layoutToggle = findViewById(R.id.layoutToggle)
         mainProgressBar = findViewById(R.id.main_progress)
         bufferProgress = findViewById(R.id.bufferProgress)
@@ -117,31 +117,6 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             viewModel.videos(videoList)
         }
     }
-    private fun initializePlayer() {
-
-           if(exoPlayer == null) {
-               exoPlayer = ExoPlayer.Builder(this)
-                   .build()
-
-               exoPlayer?.addListener(playbackStatus())
-               playerView.player = exoPlayer
-
-
-               mediaSession = MediaSessionCompat(this, packageName)
-               val mediaSessionConnector = MediaSessionConnector(mediaSession)
-               shadhinQueueNavigator = ShadhinMusicQueueNavigator(mediaSession)
-               mediaSessionConnector.setPlayer(exoPlayer)
-               mediaSessionConnector.setQueueNavigator(shadhinQueueNavigator)
-               mediaSession.isActive = true
-
-           }
-
-
-    }
-    private fun gestureSetup() {
-        playerOnScaleGestureListener = PlayerOnScaleGestureListener(playerView, this)
-        scaleGestureDetector = ScaleGestureDetector(this, playerOnScaleGestureListener)
-    }
     private fun observe() {
         viewModel.isListLiveData.observe(this, Observer { isListLayout->
             if (isListLayout) {
@@ -167,8 +142,64 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             adapter.submitList(videoList)
             addOnPlayerQueue(videoList)
         })
+        viewModel.currentVideo.observe(this, Observer {  video->
+            videoTitleTextView.text = video.title
+            videoDescTextView.text = video.artist
+        })
     }
 
+
+    private fun initializePlayer() {
+
+           if(exoPlayer == null) {
+               exoPlayer = ExoPlayer.Builder(this)
+                   .build()
+
+               exoPlayer?.addListener(playbackStatus())
+               playerView.player = exoPlayer
+
+
+               mediaSession = MediaSessionCompat(this, packageName)
+               val mediaSessionConnector = MediaSessionConnector(mediaSession)
+               shadhinQueueNavigator = ShadhinMusicQueueNavigator(mediaSession)
+               mediaSessionConnector.setPlayer(exoPlayer)
+               mediaSessionConnector.setQueueNavigator(shadhinQueueNavigator)
+               mediaSession.isActive = true
+
+           }
+
+
+    }
+    private fun playbackStatus() = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            super.onPlaybackStateChanged(playbackState)
+
+            when (playbackState) {
+                ExoPlayer.STATE_BUFFERING -> showBuffering()
+                ExoPlayer.STATE_READY -> hideBuffering()
+                else -> hideBuffering()
+            }
+
+        }
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            super.onIsPlayingChanged(isPlaying)
+            adapter.currentItem(isPlaying, exoPlayer?.currentMediaItem?.mediaId)
+            playerView.keepScreenOn = isPlaying
+        }
+
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            super.onMediaItemTransition(mediaItem, reason)
+            adapter.currentItem(false, mediaItem?.mediaId)
+            viewModel.currentVideo(mediaItem?.mediaId)
+        }
+
+    }
+
+    private fun gestureSetup() {
+        playerOnScaleGestureListener = PlayerOnScaleGestureListener(playerView, this)
+        scaleGestureDetector = ScaleGestureDetector(this, playerOnScaleGestureListener)
+    }
     private fun togglePlayPause(item: Video) {
         if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
             if (exoPlayer?.isPlaying == true) {
@@ -208,30 +239,6 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private fun showBuffering() {
         bufferProgress.visibility = View.VISIBLE
         playerView.useController = false
-    }
-    private fun playbackStatus() = object : Player.Listener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            super.onPlaybackStateChanged(playbackState)
-
-            when (playbackState) {
-                ExoPlayer.STATE_BUFFERING -> showBuffering()
-                ExoPlayer.STATE_READY -> hideBuffering()
-                else -> hideBuffering()
-            }
-
-        }
-
-        override fun onIsPlayingChanged(isPlaying: Boolean) {
-            super.onIsPlayingChanged(isPlaying)
-            adapter.currentItem(isPlaying, exoPlayer?.currentMediaItem?.mediaId)
-            playerView.keepScreenOn = isPlaying
-        }
-
-        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-            super.onMediaItemTransition(mediaItem, reason)
-            adapter.currentItem(false, mediaItem?.mediaId)
-        }
-
     }
     private fun toggleOrientation() {
         requestedOrientation = when (resources.configuration.orientation) {
