@@ -74,15 +74,18 @@
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_btn_live.xml" value="0.137" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_forward_new.xml" value="0.168" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_grid_view.xml" value="0.168" />
+        <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_list_view_do.xml" value="0.135" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_pause_filled.xml" value="0.137" />
+        <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_pause_video.xml" value="0.143" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_play_filled.xml" value="0.168" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_play_video.xml" value="0.168" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_reward_new.xml" value="0.168" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_shadhin_icon_gray_vector.xml" value="0.1295" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_video_fullscreen.xml" value="0.137" />
+        <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/ic_video_fullscreen_minimize.xml" value="0.131" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/drawable/video_lay_background.xml" value="0.168" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/activity_sdk_main.xml" value="0.1921875" />
-        <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/activity_video.xml" value="0.25" />
+        <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/activity_video.xml" value="0.2" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/exo_video_controller_view.xml" value="0.1921875" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/fragment_artist_details.xml" value="0.1921875" />
         <entry key="..\:/Users/GakkMedia/AndroidStudioProjects/mybl-shadhinmusic/ShadhinMusicLibrary/src/main/res/layout/fragment_featured_home.xml" value="0.1921875" />

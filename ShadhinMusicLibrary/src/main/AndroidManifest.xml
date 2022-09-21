@@ -10,7 +10,7 @@
         android:name=".di.ShadhinApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.VideoActivity"
+            android:name=".activities.video.VideoActivity"
             android:exported="false"
             android:theme="@style/videoAppTheme"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"

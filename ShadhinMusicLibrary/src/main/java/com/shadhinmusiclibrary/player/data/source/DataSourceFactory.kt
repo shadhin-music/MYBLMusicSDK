@@ -28,7 +28,6 @@ open class ShadhinDataSourceFactory private constructor(
     }
 
     private fun initialization() {
-        Log.i(TAG, "initialization: ${music.toString()}")
         isDataSourceError = false
         val client = OkHttpClient()
             .newBuilder()

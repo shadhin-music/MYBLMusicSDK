@@ -9,7 +9,8 @@ import android.widget.Button
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.activities.VideoActivity
+import com.shadhinmusiclibrary.activities.video.VideoActivity
+
 import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment

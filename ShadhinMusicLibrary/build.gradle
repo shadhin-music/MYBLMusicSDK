@@ -8,7 +8,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        minSdk 19
+        minSdk 21
         targetSdk 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -55,9 +55,12 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.17.1'
-    implementation 'com.google.android.exoplayer:extension-okhttp:2.13.3'
+    //implementation 'com.google.android.exoplayer:extension-okhttp:2.13.3'
+    implementation 'com.google.android.exoplayer:extension-okhttp:2.17.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'
     implementation "com.google.android.exoplayer:extension-mediasession:2.17.1"
     implementation 'androidx.media:media:1.5.0'
+
 
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'

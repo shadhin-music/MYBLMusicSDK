@@ -33,12 +33,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/videoImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     />
 
                 <ImageView
+                    android:id="@+id/play_pause"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
 

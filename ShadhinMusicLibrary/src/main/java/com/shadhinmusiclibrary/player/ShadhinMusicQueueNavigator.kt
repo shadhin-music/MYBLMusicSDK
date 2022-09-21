@@ -17,7 +17,6 @@ class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
             (player as ExoPlayer)
                 .getMediaItemAt(windowIndex)
                 .toServiceMediaItem()
-
         return playerItem.description
 
     }

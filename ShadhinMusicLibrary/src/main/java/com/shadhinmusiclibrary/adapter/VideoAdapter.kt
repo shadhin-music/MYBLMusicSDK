@@ -4,11 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.Video
 
@@ -96,49 +99,72 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
     }
 
     inner class ListViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind(item: Video){
-           /* binding.data = item
-            binding.executePendingBindings()
+        private var titleTextView: TextView = itemView.findViewById(R.id.videoTitle)
+        private var subTitleTextView:TextView = itemView.findViewById(R.id.videoDesc)
+        private var playPauseImage:ImageView = itemView.findViewById(R.id.play_pause)
+        private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
 
-            binding.parent.setOnClickListener {
+        fun bind(item: Video){
+
+            titleTextView.text = item.title
+            if (item.isPlaying) {
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+            } else {
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+            }
+            subTitleTextView.text = item.artist
+
+            Glide.with(itemView.context)
+                .load(item.image)
+                .placeholder(R.drawable.default_video)
+                .into(videoImage)
+
+
+                if (item.isPlaystate) {
+                    playPauseImage.setImageResource(R.drawable.ic_pause_video)
+                } else {
+                    playPauseImage.setImageResource(R.drawable.ic_play_video)
+                }
+            itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
             }
-            binding.threeDotButton.setOnClickListener {
-                videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),true)
-            }*/
+
         }
 
-
-       /* fun setVideoTitle(textView: TextView, data: Video?) {
-            textView.text = ""
-            if (data != null) {
-                textView.setText(data.getTitle())
-                if (data.isPlaying()) {
-                    textView.setTextColor(textView.context.resources.getColor(R.color.colorPrimary))
-                } else {
-                    textView.setTextColor(
-                        UtilHelper.getColFromAttr(
-                            textView.context,
-                            R.attr.down_item_title
-                        )
-                    )
-                }
-            }
-        }*/
     }
     inner class GridViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind(item: Video){
-           /* binding.data = item
-            binding.executePendingBindings()
+        private var titleTextView: TextView = itemView.findViewById(R.id.videoTitle)
+        private var subTitleTextView:TextView = itemView.findViewById(R.id.videoDesc)
+        private var playPauseImage:ImageView = itemView.findViewById(R.id.play_pause)
+        private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
 
-            binding.parent.setOnClickListener {
+        fun bind(item: Video){
+
+            titleTextView.text = item.title
+            if (item.isPlaying) {
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+            } else {
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+            }
+            subTitleTextView.text = item.artist
+
+            Glide.with(itemView.context)
+                .load(item.image)
+                .placeholder(R.drawable.default_video)
+                .into(videoImage)
+
+
+            if (item.isPlaystate) {
+                playPauseImage.setImageResource(R.drawable.ic_pause_video)
+            } else {
+                playPauseImage.setImageResource(R.drawable.ic_play_video)
+            }
+            itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
             }
-            binding.threeDotButton.setOnClickListener {
-                videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),true)
-            }*/
         }
     }
+
     enum class ViewType{
         LIST,
         GRID

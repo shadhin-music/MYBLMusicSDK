@@ -118,12 +118,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                 playerViewModel.musicIndexLiveData.observe(
                     this,
                     Observer { itCurrPlayingVPosition ->
-                        setMiniMusicPlayerData(
-                            mutableListOf<SongDetail>().apply {
-                                add(UtilHelper.getSongDetailToMusic(itMus))
-                            },
-                            itCurrPlayingVPosition
-                        )
+                        try { // TODO Reza vai please handle this crash
+                            setMiniMusicPlayerData(
+                                mutableListOf<SongDetail>().apply {
+                                    add(UtilHelper.getSongDetailToMusic(itMus))
+                                },
+                                itCurrPlayingVPosition
+                            )
+                        }catch (e:Exception){}
                     })
             }
         })
