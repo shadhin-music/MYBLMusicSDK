@@ -122,25 +122,24 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         routeData(patch, selectedPatchIndex)
 
-        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
+        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
                 isPlayOrPause = itMus.isPlaying!!
             }
-        })
+        }
 
-        playerViewModel.playListLiveData.observe(this, Observer { itMusicList ->
-            playerViewModel.musicIndexLiveData.observe(this, Observer {
+        playerViewModel.playListLiveData.observe(this) { itMusicList ->
+            playerViewModel.musicIndexLiveData.observe(this) {
                 setupMainMusicPlayerAdapter(
                     UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
                     it
                 )
-            })
-        })
+            }
+        }
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
-//        mainMusicPlayerUiFunctionality()
     }
 
 
@@ -271,7 +270,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
             }
@@ -290,6 +288,21 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         )[PlayerViewModel::class.java]
         playerViewModel.connect()
         playerViewModel.startObservePlayerProgress(this)
+    }
+
+    fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        playerViewModel.unSubscribe()
+        playerViewModel.subscribe(
+            MusicPlayList(
+                UtilHelper.getMusicListToSongDetailList(mSongDetails),
+                0
+            ),
+            false,
+            clickItemPosition
+        )
+
+        miniPlayerHideShow(true)
+        setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
     }
 
     private fun miniPlayerHideShow(playing: Boolean) {
@@ -367,21 +380,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         })
     }
 
-    fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        playerViewModel.unSubscribe()
-        playerViewModel.subscribe(
-            MusicPlayList(
-                UtilHelper.getMusicListToSongDetailList(mSongDetails),
-                0
-            ),
-            false,
-            clickItemPosition
-        )
-
-        miniPlayerHideShow(true)
-        setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
-    }
-
     private fun miniPlayerPlayPauseState(playing: Boolean) {
         if (playing) {
             ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
@@ -449,25 +447,22 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             } else {
                 "0:00"
             }
-            Log.e(
-                "SDKMA",
-                "setup: " + it.currentPositionTimeLabel()!! + " duration: " + it.durationTimeLabel()!!
-            )
             sbCurrentPlaySongStatus.secondaryProgress = it.bufferPosition?.toInt()!!
         })
-//        playerViewModel.startObservePlayerProgress(this)
 
         sbCurrentPlaySongStatus.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                sbCurrentPlaySongStatus.progress = p0!!.progress
-                playerViewModel.seekTo(p1.toLong())
+                if (p2) {
+                    sbCurrentPlaySongStatus.progress = p0!!.progress
+                }
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
+                playerViewModel.seekTo(p0!!.progress.toLong())
             }
         })
 
@@ -550,6 +545,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         ibtnDownload.setOnClickListener {
 //            setControlColor(true, ibtnDownload)
+        }
+
+        acivMinimizePlayerBtn.setOnClickListener {
+            toggleMiniPlayerView(true)
         }
     }
 

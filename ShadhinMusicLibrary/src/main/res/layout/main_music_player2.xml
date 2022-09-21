@@ -16,6 +16,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="@id/parentRelative">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -63,8 +65,8 @@
         android:id="@+id/ll_control_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -83,6 +85,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2.50"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <TextView
@@ -106,7 +110,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight=".50"
-                android:clickable="false"
+                android:clickable="true"
                 android:padding="6dp"
                 android:src="@drawable/ic_baseline_favorite_border_24" />
         </LinearLayout>
@@ -153,6 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+
             android:layout_marginBottom="20dp"
             android:layout_weight="5"
             android:gravity="center"
