@@ -8,9 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
-import android.view.View
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -81,6 +79,44 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         observe()
     }
 
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+    }
+    private fun setupUI() {
+        mainLayout = findViewById(R.id.main)
+        videoRecyclerView = findViewById(R.id.videoRecyclerView)
+        layoutToggle = findViewById(R.id.layoutToggle)
+        mainProgressBar = findViewById(R.id.main_progress)
+        bufferProgress = findViewById(R.id.bufferProgress)
+        playerLayout = findViewById(R.id.playerLayout)
+        playerView = findViewById(R.id.playerView)
+        backButton = playerView.findViewById(R.id.backButton)
+        fullscreenToggleButton = playerView.findViewById(R.id.toggleOrientationButton)
+        layoutToggle.setOnClickListener { viewModel.layoutToggle() }
+        backButton.setOnClickListener { onBackPressed() }
+        fullscreenToggleButton.setOnClickListener {  toggleOrientation() }
+        configOrientation(resources.configuration.orientation)
+    }
+    private fun setupAdapter() {
+        adapter = VideoAdapter(this)
+        videoRecyclerView.adapter = adapter
+        videoRecyclerView.layoutManager = adapter.layoutManager
+
+        adapter.onItemClickListeners { item, isMenu ->
+            if (!isMenu) {
+                togglePlayPause(item)
+            }
+        }
+    }
+    private fun initData() {
+        if (intent.hasExtra(INTENT_KEY_DATA_LIST) &&
+            intent.hasExtra(INTENT_KEY_POSITION)
+        ) {
+            currentPosition = intent.getIntExtra(INTENT_KEY_POSITION, 0)
+            videoList = intent.getParcelableArrayListExtra(INTENT_KEY_DATA_LIST)
+            viewModel.videos(videoList)
+        }
+    }
     private fun initializePlayer() {
 
            if(exoPlayer == null) {
@@ -106,76 +142,6 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         playerOnScaleGestureListener = PlayerOnScaleGestureListener(playerView, this)
         scaleGestureDetector = ScaleGestureDetector(this, playerOnScaleGestureListener)
     }
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            scaleGestureDetector.onTouchEvent(event)
-        }
-        return true
-    }
-    private fun addOnPlayerQueue(videoList: List<Video>) {
-        contactMediaSource.clear()
-        exoPlayer?.clearMediaItems()
-        videoMediaSource = ShadhinVideoMediaSource(this.applicationContext,
-            videoList,
-            injector.exoplayerCache,
-            injector.musicRepository
-        )
-        val mediaSources = videoMediaSource?.createSources()
-        if(!mediaSources.isNullOrEmpty()){
-            contactMediaSource.addMediaSources(mediaSources)
-            exoPlayer?.addMediaSource(contactMediaSource)
-            exoPlayer?.prepare()
-            exoPlayer?.playWhenReady = true
-        }
-    }
-    private fun playbackStatus() = object : Player.Listener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            super.onPlaybackStateChanged(playbackState)
-
-            when (playbackState) {
-                ExoPlayer.STATE_BUFFERING -> showBuffering()
-                ExoPlayer.STATE_READY -> hideBuffering()
-                else -> hideBuffering()
-            }
-
-        }
-
-        override fun onIsPlayingChanged(isPlaying: Boolean) {
-            super.onIsPlayingChanged(isPlaying)
-            //viewModel.playingChanged(isPlaying)
-           // playerView.useController = !isPipMode
-            adapter.currentItem(isPlaying, exoPlayer?.currentMediaItem?.mediaId)
-            playerView.keepScreenOn = isPlaying
-        }
-
-        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-            super.onMediaItemTransition(mediaItem, reason)
-            //viewModel.mediaItemTransition(mediaItem,reason)
-            //playerView.useController = !isPipMode
-          //  viewModel.currentVideoItem(mediaItem?.toCategoryData())
-            adapter.currentItem(false, mediaItem?.mediaId)
-
-
-        }
-
-    }
-    private fun hideBuffering() {
-        bufferProgress.visibility = View.GONE
-        playerView.useController = true
-    }
-
-    private fun showBuffering() {
-        bufferProgress.visibility = View.VISIBLE
-        playerView.useController = false
-    }
-
-    override fun onPause() {
-        super.onPause()
-        exoPlayer?.pause()
-    }
-
-
-
     private fun observe() {
         viewModel.isListLiveData.observe(this, Observer { isListLayout->
             if (isListLayout) {
@@ -203,36 +169,67 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         })
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[VideoViewModel::class.java]
-    }
-
-    private fun setupUI() {
-
-        mainLayout = findViewById(R.id.main)
-        videoRecyclerView = findViewById(R.id.videoRecyclerView)
-        layoutToggle = findViewById(R.id.layoutToggle)
-        mainProgressBar = findViewById(R.id.main_progress)
-        bufferProgress = findViewById(R.id.bufferProgress)
-        playerLayout = findViewById(R.id.playerLayout)
-        playerView = findViewById(R.id.playerView)
-        backButton = playerView.findViewById(R.id.backButton)
-        fullscreenToggleButton = playerView.findViewById(R.id.toggleOrientationButton)
-        layoutToggle.setOnClickListener { viewModel.layoutToggle() }
-        backButton.setOnClickListener { onBackPressed() }
-        fullscreenToggleButton.setOnClickListener {  toggleOrientation() }
-        configOrientation(resources.configuration.orientation)
-    }
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        configOrientation(newConfig.orientation)
-    }
-
-    override fun onBackPressed() {
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            toggleOrientation()
+    private fun togglePlayPause(item: Video) {
+        if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
+            if (exoPlayer?.isPlaying == true) {
+                exoPlayer?.pause()
+            } else {
+                exoPlayer?.play()
+            }
         } else {
-           finish()
+            val windowIndex = videoList?.indexOfFirst { it.contentID == item.contentID }
+            if (windowIndex != -1) {
+                exoPlayer?.seekTo(windowIndex ?: 0, 0L)
+                exoPlayer?.playWhenReady = true
+            }
+        }
+
+    }
+    private fun addOnPlayerQueue(videoList: List<Video>) {
+        contactMediaSource.clear()
+        exoPlayer?.clearMediaItems()
+        videoMediaSource = ShadhinVideoMediaSource(this.applicationContext,
+            videoList,
+            injector.exoplayerCache,
+            injector.musicRepository
+        )
+        val mediaSources = videoMediaSource?.createSources()
+        if(!mediaSources.isNullOrEmpty()){
+            contactMediaSource.addMediaSources(mediaSources)
+            exoPlayer?.addMediaSource(contactMediaSource)
+            exoPlayer?.prepare()
+            exoPlayer?.playWhenReady = true
+        }
+    }
+    private fun hideBuffering() {
+        bufferProgress.visibility = View.GONE
+        playerView.useController = true
+    }
+    private fun showBuffering() {
+        bufferProgress.visibility = View.VISIBLE
+        playerView.useController = false
+    }
+    private fun playbackStatus() = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            super.onPlaybackStateChanged(playbackState)
+
+            when (playbackState) {
+                ExoPlayer.STATE_BUFFERING -> showBuffering()
+                ExoPlayer.STATE_READY -> hideBuffering()
+                else -> hideBuffering()
+            }
+
+        }
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            super.onIsPlayingChanged(isPlaying)
+            adapter.currentItem(isPlaying, exoPlayer?.currentMediaItem?.mediaId)
+            playerView.keepScreenOn = isPlaying
+        }
+
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+            super.onMediaItemTransition(mediaItem, reason)
+            adapter.currentItem(false, mediaItem?.mediaId)
         }
 
     }
@@ -251,7 +248,6 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             }
         }
     }
-
     private fun configOrientation(orientation: Int) {
         when (orientation) {
             Configuration.ORIENTATION_PORTRAIT -> preparePortraitUI()
@@ -259,13 +255,30 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             else -> preparePortraitUI()
         }
     }
-
     private fun preparePortraitUI() {
         showSystemUI()
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             setPortraitPlayerSize()
         }, 100)
         fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen)
+    }
+    private fun prepareLandscapeUI() {
+        hideSystemUI()
+        setLandscapePlayerSize()
+        fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen_minimize)
+    }
+    private fun setPortraitPlayerSize() {
+        val displayWidth = UtilHelper.getScreenSize(this)?.x
+        val height = calculateVideoHeight(displayWidth?:0, videoWidth, videoHeight)
+        playerLayout.layoutParams =
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
+    }
+    private fun setLandscapePlayerSize() {
+        playerLayout.layoutParams =
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
     }
     private fun showSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -274,28 +287,6 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             mainLayout
         ).show(WindowInsetsCompat.Type.systemBars())
     }
-
-    private fun prepareLandscapeUI() {
-        hideSystemUI()
-        setLandscapePlayerSize()
-        fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen_minimize)
-    }
-
-    private fun setPortraitPlayerSize() {
-        val displayWidth = UtilHelper.getScreenSize(this)?.x
-        val height = calculateVideoHeight(displayWidth?:0, videoWidth, videoHeight)
-        playerLayout.layoutParams =
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)
-    }
-
-    private fun setLandscapePlayerSize() {
-        playerLayout.layoutParams =
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-            )
-    }
-
     private fun hideSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, mainLayout).let { controller ->
@@ -305,49 +296,34 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         }
     }
 
-    private fun setupAdapter() {
-        adapter = VideoAdapter(this)
-        videoRecyclerView.adapter = adapter
-        videoRecyclerView.layoutManager = adapter.layoutManager
-
-        adapter.onItemClickListeners { item, isMenu ->
-            if (!isMenu) {
-                togglePlayPause(item)
-            }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            scaleGestureDetector.onTouchEvent(event)
         }
+        return true
     }
-    private fun initData() {
-        if (intent.hasExtra(INTENT_KEY_DATA_LIST) &&
-            intent.hasExtra(INTENT_KEY_POSITION)
-        ) {
-            currentPosition = intent.getIntExtra(INTENT_KEY_POSITION, 0)
-            videoList = intent.getParcelableArrayListExtra(INTENT_KEY_DATA_LIST)
-            viewModel.videos(videoList)
-        }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        configOrientation(newConfig.orientation)
     }
-    private fun togglePlayPause(item: Video) {
-        if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
-            if (exoPlayer?.isPlaying == true) {
-                exoPlayer?.pause()
-            } else {
-                exoPlayer?.play()
-            }
+    override fun onBackPressed() {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            toggleOrientation()
         } else {
-            val windowIndex = videoList?.indexOfFirst { it.contentID == item.contentID }
-            if (windowIndex != -1) {
-                exoPlayer?.seekTo(windowIndex ?: 0, 0L)
-                exoPlayer?.playWhenReady = true
-            }
+            finish()
         }
 
     }
-
-
+    override fun onPause() {
+        super.onPause()
+        exoPlayer?.pause()
+    }
     override fun onDestroy() {
         exoPlayer?.release()
         exoPlayer = null
         super.onDestroy()
     }
+
     companion object {
         const val INTENT_KEY_THEME = "theme"
         const val INTENT_KEY_DATA_LIST = "data_list"
