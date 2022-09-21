@@ -1,5 +1,5 @@
 package com.shadhinmusiclibrary.adapter
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 import android.content.Context
 import android.nfc.cardemulation.CardEmulation
 import android.provider.Settings.Global.getString
@@ -20,11 +20,12 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
+import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
-    RecyclerView.Adapter<ArtistHeaderAdapter.HeaderViewHolder>() {
-
+class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
+    RecyclerView.Adapter<BottomSheetArtistHeaderAdapter.HeaderViewHolder>() {
+    var data:ArtistContent?= null
     var bio: LastFmResult? = null
     var banner: ArtistBanner? = null
     private var parentView: View? = null
@@ -36,7 +37,7 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
 
 
     override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-        holder.bindItems(homePatchDetail)
+        holder.bindItems(songDetail)
 
 
     }
@@ -46,8 +47,8 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
         return 1
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
-        this.homePatchDetail = homePatchDetail
+    fun setData(songDetail: SongDetail) {
+        this.songDetail = songDetail
         notifyDataSetChanged()
     }
 
@@ -73,14 +74,18 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
         this.banner = banner
     }
 
+    fun setHeaderImage(data: ArtistContent?) {
+         this.data = data
+    }
+
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(homePatchDetail: HomePatchDetail?) {
+        fun bindItems(songDetail: SongDetail?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
-            var url: String = homePatchDetail!!.getImageUrl300Size()
+            var url: String = data?.getImageUrl300Size().toString()
             val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.setText(homePatchDetail.Artist)
+            textArtist.setText(songDetail?.artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
@@ -91,7 +96,7 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text = homePatchDetail.Artist + "'s"
+            tvName.text = songDetail?.artist + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             if (banner?.image?.isEmpty() == false) {
                 val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)

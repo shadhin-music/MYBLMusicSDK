@@ -1,17 +1,22 @@
 package com.shadhinmusiclibrary.activities
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -21,12 +26,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
+import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
+import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
@@ -85,6 +93,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
     private lateinit var playerViewModel: PlayerViewModel
 
+    private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
+
     private lateinit var listData: MutableList<HomePatchDetail>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +109,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
 
+        mainMusicPlayerAdapter = MusicPlayAdapter(this)
+
+
         //Will received data from Home Fragment from MYBLL App
         val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
             .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
@@ -110,24 +123,165 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
             if (itMus != null) {
-//                playerViewModel.musicIndexLiveData.observe(
-//                    this,
-//                    Observer { itCurrPlayingVPosition ->
-//                        setMusicPlayerInitData(
-//                            mutableListOf<SongDetail>().apply {
-//                                add(UtilHelper.getSongDetailToMusic(itMus))
-//                            },
-//                            itCurrPlayingVPosition
-//                        )
-                setupMiniMusicPlayer(UtilHelper.getSongDetailToMusic(itMus))
-//                    })
+                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+                isPlayOrPause = itMus.isPlaying!!
             }
         })
 
-        slCustomBShOnMaximized()
+        playerViewModel.playListLiveData.observe(this, Observer { itMusicList ->
+            playerViewModel.musicIndexLiveData.observe(this, Observer {
+                setupMainMusicPlayerAdapter(
+                    UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
+                    it
+                )
+            })
+        })
 
-        setMusicBannerAdapter()
-        mainMusicPlayerUiFunctionality()
+        miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
+        slCustomBShOnMaximized()
+//        mainMusicPlayerUiFunctionality()
+    }
+
+
+
+    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
+        if (selectedIndex != null) {
+            //Single Item Click event
+            val homePatchDetail = homePatchItem.Data[selectedIndex]
+            when (homePatchDetail.ContentType.uppercase()) {
+                DataContentType.CONTENT_TYPE_A -> {
+                    //open artist details
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                        Bundle().apply {
+                            putSerializable(
+                                 PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_R -> {
+                    //open album details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_P -> {
+                    //open playlist
+                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
+                        Bundle().apply {
+                            putSerializable(
+                              PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_S -> {
+                    //open songs
+                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
+                        Bundle().apply {
+                            putSerializable(
+                               PatchItem,
+                                homePatchItem
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_PD -> {
+                    //open podcast
+                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
+                        Bundle().apply {
+                            putSerializable(
+                               PatchItem,
+                                homePatchItem as Serializable
+                            )
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                homePatchDetail as Serializable
+                            )
+                        })
+                }
+            }
+        } else {
+            //See All Item Click event
+            when (homePatchItem.ContentType.uppercase()) {
+                DataContentType.CONTENT_TYPE_A -> {
+                    //open artist details
+                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_R -> {
+                    //open artist details
+                    setupNavGraphAndArg(R.navigation.nav_graph_album_list,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_P -> {
+                    //open playlist
+                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_list,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_S -> {
+                    //open songs
+                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
+                        Bundle().apply {
+                            putSerializable(
+                               PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        })
+                }
+                DataContentType.CONTENT_TYPE_PD -> {
+                    //open podcast
+                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
+                        })
+                }
+            }
+        }
+    }
+
+    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
+        val inflater = navHostFragment.navController.navInflater
+        val navGraph = inflater.inflate(graphResId)
+        navController.setGraph(navGraph, bundleData)
     }
 
     private fun createPlayerVM() {
@@ -137,7 +291,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         playerViewModel.connect()
     }
 
-    private fun miniPlayerShowHide(playing: Boolean) {
+    private fun miniPlayerHideShow(playing: Boolean) {
         //at fast show mini player
         // getDPfromPX paramerer pass pixel. how many height layout show.
         // this mini player height 72dp thats why i set 73dp view show
@@ -212,17 +366,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         })
     }
 
-    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
-        val inflater = navHostFragment.navController.navInflater
-        val navGraph = inflater.inflate(graphResId)
-        navController.setGraph(navGraph, bundleData)
-    }
-
     fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        Log.e(
-            "SDKMA",
-            "setMiniMusicPlayerData: size: " + mSongDetails.size + " itemPosition: " + clickItemPosition
-        )
         playerViewModel.unSubscribe()
         playerViewModel.subscribe(
             MusicPlayList(
@@ -232,49 +376,23 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             false,
             clickItemPosition
         )
+        miniPlayerHideShow(true)
+        setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
     }
 
-    fun setupMiniMusicPlayer(mSongDetails: SongDetail) {
-        Glide.with(this)
-            .load(mSongDetails.getImageUrl300Size())
-            .transition(DrawableTransitionOptions().crossFade(500))
-            .fitCenter()
-            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.ic_asif_300)
-            .error(R.drawable.ic_asif_300)
-            .into(ivSongThumbMini)
-        tvSongNameMini.text = mSongDetails.title
-        tvSingerNameMini.text = mSongDetails.artist
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
-        playerViewModel.startObservePlayerProgress(this)
-        cvMiniPlayer.visibility = View.VISIBLE
-        playerViewModel.playerProgress.observe(this, Observer {
-            tvTotalDurationMini.text = it.currentPositionTimeLabel()
-        })
-
-        playerViewModel.playbackStateLiveData.observe(this, Observer {
-            playPauseState(it.isPlaying)
-            miniPlayerShowHide(it.isPlaying)
-        })
-
-        ibtnSkipPreviousMini.setOnClickListener {
-            playerViewModel.skipToPrevious()
-        }
-
-        ibtnPlayPauseMini.setOnClickListener {
-            playerViewModel.togglePlayPause()
-        }
-
-        ibtnSkipNextMini.setOnClickListener {
-            playerViewModel.skipToNext()
-        }
-    }
-
-    private fun playPauseState(playing: Boolean) {
+    private fun miniPlayerPlayPauseState(playing: Boolean) {
         if (playing) {
             ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
         } else {
             ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
+        }
+    }
+
+    private fun mainPlayerPlayPauseState(playing: Boolean) {
+        if (playing) {
+            ibtnPlayPause.setImageResource(R.drawable.ic_baseline_pause_circle_filled_60)
+        } else {
+            ibtnPlayPause.setImageResource(R.drawable.ic_baseline_play_circle_filled_60)
         }
     }
 
@@ -299,214 +417,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
     }
 
-    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
-        if (selectedIndex != null) {
-            //Single Item Click event
-            val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.uppercase()) {
-                DataContentType.CONTENT_TYPE_A -> {
-                    //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_R -> {
-                    //open album details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_P -> {
-                    //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_S -> {
-                    //open songs
-                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_PD -> {
-                    //open podcast
-                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
-                }
-            }
-        } else {
-            //See All Item Click event
-            when (homePatchItem.ContentType.uppercase()) {
-                DataContentType.CONTENT_TYPE_A -> {
-                    //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_R -> {
-                    //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_list,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_P -> {
-                    //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_list,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_S -> {
-                    //open songs
-                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                        })
-                }
-                DataContentType.CONTENT_TYPE_PD -> {
-                    //open podcast
-                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
-                        Bundle().apply {
-                            putSerializable(
-                                AppConstantUtils.PatchItem,
-                                homePatchItem as Serializable
-                            )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
-                        })
-                }
-            }
-        }
-    }
-
-    private fun setMusicBannerAdapter() {
-        val adapter = MusicPlayAdapter(this)
-        listData = mutableListOf()
-        for (i in 1..3) {
-            listData.add(
-                HomePatchDetail(
-                    "",
-                    "",
-                    "test 11111",
-                    "Habib",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/ArtistPreviewImageFile/HridoyKhan_<\$size\$>.jpg",
-                    "",
-                    ""
-                )
-            )
-            listData.add(
-                HomePatchDetail(
-                    "",
-                    "",
-                    "test 2222",
-                    "Balam",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "https://shadhinmusiccontent.sgp1.digitaloceanspaces.com/ArtistPreviewImageFile/Asif_<\$size\$>.jpg",
-                    "",
-                    ""
-                )
-            )
-        }
-        adapter.setMusicData(listData)
-
-        dsvCurrentPlaySongsThumb.adapter = adapter
+    private fun setupMainMusicPlayerAdapter(
+        mSongDetails: MutableList<SongDetail>,
+        clickItemPosition: Int
+    ) {
+        mainMusicPlayerAdapter.setMusicData(mSongDetails)
+        dsvCurrentPlaySongsThumb.adapter = mainMusicPlayerAdapter
         dsvCurrentPlaySongsThumb.setOrientation(DSVOrientation.HORIZONTAL)
         dsvCurrentPlaySongsThumb.setSlideOnFling(true)
         dsvCurrentPlaySongsThumb.setOffscreenItems(2)
@@ -518,43 +434,160 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                 .setMinScale(0.95f)
                 .build()
         )
+        dsvCurrentPlaySongsThumb.scrollToPosition(clickItemPosition)
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
-    }
 
-    private fun mainMusicPlayerUiFunctionality() {
+        playerViewModel.startObservePlayerProgress(this)
+        playerViewModel.playerProgress.observe(this, Observer {
+            sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
+            sbCurrentPlaySongStatus.max = it.duration?.toInt() ?: 0
+            tvCurrentPlayDuration.text = it.currentPositionTimeLabel()
+            tvCurrentPlayDuration.text = if (it.currentPosition?.toInt()!! >= 0) {
+                it.currentPositionTimeLabel()
+            } else {
+                "0:00"
+            }
+//            tvTotalPlayDuration.text = it.durationTimeLabel()
+            tvTotalPlayDuration.text = if (it.duration?.toInt()!! >= 0) {
+                it.durationTimeLabel()
+            } else {
+                "0:00"
+            }
+            sbCurrentPlaySongStatus.secondaryProgress = it.bufferPosition?.toInt()!!
+        })
+
+        sbCurrentPlaySongStatus.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                sbCurrentPlaySongStatus.progress = p0!!.progress
+                playerViewModel.seekTo(p1.toLong())
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
+
+        playerViewModel.playbackStateLiveData.observe(this, Observer {
+            mainPlayerPlayPauseState(it.isPlaying)
+        })
+
+        playerViewModel.repeatModeLiveData.observe(this, Observer {
+            when (it) {
+                PlaybackStateCompat.REPEAT_MODE_NONE -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_24)
+                    ibtnShuffle.isEnabled = true
+                    ibtnShuffle.setColorFilter(0)
+//                setControlColor(false, ibtnControl)
+                }
+                PlaybackStateCompat.REPEAT_MODE_ONE -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_one_on_24)
+                    ibtnShuffle.isEnabled = false
+                    ibtnShuffle.setColorFilter(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.colorTransparent
+                        ), PorterDuff.Mode.SRC_IN
+                    )
+//                setControlColor(true, ibtnControl)
+                }
+                PlaybackStateCompat.REPEAT_MODE_ALL -> {
+                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_on_24)
+//                setControlColor(true, ibtnControl)
+                    ibtnShuffle.isEnabled = true
+                    ibtnShuffle.setColorFilter(0)
+                }
+            }
+        })
+
+        playerViewModel.shuffleLiveData.observe(this, Observer {
+            when (it) {
+                PlaybackStateCompat.SHUFFLE_MODE_NONE -> {
+//                    setControlColor(false, ibtnShuffle)
+                    ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_24)
+                }
+                PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
+//                    setControlColor(true, ibtnShuffle)
+                    ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_on_24)
+                }
+            }
+        })
+
         ibtnShuffle.setOnClickListener {
-            setControlColor(ibtnShuffle)
+            playerViewModel.shuffleToggle()
         }
 
         ibtnSkipPrevious.setOnClickListener {
-
+            playerViewModel.skipToPrevious()
         }
 
         ibtnPlayPause.setOnClickListener {
-            setControlColor(ibtnPlayPause)
+            playerViewModel.togglePlayPause()
         }
 
-        ibtnSkipNext.setOnClickListener { }
+        ibtnSkipNext.setOnClickListener {
+            playerViewModel.skipToNext()
+        }
 
         ibtnRepeatSong.setOnClickListener {
-            setControlColor(ibtnRepeatSong)
+            playerViewModel.repeatTrack()
         }
 
         ibtnVolume.setOnClickListener {
-            setControlColor(ibtnVolume)
+//            setControlColor(true, ibtnVolume)
         }
 
         ibtnLibraryAdd.setOnClickListener {
-            setControlColor(ibtnLibraryAdd)
+//            setControlColor(true, ibtnLibraryAdd)
         }
 
         ibtnQueueMusic.setOnClickListener {
-            setControlColor(ibtnQueueMusic)
+//            setControlColor(true, ibtnQueueMusic)
         }
 
         ibtnDownload.setOnClickListener {
-            setControlColor(ibtnDownload)
+//            setControlColor(true, ibtnDownload)
+        }
+    }
+
+    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
+        Glide.with(this)
+            .load(mSongDetails.getImageUrl300Size())
+            .transition(DrawableTransitionOptions().crossFade(500))
+            .fitCenter()
+            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
+            .placeholder(R.drawable.ic_asif_300)
+            .error(R.drawable.ic_asif_300)
+            .into(ivSongThumbMini)
+        tvSongNameMini.text = mSongDetails.title
+        tvSingerNameMini.text = mSongDetails.artist
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
+        cvMiniPlayer.visibility = View.VISIBLE
+
+        setPaletteGradientColor(getBitmapFromIV(ivSongThumbMini))
+
+        playerViewModel.startObservePlayerProgress(this)
+        playerViewModel.playerProgress.observe(this, Observer {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
+        })
+
+        playerViewModel.playbackStateLiveData.observe(this, Observer {
+            miniPlayerPlayPauseState(it.isPlaying)
+        })
+
+        ibtnSkipPreviousMini.setOnClickListener {
+            playerViewModel.skipToPrevious()
+        }
+
+        ibtnPlayPauseMini.setOnClickListener {
+            playerViewModel.togglePlayPause()
+        }
+
+        ibtnSkipNextMini.setOnClickListener {
+            playerViewModel.skipToNext()
         }
     }
 
@@ -563,9 +596,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         adapterPosition: Int
     ) {
         if (viewHolder != null) {
-            viewHolder.sMusicData.Artist
-            tvSongName.text = viewHolder.sMusicData.AlbumName.toString()
-            tvSingerName.text = viewHolder.sMusicData.Artist
+            viewHolder.sMusicData.artist
+            tvSongName.text = viewHolder.sMusicData.title
+            tvSingerName.text = viewHolder.sMusicData.artist
             setPaletteGradientColor(getBitmapFromVH(viewHolder))
         }
     }
@@ -589,8 +622,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentHolder: MusicPlayAdapter.MusicPlayVH?,
         newCurrent: MusicPlayAdapter.MusicPlayVH?
     ) {
+        Log.e(
+            "SDKMA", "scrollPosition: " + scrollPosition +
+                    " currentPosition: " + currentPosition +
+                    " newPosition: " + newPosition
+        )
         if (currentHolder != null) {
             setPaletteGradientColor(getBitmapFromVH(currentHolder))
+
+            playerViewModel.skipToQueueItem(newPosition)
         }
     }
 
@@ -616,6 +656,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         return (traDaw.toBitmap())
     }
 
+    private fun getBitmapFromIV(ivCurrentPlayImage: ImageView): Bitmap {
+        val traDaw = ivCurrentPlayImage.drawable
+        return (traDaw.toBitmap())
+    }
+
     override fun onBackPressed() {
         if (playerMode === PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
@@ -634,4 +679,26 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         super.onDestroy()
         playerViewModel.disconnect()
     }
+  fun showBottomSheetDialog(context: Context, mSongDetails: SongDetail) {
+        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
+        val contentView =
+            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+        bottomSheetDialog.setContentView(contentView)
+        bottomSheetDialog.show()
+        val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        constraintAlbum?.setOnClickListener {
+            gotoArtist(context,mSongDetails)
+
+        }
+    }
+
+    private fun gotoArtist(context: Context, mSongDetails: SongDetail) {
+        val manager: FragmentManager = supportFragmentManager
+        manager.beginTransaction()
+            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails))
+            .addToBackStack("Fragment")
+            .commit()
+        Log.e("TAGGY","SONGDETAILS: "+ mSongDetails)
+    }
+
 }

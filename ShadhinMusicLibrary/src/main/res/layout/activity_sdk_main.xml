@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/frame">
 
     <com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sl_custom_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="bottom"
         android:visibility="visible"
         app:umanoDragView="@id/rl_music_player_panel_parent"
@@ -46,7 +49,9 @@
             android:id="@+id/rl_music_player_panel_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true">
 
             <include
                 android:id="@+id/include_mini_music_player"

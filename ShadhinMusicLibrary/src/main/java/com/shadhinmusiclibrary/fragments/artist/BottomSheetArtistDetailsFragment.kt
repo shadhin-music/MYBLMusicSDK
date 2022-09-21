@@ -11,6 +11,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -33,28 +35,28 @@ import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 
-class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack {
+class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
     private lateinit var navController: NavController
-//    var homePatchItem: HomePatchItem? = null
-//    var homePatchDetail: HomePatchDetail? = null
+    var homePatchItem: HomePatchItem? = null
+    var songDetail: SongDetail?= null
     var artistContent: ArtistContent? = null
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     private lateinit var parentAdapter: ConcatAdapter
-    private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
+    private lateinit var artistHeaderAdapter: BottomSheetArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
     private lateinit var artistSongAdapter: ArtistSongsAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//            homePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
-//        }
-//    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+           homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            songDetail = it.getSerializable("songDetail") as SongDetail?
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +69,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Check", "yes iam called")
+        Log.e("Check", "yes iam called"+ songDetail)
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -104,17 +106,17 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
+        artistHeaderAdapter = BottomSheetArtistHeaderAdapter(songDetail)
         artistSongAdapter = ArtistSongsAdapter()
-        artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
+      artistAlbumsAdapter = ArtistAlbumsAdapter(homePatchItem, this)
         artistsYouMightLikeAdapter =
-            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
+            ArtistsYouMightLikeAdapter(homePatchItem, this, songDetail?.ArtistId)
         parentAdapter = ConcatAdapter(
             config,
             artistHeaderAdapter,
             HeaderAdapter(),
             artistSongAdapter,
-            artistAlbumsAdapter,
+          //  artistAlbumsAdapter,
             artistsYouMightLikeAdapter
         )
         parentAdapter.notifyDataSetChanged()
@@ -141,8 +143,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun observeData() {
-        argHomePatchDetail?.let { viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG","DATA: "+ it.Artist)}
+        songDetail?.let { viewModel.fetchArtistBioData(it.artist)
+            Log.e("TAG","DATA: "+ it.artist)}
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
 
@@ -162,7 +164,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             // viewDataInRecyclerView(it)
 
         }
-        argHomePatchDetail.let {
+        songDetail.let {
             it?.ArtistId?.let { it1 ->
                 it1?.toInt()
                     ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
@@ -178,11 +180,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 Log.e("TAG", "DATA123: " + it)
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
+        songDetail.let {
+            viewModelArtistSong.fetchArtistSongData(it?.ArtistId?.toInt() ?: 0)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     artistSongAdapter.artistContent(res.data)
+                    artistHeaderAdapter.setHeaderImage(res.data)
                 } else {
                     showDialog()
                 }
@@ -191,20 +194,20 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 //                Log.e("TAG","DATA: "+ it)
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
-            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-
-                if (res.status == Status.SUCCESS) {
-                    artistAlbumsAdapter.setData(res.data)
-                } else {
-                    showDialog()
-                }
-
-
-            }
-        }
-        Log.e("TAG", "ARTISTID: " + argHomePatchDetail?.ArtistId)
+//        songDetail.let {
+//            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
+//            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
+//
+//                if (res.status == Status.SUCCESS) {
+//                    artistAlbumsAdapter.setData(res.data)
+//                } else {
+//                    showDialog()
+//                }
+//
+//
+//            }
+//        }
+       // Log.e("TAG", "ARTISTID: " + argHomePatchDetail?.ArtistId)
     }
 
     private fun showDialog() {
@@ -223,11 +226,11 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     companion object {
 
         @JvmStatic
-        fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
-            ArtistDetailsFragment().apply {
+        fun newInstance(songDetail: SongDetail) =
+            BottomSheetArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable("homePatchItem", homePatchItem)
-                    putSerializable("homePatchDetail", homePatchDetail)
+
+                    putSerializable("songDetail", songDetail)
                 }
             }
     }
@@ -235,10 +238,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
-        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        artistHeaderAdapter.setData(argHomePatchDetail!!)
+       //songDetail = selectedHomePatchItem.Data[itemPosition]
+       // artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
-        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+        artistsYouMightLikeAdapter.artistIDToSkip = songDetail!!.ArtistId
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
 

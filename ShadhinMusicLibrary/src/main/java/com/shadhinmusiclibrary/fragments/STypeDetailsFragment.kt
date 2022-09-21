@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -34,31 +36,33 @@ class STypeDetailsFragment : CommonBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         listSongDetail = mutableListOf()
         argHomePatchDetail!!.apply {
-//            listSongDetail.add(
-//                SongDetail(
-//                    ContentID,
-//                    image,
-//                    title,
-//                    ContentType,
-//                    PlayUrl,
-//                    Artist,
-//                    Duration,
-//                    copyright = "",
-//                    labelname = "",
-//                    releaseDate = "",
-//                    fav,
-//                    ArtistId,
-//                    albumId = "",
-//                    userPlayListId = "",
-//                    RootType="",
-//                    roo
-//                )
-//            )
+            listSongDetail.add(
+                SongDetail(
+                    ContentID,
+                    image,
+                    title,
+                    ContentType,
+                    PlayUrl,
+                    Artist,
+                    Duration,
+                    copyright = "",
+                    labelname = "",
+                    releaseDate = "",
+                    fav,
+                    ArtistId,
+                    albumId = "",
+                    userPlayListId = "",
+                    rootType = "",
+                    rootContentID = "",
+                    rootImage = "",
+                    rootContentType = ""
+                )
+            )
         }
 
         adapter = GenrePlaylistAdapter()
         adapter.setRootData(argHomePatchDetail!!)
-//        adapter.setData(listSongDetail)
+        //adapter.setData(listSongDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

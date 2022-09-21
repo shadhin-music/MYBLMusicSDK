@@ -136,6 +136,7 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:id="@+id/cardBiography"
+    android:visibility="gone"
     app:cardElevation="0dp"
     android:elevation="1dp"
     app:cardBackgroundColor="@color/colorWhite"

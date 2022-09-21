@@ -62,7 +62,7 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
             Log.d("TAGGGGGGGY","MESSAGE: ")
             val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
-            manager?.popBackStack("YourFragmentTag", 0);
+            manager?.popBackStack("Fragment", 0);
            // ShadhinMusicSdkCore.getHomeFragment()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager

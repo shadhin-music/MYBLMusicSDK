@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
+import java.io.Serializable
+
 data class SongDetail(
     val ContentID: String,
     val image: String,
@@ -20,7 +22,7 @@ data class SongDetail(
     val rootContentID: String,
     val rootImage: String,
     val rootContentType: String
-) {
+) : Serializable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
     }

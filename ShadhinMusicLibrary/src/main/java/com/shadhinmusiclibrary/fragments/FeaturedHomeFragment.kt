@@ -36,21 +36,27 @@ class FeaturedHomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>()
 //        observeData()
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
 //
-//        btnrelease.setOnClickListener {
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager.beginTransaction()
-//                .replace(R.id.container,LatestReleaseFragment() )
-//                .addToBackStack("Fragment")
-//                .commit()
-//        }
-//        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
-        val btnPopularArtist: Button = requireView().findViewById(com.shadhinmusiclibrary.R.id.btnPopularArtists)
-        btnPopularArtist.setOnClickListener {
-            val childFragment: Fragment = FeaturedPopularArtistFragment()
-            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-            transaction.add(com.shadhinmusiclibrary.R.id.container1, childFragment).addToBackStack("YourFragmentTag")
+        btnrelease.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1,LatestReleaseFragment() )
+                .addToBackStack("Fragment")
                 .commit()
+        }
+//        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
+        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+        btnPopularArtist.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1,FeaturedPopularArtistFragment() )
+                .addToBackStack("Fragment")
+                .commit()
+//            val childFragment: Fragment = FeaturedPopularArtistFragment()
+//            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+//            transaction.add(com.shadhinmusiclibrary.R.id.container1, childFragment).addToBackStack("YourFragmentTag")
+//                .commit()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager.beginTransaction()
