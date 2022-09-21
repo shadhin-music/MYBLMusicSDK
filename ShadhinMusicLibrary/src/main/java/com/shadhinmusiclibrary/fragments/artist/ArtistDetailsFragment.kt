@@ -22,20 +22,26 @@ import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
+import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack {
+class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
+    ArtistOnItemClickCallback {
     private lateinit var navController: NavController
-//    var homePatchItem: HomePatchItem? = null
+
+    //    var homePatchItem: HomePatchItem? = null
 //    var homePatchDetail: HomePatchDetail? = null
     var artistContent: ArtistContent? = null
     private lateinit var viewModel: ArtistViewModel
@@ -105,7 +111,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
-        artistSongAdapter = ArtistSongsAdapter()
+        artistSongAdapter = ArtistSongsAdapter(this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
@@ -141,21 +147,23 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun observeData() {
-        argHomePatchDetail?.let { viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG","DATA: "+ it.Artist)}
+        argHomePatchDetail?.let {
+            viewModel.fetchArtistBioData(it.Artist)
+            Log.e("TAG", "DATA: " + it.Artist)
+        }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
 
             if (response.status == Status.SUCCESS) {
                 artistHeaderAdapter.artistBio(response.data)
-                Log.e("TAG","DATA321: "+ response.data?.artist)
+                Log.e("TAG", "DATA321: " + response.data?.artist)
 //                Log.e("TAG","DATA: "+ response.message)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
-              //  Log.e("TAG","DATA321: "+ response.message )
-               // Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
-              //  showDialog()
+                //  Log.e("TAG","DATA321: "+ response.message )
+                // Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
+                //  showDialog()
             }
 
 //            ArtistHeaderAdapter(it)
@@ -300,15 +308,20 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
-//    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =
-//        try { navigate(resId, args) }
-//        catch (e: Exception) {
-//            Log.e("TAG", "Message: "+ e)
-//        }
-
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
+        playItem(UtilHelper.getSongDetailToArtistContentDataList(mSongDetails), clickItemPosition)
+    }
+
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        songDetails: MutableList<ArtistContentData>
+    ) {
+
     }
 }

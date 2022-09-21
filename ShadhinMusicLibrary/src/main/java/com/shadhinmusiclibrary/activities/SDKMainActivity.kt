@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +33,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
+import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
 import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -119,27 +121,25 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         routeData(patch, selectedPatchIndex)
 
-        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
+        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
                 isPlayOrPause = itMus.isPlaying!!
             }
-        })
+        }
 
-        playerViewModel.playListLiveData.observe(this, Observer { itMusicList ->
-            playerViewModel.musicIndexLiveData.observe(this, Observer {
+        playerViewModel.playListLiveData.observe(this) { itMusicList ->
+            playerViewModel.musicIndexLiveData.observe(this) {
                 setupMainMusicPlayerAdapter(
                     UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
                     it
                 )
-            })
-        })
+            }
+        }
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
-//        mainMusicPlayerUiFunctionality()
     }
-
 
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
@@ -152,7 +152,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
-                                 PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -180,7 +180,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
                         Bundle().apply {
                             putSerializable(
-                              PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -436,18 +436,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
         dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
 
-        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
             sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
             sbCurrentPlaySongStatus.max = it.duration?.toInt() ?: 0
             tvCurrentPlayDuration.text = it.currentPositionTimeLabel()
-            tvCurrentPlayDuration.text = if (it.currentPosition?.toInt()!! >= 0) {
-                it.currentPositionTimeLabel()
-            } else {
-                "0:00"
-            }
-//            tvTotalPlayDuration.text = it.durationTimeLabel()
-            tvTotalPlayDuration.text = if (it.duration?.toInt()!! >= 0) {
+            tvTotalPlayDuration.text = if (it.durationTimeLabel() != "-153722867280912:0-55") {
                 it.durationTimeLabel()
             } else {
                 "0:00"
@@ -458,8 +451,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         sbCurrentPlaySongStatus.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                sbCurrentPlaySongStatus.progress = p0!!.progress
-                playerViewModel.seekTo(p1.toLong())
+                if (p2) {
+                    sbCurrentPlaySongStatus.progress = p0!!.progress
+                }
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -549,6 +543,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         ibtnDownload.setOnClickListener {
 //            setControlColor(true, ibtnDownload)
         }
+
+        acivMinimizePlayerBtn.setOnClickListener {
+            toggleMiniPlayerView(true)
+        }
     }
 
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
@@ -565,9 +563,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
 
-        setPaletteGradientColor(getBitmapFromIV(ivSongThumbMini))
+        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
-        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this, Observer {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         })
@@ -597,7 +594,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             viewHolder.sMusicData.artist
             tvSongName.text = viewHolder.sMusicData.title
             tvSingerName.text = viewHolder.sMusicData.artist
-            setPaletteGradientColor(getBitmapFromVH(viewHolder))
+            setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
         }
     }
 
@@ -620,31 +617,28 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentHolder: MusicPlayAdapter.MusicPlayVH?,
         newCurrent: MusicPlayAdapter.MusicPlayVH?
     ) {
-        Log.e(
-            "SDKMA", "scrollPosition: " + scrollPosition +
-                    " currentPosition: " + currentPosition +
-                    " newPosition: " + newPosition
-        )
         if (currentHolder != null) {
-            setPaletteGradientColor(getBitmapFromVH(currentHolder))
+            setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
 
             playerViewModel.skipToQueueItem(newPosition)
         }
     }
 
-    private fun setPaletteGradientColor(imBitmapData: Bitmap) {
+    private fun setMainPlayerBackgroundColor(imBitmapData: Bitmap) {
         val palette: Palette = Palette.from(imBitmapData).generate()
         val vibrantSwatch: Palette.Swatch? = palette.vibrantSwatch
         if (vibrantSwatch != null) {
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(
-                    ContextCompat.getColor(this, R.color.shadinRequiredColor),
-                    vibrantSwatch.rgb
+            if (vibrantSwatch.rgb.red > 0.90 && vibrantSwatch.rgb.green > 0.90 && vibrantSwatch.rgb.blue > 0.90) {
+                val gradientDrawable = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(
+                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                        vibrantSwatch.rgb
+                    )
                 )
-            )
-            gradientDrawable.cornerRadius = 0f
-            clMainMusicPlayer.background = gradientDrawable
+                gradientDrawable.cornerRadius = 0f
+                clMainMusicPlayer.background = gradientDrawable
+            }
         }
     }
 
@@ -699,11 +693,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
       if (image != null) {
           Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
       }
-        val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
-        constraintAlbum?.setOnClickListener {
-            gotoArtist(context,mSongDetails,argHomePatchItem,argHomePatchDetail)
-           bottomSheetDialog.dismiss()
-        }
+      val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
+      constraintAlbum?.setOnClickListener {
+          gotoArtist(context,mSongDetails,argHomePatchItem,argHomePatchDetail)
+          bottomSheetDialog.dismiss()
+      }
     }
 
     private fun gotoArtist(

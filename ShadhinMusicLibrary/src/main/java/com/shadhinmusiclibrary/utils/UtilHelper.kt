@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
 
@@ -81,6 +82,39 @@ object UtilHelper {
         }
 
         return musicList
+    }
+
+    fun getSongDetailToArtistContentDataList(musicList: MutableList<ArtistContentData>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (musicItem in musicList) {
+            musicItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = ContentID,
+                        image = image,
+                        title = title,
+                        ContentType = ContentType,
+                        PlayUrl = PlayUrl,
+                        artist = artistname,
+                        duration = duration,
+                        copyright = copyright,
+                        labelname = labelname,
+                        releaseDate = releaseDate,
+                        fav = fav,
+                        ArtistId = "",
+                        albumId = "",
+                        userPlayListId = "",
+                        rootType = ContentType,
+
+                        rootContentID = ContentID,
+                        rootContentType = ContentType,
+                        rootImage = image
+                    )
+                )
+            }
+        }
+
+        return songDetailList
     }
 
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<SongDetail> {
