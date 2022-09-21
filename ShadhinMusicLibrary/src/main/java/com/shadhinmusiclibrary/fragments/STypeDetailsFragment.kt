@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -49,14 +51,18 @@ class STypeDetailsFragment : CommonBaseFragment() {
                     fav,
                     ArtistId,
                     albumId = "",
-                    userPlayListId = ""
+                    userPlayListId = "",
+                    rootType = "",
+                    rootContentID = "",
+                    rootImage = "",
+                    rootContentType = ""
                 )
             )
         }
 
         adapter = GenrePlaylistAdapter()
         adapter.setRootData(argHomePatchDetail!!)
-        adapter.setData(listSongDetail)
+        //adapter.setData(listSongDetail)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

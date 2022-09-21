@@ -67,17 +67,17 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     private fun fetchOnlineData(contentId: Int) {
         viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
-            //updateAndSetAdapter(res?.data?.data!!)
+            updateAndSetAdapter(res?.data?.data!!)
         }
     }
 
-//    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
-//        updatedSongList = mutableListOf()
-//        for (songItem in songList) {
-//            updatedSongList.add(
-//                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
-//            )
-//        }
-//        adapter.setSongData(updatedSongList)
-//    }
+    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+        updatedSongList = mutableListOf()
+        for (songItem in songList) {
+            updatedSongList.add(
+                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
+            )
+        }
+        adapter.setSongData(updatedSongList)
+    }
 }

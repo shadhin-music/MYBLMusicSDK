@@ -142,21 +142,26 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun observeData() {
-        argHomePatchDetail?.let { viewModel.fetchArtistBioData(it.Artist) }
+        argHomePatchDetail?.let { viewModel.fetchArtistBioData(it.Artist)
+            Log.e("TAG","DATA: "+ it.Artist)}
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
+
             if (response.status == Status.SUCCESS) {
                 artistHeaderAdapter.artistBio(response.data)
+                Log.e("TAG","DATA321: "+ response.data?.artist)
+//                Log.e("TAG","DATA: "+ response.message)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
-                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
-                showDialog()
+              //  Log.e("TAG","DATA321: "+ response.message )
+               // Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
+              //  showDialog()
             }
 
 //            ArtistHeaderAdapter(it)
             // viewDataInRecyclerView(it)
-            //Log.e("TAG","DATA: "+ it.artist)
+
         }
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->

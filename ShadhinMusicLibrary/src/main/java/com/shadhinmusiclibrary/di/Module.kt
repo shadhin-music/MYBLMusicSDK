@@ -45,13 +45,7 @@ class Module(private val applicationContext: Context) {
         return SingleOkHttpClient.getInstance()
     }
 
-    private fun getFMClient(): Retrofit {
-        return RetrofitFMClient.getInstance(getClient())
-    }
 
-    private fun getFMService(): ApiService {
-        return SingleFMService.getInstance(getFMClient())
-    }
 
     private val artistAlbumApiService:ApiService = getApiShadhinMusicService()
     
@@ -118,6 +112,13 @@ class Module(private val applicationContext: Context) {
 //        return getRetrofitInstance().create(ApiService::class.java)
 //    }
 
+//    private fun getFMClient(): Retrofit {
+//        return RetrofitFMClient.getInstance(getClient())
+//    }
+
+//    private fun getFMService(): ApiService {
+//        return SingleFMService.getInstance(getFMClient())
+//    }
     private fun getRetrofitAPIShadhinMusicInstanceV5(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
@@ -136,13 +137,7 @@ class Module(private val applicationContext: Context) {
         return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
 
-    private fun getClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                LastFmApiKeyInterceptor()
-            )
-            .build()
-    }
+
 
     private fun getFMClient(): Retrofit {
         return Retrofit.Builder()
@@ -151,7 +146,13 @@ class Module(private val applicationContext: Context) {
             .client(getClient())
             .build()
     }
-
+ private fun getClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                LastFmApiKeyInterceptor()
+            )
+            .build()
+    }
     private fun getFMService(): ApiService {
         return getFMClient().create(ApiService::class.java)
     }
@@ -200,6 +201,15 @@ class Module(private val applicationContext: Context) {
         artistAlbumApiService)
     val popularArtistViewModelFactory: PopularArtistViewModelFactory get()= PopularArtistViewModelFactory(
         popularArtistRepository)
+
+
+    val featuredtrackListRepository:FeaturedTracklistRepository get() = FeaturedTracklistRepository(
+        artistAlbumApiService)
+    val featuredtrackListViewModelFactory:FeaturedTracklistViewModelFactory get()= FeaturedTracklistViewModelFactory(
+        featuredtrackListRepository)
+
+
+
 
 
     val exoplayerCache: SimpleCache

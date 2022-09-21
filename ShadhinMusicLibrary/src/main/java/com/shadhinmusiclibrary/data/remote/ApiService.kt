@@ -59,4 +59,7 @@ interface ApiService {
 
     @GET("artist/getpopularartist")
      suspend fun fetchPopularArtist():PopularArtistModel
+
+     @GET("track/GetLatestTrack")
+    suspend fun fetchFeaturedTrackList() :FeaturedLatestTrackListModel
 }

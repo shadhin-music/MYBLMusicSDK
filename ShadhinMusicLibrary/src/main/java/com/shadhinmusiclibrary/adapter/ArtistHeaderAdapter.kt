@@ -83,6 +83,10 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
+             val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
+            if(updatedbio.length>25){
+                cardBiography.visibility= VISIBLE
+            }
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
