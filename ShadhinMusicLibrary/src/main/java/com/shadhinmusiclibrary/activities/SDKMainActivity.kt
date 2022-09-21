@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.activities
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -7,14 +8,15 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -22,18 +24,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
+import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
+import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
@@ -297,6 +300,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
     }
 
+
+
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
@@ -307,7 +312,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                 PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -321,7 +326,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_album_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -335,7 +340,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                              PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -349,7 +354,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                               PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -363,7 +368,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                               PatchItem,
                                 homePatchItem as Serializable
                             )
                             putSerializable(
@@ -381,7 +386,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                         })
@@ -391,7 +396,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_album_list,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                         })
@@ -401,7 +406,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_playlist_list,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                         })
@@ -411,7 +416,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                               PatchItem,
                                 homePatchItem as Serializable
                             )
                         })
@@ -421,7 +426,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
                         Bundle().apply {
                             putSerializable(
-                                AppConstantUtils.PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                             Log.d("TAG", "CLICK ITEM123: " + PatchItem)
@@ -632,4 +637,26 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         super.onDestroy()
         playerViewModel.disconnect()
     }
+  fun showBottomSheetDialog(context: Context, mSongDetails: SongDetail) {
+        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
+        val contentView =
+            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+        bottomSheetDialog.setContentView(contentView)
+        bottomSheetDialog.show()
+        val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        constraintAlbum?.setOnClickListener {
+            gotoArtist(context,mSongDetails)
+
+        }
+    }
+
+    private fun gotoArtist(context: Context, mSongDetails: SongDetail) {
+        val manager: FragmentManager = supportFragmentManager
+        manager.beginTransaction()
+            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails))
+            .addToBackStack("Fragment")
+            .commit()
+        Log.e("TAGGY","SONGDETAILS: "+ mSongDetails)
+    }
+
 }

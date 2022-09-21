@@ -2,22 +2,28 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
+class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback) :
     RecyclerView.Adapter<AlbumAdapter.AlbumVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
@@ -64,8 +70,12 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
                         if (holder.itemViewType == VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
+
                         }
                     }
+//                    holder.menu?.setOnClickListener {
+//                        bottomSheetDialogItemCallback.onClickBottomItem(dataSongDetail,(position-1))
+//                    }
                 }
             }
         }
@@ -117,6 +127,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 
         //        private lateinit var ivFavorite: ImageView
         var ivPlayBtn: ImageView? = null
+        var menu:ImageView ?= null
 
         //        private lateinit var ivShareBtnFab: ImageView
         fun bindRoot(root: HomePatchDetail) {
@@ -135,7 +146,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
-
+            menu= viewItem.findViewById(R.id.iv_song_menu_icon)
 //            if (isPlaying) {
 //                ivPlayBtn!!.setImageResource(R.drawable.ic_pause_circle_filled)
 //            } else {
@@ -158,15 +169,13 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback) :
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
+            ivSongMenuIcon.setOnClickListener {
+                bottomSheetDialogItemCallback.onClickBottomItem(dataSongDetail[0])
+            }
+
         }
 
-//        private fun showBottomSheetDialog(context: Context) {
-//            val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
-//            val contentView =
-//                View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
-//            bottomSheetDialog.setContentView(contentView)
-//            bottomSheetDialog.show()
-//        }
+
     }
 
     private companion object {

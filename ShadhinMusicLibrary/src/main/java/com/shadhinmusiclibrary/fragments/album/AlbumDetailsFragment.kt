@@ -7,29 +7,27 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
@@ -56,7 +54,7 @@ class AlbumDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        createPlayerVM()
-        adapter = AlbumAdapter(this)
+        adapter = AlbumAdapter(this,this)
 
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
@@ -133,5 +131,11 @@ class AlbumDetailsFragment :
                 }
             })
         }
+    }
+
+
+
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(context= requireContext(),mSongDetails)
     }
 }

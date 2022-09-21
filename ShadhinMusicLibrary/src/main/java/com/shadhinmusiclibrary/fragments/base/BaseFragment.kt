@@ -1,11 +1,15 @@
 package com.shadhinmusiclibrary.fragments.base
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.Nullable
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -59,4 +63,6 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
             ivPlayPause.setImageResource(R.drawable.ic_play_linear)
         }
     }
+
+
 }

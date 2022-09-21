@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 open class CommonBaseFragment : Fragment() {
@@ -19,6 +20,7 @@ open class CommonBaseFragment : Fragment() {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
             argHomePatchDetail =
                 it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
+
         }
     }
 }
