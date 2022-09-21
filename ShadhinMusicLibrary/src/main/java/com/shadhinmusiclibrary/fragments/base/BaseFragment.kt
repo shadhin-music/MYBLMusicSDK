@@ -63,6 +63,4 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
             ivPlayPause.setImageResource(R.drawable.ic_play_linear)
         }
     }
-
-
 }

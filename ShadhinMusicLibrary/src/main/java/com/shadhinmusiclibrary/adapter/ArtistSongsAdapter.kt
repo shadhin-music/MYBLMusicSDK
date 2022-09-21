@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 
 
-class ArtistSongsAdapter:
+class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
     RecyclerView.Adapter<ArtistSongsAdapter.ViewHolder>() {
- //   private var artistContent: ArtistContent? = null
-    private var artistContentList:MutableList<ArtistContentData> = ArrayList()
-    private var parentView:View?=null
+    //   private var artistContent: ArtistContent? = null
+    private var artistContentList: MutableList<ArtistContentData> = ArrayList()
+    private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-        parentView = LayoutInflater.from(parent.context).inflate(R.layout.video_podcast_epi_single_item, parent, false)
+        parentView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
     }
 
@@ -31,7 +34,9 @@ class ArtistSongsAdapter:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(artistContentList[position])
 
-
+        holder.itemView.setOnClickListener {
+            itemClickCB.onClickItem(artistContentList, position)
+        }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -64,10 +69,10 @@ class ArtistSongsAdapter:
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView!!)
-            val textTitle:TextView = itemView.findViewById(R.id.tv_song_name)
-            val textArtist:TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration:TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text= artistContent.title
+            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            textTitle.text = artistContent.title
             textArtist.text = artistContent.artistname
             textDuration.text = artistContent.duration
             //Log.e("TAG","DATA123: "+ artistContent?.image)
