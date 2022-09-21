@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
-import android.view.*
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -33,6 +36,7 @@ import com.shadhinmusiclibrary.player.data.source.ShadhinVideoMediaSource
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
+
 
 class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
 
@@ -67,8 +71,8 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
-        setupViewModel()
         setupUI()
+        setupViewModel()
         setupAdapter()
         initData()
         initializePlayer()
@@ -80,6 +84,14 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         viewModel = ViewModelProvider(this)[VideoViewModel::class.java]
     }
     private fun setupUI() {
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        supportActionBar?.title = "Back"
+
         mainLayout = findViewById(R.id.main)
         videoRecyclerView = findViewById(R.id.videoRecyclerView)
         videoTitleTextView = findViewById(R.id.videoTitle)
@@ -264,6 +276,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     }
     private fun preparePortraitUI() {
         showSystemUI()
+        supportActionBar?.show()
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             setPortraitPlayerSize()
         }, 100)
@@ -271,6 +284,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     }
     private fun prepareLandscapeUI() {
         hideSystemUI()
+        supportActionBar?.hide()
         setLandscapePlayerSize()
         fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen_minimize)
     }
@@ -313,14 +327,26 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         super.onConfigurationChanged(newConfig)
         configOrientation(newConfig.orientation)
     }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> false
+        }
+    }
+
     override fun onBackPressed() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toggleOrientation()
         } else {
             finish()
         }
-
     }
+
     override fun onPause() {
         super.onPause()
         exoPlayer?.pause()

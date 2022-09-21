@@ -134,6 +134,7 @@
         android:background="?selectableItemBackgroundBorderless"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
+        android:visibility="invisible"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
         app:layout_constraintStart_toStartOf="parent"

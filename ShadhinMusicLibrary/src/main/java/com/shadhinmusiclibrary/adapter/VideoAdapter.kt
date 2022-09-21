@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.utils.createTimeLabel
 
 
 typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
@@ -101,12 +102,16 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
     inner class ListViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){
         private var titleTextView: TextView = itemView.findViewById(R.id.videoTitle)
         private var subTitleTextView:TextView = itemView.findViewById(R.id.videoDesc)
+        private var durationTextView:TextView = itemView.findViewById(R.id.video_duration)
         private var playPauseImage:ImageView = itemView.findViewById(R.id.play_pause)
         private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
 
+
         fun bind(item: Video){
 
+
             titleTextView.text = item.title
+            durationTextView.text = createTimeLabel(item.duration?.toLong()?:0L)
             if (item.isPlaying) {
                 titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
             } else {
@@ -121,9 +126,9 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
 
 
                 if (item.isPlaystate) {
-                    playPauseImage.setImageResource(R.drawable.ic_pause_video)
+                    playPauseImage.setImageResource(R.drawable.ic_pause_n)
                 } else {
-                    playPauseImage.setImageResource(R.drawable.ic_play_video)
+                    playPauseImage.setImageResource(R.drawable.ic_play_n)
                 }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
@@ -155,9 +160,9 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
 
 
             if (item.isPlaystate) {
-                playPauseImage.setImageResource(R.drawable.ic_pause_video)
+                playPauseImage.setImageResource(R.drawable.ic_pause_n)
             } else {
-                playPauseImage.setImageResource(R.drawable.ic_play_video)
+                playPauseImage.setImageResource(R.drawable.ic_play_n)
             }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)

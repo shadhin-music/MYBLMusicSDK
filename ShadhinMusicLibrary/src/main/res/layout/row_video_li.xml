@@ -5,26 +5,26 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:selectableItemBackground"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardElevation="0dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_gravity="center">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView5"
             android:layout_width="0dp"
-            android:layout_height="63dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="4dp"
+            android:layout_height="0dp"
+            app:cardCornerRadius="8dp"
 
             app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -33,14 +33,16 @@
                 android:id="@+id/videoImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+
+                android:scaleType="centerCrop"
+                tools:background="@color/colorPrimary" />
 
             <ImageView
                 android:id="@+id/play_pause"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_play_video" />
+                android:src="@drawable/ic_play_n" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -48,11 +50,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/threeDotButton"
             app:layout_constraintStart_toEndOf="@+id/cardView5"
-            app:layout_constraintTop_toTopOf="@+id/cardView5">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/videoTitle"
@@ -60,9 +64,9 @@
                 android:layout_height="wrap_content"
 
 
+                android:lines="1"
                 android:textColor="@color/down_title"
                 android:textSize="16sp"
-                android:lines="1"
                 tools:text="God’s Plan" />
 
             <View
@@ -74,25 +78,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:textColor="@color/down_title"
                 android:lines="1"
+                android:textColor="@color/down_title"
                 android:textSize="12sp"
                 tools:text="Drake" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <TextView
+                android:id="@+id/video_duration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:lines="1"
+                android:textColor="@color/down_title"
+                android:textSize="12sp"
+                tools:text="3:10" />
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/threeDotButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="@android:color/transparent"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
+            android:src="@drawable/ic_more_vert"
 
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
