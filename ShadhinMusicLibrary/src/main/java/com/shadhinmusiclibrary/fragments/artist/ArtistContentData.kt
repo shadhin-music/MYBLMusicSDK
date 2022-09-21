@@ -15,4 +15,8 @@ data class ArtistContentData(
     val labelname: String,
     val releaseDate: String,
     val title: String
-)
+){
+    fun getImageUrl300Size(): String {
+        return this.image.replace("<\$size\$>", "300")
+    }
+}

@@ -1,5 +1,5 @@
 package com.shadhinmusiclibrary.adapter
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
 import android.content.Context
 import android.nfc.cardemulation.CardEmulation
 import android.provider.Settings.Global.getString
@@ -21,6 +21,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
@@ -76,6 +77,7 @@ class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
 
     fun setHeaderImage(data: ArtistContent?) {
          this.data = data
+        notifyDataSetChanged()
     }
 
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -84,6 +86,7 @@ class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
             var url: String = data?.getImageUrl300Size().toString()
+            Log.d("TAGG","Image: "+ url)
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(songDetail?.artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)

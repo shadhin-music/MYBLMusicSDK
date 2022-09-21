@@ -1,7 +1,10 @@
 package com.shadhinmusiclibra
 
-import android.annotation.SuppressLint
+import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
+
+
 
 
 import android.view.LayoutInflater
@@ -13,52 +16,43 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ArtistAlbumListAdapter
-import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 
 
-class ArtistAlbumsAdapter(
-    var homePatchItem: HomePatchItem?,
-    val homeCallBack: HomeCallBack
-) : RecyclerView.Adapter<ArtistAlbumsAdapter.ViewHolder>() {
-    var artistAlbumModel: ArtistAlbumModel? = null
+class BottomsheetArtistsYouMightLikeAdapter(
+     var homePatchItem: HomePatchItem?,
+    val homeCallBack: HomeCallBack,
+    var artistIDToSkip: String? = null) : RecyclerView.Adapter<BottomsheetArtistsYouMightLikeAdapter.ViewHolder>() {
+
+    var adapter: ArtistAdapter? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(homePatchItem, artistAlbumModel)
+
+        holder.bindItems(homePatchItem)
 
 
     }
-
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
         return 1
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(artistAlbumModel: ArtistAlbumModel?) {
-        this.artistAlbumModel = artistAlbumModel
-        notifyDataSetChanged()
-    }
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?, artistAlbumModel: ArtistAlbumModel?) {
-
-            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-            tvTitle.text = "Albums"
+        val  context = itemView.getContext()
+        fun bindItems(homePatchItem: HomePatchItem?) {
+           val textView:TextView = itemView.findViewById(R.id.tvTitle)
+            textView.text= "You might like also"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter =
-                ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
+            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack,artistIDToSkip)
+            recyclerView.adapter = adapter
 
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
@@ -80,9 +74,8 @@ class ArtistAlbumsAdapter(
         }
 
     }
-
     companion object {
-        const val VIEW_TYPE = 3
+        const val VIEW_TYPE = 4
     }
 }
 

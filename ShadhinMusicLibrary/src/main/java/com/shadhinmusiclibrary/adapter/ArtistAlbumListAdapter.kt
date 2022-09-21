@@ -47,18 +47,10 @@ class ArtistAlbumListAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
         fun bindItems(artistAlbumModel: ArtistAlbumModel?) {
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
-//               manager.beginTransaction()
-//                    .replace(R.id.container, ArtistAlbumsDetails2Fragment.newInstance(artistAlbumModel,
-//                        artistAlbumModel!!.data[absoluteAdapterPosition]))
-//                    .addToBackStack("Trending")
-//                    .commit()
-//            }
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String =
-                this@ArtistAlbumListAdapter.artistAlbumModel?.data?.get(absoluteAdapterPosition)?.image.toString()
+                artistAlbumModel?.data?.get(absoluteAdapterPosition)?.image.toString()
             textView.text =
                 this@ArtistAlbumListAdapter.artistAlbumModel?.data!![absoluteAdapterPosition]?.title
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
@@ -68,6 +60,15 @@ class ArtistAlbumListAdapter(
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
+//            itemView.setOnClickListener {
+//                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
+//               manager.beginTransaction()
+//                    .replace(R.id.container, ArtistAlbumsDetails2Fragment.newInstance(artistAlbumModel,
+//                        artistAlbumModel!!.data[absoluteAdapterPosition]))
+//                    .addToBackStack("Trending")
+//                    .commit()
+//            }
+
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)

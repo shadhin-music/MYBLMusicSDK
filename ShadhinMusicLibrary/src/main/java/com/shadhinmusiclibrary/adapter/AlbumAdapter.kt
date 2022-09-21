@@ -170,7 +170,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                bottomSheetDialogItemCallback.onClickBottomItem(dataSongDetail[0])
+                bottomSheetDialogItemCallback.onClickBottomItem(mSongDetail)
             }
 
         }

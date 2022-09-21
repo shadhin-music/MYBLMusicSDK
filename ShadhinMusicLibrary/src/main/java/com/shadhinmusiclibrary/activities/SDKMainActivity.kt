@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.NavigationRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +32,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
-import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
 import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -679,26 +677,48 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         super.onDestroy()
         playerViewModel.disconnect()
     }
-  fun showBottomSheetDialog(context: Context, mSongDetails: SongDetail) {
+  fun showBottomSheetDialog(
+      context: Context,
+      mSongDetails: SongDetail,
+      argHomePatchItem: HomePatchItem?,
+      argHomePatchDetail: HomePatchDetail?
+  ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
+
         val contentView =
             View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
+       val closeButton:ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
+           closeButton?.setOnClickListener {
+               bottomSheetDialog.dismiss()
+           }
+      val image:ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+      val url = argHomePatchDetail?.image
+
+      if (image != null) {
+          Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+      }
         val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(context,mSongDetails)
-
+            gotoArtist(context,mSongDetails,argHomePatchItem,argHomePatchDetail)
+           bottomSheetDialog.dismiss()
         }
     }
 
-    private fun gotoArtist(context: Context, mSongDetails: SongDetail) {
+    private fun gotoArtist(
+        context: Context,
+        mSongDetails: SongDetail,
+        argHomePatchItem: HomePatchItem?,
+        argHomePatchDetail: HomePatchDetail?,
+
+        ) {
         val manager: FragmentManager = supportFragmentManager
         manager.beginTransaction()
-            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails))
+            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails,argHomePatchItem,argHomePatchDetail))
             .addToBackStack("Fragment")
             .commit()
-        Log.e("TAGGY","SONGDETAILS: "+ mSongDetails)
+        Log.e("TAGGY","SONGDETAILS: "+ argHomePatchItem)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary. fragments.album
+package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,19 +19,34 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class AlbumDetailsFragment :
+class BottomsheetAlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
+    var artistAlbumModelData: ArtistAlbumModelData? = null
+     var homePatchItem:HomePatchItem?= null
+    var homePatchDetail:HomePatchDetail?=null
 //    private lateinit var playerViewModel: PlayerViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+          //  homePatchItem = it.getSerializable("argHomePatchItem") as HomePatchItem?
+            artistAlbumModelData = it.getSerializable("artistAlbumModelData") as ArtistAlbumModelData
+            homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetail
+        }
+
+    }
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
     }
@@ -56,8 +71,8 @@ class AlbumDetailsFragment :
         adapter = AlbumAdapter(this,this)
 
         ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
-        adapter.setRootData(argHomePatchDetail!!)
+        fetchOnlineData(artistAlbumModelData?.ContentID?.toInt() ?: 0)
+        adapter.setRootData(homePatchDetail)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -91,7 +106,7 @@ class AlbumDetailsFragment :
         updatedSongList = mutableListOf()
         for (songItem in songList) {
             updatedSongList.add(
-                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
+                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail!!)
             )
         }
         adapter.setSongData(updatedSongList)
@@ -125,9 +140,22 @@ class AlbumDetailsFragment :
         }
     }
 
-
+  companion object{
+      @JvmStatic
+      fun newInstance(artistAlbumModelData: ArtistAlbumModelData, homePatchDetail: HomePatchDetail?) =
+          BottomsheetAlbumDetailsFragment().apply {
+              arguments = Bundle().apply {
+                  //putSerializable("argHomePatchItem",argHomePatchItem)
+                  putSerializable("artistAlbumModelData", artistAlbumModelData)
+                  putSerializable("argHomePatchDetail",homePatchDetail)
+              }
+          }
+  }
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(context= requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail)
     }
 }
