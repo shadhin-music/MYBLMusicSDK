@@ -5,14 +5,17 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.google.firebase.analytics.FirebaseAnalytics
+
 
 class AppActivity() : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 //        val buttonHome:Button = findViewById(R.id.buttonHome)
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
@@ -28,7 +31,7 @@ class AppActivity() : AppCompatActivity() {
 //            finish()
 //        }, 1000)
 
-            // HomeFragment()
+        // HomeFragment()
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
 
@@ -43,9 +46,6 @@ class AppActivity() : AppCompatActivity() {
 
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
-
-
-
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -53,7 +53,6 @@ class AppActivity() : AppCompatActivity() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-
             }
         })
 
@@ -63,7 +62,6 @@ class AppActivity() : AppCompatActivity() {
         val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
     }
-
 
 
 }
