@@ -697,5 +697,4 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             .commit()
         Log.e("TAGGY", "SONGDETAILS: " + mSongDetails)
     }
-
 }
