@@ -273,6 +273,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                             Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
+                DataContentType.CONTENT_TYPE_V-> {
+                    //open podcast
+                    setupNavGraphAndArg(R.navigation.nav_graph_video_list_and_details,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
+                        })
+                }
             }
         }
     }

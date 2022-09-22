@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/ic_baseline_play_circle_filled_24"
-            android:visibility="gone" />
+           />
 
         <ImageView
             android:id="@+id/image"

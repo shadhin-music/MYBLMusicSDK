@@ -6,4 +6,5 @@ object DataContentType {
     const val CONTENT_TYPE_P = "P"
     const val CONTENT_TYPE_S = "S"
     const val CONTENT_TYPE_PD = "PDJG"
+    const val CONTENT_TYPE_V = "V"
 }
