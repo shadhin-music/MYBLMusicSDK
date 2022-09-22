@@ -1,61 +1,54 @@
 package com.shadhinmusiclibrary.fragments
 
-
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.fragments.home.HomeViewModel
-import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
-import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.activities.video.VideoActivity
 
+import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
+import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
-class FeaturedHomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint {
-    private var pageNum = 1
+class FeaturedHomeFragment : CommonBaseFragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_featured_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        viewModel!!.fetchHomeData( pageNum,false)
-//        observeData()
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
-//
-        btnrelease.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,LatestReleaseFragment() )
-                .addToBackStack("Fragment")
-                .commit()
+
+
+
+
+        view.findViewById<Button>(R.id.button).setOnClickListener {
+
+            val intent = Intent(requireContext(), VideoActivity::class.java)
+            val typeToken = object:TypeToken<ArrayList<Video>>(){}.type
+            val videos :ArrayList<Video> = Gson().fromJson(VideoJOSN,typeToken)
+            intent.putExtra(VideoActivity.INTENT_KEY_POSITION, 0)
+            intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+            startActivity(intent)
         }
-//        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
-        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
-        btnPopularArtist.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,FeaturedPopularArtistFragment() )
-                .addToBackStack("Fragment")
-                .commit()
-//            val childFragment: Fragment = FeaturedPopularArtistFragment()
-//            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-//            transaction.add(com.shadhinmusiclibrary.R.id.container1, childFragment).addToBackStack("YourFragmentTag")
+
+
+//        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+//        btnPopularArtist.setOnClickListener {
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager.beginTransaction()
+//                .replace(R.id.container,FeaturedPopularArtistsFragment() )
+//                .addToBackStack("Fragment")
 //                .commit()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager

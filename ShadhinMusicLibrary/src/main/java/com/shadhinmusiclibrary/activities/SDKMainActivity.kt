@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.activities
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
@@ -122,21 +121,22 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         routeData(patch, selectedPatchIndex)
 
-        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
+        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
             if (itMus != null) {
-                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
-                isPlayOrPause = itMus.isPlaying!!
+                playerViewModel.musicIndexLiveData.observe(
+                    this,
+                    Observer { itCurrPlayingVPosition ->
+                        try { // TODO Reza vai please handle this crash
+                            setMiniMusicPlayerData(
+                                mutableListOf<SongDetail>().apply {
+                                    add(UtilHelper.getSongDetailToMusic(itMus))
+                                },
+                                itCurrPlayingVPosition
+                            )
+                        }catch (e:Exception){}
+                    })
             }
-        }
-
-        playerViewModel.playListLiveData.observe(this) { itMusicList ->
-            playerViewModel.musicIndexLiveData.observe(this) {
-                setupMainMusicPlayerAdapter(
-                    UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
-                    it
-                )
-            }
-        }
+        })
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()

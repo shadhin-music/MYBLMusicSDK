@@ -23,6 +23,13 @@ object UtilHelper {
             height
         }
     }
+    fun getScreenSize(context: Context): Point? {
+        //val display = (context as Activity).windowManager.defaultDisplay
+        val display = (context as Activity).windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return size
+    }
 
     fun getImageUrlSize300(imageUrl: String): String {
         return imageUrl.replace("<\$size\$>", "300")
