@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.utils.TimeParser
 
 
 class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
@@ -74,7 +75,7 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
             textTitle.text = artistContent.title
             textArtist.text = artistContent.artistname
-            textDuration.text = artistContent.duration
+            textDuration.text = TimeParser.secToMin(artistContent.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

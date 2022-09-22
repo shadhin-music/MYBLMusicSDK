@@ -118,7 +118,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         parentAdapter = ConcatAdapter(
             config,
             artistHeaderAdapter,
-            HeaderAdapter(),
             artistSongAdapter,
             artistAlbumsAdapter,
             artistsYouMightLikeAdapter
@@ -277,7 +276,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                         ContentID = mArtAlbumMod.ContentID,
                         ContentType = mArtAlbumMod.ContentType,
                         PlayUrl = mArtAlbumMod.PlayUrl,
-                        AlbumName = "",
+                        AlbumName = mArtAlbumMod.title,
                         AlbumImage = "",
                         fav = mArtAlbumMod.fav,
                         Banner = "",

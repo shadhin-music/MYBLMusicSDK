@@ -41,6 +41,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:text="Ami Bhabi Tumi"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -50,6 +52,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Habib Wahid"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:textSize="12sp" />
 
                 <TextView

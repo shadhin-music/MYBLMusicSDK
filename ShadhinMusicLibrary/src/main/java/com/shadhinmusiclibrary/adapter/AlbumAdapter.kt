@@ -139,7 +139,12 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
             tvCurrentAlbumName.text = root.title
-
+           if(root.title.isNullOrEmpty()){
+               tvCurrentAlbumName.text = root.AlbumName
+           }
+//            if(root.Artist.isNullOrEmpty()){
+//                tvArtistName.text = rootDataContent?.AlbumName
+//            }
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
             tvArtistName.text = root.Artist
