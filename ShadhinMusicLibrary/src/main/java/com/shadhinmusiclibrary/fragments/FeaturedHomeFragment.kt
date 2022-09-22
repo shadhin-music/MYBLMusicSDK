@@ -1,72 +1,66 @@
 package com.shadhinmusiclibrary.fragments
 
-
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.home.HomeViewModel
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.utils.Status
 
+class FeaturedHomeFragment : CommonBaseFragment() {
 
-class FeaturedHomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint {
-    private var pageNum = 1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_featured_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        viewModel!!.fetchHomeData( pageNum,false)
-//        observeData()
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
-//
-        btnrelease.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,LatestReleaseFragment() )
-                .addToBackStack("Fragment")
-                .commit()
-        }
-//        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
-        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
-        btnPopularArtist.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,FeaturedPopularArtistFragment() )
-                .addToBackStack("Fragment")
-                .commit()
-//            val childFragment: Fragment = FeaturedPopularArtistFragment()
-//            val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-//            transaction.add(com.shadhinmusiclibrary.R.id.container1, childFragment).addToBackStack("YourFragmentTag")
-//                .commit()
+//        val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+//        btnPopularArtist.setOnClickListener {
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager.beginTransaction()
-//                .add(R.id.container1,FeaturedPopularArtistFragment.newInstance())
-//                .addToBackStack(null)
+//                .replace(R.id.container,FeaturedPopularArtistsFragment() )
+//                .addToBackStack("Fragment")
 //                .commit()
+//        }
+//        btnrelease.setOnClickListener {
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager.beginTransaction()
+//                .replace(R.id.container,LatestReleaseFragment() )
+//                .addToBackStack("Fragment")
+//                .commit()
+//        }
+//        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
+        view.findViewById<Button>(R.id.button).setOnClickListener {
+
+            val intent = Intent(requireContext(), VideoActivity::class.java)
+            val typeToken = object: TypeToken<ArrayList<Video>>(){}.type
+            val videos :ArrayList<Video> = Gson().fromJson(VideoJOSN,typeToken)
+            intent.putExtra(VideoActivity.INTENT_KEY_POSITION, 0)
+            intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+            startActivity(intent)
         }
     }
     private fun observeData() {
-      //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
 
         viewModel!!.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
@@ -74,10 +68,10 @@ class FeaturedHomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>()
                 var homePatchItem = res.data?.data!![0]
 
 
-               // progressBar.visibility = View.GONE
-             //   viewDataInRecyclerView(res.data)
+                // progressBar.visibility = View.GONE
+                //   viewDataInRecyclerView(res.data)
             } else {
-               // progressBar.visibility = View.VISIBLE
+                // progressBar.visibility = View.VISIBLE
             }
             //isLoading = false
         }

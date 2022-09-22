@@ -675,7 +675,20 @@ fun main(){
     println(doggy.toString())
 }*/
 
+/*val Int.dp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()*/
 
+/*fun rangeMap(x: Float, in_min: Float, in_max: Float, out_min: Float, out_max: Float): Float {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+}
+fun calculateVideoHeight(displayWidth:Int,videoWidth:Int,videoHeight:Int): Int {
+    return rangeMap(videoHeight.toFloat(),0F,videoWidth.toFloat(),0F,displayWidth.toFloat()).toInt()
+}
+fun calculateVideoWidth(displayHeight:Int, videoHeight:Int, videoWidth:Int): Int {
+    return rangeMap(videoWidth.toFloat(),0F,videoHeight.toFloat(),0F,displayHeight.toFloat()).toInt()
+}*/
 
 
 
