@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.activities
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
@@ -104,44 +105,45 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
-        createPlayerVM()
 
+        createPlayerVM()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
-
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-
         //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
-            .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
         var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
         }
         routeData(patch, selectedPatchIndex)
 
-        playerViewModel.currentMusicLiveData.observe(this, Observer { itMus ->
+        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
-                playerViewModel.musicIndexLiveData.observe(
-                    this,
-                    Observer { itCurrPlayingVPosition ->
-                        try { // TODO Reza vai please handle this crash
-                            setMiniMusicPlayerData(
-                                mutableListOf<SongDetail>().apply {
-                                    add(UtilHelper.getSongDetailToMusic(itMus))
-                                },
-                                itCurrPlayingVPosition
-                            )
-                        }catch (e:Exception){}
-                    })
+                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+                isPlayOrPause = itMus.isPlaying!!
             }
-        })
+        }
+
+        playerViewModel.playListLiveData.observe(this) { itMusicList ->
+            playerViewModel.musicIndexLiveData.observe(this) {
+                setupMainMusicPlayerAdapter(
+                    UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
+                    it
+                )
+            }
+        }
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
-    }
 
+        cvMiniPlayer.setOnClickListener {
+            //Mini player show. when mini player click
+            toggleMiniPlayerView(false)
+        }
+    }
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
