@@ -715,7 +715,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = argHomePatchDetail?.image
-
+         val title:TextView ?= bottomSheetDialog.findViewById(R.id.name)
+         title?.text = argHomePatchDetail?.title
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }

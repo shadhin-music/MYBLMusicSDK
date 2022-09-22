@@ -26,6 +26,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
@@ -33,13 +34,11 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.album.BottomsheetAlbumDetailsFragment
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
-import java.io.Serializable
 
 
-class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,ArtistOnItemClickCallback{
+class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,ArtistOnItemClickCallback,BottomSheetDialogItemCallback{
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var songDetail: SongDetail?= null
@@ -116,7 +115,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = BottomSheetArtistHeaderAdapter(songDetail)
-        artistSongAdapter = ArtistSongsAdapter(this)
+//        artistSongAdapter = ArtistSongsAdapter(this,this)
       artistAlbumsAdapter = ArtistAlbumsAdapter(homePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(homePatchItem, this, songDetail?.ArtistId)
@@ -347,5 +346,9 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
         songDetails: MutableList<ArtistContentData>,
     ) {
 
+    }
+
+    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
+        TODO("Not yet implemented")
     }
 }

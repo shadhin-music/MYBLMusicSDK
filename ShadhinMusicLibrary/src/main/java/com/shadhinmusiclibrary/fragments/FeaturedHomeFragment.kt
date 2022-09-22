@@ -1,39 +1,27 @@
 package com.shadhinmusiclibrary.fragments
 
-<<<<<<<<< Temporary merge branch 1
 import android.content.Intent
 import android.os.Bundle
-=========
-
-import android.os.Bundle
-import android.util.Log
->>>>>>>>> Temporary merge branch 2
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-<<<<<<<<< Temporary merge branch 1
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
-
 import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-=========
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.home.HomeViewModel
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.utils.Status
->>>>>>>>> Temporary merge branch 2
 
+class FeaturedHomeFragment : CommonBaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +38,7 @@ import com.shadhinmusiclibrary.utils.Status
             val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
-                .replace(R.id.container1,FeaturedPopularArtistsFragment() )
+                .replace(R.id.container1,FeaturedPopularArtistFragment() )
                 .addToBackStack("Fragment")
                 .commit()
         }

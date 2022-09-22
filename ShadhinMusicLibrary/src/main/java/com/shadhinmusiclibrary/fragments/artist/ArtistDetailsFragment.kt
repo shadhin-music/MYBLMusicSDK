@@ -21,10 +21,11 @@ import com.shadhinmusiclibra.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -38,7 +39,7 @@ import java.io.Serializable
 
 
 class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    ArtistOnItemClickCallback {
+    ArtistOnItemClickCallback , BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
 
     //    var homePatchItem: HomePatchItem? = null
@@ -111,7 +112,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
-        artistSongAdapter = ArtistSongsAdapter(this)
+        artistSongAdapter = ArtistSongsAdapter(this,this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
@@ -322,5 +323,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         songDetails: MutableList<ArtistContentData>
     ) {
 
+    }
+
+
+    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

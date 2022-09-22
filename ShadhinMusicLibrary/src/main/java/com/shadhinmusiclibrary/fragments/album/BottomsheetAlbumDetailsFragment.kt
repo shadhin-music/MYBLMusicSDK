@@ -29,7 +29,7 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class BottomsheetAlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback{
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
@@ -67,8 +67,8 @@ class BottomsheetAlbumDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        createPlayerVM()
-        adapter = AlbumAdapter(this,this)
+////        createPlayerVM()
+//        adapter = AlbumAdapter(this,)
 
         ///read data from online
         fetchOnlineData(artistAlbumModelData?.ContentID?.toInt() ?: 0)
@@ -152,10 +152,10 @@ class BottomsheetAlbumDetailsFragment :
           }
   }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail)
-    }
+//    override fun onClickBottomItem(mSongDetails: SongDetail) {
+//        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),
+//            mSongDetails,
+//            argHomePatchItem,
+//            argHomePatchDetail)
+//    }
 }
