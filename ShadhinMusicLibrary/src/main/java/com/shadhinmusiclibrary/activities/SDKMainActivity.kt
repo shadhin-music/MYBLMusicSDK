@@ -105,17 +105,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
-        createPlayerVM()
 
+        createPlayerVM()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
-
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-
         //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
-            .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
         var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
@@ -140,8 +138,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
-    }
 
+        cvMiniPlayer.setOnClickListener {
+            //Mini player show. when mini player click
+            toggleMiniPlayerView(false)
+        }
+    }
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
@@ -818,5 +820,4 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 //            .commit()
 //        Log.e("TAGGY","SONGDETAILS: "+ argHomePatchItem)
     }
-
 }

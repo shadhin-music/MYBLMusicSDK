@@ -94,8 +94,8 @@ class MusicPlayAdapter(
                 .load(sMusicData.getImageUrl300Size())
                 .transition(DrawableTransitionOptions().crossFade(500))
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-                .placeholder(R.drawable.ic_artist)
-                .error(R.drawable.ic_artist)
+                .placeholder(R.drawable.default_song)
+                .error(R.drawable.default_song)
                 .into(ivCurrentPlayImage)
         }
     }
