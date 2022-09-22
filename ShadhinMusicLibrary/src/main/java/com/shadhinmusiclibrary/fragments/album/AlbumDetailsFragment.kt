@@ -128,6 +128,6 @@ class AlbumDetailsFragment :
 
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

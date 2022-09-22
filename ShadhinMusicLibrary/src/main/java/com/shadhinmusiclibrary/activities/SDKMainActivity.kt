@@ -9,13 +9,14 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.annotation.NavigationRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +34,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
-import com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment
 import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -46,6 +46,7 @@ import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import java.io.Serializable
+import androidx.annotation.NavigationRes as NavigationRes1
 
 
 internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
@@ -194,7 +195,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem
                             )
                             putSerializable(
@@ -208,7 +209,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                             putSerializable(
@@ -256,7 +257,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                     setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
                         Bundle().apply {
                             putSerializable(
-                               PatchItem,
+                                PatchItem,
                                 homePatchItem as Serializable
                             )
                         })
@@ -276,10 +277,20 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
     }
 
-    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
+    private fun setupNavGraphAndArg(@NavigationRes1 graphResId: Int, bundleData: Bundle) {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
+    }
+
+    private fun setupNavGraphAndArg(
+        bsdNavController: NavController,
+        @NavigationRes1 graphResId: Int,
+        bundleData: Bundle,
+    ) {
+        val inflater = navHostFragment.navController.navInflater
+        val navGraph = inflater.inflate(graphResId)
+        bsdNavController.setGraph(navGraph, bundleData)
     }
 
     private fun createPlayerVM() {
@@ -358,7 +369,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             override fun onPanelStateChanged(
                 panel: View?,
                 previousState: SlidingUpPanelLayout.PanelState?,
-                newState: SlidingUpPanelLayout.PanelState?
+                newState: SlidingUpPanelLayout.PanelState?,
             ) {
             }
         })
@@ -417,7 +428,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
     private fun setupMainMusicPlayerAdapter(
         mSongDetails: MutableList<SongDetail>,
-        clickItemPosition: Int
+        clickItemPosition: Int,
     ) {
         mainMusicPlayerAdapter.setMusicData(mSongDetails)
         dsvCurrentPlaySongsThumb.adapter = mainMusicPlayerAdapter
@@ -588,7 +599,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
     override fun onCurrentItemChanged(
         viewHolder: MusicPlayAdapter.MusicPlayVH?,
-        adapterPosition: Int
+        adapterPosition: Int,
     ) {
         if (viewHolder != null) {
             viewHolder.sMusicData.artist
@@ -600,13 +611,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
     override fun onScrollStart(
         currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-        adapterPosition: Int
+        adapterPosition: Int,
     ) {
     }
 
     override fun onScrollEnd(
         currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-        adapterPosition: Int
+        adapterPosition: Int,
     ) {
     }
 
@@ -615,7 +626,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentPosition: Int,
         newPosition: Int,
         currentHolder: MusicPlayAdapter.MusicPlayVH?,
-        newCurrent: MusicPlayAdapter.MusicPlayVH?
+        newCurrent: MusicPlayAdapter.MusicPlayVH?,
     ) {
         if (currentHolder != null) {
             setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
@@ -671,48 +682,130 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         super.onDestroy()
         playerViewModel.disconnect()
     }
-  fun showBottomSheetDialog(
-      context: Context,
-      mSongDetails: SongDetail,
-      argHomePatchItem: HomePatchItem?,
-      argHomePatchDetail: HomePatchDetail?
-  ) {
+
+    fun showBottomSheetDialog(
+        bsdNavController: NavController,
+        context: Context,
+        mSongDetails: SongDetail,
+        argHomePatchItem: HomePatchItem?,
+        argHomePatchDetail: HomePatchDetail?,
+    ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
             View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
-       val closeButton:ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
-           closeButton?.setOnClickListener {
-               bottomSheetDialog.dismiss()
-           }
-      val image:ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-      val url = argHomePatchDetail?.image
+        val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+        val url = argHomePatchDetail?.image
 
-      if (image != null) {
-          Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
-      }
-      val constraintAlbum: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintAlbum)
-      constraintAlbum?.setOnClickListener {
-          gotoArtist(context,mSongDetails,argHomePatchItem,argHomePatchDetail)
-          bottomSheetDialog.dismiss()
-      }
+        if (image != null) {
+            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+        }
+        val constraintAlbum: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        constraintAlbum?.setOnClickListener {
+            gotoArtist(bsdNavController,
+                context,
+                mSongDetails,
+                argHomePatchItem,
+                argHomePatchDetail)
+            bottomSheetDialog.dismiss()
+        }
     }
 
     private fun gotoArtist(
+        bsdNavController: NavController,
         context: Context,
         mSongDetails: SongDetail,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-        val manager: FragmentManager = supportFragmentManager
-        manager.beginTransaction()
-            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails,argHomePatchItem,argHomePatchDetail))
-            .addToBackStack("Fragment")
-            .commit()
-        Log.e("TAGGY","SONGDETAILS: "+ argHomePatchItem)
+
+
+//        when (argHomePatchDetail?.ContentType?.uppercase()) {
+//            DataContentType.CONTENT_TYPE_A -> {
+//                //open artist details
+//                bsdNavController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            argHomePatchItem
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+//                            argHomePatchDetail as Serializable
+//                        )
+//                    })
+//            }
+//            DataContentType.CONTENT_TYPE_R -> {
+//                //open album details
+//                setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            argHomePatchItem
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+//                            argHomePatchDetail as Serializable
+//                        )
+//                    })
+//            }
+//            DataContentType.CONTENT_TYPE_P -> {
+//                //open playlist
+//                setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            argHomePatchItem
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+//                            argHomePatchDetail as Serializable
+//                        )
+//                    })
+//            }
+//            DataContentType.CONTENT_TYPE_S -> {
+//                //open songs
+//                setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            argHomePatchItem
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+//                            argHomePatchDetail as Serializable
+//                        )
+//                    })
+//            }
+//            DataContentType.CONTENT_TYPE_PD -> {
+//                //open podcast
+//                setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            argHomePatchItem as Serializable
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+//                            argHomePatchDetail as Serializable
+//                        )
+//                    })
+//            }
+//        }
+//        val manager: FragmentManager = supportFragmentManager
+//        manager.beginTransaction()
+//            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails,argHomePatchItem,argHomePatchDetail))
+//            .addToBackStack("Fragment")
+//            .commit()
+//        Log.e("TAGGY","SONGDETAILS: "+ argHomePatchItem)
     }
 
 }

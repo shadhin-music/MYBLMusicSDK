@@ -10,8 +10,10 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -23,22 +25,28 @@ import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
+import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.album.BottomsheetAlbumDetailsFragment
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 
-class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack {
+class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,ArtistOnItemClickCallback{
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var songDetail: SongDetail?= null
+    var homePatchDetail:HomePatchDetail?=null
+
+
+
     var artistContent: ArtistContent? = null
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
@@ -55,6 +63,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
         arguments?.let {
            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
             songDetail = it.getSerializable("songDetail") as SongDetail?
+            homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetail?
         }
     }
 
@@ -107,7 +116,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = BottomSheetArtistHeaderAdapter(songDetail)
-        artistSongAdapter = ArtistSongsAdapter()
+        artistSongAdapter = ArtistSongsAdapter(this)
       artistAlbumsAdapter = ArtistAlbumsAdapter(homePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(homePatchItem, this, songDetail?.ArtistId)
@@ -116,8 +125,8 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
             artistHeaderAdapter,
             HeaderAdapter(),
             artistSongAdapter,
-          //  artistAlbumsAdapter,
-            artistsYouMightLikeAdapter
+            artistAlbumsAdapter,
+           // artistsYouMightLikeAdapter
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
@@ -194,19 +203,19 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
 //                Log.e("TAG","DATA: "+ it)
             }
         }
-//        songDetail.let {
-//            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
-//            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-//
-//                if (res.status == Status.SUCCESS) {
-//                    artistAlbumsAdapter.setData(res.data)
-//                } else {
-//                    showDialog()
-//                }
-//
-//
-//            }
-//        }
+        songDetail.let {
+            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
+            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
+
+                if (res.status == Status.SUCCESS) {
+                    artistAlbumsAdapter.setData(res.data)
+                } else {
+                    showDialog()
+                }
+
+
+            }
+        }
        // Log.e("TAG", "ARTISTID: " + argHomePatchDetail?.ArtistId)
     }
 
@@ -226,7 +235,11 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     companion object {
 
         @JvmStatic
-        fun newInstance(songDetail: SongDetail) =
+        fun newInstance(
+            songDetail: SongDetail,
+            argHomePatchItem: HomePatchItem?,
+            argHomePatchDetail: HomePatchDetail?
+        ) =
             BottomSheetArtistDetailsFragment().apply {
                 arguments = Bundle().apply {
 
@@ -241,7 +254,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
        //songDetail = selectedHomePatchItem.Data[itemPosition]
        // artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
-        artistsYouMightLikeAdapter.artistIDToSkip = songDetail!!.ArtistId
+       // artistsYouMightLikeAdapter.artistIDToSkip = songDetail!!.ArtistId
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
 
@@ -259,54 +272,57 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
         val manager: FragmentManager =
             (requireContext() as AppCompatActivity).supportFragmentManager
         manager.beginTransaction()
-            .replace(R.id.containerFrame, BottomsheetAlbumDetailsFragment.newInstance(artistAlbumModelData[itemPosition],homePatchDetail))
+            .replace(R.id.containerFrame,
+                BottomsheetAlbumDetailsFragment.newInstance(artistAlbumModelData[itemPosition],
+                    homePatchDetail))
             .addToBackStack("Fragment")
             .commit()
-        ShadhinMusicSdkCore.pressCountIncrement()
-        val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
-            Bundle().apply {
-                putSerializable(
-                    AppConstantUtils.PatchItem,
-                    HomePatchItem("", "", listOf(), "", "", 0, 0)
-                )
-                putSerializable(
-                    AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = mArtAlbumMod.AlbumId,
-                        ArtistId = mArtAlbumMod.ArtistId,
-                        ContentID = mArtAlbumMod.ContentID,
-                        ContentType = mArtAlbumMod.ContentType,
-                        PlayUrl = mArtAlbumMod.PlayUrl,
-                        AlbumName = "",
-                        AlbumImage = "",
-                        fav = mArtAlbumMod.fav,
-                        Banner = "",
-                        Duration = mArtAlbumMod.duration,
-                        TrackType = "",
-                        image = mArtAlbumMod.image,
-                        ArtistImage = "",
-                        Artist = mArtAlbumMod.artistname,
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = "",
-                        Type = ""
-
-                    ) as Serializable
-                )
-            })
+//        ShadhinMusicSdkCore.pressCountIncrement()
+//        val mArtAlbumMod = artistAlbumModelData[itemPosition]
+//        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+//            Bundle().apply {
+//                putSerializable(
+//                    AppConstantUtils.PatchItem,
+//                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+//                )
+//                putSerializable(
+//                    AppConstantUtils.PatchDetail,
+//                    HomePatchDetail(
+//                        AlbumId = mArtAlbumMod.AlbumId,
+//                        ArtistId = mArtAlbumMod.ArtistId,
+//                        ContentID = mArtAlbumMod.ContentID,
+//                        ContentType = mArtAlbumMod.ContentType,
+//                        PlayUrl = mArtAlbumMod.PlayUrl,
+//                        AlbumName = "",
+//                        AlbumImage = "",
+//                        fav = mArtAlbumMod.fav,
+//                        Banner = "",
+//                        Duration = mArtAlbumMod.duration,
+//                        TrackType = "",
+//                        image = mArtAlbumMod.image,
+//                        ArtistImage = "",
+//                        Artist = mArtAlbumMod.artistname,
+//                        CreateDate = "",
+//                        Follower = "",
+//                        imageWeb = "",
+//                        IsPaid = false,
+//                        NewBanner = "",
+//                        PlayCount = 0,
+//                        PlayListId = "",
+//                        PlayListImage = "",
+//                        PlayListName = "",
+//                        RootId = "",
+//                        RootType = "",
+//                        Seekable = false,
+//                        TeaserUrl = "",
+//                        title = "",
+//                        Type = ""
 //
+//                    ) as Serializable
+//                )
+//            })
+//
+
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
@@ -320,5 +336,16 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
 //        }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
+
+    }
+
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        songDetails: MutableList<ArtistContentData>,
+    ) {
+
     }
 }
