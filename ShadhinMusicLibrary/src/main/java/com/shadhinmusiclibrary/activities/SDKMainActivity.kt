@@ -690,6 +690,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
     ) {
+        Log.e("SDKMA", "showBottomSheetDialog: ")
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
@@ -709,11 +710,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(bsdNavController,
+            gotoArtist(
+                bsdNavController,
                 context,
                 mSongDetails,
                 argHomePatchItem,
-                argHomePatchDetail)
+                argHomePatchDetail
+            )
             bottomSheetDialog.dismiss()
         }
     }
@@ -726,80 +729,79 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-
-
-//        when (argHomePatchDetail?.ContentType?.uppercase()) {
-//            DataContentType.CONTENT_TYPE_A -> {
-//                //open artist details
-//                bsdNavController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            argHomePatchItem
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-//                            argHomePatchDetail as Serializable
-//                        )
-//                    })
-//            }
-//            DataContentType.CONTENT_TYPE_R -> {
-//                //open album details
-//                setupNavGraphAndArg(R.navigation.nav_graph_album_details,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            argHomePatchItem
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-//                            argHomePatchDetail as Serializable
-//                        )
-//                    })
-//            }
-//            DataContentType.CONTENT_TYPE_P -> {
-//                //open playlist
-//                setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            argHomePatchItem
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-//                            argHomePatchDetail as Serializable
-//                        )
-//                    })
-//            }
-//            DataContentType.CONTENT_TYPE_S -> {
-//                //open songs
-//                setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            argHomePatchItem
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-//                            argHomePatchDetail as Serializable
-//                        )
-//                    })
-//            }
-//            DataContentType.CONTENT_TYPE_PD -> {
-//                //open podcast
-//                setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            argHomePatchItem as Serializable
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-//                            argHomePatchDetail as Serializable
-//                        )
-//                    })
-//            }
-//        }
+        Log.e("SDKMA", "gotoArtist: ")
+        when (argHomePatchDetail?.ContentType?.uppercase()) {
+            DataContentType.CONTENT_TYPE_A -> {
+                //open artist details
+                bsdNavController.navigate(R.id.action_album_fragment_to_artist_details_fragment,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            argHomePatchItem
+                        )
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            argHomePatchDetail as Serializable
+                        )
+                    })
+            }
+            /*   DataContentType.CONTENT_TYPE_R -> {
+                   //open album details
+                   setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                       Bundle().apply {
+                           putSerializable(
+                               PatchItem,
+                               argHomePatchItem
+                           )
+                           putSerializable(
+                               AppConstantUtils.PatchDetail,
+                               argHomePatchDetail as Serializable
+                           )
+                       })
+               }
+               DataContentType.CONTENT_TYPE_P -> {
+                   //open playlist
+                   setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
+                       Bundle().apply {
+                           putSerializable(
+                               PatchItem,
+                               argHomePatchItem
+                           )
+                           putSerializable(
+                               AppConstantUtils.PatchDetail,
+                               argHomePatchDetail as Serializable
+                           )
+                       })
+               }
+               DataContentType.CONTENT_TYPE_S -> {
+                   //open songs
+                   setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
+                       Bundle().apply {
+                           putSerializable(
+                               PatchItem,
+                               argHomePatchItem
+                           )
+                           putSerializable(
+                               AppConstantUtils.PatchDetail,
+                               argHomePatchDetail as Serializable
+                           )
+                       })
+               }
+               DataContentType.CONTENT_TYPE_PD -> {
+                   //open podcast
+                   setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
+                       Bundle().apply {
+                           putSerializable(
+                               PatchItem,
+                               argHomePatchItem as Serializable
+                           )
+                           putSerializable(
+                               AppConstantUtils.PatchDetail,
+                               argHomePatchDetail as Serializable
+                           )
+                       })
+               }*/
+        }
 //        val manager: FragmentManager = supportFragmentManager
 //        manager.beginTransaction()
 //            .replace(R.id.frame, BottomSheetArtistDetailsFragment.newInstance(mSongDetails,argHomePatchItem,argHomePatchDetail))
@@ -807,5 +809,4 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 //            .commit()
 //        Log.e("TAGGY","SONGDETAILS: "+ argHomePatchItem)
     }
-
 }

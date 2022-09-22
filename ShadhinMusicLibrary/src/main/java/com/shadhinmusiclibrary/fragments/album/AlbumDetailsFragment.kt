@@ -1,6 +1,7 @@
-package com.shadhinmusiclibrary. fragments.album
+package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -26,7 +27,8 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,
+    BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
@@ -53,7 +55,7 @@ class AlbumDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        createPlayerVM()
-        adapter = AlbumAdapter(this,this)
+        adapter = AlbumAdapter(this, this)
 
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
@@ -126,8 +128,14 @@ class AlbumDetailsFragment :
     }
 
 
-
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        Log.e("ADF", "onClickBottomItem: ")
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }
