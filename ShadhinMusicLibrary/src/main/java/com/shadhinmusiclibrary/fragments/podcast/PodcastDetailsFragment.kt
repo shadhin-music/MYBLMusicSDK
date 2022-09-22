@@ -18,32 +18,37 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack {
+class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
+    PodcustOnItemClickCallback {
     private lateinit var navController: NavController
-//    var homePatchItem: HomePatchItem? = null
+
+    //    var homePatchItem: HomePatchItem? = null
 //    var homePatchDetail: HomePatchDetail? = null
-      private lateinit var viewModel:PodcastViewModel
+    private lateinit var viewModel: PodcastViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var podcastHeaderAdapter: PodcastHeaderAdapter
     private lateinit var podcastEpisodesAdapter: PodcastEpisodesAdapter
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
-    var data: Data?= null
-     var episode:List<Episode>?=null
+    var data: Data? = null
+    var episode: List<Episode>? = null
 
     var podcastType: String = ""
     var contentType: String = ""
     var selectedEpisodeID: Int = 0
 
-  //  private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+    //  private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -65,15 +70,15 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         argHomePatchDetail?.let {
-            val Type:String = it.ContentType
-            podcastType=  Type.take(2)
+            val Type: String = it.ContentType
+            podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
             Log.e("TAG", "DATA ARtist: " + selectedEpisodeID)
             //  Log.d("TAG", "PODCAST DATA: " + contentType + podcastType+it.AlbumId+false)
             //viewModel.fetchPodcastContent(podcastType,it.AlbumId.toInt(),contentType,false)
         }
-       // Log.e("Check", "yes iam called")
+        // Log.e("Check", "yes iam called")
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -98,8 +103,8 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         podcastHeaderAdapter = PodcastHeaderAdapter(episode)
-        podcastEpisodesAdapter = PodcastEpisodesAdapter(data)
-        podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data,this)
+        podcastEpisodesAdapter = PodcastEpisodesAdapter(data, this)
+        podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
 //        artistsYouMightLikeAdapter =
 //            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
         parentAdapter = ConcatAdapter(
@@ -122,20 +127,21 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     }
 
     private fun observeData() {
-        viewModel.fetchPodcastContent(podcastType,selectedEpisodeID,contentType,false)
+        viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
 
                 response?.data?.data?.EpisodeList?.let { podcastHeaderAdapter.setHeader(it) }
-                response.data?.data?.EpisodeList?.get(0)?.let { podcastEpisodesAdapter.setData(it.TrackList) }
-                response.data?.data?.let { it?.EpisodeList?.let { it1 ->
-                    podcastMoreEpisodesAdapter.setData(it1 as MutableList<Episode>)
-                } }
+                response.data?.data?.EpisodeList?.get(0)
+                    ?.let { podcastEpisodesAdapter.setData(it.TrackList.toMutableList()) }
+                response.data?.data?.let {
+                    it?.EpisodeList?.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1 as MutableList<Episode>)
+                    }
+                }
                 Log.e("TAG", "DATA: " + response.data)
-            }
-
-            else {
-               Log.e("TAG", "DATA: " + response.message)
+            } else {
+                Log.e("TAG", "DATA: " + response.message)
 
             }
 
@@ -181,7 +187,6 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 //        parentRecycler.scrollToPosition(0)
 
     }
-
 
 
 //    override fun onArtistAlbumClick(
@@ -249,9 +254,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         selectedEpisodeID = episode.Id
         observeData()
 
-
         //podcastHeaderAdapter.setHeader(data)
-
         // podcastEpisodesAdapter.setData
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
 //        observeData()
@@ -260,5 +263,13 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 //        parentRecycler.scrollToPosition(0)
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
+    }
+
+    override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
+        playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+    }
+
+    override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
+
     }
 }

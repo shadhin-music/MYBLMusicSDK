@@ -16,6 +16,6 @@
         android:id="@+id/iv_current_play_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_asif_300"
+        android:src="@drawable/default_song"
         android:visibility="visible" />
 </androidx.cardview.widget.CardView>

@@ -577,15 +577,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.ic_asif_300)
-            .error(R.drawable.ic_asif_300)
+            .placeholder(R.drawable.default_song)
+            .error(R.drawable.default_song)
             .into(ivSongThumbMini)
+        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
+
         tvSongNameMini.text = mSongDetails.title
         tvSingerNameMini.text = mSongDetails.artist
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
-
-        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
         playerViewModel.playerProgress.observe(this, Observer {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
