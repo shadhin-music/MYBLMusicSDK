@@ -15,7 +15,7 @@
         android:background="@color/transparent"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toTopOf="@+id/cl_parent">
+        app:layout_constraintTop_toTopOf="@+id/cl_main_music_player">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -264,7 +264,8 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="4"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="0dp"
