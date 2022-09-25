@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary. fragments.album
+package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,8 +20,6 @@ import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
-import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
