@@ -6,17 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import java.lang.reflect.Array
 
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
@@ -33,7 +34,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
           // VIEW_AD -> R.layout.item_ad
 //            VIEW_DOWNLOAD -> R.layout.item_my_fav
-//            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
+            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
@@ -67,7 +68,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             "Track" -> VIEW_RELEASE
             "Podcast"-> VIEW_POPULAR_PODCAST
             "SmallVideo"-> VIEW_TRENDING_MUSIC_VIDEO
-
+            "amarTune" -> VIEW_POPULAR_AMAR_TUNES
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -181,6 +182,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
                 homeCallBack.onClickSeeAll(homePatchItem)
                Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
+
 //            itemView.setOnClickListener {
 //                val manager: FragmentManager =
 //                    (mContext as AppCompatActivity).supportFragmentManager
@@ -189,6 +191,13 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                    .addToBackStack("Fragment")
 //                    .commit()
 //            }
+        }
+        private fun bindPopularAmarTunes(homePatchItem: HomePatchItem) {
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = homePatchItem.Name
+            val image:ShapeableImageView = itemView.findViewById(R.id.image)
+              Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+
         }
         private fun bindAd() {
           //  Do your view assignment here from the data model
@@ -217,9 +226,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            }
         }
 
-        private fun bindPopularAmarTunes() {
 
-        }
 
         private fun bindPopularBands() {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
@@ -292,6 +299,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
                 "Track" -> bindRelease(homePatchItemModel)
                 "Podcast" ->bindPopularPodcast(homePatchItemModel)
                 "SmallVideo"-> bindTrendingMusic(homePatchItemModel)
+                "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
 
