@@ -487,6 +487,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
+        dsvCurrentPlaySongsThumb.addOnItemChangedListener { viewHolder, _ ->
+            if (viewHolder != null) {
+                viewHolder as MusicPlayAdapter.MusicPlayVH?
+                setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
+            }
+        }
+
         playerViewModel.playerProgress.observe(this, Observer {
             sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
             sbCurrentPlaySongStatus.max = it.duration?.toInt() ?: 0
