@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/frame">
+    android:orientation="vertical">
 
     <com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sl_custom_bottom_sheet"
@@ -53,7 +53,6 @@
             android:clickable="true"
             android:focusable="true">
 
-
             <include
                 android:id="@+id/include_main_music_player"
                 layout="@layout/main_music_player2" />
@@ -62,7 +61,7 @@
                 android:id="@+id/include_mini_music_player"
                 layout="@layout/mini_music_player"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="72dp" />
         </RelativeLayout>
     </com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout>
     <!--    <include layout="@layout/music_player_motion_layout" />-->
