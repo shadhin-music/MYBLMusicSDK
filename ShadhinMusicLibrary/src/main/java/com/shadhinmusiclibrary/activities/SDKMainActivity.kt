@@ -49,9 +49,7 @@ import java.io.Serializable
 import androidx.annotation.NavigationRes as NavigationRes1
 
 
-internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
-    DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
-    DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
+internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var isPlayOrPause = false
@@ -97,6 +95,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
 
     private lateinit var listData: MutableList<HomePatchDetail>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sdk_main)
@@ -275,7 +274,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                             Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
-                DataContentType.CONTENT_TYPE_V-> {
+                DataContentType.CONTENT_TYPE_V -> {
                     //open podcast
                     setupNavGraphAndArg(R.navigation.nav_graph_video_list_and_details,
                         Bundle().apply {
@@ -398,6 +397,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             false,
             clickItemPosition
         )
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner = this)
         miniPlayerHideShow(true)
         setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
     }
@@ -457,8 +457,35 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                 .build()
         )
         dsvCurrentPlaySongsThumb.scrollToPosition(clickItemPosition)
-        dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
-//        dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
+        dsvCurrentPlaySongsThumb.addScrollStateChangeListener(object :
+            DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
+
+            override fun onScrollStart(
+                currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+                adapterPosition: Int
+            ) {
+            }
+
+            override fun onScrollEnd(
+                currentItemHolder: MusicPlayAdapter.MusicPlayVH,
+                adapterPosition: Int
+            ) {
+                currentItemHolder.sMusicData.artist
+                playerViewModel.skipToQueueItem(adapterPosition)
+                tvSongName.text = currentItemHolder.sMusicData.title
+                tvSingerName.text = currentItemHolder.sMusicData.artist
+                setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
+            }
+
+            override fun onScroll(
+                scrollPosition: Float,
+                currentPosition: Int,
+                newPosition: Int,
+                currentHolder: MusicPlayAdapter.MusicPlayVH?,
+                newCurrent: MusicPlayAdapter.MusicPlayVH?
+            ) {
+            }
+        })
 
         playerViewModel.playerProgress.observe(this, Observer {
             sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
@@ -484,6 +511,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
+                playerViewModel.seekTo(p0!!.progress.toLong())
             }
         })
 
@@ -589,9 +617,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
 
-        playerViewModel.playerProgress.observe(this, Observer {
+        playerViewModel.playerProgress.observe(this) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
-        })
+        }
 
         playerViewModel.playbackStateLiveData.observe(this, Observer {
             miniPlayerPlayPauseState(it.isPlaying)
@@ -608,60 +636,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         ibtnSkipNextMini.setOnClickListener {
             playerViewModel.skipToNext()
         }
-    }
-
-    override fun onCurrentItemChanged(
-        viewHolder: MusicPlayAdapter.MusicPlayVH?,
-        adapterPosition: Int,
-    ) {
-        //ToDO testing are running rezaul khan
-        if (viewHolder != null) {
-            viewHolder.sMusicData.artist
-            tvSongName.text = viewHolder.sMusicData.title
-            tvSingerName.text = viewHolder.sMusicData.artist
-            setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
-//        }
-//
-//
-//        if (viewHolder != null) {
-//            setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
-
-            playerViewModel.skipToQueueItem(adapterPosition)
-        }
-    }
-
-    override fun onScrollStart(
-        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-        adapterPosition: Int,
-    ) {
-    }
-
-    override fun onScrollEnd(
-        currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-        adapterPosition: Int,
-    ) {
-        //ToDO testing are running rezaul khan
-//        if (currentItemHolder != null) {
-//            currentItemHolder.sMusicData.artist
-//            tvSongName.text = currentItemHolder.sMusicData.title
-//            tvSingerName.text = currentItemHolder.sMusicData.artist
-//            setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
-//        }
-    }
-
-    override fun onScroll(
-        scrollPosition: Float,
-        currentPosition: Int,
-        newPosition: Int,
-        currentHolder: MusicPlayAdapter.MusicPlayVH?,
-        newCurrent: MusicPlayAdapter.MusicPlayVH?,
-    ) {
-        //ToDO testing are running rezaul khan
-//        if (currentHolder != null) {
-//            setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
-//
-//            playerViewModel.skipToQueueItem(newPosition)
-//        }
     }
 
     private fun setMainPlayerBackgroundColor(imBitmapData: Bitmap) {
@@ -732,8 +706,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = argHomePatchDetail?.image
-         val title:TextView ?= bottomSheetDialog.findViewById(R.id.name)
-         title?.text = argHomePatchDetail?.title
+        val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
+        title?.text = argHomePatchDetail?.title
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
