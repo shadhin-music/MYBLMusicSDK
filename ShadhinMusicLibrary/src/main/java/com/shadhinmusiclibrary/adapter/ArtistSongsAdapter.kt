@@ -45,7 +45,8 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
         }
         val ivSongMenuIcon: ImageView =  holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
-            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail("","","","","","","","",
+            val artistContent = artistContentList[position]
+            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail("",artistContent.image,artistContent.title,"","",artistContent.artistname,"","",
             "","","","","","","","","",""),artistContentList[position])
         }
     }

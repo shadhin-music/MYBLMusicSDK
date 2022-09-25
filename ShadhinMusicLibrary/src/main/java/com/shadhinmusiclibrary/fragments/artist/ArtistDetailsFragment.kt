@@ -327,6 +327,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
 
     override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog2(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

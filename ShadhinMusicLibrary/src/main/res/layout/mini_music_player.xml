@@ -13,6 +13,7 @@
     android:id="@+id/ll_mini_music_player"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:elevation="10dp"
     android:background="@drawable/dialog_bg_top_left_right_radius_10dp"
     android:gravity="center"
     android:orientation="horizontal"
