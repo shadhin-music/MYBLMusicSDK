@@ -61,9 +61,9 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
         <include
             layout="@layout/powered_by"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/recyclerView"
@@ -72,9 +72,9 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:theme="@style/ProgressBarTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:theme="@style/ProgressBarTheme" />
 
 </RelativeLayout>

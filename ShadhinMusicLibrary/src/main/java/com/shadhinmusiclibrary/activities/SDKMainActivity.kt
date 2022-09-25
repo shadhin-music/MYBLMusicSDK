@@ -17,7 +17,6 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -34,7 +33,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
-import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
@@ -56,7 +54,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
 
     //mini music player
-    private lateinit var cvMiniPlayer: CardView
+    private lateinit var llMiniMusicPlayer: LinearLayout
     private lateinit var ivSongThumbMini: ImageView
     private lateinit var tvSongNameMini: TextView
     private lateinit var tvSingerNameMini: TextView
@@ -138,7 +136,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
 
-        cvMiniPlayer.setOnClickListener {
+        llMiniMusicPlayer.setOnClickListener {
             //Mini player show. when mini player click
             toggleMiniPlayerView(false)
         }
@@ -323,7 +321,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun uiInitMiniMusicPlayer() {
-        cvMiniPlayer = findViewById(R.id.include_mini_music_player)
+        llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
         ivSongThumbMini = findViewById(R.id.iv_song_thumb_mini)
         tvSongNameMini = findViewById(R.id.tv_song_name_mini)
         tvSingerNameMini = findViewById(R.id.tv_singer_name_mini)
@@ -362,14 +360,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         slCustomBottomSheet.addPanelSlideListener(object :
             SlidingUpPanelLayout.PanelSlideListener {
             override fun onPanelSlide(panel: View?, slideOffset: Float) {
-                cvMiniPlayer.alpha = (1 - slideOffset)
+                llMiniMusicPlayer.alpha = (1 - slideOffset)
                 clMainMusicPlayer.alpha = slideOffset
                 if (slideOffset == 1f) {
                     playerMode = PlayerMode.MAXIMIZED
-                    cvMiniPlayer.visibility = View.GONE
+                    llMiniMusicPlayer.visibility = View.GONE
                 } else {
                     playerMode = PlayerMode.MINIMIZED
-                    cvMiniPlayer.visibility = View.VISIBLE
+                    llMiniMusicPlayer.visibility = View.VISIBLE
                 }
                 val params = RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -430,12 +428,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun toggleMiniPlayerView(isVisible: Boolean) {
         if (isVisible) {
             playerMode = PlayerMode.MINIMIZED
-            cvMiniPlayer.visibility = View.VISIBLE
+            llMiniMusicPlayer.visibility = View.VISIBLE
             slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         } else {
             playerMode = PlayerMode.MAXIMIZED
             slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-            cvMiniPlayer.visibility = View.INVISIBLE
+            llMiniMusicPlayer.visibility = View.INVISIBLE
         }
     }
 
@@ -522,11 +520,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
-        playerViewModel.playbackStateLiveData.observe(this, Observer {
+        playerViewModel.playbackStateLiveData.observe(this) {
             mainPlayerPlayPauseState(it.isPlaying)
-        })
+        }
 
-        playerViewModel.repeatModeLiveData.observe(this, Observer {
+        playerViewModel.repeatModeLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.REPEAT_MODE_NONE -> {
                     setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_24)
@@ -552,9 +550,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     ibtnShuffle.setColorFilter(0)
                 }
             }
-        })
+        }
 
-        playerViewModel.shuffleLiveData.observe(this, Observer {
+        playerViewModel.shuffleLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.SHUFFLE_MODE_NONE -> {
 //                    setControlColor(false, ibtnShuffle)
@@ -565,7 +563,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_on_24)
                 }
             }
-        })
+        }
 
         ibtnShuffle.setOnClickListener {
             playerViewModel.shuffleToggle()
@@ -609,6 +607,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
+        Log.e("Check", "Fired 0")
         Glide.with(this)
             .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -622,22 +621,24 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvSongNameMini.text = mSongDetails.title
         tvSingerNameMini.text = mSongDetails.artist
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
-        cvMiniPlayer.visibility = View.VISIBLE
+        llMiniMusicPlayer.visibility = View.VISIBLE
 
         playerViewModel.playerProgress.observe(this) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
-        playerViewModel.playbackStateLiveData.observe(this, Observer {
+        playerViewModel.playbackStateLiveData.observe(this) {
             miniPlayerPlayPauseState(it.isPlaying)
-        })
+        }
 
         ibtnSkipPreviousMini.setOnClickListener {
             playerViewModel.skipToPrevious()
         }
 
+
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
+            Log.e("Check", "Fired 1")
         }
 
         ibtnSkipNextMini.setOnClickListener {
@@ -675,7 +676,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     override fun onBackPressed() {
-        if (playerMode === PlayerMode.MAXIMIZED) {
+        if (playerMode == PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
 
             if (!navController.navigateUp()) {
@@ -700,7 +701,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
     ) {
-        Log.e("SDKMA", "showBottomSheetDialog: ")
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
