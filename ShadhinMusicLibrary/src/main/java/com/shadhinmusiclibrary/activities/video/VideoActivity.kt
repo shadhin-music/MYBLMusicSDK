@@ -83,7 +83,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         initializePlayer()
         gestureSetup()
         observe()
-       
+
     }
 
     private fun createPlayerVM() {
