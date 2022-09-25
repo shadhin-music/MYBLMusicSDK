@@ -458,7 +458,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         )
         dsvCurrentPlaySongsThumb.scrollToPosition(clickItemPosition)
         dsvCurrentPlaySongsThumb.addScrollStateChangeListener(this)
-        dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
+//        dsvCurrentPlaySongsThumb.addOnItemChangedListener(this)
 
         playerViewModel.playerProgress.observe(this, Observer {
             sbCurrentPlaySongStatus.progress = it.currentPosition?.toInt() ?: 0
@@ -614,11 +614,19 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         viewHolder: MusicPlayAdapter.MusicPlayVH?,
         adapterPosition: Int,
     ) {
+        //ToDO testing are running rezaul khan
         if (viewHolder != null) {
             viewHolder.sMusicData.artist
             tvSongName.text = viewHolder.sMusicData.title
             tvSingerName.text = viewHolder.sMusicData.artist
             setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
+//        }
+//
+//
+//        if (viewHolder != null) {
+//            setMainPlayerBackgroundColor(getBitmapFromVH(viewHolder))
+
+            playerViewModel.skipToQueueItem(adapterPosition)
         }
     }
 
@@ -632,6 +640,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentItemHolder: MusicPlayAdapter.MusicPlayVH,
         adapterPosition: Int,
     ) {
+        //ToDO testing are running rezaul khan
+//        if (currentItemHolder != null) {
+//            currentItemHolder.sMusicData.artist
+//            tvSongName.text = currentItemHolder.sMusicData.title
+//            tvSingerName.text = currentItemHolder.sMusicData.artist
+//            setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
+//        }
     }
 
     override fun onScroll(
@@ -641,11 +656,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         currentHolder: MusicPlayAdapter.MusicPlayVH?,
         newCurrent: MusicPlayAdapter.MusicPlayVH?,
     ) {
-        if (currentHolder != null) {
-            setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
-
-            playerViewModel.skipToQueueItem(newPosition)
-        }
+        //ToDO testing are running rezaul khan
+//        if (currentHolder != null) {
+//            setMainPlayerBackgroundColor(getBitmapFromVH(currentHolder))
+//
+//            playerViewModel.skipToQueueItem(newPosition)
+//        }
     }
 
     private fun setMainPlayerBackgroundColor(imBitmapData: Bitmap) {
