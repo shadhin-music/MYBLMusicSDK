@@ -53,15 +53,16 @@
             android:clickable="true"
             android:focusable="true">
 
+
+            <include
+                android:id="@+id/include_main_music_player"
+                layout="@layout/main_music_player2" />
+
             <include
                 android:id="@+id/include_mini_music_player"
                 layout="@layout/mini_music_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <include
-                android:id="@+id/include_main_music_player"
-                layout="@layout/main_music_player2" />
         </RelativeLayout>
     </com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout>
     <!--    <include layout="@layout/music_player_motion_layout" />-->
