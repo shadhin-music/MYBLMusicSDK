@@ -34,6 +34,7 @@ import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.player.ShadhinMusicQueueNavigator
 import com.shadhinmusiclibrary.player.data.source.MediaSources
 import com.shadhinmusiclibrary.player.data.source.ShadhinVideoMediaSource
+import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
@@ -68,10 +69,13 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private var currentPosition = 0
     private var videoList: ArrayList<Video>? = ArrayList()
     private lateinit var viewModel: VideoViewModel
-
+    private lateinit var playerViewModel: PlayerViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
+
+        createPlayerVM()
+        playerViewModel.togglePlayPause()
         setupUI()
         setupViewModel()
         setupAdapter()
@@ -79,10 +83,19 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         initializePlayer()
         gestureSetup()
         observe()
+
+    }
+
+    private fun createPlayerVM() {
+        playerViewModel = ViewModelProvider(
+            this, injector.playerViewModelFactory
+        )[PlayerViewModel::class.java]
+        playerViewModel.connect()
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+
     }
     private fun setupUI() {
 
@@ -241,6 +254,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         if(!mediaSources.isNullOrEmpty()){
             contactMediaSource.addMediaSources(mediaSources)
             exoPlayer?.addMediaSource(contactMediaSource)
+            exoPlayer?.seekTo(currentPosition, 0)
             exoPlayer?.prepare()
             exoPlayer?.playWhenReady = true
         }

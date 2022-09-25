@@ -2,7 +2,8 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.content.Intent
-import android.provider.MediaStore
+import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +13,9 @@ import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
-import com.shadhinmusiclibrary.data.fake.FakeData
-import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.Video
@@ -62,6 +59,7 @@ class TopTrendingVideosAdapter(val homePatchItemModel: HomePatchItem, val homePa
                     video.setData(item)
                     videoArray.add(video)
                 }
+                Log.d("TAG","Position: "+ absoluteAdapterPosition)
                 val videos :ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
