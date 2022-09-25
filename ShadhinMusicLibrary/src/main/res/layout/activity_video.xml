@@ -308,7 +308,12 @@
                     tools:listitem="@layout/row_video_gr">
 
                 </androidx.recyclerview.widget.RecyclerView>
-
+                <include
+                    layout="@layout/powered_by"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/videoRecyclerView"
+                    android:layout_marginTop="-25dp" />
             </LinearLayout>
 
 
@@ -320,4 +325,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
     </FrameLayout>

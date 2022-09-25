@@ -41,7 +41,7 @@ class AmartunesWebviewFragment : Fragment() {
         mWebview.getSettings().setJavaScriptEnabled(true)
         mWebview.getSettings().setAllowContentAccess(true)
 
-        mWebview.loadUrl("http://amartune.banglalink.net/pwa/home")
+//        mWebview.loadUrl("http://amartune.banglalink.net/pwa/home")
 
         mWebview.getSettings().setUseWideViewPort(true)
         mWebview.getSettings().setLoadWithOverviewMode(true)
@@ -66,7 +66,7 @@ class AmartunesWebviewFragment : Fragment() {
         mWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH)
         mWebview.setInitialScale(1)
           // mWebview.loadUrl("http://www.google.com")
-          // mWebview.loadUrl("http://amartune.banglalink.net")
+           mWebview.loadUrl("http://amartune.banglalink.net/pwa/home")
          //  Log.e("TAG", "URL: "+ "http://amartune.banglalink.net/pwa/home")
            mWebview.setWebViewClient(MyWebViewClient())
     }

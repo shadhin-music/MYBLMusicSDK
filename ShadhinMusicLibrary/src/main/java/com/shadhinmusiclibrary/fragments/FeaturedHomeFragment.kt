@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.home.HomeViewModel
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
@@ -34,6 +35,7 @@ class FeaturedHomeFragment : CommonBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+        val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
         btnPopularArtist.setOnClickListener {
             val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
@@ -47,6 +49,14 @@ class FeaturedHomeFragment : CommonBaseFragment() {
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1,LatestReleaseFragment() )
+                .addToBackStack("Fragment")
+                .commit()
+        }
+        btnAmartunes.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1, AmartunesWebviewFragment.newInstance())
                 .addToBackStack("Fragment")
                 .commit()
         }

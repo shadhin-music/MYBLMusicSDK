@@ -136,7 +136,11 @@ class ShadhinMusicServiceConnection(
       //  }
 
     }
-    override fun connect() = mediaBrowser.connect()
+    override fun connect() {
+        if (!mediaBrowser.isConnected){
+            mediaBrowser.connect()
+        }
+    }
     override fun disconnect(){
         mediaControllerCompat?.unregisterCallback(mediaControllerCallback)
 

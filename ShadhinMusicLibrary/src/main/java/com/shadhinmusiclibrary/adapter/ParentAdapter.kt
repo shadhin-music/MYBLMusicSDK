@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +21,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
@@ -197,6 +201,14 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             title.text = homePatchItem.Name
             val image:ShapeableImageView = itemView.findViewById(R.id.image)
               Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+            itemView.setOnClickListener {
+                val manager: FragmentManager =
+                (mContext as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container, AmartunesWebviewFragment.newInstance())
+                .addToBackStack("Fragment")
+                .commit()
+            }
 
         }
         private fun bindAd() {

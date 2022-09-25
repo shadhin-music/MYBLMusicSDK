@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FC">
+    android:background="#EFEFEF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentRelative"
@@ -63,11 +63,17 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingStart="10dp"
-            android:paddingBottom="50dp"
-            android:paddingEnd="10dp"
             android:paddingTop="10dp"
-            android:clipToPadding="false"/>
+            android:paddingEnd="10dp"
+            android:paddingBottom="80dp" />
+        <include
+            layout="@layout/powered_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerView"
+            android:layout_marginTop="-70dp" />
     </RelativeLayout>
 
 <!--    <ProgressBar-->
