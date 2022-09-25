@@ -2,13 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv_mini_music_player"
+    style="@style/CustomCardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:background="@android:color/transparent"
     android:visibility="visible"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="8dp">
+    app:cardBackgroundColor="@color/colorGreen"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:id="@+id/layout_parent"
@@ -24,7 +23,7 @@
             android:layout_margin="7dp"
             android:layout_weight=".50"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="3dp">
 
             <ImageView
                 android:id="@+id/iv_song_thumb_mini"
