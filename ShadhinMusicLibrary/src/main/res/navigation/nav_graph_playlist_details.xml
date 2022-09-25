@@ -9,4 +9,5 @@
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
         android:label="Playlist Details"
         tools:layout="@layout/fragment_playlist_details" />
+
 </navigation>
