@@ -11,17 +11,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 
 
-class PodcastEpisodesAdapter(val data: Data?) :
+class PodcastEpisodesAdapter(val data: Data?, private val itemClickCB: PodcustOnItemClickCallback) :
     RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
-     var tracks: List<Track> = emptyList()
+    var tracks: MutableList<Track> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastEpisodesViewHolder {
-       val  v = LayoutInflater.from(parent.context)
+        val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.podcast_episodes_item, parent, false)
         return PodcastEpisodesViewHolder(v)
     }
@@ -29,8 +31,9 @@ class PodcastEpisodesAdapter(val data: Data?) :
 
     override fun onBindViewHolder(holder: PodcastEpisodesViewHolder, position: Int) {
         holder.bindItems(position)
-
-
+        holder.itemView.setOnClickListener {
+            itemClickCB.onClickItem(tracks, position)
+        }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -38,25 +41,25 @@ class PodcastEpisodesAdapter(val data: Data?) :
         return tracks.size
     }
 
-    fun setData(data: List<Track>) {
+    fun setData(data: MutableList<Track>) {
         Log.d("TAG", "Url1234 : " + data)
-        tracks =  data
+        tracks = data
         notifyDataSetChanged()
 
-   }
+    }
 
     inner class PodcastEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(position: Int) {
 
-            val image: ShapeableImageView =itemView.findViewById(R.id.siv_song_icon)
-            val textArtistName:TextView = itemView.findViewById(R.id.tv_song_length)
+            val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
+            val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
             textArtistName.text = tracks[position].Duration
             val url: String = tracks[position].ImageUrl
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(image)
-            val textView:TextView = itemView.findViewById(R.id.tv_song_name)
+            val textView: TextView = itemView.findViewById(R.id.tv_song_name)
             textView.text = tracks[position].Name
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityIdo

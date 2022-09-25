@@ -21,14 +21,16 @@ import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,
-    BottomSheetDialogItemCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
@@ -55,7 +57,7 @@ class AlbumDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        createPlayerVM()
-        adapter = AlbumAdapter(this, this)
+        adapter = AlbumAdapter(this,this)
 
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
@@ -128,14 +130,8 @@ class AlbumDetailsFragment :
     }
 
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
-        Log.e("ADF", "onClickBottomItem: ")
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
+
+    override fun onClickBottomItem(mSongDetails: SongDetail, artistContentData: ArtistContentData) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

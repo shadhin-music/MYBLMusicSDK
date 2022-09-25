@@ -12,13 +12,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
             android:id="@+id/cardHeader">
             <androidx.cardview.widget.CardView
                 android:id="@+id/thumb_card"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="1dp"
                 >
@@ -139,6 +140,8 @@
                 android:layout_marginTop="12dp"
                 android:maxLines="4"
                 android:text=""
+                android:justificationMode="inter_word"
+                android:layout_gravity="center_vertical|end"
                 app:animation_duration="750" />
 
             <TextView

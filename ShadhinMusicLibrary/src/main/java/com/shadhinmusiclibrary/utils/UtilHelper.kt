@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
@@ -21,6 +22,13 @@ object UtilHelper {
         } else {
             height
         }
+    }
+    fun getScreenSize(context: Context): Point? {
+        //val display = (context as Activity).windowManager.defaultDisplay
+        val display = (context as Activity).windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        return size
     }
 
     fun getImageUrlSize300(imageUrl: String): String {
@@ -82,6 +90,39 @@ object UtilHelper {
         }
 
         return musicList
+    }
+
+    fun getSongDetailToTrackList(trackList: MutableList<Track>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (trackItem in trackList) {
+            trackItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = ShowId,
+                        image = ImageUrl,
+                        title = Name,
+                        ContentType = ContentType,
+                        PlayUrl = PlayUrl,
+                        artist = Starring,
+                        duration = Duration,
+                        copyright = "",
+                        labelname = Name,
+                        releaseDate = CeateDate,
+                        fav = fav,
+                        ArtistId = "",
+                        albumId = "",
+                        userPlayListId = "",
+                        rootType = ContentType,
+
+                        rootContentID = ShowId,
+                        rootContentType = ContentType,
+                        rootImage = ImageUrl
+                    )
+                )
+            }
+        }
+
+        return songDetailList
     }
 
     fun getSongDetailToArtistContentDataList(musicList: MutableList<ArtistContentData>): MutableList<SongDetail> {

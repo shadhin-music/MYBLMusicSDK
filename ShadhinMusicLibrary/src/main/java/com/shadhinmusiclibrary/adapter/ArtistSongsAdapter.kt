@@ -13,12 +13,18 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
+import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
+class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
+                         val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+) :
     RecyclerView.Adapter<ArtistSongsAdapter.ViewHolder>() {
     //   private var artistContent: ArtistContent? = null
     private var artistContentList: MutableList<ArtistContentData> = ArrayList()
@@ -36,6 +42,11 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
 
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(artistContentList, position)
+        }
+        val ivSongMenuIcon: ImageView =  holder.itemView.findViewById(R.id.iv_song_menu_icon)
+        ivSongMenuIcon.setOnClickListener {
+            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail("","","","","","","","",
+            "","","","","","","","","",""),artistContentList[position])
         }
     }
 
@@ -74,7 +85,7 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback) :
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
             textTitle.text = artistContent.title
             textArtist.text = artistContent.artistname
-            textDuration.text = artistContent.duration
+            textDuration.text = TimeParser.secToMin(artistContent.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

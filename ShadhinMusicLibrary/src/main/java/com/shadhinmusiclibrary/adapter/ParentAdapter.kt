@@ -8,19 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-
-
-import com.shadhinmusiclibrary.fragments.*
-import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
+import java.lang.reflect.Array
 
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
@@ -29,11 +25,12 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-//            VIEW_SEARCH-> R.layout.item_search
+            VIEW_SEARCH-> R.layout.item_search
             VIEW_ARTIST -> R.layout.item_artist
             VIEW_PLAYLIST -> R.layout.item_playlist
             VIEW_RELEASE -> R.layout.item_release_patch
             VIEW_POPULAR_PODCAST -> R.layout.item_release_patch
+            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
           // VIEW_AD -> R.layout.item_ad
 //            VIEW_DOWNLOAD -> R.layout.item_my_fav
 //            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
@@ -42,7 +39,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
 //            VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
 //            VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
-//            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
@@ -55,19 +52,22 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        holder.bind(homeListData?.get(position))
+        holder.bind(homeListData.get(position))
     }
 
-    override fun getItemCount(): Int = homeListData?.size ?: 0
+    override fun getItemCount(): Int = homeListData.size ?: 0
 
     override fun getItemViewType(position: Int): Int {
 
-        return when (homeListData?.get(position)?.Design) {
+        return when (homeListData.get(position).Design) {
+            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
             "Track" -> VIEW_RELEASE
             "Podcast"-> VIEW_POPULAR_PODCAST
+            "SmallVideo"-> VIEW_TRENDING_MUSIC_VIDEO
+
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -87,7 +87,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
 
             else -> {
-                0
+                -1
             }
         }
     }
@@ -95,6 +95,10 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItem>) {
         var size = this.homeListData.size
+        if (this.homeListData.isEmpty()) {
+            val search = HomePatchItem("007", "searchBar", emptyList(), "search", "search", 0, 0)
+            this.homeListData.add(search)
+        }
         this.homeListData.addAll(data)
         var sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
@@ -263,32 +267,34 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             recyclerView.adapter = MyBLOffersAdapter()
         }
 
-        private fun bindTrendingMusic() {
+        private fun bindTrendingMusic(homePatchItemModel: HomePatchItem) {
+              val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text = homePatchItemModel.Name
+
+            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+                homeCallBack.onClickSeeAll(homePatchItemModel)
+
+            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = TopTrendingVideosAdapter()
-            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
-            seeAll.setOnClickListener {
-                val manager: FragmentManager =
-                    (mContext as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, MusicFragment.newInstance())
-                    .commit()
-//               homeCallBack.onClickSeeAll()
-            }
+            recyclerView.adapter = TopTrendingVideosAdapter(homePatchItemModel, homePatchDetail = homeListData[absoluteAdapterPosition].Data)
         }
 
 
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
+                "search"->bindAd()
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
                 "Track" -> bindRelease(homePatchItemModel)
                 "Podcast" ->bindPopularPodcast(homePatchItemModel)
+                "SmallVideo"-> bindTrendingMusic(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
+
 
             /*when (dataModel) {
                      dataModel-> bindArtist(dataModel!!)
@@ -314,19 +320,19 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     }
 
     private companion object {
-        // val VIEW_SEARCH =0
-        val VIEW_ARTIST = 0
-        val VIEW_RELEASE = 1
-        val VIEW_PLAYLIST = 2
-        val VIEW_AD = 3
-        val VIEW_DOWNLOAD = 4
-        val VIEW_POPULAR_AMAR_TUNES = 5
-        val VIEW_POPULAR_BANDS = 6
-        val VIEW_MADE_FOR_YOU = 7
-        val VIEW_LATEST_RELEASE = 8
-        val VIEW_POPULAR_PODCAST = 9
-        val VIEW_BL_MUSIC_OFFERS = 10
-        val VIEW_TRENDING_MUSIC_VIDEO = 11
+        val VIEW_SEARCH = 0
+        val VIEW_ARTIST = 1
+        val VIEW_RELEASE = 2
+        val VIEW_PLAYLIST = 3
+        val VIEW_AD = 4
+        val VIEW_DOWNLOAD = 5
+        val VIEW_POPULAR_AMAR_TUNES = 6
+        val VIEW_POPULAR_BANDS = 7
+        val VIEW_MADE_FOR_YOU = 8
+        val VIEW_LATEST_RELEASE = 9
+        val VIEW_POPULAR_PODCAST = 10
+        val VIEW_BL_MUSIC_OFFERS = 11
+        val VIEW_TRENDING_MUSIC_VIDEO = 12
     }
 }
 

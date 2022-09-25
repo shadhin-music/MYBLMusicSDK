@@ -105,17 +105,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
-        createPlayerVM()
 
+        createPlayerVM()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
-
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-
         //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(AppConstantUtils.PatchItem)!!
-            .getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
         var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
@@ -140,8 +138,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
 
         miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
-    }
 
+        cvMiniPlayer.setOnClickListener {
+            //Mini player show. when mini player click
+            toggleMiniPlayerView(false)
+        }
+    }
 
     private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
@@ -265,6 +267,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
                 DataContentType.CONTENT_TYPE_PD -> {
                     //open podcast
                     setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
+                        })
+                }
+                DataContentType.CONTENT_TYPE_V-> {
+                    //open podcast
+                    setupNavGraphAndArg(R.navigation.nav_graph_video_list_and_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -566,15 +579,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.ic_asif_300)
-            .error(R.drawable.ic_asif_300)
+            .placeholder(R.drawable.default_song)
+            .error(R.drawable.default_song)
             .into(ivSongThumbMini)
+        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
+
         tvSongNameMini.text = mSongDetails.title
         tvSingerNameMini.text = mSongDetails.artist
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         cvMiniPlayer.visibility = View.VISIBLE
-
-        setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
         playerViewModel.playerProgress.observe(this, Observer {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
@@ -703,7 +716,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint,
         }
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = argHomePatchDetail?.image
-
+         val title:TextView ?= bottomSheetDialog.findViewById(R.id.name)
+         title?.text = argHomePatchDetail?.title
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }

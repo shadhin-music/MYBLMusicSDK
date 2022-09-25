@@ -1,28 +1,30 @@
 package com.shadhinmusiclibrary.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.io.Serializable
-
+@Parcelize
 data class HomePatchDetail(
     val AlbumId: String,
-    val AlbumImage: Any,
-    val AlbumName: Any,
+    val AlbumImage: String,
+    val AlbumName: String,
     val Artist: String,
     val ArtistId: String,
-    val ArtistImage: Any,
+    val ArtistImage: String,
     val Banner: String,
     val ContentID: String,
     val ContentType: String,
-    val CreateDate: Any,
+    val CreateDate: String,
     val Duration: String,
-    val Follower: Any,
+    val Follower: String,
     val IsPaid: Boolean,
     val NewBanner: String,
     val PlayCount: Int,
-    val PlayListId: Any,
-    val PlayListImage: Any,
-    val PlayListName: Any,
+    val PlayListId:String,
+    val PlayListImage: String,
+    val PlayListName: String,
     val PlayUrl: String,
-    val RootId: Any,
+    val RootId: String,
     val RootType: String,
     val Seekable: Boolean,
     val TeaserUrl: String,
@@ -30,9 +32,9 @@ data class HomePatchDetail(
     val Type: String,
     val fav: String,
     val image: String,
-    val imageWeb: Any,
+    val imageWeb: String,
     val title: String
-) : Serializable {
+) : Serializable, Parcelable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
     }

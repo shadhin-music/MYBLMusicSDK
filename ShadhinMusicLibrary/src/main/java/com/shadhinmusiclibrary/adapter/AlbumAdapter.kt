@@ -20,6 +20,7 @@ import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
@@ -139,7 +140,12 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
             tvCurrentAlbumName.text = root.title
-
+           if(root.title.isNullOrEmpty()){
+               tvCurrentAlbumName.text = root.AlbumName
+           }
+//            if(root.Artist.isNullOrEmpty()){
+//                tvArtistName.text = rootDataContent?.AlbumName
+//            }
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
             tvArtistName.text = root.Artist
@@ -170,7 +176,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                bottomSheetDialogItemCallback.onClickBottomItem(mSongDetail)
+                bottomSheetDialogItemCallback.onClickBottomItem(mSongDetail, artistDetails = ArtistContentData("","","","","",0,"","","","","","","",""))
             }
 
         }
