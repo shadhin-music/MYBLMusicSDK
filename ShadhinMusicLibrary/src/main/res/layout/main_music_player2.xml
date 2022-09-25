@@ -110,15 +110,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="Ami Bhabi Tumi"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_singer_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Habib Wahid" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <ImageView

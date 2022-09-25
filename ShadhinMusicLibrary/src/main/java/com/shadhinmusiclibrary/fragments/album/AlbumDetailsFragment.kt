@@ -106,24 +106,24 @@ class AlbumDetailsFragment :
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-        val albumVH = currentVH as AlbumAdapter.AlbumVH
-        if (songDetails.size > 0) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer {
-                if (it != null) {
-                    if ((it.rootType!! == songDetails[0].rootContentType)
-                        && (it.mediaId!! == songDetails[0].ContentID)
-                    ) {
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
-                        }
-
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
-//                            albumVH.itemView.setBackgroundColor(Color.BLUE)
-                        }
-                    }
-                }
-            })
-        }
+//        val albumVH = currentVH as AlbumAdapter.AlbumVH
+//        if (songDetails.size > 0) {
+//            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer {
+//                if (it != null) {
+//                    if ((it.rootType!! == songDetails[0].rootContentType)
+//                        && (it.mediaId!! == songDetails[0].ContentID)
+//                    ) {
+//                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+//                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+//                        }
+//
+//                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+////                            albumVH.itemView.setBackgroundColor(Color.BLUE)
+//                        }
+//                    }
+//                }
+//            })
+//        }
     }
 
 
