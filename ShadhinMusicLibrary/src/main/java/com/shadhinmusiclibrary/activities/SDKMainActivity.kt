@@ -487,6 +487,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
+//        playerViewModel.currentMusicLiveData.observe(this, Observer {
+        tvSongName.text = mSongDetails[clickItemPosition].title
+        tvSingerName.text = mSongDetails[clickItemPosition].artist
+//        })
+
+
         dsvCurrentPlaySongsThumb.addOnItemChangedListener { viewHolder, _ ->
             if (viewHolder != null) {
                 viewHolder as MusicPlayAdapter.MusicPlayVH?
