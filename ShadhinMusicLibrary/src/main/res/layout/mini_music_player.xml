@@ -48,7 +48,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="2dp"
-            android:text="buffering"
             android:textColor="@color/colorBlack"
             android:textSize="15sp" />
 
@@ -59,7 +58,6 @@
             android:layout_marginStart="10dp"
             android:maxLines="1"
             android:padding="2dp"
-            android:text="Singer name"
             android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
@@ -70,7 +68,6 @@
             android:layout_marginStart="10dp"
             android:maxLines="1"
             android:padding="2dp"
-            android:text="0.00"
             android:textColor="@color/colorBlack"
             android:textSize="12sp" />
     </LinearLayout>
