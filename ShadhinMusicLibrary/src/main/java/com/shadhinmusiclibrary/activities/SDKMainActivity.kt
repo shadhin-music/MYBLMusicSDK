@@ -118,6 +118,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         routeData(patch, selectedPatchIndex)
 
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
+            Log.e("SDKM", "currentMusicLiveData: ")
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
                 isPlayOrPause = itMus.isPlaying!!
@@ -125,6 +126,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
 
         playerViewModel.playListLiveData.observe(this) { itMusicList ->
+            Log.e("SDKM", "playListLiveData: ")
             playerViewModel.musicIndexLiveData.observe(this) {
                 setupMainMusicPlayerAdapter(
                     UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
@@ -623,7 +625,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
+        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
+            Log.e("SDKM", "playerProgress: ")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
