@@ -24,7 +24,10 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback) :
+open class AlbumAdapter(
+    private val itemClickCB: OnItemClickCallback,
+    private val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+) :
     RecyclerView.Adapter<AlbumAdapter.AlbumVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
@@ -128,7 +131,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
 
         //        private lateinit var ivFavorite: ImageView
         var ivPlayBtn: ImageView? = null
-        var menu:ImageView ?= null
+        var menu: ImageView? = null
 
         //        private lateinit var ivShareBtnFab: ImageView
         fun bindRoot(root: HomePatchDetail) {
@@ -140,9 +143,9 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
             tvCurrentAlbumName.text = root.title
-           if(root.title.isNullOrEmpty()){
-               tvCurrentAlbumName.text = root.AlbumName
-           }
+            if (root.title.isNullOrEmpty()) {
+                tvCurrentAlbumName.text = root.AlbumName
+            }
 //            if(root.Artist.isNullOrEmpty()){
 //                tvArtistName.text = rootDataContent?.AlbumName
 //            }
@@ -152,7 +155,7 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
-            menu= viewItem.findViewById(R.id.iv_song_menu_icon)
+            menu = viewItem.findViewById(R.id.iv_song_menu_icon)
 //            if (isPlaying) {
 //                ivPlayBtn!!.setImageResource(R.drawable.ic_pause_circle_filled)
 //            } else {
@@ -176,7 +179,25 @@ class AlbumAdapter(private val itemClickCB: OnItemClickCallback, private  val bo
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                bottomSheetDialogItemCallback.onClickBottomItem(mSongDetail, artistDetails = ArtistContentData("","","","","",0,"","","","","","","",""))
+                bottomSheetDialogItemCallback.onClickBottomItem(
+                    mSongDetail,
+                    artistDetails = ArtistContentData(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        0,
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                    )
+                )
             }
 
         }
