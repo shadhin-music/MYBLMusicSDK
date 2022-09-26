@@ -103,62 +103,25 @@ class AlbumDetailsFragment :
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
-                if (itMusic != null) {
-                    if ((mSongDetails[clickItemPosition].rootContentType == itMusic.rootType &&
-                                mSongDetails[clickItemPosition].ContentID == itMusic.mediaId)
-                    ) {
-                        Log.e("TAG", "onRootClickItem: if")
-                        playerViewModel.togglePlayPause()
-                    } else {
-                        Log.e("TAG", "onRootClickItem: else")
-                        playItem(mSongDetails, clickItemPosition)
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null) {
-            if (playerViewModel.isPlaying) {
-                playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
-                    if (itMusic != null) {
-                        if ((mSongDetails[clickItemPosition].rootContentType == itMusic.rootType &&
-                                    mSongDetails[clickItemPosition].ContentID != itMusic.mediaId &&
-                                    mSongDetails[clickItemPosition].artist != itMusic.artistName)
-                        ) {
-                            Log.e("TAG", "onClickItem: itMusic !=null if")
-                            playItem(mSongDetails, clickItemPosition)
-                        }
-/*                    if ((mSongDetails[clickItemPosition].rootContentType == itMusic.rootType &&
-                                mSongDetails[clickItemPosition].ContentID != itMusic.mediaId &&
-                                mSongDetails[clickItemPosition].artist == itMusic.artistName)
-                    ) {
-
-                    }*/
-                    }
-/*                    else {
-                        Log.e("TAG", "onClickItem: itMusic else")
-                        playItem(mSongDetails, clickItemPosition)
-                    }*/
-                }
-            } else if (playerViewModel.isPlaying &&
-                mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic!!.mediaId
-            ) {
-                Log.e("TAG", "onClickItem: isPlaying ContentID==")
-                playerViewModel.skipToQueueItem(clickItemPosition)
-            }
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            playerViewModel.togglePlayPause()
         } else {
-            Log.e("TAG", "onClickItem: else")
             playItem(mSongDetails, clickItemPosition)
         }
     }
 
-    private fun aaa(clickItemPosition: Int) {
-        playerViewModel.skipToQueueItem(clickItemPosition)
+    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(mSongDetails, clickItemPosition)
+        }
     }
+
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
