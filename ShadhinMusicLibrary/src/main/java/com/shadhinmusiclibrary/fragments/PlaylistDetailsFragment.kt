@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -90,6 +91,10 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
         adapter.setSongData(updatedSongList)
     }
 
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+
+    }
+
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         playItem(mSongDetails, clickItemPosition)
     }
@@ -98,31 +103,31 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-//        val albumVH = currentVH as PlaylistAdapter.PlaylistVH
-//        if (songDetails.size > 0) {
-//            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer { itMus ->
-//                if (itMus != null) {
-//                    if ((itMus.rootType!! == songDetails[0].rootContentType)
-//                        && (itMus.mediaId!! == songDetails[0].ContentID)
-//                    ) {
-//                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-//                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
-//                        }
-//
-//                        playerViewModel.musicIndexLiveData.observe(requireActivity()) { itSelectedPosition ->
-//
-//                            Log.e(
-//                                "PLDF",
-//                                "getCurrentVH: Position " + itSelectedPosition + " itemViewType " + albumVH.itemViewType
-//                            )
-////                            if (itSelectedPosition == albumVH.itemViewType) {
-////                                albumVH.tvSongName!!.setTextColor(Color.YELLOW)
-////                            }
-//                        }
-//                    }
-//                }
-//            })
-//        }
+        val albumVH = currentVH as PlaylistAdapter.PlaylistVH
+        if (songDetails.size > 0) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer { itMus ->
+                if (itMus != null) {
+                    if ((itMus.rootType!! == songDetails[0].rootContentType)
+                        && (itMus.mediaId!! == songDetails[0].ContentID)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        }
+
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) { itSelectedPosition ->
+/*                            Log.e(
+                                "PLDF",
+                                "getCurrentVH: Position " + itSelectedPosition + " itemViewType " + albumVH.itemViewType
+                            )*/
+                            albumVH.itemView.setBackgroundColor(Color.BLUE)
+//                            if (itSelectedPosition == albumVH.itemViewType) {
+//                                albumVH.tvSongName!!.setTextColor(Color.YELLOW)
+//                            }
+                        }
+                    }
+                }
+            })
+        }
     }
 
 }

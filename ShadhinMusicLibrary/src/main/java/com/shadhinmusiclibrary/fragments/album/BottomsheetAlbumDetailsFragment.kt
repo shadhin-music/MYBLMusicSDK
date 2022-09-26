@@ -112,6 +112,10 @@ class BottomsheetAlbumDetailsFragment :
         adapter.setSongData(updatedSongList)
     }
 
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+
+    }
+
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         playItem(mSongDetails, clickItemPosition)
     }
