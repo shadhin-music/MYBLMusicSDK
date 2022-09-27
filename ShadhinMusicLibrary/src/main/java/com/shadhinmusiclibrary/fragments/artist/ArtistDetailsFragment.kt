@@ -39,7 +39,7 @@ import java.io.Serializable
 
 
 class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    ArtistOnItemClickCallback , BottomSheetDialogItemCallback {
+    ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
 
     //    var homePatchItem: HomePatchItem? = null
@@ -112,7 +112,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
-        artistSongAdapter = ArtistSongsAdapter(this,this)
+        artistSongAdapter = ArtistSongsAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
@@ -327,6 +327,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
 
     override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }

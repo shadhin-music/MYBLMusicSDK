@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.fragments.album
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -25,9 +27,11 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
+import com.shadhinmusiclibrary.utils.get
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,
+    BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
@@ -54,7 +58,7 @@ class AlbumDetailsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        createPlayerVM()
-        adapter = AlbumAdapter(this,this)
+        adapter = AlbumAdapter(this, this)
 
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
@@ -98,37 +102,64 @@ class AlbumDetailsFragment :
         adapter.setSongData(updatedSongList)
     }
 
-    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        playItem(mSongDetails, clickItemPosition)
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            playerViewModel.togglePlayPause()
+        } else {
+            playItem(mSongDetails, clickItemPosition)
+        }
     }
+
+    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(mSongDetails, clickItemPosition)
+        }
+    }
+
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-//        val albumVH = currentVH as AlbumAdapter.AlbumVH
-//        if (songDetails.size > 0) {
-//            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer {
-//                if (it != null) {
-//                    if ((it.rootType!! == songDetails[0].rootContentType)
-//                        && (it.mediaId!! == songDetails[0].ContentID)
-//                    ) {
-//                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-//                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
-//                        }
-//
-//                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
-////                            albumVH.itemView.setBackgroundColor(Color.BLUE)
-//                        }
-//                    }
-//                }
-//            })
-//        }
+        val albumVH = currentVH as AlbumAdapter.AlbumVH
+        if (songDetails.size > 0 && isAdded) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+                if (itMusic != null) {
+                    if ((songDetails.indexOfFirst {
+                            it.rootContentType == itMusic.rootType &&
+                                    it.ContentID == itMusic.mediaId
+                        } != -1)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        }
+
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                            Log.e(
+                                "ADF",
+                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
-
     override fun onClickBottomItem(mSongDetails: SongDetail, artistContentData: ArtistContentData) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }

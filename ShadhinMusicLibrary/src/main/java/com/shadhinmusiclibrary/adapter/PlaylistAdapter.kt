@@ -50,21 +50,22 @@ class PlaylistAdapter(private val itemClickCB: OnItemClickCallback) :
             // val mSongDetItem = dataSongDetail[position-1]
             when (holder.itemViewType) {
                 0 -> {
-//                    itemClickCB.getCurrentVH(holder, dataSongDetail)
-//                    holder.ivPlayBtn?.setOnClickListener {
-                    /*
-                    if player.state == playing && player.rootid == this.rootId{
-                        player.pause
-                    }else if player.state = paused && player.rootid == this.rootId{
-                        player.play
-                    }else{
-                        this.startPlaying(trackArray, index = 0)
+                    itemClickCB.getCurrentVH(holder, dataSongDetail)
+                    holder.ivPlayBtn?.setOnClickListener {
+                        /*
+                        if player.state == playing && player.rootid == this.rootId{
+                            player.pause
+                        }else if player.state = paused && player.rootid == this.rootId{
+                            player.play
+                        }else{
+                            this.startPlaying(trackArray, index = 0)
+                        }
+                         */
+                        itemClickCB.onClickItem(dataSongDetail, position)
                     }
-                     */
-//                        itemClickCB.onClickItem(mSongDetItem)
-//                    }
                 }
                 1 -> {
+//                    itemClickCB.getCurrentVH(holder, dataSongDetail)
                     holder.itemView.setOnClickListener {
                         if (holder.itemViewType == PlaylistAdapter.VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]

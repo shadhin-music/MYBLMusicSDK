@@ -55,26 +55,26 @@ open class AlbumAdapter(
             // val mSongDetItem = dataSongDetail[position-1]
             when (holder.itemViewType) {
                 0 -> {
-//                    itemClickCB.getCurrentVH(holder, dataSongDetail)
-//                    holder.ivPlayBtn?.setOnClickListener {
-                    /*
-                    if player.state == playing && player.rootid == this.rootId{
-                        player.pause
-                    }else if player.state = paused && player.rootid == this.rootId{
-                        player.play
-                    }else{
-                        this.startPlaying(trackArray, index = 0)
+                    itemClickCB.getCurrentVH(holder, dataSongDetail)
+                    holder.ivPlayBtn?.setOnClickListener {
+                        /*
+                        if player.state == playing && player.rootid == this.rootId{
+                            player.pause
+                        }else if player.state = paused && player.rootid == this.rootId{
+                            player.play
+                        }else{
+                            this.startPlaying(trackArray, index = 0)
+                        }
+                         */
+
+                        itemClickCB.onRootClickItem(dataSongDetail, position)
                     }
-                     */
-//                        itemClickCB.onClickItem(mSongDetItem)
-//                    }
                 }
                 1 -> {
                     holder.itemView.setOnClickListener {
                         if (holder.itemViewType == VIEW_TRACK_ITEM) {
-                            val mSongDetItem = dataSongDetail[position - 1]
+//                            val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
-
                         }
                     }
 //                    holder.menu?.setOnClickListener {

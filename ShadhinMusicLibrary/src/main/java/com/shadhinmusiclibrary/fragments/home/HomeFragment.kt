@@ -88,8 +88,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                             //loadMoreItems()
-                            Log.e("TAG", "visibleItemCount: " + visibleItemCount)
-                            Log.e("TAG", "pastVisibleItem: " + firstVisibleItemPosition)
                             //Log.e("TAG", "pagenumber: " + pageNum++)
                             //pageNum++
                             isLoading = true
