@@ -12,21 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
-                         val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
-) :
-    RecyclerView.Adapter<ArtistSongsAdapter.ViewHolder>() {
+class AlbumsTrackAdapter( private val itemClickCB: OnItemClickCallback, val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback) :
+    RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {
     //   private var artistContent: ArtistContent? = null
-    private var songDetail:MutableList<SongDetail> = ArrayList()
-    private var artistContentList: MutableList<ArtistContentData> = ArrayList()
+    var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+   // private var artistContentList: MutableList<ArtistContentData> = ArrayList()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -37,55 +36,67 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(artistContentList[position])
+        holder.bindItems(dataSongDetail[position])
 
         holder.itemView.setOnClickListener {
-            itemClickCB.onClickItem(artistContentList, position)
+            itemClickCB.onClickItem(dataSongDetail, position)
         }
         val ivSongMenuIcon: ImageView =  holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
-            val artistContent = artistContentList[position]
-            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail(artistContent.ContentID,artistContent.image,artistContent.title,"","",artistContent.artistname,"","",
-                "","","",artistContent.ArtistId,artistContent.AlbumId,"","","","",""))
+             val songDetail = dataSongDetail[position]
+            Log.e("TAG","ONCLICK: "+ songDetail)
+            //val artistContent = artistContentList[position]
+            bottomSheetDialogItemCallback.onClickBottomItem(songDetail)
+
         }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
-        return artistContentList.size
+        return  dataSongDetail.size
 
     }
 
-    fun artistContent(artistContent: ArtistContent?) {
+    fun trackContent(dataSongDetail: SongDetail?) {
 
-        artistContent?.data?.let {
+//        trackContent?.let {
+//
+//            this.artistContentList.clear()
+//            this.artistContentList.addAll(it)
+//            this.notifyDataSetChanged()
+//
+//        }
 
-            this.artistContentList.clear()
-            this.artistContentList.addAll(it)
-            this.notifyDataSetChanged()
+    }
 
+    fun setData(data: MutableList<SongDetail>,  rootPatch: HomePatchDetail) {
+        this.dataSongDetail = mutableListOf()
+        for (songItem in data) {
+            dataSongDetail.add(
+                UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
+            )
         }
-
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistContent: ArtistContentData) {
+        fun bindItems( dataSongDetail: SongDetail) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = artistContent.image
+            val url: String = dataSongDetail.getImageUrl300Size()
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url)
                 .into(imageView!!)
             val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = artistContent.title
-            textArtist.text = artistContent.artistname
-            textDuration.text = TimeParser.secToMin(artistContent.duration)
+            textTitle.text = dataSongDetail.title
+            textArtist.text = dataSongDetail.artist
+            textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

@@ -348,7 +348,9 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
 
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
+
+
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
         TODO("Not yet implemented")
     }
 }

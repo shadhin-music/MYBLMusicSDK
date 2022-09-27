@@ -728,6 +728,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
+        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        artistname?.text = mSongDetails.artist
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
@@ -761,6 +763,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
+        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        artistname?.text = mSongDetails.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = mSongDetails.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)

@@ -8,12 +8,10 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -187,25 +185,25 @@ open class AlbumAdapter(
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                bottomSheetDialogItemCallback.onClickBottomItem(
-                    mSongDetail,
-                    artistDetails = ArtistContentData(
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
-                    )
-                )
+//                bottomSheetDialogItemCallback.onClickBottomItem(
+//                    mSongDetail,
+//                    artistDetails = ArtistContentData(
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        0,
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        ""
+//                    )
+//                )
             }
 
         }

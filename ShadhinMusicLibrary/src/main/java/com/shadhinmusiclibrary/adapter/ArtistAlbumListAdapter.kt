@@ -6,9 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,7 +14,6 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsDetails2Fragment
 
 
 class ArtistAlbumListAdapter(
@@ -37,6 +33,8 @@ class ArtistAlbumListAdapter(
         holder.bindItems(artistAlbumModel)
         holder.itemView.setOnClickListener {
             homeCallBack.onArtistAlbumClick(position, artistAlbumModel!!.data)
+           // homeCallBack.onClickItemAndAllItem(position,homePatchItem)
+            //homeCallBack.onAlbumClick(position,artistAlbumModel!!.data)
         }
     }
 

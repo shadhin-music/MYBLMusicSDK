@@ -33,7 +33,9 @@ class ArtistAlbumsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(homePatchItem, artistAlbumModel)
-
+//         holder.itemView.setOnClickListener {
+//
+//         }
 
     }
 

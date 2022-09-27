@@ -313,6 +313,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
     }
 
+//    override fun onAlbumClick(itemPosition: Int, songDetail: MutableList<ArtistAlbumModelData>) {
+//        TODO("Not yet implemented")
+//    }
+
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
@@ -328,7 +332,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
 
-    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog2(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

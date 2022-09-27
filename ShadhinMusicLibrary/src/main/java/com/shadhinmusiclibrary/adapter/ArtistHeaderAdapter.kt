@@ -84,7 +84,7 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
-             val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
+            val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
             if(updatedbio.length>25){
                 cardBiography.visibility= VISIBLE
             }
@@ -119,21 +119,6 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
                 .load(url)
                 .into(imageView)
 
-//            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
-//            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , ArtistDetailsFragment.newInstance())
-//                    .commit()
-//            }
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
-            //getActorName(entityId!!)
-
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
 
 
         }
