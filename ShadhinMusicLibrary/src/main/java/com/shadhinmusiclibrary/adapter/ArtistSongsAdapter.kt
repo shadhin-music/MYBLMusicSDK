@@ -14,11 +14,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
-import com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
@@ -27,6 +25,7 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
 ) :
     RecyclerView.Adapter<ArtistSongsAdapter.ViewHolder>() {
     //   private var artistContent: ArtistContent? = null
+    private var songDetail:MutableList<SongDetail> = ArrayList()
     private var artistContentList: MutableList<ArtistContentData> = ArrayList()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,8 +44,9 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
         }
         val ivSongMenuIcon: ImageView =  holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
-            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail("","","","","","","","",
-            "","","","","","","","","",""),artistContentList[position])
+            val artistContent = artistContentList[position]
+            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail(artistContent.ContentID,artistContent.image,artistContent.title,"","",artistContent.artistname,"","",
+                "","","",artistContent.ArtistId,artistContent.AlbumId,"","","","",""))
         }
     }
 

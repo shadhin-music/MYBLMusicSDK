@@ -728,23 +728,63 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
+        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        artistname?.text = mSongDetails.artist
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(
-                bsdNavController,
-                context,
-                mSongDetails,
-                argHomePatchItem,
-                argHomePatchDetail
-            )
+//            gotoArtist(
+//                bsdNavController,
+//                context,
+//                mSongDetails,
+//                argHomePatchItem,
+//                argHomePatchDetail
+//            )
             bottomSheetDialog.dismiss()
         }
     }
+    fun showBottomSheetDialog2(
+        bsdNavController: NavController,
+        context: Context,
+        mSongDetails: SongDetail,
+        argHomePatchItem: HomePatchItem?,
+        argHomePatchDetail: HomePatchDetail?,
+    ) {
+        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
+        val contentView =
+            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+        bottomSheetDialog.setContentView(contentView)
+        bottomSheetDialog.show()
+        val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        artistname?.text = mSongDetails.artist
+        val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+        val url = mSongDetails.image
+        val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
+        title?.text = mSongDetails?.title
+        if (image != null) {
+            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+        }
+        val constraintAlbum: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        constraintAlbum?.setOnClickListener {
+//            gotoArtist(
+//                bsdNavController,
+//                context,
+//                mSongDetails,
+//                argHomePatchItem,
+//                argHomePatchDetail
+//            )
+            bottomSheetDialog.dismiss()
+        }
+    }
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,

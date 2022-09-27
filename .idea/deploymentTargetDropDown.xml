@@ -6,12 +6,21 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
+<<<<<<< HEAD
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\user\.android\avd\8_Fold-out_API_30.avd" />
+=======
             <type value="SERIAL_NUMBER" />
             <value value="HZAL1670DAJ53101671" />
+>>>>>>> origin/dev_rezaul
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
+<<<<<<< HEAD
+    <timeTargetWasSelectedWithDropDown value="2022-09-25T10:17:49.387201400Z" />
+=======
     <timeTargetWasSelectedWithDropDown value="2022-09-25T08:33:18.906090400Z" />
+>>>>>>> origin/dev_rezaul
   </component>
 </project>

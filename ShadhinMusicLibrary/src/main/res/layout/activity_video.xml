@@ -120,6 +120,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="8dp"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -308,7 +309,13 @@
                     tools:listitem="@layout/row_video_gr">
 
                 </androidx.recyclerview.widget.RecyclerView>
-
+                <include
+                    layout="@layout/powered_by"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/videoRecyclerView"
+                    android:layout_marginTop="-25dp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
 
@@ -320,4 +327,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
     </FrameLayout>

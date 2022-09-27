@@ -10,11 +10,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
@@ -34,7 +36,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     var isLoading = false
     var isLastPage = false
     private lateinit var rvAllHome: RecyclerView
-
+      private lateinit var footerAdapter: HomeFooterAdapter
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -71,9 +73,16 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         }
     }
 
+
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {
+
+            footerAdapter = HomeFooterAdapter()
+
             dataAdapter = ParentAdapter(this)
+
+
+
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -92,6 +101,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                             //pageNum++
                             isLoading = true
                             viewModel!!.fetchHomeData(++pageNum, false)
+
                             //observeData()
                         }
 
@@ -99,7 +109,10 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     super.onScrolled(recyclerView, dx, dy)
                 }
             })
-
+//            val config = ConcatAdapter.Config.Builder()
+//                .setIsolateViewTypes(false)
+//                .build()
+//            val concatAdapter=  ConcatAdapter(config,dataAdapter)
             recyclerView.adapter = dataAdapter
         }
         homeData.let {
@@ -110,6 +123,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         }
         if(homeData?.total == pageNum){
             isLastPage = true
+            val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+            val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
+            recyclerView.adapter= ConcatAdapter(config,dataAdapter,footerAdapter)
         }
 
     }

@@ -9,15 +9,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter.Companion.VIEW_TYPE
+import com.shadhinmusiclibrary.adapter.ParentAdapter.Companion.VIEW_TYPE
+
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
 class ParentAdapter(val homeCallBack: HomeCallBack) :
@@ -56,11 +63,11 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         holder.bind(homeListData.get(position))
     }
 
-    override fun getItemCount(): Int = homeListData.size ?: 0
+    override fun getItemCount(): Int = homeListData.size
 
-    override fun getItemViewType(position: Int): Int {
+    override fun getItemViewType(position: Int):Int {
 
-        return when (homeListData.get(position).Design) {
+      return when (homeListData.get(position).Design)  {
             "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
@@ -197,6 +204,14 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             title.text = homePatchItem.Name
             val image:ShapeableImageView = itemView.findViewById(R.id.image)
               Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+            itemView.setOnClickListener {
+                val manager: FragmentManager =
+                (mContext as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container, AmartunesWebviewFragment.newInstance())
+                .addToBackStack("Fragment")
+                .commit()
+            }
 
         }
         private fun bindAd() {
@@ -341,6 +356,10 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         val VIEW_POPULAR_PODCAST = 10
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
+
+
+        const val VIEW_TYPE = 10
+
     }
 }
 

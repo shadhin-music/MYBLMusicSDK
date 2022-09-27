@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="colorBlack">#FF000000</color>
     <color name="colorWhite">#FFFFFFFF</color>
-    <color name="shadinRequiredColor">#F5F7FC</color>
+    <color name="shadinRequiredColor">#EFEFEF</color>
     <color name="colorWhiteSeventyPercent">#A3A0A0</color>
     <color name="colorPrimary">#FF5757</color>
     <color name="bufferColor">#8000AFF5</color>

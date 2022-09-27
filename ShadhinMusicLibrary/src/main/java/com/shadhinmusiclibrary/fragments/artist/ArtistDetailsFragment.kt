@@ -50,6 +50,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     private lateinit var parentAdapter: ConcatAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
     private lateinit var artistSongAdapter: ArtistSongsAdapter
@@ -111,6 +112,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
+        footerAdapter = HomeFooterAdapter()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
         artistSongAdapter = ArtistSongsAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
@@ -121,7 +123,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             artistHeaderAdapter,
             artistSongAdapter,
             artistAlbumsAdapter,
-            artistsYouMightLikeAdapter
+            artistsYouMightLikeAdapter,footerAdapter
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
@@ -218,11 +220,11 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private fun showDialog() {
         AlertDialog.Builder(requireContext()) //set icon
             .setIcon(android.R.drawable.ic_dialog_alert) //set title
-            .setTitle("An Error Happend") //set message
+            .setTitle("An error occurred") //set message
             .setMessage("Go back to previous page") //set positive button
             .setPositiveButton("Okay",
                 DialogInterface.OnClickListener { dialogInterface, i ->
-
+                    requireActivity().finish()
                 })
 
             .show()
@@ -311,6 +313,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
     }
 
+//    override fun onAlbumClick(itemPosition: Int, songDetail: MutableList<ArtistAlbumModelData>) {
+//        TODO("Not yet implemented")
+//    }
+
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
@@ -326,13 +332,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
 
-    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialog2(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
     }
 }

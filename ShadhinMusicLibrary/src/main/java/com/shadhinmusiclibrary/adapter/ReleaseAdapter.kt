@@ -32,6 +32,7 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
         }
     }
 
+    override fun getItemViewType(position: Int)= VIEW_TYPE
     override fun getItemCount(): Int {
         return homePatchItem.Data.size
     }
@@ -51,6 +52,9 @@ class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack:
                 .into(imageView)
 
         }
+    }
+    companion object{
+        const val VIEW_TYPE =1
     }
 }
 

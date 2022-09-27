@@ -2,24 +2,20 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
@@ -31,12 +27,14 @@ open class AlbumAdapter(
     RecyclerView.Adapter<AlbumAdapter.AlbumVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    private var artistAlbumModel: MutableList<ArtistAlbumModelData> = mutableListOf()
     private var isPlaying = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumVH {
         val layout = when (viewType) {
             VIEW_ALBUM -> R.layout.playlist_header
             VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
+            VIEW_OTHER_ALBUM -> R.layout.item_release_patch
             else -> throw IllegalArgumentException("Invalid view type")
         }
         val view = LayoutInflater
@@ -49,6 +47,7 @@ open class AlbumAdapter(
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
+            2-> holder.bindAlbum(artistAlbumModel)
         }
 
         if (dataSongDetail.isNotEmpty()) {
@@ -100,15 +99,22 @@ open class AlbumAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             0 -> VIEW_ALBUM
-            else -> {
-                VIEW_TRACK_ITEM
-            }
+            1 -> VIEW_TRACK_ITEM
+
+            else->
+                VIEW_OTHER_ALBUM
+
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongData(data: MutableList<SongDetail>) {
+    fun setSongData(
+        data: MutableList<SongDetail>,
+
+
+        ) {
         this.dataSongDetail = data
+//        this.artistAlbumModel = artistAlbumModel
         notifyDataSetChanged()
     }
 
@@ -179,27 +185,39 @@ open class AlbumAdapter(
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-                bottomSheetDialogItemCallback.onClickBottomItem(
-                    mSongDetail,
-                    artistDetails = ArtistContentData(
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
-                    )
-                )
+//                bottomSheetDialogItemCallback.onClickBottomItem(
+//                    mSongDetail,
+//                    artistDetails = ArtistContentData(
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        0,
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        "",
+//                        ""
+//                    )
+//                )
             }
 
+        }
+
+        fun bindAlbum(artistAlbumModelData: MutableList<ArtistAlbumModelData>) {
+            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+           // tvTitle.text = homePatchItem.Name
+            seeAll.visibility = GONE
+
+//            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+//            recyclerView.layoutManager =
+//                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+//            recyclerView.adapter = ArtistOthersAlbumListAdapter(artistAlbumModelData!!,homeCallBack)
         }
 
 
@@ -208,5 +226,6 @@ open class AlbumAdapter(
     private companion object {
         const val VIEW_ALBUM = 0
         const val VIEW_TRACK_ITEM = 1
+        const val VIEW_OTHER_ALBUM =2
     }
 }

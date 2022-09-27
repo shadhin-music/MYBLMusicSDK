@@ -79,7 +79,7 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
                     GridLayoutManager(requireContext(), 4)
 //          Log.e("TAG","ID: "+ argHomePatchItem)
                 recyclerView.adapter =
-                    response.data?.let { it?.data?.let { it1 -> FeaturedPopularArtistAdapter(it1,this) } }
+                    response.data?.let { it.data.let { it1 -> FeaturedPopularArtistAdapter(it1,this) } }
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()

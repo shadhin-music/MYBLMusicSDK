@@ -33,7 +33,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.album.BottomsheetAlbumDetailsFragment
+
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
@@ -270,12 +270,12 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     ) {
         val manager: FragmentManager =
             (requireContext() as AppCompatActivity).supportFragmentManager
-        manager.beginTransaction()
-            .replace(R.id.containerFrame,
-                BottomsheetAlbumDetailsFragment.newInstance(artistAlbumModelData[itemPosition],
-                    homePatchDetail))
-            .addToBackStack("Fragment")
-            .commit()
+//        manager.beginTransaction()
+//            .replace(R.id.containerFrame,
+//                BottomsheetAlbumDetailsFragment.newInstance(artistAlbumModelData[itemPosition],
+//                    homePatchDetail))
+//            .addToBackStack("Fragment")
+//            .commit()
 //        ShadhinMusicSdkCore.pressCountIncrement()
 //        val mArtAlbumMod = artistAlbumModelData[itemPosition]
 //        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
@@ -348,7 +348,9 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
 
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail, artistDetails: ArtistContentData) {
+
+
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
         TODO("Not yet implemented")
     }
 }

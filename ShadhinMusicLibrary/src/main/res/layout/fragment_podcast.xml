@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FC"
+    android:background="#EFEFEF"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -69,17 +69,18 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingStart="10dp"
-            android:paddingBottom="100dp"
-            android:paddingEnd="10dp"
             android:paddingTop="10dp"
-            android:clipToPadding="false"/>
+            android:paddingEnd="10dp"
+            android:paddingBottom="70dp" />
         <include
             layout="@layout/powered_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/recyclerView"
-            android:layout_marginTop="-70dp" />
+            android:layout_marginTop="-70dp"
+            android:visibility="gone"/>
     </RelativeLayout>
 <!--<Button-->
 <!--    android:layout_width="match_parent"-->
