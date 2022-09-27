@@ -83,10 +83,10 @@ Rezaul Khan, rezaulkhan.gakk@gmail.com
 
 <p align="center">
   <a style="text-decoration:none" area-label="Android">
-<img herf="https://play.google.com/store/apps/details?id=com.gm.shadhin" alt="Google Play" src="https://lh3.googleusercontent.com/SnctPmTxZhH89s1b5GMoyhmujcqSVA8p_y9RZw6LCPGAQPCjxZBhJc0Dhbzy0P3lKrGd496VV3Z5nw8youku1PStLQ8xnbl13fO1Y70eJyiRZZRZaA=s0" width="168" height="40" >
+  [<img alt="Google Play" src="https://lh3.googleusercontent.com/SnctPmTxZhH89s1b5GMoyhmujcqSVA8p_y9RZw6LCPGAQPCjxZBhJc0Dhbzy0P3lKrGd496VV3Z5nw8youku1PStLQ8xnbl13fO1Y70eJyiRZZRZaA=s0" width="168" height="40" >](https://play.google.com/store/apps/details?id=com.gm.shadhin)
   </a>
-  <a herf="https://apps.apple.com/us/app/shadhin-music/id1481808365" style="text-decoration:none" area-label="Build Status">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="168" height="40" />
+  <a style="text-decoration:none" area-label="Build Status">
+    [<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="168" height="40" />](https://apps.apple.com/us/app/shadhin-music/id1481808365)
   </a>
 </p>
 
