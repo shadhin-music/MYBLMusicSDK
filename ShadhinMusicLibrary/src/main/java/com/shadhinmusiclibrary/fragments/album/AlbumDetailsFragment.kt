@@ -122,7 +122,6 @@ class AlbumDetailsFragment :
         }
     }
 
-
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
@@ -151,7 +150,6 @@ class AlbumDetailsFragment :
             }
         }
     }
-
 
     override fun onClickBottomItem(mSongDetails: SongDetail, artistContentData: ArtistContentData) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog(
