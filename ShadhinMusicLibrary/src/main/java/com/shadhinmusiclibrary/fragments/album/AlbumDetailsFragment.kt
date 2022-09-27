@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -8,31 +9,39 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback {
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,BottomSheetDialogItemCallback,HomeCallBack {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
+    var artistAlbumModelData:ArtistAlbumModelData ?= null
 //    private lateinit var playerViewModel: PlayerViewModel
-
+private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
     }
@@ -53,17 +62,27 @@ class AlbumDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModelArtistAlbum = ViewModelProvider(
+            this,
+            injector.artistAlbumViewModelFactory
+        )[ArtistAlbumsViewModel::class.java]
+
+
 //        createPlayerVM()
         adapter = AlbumAdapter(this,this)
-
+        footerAdapter= HomeFooterAdapter()
         ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
+        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt(), argHomePatchDetail!!.ArtistId,argHomePatchDetail!!.ContentType)
         adapter.setRootData(argHomePatchDetail!!)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = adapter
+        val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+         val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
+        recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
@@ -74,7 +93,7 @@ class AlbumDetailsFragment :
         }
     }
 
-    private fun fetchOnlineData(contentId: Int) {
+    private fun fetchOnlineData(contentId: Int, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
@@ -86,11 +105,28 @@ class AlbumDetailsFragment :
                 updateAndSetAdapter(mutableListOf())
             }
         }
+
+            viewModelArtistAlbum.fetchArtistAlbum("r", artistId.toInt())
+            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
+
+                if (res.status == Status.SUCCESS) {
+                    Log.d("TAG","DATA: "+ res.data!!.data)
+                    //updateAndSetAdapter(null,res.data!!.data)
+                } else {
+                   // showDialog()
+                }
+
+
+            }
+
     }
 
-    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+    private fun updateAndSetAdapter(
+        songList: MutableList<SongDetail>?,
+
+    ) {
         updatedSongList = mutableListOf()
-        for (songItem in songList) {
+        for (songItem in songList!!) {
             updatedSongList.add(
                 UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
             )
@@ -130,5 +166,17 @@ class AlbumDetailsFragment :
 
     override fun onClickBottomItem(mSongDetails: SongDetail, artistContentData: ArtistContentData) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+    }
+
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+        TODO("Not yet implemented")
     }
 }

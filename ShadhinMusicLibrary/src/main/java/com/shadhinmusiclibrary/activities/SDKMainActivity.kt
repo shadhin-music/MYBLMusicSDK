@@ -731,13 +731,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(
-                bsdNavController,
-                context,
-                mSongDetails,
-                argHomePatchItem,
-                argHomePatchDetail
-            )
+//            gotoArtist(
+//                bsdNavController,
+//                context,
+//                mSongDetails,
+//                argHomePatchItem,
+//                argHomePatchDetail
+//            )
             bottomSheetDialog.dismiss()
         }
     }
@@ -768,13 +768,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
-            gotoArtist(
-                bsdNavController,
-                context,
-                mSongDetails,
-                argHomePatchItem,
-                argHomePatchDetail
-            )
+//            gotoArtist(
+//                bsdNavController,
+//                context,
+//                mSongDetails,
+//                argHomePatchItem,
+//                argHomePatchDetail
+//            )
             bottomSheetDialog.dismiss()
         }
     }

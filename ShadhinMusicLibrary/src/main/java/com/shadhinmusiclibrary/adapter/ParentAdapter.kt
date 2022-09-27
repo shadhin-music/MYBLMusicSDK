@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter.Companion.VIEW_TYPE
+import com.shadhinmusiclibrary.adapter.ParentAdapter.Companion.VIEW_TYPE
+
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
@@ -60,11 +63,11 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         holder.bind(homeListData.get(position))
     }
 
-    override fun getItemCount(): Int = homeListData.size ?: 0
+    override fun getItemCount(): Int = homeListData.size
 
-    override fun getItemViewType(position: Int): Int {
+    override fun getItemViewType(position: Int):Int {
 
-        return when (homeListData.get(position).Design) {
+      return when (homeListData.get(position).Design)  {
             "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
@@ -353,6 +356,10 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
         val VIEW_POPULAR_PODCAST = 10
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
+
+
+        const val VIEW_TYPE = 10
+
     }
 }
 

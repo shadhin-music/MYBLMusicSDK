@@ -65,7 +65,7 @@
             android:clipToPadding="false"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="100dp" />
+            android:paddingBottom="50dp" />
 
         <include
             layout="@layout/powered_by"

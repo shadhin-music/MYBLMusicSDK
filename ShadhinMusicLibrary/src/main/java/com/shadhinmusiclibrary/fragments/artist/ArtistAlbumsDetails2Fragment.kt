@@ -9,11 +9,13 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.ArtistSpecificAlbumAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 
@@ -27,6 +29,7 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     private var param1: ArtistAlbumModel? = null
     private var param2: ArtistAlbumModelData? = null
     private lateinit var viewModel: AlbumViewModel
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,15 +51,19 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = ArtistSpecificAlbumAdapter()
+        footerAdapter = HomeFooterAdapter()
         setupViewModel()
         ///read data from online
         fetchOnlineData(param2!!.ContentID.toInt())
         adapter.setRootData(param2)
-
+        val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+          val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {

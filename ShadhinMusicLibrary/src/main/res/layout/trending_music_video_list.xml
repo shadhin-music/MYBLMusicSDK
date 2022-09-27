@@ -25,7 +25,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_play_circle_filled_24"
+            android:src="@drawable/ic_play_n"
             android:layout_gravity="center_vertical"/>
     </androidx.cardview.widget.CardView>
     <TextView

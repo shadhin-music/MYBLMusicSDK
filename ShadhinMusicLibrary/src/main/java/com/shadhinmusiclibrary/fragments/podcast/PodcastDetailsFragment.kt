@@ -47,7 +47,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     var podcastType: String = ""
     var contentType: String = ""
     var selectedEpisodeID: Int = 0
-
+    private lateinit var footerAdapter: HomeFooterAdapter
     //  private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +105,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         podcastHeaderAdapter = PodcastHeaderAdapter(episode)
         podcastEpisodesAdapter = PodcastEpisodesAdapter(data, this)
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
+        footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
 //            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
         parentAdapter = ConcatAdapter(
@@ -112,7 +113,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             podcastHeaderAdapter,
             PodcastTrackHeaderAdapter(),
             podcastEpisodesAdapter,
-            podcastMoreEpisodesAdapter
+            podcastMoreEpisodesAdapter, footerAdapter
 
         )
         parentAdapter.notifyDataSetChanged()
