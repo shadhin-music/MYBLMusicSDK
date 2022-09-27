@@ -39,7 +39,7 @@ import java.io.Serializable
 
 
 class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    ArtistOnItemClickCallback , BottomSheetDialogItemCallback {
+    ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
 
     //    var homePatchItem: HomePatchItem? = null
@@ -114,7 +114,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
-        artistSongAdapter = ArtistSongsAdapter(this,this)
+        artistSongAdapter = ArtistSongsAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)

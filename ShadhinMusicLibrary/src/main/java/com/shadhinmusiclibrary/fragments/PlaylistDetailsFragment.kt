@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
@@ -96,39 +98,52 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
         adapter.setSongData(updatedSongList)
     }
 
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            playerViewModel.togglePlayPause()
+        } else {
+            playItem(mSongDetails, clickItemPosition)
+        }
+    }
+
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        playItem(mSongDetails, clickItemPosition)
+        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(mSongDetails, clickItemPosition)
+        }
     }
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-//        val albumVH = currentVH as PlaylistAdapter.PlaylistVH
-//        if (songDetails.size > 0) {
-//            playerViewModel.currentMusicLiveData.observe(requireActivity(), Observer { itMus ->
-//                if (itMus != null) {
-//                    if ((itMus.rootType!! == songDetails[0].rootContentType)
-//                        && (itMus.mediaId!! == songDetails[0].ContentID)
-//                    ) {
-//                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-//                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
-//                        }
-//
-//                        playerViewModel.musicIndexLiveData.observe(requireActivity()) { itSelectedPosition ->
-//
-//                            Log.e(
-//                                "PLDF",
-//                                "getCurrentVH: Position " + itSelectedPosition + " itemViewType " + albumVH.itemViewType
-//                            )
-////                            if (itSelectedPosition == albumVH.itemViewType) {
-////                                albumVH.tvSongName!!.setTextColor(Color.YELLOW)
-////                            }
-//                        }
-//                    }
-//                }
-//            })
-//        }
-    }
+        val albumVH = currentVH as PlaylistAdapter.PlaylistVH
+        if (songDetails.size > 0 && isAdded) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+                if (itMusic != null) {
+                    if ((songDetails.indexOfFirst {
+                            it.rootContentType == itMusic.rootType &&
+                                    it.ContentID == itMusic.mediaId
+                        } != -1)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        }
 
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                            Log.e(
+                                "ADF",
+                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

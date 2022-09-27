@@ -128,10 +128,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.playListLiveData.observe(this) { itMusicList ->
             Log.e("SDKM", "playListLiveData: ")
             playerViewModel.musicIndexLiveData.observe(this) {
-                setupMainMusicPlayerAdapter(
-                    UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
-                    it
-                )
+                try {
+                    setupMainMusicPlayerAdapter(
+                        UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
+                        it
+                    )
+                } catch (exception: Exception) {
+                }
             }
         }
 
