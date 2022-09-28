@@ -71,7 +71,7 @@
 
 More usages about ShadhinSDK, please see the sample.
 
-At fast init SDK
+At first initialize SDK
 
      ShadhinMusicSdkCore.initializeSDK(userName: String,
         msID: String,
@@ -98,7 +98,6 @@ API Activity Request Type
 Rezaul Khan, rezaulkhan.gakk@gmail.com
 
 [More about developer complany: Shadhin Music Limited <img src="https://shadhinmusic.com/img/shadhinlogo.svg" width="200" height="40" />](https://shadhinmusic.com)
-
 
 ## License
 
