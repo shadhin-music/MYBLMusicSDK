@@ -64,7 +64,7 @@
 **Gradle**
 
     dependencies {
-       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.0'
+       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.3'
     }
     
  ## Usage
