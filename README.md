@@ -1,5 +1,5 @@
 # ShadhinSDK
-
+[![](https://jitpack.io/v/GakkMedia/MYBLShadhinSDK-android.svg)](https://jitpack.io/#GakkMedia/MYBLShadhinSDK-android)
 
 ## ScreenShot
 <p align="center">
@@ -64,15 +64,16 @@
 **Gradle**
 
     dependencies {
-       implementation 'com.github.
+       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.0'
     }
     
  ## Usage
 
 More usages about ShadhinSDK, please see the sample.
 
-Open *********
-     sdlkfjdkfjkdf
+Open HomeFragment
+
+     ShadhinMusicSdkCore.getHomeFragment()
      
      
   
@@ -81,14 +82,8 @@ Rezaul Khan, rezaulkhan.gakk@gmail.com
 
 [More about developer complany: Shadhin Music Limited <img src="https://shadhinmusic.com/img/shadhinlogo.svg" width="200" height="40" />](https://shadhinmusic.com)
 
-<p align="center">
-  <a style="text-decoration:none" area-label="Android">
-  [<img alt="Google Play" src="https://lh3.googleusercontent.com/SnctPmTxZhH89s1b5GMoyhmujcqSVA8p_y9RZw6LCPGAQPCjxZBhJc0Dhbzy0P3lKrGd496VV3Z5nw8youku1PStLQ8xnbl13fO1Y70eJyiRZZRZaA=s0" width="168" height="40" >](https://play.google.com/store/apps/details?id=com.gm.shadhin)
-  </a>
-  <a style="text-decoration:none" area-label="Build Status">
-    [<img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" width="168" height="40" />](https://apps.apple.com/us/app/shadhin-music/id1481808365)
-  </a>
-</p>
+<a alt='Google Play' href='https://apps.apple.com/us/app/shadhin-music/id1481808365' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg' border='0' /></a>
+<a alt='Try it on Google Play' href='https://play.google.com/store/apps/details?id=com.gm.shadhin' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://developer.android.com/images/brand/en_generic_rgb_wo_60.png' border='0' /></a>
 
 ## License
 
