@@ -223,11 +223,11 @@ class AlbumDetailsFragment :
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onArtistAlbumClick(
@@ -269,7 +269,5 @@ class AlbumDetailsFragment :
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
         observeData(mArtAlbumMod.ContentID.toInt(), mArtAlbumMod.ArtistId.toInt(), "r")
-
     }
-
 }

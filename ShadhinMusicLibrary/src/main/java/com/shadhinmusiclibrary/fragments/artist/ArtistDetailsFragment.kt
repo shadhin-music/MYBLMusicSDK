@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments.artist
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +21,9 @@ import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.*
+import com.shadhinmusiclibrary.adapter.ArtistHeaderAdapter
+import com.shadhinmusiclibrary.adapter.ArtistSongsAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -154,8 +155,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 } else {
                     progressBar.visibility = VISIBLE
                 }
-
-                Log.e("TAG", "DATA123: " + it)
             }
         }
         argHomePatchDetail.let {
@@ -166,9 +165,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 } else {
                     showDialog()
                 }
-//                progressBar.visibility= GONE
-//                artistSongAdapter.artistContent(it)
-//                Log.e("TAG","DATA: "+ it)
             }
         }
         argHomePatchDetail.let {
@@ -180,11 +176,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 } else {
                     showDialog()
                 }
-
-
             }
         }
-        Log.e("TAG", "ARTISTID: " + argHomePatchDetail?.ArtistId)
     }
 
     private fun showDialog() {

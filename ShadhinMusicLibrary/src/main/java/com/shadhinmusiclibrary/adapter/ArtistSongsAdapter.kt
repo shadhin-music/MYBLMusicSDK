@@ -20,12 +20,13 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
-                         val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+class ArtistSongsAdapter(
+    private val itemClickCB: ArtistOnItemClickCallback,
+    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
 ) :
     RecyclerView.Adapter<ArtistSongsAdapter.ViewHolder>() {
     //   private var artistContent: ArtistContent? = null
-    private var songDetail:MutableList<SongDetail> = ArrayList()
+    private var songDetail: MutableList<SongDetail> = ArrayList()
     private var artistContentList: MutableList<ArtistContentData> = ArrayList()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,11 +43,31 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(artistContentList, position)
         }
-        val ivSongMenuIcon: ImageView =  holder.itemView.findViewById(R.id.iv_song_menu_icon)
+        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
             val artistContent = artistContentList[position]
-            bottomSheetDialogItemCallback.onClickBottomItem(SongDetail(artistContent.ContentID,artistContent.image,artistContent.title,"","",artistContent.artistname,"","",
-                "","","",artistContent.ArtistId,artistContent.AlbumId,"","","","",""))
+            bottomSheetDialogItemCallback.onClickBottomItem(
+                SongDetail(
+                    artistContent.ContentID,
+                    artistContent.image,
+                    artistContent.title,
+                    "",
+                    "",
+                    artistContent.artistname,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    artistContent.ArtistId,
+                    artistContent.AlbumId,
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                )
+            )
         }
     }
 
@@ -88,22 +109,14 @@ class ArtistSongsAdapter(private val itemClickCB: ArtistOnItemClickCallback,
             textDuration.text = TimeParser.secToMin(artistContent.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , AlbumFragment.newInstance())
-//                    .commit()
             }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 
     companion object {
