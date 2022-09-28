@@ -337,6 +337,13 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
+    override fun onRootClickItem(
+        mSongDetails: MutableList<ArtistContentData>,
+        clickItemPosition: Int
+    ) {
+
+    }
+
     override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
 
     }

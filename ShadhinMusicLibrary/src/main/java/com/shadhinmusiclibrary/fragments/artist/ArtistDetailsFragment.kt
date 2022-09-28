@@ -320,6 +320,13 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
+    override fun onRootClickItem(
+        mSongDetails: MutableList<ArtistContentData>,
+        clickItemPosition: Int
+    ) {
+
+    }
+
     override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
         playItem(UtilHelper.getSongDetailToArtistContentDataList(mSongDetails), clickItemPosition)
     }
