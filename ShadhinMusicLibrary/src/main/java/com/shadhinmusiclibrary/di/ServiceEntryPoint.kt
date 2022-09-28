@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.di
 
 import android.app.Service
-import androidx.fragment.app.Fragment
 
 interface ServiceEntryPoint {
     val injector: Module

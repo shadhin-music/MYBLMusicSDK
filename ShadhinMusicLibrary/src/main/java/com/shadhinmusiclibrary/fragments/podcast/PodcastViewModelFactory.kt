@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.fragments.podcast
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.shadhinmusiclibrary.data.repository.AlbumContentRepository
 import com.shadhinmusiclibrary.data.repository.PodcastRepository
 
 class PodcastViewModelFactory(private val podcastRepository: PodcastRepository) :

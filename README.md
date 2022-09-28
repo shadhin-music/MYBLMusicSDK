@@ -71,19 +71,31 @@
 
 More usages about ShadhinSDK, please see the sample.
 
+At fast init SDK
+
+     ShadhinMusicSdkCore.initializeSDK("", "", "", "")
+
 Open HomeFragment
 
      ShadhinMusicSdkCore.getHomeFragment()
      
+Open API Activity
+
+     ShadhinMusicSdkCore.openActivity(context)
+
+API Activity Request Type
      
+     ShadhinMusicSdkCore.API_FeaturedPodcast
+     ShadhinMusicSdkCore.API_PopularArtists 
+     ShadhinMusicSdkCore.API_LatestRelease
+     ShadhinMusicSdkCore.API_Videos
+     ShadhinMusicSdkCore.API_Tunes
   
 ## Author
 Rezaul Khan, rezaulkhan.gakk@gmail.com
 
 [More about developer complany: Shadhin Music Limited <img src="https://shadhinmusic.com/img/shadhinlogo.svg" width="200" height="40" />](https://shadhinmusic.com)
 
-<a alt='Google Play' href='https://apps.apple.com/us/app/shadhin-music/id1481808365' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg' border='0' /></a>
-<a alt='Try it on Google Play' href='https://play.google.com/store/apps/details?id=com.gm.shadhin' target='_blank' align='right'><img align='right' height='36' style='border:0px;height:36px;' src='https://developer.android.com/images/brand/en_generic_rgb_wo_60.png' border='0' /></a>
 
 ## License
 

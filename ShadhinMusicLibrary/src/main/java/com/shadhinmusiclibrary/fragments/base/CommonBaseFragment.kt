@@ -2,9 +2,7 @@ package com.shadhinmusiclibrary.fragments.base
 
 import android.os.Bundle
 import androidx.annotation.Nullable
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
-import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
