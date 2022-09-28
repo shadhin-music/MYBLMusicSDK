@@ -41,9 +41,6 @@ import java.io.Serializable
 class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
-
-    //    var homePatchItem: HomePatchItem? = null
-//    var homePatchDetail: HomePatchDetail? = null
     var artistContent: ArtistContent? = null
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
@@ -56,13 +53,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private lateinit var artistSongAdapter: ArtistSongsAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//            homePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,19 +75,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 navController.popBackStack()
             }
         }
-//        val dataAdapter = ArtistDetailsAdapter(homePatchItem)
-//        dataAdapter.setData(homePatchDetail)
-//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-//        recyclerView.layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        recyclerView.adapter = dataAdapter
-//        val back: ImageView? = view.findViewById(R.id.imageBack)
-//
-//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//        back?.setOnClickListener {
-//            manager.popBackStack("Artist Fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
-//        }
     }
 
     private fun initialize() {
@@ -123,7 +100,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             artistHeaderAdapter,
             artistSongAdapter,
             artistAlbumsAdapter,
-            artistsYouMightLikeAdapter,footerAdapter
+            artistsYouMightLikeAdapter, footerAdapter
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
@@ -163,14 +140,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
-                //  Log.e("TAG","DATA321: "+ response.message )
-                // Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
-                //  showDialog()
             }
-
-//            ArtistHeaderAdapter(it)
-            // viewDataInRecyclerView(it)
-
         }
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->
@@ -222,24 +192,13 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             .setIcon(android.R.drawable.ic_dialog_alert) //set title
             .setTitle("An error occurred") //set message
             .setMessage("Go back to previous page") //set positive button
-            .setPositiveButton("Okay",
-                DialogInterface.OnClickListener { dialogInterface, i ->
-                    requireActivity().finish()
-                })
+            .setPositiveButton(
+                "Okay"
+            ) { _, _ ->
+                requireActivity().finish()
+            }
 
             .show()
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
-            ArtistDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("homePatchItem", homePatchItem)
-                    putSerializable("homePatchDetail", homePatchDetail)
-                }
-            }
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
@@ -313,14 +272,19 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
     }
 
-//    override fun onAlbumClick(itemPosition: Int, songDetail: MutableList<ArtistAlbumModelData>) {
-//        TODO("Not yet implemented")
-//    }
-
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
     override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
+//        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+//            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+//                playerViewModel.skipToQueueItem(clickItemPosition)
+//            } else {
+//                playerViewModel.togglePlayPause()
+//            }
+//        } else {
+//            playItem(mSongDetails, clickItemPosition)
+//        }
         playItem(UtilHelper.getSongDetailToArtistContentDataList(mSongDetails), clickItemPosition)
     }
 
@@ -333,6 +297,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog2(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog2(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }
