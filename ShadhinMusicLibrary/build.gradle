@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'maven-publish'
 }
 
 android {
@@ -67,4 +68,17 @@ dependencies {
 
     //image to get color and set in player background
     implementation 'androidx.palette:palette:1.0.0'
+}
+//For Maven Publish
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = "com.shadhinmusiclibrary"
+                artifactId = "shadhinSDK"
+                version = "1.0"
+            }
+        }
+    }
 }
