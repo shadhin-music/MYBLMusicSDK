@@ -73,7 +73,10 @@ More usages about ShadhinSDK, please see the sample.
 
 At fast init SDK
 
-     ShadhinMusicSdkCore.initializeSDK("", "", "", "")
+     ShadhinMusicSdkCore.initializeSDK(userName: String,
+        msID: String,
+        imageUrl: String,
+        token: String)
 
 Open HomeFragment
 
@@ -81,7 +84,7 @@ Open HomeFragment
      
 Open API Activity
 
-     ShadhinMusicSdkCore.openActivity(context)
+     ShadhinMusicSdkCore.openActivity(reqContext: Context, reqId: Int)
 
 API Activity Request Type
      

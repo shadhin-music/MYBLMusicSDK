@@ -20,14 +20,6 @@ internal class ViewPagerAdapter(
     override fun getItem(position: Int): Fragment {
 //        return  SearchFragment()
 
-        ShadhinMusicSdkCore.openActivity(context)
-        ShadhinMusicSdkCore.API_FeaturedPodcast
-        ShadhinMusicSdkCore.API_PopularArtists
-        ShadhinMusicSdkCore.API_LatestRelease
-        ShadhinMusicSdkCore.API_Videos
-        ShadhinMusicSdkCore.API_Tunes
-
-
         return when (position) {
             0 -> {
                 ShadhinMusicSdkCore.getHomeFragment()

@@ -26,7 +26,7 @@ object ShadhinMusicSdkCore {
 
     }
 
-    fun openActivity(reqContext: Context) {
+    fun openActivity(reqContext: Context, reqId: Int) {
 
     }
 
