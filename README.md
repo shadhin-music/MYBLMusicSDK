@@ -64,7 +64,7 @@
 **Gradle**
 
     dependencies {
-       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.3'
+       implementation 'com.github.shadhin-music:MYBLMusicSDK:v1.0.3'
     }
     
  ## Usage
@@ -73,27 +73,25 @@ More usages about ShadhinSDK, please see the sample.
 
 At first initialize SDK. And implement
      
-     override fun tokenStatus(): Boolean {
-     ....
-     }   
+     interface ShadhinSDKCallback {
+     //after initializeSDK this method will be notify
+     //about the token status
+     fun tokenStatus(isTokenValid: Boolean, error: String)
+     }
 
-     ShadhinMusicSdkCore.initializeSDK(token: String, refShaSdkCall: ShadhinSDKCallback)
+     ShadhinMusicSdkCore.initializeSDK(token: String, refSdkCall: ShadhinSDKCallback)
 
 Open HomeFragment
 
-     ShadhinMusicSdkCore.getHomeFragment()
+     ShadhinMusicSdkCore.getMusicFragment()
      
 Open API Activity
 
-     ShadhinMusicSdkCore.openActivity(reqContext: Context, reqId: Int)
+     ShadhinMusicSdkCore.openPatch(reqContext: Context, reqId: Int)
 
 API Activity Request Type
      
-     ShadhinMusicSdkCore.API_FeaturedPodcast
-     ShadhinMusicSdkCore.API_PopularArtists 
-     ShadhinMusicSdkCore.API_LatestRelease
-     ShadhinMusicSdkCore.API_Videos
-     ShadhinMusicSdkCore.API_Tunes
+     get rcode from API
   
 ## Author
 Rezaul Khan, rezaulkhan.gakk@gmail.com
