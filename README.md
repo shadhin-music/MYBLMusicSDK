@@ -1,5 +1,6 @@
 # ShadhinSDK
 [![](https://jitpack.io/v/GakkMedia/MYBLShadhinSDK-android.svg)](https://jitpack.io/#GakkMedia/MYBLShadhinSDK-android)
+[![](https://jitpack.io/v/shadhin-music/MYBLMusicSDK.svg)](https://jitpack.io/#shadhin-music/MYBLMusicSDK)
 
 ## ScreenShot
 <p align="center">
@@ -87,7 +88,7 @@ Open HomeFragment
      
 Open API Activity
 
-     ShadhinMusicSdkCore.openPatch(reqContext: Context, reqId: Int)
+     ShadhinMusicSdkCore.openPatch(reqContext: Context, requestId: Int)
 
 API Activity Request Type
      
