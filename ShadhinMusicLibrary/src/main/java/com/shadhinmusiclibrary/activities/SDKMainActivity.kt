@@ -165,10 +165,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun routeDataPatch(contentType: String) {
         when (contentType.uppercase()) {
-            DataContentType.CONTENT_TYPE_A -> {
+            DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
             }
-            DataContentType.CONTENT_TYPE_R -> {
+            DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
             DataContentType.CONTENT_TYPE_WV -> {
