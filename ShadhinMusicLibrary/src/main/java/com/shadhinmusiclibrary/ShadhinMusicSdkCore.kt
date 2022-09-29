@@ -7,6 +7,7 @@ import com.shadhinmusiclibrary.fragments.home.HomeFragment
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
 
+
     fun getHomeFragment(): Fragment {
         return HomeFragment()
     }

@@ -64,19 +64,20 @@
 **Gradle**
 
     dependencies {
-       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.0'
+       implementation 'com.github.GakkMedia:MYBLShadhinSDK-android:1.0.3'
     }
     
  ## Usage
 
 More usages about ShadhinSDK, please see the sample.
 
-At first initialize SDK
+At first initialize SDK. And implement
+     
+     override fun tokenStatus(): Boolean {
+     ....
+     }   
 
-     ShadhinMusicSdkCore.initializeSDK(userName: String,
-        msID: String,
-        imageUrl: String,
-        token: String)
+     ShadhinMusicSdkCore.initializeSDK(token: String, refShaSdkCall: ShadhinSDKCallback)
 
 Open HomeFragment
 

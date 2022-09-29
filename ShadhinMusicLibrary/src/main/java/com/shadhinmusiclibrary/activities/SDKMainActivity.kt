@@ -118,7 +118,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         routeData(patch, selectedPatchIndex)
 
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
-            Log.e("SDKM", "currentMusicLiveData: ")
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
                 isPlayOrPause = itMus.isPlaying!!
@@ -126,7 +125,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
 
         playerViewModel.playListLiveData.observe(this) { itMusicList ->
-            Log.e("SDKM", "playListLiveData: ")
             playerViewModel.musicIndexLiveData.observe(this) {
                 try {
                     setupMainMusicPlayerAdapter(
@@ -274,7 +272,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
                 DataContentType.CONTENT_TYPE_V -> {
@@ -285,7 +282,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
             }
@@ -316,7 +312,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun miniPlayerHideShow(playing: Boolean) {
-        //at fast show mini player
+        // at fast show mini player
         // getDPfromPX paramerer pass pixel. how many height layout show.
         // this mini player height 72dp thats why i set 73dp view show
         if (playing) {
@@ -490,11 +486,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
-//        playerViewModel.currentMusicLiveData.observe(this, Observer {
         tvSongName.text = mSongDetails[clickItemPosition].title
         tvSingerName.text = mSongDetails[clickItemPosition].artist
-//        })
-
 
         dsvCurrentPlaySongsThumb.addOnItemChangedListener { viewHolder, _ ->
             if (viewHolder != null) {
@@ -552,11 +545,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                             R.color.colorTransparent
                         ), PorterDuff.Mode.SRC_IN
                     )
-//                setControlColor(true, ibtnControl)
                 }
                 PlaybackStateCompat.REPEAT_MODE_ALL -> {
                     setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_on_24)
-//                setControlColor(true, ibtnControl)
                     ibtnShuffle.isEnabled = true
                     ibtnShuffle.setColorFilter(0)
                 }
@@ -566,11 +557,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.shuffleLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.SHUFFLE_MODE_NONE -> {
-//                    setControlColor(false, ibtnShuffle)
                     ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_24)
                 }
                 PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
-//                    setControlColor(true, ibtnShuffle)
                     ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_on_24)
                 }
             }
@@ -597,19 +586,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
 
         ibtnVolume.setOnClickListener {
-//            setControlColor(true, ibtnVolume)
         }
 
         ibtnLibraryAdd.setOnClickListener {
-//            setControlColor(true, ibtnLibraryAdd)
         }
 
         ibtnQueueMusic.setOnClickListener {
-//            setControlColor(true, ibtnQueueMusic)
         }
 
         ibtnDownload.setOnClickListener {
-//            setControlColor(true, ibtnDownload)
         }
 
         acivMinimizePlayerBtn.setOnClickListener {
@@ -746,6 +731,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
     }
+
     fun showBottomSheetDialog2(
         bsdNavController: NavController,
         context: Context,
@@ -785,6 +771,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
     }
+
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,

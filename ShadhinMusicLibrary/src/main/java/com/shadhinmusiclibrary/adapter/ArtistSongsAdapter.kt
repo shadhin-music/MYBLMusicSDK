@@ -109,7 +109,6 @@ class ArtistSongsAdapter(
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
