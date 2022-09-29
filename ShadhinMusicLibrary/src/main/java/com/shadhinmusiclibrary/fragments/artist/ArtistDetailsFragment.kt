@@ -92,11 +92,9 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
 //            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 //        recyclerView.adapter = dataAdapter
 //        val back: ImageView? = view.findViewById(R.id.imageBack)
-//
 //        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //        back?.setOnClickListener {
 //            manager.popBackStack("Artist Fragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
 //        }
     }
 
