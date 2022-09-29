@@ -1,13 +1,8 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.content.Context
-import android.nfc.cardemulation.CardEmulation
-import android.provider.Settings.Global.getString
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,32 +11,41 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
-    RecyclerView.Adapter<ArtistHeaderAdapter.HeaderViewHolder>() {
+class ArtistHeaderAdapter(
+    var homePatchDetail: HomePatchDetail?,
+    private val itemClickCB: ArtistOnItemClickCallback
+) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
 
+    private var dataSongDetail: MutableList<ArtistContentData> = mutableListOf()
     var bio: LastFmResult? = null
     var banner: ArtistBanner? = null
     private var parentView: View? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.artist_details_header, parent, false)
-        return HeaderViewHolder(parentView!!)
+        return ArtistHeaderVH(parentView!!)
     }
 
 
-    override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArtistHeaderVH, position: Int) {
         holder.bindItems(homePatchDetail)
-
-
+        itemClickCB.getCurrentVH(holder, dataSongDetail)
+        holder.ivPlayBtn?.setOnClickListener {
+            itemClickCB.onRootClickItem(dataSongDetail, position)
+        }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
+
     override fun getItemCount(): Int {
         return 1
     }
@@ -53,8 +57,6 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
 
     fun artistBio(bio: LastFmResult?) {
         this.bio = bio
-
-
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
 //            moreText.setOnClickListener { e ->
@@ -73,20 +75,23 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
         this.banner = banner
     }
 
-    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ArtistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
+        var ivPlayBtn: ImageView? = null
+
         fun bindItems(homePatchDetail: HomePatchDetail?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
+            ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
-            var url: String = homePatchDetail!!.getImageUrl300Size()
+            val url: String = homePatchDetail!!.getImageUrl300Size()
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
             val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
-            if(updatedbio.length>25){
-                cardBiography.visibility= VISIBLE
+            if (updatedbio.length > 25) {
+                cardBiography.visibility = VISIBLE
             }
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
@@ -114,15 +119,10 @@ class ArtistHeaderAdapter(var homePatchDetail: HomePatchDetail?) :
                     moreText.text = "Less"
                 }
             }
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
                 .load(url)
                 .into(imageView)
-
-
-
         }
-
     }
 
     companion object {

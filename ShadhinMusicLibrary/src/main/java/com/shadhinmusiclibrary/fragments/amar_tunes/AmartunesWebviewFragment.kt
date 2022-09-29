@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.fragments.amar_tunes
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.R
-
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class AmartunesWebviewFragment : Fragment() {
 
@@ -35,8 +29,8 @@ class AmartunesWebviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       val mWebview:WebView = requireView().findViewById(R.id.webview)
-         //  mWebview.settings.javaScriptEnabled =true
+        val mWebview: WebView = requireView().findViewById(R.id.webview)
+        //  mWebview.settings.javaScriptEnabled =true
         mWebview.getSettings().setLoadsImagesAutomatically(true)
         mWebview.getSettings().setJavaScriptEnabled(true)
         mWebview.getSettings().setAllowContentAccess(true)
@@ -65,17 +59,19 @@ class AmartunesWebviewFragment : Fragment() {
         mWebview.setWebViewClient(WebViewClient())
         mWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH)
         mWebview.setInitialScale(1)
-          // mWebview.loadUrl("http://www.google.com")
-           mWebview.loadUrl("http://amartune.banglalink.net/pwa/home")
-         //  Log.e("TAG", "URL: "+ "http://amartune.banglalink.net/pwa/home")
-           mWebview.setWebViewClient(MyWebViewClient())
+        // mWebview.loadUrl("http://www.google.com")
+        mWebview.loadUrl("http://amartune.banglalink.net/pwa/home")
+        //  Log.e("TAG", "URL: "+ "http://amartune.banglalink.net/pwa/home")
+        mWebview.setWebViewClient(MyWebViewClient())
     }
+
     private class MyWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             view.loadUrl(url)
             return true
         }
     }
+
     companion object {
 
 

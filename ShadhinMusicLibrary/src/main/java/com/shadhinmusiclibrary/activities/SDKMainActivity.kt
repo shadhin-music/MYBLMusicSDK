@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -108,14 +107,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         uiInitMainMusicPlayer()
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-        //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(PatchItem)!!
-            .getSerializable(PatchItem) as HomePatchItem
-        var selectedPatchIndex: Int? = null
-        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
-            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        //Will received request from Any page from MYBLL app
+        val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
+        if (uiRequest == AppConstantUtils.Requester_Name_Home) {
+            homeFragmentAccess()
         }
-        routeData(patch, selectedPatchIndex)
+        if (uiRequest == AppConstantUtils.Requester_Name_API) {
+            patchFragmentAccess()
+        }
 
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
@@ -145,7 +144,40 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
     }
 
-    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
+    private fun homeFragmentAccess() {
+        //Will received data from Home Fragment from MYBLL App
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+        var selectedPatchIndex: Int? = null
+        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
+            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        }
+
+        routeDataHomeFragment(patch, selectedPatchIndex)
+    }
+
+    private fun patchFragmentAccess() {
+        val dataContentType =
+            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
+
+        routeDataPatch(dataContentType)
+    }
+
+    private fun routeDataPatch(contentType: String) {
+        when (contentType.uppercase()) {
+            DataContentType.CONTENT_TYPE_A -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_R -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_WV -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            }
+        }
+    }
+
+    private fun routeDataHomeFragment(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
@@ -621,7 +653,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
-            Log.e("SDKM", "playerProgress: ")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
@@ -780,7 +811,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-        Log.e("SDKMA", "gotoArtist: ")
         when (argHomePatchDetail?.ContentType?.uppercase()) {
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details

@@ -25,11 +25,11 @@ import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.utils.Status
 
 
-class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPoint {
+class FeaturedPopularArtistFragment : Fragment(), HomeCallBack, FragmentEntryPoint {
 
-    private var homePatchitem: HomePatchItem?= null
+    private var homePatchitem: HomePatchItem? = null
 
-     lateinit var viewModel:PopularArtistViewModel
+    lateinit var viewModel: PopularArtistViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        arguments?.let {
@@ -37,33 +37,37 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
 //           // Log.d("TaG","Message123: "+ homePatchitem)
 //        }
     }
-    private fun setupViewModel() {
 
+    private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.popularArtistViewModelFactory)[PopularArtistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.popularArtistViewModelFactory
+            )[PopularArtistViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_featured_popular_artist, container1, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TaG","Message: "+ homePatchitem)
+        Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         //tvTitle.text =  homePatchitem?.Name
-         setupViewModel()
+        setupViewModel()
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY","MESSAGE: ")
+            Log.d("TAGGGGGGGY", "MESSAGE: ")
             val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager?.popBackStack("Fragment", 0);
-           // ShadhinMusicSdkCore.getHomeFragment()
+            // ShadhinMusicSdkCore.getHomeFragment()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager.beginTransaction()
@@ -75,6 +79,7 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
 //            }
         }
     }
+
     fun observeData() {
         viewModel.fetchPouplarArtist()
         viewModel.popularArtistContent.observe(viewLifecycleOwner) { response ->
@@ -84,7 +89,14 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
                     GridLayoutManager(requireContext(), 4)
 //          Log.e("TAG","ID: "+ argHomePatchItem)
                 recyclerView.adapter =
-                    response.data?.let { it?.data?.let { it1 -> FeaturedPopularArtistAdapter(it1,this) } }
+                    response.data?.let {
+                        it?.data?.let { it1 ->
+                            FeaturedPopularArtistAdapter(
+                                it1,
+                                this
+                            )
+                        }
+                    }
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
@@ -92,28 +104,28 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
             }
         }
     }
+
     companion object {
 
         @JvmStatic
-        fun newInstance()=
+        fun newInstance() =
 //        fun newInstance(homePatchitem: HomePatchItem) =
             FeaturedPopularArtistFragment().apply {
                 arguments = Bundle().apply {
-                 //   putSerializable("homePatchitem", homePatchitem)
+                    //   putSerializable("homePatchitem", homePatchitem)
 
                 }
             }
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
     }
 }

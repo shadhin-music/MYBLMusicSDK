@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_grap_patch_type_a"
+    app:startDestination="@id/featuredPopularArtistFragment">
+
+    <fragment
+        android:id="@+id/featuredPopularArtistFragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment"
+        tools:layout="@layout/fragment_featured_popular_artist" />
+
+</navigation>

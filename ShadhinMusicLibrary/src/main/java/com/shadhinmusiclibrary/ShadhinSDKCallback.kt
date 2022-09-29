@@ -1,5 +1,5 @@
 package com.shadhinmusiclibrary
 
 interface ShadhinSDKCallback {
-    fun tokenStatus(): Boolean
+    fun tokenStatus(isTokenValid: Boolean, error: String)
 }

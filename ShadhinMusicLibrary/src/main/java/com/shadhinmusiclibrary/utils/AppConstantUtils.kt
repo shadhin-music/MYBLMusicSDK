@@ -20,4 +20,8 @@ internal object AppConstantUtils {
     const val LAST_FM_API_KEY = "55dd9a0fd0790ee3219022141a8cdf39"
     const val LAST_FM_CONTENT_TYPE_JSON = "json"
 
+    const val DataContentRequestId = "DataContentRequestId"
+    const val UI_Request_Type = "UIName"
+    const val Requester_Name_Home = "HomeFragment"
+    const val Requester_Name_API = "AllMusic"
 }

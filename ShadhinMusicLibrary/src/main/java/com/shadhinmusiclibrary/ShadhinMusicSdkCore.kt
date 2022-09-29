@@ -1,14 +1,17 @@
 package com.shadhinmusiclibrary
 
 import android.content.Context
+import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
 
-
-    fun getHomeFragment(): Fragment {
+    //get Music frangment
+    fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
 
@@ -27,8 +30,16 @@ object ShadhinMusicSdkCore {
 
     }
 
-    fun openActivity(reqContext: Context, reqId: Int) {
-
+    fun openPatch(reqContext: Context, requestId: String) {
+        reqContext.startActivity(
+            Intent(
+                reqContext,
+                SDKMainActivity::class.java
+            ).apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_API)
+                putExtra(AppConstantUtils.DataContentRequestId, requestId)
+            }
+        )
     }
 
     internal fun pressCountIncrement() {
