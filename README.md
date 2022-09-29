@@ -64,7 +64,7 @@
 **Gradle**
 
     dependencies {
-       implementation 'com.github.shadhin-music:MYBLMusicSDK:v1.0.3'
+       implementation 'com.github.shadhin-music:MYBLMusicSDK:1.0.4'
     }
     
  ## Usage
