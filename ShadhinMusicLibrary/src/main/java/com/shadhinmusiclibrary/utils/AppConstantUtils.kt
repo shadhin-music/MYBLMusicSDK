@@ -19,5 +19,5 @@ internal object AppConstantUtils {
     const val LAST_FM_MIN_BIO_CHAR = 100
     const val LAST_FM_API_KEY = "55dd9a0fd0790ee3219022141a8cdf39"
     const val LAST_FM_CONTENT_TYPE_JSON = "json"
-
+    const val token = "token"
 }

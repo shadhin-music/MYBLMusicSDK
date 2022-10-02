@@ -35,6 +35,7 @@ class FeaturedHomeFragment : CommonBaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+        val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
         btnPopularArtist.setOnClickListener {
             val manager: FragmentManager =
@@ -57,6 +58,14 @@ class FeaturedHomeFragment : CommonBaseFragment() {
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, AmartunesWebviewFragment.newInstance())
+                .addToBackStack("Fragment")
+                .commit()
+        }
+        btnMusicVideos.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1,MusicVideoFragment() )
                 .addToBackStack("Fragment")
                 .commit()
         }

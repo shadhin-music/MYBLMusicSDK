@@ -21,10 +21,10 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 class ArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
-    val homeCallBack: HomeCallBack,
-    var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+     val homeCallBack: HomeCallBack,
+     var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
 
-    var adapter: ArtistAdapter? = null
+     var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)

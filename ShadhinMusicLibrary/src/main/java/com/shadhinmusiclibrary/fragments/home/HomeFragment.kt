@@ -21,11 +21,16 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.RBT
+import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
@@ -37,6 +42,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     var isLastPage = false
     private lateinit var rvAllHome: RecyclerView
       private lateinit var footerAdapter: HomeFooterAdapter
+      private var rbt: RBT ? = null
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -56,6 +62,20 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         super.onViewCreated(view, savedInstanceState)
         Log.e("Home", "onViewCreated Message: " + pageNum)
         viewModel!!.fetchHomeData( pageNum,false)
+
+
+//        val jsonObject = JSONObject()
+//        jsonObject.put("first_name", "")
+//        jsonObject.put("last_name", "3540")
+//        jsonObject.put("gender", "")
+//        jsonObject.put("msisdn","8801718755949")
+//
+//
+//        val jsonObjectString = jsonObject.toString()
+//
+//
+//        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+//        viewModel!!.fetchRBTURL(requestBody)
         observeData()
     }
 
@@ -71,8 +91,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             }
             isLoading = false
         }
-    }
 
+    }
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {

@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
+import com.shadhinmusiclibrary.fragments.search.SearchViewModelFactory
 import com.shadhinmusiclibrary.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
@@ -162,6 +163,7 @@ class Module(private val applicationContext: Context) {
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
         HomeContentRepository(getApiShadhinMusicServiceV5())
+
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
         ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistSongContent: ArtistSongContentRepository =
@@ -209,7 +211,10 @@ class Module(private val applicationContext: Context) {
         featuredtrackListRepository)
 
 
-
+    val searchRepository: SearchRepository get() = SearchRepository(
+        artistAlbumApiService)
+    val searchViewModelFactory: SearchViewModelFactory get()= SearchViewModelFactory(
+        searchRepository)
 
 
     val exoplayerCache: SimpleCache

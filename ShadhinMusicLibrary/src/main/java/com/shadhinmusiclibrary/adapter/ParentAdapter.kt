@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,13 +25,17 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter.Companion.VIEW_TYPE
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.RBT
+import com.shadhinmusiclibrary.data.model.RBTDATA
+
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
+import com.shadhinmusiclibrary.fragments.search.SearchFragment
 
 
-class ParentAdapter(val homeCallBack: HomeCallBack) :
+class ParentAdapter(var homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
     private var homeListData: MutableList<HomePatchItem> = mutableListOf()
-
+    private  var rbt:MutableList<RBT> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
             VIEW_SEARCH-> R.layout.item_search
@@ -116,6 +121,18 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
+
+        private fun bindSearch(){
+            val search:TextView = itemView.findViewById(R.id.searchInput)
+                search.setOnClickListener {
+                    val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
+                manager.beginTransaction()
+                    .replace(R.id.container, SearchFragment.newInstance() )
+                    .addToBackStack("Fragment")
+                    .commit()
+                    Log.e("TAG","Hello")
+                }
+        }
         private fun bindArtist(homePatchItem: HomePatchItem, homeCallBack: HomeCallBack) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
@@ -204,6 +221,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             title.text = homePatchItem.Name
             val image:ShapeableImageView = itemView.findViewById(R.id.image)
               Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+           // Log.e("TAG","URL: "+ rbtdata)
             itemView.setOnClickListener {
                 val manager: FragmentManager =
                 (mContext as AppCompatActivity).supportFragmentManager
@@ -307,7 +325,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
-                "search"->bindAd()
+                "search"->bindSearch()
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
