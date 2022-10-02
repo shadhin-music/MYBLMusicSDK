@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -53,7 +54,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
 
     //mini music player
-    private lateinit var llMiniMusicPlayer: LinearLayout
+    private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
     private lateinit var tvSongNameMini: TextView
     private lateinit var tvSingerNameMini: TextView

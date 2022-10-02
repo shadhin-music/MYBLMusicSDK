@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -18,23 +15,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PatchCallBack
+import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class FeaturedPopularArtistFragment : CommonBaseFragment(), HomeCallBack {
+class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
     lateinit var viewModel: PopularArtistViewModel
-
 
     private fun setupViewModel() {
         viewModel =
@@ -63,7 +59,6 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), HomeCallBack {
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY", "MESSAGE: ")
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager?.popBackStack("Fragment", 0);
@@ -74,9 +69,11 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), HomeCallBack {
 //                .replace(R.id.container1, HomeFragment())
 //                .addToBackStack(null)
 //                .commit()
-//            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-//                requireActivity().finish()
-//            }
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            } else {
+                navController.popBackStack()
+            }
         }
     }
 
@@ -100,27 +97,29 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), HomeCallBack {
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
         ShadhinMusicSdkCore.pressCountIncrement()
-        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
+        val sSelectedData = selectedData[itemPosition]
         navController.navigate(
             R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    selectedHomePatchItem as Serializable
+                    UtilHelper.getHomePatchItemToData(selectedData) as Serializable
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    homePatchDetail as Serializable
+                    UtilHelper.getHomePatchDetailToData(sSelectedData) as Serializable
                 )
             })
+//            AppConstantUtils.PatchDetail,
+//            UtilHelper.getHomePatchDetailToData(selectedData) as Serializable
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//
+//    }
 
-    }
-
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-    }
+//    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+//    }
 }

@@ -61,5 +61,5 @@ interface ApiService {
     suspend fun fetchPopularArtist(): PopularArtistModel
 
     @GET("track/GetLatestTrack")
-    suspend fun fetchFeaturedTrackList(): FeaturedLatestTrackListModel
+    suspend fun fetchFeaturedTrackList(): APIResponse<MutableList<FeaturedSongDetail>>
 }

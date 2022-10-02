@@ -85,7 +85,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun setupAdapters() {
-
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -146,8 +145,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->
-                it1?.toInt()
-                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
+                it1.toInt().let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
