@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.fragments.AllFragment
-import com.shadhinmusiclibrary.fragments.FeaturedHomeFragment
 
 
 @Suppress("DEPRECATION")
@@ -19,9 +17,10 @@ internal class ViewPagerAdapter(
 
     override fun getItem(position: Int): Fragment {
 //        return  SearchFragment()
+
         return when (position) {
             0 -> {
-                ShadhinMusicSdkCore.getHomeFragment()
+                ShadhinMusicSdkCore.getMusicFragment()
             }
             1 -> {
                 FeaturedHomeFragment()

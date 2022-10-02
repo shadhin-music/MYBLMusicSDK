@@ -1,65 +1,42 @@
-package com.shadhinmusiclibrary.fragments
+package com.co.shadhinmusicsdk
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.activities.video.VideoActivity
-import com.shadhinmusiclibrary.data.fake.FakeData.VideoJOSN
-import com.shadhinmusiclibrary.data.model.Video
+import androidx.fragment.app.Fragment
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.fragments.home.HomeViewModel
-import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
-import com.shadhinmusiclibrary.utils.Status
 
-class FeaturedHomeFragment : CommonBaseFragment() {
+class FeaturedHomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_featured_home, container, false)
+        return inflater.inflate(
+            R.layout.fragment_featured_home,
+            container,
+            false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnrelease: Button= requireView().findViewById(R.id.btnLatestRelease)
+        val btnrelease: Button = requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
         val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
+
         btnPopularArtist.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,FeaturedPopularArtistFragment() )
-                .addToBackStack("Fragment")
-                .commit()
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
         btnrelease.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1,LatestReleaseFragment() )
-                .addToBackStack("Fragment")
-                .commit()
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC201")
         }
         btnAmartunes.setOnClickListener {
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1, AmartunesWebviewFragment.newInstance())
-                .addToBackStack("Fragment")
-                .commit()
+            ShadhinMusicSdkCore.openPatch(requireContext(), "AT")
         }
         btnMusicVideos.setOnClickListener {
             val manager: FragmentManager =

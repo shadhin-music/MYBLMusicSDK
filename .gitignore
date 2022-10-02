@@ -42,3 +42,4 @@ local.properties
 /library/smoothstreaming/buildout/
 /library/ui/build/
 /library/ui/buildout/
+/.idea/

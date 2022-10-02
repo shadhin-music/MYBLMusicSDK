@@ -25,10 +25,10 @@ import java.io.Serializable
 
 
 class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
-    //    var argHomePatchItem: HomePatchItem? = null
+
     private lateinit var navController: NavController
-   private lateinit var footerAdapter: HomeFooterAdapter
-   private lateinit var popularArtistAdapter:PopularArtistAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var popularArtistAdapter: PopularArtistAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -43,7 +43,7 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         super.onViewCreated(view, savedInstanceState)
         val verticalSpanCount = 1
         val horizontalSpanCount = 4
-         footerAdapter = HomeFooterAdapter()
+        footerAdapter = HomeFooterAdapter()
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
 
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -52,7 +52,7 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,popularArtistAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, popularArtistAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -65,13 +65,13 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         recyclerView.adapter = concatAdapter
 //        val argHomePatchItem =
 //            arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
-       val tvTitle:TextView = requireView().findViewById(R.id.tvTitle)
+        val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         tvTitle.text = argHomePatchItem?.Name
 //        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager =
 //            GridLayoutManager(requireContext(), 4)
-          recyclerView.adapter = concatAdapter
-       // recyclerView.adapter =
+        recyclerView.adapter = concatAdapter
+        // recyclerView.adapter =
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {

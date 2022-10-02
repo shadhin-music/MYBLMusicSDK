@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.fragments.artist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.shadhinmusiclibrary.data.repository.ArtistBannerContentRepository
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
 
 

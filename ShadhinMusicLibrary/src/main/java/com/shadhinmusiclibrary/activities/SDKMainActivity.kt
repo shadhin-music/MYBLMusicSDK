@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -108,17 +107,16 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         uiInitMainMusicPlayer()
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-        //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(PatchItem)!!
-            .getSerializable(PatchItem) as HomePatchItem
-        var selectedPatchIndex: Int? = null
-        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
-            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        //Will received request from Any page from MYBLL app
+        val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
+        if (uiRequest == AppConstantUtils.Requester_Name_Home) {
+            homeFragmentAccess()
         }
-        routeData(patch, selectedPatchIndex)
+        if (uiRequest == AppConstantUtils.Requester_Name_API) {
+            patchFragmentAccess()
+        }
 
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
-            Log.e("SDKM", "currentMusicLiveData: ")
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
                 isPlayOrPause = itMus.isPlaying!!
@@ -126,7 +124,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
 
         playerViewModel.playListLiveData.observe(this) { itMusicList ->
-            Log.e("SDKM", "playListLiveData: ")
             playerViewModel.musicIndexLiveData.observe(this) {
                 try {
                     setupMainMusicPlayerAdapter(
@@ -147,7 +144,40 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
     }
 
-    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
+    private fun homeFragmentAccess() {
+        //Will received data from Home Fragment from MYBLL App
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+        var selectedPatchIndex: Int? = null
+        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
+            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        }
+
+        routeDataHomeFragment(patch, selectedPatchIndex)
+    }
+
+    private fun patchFragmentAccess() {
+        val dataContentType =
+            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
+
+        routeDataPatch(dataContentType)
+    }
+
+    private fun routeDataPatch(contentType: String) {
+        when (contentType.uppercase()) {
+            DataContentType.CONTENT_TYPE_A_RC203 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_R_RC201 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_WV -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            }
+        }
+    }
+
+    private fun routeDataHomeFragment(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
@@ -274,7 +304,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
                 DataContentType.CONTENT_TYPE_V -> {
@@ -285,7 +314,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                            Log.d("TAG", "CLICK ITEM123: " + PatchItem)
                         })
                 }
             }
@@ -316,7 +344,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun miniPlayerHideShow(playing: Boolean) {
-        //at fast show mini player
+        // at fast show mini player
         // getDPfromPX paramerer pass pixel. how many height layout show.
         // this mini player height 72dp thats why i set 73dp view show
         if (playing) {
@@ -490,11 +518,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
-//        playerViewModel.currentMusicLiveData.observe(this, Observer {
         tvSongName.text = mSongDetails[clickItemPosition].title
         tvSingerName.text = mSongDetails[clickItemPosition].artist
-//        })
-
 
         dsvCurrentPlaySongsThumb.addOnItemChangedListener { viewHolder, _ ->
             if (viewHolder != null) {
@@ -552,11 +577,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                             R.color.colorTransparent
                         ), PorterDuff.Mode.SRC_IN
                     )
-//                setControlColor(true, ibtnControl)
                 }
                 PlaybackStateCompat.REPEAT_MODE_ALL -> {
                     setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_on_24)
-//                setControlColor(true, ibtnControl)
                     ibtnShuffle.isEnabled = true
                     ibtnShuffle.setColorFilter(0)
                 }
@@ -566,11 +589,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.shuffleLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.SHUFFLE_MODE_NONE -> {
-//                    setControlColor(false, ibtnShuffle)
                     ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_24)
                 }
                 PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
-//                    setControlColor(true, ibtnShuffle)
                     ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_on_24)
                 }
             }
@@ -597,19 +618,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
 
         ibtnVolume.setOnClickListener {
-//            setControlColor(true, ibtnVolume)
         }
 
         ibtnLibraryAdd.setOnClickListener {
-//            setControlColor(true, ibtnLibraryAdd)
         }
 
         ibtnQueueMusic.setOnClickListener {
-//            setControlColor(true, ibtnQueueMusic)
         }
 
         ibtnDownload.setOnClickListener {
-//            setControlColor(true, ibtnDownload)
         }
 
         acivMinimizePlayerBtn.setOnClickListener {
@@ -636,7 +653,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
-            Log.e("SDKM", "playerProgress: ")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
@@ -746,6 +762,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
     }
+
     fun showBottomSheetDialog2(
         bsdNavController: NavController,
         context: Context,
@@ -785,6 +802,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
     }
+
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
@@ -793,7 +811,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-        Log.e("SDKMA", "gotoArtist: ")
         when (argHomePatchDetail?.ContentType?.uppercase()) {
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details

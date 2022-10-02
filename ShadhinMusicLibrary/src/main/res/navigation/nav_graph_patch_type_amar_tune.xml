@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_patch_type_amar_tune"
+    app:startDestination="@id/amartunesWebviewFragment">
+
+    <fragment
+        android:id="@+id/amartunesWebviewFragment"
+        android:name="com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment"
+        tools:layout="@layout/fragment_amar_tunes_webview" />
+</navigation>

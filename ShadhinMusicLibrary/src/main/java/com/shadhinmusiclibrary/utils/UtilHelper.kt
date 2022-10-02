@@ -263,4 +263,9 @@ object UtilHelper {
             )
         }
     }
+
+//    fun getArtistContentToArtistContentList(musicList: MutableList<ArtistContentData>): MutableList<ArtistContentData>{
+//
+//
+//    }
 }

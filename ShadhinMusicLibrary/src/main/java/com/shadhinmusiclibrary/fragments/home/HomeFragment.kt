@@ -21,28 +21,23 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.RBT
-import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
     FragmentEntryPoint, HomeCallBack {
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
+
     //var page = -1
     var isLoading = false
     var isLastPage = false
     private lateinit var rvAllHome: RecyclerView
-      private lateinit var footerAdapter: HomeFooterAdapter
-      private var rbt: RBT ? = null
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -61,21 +56,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Home", "onViewCreated Message: " + pageNum)
-        viewModel!!.fetchHomeData( pageNum,false)
-
-
-//        val jsonObject = JSONObject()
-//        jsonObject.put("first_name", "")
-//        jsonObject.put("last_name", "3540")
-//        jsonObject.put("gender", "")
-//        jsonObject.put("msisdn","8801718755949")
-//
-//
-//        val jsonObjectString = jsonObject.toString()
-//
-//
-//        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-//        viewModel!!.fetchRBTURL(requestBody)
+        viewModel!!.fetchHomeData(pageNum, false)
         observeData()
     }
 
@@ -91,8 +72,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             }
             isLoading = false
         }
-
     }
+
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {
@@ -100,7 +81,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             footerAdapter = HomeFooterAdapter()
 
             dataAdapter = ParentAdapter(this)
-
 
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
@@ -161,6 +141,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                 putExtra(AppConstantUtils.PatchItem, data)
                 putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
             })

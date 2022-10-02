@@ -49,14 +49,4 @@ class LatestReleaseFragment : Fragment(), FragmentEntryPoint {
       setupViewModel()
         observeData()
     }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            LatestReleaseFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
 }

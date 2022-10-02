@@ -33,24 +33,28 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
-class AlbumDetailsFragment:
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), FragmentEntryPoint, OnItemClickCallback,BottomSheetDialogItemCallback,HomeCallBack {
+class AlbumDetailsFragment :
+    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
+    FragmentEntryPoint,
+    OnItemClickCallback,
+    BottomSheetDialogItemCallback,
+    HomeCallBack {
 
     private lateinit var navController: NavController
     private lateinit var adapter: AlbumAdapter
     private lateinit var albumHeaderAdapter: AlbumHeaderAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var albumsTrackAdapter: AlbumsTrackAdapter
-    var artistAlbumModelData:ArtistAlbumModelData ?= null
-    //private lateinit var albumViewModel: AlbumViewModel
-   private lateinit var   artistAlbumsAdapter: ArtistAlbumsAdapter
+    var artistAlbumModelData: ArtistAlbumModelData? = null
 
-private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
+    //private lateinit var albumViewModel: AlbumViewModel
+    private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+
+    private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
     }
@@ -72,21 +76,30 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail,this)
+        albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
+        albumsTrackAdapter = AlbumsTrackAdapter(this, this)
+        footerAdapter = HomeFooterAdapter()
+        setupViewModel()
+        observeData(
+            argHomePatchDetail!!.ContentID.toInt(),
+            argHomePatchDetail!!.ArtistId.toInt(),
+            argHomePatchDetail!!.ContentType
+        )
+        artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
 
-        footerAdapter= HomeFooterAdapter()
-        albumsTrackAdapter = AlbumsTrackAdapter(this,this)
-         setupViewModel()
-        observeData(argHomePatchDetail!!.ContentID.toInt(), argHomePatchDetail!!.ArtistId.toInt(),argHomePatchDetail!!.ContentType)
-
-         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem,this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder()
-                .setIsolateViewTypes(false)
-                .build()
-         val concatAdapter=  ConcatAdapter(config,albumHeaderAdapter,albumsTrackAdapter,artistAlbumsAdapter,footerAdapter)
+            .setIsolateViewTypes(false)
+            .build()
+        val concatAdapter = ConcatAdapter(
+            config,
+            albumHeaderAdapter,
+            albumsTrackAdapter,
+            artistAlbumsAdapter,
+            footerAdapter
+        )
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -97,29 +110,24 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
             }
         }
     }
+
     private fun setupViewModel() {
         viewModelArtistAlbum = ViewModelProvider(
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
-
-//        albumViewModel = ViewModelProvider(
-//            this,
-//            injector.factoryAlbumVM
-//        )[AlbumViewModel::class.java]
-
     }
+
     private fun observeData(contentId: Int, artistId: Int, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()){res->
+        viewModel!!.albumContent.observe(requireActivity()) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 albumsTrackAdapter.setData(res.data!!.data, argHomePatchDetail!!)
-              //  updateAndSetAdapter(res.data!!.data)
+                //  updateAndSetAdapter(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE
-                //updateAndSetAdapter(mutableListOf())
             }
         }
 
@@ -127,25 +135,26 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
         viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 
             if (res.status == Status.SUCCESS) {
-                Log.e("TAG","ARTISTDATA: "+ res.data!!.data)
+                Log.e("TAG", "ARTISTDATA: " + res.data!!.data)
                 artistAlbumsAdapter.setData(res.data)
             } else {
                 // showDialog()
             }
-
-
         }
     }
 
-    override fun onRootClickItem(_mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        val mSongDetails = albumsTrackAdapter.dataSongDetail
-        Log.e("Check", "array size ->"+mSongDetails.size+"  index -> "+clickItemPosition)
-        if (mSongDetails.size > clickItemPosition) {
-            Log.e("Check", "rhs ->"+mSongDetails[clickItemPosition].rootContentID+"  lfs -> "+playerViewModel.currentMusic?.rootId)
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        val lSongDetails = albumsTrackAdapter.dataSongDetail
+        Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
+        if (lSongDetails.size > clickItemPosition) {
+            Log.e(
+                "Check",
+                "rhs ->" + lSongDetails[clickItemPosition].rootContentID + "  lfs -> " + playerViewModel.currentMusic?.rootId
+            )
+            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
-                playItem(mSongDetails, clickItemPosition)
+                playItem(lSongDetails, clickItemPosition)
             }
         }
     }
@@ -167,12 +176,12 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-        val _songDetails = albumsTrackAdapter.dataSongDetail
+        val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
-        if (_songDetails.size > 0 && isAdded) {
+        if (mSongDet.size > 0 && isAdded) {
             playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
                 if (itMusic != null) {
-                    if ((_songDetails.indexOfFirst {
+                    if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
@@ -192,8 +201,15 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
             }
         }
     }
+
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(navController,context= requireContext(),mSongDetails,argHomePatchItem,argHomePatchDetail)
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
@@ -203,11 +219,11 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onArtistAlbumClick(
@@ -215,7 +231,8 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
         artistAlbumModelData: List<ArtistAlbumModelData>
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        val data = HomePatchDetail( AlbumId = mArtAlbumMod.AlbumId,
+        val data = HomePatchDetail(
+            AlbumId = mArtAlbumMod.AlbumId,
             ArtistId = mArtAlbumMod.ArtistId,
             ContentID = mArtAlbumMod.ContentID,
             ContentType = mArtAlbumMod.ContentType,
@@ -247,8 +264,6 @@ private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
         )
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
-        observeData(mArtAlbumMod.ContentID.toInt(),mArtAlbumMod.ArtistId.toInt(),"r")
-
+        observeData(mArtAlbumMod.ContentID.toInt(), mArtAlbumMod.ArtistId.toInt(), "r")
     }
-
 }
