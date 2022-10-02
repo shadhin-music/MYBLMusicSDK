@@ -29,7 +29,8 @@ class FeaturedPopularArtistAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(homePatchItem1.size)
         holder.itemView.setOnClickListener {
-          //  homeCallBack.onClickItemAndAllItem(position, homePatchItem1)
+            val homePatchItem = homePatchItem1[position]
+//            homeCallBack.onClickItemAndAllItem(,homePatchItem)
         }
     }
 
