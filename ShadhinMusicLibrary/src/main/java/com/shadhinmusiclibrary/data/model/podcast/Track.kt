@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model.podcast
 
+import java.io.Serializable
+
 data class Track(
     val CeateDate: String,
     val ContentType: String,
@@ -17,5 +19,13 @@ data class Track(
     val Starring: String,
     val TrackType: String,
     val fav: String,
-    val totalStream: Int
-)
+    val totalStream: Int,
+
+    val rootContentID: String,
+    val rootImage: String,
+    val rootContentType: String
+): Serializable {
+    fun getImageUrl300Size(): String {
+        return this.ImageUrl.replace("<\$size\$>", "300")
+    }
+}

@@ -52,7 +52,6 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         //tvTitle.text =  homePatchitem?.Name
         setupViewModel()

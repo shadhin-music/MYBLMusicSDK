@@ -42,7 +42,6 @@ class PopularArtistAdapter(
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
             val url: String = homePatchItem1.Data[absoluteAdapterPosition].getImageUrl300Size()
-            Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url)
                 .into(imageView)

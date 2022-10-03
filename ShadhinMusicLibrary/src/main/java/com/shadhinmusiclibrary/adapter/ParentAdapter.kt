@@ -187,7 +187,6 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 homeCallBack.onClickSeeAll(homePatchItem)
-               Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
 
 //            itemView.setOnClickListener {

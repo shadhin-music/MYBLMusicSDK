@@ -24,16 +24,9 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 class PodcastFragment : CommonBaseFragment(), HomeCallBack {
-
     private lateinit var navController: NavController
     private lateinit var releaseAdapter: ReleaseAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,15 +44,13 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         val verticalSpanCount = 1
         val horizontalSpanCount = 3
 
-
-
-      //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
+        //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         releaseAdapter = ReleaseAdapter(argHomePatchItem!!, this)
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
-                .setIsolateViewTypes(false)
-                .build()
-          val concatAdapter=  ConcatAdapter(config,releaseAdapter,footerAdapter)
+            .setIsolateViewTypes(false)
+            .build()
+        val concatAdapter = ConcatAdapter(config, releaseAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -72,7 +63,6 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         recyclerView.adapter = concatAdapter
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.text = argHomePatchItem!!.Name
-        Log.d("TAG","CLICK ITEM123: "+ argHomePatchItem)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
@@ -93,7 +83,7 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        val homePatchItem =selectedHomePatchItem
+        val homePatchItem = selectedHomePatchItem
         navController.navigate(R.id.action_podcast_list_fragment_to_podcast_details_fragment,
             Bundle().apply {
                 putSerializable(
@@ -114,7 +104,4 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         TODO("Not yet implemented")
     }
-
-
-
 }

@@ -1,24 +1,19 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.podcast.Data
-import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 
 
-class PodcastEpisodesAdapter(val data: Data?, private val itemClickCB: PodcustOnItemClickCallback) :
+class PodcastEpisodesAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
     RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
     var tracks: MutableList<Track> = mutableListOf()
 
@@ -28,7 +23,6 @@ class PodcastEpisodesAdapter(val data: Data?, private val itemClickCB: PodcustOn
         return PodcastEpisodesViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: PodcastEpisodesViewHolder, position: Int) {
         holder.bindItems(position)
         holder.itemView.setOnClickListener {
@@ -37,15 +31,14 @@ class PodcastEpisodesAdapter(val data: Data?, private val itemClickCB: PodcustOn
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
+
     override fun getItemCount(): Int {
         return tracks.size
     }
 
     fun setData(data: MutableList<Track>) {
-        Log.d("TAG", "Url1234 : " + data)
         tracks = data
         notifyDataSetChanged()
-
     }
 
     inner class PodcastEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -71,7 +64,6 @@ class PodcastEpisodesAdapter(val data: Data?, private val itemClickCB: PodcustOn
 
 
         }
-
     }
 
     companion object {

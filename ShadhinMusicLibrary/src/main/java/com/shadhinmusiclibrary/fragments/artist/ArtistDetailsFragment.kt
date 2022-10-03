@@ -272,16 +272,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = artistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
-            if (playerViewModel.currentMusic != null) {
-                if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
-                    playerViewModel.togglePlayPause()
-                }
+            Log.e("ADF", "onRootClickItem: " + lSongDetails[clickItemPosition].rootContentID)
+            if ((lSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                playerViewModel.togglePlayPause()
             } else {
-                Log.e(
-                    "Check",
-                    "rhs ->" + lSongDetails[clickItemPosition].AlbumId + "  lfs -> " + playerViewModel.currentMusic?.rootId
-                )
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
                     clickItemPosition
@@ -295,16 +289,17 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         clickItemPosition: Int
     ) {
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " rooId" + playerViewModel.currentMusic?.rootId
-            )
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
+            } else {
+                playItem(
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    clickItemPosition
+                )
             }
         } else {
             playItem(
@@ -328,7 +323,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-
                         playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
                         }

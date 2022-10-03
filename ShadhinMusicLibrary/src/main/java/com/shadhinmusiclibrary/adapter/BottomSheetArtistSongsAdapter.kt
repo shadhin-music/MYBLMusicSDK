@@ -60,7 +60,6 @@ class BottomSheetArtistSongsAdapter:
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView!!)
