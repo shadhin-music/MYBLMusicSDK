@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.fragments.artist
 
+import androidx.annotation.Keep
+
+@Keep
 data class ArtistContentData(
     val AlbumId: String,
     val ArtistId: String,
