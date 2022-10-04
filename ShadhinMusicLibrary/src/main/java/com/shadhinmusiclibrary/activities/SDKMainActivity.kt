@@ -149,7 +149,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.uppercase()) {
+            when (homePatchDetail.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
@@ -223,7 +223,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         } else {
             //See All Item Click event
-            when (homePatchItem.ContentType.uppercase()) {
+            when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
@@ -781,7 +781,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         ) {
         Log.e("SDKMA", "gotoArtist: ")
-        when (argHomePatchDetail?.ContentType?.uppercase()) {
+        when (argHomePatchDetail?.ContentType?.toUpperCase()) {
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
                 bsdNavController.navigate(R.id.action_album_fragment_to_artist_details_fragment,
