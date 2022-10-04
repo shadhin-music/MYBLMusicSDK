@@ -1,7 +1,8 @@
 package com.shadhinmusiclibrary.data.model.podcast
 
+import androidx.annotation.Keep
 import java.io.Serializable
-
+@Keep
 data class Track(
     val CeateDate: String,
     val ContentType: String,

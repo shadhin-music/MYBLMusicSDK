@@ -1,7 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
+import androidx.annotation.Keep
 import java.io.Serializable
-
+@Keep
 data class HomePatchItem(
     val Code: String,
     var ContentType: String,

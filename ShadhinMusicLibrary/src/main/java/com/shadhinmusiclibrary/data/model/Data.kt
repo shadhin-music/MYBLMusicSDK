@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class Data(
     val ArtistName: String,
     val Client: Int,
