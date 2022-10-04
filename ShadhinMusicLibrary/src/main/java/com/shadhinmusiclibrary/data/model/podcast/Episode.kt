@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.data.model.podcast
 
+import androidx.annotation.Keep
+
+@Keep
 data class Episode(
     val Code: String,
     val ContentType: String,

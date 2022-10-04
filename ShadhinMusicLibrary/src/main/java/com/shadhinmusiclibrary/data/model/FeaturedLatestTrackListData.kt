@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class FeaturedLatestTrackListData(
     val albumId: String,
     val artistId: String,

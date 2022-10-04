@@ -7,9 +7,8 @@ plugins {
 
 android {
     compileSdk 30
-
     defaultConfig {
-        minSdk 21
+        minSdk 19
         targetSdk 30
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -17,7 +16,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
+            debuggable = false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -28,11 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
-
-//    buildFeatures {
-//        dataBinding = true
-//    }
 }
 
 
@@ -69,7 +70,7 @@ afterEvaluate {
                 from components.release
                 groupId = "com.shadhinmusiclibrary"
                 artifactId = "shadhinSDK"
-                version = "1.0.0"
+                version = "1.0.7"
             }
         }
     }

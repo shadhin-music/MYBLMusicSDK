@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
+import androidx.annotation.Keep
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
 
@@ -16,6 +17,7 @@ import java.io.Serializable
 
 const val regexMp3Url = "\\w[A-Za-z\\S ]+(\\b.mp3\\b)"
 const val regexMp4Url = "\\w[A-Za-z\\S ]+(\\b.mp4\\b)"
+@Keep
 data class Music(
     var mediaId: String? = null,
     var title: String? = null,
