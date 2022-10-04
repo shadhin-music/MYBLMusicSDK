@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -39,9 +38,6 @@ class AlbumsTrackAdapter(
 
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(dataSongDetail, position)
-//            notifyDataSetChanged()
-            holder.tvSongName?.setBackgroundColor(R.color.colorGreen.toInt())
-            notifyDataSetChanged()
         }
 
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
@@ -67,7 +63,15 @@ class AlbumsTrackAdapter(
         notifyDataSetChanged()
     }
 
-  /*  private class AlbumTrackDiffCB() : DiffUtil.Callback() {
+    fun setPlayingSong(mediaId: String, newSongDetails: List<SongDetail>) {
+        val callback = AlbumTrackDiffCB(dataSongDetail, newSongDetails)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        dataSongDetail.clear()
+        dataSongDetail.addAll(newSongDetails)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private class AlbumTrackDiffCB() : DiffUtil.Callback() {
         private lateinit var oldSongDetails: List<SongDetail>
         private lateinit var newSongDetails: List<SongDetail>
 
@@ -83,10 +87,13 @@ class AlbumsTrackAdapter(
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
 
-
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
-    }*/
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            return super.getChangePayload(oldItemPosition, newItemPosition)
+        }
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()

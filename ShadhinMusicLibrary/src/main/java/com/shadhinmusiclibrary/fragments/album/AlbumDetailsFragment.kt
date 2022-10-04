@@ -36,6 +36,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -108,6 +109,19 @@ class AlbumDetailsFragment :
             } else {
                 navController.popBackStack()
             }
+        }
+
+        try {
+            playerViewModel.playListLiveData.observe(requireActivity()) { itMusicPlay ->
+                playerViewModel.musicIndexLiveData.observe(requireActivity()) { itCurrPlayItem ->
+                    albumsTrackAdapter.setPlayingSong(
+                        itCurrPlayItem.toString(),
+                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
+                    )
+                }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 

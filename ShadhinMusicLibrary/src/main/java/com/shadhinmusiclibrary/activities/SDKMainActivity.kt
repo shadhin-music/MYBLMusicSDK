@@ -19,6 +19,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -43,6 +44,9 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.Serializable
 import androidx.annotation.NavigationRes as NavigationRes1
 
@@ -684,7 +688,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 val gradientDrawable = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     intArrayOf(
-                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                        ContextCompat.getColor(this@SDKMainActivity, R.color.shadinRequiredColor),
                         vibrantSwatch.rgb
                     )
                 )

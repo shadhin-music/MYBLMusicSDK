@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabIconTint="@color/colorTransparent"
         app:tabIndicatorColor="@color/colorWhite"
+
         app:tabIndicatorHeight="3dp"
         app:tabSelectedTextColor="@color/colorWhite"
         app:tabTextColor="@color/colorTransparent">
