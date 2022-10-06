@@ -1,10 +1,6 @@
-package com.shadhinmusiclibra
+package com.shadhinmusiclibrary.adapter
 
-import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
-
-
 
 
 import android.view.LayoutInflater

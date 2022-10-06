@@ -71,7 +71,6 @@ fun bitmapFromUri(context: Context, imageUrl: Uri?, onBitmap: (image: Bitmap?) -
                     resource: Bitmap,
                     transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
                 ) {
-                  //  Log.i("DataSourceFactory", "onResourceReady: ${Thread.currentThread().name}")
                     onBitmap(resource)
                 }
 
@@ -198,9 +197,33 @@ fun preloadBitmapClear(){
 fun preLoadBitmap(playlist: MusicPlayList, context: Context){
 
     playlist.list.forEach { music ->
-        bitmapFromUri(context, Uri.parse(music.displayIconUrl),200){
+
+
+        Glide.with(context).asBitmap()
+            .load(music.displayIconUrl)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(object : CustomTarget<Bitmap>(200, 200) {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                ) {
+                   // onBitmap(resource)
+                    bitmapHasMap[music.mediaId.toString()] = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    super.onLoadFailed(errorDrawable)
+                  //  onBitmap(null)
+                }
+            })
+        /*bitmapFromUri(context, Uri.parse(music.displayIconUrl),200){
             bitmapHasMap[music.mediaId.toString()] = it
-        }
+        }*/
     }
 }
 fun getPreloadBitmap(mediaId:String):Bitmap?{

@@ -4,9 +4,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_ID
 import com.shadhinmusiclibrary.player.utils.bitmapFromUri
@@ -67,11 +71,40 @@ class  ShadhinMusicNotificationManager(
             val uri:Uri? = mediaControllerCompat?.metadata?.description?.iconUri
             val mediaId =  mediaControllerCompat?.metadata?.description?.mediaId
 
-            bitmapFromUri(context,uri){ bitmap->
+           /* bitmapFromUri(context,uri){ bitmap->
                 if(bitmap !=null){
                     callback.onBitmap(bitmap)
                 }
+            }*/
+
+            if(uri !=null) {
+
+                Glide.with(context).asBitmap()
+                    .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                        ) {
+                            // onBitmap(resource)
+                            callback.onBitmap(resource)
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+
+                        }
+
+
+                        override fun onLoadFailed(errorDrawable: Drawable?) {
+                            super.onLoadFailed(errorDrawable)
+                            //onBitmap(null)
+                            //callback.onBitmap(null)
+                        }
+                    })
             }
+
+
             return mediaId?.let { getPreloadBitmap(it) }
         }
 
