@@ -1,5 +1,6 @@
 # ShadhinSDK
 [![](https://jitpack.io/v/GakkMedia/MYBLShadhinSDK-android.svg)](https://jitpack.io/#GakkMedia/MYBLShadhinSDK-android)
+[![Code-Size](https://img.shields.io/github/languages/code-size/GakkMedia/MYBLShadhinSDK-android)](#)
 
 ## ScreenShot
 <p align="center">
