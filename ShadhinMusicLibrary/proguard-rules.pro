@@ -41,3 +41,5 @@
 -keepclassmembers class fqcn.of.javascript.interface.for.webview {
    public *;
 }
+-keep class * extends androidx.fragment.app.Fragment{}
+-keepnames class androidx.navigation.fragment.NavHostFragment
