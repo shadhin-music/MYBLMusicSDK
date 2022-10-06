@@ -1,12 +1,13 @@
 package com.shadhinmusiclibrary
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
 
+@Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
-
 
     fun getHomeFragment(): Fragment {
         return HomeFragment()
