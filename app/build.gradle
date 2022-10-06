@@ -5,6 +5,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'kotlin-kapt'
+    id 'kotlin-allopen'
 }
 
 android {
@@ -213,7 +214,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-applinks:9.1.1'
 
     //zoom image view
-   /* implementation 'com.github.MikeOrtiz:TouchImageView:3.0.1'*/
+    /* implementation 'com.github.MikeOrtiz:TouchImageView:3.0.1'*/
 
     //step view
     /*implementation 'com.params.stepview:stepview:1.0.2'*/
