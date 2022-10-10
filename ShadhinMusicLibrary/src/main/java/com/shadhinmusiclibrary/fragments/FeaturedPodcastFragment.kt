@@ -86,12 +86,12 @@ class FeaturedPodcastFragment : CommonBaseFragment(), HomeCallBack {
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
-                recyclerView.adapter =
+                /*recyclerView.adapter =
                     response.data?.let {
                         it?.data?.let { it1 ->
                             FeaturedPopularArtistAdapter(it1, this)
                         }
-                    }
+                    }*/
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()

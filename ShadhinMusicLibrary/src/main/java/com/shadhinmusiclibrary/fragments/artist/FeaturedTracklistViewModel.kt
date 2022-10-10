@@ -27,7 +27,8 @@ class FeaturedTracklistViewModel(private val featuredTracklistRepository: Featur
 
     fun fetchFeaturedTrackList() = viewModelScope.launch {
         val response = featuredTracklistRepository.fetchFeaturedTrackList()
-        _featuredTracklistContent.postValue(response)
+
+       // _featuredTracklistContent.postValue(response)
     }
 
 
