@@ -4,14 +4,13 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.search.SearchAlbumdata
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.data.model.search.SearchModelData
+import com.shadhinmusiclibrary.data.model.search.*
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 
 interface SearchItemCallBack {
-    fun onClickArtistItem( searchArtistdata: SearchArtistdata)
-    fun onClickAlbumItem(albumModelData: SearchAlbumdata)
-
+    fun onClickSearchItem(searchData: SearchData)
+    fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int)
+    fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int)
+//    fun onClickAlbumItem(albumModelData: SearchData)
 //    fun onAlbumClick(itemPosition: Int, songDetail: MutableList<ArtistAlbumModelData>)
 }

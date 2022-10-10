@@ -5,19 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.data.model.LatestVideoModel
-import com.shadhinmusiclibrary.data.model.PopularArtistModel
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.data.model.search.SearchModel
-import com.shadhinmusiclibrary.data.model.search.SearchModelData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
-
-import com.shadhinmusiclibrary.data.repository.ArtistAlbumContentRepository
-import com.shadhinmusiclibrary.data.repository.PopularArtistRepository
 import com.shadhinmusiclibrary.data.repository.SearchRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
-import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
 

@@ -5,26 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.fragments.search.SearchFragment
+import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.utils.CircleImageView
-import com.shadhinmusiclibrary.utils.TimeParser
 
 
 class SearchArtistAdapter(
-    val searchArtistdata: List<SearchArtistdata>,
-       val homeCallBack: SearchItemCallBack
+    val searchArtistdata: MutableList<SearchData>,
+    val searchCallBack: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchArtistAdapter.ViewHolder>() {
 
@@ -49,22 +43,19 @@ class SearchArtistAdapter(
     }
 
     fun trackContent(dataSongDetail: SongDetail?) {
-
 //        trackContent?.let {
-//
 //            this.artistContentList.clear()
 //            this.artistContentList.addAll(it)
 //            this.notifyDataSetChanged()
 //
 //        }
-
     }
 
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistDetails: SearchArtistdata) {
+        fun bindItems(artistDetails: SearchData) {
             val imageView:CircleImageView = itemView.findViewById(R.id.artist_img)
             val url: String = artistDetails.image
             Log.d("TAG", "ImageUrl: " + url)
@@ -76,7 +67,7 @@ class SearchArtistAdapter(
             textArtist.text = artistDetails.Artist
 
             itemView.setOnClickListener {
-                homeCallBack.onClickArtistItem(artistDetails)
+                searchCallBack.onClickSearchItem(artistDetails)
                  Log.d("TAG", "artistDetails: " + artistDetails)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()

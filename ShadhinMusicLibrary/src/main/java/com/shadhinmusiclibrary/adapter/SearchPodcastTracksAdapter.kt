@@ -11,13 +11,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.*
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchPodcastTracksAdapter(val searchPodcastTrack: List<SearchPodcastTrackdata> ) :
+class SearchPodcastTracksAdapter(
+    private val searchPodcastTrack: List<SearchData>,
+    private val seaItemCallback: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchPodcastTracksAdapter.ViewHolder>() {
 
 
@@ -30,13 +34,11 @@ class SearchPodcastTracksAdapter(val searchPodcastTrack: List<SearchPodcastTrack
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchPodcastTrack[position])
-
-
-
+        seaItemCallback.onClickPlaySearchItem(searchPodcastTrack,position)
     }
 
     override fun getItemCount(): Int {
-        return  searchPodcastTrack.size
+        return searchPodcastTrack.size
 
     }
 
@@ -53,14 +55,13 @@ class SearchPodcastTracksAdapter(val searchPodcastTrack: List<SearchPodcastTrack
     }
 
 
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchPodcastTrack: SearchPodcastTrackdata) {
+        fun bindItems(searchPodcastTrack: SearchData) {
 
-            val imageView:ImageView = itemView.findViewById(R.id.thumb)
+            val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchPodcastTrack.image
-            val textTitle:TextView = itemView.findViewById(R.id.title)
+            val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)

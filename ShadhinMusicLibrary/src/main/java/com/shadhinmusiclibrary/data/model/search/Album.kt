@@ -1,7 +1,7 @@
 package com.shadhinmusiclibrary.data.model.search
 
 data class Album(
-    val data: List<SearchAlbumdata>,
+    val data: MutableList<SearchData>,
     val message: String,
     val status: String,
     val type: String

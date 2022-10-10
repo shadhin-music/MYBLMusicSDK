@@ -65,24 +65,22 @@ interface ApiService {
     ):FeaturedPodcast
 
     @GET("artist/getpopularartist")
-     suspend fun fetchPopularArtist():PopularArtistModel
+    suspend fun fetchPopularArtist(): PopularArtistModel
 
     @GET("video/getlatestvideo")
-    suspend fun fetchLatestVideo():LatestVideoModel
+    suspend fun fetchLatestVideo(): LatestVideoModel
 
-     @GET("track/GetLatestTrack")
-    suspend fun fetchFeaturedTrackList() :APIResponse<MutableList<FeaturedSongDetail>>
+    @GET("track/GetLatestTrack")
+    suspend fun fetchFeaturedTrackList(): APIResponse<MutableList<FeaturedSongDetail>>
 
     @GET("RBTPWA/GETPWATOKEN")
-    suspend fun rbtURL():RBT
+    suspend fun rbtURL(): RBT
 
     @GET("Search/SearchByKeyword")
-      suspend fun getSearch(
-        @Query("keyword") keyword:String
-      ): SearchModel
+    suspend fun getSearch(
+        @Query("keyword") keyword: String
+    ): SearchModel
 
-
-   @GET("Track/TopTrending")
-      suspend fun getTopTrendingItems(@Query("type") type:String): TopTrendingModel
-
+    @GET("Track/TopTrending")
+    suspend fun getTopTrendingItems(@Query("type") type: String): TopTrendingModel
 }

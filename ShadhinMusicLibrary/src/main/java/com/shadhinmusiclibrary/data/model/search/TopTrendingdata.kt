@@ -14,7 +14,12 @@ data class TopTrendingdata(
     val image: String,
     val labelname: String,
     val releaseDate: Any,
-    val title: String
+    val title: String,
+
+    val rootType: String?,
+    val rootContentID: String,
+    val rootImage: String,
+    val rootContentType: String
 ){
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
