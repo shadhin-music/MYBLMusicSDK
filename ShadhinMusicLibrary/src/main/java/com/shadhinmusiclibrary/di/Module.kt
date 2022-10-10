@@ -10,6 +10,7 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
+import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
 
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
 import com.shadhinmusiclibrary.fragments.search.SearchViewModelFactory
@@ -216,6 +217,11 @@ class Module(private val applicationContext: Context) {
     val artistAlbumViewModelFactory: ArtistAlbumViewModelFactory
         get() = ArtistAlbumViewModelFactory(
             artistAlbumContentRepository)
+
+    private val featuredpodcastRepository: FeaturedPodcastRepository get() = FeaturedPodcastRepository(
+        getApiShadhinMusicServiceV5())
+    val featuredpodcastViewModelFactory:FeaturedPodcastViewModelFactory
+        get() = FeaturedPodcastViewModelFactory(featuredpodcastRepository)
 
     private val podcastRepository: PodcastRepository get() = PodcastRepository(
         podcastApiService)

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
 import com.shadhinmusiclibrary.fragments.MusicVideoFragment
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
@@ -29,6 +30,7 @@ class FeaturedHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button = requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
+        val btnFeaturedPodcast:Button = requireView().findViewById(R.id.btnFeaturedPodcast)
         val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
 
@@ -46,6 +48,14 @@ class FeaturedHomeFragment : Fragment() {
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, MusicVideoFragment() )
+                .addToBackStack("Fragment")
+                .commit()
+        }
+        btnFeaturedPodcast.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1, FeaturedPodcastFragment() )
                 .addToBackStack("Fragment")
                 .commit()
         }

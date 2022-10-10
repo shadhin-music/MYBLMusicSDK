@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model
 
+import android.os.Parcelable
+
 data class FeaturedPodcastDetails(
     val About: String,
     val CeateDate: String,
@@ -26,4 +28,8 @@ data class FeaturedPodcastDetails(
     val TrackType: String,
     val TracktId: String,
     val fav: String
-)
+){
+    fun getImageUrl300Size(): String {
+        return this.ImageUrl.replace("<\$size\$>", "300")
+    }
+}
