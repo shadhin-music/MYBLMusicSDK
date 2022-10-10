@@ -22,7 +22,7 @@ internal class ViewPagerAdapter(
 
         return when (position) {
             0 -> {
-                ShadhinMusicSdkCore.getHomeFragment()
+                ShadhinMusicSdkCore.getMusicFragment()
             }
             1 -> {
                 FeaturedHomeFragment()
