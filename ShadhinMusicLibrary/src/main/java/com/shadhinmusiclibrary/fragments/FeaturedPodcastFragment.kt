@@ -29,7 +29,7 @@ import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 
-class FeaturedPodcastFragment : CommonBaseFragment(), HomeCallBack {
+class FeaturedPodcastFragment : CommonBaseFragment(){
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
@@ -48,7 +48,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_featured_popular_artist, container1, false)
+        val viewRef = inflater.inflate(R.layout.fragment_podcast, container1, false)
         navController = findNavController()
 
         return viewRef
@@ -86,12 +86,12 @@ class FeaturedPodcastFragment : CommonBaseFragment(), HomeCallBack {
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
-                recyclerView.adapter =
-                    response.data?.let {
-                        it?.data?.let { it1 ->
-                            FeaturedPopularArtistAdapter(it1, this)
-                        }
-                    }
+               // recyclerView.adapter =
+//                    response.data?.let {
+//                        it?.data?.let { it1 ->
+//                            //FeaturedPopularArtistAdapter(it1)
+//                        }
+//                    }
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
@@ -100,27 +100,27 @@ class FeaturedPodcastFragment : CommonBaseFragment(), HomeCallBack {
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
-        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        navController.navigate(
-            R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
-            Bundle().apply {
-                putSerializable(
-                    AppConstantUtils.PatchItem,
-                    selectedHomePatchItem as Serializable
-                )
-                putSerializable(
-                    AppConstantUtils.PatchDetail,
-                    homePatchDetail as Serializable
-                )
-            })
-    }
-
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-
-    }
-
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-    }
+//    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
+//        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
+//        navController.navigate(
+//            R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
+//            Bundle().apply {
+//                putSerializable(
+//                    AppConstantUtils.PatchItem,
+//                    selectedHomePatchItem as Serializable
+//                )
+//                putSerializable(
+//                    AppConstantUtils.PatchDetail,
+//                    homePatchDetail as Serializable
+//                )
+//            })
+//    }
+//
+//    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//
+//    }
+//
+//    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+//    }
 }

@@ -61,11 +61,12 @@ interface ApiService {
 
     @GET("artist/getpopularartist")
      suspend fun fetchPopularArtist():PopularArtistModel
+
     @GET("video/getlatestvideo")
     suspend fun fetchLatestVideo():LatestVideoModel
 
      @GET("track/GetLatestTrack")
-    suspend fun fetchFeaturedTrackList() :FeaturedLatestTrackListModel
+    suspend fun fetchFeaturedTrackList() :APIResponse<MutableList<FeaturedSongDetail>>
 
     @GET("RBTPWA/GETPWATOKEN")
     suspend fun rbtURL():RBT
