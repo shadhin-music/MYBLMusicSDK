@@ -3,6 +3,8 @@ package com.shadhinmusiclibrary.data.remote
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
+import com.shadhinmusiclibrary.data.model.search.SearchModel
+import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
@@ -71,10 +73,10 @@ interface ApiService {
     @GET("Search/SearchByKeyword")
       suspend fun getSearch(
         @Query("keyword") keyword:String
-      ):SearchModel
+      ): SearchModel
 
 
    @GET("Track/TopTrending")
-      suspend fun getTopTrendingItems(@Query("type") type:String):TopTrendingModel
+      suspend fun getTopTrendingItems(@Query("type") type:String): TopTrendingModel
 
 }
