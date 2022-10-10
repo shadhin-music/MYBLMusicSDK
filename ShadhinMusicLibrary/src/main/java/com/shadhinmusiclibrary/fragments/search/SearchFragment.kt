@@ -3,6 +3,7 @@ package com.shadhinmusiclibrary.fragments.search
 import android.app.SearchManager
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -25,10 +26,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
@@ -448,6 +451,20 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                     R.id.action_search_fragment_to_podcast_details_fragment,
                     patchItem
                 )
+            }
+            DataContentType.CONTENT_TYPE_V -> {
+                //open playlist
+//                val intent = Intent(itemView.context, VideoActivity::class.java)
+//                val videoArray = ArrayList<Video>()
+//                for (item in  argHomePatchItem.Data){
+//                    val video = Video()
+//                    video.setData(item)
+//                    videoArray.add(video)
+//                }
+//                val videos :ArrayList<Video> = videoArray
+//                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
+//                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+//                itemView.context.startActivity(intent)
             }
 //            DataContentType.CONTENT_TYPE_S -> {
 //                //open songs
