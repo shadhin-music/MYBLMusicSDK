@@ -64,6 +64,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             Log.d("TAGGGGGGGY", "MESSAGE: ")
+            requireActivity().onBackPressed()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
 //            manager?.popBackStack("Fragment", 0);

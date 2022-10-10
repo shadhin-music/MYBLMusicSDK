@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,19 @@ class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_popular_artists, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
+        setupUI()
+        observeData()
+    }
+
+    private fun setupUI() {
+        view?.findViewById<ImageView>(R.id.imageBack)?.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun setupViewModel() {
@@ -49,12 +63,6 @@ class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
 //                showDialog()
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
-        observeData()
     }
 
     override fun onClickItem(

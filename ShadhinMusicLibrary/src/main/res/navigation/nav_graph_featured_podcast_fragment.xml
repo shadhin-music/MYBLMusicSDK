@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_featured_podcast_fragment"
+    app:startDestination="@id/featuredPodcastFragment">
+
+    <fragment
+        android:id="@+id/featuredPodcastFragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment"
+        android:label="FeaturedPodcastFragment" />
+</navigation>
