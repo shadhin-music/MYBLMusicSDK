@@ -13,10 +13,10 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.SearchAlbumdata
+import com.shadhinmusiclibrary.data.model.search.SearchData
 
 
-class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>, val homeCallBack: SearchItemCallBack) :
+class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
     RecyclerView.Adapter<SearchAlbumsAdapter.ViewHolder>() {
 
 
@@ -55,7 +55,7 @@ class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>, val homeCa
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchAlbumdata: SearchAlbumdata) {
+        fun bindItems(searchAlbumdata: SearchData) {
             val imageView:ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchAlbumdata.image
              val textTitle:TextView = itemView.findViewById(R.id.title)
@@ -72,7 +72,7 @@ class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>, val homeCa
            // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
-                homeCallBack.onClickAlbumItem(searchAlbumdata)
+                searchCallBack.onClickSearchItem(searchAlbumdata)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container , AlbumFragment.newInstance())
@@ -81,17 +81,11 @@ class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>, val homeCa
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
-
-
 }
 
 

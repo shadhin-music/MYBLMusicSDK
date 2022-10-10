@@ -11,14 +11,19 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.SearchPodcastEpisodedata
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchEpisodeAdapter(val searchEpisodedata: List<SearchPodcastEpisodedata>) :
+class SearchEpisodeAdapter(
+    val searchEpisodedata: List<SearchData>,
+    private val seaItemCallback: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchEpisodeAdapter.ViewHolder>() {
 
 
@@ -31,13 +36,14 @@ class SearchEpisodeAdapter(val searchEpisodedata: List<SearchPodcastEpisodedata>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchEpisodedata[position])
-
-
-
+        holder.itemView.setOnClickListener {
+            val searchData: SearchData = searchEpisodedata[position]
+            seaItemCallback.onClickSearchItem(searchData)
+        }
     }
 
     override fun getItemCount(): Int {
-        return  searchEpisodedata.size
+        return searchEpisodedata.size
 
     }
 
@@ -54,14 +60,13 @@ class SearchEpisodeAdapter(val searchEpisodedata: List<SearchPodcastEpisodedata>
     }
 
 
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchEpisodedata: SearchPodcastEpisodedata) {
+        fun bindItems(searchEpisodedata: SearchData) {
 
-            val imageView:ImageView = itemView.findViewById(R.id.thumb)
+            val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchEpisodedata.image
-            val textTitle:TextView = itemView.findViewById(R.id.title)
+            val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)

@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
 import com.shadhinmusiclibrary.data.model.search.SearchVideodata
 
 
-class SearchVideoAdapter(val searchVideodata: List<SearchVideodata>) :
+class SearchVideoAdapter(val searchVideodata: List<SearchData>) :
     RecyclerView.Adapter<SearchVideoAdapter.ViewHolder>() {
 
 
@@ -55,7 +56,7 @@ class SearchVideoAdapter(val searchVideodata: List<SearchVideodata>) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchVideodata: SearchVideodata) {
+        fun bindItems(searchVideodata: SearchData) {
             val imageView:ImageView = itemView.findViewById(R.id.video_thumb)
             val url: String = searchVideodata.image
              val textTitle:TextView = itemView.findViewById(R.id.song_name)

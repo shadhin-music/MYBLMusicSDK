@@ -11,15 +11,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.SearchPodcastEpisodedata
 import com.shadhinmusiclibrary.data.model.search.SearchPodcastShowdata
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchShowAdapter(val searchshowdata: List<SearchPodcastShowdata>) :
+class SearchShowAdapter(
+    val searchshowdata: List<SearchData>,
+    private val seaItemCallback: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchShowAdapter.ViewHolder>() {
 
 
@@ -32,37 +37,32 @@ class SearchShowAdapter(val searchshowdata: List<SearchPodcastShowdata>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchshowdata[position])
-
-
-
+        val searchData: SearchData = searchshowdata[position]
+        holder.itemView.setOnClickListener {
+            seaItemCallback.onClickSearchItem(searchData)
+        }
     }
 
     override fun getItemCount(): Int {
-        return  searchshowdata.size
+        return searchshowdata.size
 
     }
 
     fun trackContent(dataSongDetail: SongDetail?) {
-
 //        trackContent?.let {
-//
 //            this.artistContentList.clear()
 //            this.artistContentList.addAll(it)
 //            this.notifyDataSetChanged()
-//
 //        }
-
     }
-
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchshowdata: SearchPodcastShowdata) {
-
-            val imageView:ImageView = itemView.findViewById(R.id.thumb)
+        fun bindItems(searchshowdata: SearchData) {
+            val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchshowdata.image
-            val textTitle:TextView = itemView.findViewById(R.id.title)
+            val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)
@@ -81,12 +81,8 @@ class SearchShowAdapter(val searchshowdata: List<SearchPodcastShowdata>) :
 //                    .replace(R.id.container , AlbumFragment.newInstance())
 //                    .commit()
             }
-
         }
-
     }
-
-
 }
 
 

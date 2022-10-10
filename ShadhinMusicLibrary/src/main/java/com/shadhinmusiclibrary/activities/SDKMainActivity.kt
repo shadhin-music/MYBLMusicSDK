@@ -19,7 +19,6 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -33,9 +32,6 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.Artist
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.data.model.search.SearchModelData
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -45,11 +41,7 @@ import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
-import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.Serializable
 import androidx.annotation.NavigationRes as NavigationRes1
 
@@ -120,7 +112,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
             homeFragmentAccess()
         }
-     //  homeFragmentAccess()
+        //  homeFragmentAccess()
         if (uiRequest == AppConstantUtils.Requester_Name_API) {
             patchFragmentAccess()
         }
@@ -158,7 +150,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun searchFragmentAccess() {
-
         var patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItem
 
@@ -169,7 +160,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 ////        val homePatchDetail = patch.Data[selectedPatchIndex!!]
 //        Log.d("TAG", "Patch: "+ patch.Data)
 //          if(patch.Data[selectedPatchIndex].ContentType=="A") {
-        setupNavGraphAndArg(R.navigation.nav_graph_search_artist_details,
+        setupNavGraphAndArg(R.navigation.nav_graph_search,
             Bundle().apply {
                 putSerializable(
                     PatchItem,

@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
@@ -122,6 +124,70 @@ object UtilHelper {
             }
         }
 
+        return songDetailList
+    }
+
+    fun getSongDetailToTopTrendingDataList(topTrandList: List<TopTrendingdata>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (trackItem in topTrandList) {
+            trackItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = ContentID,
+                        image = image,
+                        title = title,
+                        ContentType = ContentType,
+                        PlayUrl = PlayUrl,
+                        artist = artistname,
+                        duration = duration,
+                        copyright = "",
+                        labelname = labelname,
+                        releaseDate = "",
+                        fav = "",
+                        ArtistId = ArtistId,
+                        albumId = AlbumId,
+                        userPlayListId = "",
+                        rootType = ContentType,
+
+                        rootContentID = ContentID,
+                        rootContentType = ContentType,
+                        rootImage = image
+                    )
+                )
+            }
+        }
+        return songDetailList
+    }
+
+    fun getSongDetailToSearchDataList(topTrandList: List<SearchData>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (trackItem in topTrandList) {
+            trackItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = ContentID,
+                        image = image,
+                        title = title,
+                        ContentType = ContentType,
+                        PlayUrl = PlayUrl ?: "",
+                        artist = Artist,
+                        duration = "120",
+                        copyright = "",
+                        labelname = "",
+                        releaseDate = "",
+                        fav = "",
+                        ArtistId = ArtistId,
+                        albumId = AlbumId,
+                        userPlayListId = "",
+                        rootType = ContentType,
+
+                        rootContentID = ContentID,
+                        rootContentType = ContentType,
+                        rootImage = image
+                    )
+                )
+            }
+        }
         return songDetailList
     }
 

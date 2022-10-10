@@ -46,7 +46,6 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         val horizontalSpanCount = 4
         footerAdapter = HomeFooterAdapter()
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        Log.e("TAG","Data1234: " + argHomePatchItem)
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         footerAdapter = HomeFooterAdapter()
@@ -62,7 +61,7 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
                 }
             }
         recyclerView.layoutManager = layoutManager
-        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+        layoutManager.spanSizeLookup = onSpanSizeLookup
         recyclerView.adapter = concatAdapter
 //        val argHomePatchItem =
 //            arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
