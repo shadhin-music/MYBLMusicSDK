@@ -42,12 +42,14 @@ class FeaturedHomeFragment : Fragment() {
             ShadhinMusicSdkCore.openPatch(requireContext(), "AT")
         }
         btnMusicVideos.setOnClickListener {
-            val manager: FragmentManager =
+
+            ShadhinMusicSdkCore.openPatch(requireContext(),"RC204")
+           /* val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, MusicVideoFragment() )
                 .addToBackStack("Fragment")
-                .commit()
+                .commit()*/
         }
 //        val recyclerView:RecyclerView = requireView().findViewById(R.id.rv_all_home)
 //           view.findViewById<Button>(R.id.button).setOnClickListener {

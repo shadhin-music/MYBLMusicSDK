@@ -74,4 +74,5 @@ class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
             )
         }
     }
+
 }

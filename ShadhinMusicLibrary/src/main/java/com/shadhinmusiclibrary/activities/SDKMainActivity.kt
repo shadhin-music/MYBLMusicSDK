@@ -203,8 +203,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun patchFragmentAccess() {
         val dataContentType =
-            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
-
+            intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         routeDataPatch(dataContentType)
     }
 
@@ -218,6 +217,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
             DataContentType.CONTENT_TYPE_WV -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_V_RC204 ->{
+                setupNavGraphAndArg(R.navigation.nav_graph_music_video, Bundle())
             }
         }
     }
