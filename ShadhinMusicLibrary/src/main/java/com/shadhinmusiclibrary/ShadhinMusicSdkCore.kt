@@ -12,6 +12,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
 
+    //get Music frangment
     fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
@@ -32,15 +33,15 @@ object ShadhinMusicSdkCore {
     }
 
     fun openPatch(reqContext: Context, requestId: String) {
-//        reqContext.startActivity(
-//            Intent(
-//                reqContext,
-//                SDKMainActivity::class.java
-//            ).apply {
-//                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_API)
-//                putExtra(AppConstantUtils.DataContentRequestId, requestId)
-//            }
-//        )
+        reqContext.startActivity(
+            Intent(
+                reqContext,
+                SDKMainActivity::class.java
+            ).apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_API)
+                putExtra(AppConstantUtils.DataContentRequestId, requestId)
+            }
+        )
     }
 
     internal fun pressCountIncrement() {

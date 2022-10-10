@@ -22,7 +22,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ArtistHeaderAdapter
-import com.shadhinmusiclibrary.adapter.ArtistSongsAdapter
+import com.shadhinmusiclibrary.adapter.ArtistTrackAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
@@ -31,15 +31,15 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
+class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContent? = null
@@ -51,7 +51,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
-    private lateinit var artistSongAdapter: ArtistSongsAdapter
+    private lateinit var artistTrackAdapter: ArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
 
@@ -85,23 +85,23 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     }
 
     private fun setupAdapters() {
-
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        footerAdapter = HomeFooterAdapter()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail)
-        artistSongAdapter = ArtistSongsAdapter(this, this)
+        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this)
+        artistTrackAdapter = ArtistTrackAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
+        footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(
             config,
             artistHeaderAdapter,
-            artistSongAdapter,
+            artistTrackAdapter,
             artistAlbumsAdapter,
-            artistsYouMightLikeAdapter, footerAdapter
+            artistsYouMightLikeAdapter,
+            footerAdapter
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
@@ -145,8 +145,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
         }
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->
-                it1?.toInt()
-                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
+                it1.toInt().let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
@@ -161,7 +160,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
             viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-                    artistSongAdapter.artistContent(res.data)
+                    artistTrackAdapter.artistContent(res.data)
                 } else {
                     showDialog()
                 }
@@ -209,7 +208,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     fun loadNewArtist(patchDetails: HomePatchDetail) {
         Log.e("Check", "loadNewArtist")
     }
-
 
     override fun onArtistAlbumClick(
         itemPosition: Int,
@@ -268,26 +266,78 @@ class ArtistDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCall
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
-    override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {
-//        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-//            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-//                playerViewModel.skipToQueueItem(clickItemPosition)
-//            } else {
-//                playerViewModel.togglePlayPause()
-//            }
-//        } else {
-//            playItem(mSongDetails, clickItemPosition)
-//        }
-        playItem(UtilHelper.getSongDetailToArtistContentDataList(mSongDetails), clickItemPosition)
+    override fun onRootClickItem(
+        mSongDetails: MutableList<ArtistContentData>,
+        clickItemPosition: Int
+    ) {
+        val lSongDetails = artistTrackAdapter.artistSongList
+        if (lSongDetails.size > clickItemPosition) {
+            Log.e("ADF", "onRootClickItem: " + lSongDetails[clickItemPosition].rootContentID)
+            if ((lSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                playerViewModel.togglePlayPause()
+            } else {
+                playItem(
+                    UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
+                    clickItemPosition
+                )
+            }
+        }
+    }
+
+    override fun onClickItem(
+        mSongDetails: MutableList<ArtistContentData>,
+        clickItemPosition: Int
+    ) {
+        if (playerViewModel.currentMusic != null) {
+            if ((mSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                    playerViewModel.skipToQueueItem(clickItemPosition)
+                } else {
+                    playerViewModel.togglePlayPause()
+                }
+            } else {
+                playItem(
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    clickItemPosition
+                )
+            }
+        } else {
+            playItem(
+                UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                clickItemPosition
+            )
+        }
     }
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<ArtistContentData>
     ) {
+        val mSongDet = artistTrackAdapter.artistSongList
+        val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
+        if (mSongDet.size > 0 && isAdded) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+                if (itMusic != null) {
+                    if ((mSongDet.indexOfFirst {
+                            it.rootContentType == itMusic.rootType &&
+                                    it.ContentID == itMusic.mediaId
+                        } != -1)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        }
 
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                            Log.e(
+                                "ADF",
+                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
-
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog2(

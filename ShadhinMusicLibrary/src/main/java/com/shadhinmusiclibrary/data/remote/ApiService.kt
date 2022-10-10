@@ -51,15 +51,15 @@ interface ApiService {
 
     @GET("Podcast/PodcastbyepisodeIdV3")
     suspend fun fetchPodcastByID(
-        @Query("podType") podType:String,
-        @Query("episodeId") episodeId:Int,
-        @Query("contentTYpe") contentTYpe:String,
-        @Query("isPaid") isPaid:Boolean
+        @Query("podType") podType: String,
+        @Query("episodeId") episodeId: Int,
+        @Query("contentTYpe") contentTYpe: String,
+        @Query("isPaid") isPaid: Boolean
     ): PodcastModel
 
     @GET("artist/getpopularartist")
-     suspend fun fetchPopularArtist():PopularArtistModel
+    suspend fun fetchPopularArtist(): PopularArtistModel
 
-     @GET("track/GetLatestTrack")
-    suspend fun fetchFeaturedTrackList() :FeaturedLatestTrackListModel
+    @GET("track/GetLatestTrack")
+    suspend fun fetchFeaturedTrackList(): APIResponse<MutableList<FeaturedSongDetail>>
 }

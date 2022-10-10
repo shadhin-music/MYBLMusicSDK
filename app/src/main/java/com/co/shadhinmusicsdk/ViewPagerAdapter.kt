@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.fragments.AllFragment
-import com.shadhinmusiclibrary.fragments.FeaturedHomeFragment
 
 
 @Suppress("DEPRECATION")

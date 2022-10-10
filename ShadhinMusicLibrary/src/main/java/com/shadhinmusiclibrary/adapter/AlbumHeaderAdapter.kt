@@ -28,19 +28,8 @@ class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private val item
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
-            /*
-            if player.state == playing && player.rootid == this.rootId{
-                player.pause
-            }else if player.state = paused && player.rootid == this.rootId{
-                player.play
-            }else{
-                this.startPlaying(trackArray, index = 0)
-            }
-             */
-
             itemClickCB.onRootClickItem(dataSongDetail, position)
         }
-
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -86,10 +75,7 @@ class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private val item
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
-
-
         }
-
     }
 
     companion object {

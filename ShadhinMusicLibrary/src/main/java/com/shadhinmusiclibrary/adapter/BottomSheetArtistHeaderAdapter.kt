@@ -86,7 +86,6 @@ class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
             var url: String = data?.getImageUrl300Size().toString()
-            Log.d("TAGG","Image: "+ url)
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(songDetail?.artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)

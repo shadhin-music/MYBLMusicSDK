@@ -33,10 +33,10 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -78,17 +78,16 @@ class AlbumDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
 
         albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
-
-        footerAdapter = HomeFooterAdapter()
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
+        footerAdapter = HomeFooterAdapter()
         setupViewModel()
         observeData(
             argHomePatchDetail!!.ContentID.toInt(),
             argHomePatchDetail!!.ArtistId.toInt(),
             argHomePatchDetail!!.ContentType
         )
-
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
+
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -110,6 +109,19 @@ class AlbumDetailsFragment :
             } else {
                 navController.popBackStack()
             }
+        }
+
+        try {
+            playerViewModel.playListLiveData.observe(requireActivity()) { itMusicPlay ->
+                playerViewModel.musicIndexLiveData.observe(requireActivity()) { itCurrPlayItem ->
+                    albumsTrackAdapter.setPlayingSong(
+                        itCurrPlayItem.toString(),
+                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
+                    )
+                }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 
@@ -142,33 +154,31 @@ class AlbumDetailsFragment :
             } else {
                 // showDialog()
             }
-
-
         }
     }
 
-    override fun onRootClickItem(_mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        val mSongDetails = albumsTrackAdapter.dataSongDetail
-        Log.e("Check", "array size ->" + mSongDetails.size + "  index -> " + clickItemPosition)
-        if (mSongDetails.size > clickItemPosition) {
-            Log.e(
-                "Check",
-                "rhs ->" + mSongDetails[clickItemPosition].rootContentID + "  lfs -> " + playerViewModel.currentMusic?.rootId
-            )
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+        val lSongDetails = albumsTrackAdapter.dataSongDetail
+        Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
+        if (lSongDetails.size > clickItemPosition) {
+            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
-                playItem(mSongDetails, clickItemPosition)
+                playItem(lSongDetails, clickItemPosition)
             }
         }
     }
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                playerViewModel.skipToQueueItem(clickItemPosition)
+        if (playerViewModel.currentMusic != null) {
+            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                    playerViewModel.skipToQueueItem(clickItemPosition)
+                } else {
+                    playerViewModel.togglePlayPause()
+                }
             } else {
-                playerViewModel.togglePlayPause()
+                playItem(mSongDetails, clickItemPosition)
             }
         } else {
             playItem(mSongDetails, clickItemPosition)
@@ -180,12 +190,12 @@ class AlbumDetailsFragment :
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-        val _songDetails = albumsTrackAdapter.dataSongDetail
+        val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
-        if (_songDetails.size > 0 && isAdded) {
+        if (mSongDet.size > 0 && isAdded) {
             playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
                 if (itMusic != null) {
-                    if ((_songDetails.indexOfFirst {
+                    if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)

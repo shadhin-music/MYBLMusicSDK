@@ -4,25 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PatchCallBack
+import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.utils.Status
 
-class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPoint {
-
-    private var homePatchitem: HomePatchItem?= null
+class FeaturedPopularArtistFragment : Fragment(), PatchCallBack, FragmentEntryPoint {
+    private var homePatchitem: HomePatchItem? = null
 
     lateinit var viewModel: PopularArtistViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +29,13 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
 //           // Log.d("TaG","Message123: "+ homePatchitem)
 //        }
     }
-    private fun setupViewModel() {
 
+    private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.popularArtistViewModelFactory)[PopularArtistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.popularArtistViewModelFactory
+            )[PopularArtistViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -45,19 +45,19 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_featured_popular_artist, container1, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TaG","Message: "+ homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         //tvTitle.text =  homePatchitem?.Name
         setupViewModel()
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY","MESSAGE: ")
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager?.popBackStack("Fragment", 0);
+//            Log.d("TAGGGGGGGY", "MESSAGE: ")
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager?.popBackStack("Fragment", 0);
             // ShadhinMusicSdkCore.getHomeFragment()
 //            val manager: FragmentManager =
 //                (requireContext() as AppCompatActivity).supportFragmentManager
@@ -70,6 +70,7 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
 //            }
         }
     }
+
     fun observeData() {
         viewModel.fetchPouplarArtist()
         viewModel.popularArtistContent.observe(viewLifecycleOwner) { response ->
@@ -79,7 +80,14 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
                     GridLayoutManager(requireContext(), 4)
 //          Log.e("TAG","ID: "+ argHomePatchItem)
                 recyclerView.adapter =
-                    response.data?.let { it.data.let { it1 -> FeaturedPopularArtistAdapter(it1,this) } }
+                    response.data?.let {
+                        it.data.let { it1 ->
+                            FeaturedPopularArtistAdapter(
+                                it1,
+                                this
+                            )
+                        }
+                    }
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
@@ -87,28 +95,33 @@ class FeaturedPopularArtistFragment : Fragment() , HomeCallBack, FragmentEntryPo
             }
         }
     }
-    companion object {
 
-        @JvmStatic
-        fun newInstance()=
-//        fun newInstance(homePatchitem: HomePatchItem) =
-            FeaturedPopularArtistFragment().apply {
-                arguments = Bundle().apply {
-                    //   putSerializable("homePatchitem", homePatchitem)
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
 
-                }
-            }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
-    }
+//    companion object {
+//
+//        @JvmStatic
+//        fun newInstance()=
+////        fun newInstance(homePatchitem: HomePatchItem) =
+//            FeaturedPopularArtistFragment().apply {
+//                arguments = Bundle().apply {
+//                    //   putSerializable("homePatchitem", homePatchitem)
+//
+//                }
+//            }
+//    }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
-    }
+//    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+//
+//    }
+//
+//    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//
+//    }
+//
+//    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+//
+//    }
 }

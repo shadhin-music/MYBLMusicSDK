@@ -32,11 +32,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     FragmentEntryPoint, HomeCallBack {
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
+
     //var page = -1
     var isLoading = false
     var isLastPage = false
     private lateinit var rvAllHome: RecyclerView
-      private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -55,7 +56,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.e("Home", "onViewCreated Message: " + pageNum)
-        viewModel!!.fetchHomeData( pageNum,false)
+        viewModel!!.fetchHomeData(pageNum, false)
         observeData()
     }
 
@@ -80,7 +81,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             footerAdapter = HomeFooterAdapter()
 
             dataAdapter = ParentAdapter(this)
-
 
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
@@ -121,13 +121,13 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 dataAdapter?.notifyDataSetChanged()
             }
         }
-        if(homeData?.total == pageNum){
+        if (homeData?.total == pageNum) {
             isLastPage = true
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-            recyclerView.adapter= ConcatAdapter(config,dataAdapter,footerAdapter)
+            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
 
     }
@@ -141,6 +141,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                 putExtra(AppConstantUtils.PatchItem, data)
                 putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
             })

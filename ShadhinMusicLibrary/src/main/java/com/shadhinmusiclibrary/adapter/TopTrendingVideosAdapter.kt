@@ -59,7 +59,6 @@ class TopTrendingVideosAdapter(val homePatchItemModel: HomePatchItem, val homePa
                     video.setData(item)
                     videoArray.add(video)
                 }
-                Log.d("TAG","Position: "+ absoluteAdapterPosition)
                 val videos :ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)

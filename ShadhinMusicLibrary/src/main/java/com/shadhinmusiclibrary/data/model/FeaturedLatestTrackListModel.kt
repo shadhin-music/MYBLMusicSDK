@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 data class FeaturedLatestTrackListModel(
-    val `data`: List<FeaturedLatestTrackListData>,
+    val `data`: MutableList<FeaturedLatestTrackListData>,
     val message: String,
     val status: String
 )

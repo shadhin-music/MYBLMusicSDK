@@ -9,5 +9,5 @@ data class Data(
     val Follower: String,
     val Id: String,
     val Image: String,
-    val PlayUrl: Any
+    val PlayUrl: String
 )

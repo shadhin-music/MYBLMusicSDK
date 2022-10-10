@@ -31,7 +31,6 @@ class AllGenresDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             homePatchItem = it.getSerializable("data") as HomePatchItem?
-            Log.d("TAG","DATA: "+ homePatchItem)
         }
 
     }

@@ -54,7 +54,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter: BottomSheetArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
-    private lateinit var artistSongAdapter: ArtistSongsAdapter
+    private lateinit var artistSongAdapter: ArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -279,6 +279,13 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    }
+
+    override fun onRootClickItem(
+        mSongDetails: MutableList<ArtistContentData>,
+        clickItemPosition: Int
+    ) {
+
     }
 
     override fun onClickItem(mSongDetails: MutableList<ArtistContentData>, clickItemPosition: Int) {

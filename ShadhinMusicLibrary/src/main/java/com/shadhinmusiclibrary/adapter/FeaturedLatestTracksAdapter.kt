@@ -11,52 +11,56 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.FeaturedLatestTrackListData
+import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
+import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
+import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class FeaturedLatestTracksAdapter(val data: List<FeaturedLatestTrackListData>) :
+class FeaturedLatestTracksAdapter(
+    private val listSongDetail: MutableList<FeaturedSongDetail>,
+    private val lrOnCallBack: LatestReleaseOnCallBack
+) :
     RecyclerView.Adapter<FeaturedLatestTracksAdapter.ViewHolder>() {
 
-    private var parentView:View?=null
+    private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-        parentView = LayoutInflater.from(parent.context).inflate(R.layout.video_podcast_epi_single_item, parent, false)
+        parentView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(data[position])
-
-
+        holder.bindItems(listSongDetail[position])
+        holder.itemView.setOnClickListener {
+            lrOnCallBack.onClickItem(listSongDetail, position)
+        }
     }
-
 
     override fun getItemCount(): Int {
-        return data.size
-
+        return listSongDetail.size
     }
-
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(featuredLatestTrackListData: FeaturedLatestTrackListData) {
+        fun bindItems(mSongDetails: FeaturedSongDetail) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = featuredLatestTrackListData.image
+            val url: String = mSongDetails.image
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
+
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(mSongDetails.getImageUrl300Size())
                 .into(imageView!!)
-            val textTitle:TextView = itemView.findViewById(R.id.tv_song_name)
-            val textArtist:TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration:TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text= featuredLatestTrackListData.title
-            textArtist.text = featuredLatestTrackListData.artistname
-            textDuration.text = featuredLatestTrackListData.duration
+            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            textTitle.text = mSongDetails.title
+            textArtist.text = mSongDetails.artistname
+            textDuration.text = TimeParser.secToMin(mSongDetails.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -71,13 +75,8 @@ class FeaturedLatestTracksAdapter(val data: List<FeaturedLatestTrackListData>) :
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
-
-
 }
 
 

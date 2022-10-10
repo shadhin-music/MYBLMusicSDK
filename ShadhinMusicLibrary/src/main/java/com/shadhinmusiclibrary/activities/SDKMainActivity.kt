@@ -19,6 +19,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
@@ -43,6 +44,9 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.Serializable
 import androidx.annotation.NavigationRes as NavigationRes1
 
@@ -54,7 +58,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
 
     //mini music player
-    private lateinit var llMiniMusicPlayer: LinearLayout
+    private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
     private lateinit var tvSongNameMini: TextView
     private lateinit var tvSingerNameMini: TextView
@@ -108,14 +112,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         uiInitMainMusicPlayer()
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
 
-        //Will received data from Home Fragment from MYBLL App
-        val patch = intent.extras!!.getBundle(PatchItem)!!
-            .getSerializable(PatchItem) as HomePatchItem
-        var selectedPatchIndex: Int? = null
-        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
-            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        //Will received request from Any page from MYBLL app
+        val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
+        if (uiRequest == AppConstantUtils.Requester_Name_Home) {
+            homeFragmentAccess()
         }
-        routeData(patch, selectedPatchIndex)
+        if (uiRequest == AppConstantUtils.Requester_Name_API) {
+            patchFragmentAccess()
+        }
 
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
@@ -145,7 +149,40 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
     }
 
-    private fun routeData(homePatchItem: HomePatchItem, selectedIndex: Int?) {
+    private fun homeFragmentAccess() {
+        //Will received data from Home Fragment from MYBLL App
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+        var selectedPatchIndex: Int? = null
+        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
+            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
+        }
+
+        routeDataHomeFragment(patch, selectedPatchIndex)
+    }
+
+    private fun patchFragmentAccess() {
+        val dataContentType =
+            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
+
+        routeDataPatch(dataContentType)
+    }
+
+    private fun routeDataPatch(contentType: String) {
+        when (contentType.toUpperCase()) {
+            DataContentType.CONTENT_TYPE_A_RC203 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_R_RC201 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_WV -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            }
+        }
+    }
+
+    private fun routeDataHomeFragment(homePatchItem: HomePatchItem, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
@@ -621,7 +658,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
-            Log.e("SDKM", "playerProgress: ")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 

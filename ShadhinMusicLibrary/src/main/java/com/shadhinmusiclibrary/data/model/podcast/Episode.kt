@@ -14,6 +14,6 @@ data class Episode(
     val Name: String,
     val ShowId: String,
     val Sort: Int,
-    val TrackList: List<Track>,
+    val TrackList: MutableList<Track>,
     val fav: String
 )

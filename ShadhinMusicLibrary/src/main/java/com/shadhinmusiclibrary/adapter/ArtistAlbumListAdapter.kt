@@ -54,7 +54,6 @@ class ArtistAlbumListAdapter(
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
             textViewArtist.text =
                 this@ArtistAlbumListAdapter.artistAlbumModel.data.get(absoluteAdapterPosition).artistname
-            //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
