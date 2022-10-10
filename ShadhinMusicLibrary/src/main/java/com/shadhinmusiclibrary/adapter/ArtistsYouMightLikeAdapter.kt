@@ -48,6 +48,9 @@ class ArtistsYouMightLikeAdapter(
         fun bindItems(homePatchItem: HomePatchItem?) {
            val textView:TextView = itemView.findViewById(R.id.tvTitle)
             textView.text= "You might like also"
+            if(homePatchItem?.Data?.isEmpty() == true){
+                textView.visibility = View.GONE
+            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)

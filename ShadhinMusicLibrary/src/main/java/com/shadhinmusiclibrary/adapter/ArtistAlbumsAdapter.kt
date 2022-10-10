@@ -6,6 +6,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 
@@ -53,9 +54,13 @@ class ArtistAlbumsAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(homePatchItem: HomePatchItem?, artistAlbumModel: ArtistAlbumModel?) {
-
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = "Albums"
+//            if(homePatchItem?.Data?.isEmpty() == true){
+//                tvTitle.visibility = GONE
+//            }
+
+
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)

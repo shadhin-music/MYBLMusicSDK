@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,23 +20,27 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint, HomeCallBack {
+    FragmentEntryPoint, HomeCallBack,SearchClickCallBack {
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
-
+    private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     //var page = -1
     var isLoading = false
     var isLastPage = false
+     var rbtData :RBTDATA ?= null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
     override fun getViewModel(): Class<HomeViewModel> {
@@ -45,7 +50,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun getViewModelFactory(): HomeViewModelFactory {
         return injector.factoryHomeVM
     }
-
+//    override fun getViewModelFactory(): HomeViewModelFactory {
+//        return injector.factoryAmarTuneVM
+//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -57,6 +64,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         super.onViewCreated(view, savedInstanceState)
         Log.e("Home", "onViewCreated Message: " + pageNum)
         viewModel!!.fetchHomeData(pageNum, false)
+        viewModelAmaraTunes = ViewModelProvider(
+            this,
+            injector.factoryAmarTuneVM
+        )[AmarTunesViewModel::class.java]
+        viewModelAmaraTunes.fetchRBTURL()
+
         observeData()
     }
 
@@ -66,22 +79,30 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         viewModel!!.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
+
                 viewDataInRecyclerView(res.data)
             } else {
                 progressBar.visibility = VISIBLE
             }
             isLoading = false
         }
+        Log.e("TAG", "URL: "+ "Hello")
+//        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
+//            if (res.status == Status.SUCCESS) {
+//                rbtData=res.data?.data
+//            }
+//        }
     }
 
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {
+           // Log.e("TAG", "URLRBT: "+ this.rbtData)
 
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this)
-
+            dataAdapter = ParentAdapter(this,this)
+            //dataAdapter = ParentAdapter(this,rbtData )
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -115,6 +136,21 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 //            val concatAdapter=  ConcatAdapter(config,dataAdapter)
             recyclerView.adapter = dataAdapter
         }
+        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
+            Log.e("TAG", "URL: "+ res)
+            if (res.status == Status.SUCCESS) {
+                this.rbtData = res.data?.data
+
+             //    dataAdapter = ParentAdapter(this)
+//                    //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
+//                    var url:String = res?.data?.data?.pwaUrl.toString()
+//                    var pwatopchartURL:String = res.data?.data?.pwatopchartURL.toString()
+//                    var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
+//                    Log.e("TAG", "URL123: "+ res.data?.data)
+                //  OpenWebView(url,redirectUrl)
+            }
+        }
+
         homeData.let {
             it?.data?.let { it1 ->
                 dataAdapter?.setData(it1)
@@ -156,12 +192,28 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                 putExtra(AppConstantUtils.PatchItem, data)
+                Log.e("TAG", "DATA123: " + selectedHomePatchItem)
             })
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         TODO("Not yet implemented")
+    }
+
+    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Search)
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
     }
 
 

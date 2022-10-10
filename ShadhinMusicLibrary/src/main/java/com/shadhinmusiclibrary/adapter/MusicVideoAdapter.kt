@@ -40,19 +40,19 @@ class MusicVideoAdapter(var data: List<LatestVideoModelData>) : RecyclerView.Ada
             val imageView = itemView.findViewById(R.id.image) as ImageView
             val url: String = data[absoluteAdapterPosition].getImageUrl300Size()
             Glide.with(itemView.context).load(url).into(imageView)
-//            itemView.setOnClickListener {
-//                val intent = Intent(itemView.context, VideoActivity::class.java)
-//                val videoArray = ArrayList<Video>()
-//                for (item in argHomePatchItem.Data) {
-//                    val video = Video()
-//                    video.setData(item)
-//                    videoArray.add(video)
-//                }
-//                val videos: ArrayList<Video> = videoArray
-//                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
-//                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-//                itemView.context.startActivity(intent)
-//            }
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, VideoActivity::class.java)
+                val videoArray = ArrayList<Video>()
+                for (item in data) {
+                    val video = Video()
+                    video.setData2(item)
+                    videoArray.add(video)
+                }
+                val videos: ArrayList<Video> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                itemView.context.startActivity(intent)
+            }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)

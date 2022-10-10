@@ -11,10 +11,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface ApiService {
@@ -26,7 +23,7 @@ interface ApiService {
 
     @GET("Album/GetAlbumContent")
     suspend fun fetchAlbumContent(
-        @Query("id") contentId: Int,
+        @Query("id") contentId: String,
     ): APIResponse<MutableList<SongDetail>>
 
     @GET("?method=artist.getinfo")
@@ -36,25 +33,25 @@ interface ApiService {
 
     @GET("Artist/ArtistPlayList")
     suspend fun fetchArtistBannerData(
-        @Query("id") id: Int?,
+        @Query("id") id: String?,
 
         ): ArtistBanner
 
     @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
-        @Query("id") id: Int?,
+        @Query("id") id: String?,
 
         ): ArtistContent
 
     @GET("Artist/ArtistAlbumsbyidtype")
     suspend fun fetchArtistAlbum(
         @Query("type") type: String,
-        @Query("id") id: Int?,
+        @Query("id") id: String?,
     ): ArtistAlbumModel
 
     @GET("Playlist/GetPlaylistContentById")
     suspend fun fetchGetPlaylistContentById(
-        @Query("id") id: Int,
+        @Query("id") id: String,
     ): APIResponse<MutableList<SongDetail>>
 
     @GET("Podcast/PodcastbyepisodeIdV3")
@@ -73,8 +70,8 @@ interface ApiService {
      @GET("track/GetLatestTrack")
     suspend fun fetchFeaturedTrackList() :FeaturedLatestTrackListModel
 
-    @POST("RBTPWA/GETPWATOKEN")
-    suspend fun rbtURL(@Body requestBody: RequestBody):RBT
+    @GET("RBTPWA/GETPWATOKEN")
+    suspend fun rbtURL():RBT
 
     @GET("Search/SearchByKeyword")
       suspend fun getSearch(

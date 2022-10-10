@@ -18,7 +18,7 @@ class ArtistContentViewModel (private val artistContentRepository: ArtistSongCon
     val artistSongContent: LiveData<ApiResponse<ArtistContent>> = _artistSongContent
 
 
-    fun fetchArtistSongData(artist: Int) = viewModelScope.launch {
+    fun fetchArtistSongData(artist:String) = viewModelScope.launch {
         val response = artistContentRepository.fetchArtistSongData(artist)
 
             _artistSongContent.postValue(response)

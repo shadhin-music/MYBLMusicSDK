@@ -17,7 +17,7 @@ class ArtistBannerViewModel (private val artistBannerContentRepository: ArtistBa
 
 
 
-    fun fetchArtistBannerData(id:Int) = viewModelScope.launch {
+    fun fetchArtistBannerData(id:String) = viewModelScope.launch {
         val response = artistBannerContentRepository.fetchArtistBannerData(id)
 
             _artistBannerContent.postValue(response)

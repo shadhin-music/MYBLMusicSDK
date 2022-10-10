@@ -16,14 +16,14 @@ class AlbumViewModel(private val albumContentRepository: AlbumContentRepository)
         MutableLiveData()
     val albumContent: LiveData<ApiResponse<APIResponse<MutableList<SongDetail>>>> = _albumContent
 
-    fun fetchAlbumContent(contentId: Int) = viewModelScope.launch {
+    fun fetchAlbumContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchAlbumContent(contentId)
 
         _albumContent.postValue(response)
 
     }
 
-    fun fetchPlaylistContent(contentId: Int) = viewModelScope.launch {
+    fun fetchPlaylistContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchPlaylistContent(contentId)
 
         _albumContent.postValue(response)

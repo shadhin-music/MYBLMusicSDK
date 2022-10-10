@@ -104,4 +104,36 @@ data class Video(
         trackType = data.TrackType
         type = data.Type
     }
+    fun setData2(data: LatestVideoModelData){
+        albumId = data.AlbumId
+        albumImage = data.AlbumImage
+        albumName = data.AlbumName
+        artist = data.Artist
+        artistId = data.ArtistId
+        artistImage = data.ArtistImage
+        banner = data.Banner
+        clientValue = 2
+        contentID = data.ContentID
+        contentType = data.ContentType
+        createDate = data.CreateDate
+        duration = data.Duration
+        fav = data.fav
+        follower = data.Follower
+        image = data.image
+        imageWeb = data.imageWeb
+        isPaid = data.IsPaid
+        newBanner = data.NewBanner
+        playCount = data.PlayCount
+        playListId = data.PlayListId
+        playListImage = data.PlayListImage
+        playListName = data.PlayListName
+        playUrl = data.PlayUrl
+        rootId = data.RootId
+        rootType = data.RootType
+        seekable = data.Seekable
+        teaserUrl = data.TeaserUrl
+        title = data.title
+        trackType = data.TrackType
+        type = data.Type
+    }
 }

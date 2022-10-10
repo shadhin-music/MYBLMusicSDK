@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="8dp" />
+
+         />
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,13 +23,6 @@
         android:id="@+id/progress_bar"
         android:theme="@style/ProgressBarTheme"/>
 
-    <include
-        layout="@layout/powered_by"
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerView"
-        android:layout_marginTop="-85dp"
-        android:visibility="gone"/>
 </RelativeLayout>
 </FrameLayout>

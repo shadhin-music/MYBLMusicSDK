@@ -11,13 +11,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.fragments.search.SearchFragment
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchArtistAdapter( val searchArtistdata: List<SearchArtistdata>) :
+class SearchArtistAdapter(
+    val searchArtistdata: List<SearchArtistdata>,
+       val homeCallBack: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchArtistAdapter.ViewHolder>() {
 
 
@@ -59,20 +67,17 @@ class SearchArtistAdapter( val searchArtistdata: List<SearchArtistdata>) :
         fun bindItems(artistDetails: SearchArtistdata) {
             val imageView:CircleImageView = itemView.findViewById(R.id.artist_img)
             val url: String = artistDetails.image
-            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
-          //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-           // textTitle.text = dataSongDetail.title
+
             textArtist.text = artistDetails.Artist
-           // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
-            //Log.e("TAG","DATA123: "+ artistContent?.image)
+
             itemView.setOnClickListener {
+                homeCallBack.onClickArtistItem(artistDetails)
+                 Log.d("TAG", "artistDetails: " + artistDetails)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container , AlbumFragment.newInstance())

@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.fragments.MusicVideoFragment
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 class FeaturedHomeFragment : Fragment() {
@@ -42,7 +45,7 @@ class FeaturedHomeFragment : Fragment() {
             val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
-                .replace(R.id.container1,MusicVideoFragment() )
+                .replace(R.id.container1, MusicVideoFragment() )
                 .addToBackStack("Fragment")
                 .commit()
         }

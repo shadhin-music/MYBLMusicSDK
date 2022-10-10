@@ -20,7 +20,7 @@ class ArtistAlbumsViewModel (private val artistAlbumRepository: ArtistAlbumConte
 
 
 
-    fun fetchArtistAlbum(type: String,id:Int) = viewModelScope.launch {
+    fun fetchArtistAlbum(type: String,id:String) = viewModelScope.launch {
         val response = artistAlbumRepository.fetchArtistAlbum(type,id)
         _artistAlbumContent.postValue(response)
     }

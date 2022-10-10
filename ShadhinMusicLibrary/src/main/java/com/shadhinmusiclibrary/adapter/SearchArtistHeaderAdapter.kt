@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -16,14 +15,15 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
+import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
+class SearchArtistHeaderAdapter(
+    var homePatchDetail: SearchArtistdata?,
     private val itemClickCB: ArtistOnItemClickCallback
-) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
+) : RecyclerView.Adapter<SearchArtistHeaderAdapter.ArtistHeaderVH>() {
 
     private var dataSongDetail: MutableList<ArtistContentData> = mutableListOf()
     var bio: LastFmResult? = null
@@ -38,7 +38,7 @@ class ArtistHeaderAdapter(
 
 
     override fun onBindViewHolder(holder: ArtistHeaderVH, position: Int) {
-        holder.bindItems(homePatchDetail)
+        holder.bindItems(homePatchDetail!!)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
             itemClickCB.onRootClickItem(dataSongDetail, position)
@@ -51,7 +51,7 @@ class ArtistHeaderAdapter(
         return 1
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
+    fun setData(homePatchDetail: SearchArtistdata) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -80,12 +80,11 @@ class ArtistHeaderAdapter(
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
 
-        fun bindItems(homePatchDetail: HomePatchDetail?) {
+        fun bindItems(homePatchDetail: SearchArtistdata) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
             val url: String = homePatchDetail!!.getImageUrl300Size()
-            Log.e("TAG", "DATA: " + url)
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)

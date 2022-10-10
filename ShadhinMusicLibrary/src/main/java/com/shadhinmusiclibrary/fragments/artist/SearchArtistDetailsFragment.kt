@@ -8,8 +8,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.annotation.Nullable
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -24,6 +27,7 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ArtistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.ArtistTrackAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.adapter.SearchArtistHeaderAdapter
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -31,8 +35,11 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -40,7 +47,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
+class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack, FragmentEntryPoint,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContent? = null
@@ -50,25 +57,37 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
-    private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
+    private lateinit var artistHeaderAdapter:SearchArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
     private lateinit var artistTrackAdapter: ArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
-
+   private lateinit var searchArtistdata:SearchArtistdata
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_artist_details, container, false)
-        navController = findNavController()
+//        navController = findNavController()
         return viewRef
     }
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+
+            searchArtistdata= (it.getSerializable("searchArtistdata") as SearchArtistdata?)!!
+        }
+
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Check", "yes iam called")
+        Log.e("Check", "yes iam called"+ searchArtistdata)
         initialize()
+
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
@@ -91,7 +110,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this)
+        artistHeaderAdapter = SearchArtistHeaderAdapter(searchArtistdata,this)
         artistTrackAdapter = ArtistTrackAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
@@ -129,9 +148,9 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun observeData() {
-        argHomePatchDetail?.let {
+        searchArtistdata.let {
             viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG", "DATA: " + it.ArtistId)
+            Log.e("TAG", "DATA: " + it.Artist)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
@@ -145,11 +164,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 progressBar.visibility = GONE
             }
         }
-        argHomePatchDetail.let {
-            it?.ArtistId?.let { it1 ->
-                it1
-                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
-            }
+        searchArtistdata.let {
+            viewModelArtistBanner.fetchArtistBannerData(it.ContentID)
+        }
+
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
                     progressBar.visibility = GONE
@@ -158,9 +176,9 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                     progressBar.visibility = VISIBLE
                 }
             }
-        }
-        argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId)
+
+        searchArtistdata.let {
+            viewModelArtistSong.fetchArtistSongData(it.ContentID)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     artistTrackAdapter.artistContent(res.data)
@@ -169,8 +187,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 }
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId)
+        searchArtistdata.let {
+            viewModelArtistAlbum.fetchArtistAlbum("r", it.ContentID)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 
                 if (res.status == Status.SUCCESS) {
@@ -199,12 +217,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
-        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        artistHeaderAdapter.setData(argHomePatchDetail!!)
-        observeData()
-        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
-        parentAdapter.notifyDataSetChanged()
-        parentRecycler.scrollToPosition(0)
+//        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
+//        artistHeaderAdapter.setData(argHomePatchDetail!!)
+//        observeData()
+//        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+//        parentAdapter.notifyDataSetChanged()
+//        parentRecycler.scrollToPosition(0)
 
     }
 
@@ -322,7 +340,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         songDetails: MutableList<ArtistContentData>
     ) {
         val mSongDet = artistTrackAdapter.artistSongList
-        val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
+        val albumVH = currentVH as SearchArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
             playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
                 if (itMusic != null) {
@@ -349,12 +367,37 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
+        TODO("Not yet implemented")
     }
+
+//    override fun onClickBottomItem(mSongDetails: SongDetail) {
+//        (activity as? SDKMainActivity)?.showBottomSheetDialog2(
+//            navController,
+//            context = requireContext(),
+//            mSongDetails,
+//            argHomePatchItem,
+//            argHomePatchDetail
+//        )
+//    }
+companion object {
+
+    @JvmStatic
+    fun newInstance(searchArtistdata: SearchArtistdata) =
+       SearchArtistDetailsFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable("searchArtistdata", searchArtistdata)
+//                    putString(ARG_PARAM2, param2)
+            }
+        }
+
+
+//        @JvmStatic
+//        fun newInstance(data: RBTDATA) =
+//            AmartunesWebviewFragment().apply {
+//                arguments = Bundle().apply {
+//                    putSerializable("data", data)
+////                    putString(ARG_PARAM2, param2)
+//                }
+//            }
+}
 }

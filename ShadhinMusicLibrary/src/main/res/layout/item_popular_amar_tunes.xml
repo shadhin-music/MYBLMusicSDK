@@ -40,10 +40,10 @@
             android:paddingEnd="16dp"
             android:paddingBottom="16dp"
             android:text="See All"
+            android:visibility="gone"
             android:textColor="#2E2E2E"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/constraintRelease"
             app:layout_constraintTop_toTopOf="parent" />

@@ -14,43 +14,58 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.adapter.TopTenItemAdapter
 import com.shadhinmusiclibrary.adapter.TrendingItemsAdapter
 import com.shadhinmusiclibrary.adapter.SearchTracksAdapter
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.search.SearchAlbumdata
+import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.MySuggestionProvider
 import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
-
-   private lateinit var viewModel :SearchViewModel
+class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallBack {
+    private lateinit var navController: NavController
+    private lateinit var viewModel: SearchViewModel
     private lateinit var searchText: String
     private var queryTextChangedJob: Job? = null
-     private lateinit var tvTrending:TextView
-     private lateinit var tvTrendingVideo:TextView
-    private lateinit var tvArtist:TextView
-    private lateinit var tvAlbums:TextView
-    private lateinit var tvTracks:TextView
-    private lateinit var tvVideos:TextView
-    private lateinit var tvShows:TextView
-    private lateinit var tvEpisodes:TextView
-    private lateinit var tvPodcastTracks:TextView
+    private lateinit var tvTrending: TextView
+    private lateinit var tvTrendingItems: TextView
+    private lateinit var tvTrendingVideo: TextView
+    private lateinit var tvArtist: TextView
+    private lateinit var tvAlbums: TextView
+    private lateinit var tvTracks: TextView
+    private lateinit var tvVideos: TextView
+    private lateinit var tvShows: TextView
+    private lateinit var tvEpisodes: TextView
+    private lateinit var tvPodcastTracks: TextView
 
     private lateinit var recyclerViewAlbums: RecyclerView
     private lateinit var recyclerViewVideos: RecyclerView
@@ -58,11 +73,11 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
     private lateinit var recyclerViewShows: RecyclerView
     private lateinit var recyclerViewEpisodes: RecyclerView
     private lateinit var recyclerViewPodcastTracks: RecyclerView
-
-    private lateinit var  recyclerViewTrending: RecyclerView
-    private lateinit var recyclerViewTrendingVideos:RecyclerView
-    private lateinit var  recyclerViewArtist:RecyclerView
-    var mSuggestionAdapter : SearchSuggestionAdapter? = null
+    private lateinit var cardView: CardView
+    private lateinit var recyclerViewTrending: RecyclerView
+    private lateinit var recyclerViewTrendingVideos: RecyclerView
+    private lateinit var recyclerViewArtist: RecyclerView
+    var mSuggestionAdapter: SearchSuggestionAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -75,18 +90,31 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        val viewRef = inflater.inflate(R.layout.fragment_search, container, false)
+        navController = findNavController()
+        return viewRef
 
-        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                requireActivity().finish()
+            } else {
+                navController.popBackStack()
+            }
+        }
+        cardView = requireView().findViewById(R.id.cardView)
+        tvTrendingItems = requireView().findViewById(R.id.tvTrendingItems)
+        //recyclerViewTrendingitems = requireView().findViewById(R.id.recyclerViewTrendingItems)
         recyclerViewTrending = requireView().findViewById(R.id.recyclerViewTrending)
-         recyclerViewTrendingVideos = requireView().findViewById(R.id.recyclerViewTrendingVideos)
-         recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
+        recyclerViewTrendingVideos = requireView().findViewById(R.id.recyclerViewTrendingVideos)
+        recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
 
-        tvTrending =requireView().findViewById(R.id.tvTrending)
+        tvTrending = requireView().findViewById(R.id.tvTrending)
         tvTrendingVideo = requireView().findViewById(R.id.tvTrendingVideo)
         viewModel.getTopTrendingItems("s")
         viewModel.topTrendingContent.observe(viewLifecycleOwner) { response ->
@@ -95,22 +123,37 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                 recyclerViewTrending.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 recyclerViewTrending.adapter = TopTenItemAdapter(response?.data?.data!!)
-                Log.e("TAG","DATA: "+ response.data?.data)
+                Log.e("TAG", "DATA: " + response.data?.data)
 
             }
         }
+        val chipArtist: Chip = requireView().findViewById(R.id.chip_1)
+        val chipHabib: Chip = requireView().findViewById(R.id.chip_2)
+        val chipVideo: Chip = requireView().findViewById(R.id.chip_3)
+        val chipTahsan: Chip = requireView().findViewById(R.id.chip_4)
+        val chipKona: Chip = requireView().findViewById(R.id.chip_5)
 
-        viewModel.getTopTrendingVideos("v")
-        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-
-                recyclerViewTrendingVideos.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
-                Log.e("TAG","DATA123: "+ response.data?.data)
-
-            }
+        chipArtist.setOnClickListener {
+//            navController.navigate(R.id.action_search_fragment_to_album_details_fragment2,
+//                Bundle().apply {
+//                    putSerializable(
+//                        AppConstantUtils.PatchItem,
+//                        patch as Serializable
+//                    )
+//                })
         }
+
+//        viewModel.getTopTrendingVideos("v")
+//        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
+//            if (response.status == Status.SUCCESS) {
+//
+//                recyclerViewTrendingVideos.layoutManager =
+//                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
+//                Log.e("TAG", "DATA123: " + response.data?.data)
+//
+//            }
+//        }
 //        observeData(searchText)
         val search: android.widget.SearchView = view.findViewById(R.id.searchInput)
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
@@ -133,17 +176,14 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
 
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
-                         Log.e("SearchFragment", "async work started...")
+                        Log.e("SearchFragment", "async work started...")
                         delay(2000)
 
-                       observeData(searchText)
+                        observeData(searchText)
 
 
                     }
-                }
-
-
-                else if(searchText.isEmpty()){
+                } else if (searchText.isEmpty()) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         // Log.e("SearchFragment", "async work started...")
@@ -156,7 +196,12 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                         //searchAlbumsAdapter =null
                         mSuggestionAdapter?.swapCursor(cursor)
                         //getData()
-
+                        tvTrendingItems.visibility = GONE
+                        cardView.visibility = GONE
+                        recyclerViewTrending.visibility = GONE
+                        recyclerViewTrendingVideos.visibility = GONE
+                        tvTrending.visibility = GONE
+                        tvTrendingVideo.visibility = GONE
                     }
 
                     //search.clearFocus()
@@ -179,10 +224,11 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                 )
                 suggestions.saveRecentQuery(query, null)
                 search.clearFocus()
-                  recyclerViewTrending.visibility= GONE
-                  recyclerViewTrendingVideos.visibility = GONE
-                  tvTrending.visibility= GONE
-                  tvTrendingVideo.visibility = GONE
+                tvTrendingItems.visibility = GONE
+                recyclerViewTrending.visibility = GONE
+                recyclerViewTrendingVideos.visibility = GONE
+                tvTrending.visibility = GONE
+                tvTrendingVideo.visibility = GONE
 
                 // doSearch(searchText)
                 return true
@@ -201,10 +247,12 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
             }
         })
     }
-    private fun setupViewModel() {
 
-        viewModel = ViewModelProvider(this, injector.searchViewModelFactory)[SearchViewModel::class.java]
+    private fun setupViewModel() {
+        viewModel =
+            ViewModelProvider(this, injector.searchViewModelFactory)[SearchViewModel::class.java]
     }
+
     private fun observeData(searchText: String) {
 
         viewModel.getSearchArtist(searchText)
@@ -219,16 +267,15 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
             if (response.status == Status.SUCCESS) {
                 recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
                 tvArtist = requireView().findViewById(R.id.tvArtist)
-                if(response?.data?.data?.Artist?.data?.size!! > 0) {
+                if (response?.data?.data?.Artist?.data?.size!! > 0) {
                     recyclerViewArtist.visibility = VISIBLE
                     tvArtist.visibility = VISIBLE
                     recyclerViewArtist.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewArtist.adapter =
-                        SearchArtistAdapter(response?.data?.data?.Artist?.data!!)
-                    Log.e("TAG", "DATA123: " + response?.data?.data)
-                }
-                else{
+                        SearchArtistAdapter(response?.data?.data?.Artist?.data!!, this)
+                    Log.e("TAG", "DATASearch: " + response?.data?.data)
+                } else {
                     recyclerViewArtist.visibility = GONE
                     tvArtist.visibility = GONE
                 }
@@ -238,16 +285,15 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
             if (response.status == Status.SUCCESS) {
                 recyclerViewAlbums = requireView().findViewById(R.id.recyclerViewAlbums)
                 tvAlbums = requireView().findViewById(R.id.tvAlbums)
-                if(response?.data?.data?.Album?.data?.size!! > 0) {
+                if (response?.data?.data?.Album?.data?.size!! > 0) {
                     recyclerViewAlbums.visibility = VISIBLE
                     tvAlbums.visibility = VISIBLE
                     recyclerViewAlbums.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewAlbums.adapter =
-                        SearchAlbumsAdapter(response?.data?.data?.Album?.data!!)
+                        SearchAlbumsAdapter(response?.data?.data?.Album?.data!!, this)
                     Log.e("TAG", "DATA123: " + response?.data?.data)
-                }
-                else{
+                } else {
                     recyclerViewAlbums.visibility = GONE
                     tvAlbums.visibility = GONE
                 }
@@ -257,7 +303,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
             if (response.status == Status.SUCCESS) {
                 recyclerViewTracks = requireView().findViewById(R.id.recyclerViewTracks)
                 tvTracks = requireView().findViewById(R.id.tvTracks)
-                if(response?.data?.data?.Track?.data?.size!! > 0) {
+                if (response?.data?.data?.Track?.data?.size!! > 0) {
                     tvTracks.visibility = VISIBLE
                     recyclerViewTracks.visibility = VISIBLE
                     recyclerViewTracks.layoutManager =
@@ -265,18 +311,17 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                     recyclerViewTracks.adapter =
                         SearchTracksAdapter(response.data.data.Track.data)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
-                }
-                else{
+                } else {
                     recyclerViewTracks.visibility = GONE
-                    tvTracks.visibility =GONE
+                    tvTracks.visibility = GONE
                 }
             }
         }
-          viewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
+        viewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 recyclerViewVideos = requireView().findViewById(R.id.recyclerViewVideos)
                 tvVideos = requireView().findViewById(R.id.tvVideos)
-                if(response?.data?.data?.Video?.data?.size!! > 0) {
+                if (response?.data?.data?.Video?.data?.size!! > 0) {
                     tvVideos.visibility = VISIBLE
                     recyclerViewVideos.visibility = VISIBLE
                     recyclerViewVideos.layoutManager =
@@ -284,18 +329,17 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                     recyclerViewVideos.adapter =
                         SearchVideoAdapter(response.data.data.Video.data)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
-                }
-                else{
+                } else {
                     recyclerViewVideos.visibility = GONE
-                    tvVideos.visibility =GONE
+                    tvVideos.visibility = GONE
                 }
             }
         }
         viewModel.searchPodcastShowContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                recyclerViewShows= requireView().findViewById(R.id.recyclerViewShows)
+                recyclerViewShows = requireView().findViewById(R.id.recyclerViewShows)
                 tvShows = requireView().findViewById(R.id.tvShows)
-                if(response?.data?.data?.PodcastShow?.data?.size!! > 0) {
+                if (response?.data?.data?.PodcastShow?.data?.size!! > 0) {
                     recyclerViewShows.visibility = VISIBLE
                     tvShows.visibility = VISIBLE
                     recyclerViewShows.layoutManager =
@@ -303,8 +347,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                     recyclerViewShows.adapter =
                         SearchShowAdapter(response.data.data.PodcastShow.data)
                     Log.e("TAG", "DATA123: " + response.data.data.PodcastShow.data)
-                }
-                else{
+                } else {
                     recyclerViewShows.visibility = GONE
                     tvShows.visibility = GONE
 
@@ -315,7 +358,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
             if (response.status == Status.SUCCESS) {
                 recyclerViewEpisodes = requireView().findViewById(R.id.recyclerViewEpisodes)
                 tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
-                if(response?.data?.data?.PodcastEpisode?.data?.size!! > 0) {
+                if (response?.data?.data?.PodcastEpisode?.data?.size!! > 0) {
                     recyclerViewEpisodes.visibility = VISIBLE
                     tvEpisodes.visibility = VISIBLE
                     recyclerViewEpisodes.layoutManager =
@@ -323,33 +366,33 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
                     recyclerViewEpisodes.adapter =
                         SearchEpisodeAdapter(response?.data?.data?.PodcastEpisode?.data!!)
                     Log.e("TAG", "DATA123: " + response?.data?.data)
-                }
-                else{
-                    recyclerViewArtist.visibility = GONE
+                } else {
+                    recyclerViewEpisodes.visibility = GONE
                     tvEpisodes.visibility = GONE
                 }
             }
         }
         viewModel.searchPodcastTrackContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                recyclerViewPodcastTracks = requireView().findViewById(R.id. recyclerViewPodcastTracks)
+                recyclerViewPodcastTracks =
+                    requireView().findViewById(R.id.recyclerViewPodcastTracks)
                 tvPodcastTracks = requireView().findViewById(R.id.tvPodcastTracks)
-                if(response?.data?.data?.PodcastTrack?.data?.size!! > 0) {
+                if (response?.data?.data?.PodcastTrack?.data?.size!! > 0) {
                     recyclerViewPodcastTracks.visibility = VISIBLE
                     tvPodcastTracks.visibility = VISIBLE
                     recyclerViewPodcastTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewPodcastTracks.adapter =
-                        SearchPodcastTracksAdapter(response?.data?.data?.PodcastTrack?.data!!)
+                        SearchPodcastTracksAdapter(response.data.data.PodcastTrack.data)
                     Log.e("TAG", "DATA123: " + response?.data?.data)
-                }
-                else{
+                } else {
                     recyclerViewPodcastTracks.visibility = GONE
-                    tvPodcastTracks.visibility =GONE
+                    tvPodcastTracks.visibility = GONE
                 }
             }
         }
     }
+
     fun getRecentSuggestions(query: String): Cursor? {
         val uriBuilder: Uri.Builder = Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
@@ -358,8 +401,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
         val selection = "?"
         val selArgs = arrayOf(query)
         val uri: Uri = uriBuilder.build()
-        return  requireActivity().contentResolver.query(uri, null, selection, selArgs, null)
+        return requireActivity().contentResolver.query(uri, null, selection, selArgs, null)
     }
+
+
     companion object {
 
         @JvmStatic
@@ -370,5 +415,110 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint {
 //                    putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+
+    override fun onClickArtistItem(searchArtistdata: SearchArtistdata) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.Artist,
+            searchArtistdata as Serializable
+        )
+        navController.navigate(R.id.action_search_fragment_to_artist_details_fragment_to_album_details_fragment,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItem("", "A", listOf(), "", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetail(
+                        AlbumId = searchArtistdata.AlbumId,
+                        ArtistId = searchArtistdata.ContentID,
+                        ContentID = searchArtistdata.ContentID,
+                        ContentType = searchArtistdata.ContentType,
+                        PlayUrl = searchArtistdata.PlayUrl,
+                        AlbumName = searchArtistdata.title,
+                        AlbumImage = "",
+                        fav = "",
+                        Banner = "",
+                        Duration = searchArtistdata.Duration,
+                        TrackType = "",
+                        image = searchArtistdata.image,
+                        ArtistImage = "",
+                        Artist = searchArtistdata.Artist,
+                        CreateDate = "",
+                        Follower = "",
+                        imageWeb = "",
+                        IsPaid = false,
+                        NewBanner = "",
+                        PlayCount = 0,
+                        PlayListId = "",
+                        PlayListImage = "",
+                        PlayListName = "",
+                        RootId = "",
+                        RootType = "",
+                        Seekable = false,
+                        TeaserUrl = "",
+                        title = searchArtistdata.title,
+                        Type = ""
+
+                    ) as Serializable
+                )
+            })
+
+    }
+
+    override fun onClickAlbumItem(albumModelData: SearchAlbumdata) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data2 = Bundle()
+        data2.putSerializable(
+            AppConstantUtils.Album,
+            albumModelData as Serializable
+        )
+//        navController.navigate(R.id.action_search_fragment_to_album_details_fragment,
+//            Bundle().apply {
+//                putSerializable(
+//                    AppConstantUtils.PatchItem,
+//                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+//                )
+//                putSerializable(
+//                    AppConstantUtils.PatchDetail,
+//                    HomePatchDetail(
+//                        AlbumId = albumModelData.AlbumId,
+//                        ArtistId = albumModelData.ContentID,
+//                        ContentID = albumModelData.ContentID,
+//                        ContentType = albumModelData.ContentType,
+//                        PlayUrl = albumModelData.PlayUrl,
+//                        AlbumName = albumModelData.title,
+//                        AlbumImage = albumModelData.image,
+//                        fav = "",
+//                        Banner = "",
+//                        Duration = albumModelData.Duration,
+//                        TrackType = "",
+//                        image = albumModelData.image,
+//                        ArtistImage = "",
+//                        Artist = albumModelData.Artist,
+//                        CreateDate = "",
+//                        Follower = "",
+//                        imageWeb = "",
+//                        IsPaid = false,
+//                        NewBanner = "",
+//                        PlayCount = 0,
+//                        PlayListId = "",
+//                        PlayListImage = "",
+//                        PlayListName = "",
+//                        RootId = "",
+//                        RootType = "",
+//                        Seekable = false,
+//                        TeaserUrl = "",
+//                        title = albumModelData.title,
+//                        Type = ""
+//
+//                    ) as Serializable
+//                )
+//            })
+
     }
 }

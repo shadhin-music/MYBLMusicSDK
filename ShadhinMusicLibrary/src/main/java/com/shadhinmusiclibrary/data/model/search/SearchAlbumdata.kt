@@ -1,5 +1,7 @@
 package com.shadhinmusiclibrary.data.model.search
 
+import java.io.Serializable
+
 data class SearchAlbumdata(
     val AlbumId: String,
     val AlbumImage: Any,
@@ -31,4 +33,4 @@ data class SearchAlbumdata(
     val image: String,
     val imageWeb: Any,
     val title: String
-)
+):Serializable

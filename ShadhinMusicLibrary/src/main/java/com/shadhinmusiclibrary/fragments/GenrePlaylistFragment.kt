@@ -35,18 +35,18 @@ class GenrePlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataAdapter = GenrePlaylistAdapter()
-        // dataAdapter.setData(getMockData())
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
-        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
-        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-        button.setOnClickListener {
-            manager.popBackStack("GenrePlaylistFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
-        }
+//        val dataAdapter = GenrePlaylistAdapter(this)
+//        // dataAdapter.setData(getMockData())
+//        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
+//        recyclerView.layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        recyclerView.adapter = dataAdapter
+//        val button: AppCompatImageView = view.findViewById(R.id.imageBack)
+//        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+//        button.setOnClickListener {
+//            manager.popBackStack("GenrePlaylistFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
+//        }
 
     }
 }

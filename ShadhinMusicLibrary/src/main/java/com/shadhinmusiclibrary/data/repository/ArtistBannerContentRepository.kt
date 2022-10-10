@@ -5,7 +5,7 @@ import com.shadhinmusiclibrary.utils.safeApiCall
 
 class ArtistBannerContentRepository(private val apiService: ApiService) {
 
-    suspend fun fetchArtistBannerData(id: Int) = safeApiCall {
+    suspend fun fetchArtistBannerData(id: String) = safeApiCall {
         apiService.fetchArtistBannerData(id)
     }
 }

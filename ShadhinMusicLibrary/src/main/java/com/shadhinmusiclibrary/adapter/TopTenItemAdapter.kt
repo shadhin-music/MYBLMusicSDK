@@ -38,7 +38,7 @@ internal class TopTenItemAdapter(val data: List<TopTrendingdata>) : RecyclerView
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(data: List<TopTrendingdata>, position: Int) {
             val context = itemView.context
-            val songImage:CircleImageView = itemView.findViewById(R.id.song_img)
+            val songImage:ImageView = itemView.findViewById(R.id.song_img)
             val songName: TextView = itemView.findViewById(R.id.song_name)
             val artistName:TextView = itemView.findViewById(R.id.artist_name)
             val url :String = data[position].getImageUrl300Size()

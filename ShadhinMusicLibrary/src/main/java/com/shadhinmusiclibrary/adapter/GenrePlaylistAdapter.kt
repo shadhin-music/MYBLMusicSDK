@@ -10,12 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class GenrePlaylistAdapter:
+class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
     RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
@@ -122,9 +123,12 @@ class GenrePlaylistAdapter:
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
-            ivSongMenuIcon.setOnClickListener {
+
+                ivSongMenuIcon.setOnClickListener {
+                    bsDialogItemCallback.onClickBottomItem(mSongDetail)
+                }
 //                showBottomSheetDialog(viewItem.context)
-            }
+
         }
     }
 

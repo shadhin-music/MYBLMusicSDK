@@ -58,7 +58,7 @@ class AlbumDetailsFragment1 :
         adapter = AlbumAdapter(this, this)
 
         ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
+        fetchOnlineData(argHomePatchDetail!!.ContentID)
         adapter.setRootData(argHomePatchDetail!!)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -75,7 +75,7 @@ class AlbumDetailsFragment1 :
         }
     }
 
-    private fun fetchOnlineData(contentId: Int) {
+    private fun fetchOnlineData(contentId:String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
@@ -153,12 +153,12 @@ class AlbumDetailsFragment1 :
 
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog2(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
+//        (activity as? SDKMainActivity)?.showBottomSheetDialog2(
+//            navController,
+//            context = requireContext(),
+//            mSongDetails,
+//            argHomePatchItem,
+//            argHomePatchDetail
+//        )
     }
 }

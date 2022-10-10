@@ -11,14 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchAlbumdata
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.utils.CircleImageView
-import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>) :
+class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>, val homeCallBack: SearchItemCallBack) :
     RecyclerView.Adapter<SearchAlbumsAdapter.ViewHolder>() {
 
 
@@ -74,6 +72,7 @@ class SearchAlbumsAdapter(val searchAlbumdata: List<SearchAlbumdata>) :
            // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
+                homeCallBack.onClickAlbumItem(searchAlbumdata)
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .replace(R.id.container , AlbumFragment.newInstance())

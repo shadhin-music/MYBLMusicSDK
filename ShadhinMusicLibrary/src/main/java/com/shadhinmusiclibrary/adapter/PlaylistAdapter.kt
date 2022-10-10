@@ -10,13 +10,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class PlaylistAdapter(private val itemClickCB: OnItemClickCallback) :
+class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   private val bsDialogItemCallback: BottomSheetDialogItemCallback) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
@@ -70,6 +71,7 @@ class PlaylistAdapter(private val itemClickCB: OnItemClickCallback) :
                         if (holder.itemViewType == PlaylistAdapter.VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
+
                         }
                     }
                 }
@@ -152,7 +154,8 @@ class PlaylistAdapter(private val itemClickCB: OnItemClickCallback) :
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-//                showBottomSheetDialog(viewItem.context)
+              bsDialogItemCallback.onClickBottomItem(mSongDetail)
+                Log.e("TAGGY","ID: "+ mSongDetail)
             }
         }
     }

@@ -1,34 +1,40 @@
 package com.shadhinmusiclibrary.data.model.search
 
+import java.io.Serializable
+
 data class SearchArtistdata(
     val AlbumId: String,
-    val AlbumImage: Any,
-    val AlbumName: Any,
+    val AlbumImage: String,
+    val AlbumName:String,
     val Artist: String,
-    val ArtistId: Any,
+    val ArtistId: String,
     val ArtistImage: String,
-    val Banner: Any,
+    val Banner: String,
     val ClientValue: Int,
     val ContentID: String,
     val ContentType: String,
-    val CreateDate: Any,
+    val CreateDate: String,
     val Duration: String,
-    val Follower: Any,
+    val Follower:String,
     val IsPaid: Boolean,
-    val NewBanner: Any,
+    val NewBanner: String,
     val PlayCount: Int,
-    val PlayListId: Any,
-    val PlayListImage: Any,
-    val PlayListName: Any,
+    val PlayListId: String,
+    val PlayListImage: String,
+    val PlayListName: String,
     val PlayUrl: String,
-    val RootId: Any,
-    val RootType: Any,
+    val RootId: String,
+    val RootType: String,
     val Seekable: Boolean,
-    val TeaserUrl: Any,
+    val TeaserUrl: String,
     val TrackType: String,
     val Type: String,
-    val fav: Any,
+    val fav: String,
     val image: String,
-    val imageWeb: Any,
+    val imageWeb: String,
     val title: String
-)
+):Serializable{
+    fun getImageUrl300Size(): String {
+        return this.image.replace("<\$size\$>", "300")
+    }
+}
