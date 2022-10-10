@@ -310,7 +310,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                     recyclerViewVideos.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewVideos.adapter =
-                        SearchVideoAdapter(response.data.data.Video.data)
+                        SearchVideoAdapter(response.data.data.Video.data, this)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
                 } else {
                     recyclerViewVideos.visibility = GONE
@@ -452,20 +452,6 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                     patchItem
                 )
             }
-            DataContentType.CONTENT_TYPE_V -> {
-                //open playlist
-//                val intent = Intent(itemView.context, VideoActivity::class.java)
-//                val videoArray = ArrayList<Video>()
-//                for (item in  argHomePatchItem.Data){
-//                    val video = Video()
-//                    video.setData(item)
-//                    videoArray.add(video)
-//                }
-//                val videos :ArrayList<Video> = videoArray
-//                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
-//                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-//                itemView.context.startActivity(intent)
-            }
 //            DataContentType.CONTENT_TYPE_S -> {
 //                //open songs
 //                setupNavGraphAndArg(
@@ -502,18 +488,57 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 
     //after search play item
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null) {
-            if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                } else {
-                    playerViewModel.togglePlayPause()
+        Log.e("SF", "onClickPlaySearchItem: " + songItem[clickItemPosition].ContentType)
+        when (songItem[clickItemPosition].ContentType) {
+            DataContentType.CONTENT_TYPE_V -> {
+                //open playlist
+                val intent = Intent(context, VideoActivity::class.java)
+                val videoArray = ArrayList<Video>()
+                for (item in songItem) {
+//                    val video = Video()
+                    videoArray.add(UtilHelper.getVideoToSearchData(item))
                 }
-            } else {
-                playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                val videos: ArrayList<Video> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                startActivity(intent)
             }
-        } else {
-            playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+            DataContentType.CONTENT_TYPE_S -> {
+                if (playerViewModel.currentMusic != null) {
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                        } else {
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
+            DataContentType.CONTENT_TYPE_PD_CB -> {
+                if (playerViewModel.currentMusic != null) {
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                        } else {
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
         }
     }
 

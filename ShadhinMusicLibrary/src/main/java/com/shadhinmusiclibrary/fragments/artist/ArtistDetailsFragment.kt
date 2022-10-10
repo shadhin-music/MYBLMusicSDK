@@ -276,7 +276,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = artistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
             if (playerViewModel.currentMusic != null) {
                 if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
                     playerViewModel.togglePlayPause()
@@ -301,7 +300,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         if (playerViewModel.currentMusic != null) {
             Log.e(
                 "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " rooId" + playerViewModel.currentMusic?.rootId
+                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
             )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {

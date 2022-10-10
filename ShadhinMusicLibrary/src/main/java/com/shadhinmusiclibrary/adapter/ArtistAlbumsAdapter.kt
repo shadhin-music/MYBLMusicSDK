@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ArtistAlbumListAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class ArtistAlbumsAdapter(
@@ -47,6 +50,15 @@ class ArtistAlbumsAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(artistAlbumModel: ArtistAlbumModel?) {
+//        fun setData(data: MutableList<SongDetail>, rootPatch: HomePatchDetail) {
+//            this.dataSongDetail = mutableListOf()
+//            for (songItem in data) {
+//                dataSongDetail.add(
+//                    UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
+//                )
+//            }
+//            notifyDataSetChanged()
+//        }
         this.artistAlbumModel = artistAlbumModel
         notifyDataSetChanged()
     }

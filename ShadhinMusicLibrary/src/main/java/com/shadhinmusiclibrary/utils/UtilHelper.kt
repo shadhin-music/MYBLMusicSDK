@@ -444,7 +444,78 @@ object UtilHelper {
             0,
             0
         )
+    }
 
+//    fun getHomePatchDetailToSearchData(data: SearchData): HomePatchDetail {
+//        data.apply {
+//            return HomePatchDetail(
+//                AlbumId = AlbumId,
+//                AlbumImage = AlbumImage ?: "",
+//                AlbumName = AlbumName ?: "",
+//                Artist = Artist,
+//                ArtistId = ArtistId ?: "",
+//                ArtistImage = ArtistImage,
+//                Banner = Banner ?: "",
+//                ContentID = ContentID,
+//                ContentType = ContentType,
+//                CreateDate = CreateDate,
+//                Duration = Duration,
+//                Follower = Follower ?: "",
+//                IsPaid = IsPaid,
+//                NewBanner = NewBanner ?: "",
+//                PlayCount = PlayCount,
+//                PlayListId = PlayListId ?: "",
+//                PlayListImage = PlayListImage,
+//                PlayListName = PlayListName,
+//                PlayUrl = PlayUrl ?: "",
+//                RootId = RootId ?: "",
+//                RootType = "",
+//                Seekable = Seekable,
+//                TeaserUrl = TeaserUrl,
+//                TrackType = TrackType,
+//                Type = Type,
+//                fav = fav ?: "",
+//                image = image,
+//                imageWeb = imageWeb ?: "",
+//                title = title
+//            )
+//        }
+//    }
+
+    fun getVideoToSearchData(data: SearchData): Video {
+        data.apply {
+            return Video(
+                albumId = AlbumId,
+                albumImage = AlbumImage,
+                albumName = AlbumName,
+                artist = Artist,
+                artistId = AlbumId,
+                artistImage = ArtistImage,
+                banner = Banner,
+                contentID = ContentID,
+                contentType = ContentType,
+                createDate = CreateDate,
+                duration = Duration,
+                follower = Follower,
+                isPaid = IsPaid,
+                newBanner = NewBanner,
+                playCount = PlayCount,
+                playListId = PlayListId,
+                playListImage = PlayListImage,
+                playListName = PlayListName,
+                playUrl = PlayUrl,
+                rootId = RootId,
+                rootType = Type,
+                seekable = Seekable,
+                teaserUrl = TeaserUrl,
+                trackType = TrackType,
+                type = Type,
+                fav = fav,
+                image = image,
+                imageWeb = imageWeb,
+                title = title
+            )
+        }
     }
 
 //    fun getArtistContentToArtistContentList(musicList: MutableList<ArtistContentData>): MutableList<ArtistContentData>{

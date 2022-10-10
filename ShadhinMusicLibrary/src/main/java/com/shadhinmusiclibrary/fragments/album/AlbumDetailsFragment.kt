@@ -132,7 +132,7 @@ class AlbumDetailsFragment :
         )[ArtistAlbumsViewModel::class.java]
     }
 
-    private fun observeData(contentId:String, artistId: String, contentType: String) {
+    private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
@@ -171,6 +171,10 @@ class AlbumDetailsFragment :
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
+            Log.e(
+                "ADF",
+                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
+            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
