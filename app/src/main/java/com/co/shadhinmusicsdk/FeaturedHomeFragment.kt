@@ -31,9 +31,9 @@ class FeaturedHomeFragment : Fragment() {
         val btnrelease: Button = requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
         val btnFeaturedPodcast: Button = requireView().findViewById(R.id.btnFeaturedPodcast)
-        val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
+        val btnMusicVideos: Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
-
+        val btnAmartunesAll: Button = requireView().findViewById(R.id.btnWebview2)
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
@@ -52,8 +52,9 @@ class FeaturedHomeFragment : Fragment() {
         }
         btnMusicVideos.setOnClickListener {
 
-            ShadhinMusicSdkCore.openPatch(requireContext(),"RC204")
-           /* val manager: FragmentManager =
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC204")
+
+            /* val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, MusicVideoFragment() )
@@ -103,4 +104,8 @@ class FeaturedHomeFragment : Fragment() {
 //    override fun getViewModelFactory(): HomeViewModelFactory {
 //        return injector.factoryHomeVM
 //    }
+
+            */
+        }
+    }
 }

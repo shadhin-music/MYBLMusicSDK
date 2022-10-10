@@ -209,11 +209,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun routeDataPatch(contentType: String) {
+//        when (contentType.toUpperCase()) {
+//            DataContentType.CONTENT_TYPE_A_RC203 -> {
+//                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+//            }
         when (contentType.toUpperCase()) {
-            DataContentType.CONTENT_TYPE_A_RC203 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
-            }
-        when (contentType.uppercase()) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
@@ -243,7 +243,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.uppercase()) {
+            when (homePatchDetail.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
@@ -318,7 +318,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         } else {
             //See All Item Click event
             Log.e("ARTIST","ARTIST: " + homePatchItem.ContentType)
-            when (homePatchItem.ContentType.uppercase()) {
+            when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,

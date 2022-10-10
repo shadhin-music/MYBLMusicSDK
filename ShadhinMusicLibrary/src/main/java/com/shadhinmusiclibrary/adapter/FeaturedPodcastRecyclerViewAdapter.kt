@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.R.layout.item_podcast
 import com.shadhinmusiclibrary.R.layout.item_release_patch
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -18,7 +19,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 class FeaturedPodcastRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(item_release_patch, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(item_podcast, parent, false)
         return ViewHolder(v)
     }
 

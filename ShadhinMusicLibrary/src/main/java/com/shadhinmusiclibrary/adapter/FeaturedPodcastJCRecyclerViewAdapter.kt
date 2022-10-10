@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.R.layout.item_release_patch
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 
-class FeaturedPodcastJCRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcastJCRecyclerViewAdapter.ViewHolder>(){
+class FeaturedPodcastJCRecyclerViewAdapter : RecyclerView.Adapter<FeaturedPodcastJCRecyclerViewAdapter.ViewHolder>(){
 
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
 
@@ -32,7 +32,7 @@ class FeaturedPodcastJCRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodc
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return 1
     }
 
     @JvmName("setData1")
