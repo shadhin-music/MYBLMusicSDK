@@ -4,24 +4,22 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.home.HomeFragment
+
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
+import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
 
@@ -32,10 +30,12 @@ private const val ARG_PARAM2 = "param2"
 class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
     var data:RBTDATA ?= null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
+    private var contentType:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             data = it.getSerializable("data") as RBTDATA?
+            contentType = it.getString(CONTENT_TYPE)
             Log.d("TAG","DATA: "+ data)
         }
     }
@@ -73,17 +73,21 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
 
     private fun observeData() {
         viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
-            Log.e("TAG", "URL: "+ res)
-            if (res.status == Status.SUCCESS) {
-              //rbtData = res.data?.data
 
-                //    dataAdapter = ParentAdapter(this)
-//                    //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
-                    var url:String = res?.data?.data?.pwaUrl.toString()
-                    var pwatopchartURL:String = res.data?.data?.pwatopchartURL.toString()
-                    var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
-//                    Log.e("TAG", "URL123: "+ res.data?.data)
-                  OpenWebView(url,pwatopchartURL,redirectUrl)
+            if (res.status == Status.SUCCESS) {
+
+                val redirectUrl: String = res?.data?.data?.redirectUrl.toString()
+
+
+
+                val url = when(contentType){
+                      AMR_TUNE_ALL -> res?.data?.data?.pwaUrl.toString()
+                      AMR_TUNE -> res?.data?.data?.pwatopchartURL.toString()
+                      else -> null
+                  }
+                if (url != null) {
+                    openWebView(url,redirectUrl)
+                }
             }
         }
 //        viewModel!!.urlContent.observe(viewLifecycleOwner){res->
@@ -98,7 +102,7 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
         }
   //  }
 
-    private fun OpenWebView(url: String,pwatopchartURL:String, redirectUrl: String){
+    private fun openWebView(url: String,redirectUrl: String){
         val mWebview:WebView = requireView().findViewById(R.id.webview)
         //  mWebview.settings.javaScriptEnabled =true
         mWebview.getSettings().setLoadsImagesAutomatically(true)
@@ -129,19 +133,19 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
         mWebview.setWebViewClient(WebViewClient())
         mWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH)
         mWebview.setInitialScale(1)
-        // mWebview.loadUrl("http://www.google.com")
-        mWebview.loadUrl(pwatopchartURL)
-          Log.e("TAG", "URL: "+ url)
-        mWebview.setWebViewClient(MyWebViewClient(redirectUrl, context))
+        mWebview.loadUrl(url)
+        mWebview.setWebViewClient(MyWebViewClient(redirectUrl))
     }
-    private class MyWebViewClient(val redirectUrl: String, context: Context?) : WebViewClient() {
+    inner class MyWebViewClient(val redirectUrl: String) : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
             val mWebview:WebView ?= view?.findViewById(R.id.webview)
           //  view.loadUrl(url)
 
              if (url.equals(redirectUrl)){
-             // Toast.makeText(mWebview?.context,"CLOSE",Toast.LENGTH_SHORT).show()
-                 (view.context as AppCompatActivity).supportFragmentManager.popBackStack()
+           /*  // Toast.makeText(mWebview?.context,"CLOSE",Toast.LENGTH_SHORT).show()
+                 (view.context as AppCompatActivity).supportFragmentManager.popBackStack()*/
+
+                 requireActivity().onBackPressed()
 //
              }
 

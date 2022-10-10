@@ -47,6 +47,7 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
+import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -218,8 +219,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
             }
-            DataContentType.CONTENT_TYPE_WV -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            DataContentType.AMR_TUNE_ALL -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                    putString(CONTENT_TYPE,contentType)
+                })
+            }
+            DataContentType.AMR_TUNE -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                    putString(CONTENT_TYPE,contentType)
+                })
             }
             DataContentType.CONTENT_TYPE_V_RC204 ->{
                 setupNavGraphAndArg(R.navigation.nav_graph_music_video, Bundle())
