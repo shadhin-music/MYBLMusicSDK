@@ -14,4 +14,8 @@ data class FeaturedLatestTrackListData(
     val releaseDate: String,
     val fav: Any,
     val artistId: String
-)
+) {
+    fun getImageUrl300Size(): String {
+        return this.image.replace("<\$size\$>", "300")
+    }
+}
