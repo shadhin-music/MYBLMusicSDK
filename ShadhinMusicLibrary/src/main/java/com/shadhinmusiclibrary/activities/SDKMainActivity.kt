@@ -33,6 +33,9 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.search.Artist
+import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.data.model.search.SearchModelData
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -44,6 +47,7 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
+import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -200,8 +204,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun patchFragmentAccess() {
         val dataContentType =
-            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
-
+            intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         routeDataPatch(dataContentType)
     }
 
@@ -210,11 +213,28 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
             }
+        when (contentType.uppercase()) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
-            DataContentType.CONTENT_TYPE_WV -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
+            DataContentType.CONTENT_TYPE_PD_RC202 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_featured_podcast_fragment, Bundle())
+            }
+            DataContentType.CONTENT_TYPE_A_RC203 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+            }
+            DataContentType.AMR_TUNE_ALL -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                    putString(CONTENT_TYPE,contentType)
+                })
+            }
+            DataContentType.AMR_TUNE -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                    putString(CONTENT_TYPE,contentType)
+                })
+            }
+            DataContentType.CONTENT_TYPE_V_RC204 ->{
+                setupNavGraphAndArg(R.navigation.nav_graph_music_video, Bundle())
             }
         }
     }
@@ -223,7 +243,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.toUpperCase()) {
+            when (homePatchDetail.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
@@ -297,7 +317,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         } else {
             //See All Item Click event
-            when (homePatchItem.ContentType.toUpperCase()) {
+            Log.e("ARTIST","ARTIST: " + homePatchItem.ContentType)
+            when (homePatchItem.ContentType.uppercase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
@@ -727,7 +748,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 val gradientDrawable = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     intArrayOf(
-                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                        ContextCompat.getColor(this@SDKMainActivity, R.color.shadinRequiredColor),
                         vibrantSwatch.rgb
                     )
                 )
@@ -905,18 +926,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-        Log.e("SDKMA", "gotoArtist: ")
-        bsdNavController.navigate(R.id.artist_details_fragment,
-            Bundle().apply {
-                putSerializable(
-                    PatchItem,
-                    argHomePatchItem
-                )
-                putSerializable(
-                    AppConstantUtils.PatchDetail,
-                    argHomePatchDetail as Serializable
-                )
-            })
+                bsdNavController.navigate(R.id.artist_details_fragment,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            argHomePatchItem
+                        )
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            argHomePatchDetail as Serializable
+                        )
+                    })
 
 
     }

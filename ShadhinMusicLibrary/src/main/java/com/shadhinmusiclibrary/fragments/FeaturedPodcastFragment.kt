@@ -6,21 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCAdapter
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCRecyclerViewAdapter
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import java.io.Serializable
 
 
 class FeaturedPodcastFragment : CommonBaseFragment(){
@@ -46,7 +52,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_podcast, container1, false)
-       // navController = findNavController()
+        navController = findNavController()
 
         return viewRef
     }
@@ -62,7 +68,20 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             Log.d("TAGGGGGGGY", "MESSAGE: ")
-
+            requireActivity().onBackPressed()
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager?.popBackStack("Fragment", 0);
+            // ShadhinMusicSdkCore.getHomeFragment()
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager.beginTransaction()
+//                .replace(R.id.container1, HomeFragment())
+//                .addToBackStack(null)
+//                .commit()
+//            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+//                requireActivity().finish()
+//            }
         }
     }
      fun setAdapter(){

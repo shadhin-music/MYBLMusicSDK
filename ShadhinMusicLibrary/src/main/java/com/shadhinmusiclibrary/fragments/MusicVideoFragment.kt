@@ -26,10 +26,6 @@ class MusicVideoFragment : Fragment(), FragmentEntryPoint {
     lateinit var viewModel:PopularArtistViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-        }
     }
     private fun setupViewModel() {
 
@@ -50,10 +46,7 @@ class MusicVideoFragment : Fragment(), FragmentEntryPoint {
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY", "MESSAGE: ")
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager?.popBackStack("Fragment", 0);
+            requireActivity().onBackPressed()
         }
     }
         fun observeData() {

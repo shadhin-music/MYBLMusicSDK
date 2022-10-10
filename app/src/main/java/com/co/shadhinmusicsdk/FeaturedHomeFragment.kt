@@ -30,7 +30,7 @@ class FeaturedHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button = requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
-        val btnFeaturedPodcast:Button = requireView().findViewById(R.id.btnFeaturedPodcast)
+        val btnFeaturedPodcast: Button = requireView().findViewById(R.id.btnFeaturedPodcast)
         val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
 
@@ -40,11 +40,20 @@ class FeaturedHomeFragment : Fragment() {
         btnrelease.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC201")
         }
+        btnFeaturedPodcast.setOnClickListener {
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC202")
+        }
+
         btnAmartunes.setOnClickListener {
-            ShadhinMusicSdkCore.openPatch(requireContext(), "AT")
+            ShadhinMusicSdkCore.openPatch(requireContext(), "BNMAIN01")
+        }
+        btnAmartunesAll.setOnClickListener {
+            ShadhinMusicSdkCore.openPatch(requireContext(), "BNALL01") // for all
         }
         btnMusicVideos.setOnClickListener {
-            val manager: FragmentManager =
+
+            ShadhinMusicSdkCore.openPatch(requireContext(),"RC204")
+           /* val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, MusicVideoFragment() )
