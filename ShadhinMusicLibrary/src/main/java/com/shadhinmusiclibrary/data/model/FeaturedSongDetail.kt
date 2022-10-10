@@ -1,7 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
+import androidx.annotation.Keep
 import java.io.Serializable
-
+@Keep
 data class FeaturedSongDetail(
     val contentID: String,
     val image: String,

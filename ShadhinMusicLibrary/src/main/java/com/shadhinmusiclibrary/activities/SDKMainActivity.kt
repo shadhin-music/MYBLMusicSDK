@@ -209,7 +209,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun routeDataPatch(contentType: String) {
-        when (contentType.uppercase()) {
+        when (contentType.toUpperCase()) {
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
             }
@@ -226,7 +226,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.uppercase()) {
+            when (homePatchDetail.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
@@ -300,8 +300,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         } else {
             //See All Item Click event
-            Log.e("ARTIST","ARTIST: " + homePatchItem.ContentType)
-            when (homePatchItem.ContentType.uppercase()) {
+            when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
@@ -731,7 +730,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 val gradientDrawable = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     intArrayOf(
-                        ContextCompat.getColor(this@SDKMainActivity, R.color.shadinRequiredColor),
+                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
                         vibrantSwatch.rgb
                     )
                 )
@@ -909,17 +908,18 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-                bsdNavController.navigate(R.id.artist_details_fragment,
-                    Bundle().apply {
-                        putSerializable(
-                            PatchItem,
-                            argHomePatchItem
-                        )
-                        putSerializable(
-                            AppConstantUtils.PatchDetail,
-                            argHomePatchDetail as Serializable
-                        )
-                    })
+        Log.e("SDKMA", "gotoArtist: ")
+        bsdNavController.navigate(R.id.artist_details_fragment,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    argHomePatchItem
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    argHomePatchDetail as Serializable
+                )
+            })
 
 
     }

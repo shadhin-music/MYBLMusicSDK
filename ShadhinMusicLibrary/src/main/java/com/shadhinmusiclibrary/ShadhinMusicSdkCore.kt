@@ -2,11 +2,13 @@ package com.shadhinmusiclibrary
 
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
+@Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
 

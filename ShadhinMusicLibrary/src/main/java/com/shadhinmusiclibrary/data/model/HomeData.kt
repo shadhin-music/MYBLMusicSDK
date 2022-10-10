@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class HomeData(
     val data: List<HomePatchItem>,
     val fav: Any,

@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
 
 @Suppress("DEPRECATION")
-internal class ViewPagerAdapter(
+open class ViewPagerAdapter(
     var context: Context,
     fm: FragmentManager,
     var totalTabs: Int,

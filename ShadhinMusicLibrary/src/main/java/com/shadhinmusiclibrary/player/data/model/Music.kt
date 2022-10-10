@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
+import androidx.annotation.Keep
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
 
@@ -16,6 +17,8 @@ import java.io.Serializable
 
 const val regexMp3Url = "\\w[A-Za-z\\S ]+(\\b.mp3\\b)"
 const val regexMp4Url = "\\w[A-Za-z\\S ]+(\\b.mp4\\b)"
+
+@Keep
 data class Music(
     var mediaId: String? = null,
     var title: String? = null,
@@ -43,7 +46,7 @@ data class Music(
 
     var isPrepare: Boolean? = false,
     var isPlaying: Boolean? = false,
-    ):Serializable{
+) : Serializable {
 
     fun toPlayerMediaItem() = MediaItem.Builder()
         .setMediaId(mediaId.toString())
@@ -67,6 +70,7 @@ data class Music(
         rootTitle = meta?.rootTitle,
         rootImage = meta?.rootImage
     )
+
     fun applyRootInfo(
         rootId: String? = null,
         rootType: String? = null,
@@ -87,21 +91,22 @@ data class Music(
         rootType: String? = null,
         rootTitle: String? = null,
         rootImage: String? = null
-    ){
+    ) {
 
-        if(this.rootId.isNullOrEmpty() && rootId != null){
-             this.rootId = rootId
+        if (this.rootId.isNullOrEmpty() && rootId != null) {
+            this.rootId = rootId
         }
-        if(this.rootType.isNullOrEmpty() && rootType != null){
+        if (this.rootType.isNullOrEmpty() && rootType != null) {
             this.rootType = rootType
         }
-        if(this.rootTitle.isNullOrEmpty() && rootTitle != null){
+        if (this.rootTitle.isNullOrEmpty() && rootTitle != null) {
             this.rootTitle = rootTitle
         }
-        if(this.rootImage.isNullOrEmpty() && rootImage != null){
+        if (this.rootImage.isNullOrEmpty() && rootImage != null) {
             this.rootImage = rootImage
         }
     }
+
     fun toBundleMetaData(from: String? = "Unknown"): Bundle {
         return Bundle().apply {
             putString(CONVERT_FROM_KEY, from)
@@ -122,11 +127,14 @@ data class Music(
             putString(ROOT_IMAGE, rootImage)
             totalStream?.let { putLong(TOTAL_STREAM, it) }
             seekable?.let { putBoolean(SEEKABLE, it) }
-            putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artistName) //This string I put for display artist name samsung One UI lock screen
+            putString(
+                MediaMetadataCompat.METADATA_KEY_ARTIST,
+                artistName
+            ) //This string I put for display artist name samsung One UI lock screen
         }
     }
 
-   fun toServiceMediaItem(): MediaBrowserCompat.MediaItem {
+    fun toServiceMediaItem(): MediaBrowserCompat.MediaItem {
 
         val description = MediaDescriptionCompat.Builder()
             .setMediaUri(Uri.parse(mediaUrl))
@@ -143,69 +151,74 @@ data class Music(
     }
 
     fun endContentType(): String? {
-        if(contentType?.length == 4){
-           return contentType?.substring(2)
+        if (contentType?.length == 4) {
+            return contentType?.substring(2)
         }
-        return  contentType
+        return contentType
     }
+
     fun isPodCast(): Boolean {
-        return contentType != null && contentType?.contains("PD",true) == true
+        return contentType != null && contentType?.contains("PD", true) == true
     }
+
     fun isVideo(): Boolean {
-        return contentType != null && contentType?.contains("VD",true) == true
+        return contentType != null && contentType?.contains("VD", true) == true
     }
+
     fun podcastSubType(): String? {
-        if(isPodCast()){
-            return contentType?.uppercase()?.split("PD")?.last()
+        if (isPodCast()) {
+            return contentType?.toUpperCase()?.split("PD")?.last()
         }
         return null
     }
-    fun isLive():Boolean{
-       return trackType.equals("LM",true)
+
+    fun isLive(): Boolean {
+        return trackType.equals("LM", true)
     }
+
     fun fileName(): String? {
         return mediaUrl?.find(regexMp3Url)?.first()?.trim()
     }
+
     fun filePath(): String? {
-        return exH {  mediaUrl?.replace(Constants.FILE_BASE_URL,"")} ?:mediaUrl
+        return exH { mediaUrl?.replace(Constants.FILE_BASE_URL, "") } ?: mediaUrl
     }
 
     override fun toString(): String {
         return "Music(mediaId=$mediaId, title=$title , contentType = $contentType mediaUrl = $mediaUrl)"
     }
 
-    companion object{
-        const val USER_PLAYLIST_ID       = "user_playlist_id"
-        const val SERIALIZABLE_KEY       = "serializable_object"
-        const val CONVERT_FROM_KEY       = "convert_from"
+    companion object {
+        const val USER_PLAYLIST_ID = "user_playlist_id"
+        const val SERIALIZABLE_KEY = "serializable_object"
+        const val CONVERT_FROM_KEY = "convert_from"
 
-        const val MEDIA_ID               = "music_mediaId"
-        const val TITLE                  = "music_title"
-        const val DISPLAY_DESCRIPTION    = "music_displayDescription"
-        const val DISPLAY_ICON_URL       = "music_displayIconUrl"
-        const val MEDIA_URL              = "music_mediaUrl"
-        const val ARTIST_NAME            = "music_artistName"
-        const val DATE                   = "music_date"
-        const val CONTENT_TYPE           = "music_contentType"
-        const val USER_PLAY_LIST_ID      = "music_userPlayListId"
-        const val EPISODE_ID             = "music_episodeId"
-        const val STARRING               = "music_starring"
-        const val SEEKABLE               = "music_seekable"
-        const val DETAILS                = "music_details"
-        const val TOTAL_STREAM           = "music_totalStream"
-        const val FAV                    = "music_fav"
-        const val TRACK_TYPE             = "music_trackType"
-        const val IS_PAID                = "music_isPaid"
+        const val MEDIA_ID = "music_mediaId"
+        const val TITLE = "music_title"
+        const val DISPLAY_DESCRIPTION = "music_displayDescription"
+        const val DISPLAY_ICON_URL = "music_displayIconUrl"
+        const val MEDIA_URL = "music_mediaUrl"
+        const val ARTIST_NAME = "music_artistName"
+        const val DATE = "music_date"
+        const val CONTENT_TYPE = "music_contentType"
+        const val USER_PLAY_LIST_ID = "music_userPlayListId"
+        const val EPISODE_ID = "music_episodeId"
+        const val STARRING = "music_starring"
+        const val SEEKABLE = "music_seekable"
+        const val DETAILS = "music_details"
+        const val TOTAL_STREAM = "music_totalStream"
+        const val FAV = "music_fav"
+        const val TRACK_TYPE = "music_trackType"
+        const val IS_PAID = "music_isPaid"
 
-        const val IS_PREPARE             = "music_isPrepare"
-        const val IS_PLAYING             = "music_isPlaying"
+        const val IS_PREPARE = "music_isPrepare"
+        const val IS_PLAYING = "music_isPlaying"
 
-        const val ROOT_ID                = "music_rootId"
-        const val ROOT_TYPE              = "music_rootType"
-        const val ROOT_TITLE             = "music_rootTitle"
-        const val ROOT_IMAGE             = "music_rootImage"
+        const val ROOT_ID = "music_rootId"
+        const val ROOT_TYPE = "music_rootType"
+        const val ROOT_TITLE = "music_rootTitle"
+        const val ROOT_IMAGE = "music_rootImage"
     }
-
 
 
 }
