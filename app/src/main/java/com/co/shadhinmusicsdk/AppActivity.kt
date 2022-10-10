@@ -22,7 +22,7 @@ class AppActivity() : AppCompatActivity() {
 //        buttonHome.setOnClickListener {
 //                ShadhinMusicSdkCore.getHomeFragment()
             val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getHomeFragment())
+        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
         transaction.commit()
 //        }
 

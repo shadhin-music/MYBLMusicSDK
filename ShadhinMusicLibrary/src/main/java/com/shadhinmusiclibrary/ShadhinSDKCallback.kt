@@ -4,5 +4,5 @@ import androidx.annotation.Keep
 
 @Keep
 interface ShadhinSDKCallback {
-    fun tokenStatus(): Boolean
+    fun tokenStatus(isTokenValid: Boolean, error: String)
 }
