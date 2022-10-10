@@ -154,7 +154,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
         }
         songDetail.let {
             it?.ArtistId?.let { it1 ->
-                it1?.toInt()
+                it1
                     ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
@@ -166,27 +166,27 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
                 }
             }
         }
-        songDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it?.ArtistId?.toInt() ?: 0)
-            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
-                if (res.status == Status.SUCCESS) {
-                    artistSongAdapter.artistContent(res.data)
-                    artistHeaderAdapter.setHeaderImage(res.data)
-                } else {
-                    showDialog()
-                }
-            }
-        }
-        songDetail.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
-            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-                if (res.status == Status.SUCCESS) {
-                    artistAlbumsAdapter.setData(res.data)
-                } else {
-                    showDialog()
-                }
-            }
-        }
+//        songDetail.let {
+//            viewModelArtistSong.fetchArtistSongData(it?.ArtistId)
+//            viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
+//                if (res.status == Status.SUCCESS) {
+//                    artistSongAdapter.artistContent(res.data)
+//                    artistHeaderAdapter.setHeaderImage(res.data)
+//                } else {
+//                    showDialog()
+//                }
+//            }
+//        }
+//        songDetail.let {
+//            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
+//            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
+//                if (res.status == Status.SUCCESS) {
+//                    artistAlbumsAdapter.setData(res.data)
+//                } else {
+//                    showDialog()
+//                }
+//            }
+//        }
     }
 
     private fun showDialog() {

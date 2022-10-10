@@ -82,8 +82,8 @@ class AlbumDetailsFragment :
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         observeData(
-            argHomePatchDetail!!.ContentID.toInt(),
-            argHomePatchDetail!!.ArtistId.toInt(),
+            argHomePatchDetail!!.AlbumId,
+            argHomePatchDetail!!.ArtistId,
             argHomePatchDetail!!.ContentType
         )
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
@@ -132,7 +132,7 @@ class AlbumDetailsFragment :
         )[ArtistAlbumsViewModel::class.java]
     }
 
-    private fun observeData(contentId: Int, artistId: Int, contentType: String) {
+    private fun observeData(contentId:String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel!!.fetchAlbumContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
@@ -145,7 +145,7 @@ class AlbumDetailsFragment :
             }
         }
 
-        viewModelArtistAlbum.fetchArtistAlbum("r", artistId.toInt())
+        viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
         viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 
             if (res.status == Status.SUCCESS) {
@@ -278,6 +278,6 @@ class AlbumDetailsFragment :
         )
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
-        observeData(mArtAlbumMod.ContentID.toInt(), mArtAlbumMod.ArtistId.toInt(), "r")
+        observeData(mArtAlbumMod.ContentID, mArtAlbumMod.ArtistId, "r")
     }
 }

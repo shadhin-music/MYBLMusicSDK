@@ -15,8 +15,6 @@ class PodcastViewModel (private val podcastRepository: PodcastRepository): ViewM
 
      val podcastDetailsContent: LiveData<ApiResponse<PodcastModel>> = _podcastContent
 
-
-
     fun fetchPodcastContent(podType:String,episodeId: Int, contentType:String,isPaid:Boolean) = viewModelScope.launch {
         val response = podcastRepository.fetchPodcastByID(podType,episodeId,contentType,isPaid)
         Log.e("Podcast", "CALLED "+ response)

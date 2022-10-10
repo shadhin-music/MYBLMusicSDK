@@ -2,6 +2,8 @@ package com.shadhinmusiclibrary.data.repository
 
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.utils.safeApiCall
+import okhttp3.RequestBody
+import org.json.JSONObject
 
 class HomeContentRepository(private val apiService: ApiService) {
 
@@ -9,4 +11,8 @@ class HomeContentRepository(private val apiService: ApiService) {
         apiService.fetchHomeData(pageNumber, isPaid)
     }
 
+
+     suspend fun rbtURL() = safeApiCall {
+         apiService.rbtURL()
+     }
 }

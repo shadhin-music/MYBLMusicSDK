@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
@@ -28,7 +30,7 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    OnItemClickCallback {
+    OnItemClickCallback , BottomSheetDialogItemCallback{
 
     private lateinit var navController: NavController
     private lateinit var adapter: PlaylistAdapter
@@ -54,10 +56,10 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlaylistAdapter(this)
+        adapter = PlaylistAdapter(this,this)
         footerAdapter = HomeFooterAdapter()
         ///read data from online
-        fetchOnlineData(argHomePatchDetail!!.ContentID.toInt())
+        fetchOnlineData(argHomePatchDetail!!.ContentID)
         adapter.setRootData(argHomePatchDetail!!)
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
@@ -77,7 +79,7 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
         }
     }
 
-    private fun fetchOnlineData(contentId: Int) {
+    private fun fetchOnlineData(contentId: String) {
         viewModel!!.fetchPlaylistContent(contentId)
         viewModel!!.albumContent.observe(requireActivity()) { res ->
             if (res.status == Status.SUCCESS) {
@@ -145,5 +147,14 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
                 }
             }
         }
+    }
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }

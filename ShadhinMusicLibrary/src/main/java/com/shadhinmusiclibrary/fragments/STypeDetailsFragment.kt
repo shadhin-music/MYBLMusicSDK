@@ -13,13 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
-class STypeDetailsFragment : CommonBaseFragment() {
+class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
     private lateinit var listSongDetail: MutableList<SongDetail>
@@ -65,7 +67,7 @@ class STypeDetailsFragment : CommonBaseFragment() {
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        adapter = GenrePlaylistAdapter()
+        adapter = GenrePlaylistAdapter(this)
         val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
 
         adapter.setRootData(argHomePatchDetail!!)
@@ -82,5 +84,14 @@ class STypeDetailsFragment : CommonBaseFragment() {
                 navController.popBackStack()
             }
         }
+    }
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 }

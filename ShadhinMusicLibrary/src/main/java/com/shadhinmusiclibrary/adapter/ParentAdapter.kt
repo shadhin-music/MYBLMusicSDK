@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,19 +16,21 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.HomeFooterAdapter.Companion.VIEW_TYPE
-import com.shadhinmusiclibrary.adapter.ParentAdapter.Companion.VIEW_TYPE
 
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
-class ParentAdapter(val homeCallBack: HomeCallBack) :
+class ParentAdapter(var homeCallBack: HomeCallBack,val searchCb: SearchClickCallBack) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-    private var homeListData: MutableList<HomePatchItem> = mutableListOf()
 
+    private var homeListData: MutableList<HomePatchItem> = mutableListOf()
+    var search :HomePatchItem?=null
+    private  var rbtData:MutableList<RBTDATA> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
             VIEW_SEARCH-> R.layout.item_search
@@ -104,24 +104,50 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
     fun setData(data: List<HomePatchItem>) {
         var size = this.homeListData.size
         if (this.homeListData.isEmpty()) {
-            val search = HomePatchItem("007", "searchBar", emptyList(), "search", "search", 0, 0)
-            this.homeListData.add(search)
+            for(item in data.indices){
+
+//             data.forEachIndexed { index, homePatchItem ->
+            // Log.d("TAG","ITEM: "+"index = $index, item = $homePatchItem ")
+                search = HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+
+                // notifyDataSetChanged()
+            }
+            this.homeListData.add(search!!)
+            Log.d("TAG","ITEM123: "+ homeListData.size)
+
         }
         this.homeListData.addAll(data)
         var sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
-//        this.homeListData.addAll(data)
-//        notifyDataSetChanged()
+       // this.homeListData.addAll(data)
+
     }
+
+
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
+
+        private fun bindSearch(homePatchItemModel: HomePatchItem) {
+            val search:TextView = itemView.findViewById(R.id.searchInput)
+                search.setOnClickListener {
+                    searchCb.clickOnSearchBar(homePatchItemModel)
+
+//                    val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager
+//                manager.beginTransaction()
+//                    .replace(R.id.container, SearchFragment.newInstance() )
+//                    .addToBackStack("Fragment")
+//                    .commit()
+//                    Log.e("TAG","Hello")
+                }
+        }
         private fun bindArtist(homePatchItem: HomePatchItem, homeCallBack: HomeCallBack) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
             seeAll.setOnClickListener {
                 homeCallBack.onClickSeeAll(homePatchItem)
+                Log.e("dataget","data:" + homePatchItem)
                 // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
 //            seeAll.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
@@ -198,11 +224,19 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 //                    .commit()
 //            }
         }
-        private fun bindPopularAmarTunes(homePatchItem: HomePatchItem) {
+        private fun bindPopularAmarTunes(
+            homePatchItem: HomePatchItem,
+        ) {
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItem.Name
             val image:ShapeableImageView = itemView.findViewById(R.id.image)
               Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+            seeAll.setOnClickListener {
+              //  homeCallBack.onClickSeeAll(homePatchItem)
+               // Log.d("TAG","CLICK ITEM: "+ homePatchItem)
+            }
+            Log.e("TAG","URL1233444: "+ rbtData)
             itemView.setOnClickListener {
                 val manager: FragmentManager =
                 (mContext as AppCompatActivity).supportFragmentManager
@@ -306,7 +340,7 @@ class ParentAdapter(val homeCallBack: HomeCallBack) :
 
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
-                "search"->bindAd()
+                "search"->bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)

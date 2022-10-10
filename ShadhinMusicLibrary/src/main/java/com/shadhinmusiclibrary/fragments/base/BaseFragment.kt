@@ -19,6 +19,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fragment(),
     FragmentEntryPoint {
     var viewModel: V? = null
+   // var viewModel2: V? = null
     var argHomePatchItem: HomePatchItem? = null
     var argHomePatchDetail: HomePatchDetail? = null
     lateinit var updatedSongList: MutableList<SongDetail>
@@ -38,7 +39,8 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
         }
         createPlayerVM()
         viewModel = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
-//        viewModel = ViewModelProviders.of(this, viewModelFactory).get(getViewModel())
+       // viewModel2 = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
+        //viewModel = ViewModelProvider(this, get).get(getViewModel())
     }
 
     private fun createPlayerVM() {

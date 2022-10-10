@@ -64,12 +64,12 @@
     <!--            app:layout_constraintEnd_toEndOf="parent"-->
     <!--            />-->
 
-    <!--    <fragment-->
-    <!--        android:id="@+id/app_home_fragment"-->
-    <!--        android:name="com.co.shadhinmusicsdk.AppHomeFragment"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        tools:layout="@layout/fragment_app_home" />-->
+<!--        <fragment-->
+<!--            android:id="@+id/app_home_fragment"-->
+<!--            android:name="com.co.shadhinmusicsdk.AppHomeFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:layout="@layout/fragment_app_home" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

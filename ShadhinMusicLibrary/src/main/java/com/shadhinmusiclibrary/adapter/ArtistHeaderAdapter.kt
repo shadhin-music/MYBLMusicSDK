@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -84,6 +85,7 @@ class ArtistHeaderAdapter(
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
             val url: String = homePatchDetail!!.getImageUrl300Size()
+            Log.e("TAG", "DATA: " + url)
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)

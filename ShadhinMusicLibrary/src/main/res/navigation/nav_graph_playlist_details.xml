@@ -3,11 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_playlist_details"
-    app:startDestination="@id/playlist_details">
+    app:startDestination="@id/playlist_details1">
     <fragment
-        android:id="@+id/playlist_details"
+        android:id="@+id/playlist_details1"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
         android:label="Playlist Details"
-        tools:layout="@layout/fragment_playlist_details" />
+        tools:layout="@layout/fragment_playlist_details" >
+
+    <action
+        android:id="@+id/action_playlist_details1_to_artist_details"
+        app:destination="@id/artist_details_fragment" />
+</fragment>
+    <fragment
+        android:id="@+id/artist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="Artist Details"
+        tools:layout="@layout/fragment_artist_details">
+
+    </fragment>
 
 </navigation>

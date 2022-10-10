@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,7 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         val horizontalSpanCount = 4
         footerAdapter = HomeFooterAdapter()
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-
+        Log.e("TAG","Data1234: " + argHomePatchItem)
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         footerAdapter = HomeFooterAdapter()
@@ -67,10 +68,11 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 //            arguments?.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         tvTitle.text = argHomePatchItem?.Name
+
 //        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager =
 //            GridLayoutManager(requireContext(), 4)
-        recyclerView.adapter = concatAdapter
+      //  recyclerView.adapter = concatAdapter
         // recyclerView.adapter =
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {

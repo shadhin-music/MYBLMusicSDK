@@ -54,7 +54,7 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         ///read data from online
-        fetchOnlineData(param2!!.ContentID.toInt())
+        fetchOnlineData(param2!!.ContentID)
         adapter.setRootData(param2)
         val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
@@ -83,7 +83,7 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
         )[AlbumViewModel::class.java]
     }
 
-    private fun fetchOnlineData(contentId: Int) {
+    private fun fetchOnlineData(contentId: String) {
         viewModel.fetchAlbumContent(contentId)
         viewModel.albumContent.observe(requireActivity()) {
             adapter.setData(it.data!!.data)

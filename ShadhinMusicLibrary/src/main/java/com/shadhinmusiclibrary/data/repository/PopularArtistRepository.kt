@@ -10,4 +10,7 @@ class PopularArtistRepository(private val apiService: ApiService) {
         apiService.fetchPopularArtist()
     }
 
+    suspend fun  fetchLatestVideo() = safeApiCall {
+       apiService.fetchLatestVideo()
+     }
 }

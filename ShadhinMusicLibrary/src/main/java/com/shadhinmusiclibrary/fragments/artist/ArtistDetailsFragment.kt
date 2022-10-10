@@ -85,6 +85,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun setupAdapters() {
+
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -145,7 +146,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->
-                it1.toInt().let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
+                it1
+                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
@@ -157,7 +159,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
         argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId.toInt())
+            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     artistTrackAdapter.artistContent(res.data)
@@ -167,7 +169,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
         argHomePatchDetail.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId?.toInt()!!)
+            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 
                 if (res.status == Status.SUCCESS) {
@@ -272,10 +274,16 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = artistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            Log.e("ADF", "onRootClickItem: " + lSongDetails[clickItemPosition].rootContentID)
-            if ((lSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                playerViewModel.togglePlayPause()
+            Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
+            if (playerViewModel.currentMusic != null) {
+                if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+                    playerViewModel.togglePlayPause()
+                }
             } else {
+                Log.e(
+                    "Check",
+                    "rhs ->" + lSongDetails[clickItemPosition].AlbumId + "  lfs -> " + playerViewModel.currentMusic?.rootId
+                )
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
                     clickItemPosition
@@ -289,17 +297,16 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         clickItemPosition: Int
     ) {
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+            Log.e(
+                "ADF",
+                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " rooId" + playerViewModel.currentMusic?.rootId
+            )
+            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
-            } else {
-                playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
-                    clickItemPosition
-                )
             }
         } else {
             playItem(
@@ -323,6 +330,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
+
                         playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
                         }
@@ -340,7 +348,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickBottomItem(mSongDetails: SongDetail) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog2(
+        (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
             context = requireContext(),
             mSongDetails,

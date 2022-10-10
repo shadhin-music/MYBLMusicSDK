@@ -21,10 +21,10 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 class ArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
-    val homeCallBack: HomeCallBack,
-    var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+     val homeCallBack: HomeCallBack,
+     var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
 
-    var adapter: ArtistAdapter? = null
+     var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
@@ -48,6 +48,9 @@ class ArtistsYouMightLikeAdapter(
         fun bindItems(homePatchItem: HomePatchItem?) {
            val textView:TextView = itemView.findViewById(R.id.tvTitle)
             textView.text= "You might like also"
+            if(homePatchItem?.Data?.isEmpty() == true){
+                textView.visibility = View.GONE
+            }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
