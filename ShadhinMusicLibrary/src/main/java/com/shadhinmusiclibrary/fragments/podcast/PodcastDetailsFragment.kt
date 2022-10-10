@@ -48,15 +48,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     var contentType: String = ""
     var selectedEpisodeID: Int = 0
     private lateinit var footerAdapter: HomeFooterAdapter
-    //  private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-//            homePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +66,6 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
-            Log.e("TAG", "DATA ARtist: " + selectedEpisodeID)
             //  Log.d("TAG", "PODCAST DATA: " + contentType + podcastType+it.AlbumId+false)
             //viewModel.fetchPodcastContent(podcastType,it.AlbumId.toInt(),contentType,false)
         }
@@ -97,13 +88,12 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     }
 
     private fun setupAdapters() {
-
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastHeaderAdapter = PodcastHeaderAdapter(episode)
-        podcastEpisodesAdapter = PodcastEpisodesAdapter(data, this)
+        podcastHeaderAdapter = PodcastHeaderAdapter(this)
+        podcastEpisodesAdapter = PodcastEpisodesAdapter(this)
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
@@ -114,7 +104,6 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             PodcastTrackHeaderAdapter(),
             podcastEpisodesAdapter,
             podcastMoreEpisodesAdapter, footerAdapter
-
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
@@ -122,7 +111,6 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     }
 
     private fun setupViewModel() {
-
         viewModel =
             ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
     }
@@ -131,21 +119,21 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-
-                response?.data?.data?.EpisodeList?.let { podcastHeaderAdapter.setHeader(it) }
+                response?.data?.data?.EpisodeList?.let {
+                    podcastHeaderAdapter.setHeader(
+                        it,
+                        it[0].TrackList
+                    )
+                }
                 response.data?.data?.EpisodeList?.get(0)
                     ?.let { podcastEpisodesAdapter.setData(it.TrackList.toMutableList()) }
                 response.data?.data?.let {
-                    it?.EpisodeList?.let { it1 ->
-                        podcastMoreEpisodesAdapter.setData(it1 as MutableList<Episode>)
+                    it.EpisodeList.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1)
                     }
                 }
-                Log.e("TAG", "DATA: " + response.data)
             } else {
-                Log.e("TAG", "DATA: " + response.message)
-
             }
-
 //            ArtistHeaderAdapter(it)
             // viewDataInRecyclerView(it)
             //Log.e("TAG","DATA: "+ it.artist)
@@ -159,26 +147,13 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             .setMessage("Go back to previous page") //set positive button
             .setPositiveButton("Okay",
                 DialogInterface.OnClickListener { dialogInterface, i ->
-
                 })
-
             .show()
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance(homePatchItem: HomePatchItem, homePatchDetail: HomePatchDetail) =
-            PodcastDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("homePatchItem", homePatchItem)
-                    putSerializable("homePatchDetail", homePatchDetail)
-                }
-            }
-    }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
+        Log.e("TAG", "onClickItemAndAllItem: " + selectedHomePatchItem)
         //  setAdapter(patch)
 //        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -186,71 +161,12 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //        parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
-
     }
-
-
-//    override fun onArtistAlbumClick(
-//        itemPosition: Int,
-//        artistAlbumModelData: List<ArtistAlbumModelData>,
-//    ) {
-//        ShadhinMusicSdkCore.pressCountIncrement()
-//        val mArtAlbumMod = artistAlbumModelData[itemPosition]
-//        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
-//            Bundle().apply {
-//                putSerializable(
-//                    AppConstantUtils.PatchItem,
-//                    HomePatchItem("", "", listOf(), "", "", 0, 0)
-//                )
-//                putSerializable(
-//                    AppConstantUtils.PatchDetail,
-//                    HomePatchDetail(
-//                        AlbumId = mArtAlbumMod.AlbumId,
-//                        ArtistId = mArtAlbumMod.ArtistId,
-//                        ContentID = mArtAlbumMod.ContentID,
-//                        ContentType = mArtAlbumMod.ContentType,
-//                        PlayUrl = mArtAlbumMod.PlayUrl,
-//                        AlbumName = "",
-//                        AlbumImage = "",
-//                        fav = mArtAlbumMod.fav,
-//                        Banner = "",
-//                        Duration = mArtAlbumMod.duration,
-//                        TrackType = "",
-//                        image = mArtAlbumMod.image,
-//                        ArtistImage = "",
-//                        Artist = mArtAlbumMod.artistname,
-//                        CreateDate = "",
-//                        Follower = "",
-//                        imageWeb = "",
-//                        IsPaid = false,
-//                        NewBanner = "",
-//                        PlayCount = 0,
-//                        PlayListId = "",
-//                        PlayListImage = "",
-//                        PlayListName = "",
-//                        RootId = "",
-//                        RootType = "",
-//                        Seekable = false,
-//                        TeaserUrl = "",
-//                        title = "",
-//                        Type = ""
-//
-//                    ) as Serializable
-//                )
-//            })
-//    }
-
-//    fun NavController.safelyNavigate(@IdRes resId: Int, args: Bundle? = null) =
-//        try { navigate(resId, args) }
-//        catch (e: Exception) {
-//            Log.e("TAG", "Message: "+ e)
-//        }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        Log.d("TAG", "DATA ARtist: " + selectedEpisode)
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
         observeData()
@@ -260,14 +176,35 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
 //        observeData()
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
-        //    parentAdapter.notifyDataSetChanged()
+//    parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
     }
 
+    override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
+        Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
+        if ((mSongDetails[clickItemPosition].ShowId == playerViewModel.currentMusic?.rootId)) {
+            playerViewModel.togglePlayPause()
+        } else {
+            playItem(UtilHelper.getSongDetailToTrackList(mSongDetails), clickItemPosition)
+        }
+    }
+
     override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
-        playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+        if (playerViewModel.currentMusic != null) {
+            if ((mTracks[clickItemPosition].ShowId == playerViewModel.currentMusic?.rootId)) {
+                if ((mTracks[clickItemPosition].ShowId != playerViewModel.currentMusic?.mediaId)) {
+                    playerViewModel.skipToQueueItem(clickItemPosition)
+                } else {
+                    playerViewModel.togglePlayPause()
+                }
+            } else {
+                playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+            }
+        } else {
+            playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+        }
     }
 
     override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {

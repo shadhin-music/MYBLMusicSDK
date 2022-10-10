@@ -26,17 +26,15 @@ class PodcastMoreEpisodesListAdapter(
             LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
         return ViewHolder(v)
     }
-    private var filteredItem:MutableList<Episode>? = null
 
-
+    private var filteredItem: MutableList<Episode>? = null
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(position)
 
         holder.itemView.setOnClickListener {
-
-            homeCallBack.onClickItemPodcastEpisode(position,episode)
+            homeCallBack.onClickItemPodcastEpisode(position, episode)
         }
     }
 
@@ -46,21 +44,19 @@ class PodcastMoreEpisodesListAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
-        fun bindItems(position: Int) {
 
+        fun bindItems(position: Int) {
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String = episode[position].ImageUrl
 
-            textView.text =  episode[position].Name
+            textView.text = episode[position].Name
 
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
-
         }
     }
-
 }
 
 

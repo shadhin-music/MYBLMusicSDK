@@ -58,7 +58,6 @@
 //    class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //
 //        private fun bindArtist() {
-//            Log.d("Hello", "Loading")
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
 //            recyclerView.layoutManager =
 //                GridLayoutManager(itemView.context,2)

@@ -36,6 +36,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -109,6 +110,19 @@ class AlbumDetailsFragment :
                 navController.popBackStack()
             }
         }
+
+        try {
+            playerViewModel.playListLiveData.observe(requireActivity()) { itMusicPlay ->
+                playerViewModel.musicIndexLiveData.observe(requireActivity()) { itCurrPlayItem ->
+                    albumsTrackAdapter.setPlayingSong(
+                        itCurrPlayItem.toString(),
+                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
+                    )
+                }
+            }
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     private fun setupViewModel() {
@@ -147,10 +161,6 @@ class AlbumDetailsFragment :
         val lSongDetails = albumsTrackAdapter.dataSongDetail
         Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
         if (lSongDetails.size > clickItemPosition) {
-            Log.e(
-                "Check",
-                "rhs ->" + lSongDetails[clickItemPosition].rootContentID + "  lfs -> " + playerViewModel.currentMusic?.rootId
-            )
             if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
@@ -160,11 +170,15 @@ class AlbumDetailsFragment :
     }
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
-        if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-            if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                playerViewModel.skipToQueueItem(clickItemPosition)
+        if (playerViewModel.currentMusic != null) {
+            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                    playerViewModel.skipToQueueItem(clickItemPosition)
+                } else {
+                    playerViewModel.togglePlayPause()
+                }
             } else {
-                playerViewModel.togglePlayPause()
+                playItem(mSongDetails, clickItemPosition)
             }
         } else {
             playItem(mSongDetails, clickItemPosition)

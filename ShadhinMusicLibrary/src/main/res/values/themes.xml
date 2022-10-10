@@ -5,8 +5,9 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
-        <item name="android:statusBarColor" tools:targetApi="l">#D8F83E3E</item>
+        <item name="android:statusBarColor">#D8F83E3E</item>
     </style>
+
     <style name="videoAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -14,7 +15,8 @@
 
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap" tools:targetApi="lollipop">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true
+        </item>
         <item name="android:navigationBarColor" tools:ignore="NewApi">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/colorPrimary</item>
@@ -72,6 +74,4 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
-
-
 </resources>

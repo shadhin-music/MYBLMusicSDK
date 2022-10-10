@@ -31,7 +31,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -131,7 +130,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private fun observeData() {
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG", "DATA: " + it.ArtistId)
+            Log.e("TAG", "DATA: " + it.Artist)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->

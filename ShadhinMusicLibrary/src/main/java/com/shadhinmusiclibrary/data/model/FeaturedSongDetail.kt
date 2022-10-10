@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.data.model
 
-data class FeaturedLatestTrackListData(
+import java.io.Serializable
+
+data class FeaturedSongDetail(
     val contentID: String,
     val image: String,
     val title: String,
@@ -13,5 +15,14 @@ data class FeaturedLatestTrackListData(
     val labelname: String,
     val releaseDate: String,
     val fav: Any,
-    val artistId: String
-)
+    val artistId: String,
+    val rootType: String?,
+
+    val rootContentID: String,
+    val rootImage: String,
+    val rootContentType: String
+) : Serializable {
+    fun getImageUrl300Size(): String {
+        return this.image.replace("<\$size\$>", "300")
+    }
+}

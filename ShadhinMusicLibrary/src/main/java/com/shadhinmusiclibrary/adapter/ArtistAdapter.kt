@@ -68,8 +68,8 @@ class ArtistAdapter(
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
-            val url: String = filteredHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
-            Log.d("TAG", "ImageUrl: $url")
+            val url: String =
+                filteredHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
             Glide.with(mContext)
                 .load(url)
                 .into(imageView2)

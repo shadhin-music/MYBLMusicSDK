@@ -3,8 +3,7 @@ package com.shadhinmusiclibrary.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
@@ -23,6 +22,7 @@ object UtilHelper {
             height
         }
     }
+
     fun getScreenSize(context: Context): Point? {
         //val display = (context as Activity).windowManager.defaultDisplay
         val display = (context as Activity).windowManager.defaultDisplay
@@ -117,6 +117,39 @@ object UtilHelper {
                         rootContentID = ShowId,
                         rootContentType = ContentType,
                         rootImage = ImageUrl
+                    )
+                )
+            }
+        }
+
+        return songDetailList
+    }
+
+    fun getSongDetailToFeaturedSongDetailList(trackList: MutableList<FeaturedSongDetail>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (trackItem in trackList) {
+            trackItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = contentID,
+                        image = image,
+                        title = title,
+                        ContentType = contentType,
+                        PlayUrl = playUrl,
+                        artist = artistname,
+                        duration = duration,
+                        copyright = copyright,
+                        labelname = labelname,
+                        releaseDate = releaseDate,
+                        fav = "",
+                        ArtistId = artistId,
+                        albumId = albumId,
+                        userPlayListId = "",
+                        rootType = contentType,
+
+                        rootContentID = contentID,
+                        rootContentType = contentType,
+                        rootImage = image
                     )
                 )
             }
@@ -262,6 +295,90 @@ object UtilHelper {
                 rootImage = rootPatch.image
             )
         }
+    }
+
+    fun getHomePatchDetailToData(data: Data): HomePatchDetail {
+        return HomePatchDetail(
+            "0",
+            "",
+            "",
+            data.ArtistName,
+            data.Id,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            data.Follower,
+            false,
+            "",
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            "",
+            "",
+            "",
+            data.Image,
+            "",
+            ""
+        )
+    }
+
+    fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
+        val mPatchDetail = mutableListOf<HomePatchDetail>()
+        for (patchItem in data) {
+            mPatchDetail.add(
+                HomePatchDetail(
+                    "0",
+                    "",
+                    "",
+                    patchItem.ArtistName,
+                    patchItem.Id,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    patchItem.Follower,
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    patchItem.Image,
+                    "",
+                    ""
+                )
+            )
+        }
+
+        return HomePatchItem(
+            "",
+            "",
+            mPatchDetail,
+            "",
+            "",
+            0,
+            0
+        )
+
     }
 
 //    fun getArtistContentToArtistContentList(musicList: MutableList<ArtistContentData>): MutableList<ArtistContentData>{

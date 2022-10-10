@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PatchCallBack
 import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 class FeaturedPopularArtistAdapter(
     val homePatchItem1: List<Data>,
-    private val homeCallBack: HomeCallBack
+    private val homeCallBack: PatchCallBack
 ) : RecyclerView.Adapter<FeaturedPopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,8 +30,8 @@ class FeaturedPopularArtistAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(homePatchItem1.size)
         holder.itemView.setOnClickListener {
-            val homePatchItem = homePatchItem1[position]
-//            homeCallBack.onClickItemAndAllItem(,homePatchItem)
+//            val homePatchItem = homePatchItem1[position]
+            homeCallBack.onClickItemAndAllItem(position, homePatchItem1)
         }
     }
 
@@ -44,7 +45,6 @@ class FeaturedPopularArtistAdapter(
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
             val url: String = homePatchItem1[absoluteAdapterPosition].Image
-            Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)

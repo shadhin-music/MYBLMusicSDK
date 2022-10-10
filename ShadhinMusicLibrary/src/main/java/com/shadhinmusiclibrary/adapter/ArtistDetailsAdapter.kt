@@ -69,13 +69,11 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         val context = itemView.getContext()
         private fun bindArtist(dataModel: HomePatchDetail) {
 
-            Log.d("Hello", "Loading")
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             var url: String = dataModel.image
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG", "ImageUrl: " + url.replace("<\$size\$>", "300"))
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
@@ -88,7 +86,6 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         }
 
         private fun bindArtist2() {
-            Log.d("Hello", "Loading")
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
 //            recyclerView.layoutManager =
 //                GridLayoutManager(itemView.context,2)
@@ -97,22 +94,17 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         }
 
         private fun bindArtist3() {
-            Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             //  recyclerView.adapter = TopTrendingAdapter(data)
-
-
         }
 
         private fun bindArtist4() {
-            Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             // recyclerView.adapter = ArtistAdapter(data)
-
         }
 
 
@@ -138,5 +130,4 @@ class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         val VIEW_ALBUM = 2
         val VIEW_YOU_MIGHT_LIKE = 3
     }
-
 }

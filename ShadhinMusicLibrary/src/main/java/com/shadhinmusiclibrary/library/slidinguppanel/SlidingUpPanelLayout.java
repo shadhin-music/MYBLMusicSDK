@@ -1101,7 +1101,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
 
         // Abort any running animation, to allow state change
         if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_SETTLING) {
-            Log.d(TAG, "View is settling. Aborting animation.");
             mDragHelper.abort();
         }
 

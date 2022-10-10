@@ -63,7 +63,6 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private fun bindArtist() {
-            Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false )
           //  recyclerView.adapter = TopTrendingAdapter(data)
@@ -71,7 +70,6 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
         }
 
         private fun bindArtist2() {
-            Log.d("Hello", "Loading")
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false )
             recyclerView.adapter = PopularVideoPodcastAdapter()
@@ -83,7 +81,6 @@ class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataA
 
         }
         private fun bindArtist3() {
-            Log.d("Hello", "Loading")
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
 //            recyclerView.layoutManager =
 //                GridLayoutManager(itemView.context,)

@@ -17,6 +17,7 @@ internal object AppConstantUtils {
     const val Artist = "artist"
     const val Album = "album"
     const val PatchDetail = "patch_detail"
+    const val PatchDataItem = "patch_data_item"
     const val SongDetail = "song_detail"
     const val commonData = "data"
     const val SelectedIndex = "selected_index"

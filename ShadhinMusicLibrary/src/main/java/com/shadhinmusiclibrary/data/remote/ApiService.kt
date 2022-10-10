@@ -3,16 +3,11 @@ package com.shadhinmusiclibrary.data.remote
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
-import com.shadhinmusiclibrary.data.model.search.SearchModel
-import com.shadhinmusiclibrary.data.model.search.SearchModelData
-import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.http.*
-
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ApiService {
     @GET("ClientHomeContent/GetHomeContent")

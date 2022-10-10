@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -62,19 +63,53 @@ class AlbumsTrackAdapter(
         notifyDataSetChanged()
     }
 
+    fun setPlayingSong(mediaId: String, newSongDetails: List<SongDetail>) {
+        val callback = AlbumTrackDiffCB(dataSongDetail, newSongDetails)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        dataSongDetail.clear()
+        dataSongDetail.addAll(newSongDetails)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private class AlbumTrackDiffCB() : DiffUtil.Callback() {
+        private lateinit var oldSongDetails: List<SongDetail>
+        private lateinit var newSongDetails: List<SongDetail>
+
+        constructor(oldSongDetails: List<SongDetail>, newSongDetails: List<SongDetail>) : this() {
+            this.oldSongDetails = oldSongDetails
+            this.newSongDetails = newSongDetails
+        }
+
+        override fun getOldListSize(): Int = oldSongDetails.size
+
+        override fun getNewListSize(): Int = newSongDetails.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            return super.getChangePayload(oldItemPosition, newItemPosition)
+        }
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
+        var tvSongName: TextView? = null
         fun bindItems(dataSongDetail: SongDetail) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
+
             Glide.with(context)
                 .load(dataSongDetail.getImageUrl300Size())
                 .into(imageView!!)
-            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            tvSongName = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = dataSongDetail.title
+            val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
+            tvSongName!!.text = dataSongDetail.title
             textArtist.text = dataSongDetail.artist
-            textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(dataSongDetail.duration)
             itemView.setOnClickListener {
 
             }
