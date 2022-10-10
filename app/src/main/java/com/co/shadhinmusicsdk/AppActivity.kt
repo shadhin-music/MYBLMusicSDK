@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
 
 class AppActivity() : AppCompatActivity() {
@@ -34,10 +33,12 @@ class AppActivity() : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPager)
 
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+
         val adapter = ViewPagerAdapter(
             this, supportFragmentManager,
             tabLayout.tabCount
         )
+
         viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
