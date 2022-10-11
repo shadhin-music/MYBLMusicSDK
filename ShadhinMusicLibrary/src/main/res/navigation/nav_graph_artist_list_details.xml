@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_popular_artists">
 
         <action
-            android:id="@+id/action_popular_artist_fragment_to_artist_details_fragment"
+            android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
     </fragment>
     <fragment
@@ -21,7 +21,7 @@
         android:label="fragment_artist_details"
         tools:layout="@layout/fragment_artist_details">
         <action
-            android:id="@+id/action_artist_details_fragment_to_album_details_fragment"
+            android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
     </fragment>
     <fragment

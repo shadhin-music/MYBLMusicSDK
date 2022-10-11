@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 
-class FeaturedPodcastJCAdapter(var data: List<FeaturedPodcastDetails>?) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
+class FeaturedPodcastJCAdapter(var data: MutableList<FeaturedPodcastDetails>) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.featured_podcast_video_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -43,13 +43,13 @@ class FeaturedPodcastJCAdapter(var data: List<FeaturedPodcastDetails>?) : Recycl
            val url: String? = data?.get(absoluteAdapterPosition)?.getImageUrl300Size()
 
 
-            textViewArtist.text = data?.get(absoluteAdapterPosition)?.TrackName
+            //textViewArtist.text = data?.get(absoluteAdapterPosition)?.TrackName
             Glide.with(context)
                 .load(url)
                 .into(imageView)
 
 
-            textViewName.text= data?.get(absoluteAdapterPosition)?.EpisodeName
+            textViewName.text= data.get(absoluteAdapterPosition).EpisodeName
            // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView

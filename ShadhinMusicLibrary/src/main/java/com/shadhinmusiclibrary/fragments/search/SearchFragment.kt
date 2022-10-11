@@ -434,21 +434,21 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_artist_details_fragment,
+                    R.id.to_artist_details,
                     patchItem
                 )
             }
             DataContentType.CONTENT_TYPE_R -> {
                 //open album details
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_album_details_frag,
+                    R.id.to_album_details,
                     patchItem
                 )
             }
             DataContentType.CONTENT_TYPE_PD_BC -> {
                 //open playlist
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_podcast_details_fragment,
+                    R.id.to_podcast_details,
                     patchItem
                 )
             }

@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_playlist_details" >
 
     <action
-        android:id="@+id/action_playlist_details1_to_artist_details"
+        android:id="@+id/to_artist_details"
         app:destination="@id/artist_details_fragment" />
 </fragment>
     <fragment

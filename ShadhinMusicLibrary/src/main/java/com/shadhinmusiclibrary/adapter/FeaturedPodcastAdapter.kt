@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 class FeaturedPodcastAdapter(val data: List<FeaturedPodcastDetails>?) : RecyclerView.Adapter<FeaturedPodcastAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.featured_podcast_video_list, parent, false)
         return ViewHolder(v)
     }
 

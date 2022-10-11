@@ -11,6 +11,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
+import androidx.collection.SparseArrayCompat
+import androidx.collection.forEach
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -20,7 +22,9 @@ import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavAction
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -909,6 +913,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
+        Log.e("Check", ""+bsdNavController.graph.displayName)
         bsdNavController.navigate(R.id.artist_details_fragment,
             Bundle().apply {
                 putSerializable(
@@ -920,8 +925,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     argHomePatchDetail as Serializable
                 )
             })
-    }
 
+
+    }
     private fun gotoArtistFromPlaylist(
         bsdNavController: NavController,
         context: Context,
@@ -938,15 +944,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = "",
+                    HomePatchDetail(AlbumId = "",
                         ArtistId = mSongDetails.ArtistId!!,
                         ContentID = mSongDetails.ContentID,
                         ContentType = "",
                         PlayUrl = "",
                         AlbumName = "",
                         AlbumImage = "",
-                        fav = "",
+                        fav ="",
                         Banner = "",
                         Duration = "",
                         TrackType = "",
@@ -974,55 +979,55 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     }
 
-    private fun gotoAlbum(
-        bsdNavController: NavController,
-        context: Context,
-        mSongDetails: SongDetail,
-        argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        private fun gotoAlbum(
+            bsdNavController: NavController,
+            context: Context,
+            mSongDetails: SongDetail,
+            argHomePatchItem: HomePatchItem?,
+            argHomePatchDetail: HomePatchDetail?,
 
-        ) {
-        bsdNavController.navigate(R.id.album_details_fragment,
-            Bundle().apply {
-                putSerializable(
-                    PatchItem,
-                    argHomePatchItem
-                )
-                putSerializable(
-                    AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = mSongDetails.albumId!!,
-                        ArtistId = mSongDetails.ArtistId!!,
-                        ContentID = mSongDetails.ContentID,
-                        ContentType = "",
-                        PlayUrl = "",
-                        AlbumName = "",
-                        AlbumImage = "",
-                        fav = "",
-                        Banner = "",
-                        Duration = "",
-                        TrackType = "",
-                        image = mSongDetails.image,
-                        ArtistImage = "",
-                        Artist = mSongDetails.artist,
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = mSongDetails.title,
-                        Type = ""
-                    ) as Serializable
-                )
-            })
-    }
+            ) {
+            Log.e("Check", ""+bsdNavController.graph.displayName)
+            bsdNavController.navigate(R.id.to_album_details,
+                Bundle().apply {
+                    putSerializable(
+                        PatchItem,
+                        argHomePatchItem
+                    )
+                    putSerializable(
+                        AppConstantUtils.PatchDetail,
+                        HomePatchDetail(AlbumId = mSongDetails.albumId!!,
+                            ArtistId = mSongDetails.ArtistId!!,
+                            ContentID = mSongDetails.ContentID,
+                            ContentType = "",
+                            PlayUrl = "",
+                            AlbumName = "",
+                            AlbumImage = "",
+                            fav = "",
+                            Banner = "",
+                            Duration = "",
+                            TrackType = "",
+                            image = mSongDetails.image,
+                            ArtistImage = "",
+                            Artist = mSongDetails.artist,
+                            CreateDate = "",
+                            Follower = "",
+                            imageWeb = "",
+                            IsPaid = false,
+                            NewBanner = "",
+                            PlayCount = 0,
+                            PlayListId = "",
+                            PlayListImage = "",
+                            PlayListName = "",
+                            RootId = "",
+                            RootType = "",
+                            Seekable = false,
+                            TeaserUrl = "",
+                            title = mSongDetails.title,
+                            Type = ""
+                        ) as Serializable
+                    )
+                })
+        }
 
 }

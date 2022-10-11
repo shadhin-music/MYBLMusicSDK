@@ -100,7 +100,7 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
         ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
         navController.navigate(
-            R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

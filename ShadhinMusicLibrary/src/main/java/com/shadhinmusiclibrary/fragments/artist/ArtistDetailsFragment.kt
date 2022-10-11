@@ -219,7 +219,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+        navController.navigate(R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

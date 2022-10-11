@@ -3,29 +3,25 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.R.layout.item_podcast
-import com.shadhinmusiclibrary.R.layout.item_release_patch
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastData
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
-import com.shadhinmusiclibrary.data.model.SongDetail
 
 class FeaturedPodcastRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
+    var showName:String ?=null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(item_podcast, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems()
+         holder.bindItems(data)
 
 
     }
@@ -35,20 +31,23 @@ class FeaturedPodcastRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcas
     }
 
     @JvmName("setData1")
-    fun setData(data: List<FeaturedPodcastDetails>?) {
+    fun setData(data: List<FeaturedPodcastDetails>?, showName: String?) {
         this.data= data as MutableList<FeaturedPodcastDetails>
+          this.showName = showName
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems() {
+        fun bindItems(data: MutableList<FeaturedPodcastDetails>) {
+            val textViewName = itemView.findViewById(R.id.tvTitle) as TextView
+           textViewName.text = showName
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
                 recyclerView.layoutManager = GridLayoutManager( context,
                     2,
                     RecyclerView.HORIZONTAL,
                     false)
-              recyclerView.adapter = FeaturedPodcastAdapter(data)
+              recyclerView.adapter = FeaturedPodcastAdapter(this@FeaturedPodcastRecyclerViewAdapter.data)
 //            val textViewName = itemView.findViewById(R.id.txt_title) as TextView
 //            val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView = itemView.findViewById(R.id.image) as ImageView
