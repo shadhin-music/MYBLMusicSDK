@@ -144,8 +144,8 @@ class ShadhinMusicServiceConnection(
 
 
     override fun disconnect(){
-        mediaControllerCompat?.unregisterCallback(mediaControllerCallback)
-        mediaBrowser.disconnect()
+      kotlin.runCatching {  mediaControllerCompat?.unregisterCallback(mediaControllerCallback)}
+      kotlin.runCatching {  mediaBrowser.disconnect()}
     }
     override fun addToQueue(music: Music) = addPlayList(MusicPlayList(listOf(music)))
     override fun addPlayList(playlist: MusicPlayList) {
