@@ -325,7 +325,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val mSongDet = artistTrackAdapter.artistSongList
         val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
@@ -333,11 +333,11 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                         } != -1)
                     ) {
 
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
+                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",
                                 "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it

@@ -28,7 +28,7 @@ import java.io.Serializable
 
 class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
-    private lateinit var navController: NavController
+    private  var navController: NavController?=null
     private var homePatchitem: HomePatchItem? = null
     lateinit var viewModel: PopularArtistViewModel
 
@@ -68,11 +68,11 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 //                .replace(R.id.container1, HomeFragment())
 //                .addToBackStack(null)
 //                .commit()
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+            //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
-            } else {
+           /* } else {
                 navController.popBackStack()
-            }
+            }*/
         }
     }
 

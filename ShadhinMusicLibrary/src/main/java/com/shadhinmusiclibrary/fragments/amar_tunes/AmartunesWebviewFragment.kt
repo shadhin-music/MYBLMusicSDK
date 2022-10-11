@@ -194,7 +194,7 @@ class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity?)?.supportActionBar?.hide()
+       kotlin.runCatching { (activity as AppCompatActivity?)?.supportActionBar?.hide() }
     }
 
     override fun onStop() {

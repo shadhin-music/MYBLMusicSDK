@@ -112,8 +112,8 @@ class AlbumDetailsFragment :
         }
 
         try {
-            playerViewModel.playListLiveData.observe(requireActivity()) { itMusicPlay ->
-                playerViewModel.musicIndexLiveData.observe(requireActivity()) { itCurrPlayItem ->
+            playerViewModel.playListLiveData.observe(viewLifecycleOwner) { itMusicPlay ->
+                playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayItem ->
                     albumsTrackAdapter.setPlayingSong(
                         itCurrPlayItem.toString(),
                         UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
@@ -196,18 +196,18 @@ class AlbumDetailsFragment :
         val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
         if (mSongDet.size > 0 && isAdded) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
+                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",
                                 "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it

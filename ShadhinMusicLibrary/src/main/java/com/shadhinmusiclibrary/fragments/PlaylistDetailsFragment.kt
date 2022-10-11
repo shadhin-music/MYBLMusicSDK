@@ -126,18 +126,18 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     ) {
         val albumVH = currentVH as PlaylistAdapter.PlaylistVH
         if (songDetails.size > 0 && isAdded) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",
                                 "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it

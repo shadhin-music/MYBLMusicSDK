@@ -936,7 +936,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-        Log.e("Check", ""+bsdNavController.graph.displayName)
+      //  Log.e("Check", ""+bsdNavController.graph.displayName)
         bsdNavController.navigate(R.id.artist_details_fragment,
             Bundle().apply {
                 putSerializable(
@@ -968,7 +968,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetail(AlbumId = "",
-                        ArtistId = mSongDetails.ArtistId!!,
+                        ArtistId = mSongDetails.ArtistId?:"",
                         ContentID = mSongDetails.ContentID,
                         ContentType = "",
                         PlayUrl = "",
@@ -1010,7 +1010,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             argHomePatchDetail: HomePatchDetail?,
 
             ) {
-            Log.e("Check", ""+bsdNavController.graph.displayName)
+          //  Log.e("Check", ""+bsdNavController.graph.displayName)
             bsdNavController.navigate(R.id.to_album_details,
                 Bundle().apply {
                     putSerializable(
@@ -1019,8 +1019,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     )
                     putSerializable(
                         AppConstantUtils.PatchDetail,
-                        HomePatchDetail(AlbumId = mSongDetails.albumId!!,
-                            ArtistId = mSongDetails.ArtistId!!,
+                        HomePatchDetail(AlbumId = mSongDetails.albumId?:"",
+                            ArtistId = mSongDetails.ArtistId?:"",
                             ContentID = mSongDetails.ContentID,
                             ContentType = "",
                             PlayUrl = "",
