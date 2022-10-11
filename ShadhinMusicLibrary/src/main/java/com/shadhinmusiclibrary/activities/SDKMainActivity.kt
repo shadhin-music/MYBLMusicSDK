@@ -371,7 +371,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun setupNavGraphAndArg(@NavigationRes1 graphResId: Int, bundleData: Bundle) {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
+        Log.e("NavControllerx", "setupNavGraphAndArg: ${navGraph.displayName}")
         navController.setGraph(navGraph, bundleData)
+
     }
 
     private fun setupNavGraphAndArg(
@@ -887,6 +889,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
+
+
+
+
             gotoAlbum(
                 bsdNavController,
                 context,
@@ -982,6 +988,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
+
         bsdNavController.navigate(R.id.album_details_fragment,
             Bundle().apply {
                 putSerializable(

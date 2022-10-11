@@ -35,7 +35,7 @@ class FeaturedPodcastRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcas
     }
 
     @JvmName("setData1")
-    fun setData(data: List<FeaturedPodcastDetails>?) {
+    fun setData(data: List<FeaturedPodcastDetails>) {
         this.data= data as MutableList<FeaturedPodcastDetails>
         notifyDataSetChanged()
     }

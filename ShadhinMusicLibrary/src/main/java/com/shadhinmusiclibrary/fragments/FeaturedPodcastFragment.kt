@@ -88,7 +88,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
 
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                podcastJBAdapter.setData(response?.data?.data?.get(0)?.Data)
+                response?.data?.data?.get(0)?.Data?.let { podcastJBAdapter.setData(it) }
 
             } else {
 //                progressBar.visibility = View.GONE

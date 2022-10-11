@@ -106,10 +106,11 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 
         viewModel.getTopTrendingItems("s")
         viewModel.topTrendingContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-                recyclerViewTrending.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                recyclerViewTrending.adapter = TopTenItemAdapter(response?.data?.data!!, this)
+            if (response !=null && response.status == Status.SUCCESS) {
+                response.data?.data?.let {
+                    recyclerViewTrending.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    recyclerViewTrending.adapter = TopTenItemAdapter(it, this)
+                }
             }
         }
         val chipArtist: Chip = requireView().findViewById(R.id.chip_1)
@@ -249,17 +250,17 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
         viewModel.getSearchPodcastTrack(searchText)
 
         viewModel.searchArtistContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
                 tvArtist = requireView().findViewById(R.id.tvArtist)
-                if (response?.data?.data?.Artist?.data?.size!! > 0) {
+                if (response.data?.data?.Artist?.data?.isNotEmpty() == true) {
                     recyclerViewArtist.visibility = VISIBLE
                     tvArtist.visibility = VISIBLE
                     recyclerViewArtist.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewArtist.adapter =
-                        SearchArtistAdapter(response?.data?.data?.Artist?.data!!, this)
-                    Log.e("TAG", "DATASearch: " + response?.data?.data)
+                        SearchArtistAdapter(response.data.data.Artist.data, this)
+                    Log.e("TAG", "DATASearch: " + response.data.data)
                 } else {
                     recyclerViewArtist.visibility = GONE
                     tvArtist.visibility = GONE
@@ -267,16 +268,16 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchAlbumContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewAlbums = requireView().findViewById(R.id.recyclerViewAlbums)
                 tvAlbums = requireView().findViewById(R.id.tvAlbums)
-                if (response?.data?.data?.Album?.data?.size!! > 0) {
+                if (response.data?.data?.Album?.data?.isNotEmpty() == true) {
                     recyclerViewAlbums.visibility = VISIBLE
                     tvAlbums.visibility = VISIBLE
                     recyclerViewAlbums.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewAlbums.adapter =
-                        SearchAlbumsAdapter(response?.data?.data?.Album?.data!!, this)
+                        SearchAlbumsAdapter(response.data.data.Album.data, this)
                 } else {
                     recyclerViewAlbums.visibility = GONE
                     tvAlbums.visibility = GONE
@@ -284,10 +285,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchTracksContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response !=null && response.status == Status.SUCCESS) {
                 recyclerViewTracks = requireView().findViewById(R.id.recyclerViewTracks)
                 tvTracks = requireView().findViewById(R.id.tvTracks)
-                if (response?.data?.data?.Track?.data?.size!! > 0) {
+                if (response.data?.data?.Track?.data?.isNotEmpty() == true) {
                     tvTracks.visibility = VISIBLE
                     recyclerViewTracks.visibility = VISIBLE
                     recyclerViewTracks.layoutManager =
@@ -301,10 +302,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response !=null && response.status == Status.SUCCESS) {
                 recyclerViewVideos = requireView().findViewById(R.id.recyclerViewVideos)
                 tvVideos = requireView().findViewById(R.id.tvVideos)
-                if (response?.data?.data?.Video?.data?.size!! > 0) {
+                if (response.data?.data?.Video?.data?.isNotEmpty() == true) {
                     tvVideos.visibility = VISIBLE
                     recyclerViewVideos.visibility = VISIBLE
                     recyclerViewVideos.layoutManager =
@@ -319,10 +320,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchPodcastShowContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response !=null && response.status == Status.SUCCESS) {
                 recyclerViewShows = requireView().findViewById(R.id.recyclerViewShows)
                 tvShows = requireView().findViewById(R.id.tvShows)
-                if (response?.data?.data?.PodcastShow?.data?.size!! > 0) {
+                if (response.data?.data?.PodcastShow?.data?.isNotEmpty() == true) {
                     recyclerViewShows.visibility = VISIBLE
                     tvShows.visibility = VISIBLE
                     recyclerViewShows.layoutManager =
@@ -338,17 +339,17 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchPodcastEpisodeContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
+            if (response !=null && response.status == Status.SUCCESS) {
                 recyclerViewEpisodes = requireView().findViewById(R.id.recyclerViewEpisodes)
                 tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
-                if (response?.data?.data?.PodcastEpisode?.data?.size!! > 0) {
+                if (response.data?.data?.PodcastEpisode?.data?.isNotEmpty() == true) {
                     recyclerViewEpisodes.visibility = VISIBLE
                     tvEpisodes.visibility = VISIBLE
                     recyclerViewEpisodes.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewEpisodes.adapter =
-                        SearchEpisodeAdapter(response?.data?.data?.PodcastEpisode?.data!!, this)
-                    Log.e("TAG", "DATA123: " + response?.data?.data)
+                        SearchEpisodeAdapter(response.data.data.PodcastEpisode.data, this)
+                    Log.e("TAG", "DATA123: " + response.data.data)
                 } else {
                     recyclerViewEpisodes.visibility = GONE
                     tvEpisodes.visibility = GONE
@@ -360,14 +361,14 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 recyclerViewPodcastTracks =
                     requireView().findViewById(R.id.recyclerViewPodcastTracks)
                 tvPodcastTracks = requireView().findViewById(R.id.tvPodcastTracks)
-                if (response?.data?.data?.PodcastTrack?.data?.size!! > 0) {
+                if (response?.data?.data?.PodcastTrack?.data?.isNotEmpty() == true) {
                     recyclerViewPodcastTracks.visibility = VISIBLE
                     tvPodcastTracks.visibility = VISIBLE
                     recyclerViewPodcastTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewPodcastTracks.adapter =
                         SearchPodcastTracksAdapter(response.data.data.PodcastTrack.data, this)
-                    Log.e("TAG", "DATA123: " + response?.data?.data)
+                    Log.e("TAG", "DATA123: " + response.data.data)
                 } else {
                     recyclerViewPodcastTracks.visibility = GONE
                     tvPodcastTracks.visibility = GONE

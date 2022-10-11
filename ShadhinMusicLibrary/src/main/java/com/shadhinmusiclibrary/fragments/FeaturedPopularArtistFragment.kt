@@ -28,7 +28,7 @@ import java.io.Serializable
 
 class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
-    private lateinit var navController: NavController
+    private  var navController: NavController?=null
     private var homePatchitem: HomePatchItem? = null
     lateinit var viewModel: PopularArtistViewModel
 
@@ -45,7 +45,7 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_featured_popular_artist, container1, false)
-        navController = findNavController()
+
 
         return viewRef
     }
@@ -54,6 +54,7 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
         super.onViewCreated(view, savedInstanceState)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
         //tvTitle.text =  homePatchitem?.Name
+        navController = findNavController()
         setupViewModel()
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -68,11 +69,13 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 //                .replace(R.id.container1, HomeFragment())
 //                .addToBackStack(null)
 //                .commit()
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+
+
+            //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }
+           /* } else {
+                navController?.popBackStack()
+            }*/
         }
     }
 
@@ -99,7 +102,7 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
     override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
-        navController.navigate(
+        navController?.navigate(
             R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
             Bundle().apply {
                 putSerializable(
@@ -113,6 +116,11 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
             })
 //            AppConstantUtils.PatchDetail,
 //            UtilHelper.getHomePatchDetailToData(selectedData) as Serializable
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        navController = null
     }
 
 //    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
