@@ -137,7 +137,6 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 //                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 //                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
 //                Log.e("TAG", "DATA123: " + response.data?.data)
-//
 //            }
 //        }
 //        observeData(searchText)
@@ -155,26 +154,20 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 val text = newText ?: return false
                 searchText = text
                 // mSuggestionAdapter?.swapCursor(cursor)
-
                 if (newText.length > 1) {
 //                val text = newText ?: return false
 //                searchText = text
-
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         Log.e("SearchFragment", "async work started...")
                         delay(2000)
-
                         observeData(searchText)
-
-
                     }
                 } else if (searchText.isEmpty()) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         // Log.e("SearchFragment", "async work started...")
                         delay(1000)
-
                         //  doSearch(searchText)
 //                        rvTrending = requireView().findViewById(R.id.rvTrending)
 //                        rvTrending.visibility = VISIBLE
@@ -189,14 +182,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                         tvTrending.visibility = GONE
                         tvTrendingVideo.visibility = GONE
                     }
-
                     //search.clearFocus()
                 }
-
-
                 return false
             }
-
             override fun onQueryTextSubmit(query: String): Boolean {
 
 
@@ -215,12 +204,9 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 recyclerViewTrendingVideos.visibility = GONE
                 tvTrending.visibility = GONE
                 tvTrendingVideo.visibility = GONE
-
                 // doSearch(searchText)
                 return true
             }
-
-
         })
         search.setOnSuggestionListener(object : android.widget.SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {

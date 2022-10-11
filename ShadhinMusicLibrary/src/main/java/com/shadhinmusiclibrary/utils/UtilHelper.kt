@@ -181,9 +181,9 @@ object UtilHelper {
                         userPlayListId = "",
                         /*rootType = ContentType,*/
 
-                        rootContentID = rootContentID,
-                        rootContentType = rootContentType,
-                        rootImage = rootImage
+                        rootContentID = ContentID,
+                        rootContentType = ContentType,
+                        rootImage = image
                     )
                 )
             }

@@ -139,6 +139,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:progressTint="@color/colorPrimary"
+            android:secondaryProgressTint="@color/colorWhite"
             android:thumbTint="@color/colorPrimary" />
 
         <LinearLayout
