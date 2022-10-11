@@ -807,6 +807,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
+        val imageArtist:ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
+        val textAlbum:TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
+        textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
@@ -827,6 +830,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 argHomePatchDetail
 
             )
+
             Log.d("TAG", "CLICKArtist: " + argHomePatchItem)
             Log.d("TAG", "CLICKArtist: " + argHomePatchDetail)
             bottomSheetDialog.dismiss()
@@ -904,6 +908,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
+        val imageArtist:ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
+        val textAlbum:TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
+        textAlbum?.text = "Go to Album"
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
