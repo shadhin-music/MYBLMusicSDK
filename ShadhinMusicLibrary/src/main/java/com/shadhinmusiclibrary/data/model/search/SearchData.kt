@@ -36,10 +36,10 @@ class SearchData(
     val imageWeb: String,
     val title: String,
 
-    val rootType: String?,
+/*    val rootType: String?,*/
     val rootContentID: String,
-    val rootImage: String,
-    val rootContentType: String
+    val rootContentType: String,
+    val rootImage: String
 ) : Serializable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")

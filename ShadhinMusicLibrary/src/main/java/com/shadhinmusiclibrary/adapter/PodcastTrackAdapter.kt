@@ -10,11 +10,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class PodcastEpisodesAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
-    RecyclerView.Adapter<PodcastEpisodesAdapter.PodcastEpisodesViewHolder>() {
+class PodcastTrackAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
+    RecyclerView.Adapter<PodcastTrackAdapter.PodcastEpisodesViewHolder>() {
     var tracks: MutableList<Track> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastEpisodesViewHolder {
@@ -36,8 +38,13 @@ class PodcastEpisodesAdapter(private val itemClickCB: PodcustOnItemClickCallback
         return tracks.size
     }
 
-    fun setData(data: MutableList<Track>) {
-        tracks = data
+    fun setData(data: MutableList<Track>, rootPatch: HomePatchDetail) {
+        this.tracks =  mutableListOf()
+        for (songItem in data) {
+            tracks.add(
+                UtilHelper.getTrackToRootData(songItem, rootPatch)
+            )
+        }
         notifyDataSetChanged()
     }
 

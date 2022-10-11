@@ -288,11 +288,12 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         mSongDetails: MutableList<ArtistContentData>,
         clickItemPosition: Int
     ) {
-        Log.e(
-            "ADF",
-            "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
-        )
         if (playerViewModel.currentMusic != null) {
+            Log.e(
+                "ADF",
+                "currentMusic: " + mSongDetails[clickItemPosition].rootContentID + " "
+                        + playerViewModel.currentMusic?.rootId
+            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)

@@ -36,8 +36,6 @@ class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: HomeCallBack
 
     fun setData(episodeList: MutableList<Episode>) {
             this.episode = episodeList
-
-
     }
 
     inner class PodcastMoreEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

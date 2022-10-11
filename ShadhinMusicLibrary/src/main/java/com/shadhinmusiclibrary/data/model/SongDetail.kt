@@ -18,7 +18,7 @@ data class SongDetail(
     val ArtistId: String?,
     val albumId: String?,
     val userPlayListId: String?,
-    val rootType: String?,
+   /* val rootType: String?,*/
 
     val rootContentID: String,
     val rootImage: String,
