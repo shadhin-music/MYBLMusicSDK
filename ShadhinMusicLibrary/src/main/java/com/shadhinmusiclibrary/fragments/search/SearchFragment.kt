@@ -36,9 +36,7 @@ import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.*
-import com.shadhinmusiclibrary.utils.AppConstantUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -188,11 +186,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-
-
                 // val query: String = intent.getStringExtra(SearchManager.QUERY);
-
-
                 val suggestions: SearchRecentSuggestions = SearchRecentSuggestions(
                     context,
                     MySuggestionProvider.AUTHORITY,
@@ -432,13 +426,13 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                     patchItem
                 )
             }
-            DataContentType.CONTENT_TYPE_PD_BC -> {
-                //open playlist
-                setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_podcast_details_fragment,
-                    patchItem
-                )
-            }
+            /* DataContentType.CONTENT_TYPE_PD_BC -> {
+                 //open playlist
+                 setupNavGraphAndArg(
+                     R.id.action_search_fragment_to_podcast_details_fragment,
+                     patchItem
+                 )
+             }*/
 //            DataContentType.CONTENT_TYPE_S -> {
 //                //open songs
 //                setupNavGraphAndArg(
@@ -474,6 +468,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
     }
 
     //after search play item
+    //TODO need delay
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
         Log.e("SF", "onClickPlaySearchItem: " + songItem[clickItemPosition].ContentType)
         when (songItem[clickItemPosition].ContentType) {
@@ -516,6 +511,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 }
             }
             DataContentType.CONTENT_TYPE_PD_CB -> {
+                //TODO need delay
                 if (playerViewModel.currentMusic != null) {
                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
