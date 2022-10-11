@@ -93,14 +93,20 @@ class FeaturedPodcastFragment : CommonBaseFragment(),HomeCallBack{
         viewModel.fetchFeaturedPodcast(false)
 
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-                podcastJBAdapter.setData(response?.data?.data?.get(0)?.Data,response?.data?.data?.get(0)?.Data?.get(0)?.ShowName)
+            if (response !=null && response.status == Status.SUCCESS) {
+                if(response.data?.data?.get(0)?.Data !=null) {
+                    podcastJBAdapter.setData(
+                        response.data.data.get(0).Data,
+                        response.data.data.get(0).Data.get(0).ShowName
+                    )
 
-            } else {
+                }
+            }
+          //  else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
-            }
+          //  }
         }
         viewModel.fetchFeaturedPodcastJC(false)
             viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->

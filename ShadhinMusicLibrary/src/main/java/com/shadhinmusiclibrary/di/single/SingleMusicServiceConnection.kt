@@ -17,6 +17,10 @@ class SingleMusicServiceConnection private constructor() {
         private fun newInstance(context: Context):MusicServiceController{
             return ShadhinMusicServiceConnection(context)
         }
+        fun destroy(){
+            INSTANCE = null
+        }
+
 
     }
 }

@@ -28,7 +28,7 @@ import java.io.Serializable
 
 class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
-    private  var navController: NavController?=null
+    private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
     lateinit var viewModel: PopularArtistViewModel
 

@@ -342,7 +342,7 @@ object UtilHelper {
                         ArtistId = "",
                         albumId = "",
                         userPlayListId = userPlayListId?:"",
-                       /* rootType = rootType?:"",*/
+                    //    rootType = rootType?:"",
 
                         rootContentID = rootId?:"",
                         rootContentType = rootType?:"",
@@ -373,7 +373,7 @@ object UtilHelper {
                 ArtistId = "",
                 albumId = "",
                 userPlayListId = userPlayListId?:"",
-                /*rootType = rootType?:"",*/
+                //rootType = rootType?:"",
 
                 rootContentID = rootId?:"",
                 rootContentType = rootType?:"",

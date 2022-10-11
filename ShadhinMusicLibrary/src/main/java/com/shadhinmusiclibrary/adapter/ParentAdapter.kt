@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
@@ -238,12 +239,13 @@ class ParentAdapter(var homeCallBack: HomeCallBack,val searchCb: SearchClickCall
             }
             Log.e("TAG","URL1233444: "+ rbtData)
             itemView.setOnClickListener {
-                val manager: FragmentManager =
+                ShadhinMusicSdkCore.openPatch(itemView.context, "BNALL01")
+                /*val manager: FragmentManager =
                 (mContext as AppCompatActivity).supportFragmentManager
                manager.beginTransaction()
                 .replace(R.id.container, AmartunesWebviewFragment.newInstance())
                 .addToBackStack("Fragment")
-                .commit()
+                .commit()*/
             }
 
         }
