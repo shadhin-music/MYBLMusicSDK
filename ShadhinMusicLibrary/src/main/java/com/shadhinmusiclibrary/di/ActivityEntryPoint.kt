@@ -4,5 +4,5 @@ import android.app.Activity
 
 interface ActivityEntryPoint {
     val injector: Module
-        get() = ((this as Activity).application as ShadhinApp).module
+        get() = ShadhinApp.module((this as Activity).applicationContext)
 }

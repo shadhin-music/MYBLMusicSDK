@@ -5,6 +5,10 @@ import android.content.Intent
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.di.ShadhinApp
+import com.shadhinmusiclibrary.di.single.RetrofitClient
+import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
+import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
@@ -16,6 +20,7 @@ object ShadhinMusicSdkCore {
     fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
+
 
     /**
     @param username user name
@@ -31,6 +36,9 @@ object ShadhinMusicSdkCore {
     ) {
 
     }
+    fun initializeSDK(context: Context){
+        ShadhinApp.module(context)
+    }
 
     fun openPatch(reqContext: Context, requestId: String) {
         reqContext.startActivity(
@@ -43,6 +51,14 @@ object ShadhinMusicSdkCore {
             }
         )
     }
+    fun destroySDK(context: Context){
+        ShadhinApp.module(context)
+        ShadhinApp.onDestroy()
+        SinglePlayerApiService.destroy()
+        RetrofitClient.destroy()
+        SingleMusicServiceConnection.destroy()
+        ShadhinApp.onDestroy()
+    }
 
     internal fun pressCountIncrement() {
         backPressCount += 1
@@ -52,6 +68,7 @@ object ShadhinMusicSdkCore {
         backPressCount -= 1
         return backPressCount
     }
+
 
     const val API_LatestRelease = 1
     const val API_FeaturedPodcast = 2

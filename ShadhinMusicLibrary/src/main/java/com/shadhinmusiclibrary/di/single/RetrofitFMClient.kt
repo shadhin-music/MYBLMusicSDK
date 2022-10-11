@@ -21,6 +21,9 @@ class RetrofitFMClient private constructor() {
                 .client(okHttpClient)
                 .build()
         }
+        fun destroy(){
+           INSTANCE = null
+        }
 
     }
 }

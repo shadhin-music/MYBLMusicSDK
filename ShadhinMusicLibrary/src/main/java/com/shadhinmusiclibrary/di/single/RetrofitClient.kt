@@ -19,6 +19,9 @@ class RetrofitClient private constructor() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
+        fun destroy(){
+            INSTANCE = null
+        }
 
     }
 }
