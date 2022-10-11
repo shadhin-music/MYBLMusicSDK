@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_album_details">
 
         <action
-            android:id="@+id/action_album_details_fragment_to_artist_details_fragment"
+            android:id="@+id/to_artist_details"
             app:destination="@id/album_details_fragment" />
     </fragment>
    <fragment  android:id="@+id/artist_details_fragment"

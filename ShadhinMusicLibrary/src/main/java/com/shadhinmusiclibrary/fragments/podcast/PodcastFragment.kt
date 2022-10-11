@@ -84,7 +84,7 @@ class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         val homePatchItem = selectedHomePatchItem
-        navController.navigate(R.id.action_podcast_list_fragment_to_podcast_details_fragment,
+        navController.navigate(R.id.to_podcast_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

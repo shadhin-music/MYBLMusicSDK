@@ -77,7 +77,7 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
         navController.navigate(
-            R.id.action_release_list_fragment_to_album_details_fragment,
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

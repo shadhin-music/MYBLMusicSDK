@@ -138,7 +138,6 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 //                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 //                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
 //                Log.e("TAG", "DATA123: " + response.data?.data)
-//
 //            }
 //        }
 //        observeData(searchText)
@@ -156,26 +155,20 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 val text = newText ?: return false
                 searchText = text
                 // mSuggestionAdapter?.swapCursor(cursor)
-
                 if (newText.length > 1) {
 //                val text = newText ?: return false
 //                searchText = text
-
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         Log.e("SearchFragment", "async work started...")
                         delay(2000)
-
                         observeData(searchText)
-
-
                     }
                 } else if (searchText.isEmpty()) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         // Log.e("SearchFragment", "async work started...")
                         delay(1000)
-
                         //  doSearch(searchText)
 //                        rvTrending = requireView().findViewById(R.id.rvTrending)
 //                        rvTrending.visibility = VISIBLE
@@ -190,14 +183,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                         tvTrending.visibility = GONE
                         tvTrendingVideo.visibility = GONE
                     }
-
                     //search.clearFocus()
                 }
-
-
                 return false
             }
-
             override fun onQueryTextSubmit(query: String): Boolean {
 
 
@@ -216,12 +205,9 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 recyclerViewTrendingVideos.visibility = GONE
                 tvTrending.visibility = GONE
                 tvTrendingVideo.visibility = GONE
-
                 // doSearch(searchText)
                 return true
             }
-
-
         })
         search.setOnSuggestionListener(object : android.widget.SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
@@ -311,7 +297,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                     recyclerViewVideos.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewVideos.adapter =
-                        SearchVideoAdapter(response.data.data.Video.data)
+                        SearchVideoAdapter(response.data.data.Video.data, this)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
                 } else {
                     recyclerViewVideos.visibility = GONE
@@ -435,37 +421,23 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_artist_details_fragment,
+                    R.id.to_artist_details,
                     patchItem
                 )
             }
             DataContentType.CONTENT_TYPE_R -> {
                 //open album details
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_album_details_frag,
+                    R.id.to_album_details,
                     patchItem
                 )
             }
             DataContentType.CONTENT_TYPE_PD_BC -> {
                 //open playlist
                 setupNavGraphAndArg(
-                    R.id.action_search_fragment_to_podcast_details_fragment,
+                    R.id.to_podcast_details,
                     patchItem
                 )
-            }
-            DataContentType.CONTENT_TYPE_V -> {
-                //open playlist
-//                val intent = Intent(itemView.context, VideoActivity::class.java)
-//                val videoArray = ArrayList<Video>()
-//                for (item in  argHomePatchItem.Data){
-//                    val video = Video()
-//                    video.setData(item)
-//                    videoArray.add(video)
-//                }
-//                val videos :ArrayList<Video> = videoArray
-//                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
-//                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-//                itemView.context.startActivity(intent)
             }
 //            DataContentType.CONTENT_TYPE_S -> {
 //                //open songs
@@ -503,18 +475,57 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 
     //after search play item
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null) {
-            if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                } else {
-                    playerViewModel.togglePlayPause()
+        Log.e("SF", "onClickPlaySearchItem: " + songItem[clickItemPosition].ContentType)
+        when (songItem[clickItemPosition].ContentType) {
+            DataContentType.CONTENT_TYPE_V -> {
+                //open playlist
+                val intent = Intent(context, VideoActivity::class.java)
+                val videoArray = ArrayList<Video>()
+                for (item in songItem) {
+//                    val video = Video()
+                    videoArray.add(UtilHelper.getVideoToSearchData(item))
                 }
-            } else {
-                playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                val videos: ArrayList<Video> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                startActivity(intent)
             }
-        } else {
-            playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+            DataContentType.CONTENT_TYPE_S -> {
+                if (playerViewModel.currentMusic != null) {
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                        } else {
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
+            DataContentType.CONTENT_TYPE_PD_CB -> {
+                if (playerViewModel.currentMusic != null) {
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                        } else {
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
         }
     }
 

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_release_list">
 
         <action
-            android:id="@+id/action_release_list_fragment_to_album_details_fragment"
+            android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
     </fragment>
     <fragment

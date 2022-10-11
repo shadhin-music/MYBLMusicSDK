@@ -164,7 +164,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             viewModelArtistSong.fetchArtistSongData(it!!.ArtistId)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-                    artistTrackAdapter.artistContent(res.data)
+                    artistTrackAdapter.setArtistTrack(res.data!!.data, argHomePatchDetail!!)
                 } else {
                     showDialog()
                 }
@@ -173,7 +173,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         argHomePatchDetail.let {
             viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-
                 if (res.status == Status.SUCCESS) {
                     artistAlbumsAdapter.setData(res.data)
                 } else {
@@ -209,17 +208,13 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     }
 
-    fun loadNewArtist(patchDetails: HomePatchDetail) {
-        Log.e("Check", "loadNewArtist")
-    }
-
     override fun onArtistAlbumClick(
         itemPosition: Int,
         artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+        navController.navigate(R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -276,16 +271,11 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = artistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
             if (playerViewModel.currentMusic != null) {
                 if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                Log.e(
-                    "Check",
-                    "rhs ->" + lSongDetails[clickItemPosition].AlbumId + "  lfs -> " + playerViewModel.currentMusic?.rootId
-                )
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
                     clickItemPosition
@@ -301,16 +291,26 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         if (playerViewModel.currentMusic != null) {
             Log.e(
                 "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " rooId" + playerViewModel.currentMusic?.rootId
+                "currentMusic: " + mSongDetails[clickItemPosition].rootContentID + " "
+                        + playerViewModel.currentMusic?.rootId
             )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
+                    Log.e("ADF", "skipToQueueItem:")
                 } else {
+                    Log.e("ADF", "togglePlayPause:")
                     playerViewModel.togglePlayPause()
                 }
+            } else {
+                Log.e("ADF", "playItem: 1111")
+                playItem(
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    clickItemPosition
+                )
             }
         } else {
+            Log.e("ADF", "playItem: 2222")
             playItem(
                 UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                 clickItemPosition

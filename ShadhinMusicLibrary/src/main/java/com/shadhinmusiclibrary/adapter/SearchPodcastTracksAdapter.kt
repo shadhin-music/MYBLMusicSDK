@@ -31,7 +31,6 @@ class SearchPodcastTracksAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchPodcastTrack[position])
         seaItemCallback.onClickPlaySearchItem(searchPodcastTrack,position)
@@ -39,7 +38,6 @@ class SearchPodcastTracksAdapter(
 
     override fun getItemCount(): Int {
         return searchPodcastTrack.size
-
     }
 
     fun trackContent(dataSongDetail: SongDetail?) {

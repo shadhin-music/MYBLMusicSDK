@@ -11,7 +11,7 @@
         android:label="fragment_podcast_list"
         tools:layout="@layout/fragment_podcast">
         <action
-            android:id="@+id/action_podcast_list_fragment_to_podcast_details_fragment"
+            android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />
     </fragment>
     <fragment

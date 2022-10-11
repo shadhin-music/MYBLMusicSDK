@@ -12,9 +12,8 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shadhinmusiclibra.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCAdapter
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCRecyclerViewAdapter
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.HomePatchItem
@@ -31,7 +30,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
     private lateinit var  data: List<FeaturedPodcastDetails>
     private lateinit var  dataJc: List<FeaturedPodcastDetails>
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
-    private lateinit var  podcastJCAdapter: FeaturedPodcastJCRecyclerViewAdapter
+    private lateinit var  podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
     private fun setupViewModel() {
         viewModel =
@@ -70,12 +69,12 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
          val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
           podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter()
-
+          podcastJCAdapter =  FeaturePodcastJCRECAdapter()
          val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
          parentAdapter = ConcatAdapter(
             config,
-            podcastJBAdapter
+            podcastJBAdapter,podcastJCAdapter
 
 
         )
@@ -88,7 +87,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
 
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                response?.data?.data?.get(0)?.Data?.let { podcastJBAdapter.setData(it) }
+                podcastJBAdapter.setData(response?.data?.data?.get(0)?.Data,response?.data?.data?.get(0)?.Data?.get(0)?.ShowName)
 
             } else {
 //                progressBar.visibility = View.GONE
@@ -96,11 +95,12 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
 //                showDialog()
             }
         }
-        viewModel.fetchFeaturedPodcast(false)
+        viewModel.fetchFeaturedPodcastJC(false)
             viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
-
-                   // podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data)
+                    Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.get(1)?.Data)
+                    podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
+                        response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
                 } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()

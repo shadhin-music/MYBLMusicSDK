@@ -11,13 +11,13 @@
         android:label="Search"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_search_fragment_to_album_details_frag"
+            android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
         <action
-            android:id="@+id/action_search_fragment_to_artist_details_fragment"
+            android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
         <action
-            android:id="@+id/action_search_fragment_to_podcast_details_fragment"
+            android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />
     </fragment>
 

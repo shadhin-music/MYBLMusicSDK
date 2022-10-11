@@ -11,13 +11,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
 import com.shadhinmusiclibrary.data.model.search.SearchVideodata
 
 
-class SearchVideoAdapter(val searchVideodata: List<SearchData>) :
+class SearchVideoAdapter(
+    val searchVideodata: List<SearchData>,
+    private val seaItemCallback: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchVideoAdapter.ViewHolder>() {
 
 
@@ -27,16 +31,15 @@ class SearchVideoAdapter(val searchVideodata: List<SearchData>) :
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchVideodata[position])
-
-
-
+        holder.itemView.setOnClickListener {
+            seaItemCallback.onClickPlaySearchItem(searchVideodata, position)
+        }
     }
 
     override fun getItemCount(): Int {
-        return  searchVideodata.size
+        return searchVideodata.size
 
     }
 
@@ -53,24 +56,23 @@ class SearchVideoAdapter(val searchVideodata: List<SearchData>) :
     }
 
 
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(searchVideodata: SearchData) {
-            val imageView:ImageView = itemView.findViewById(R.id.video_thumb)
+            val imageView: ImageView = itemView.findViewById(R.id.video_thumb)
             val url: String = searchVideodata.image
-             val textTitle:TextView = itemView.findViewById(R.id.song_name)
+            val textTitle: TextView = itemView.findViewById(R.id.song_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-             //textView.setText(data.Data[absoluteAdapterPosition].title)
+            //textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
-          //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
             textTitle.text = searchVideodata.title
             textArtist.text = searchVideodata.Artist
-           // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
+            // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

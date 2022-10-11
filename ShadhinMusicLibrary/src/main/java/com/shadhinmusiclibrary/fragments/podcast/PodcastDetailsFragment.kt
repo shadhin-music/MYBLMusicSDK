@@ -19,7 +19,6 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
@@ -39,7 +38,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     private lateinit var viewModel: PodcastViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var podcastHeaderAdapter: PodcastHeaderAdapter
-    private lateinit var podcastEpisodesAdapter: PodcastEpisodesAdapter
+    private lateinit var podcastTrackAdapter: PodcastTrackAdapter
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
     var data: Data? = null
     var episode: List<Episode>? = null
@@ -93,7 +92,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         podcastHeaderAdapter = PodcastHeaderAdapter(this)
-        podcastEpisodesAdapter = PodcastEpisodesAdapter(this)
+        podcastTrackAdapter = PodcastTrackAdapter(this)
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
@@ -102,7 +101,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
             config,
             podcastHeaderAdapter,
             PodcastTrackHeaderAdapter(),
-            podcastEpisodesAdapter,
+            podcastTrackAdapter,
             podcastMoreEpisodesAdapter, footerAdapter
         )
         parentAdapter.notifyDataSetChanged()
@@ -126,7 +125,12 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
                     )
                 }
                 response.data?.data?.EpisodeList?.get(0)
-                    ?.let { podcastEpisodesAdapter.setData(it.TrackList.toMutableList()) }
+                    ?.let {
+                        podcastTrackAdapter.setData(
+                            it.TrackList.toMutableList(),
+                            argHomePatchDetail!!
+                        )
+                    }
                 response.data?.data?.let {
                     it.EpisodeList.let { it1 ->
                         podcastMoreEpisodesAdapter.setData(it1)
@@ -193,7 +197,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 
     override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mTracks[clickItemPosition].ShowId == playerViewModel.currentMusic?.rootId)) {
+            if ((mTracks[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mTracks[clickItemPosition].ShowId != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {

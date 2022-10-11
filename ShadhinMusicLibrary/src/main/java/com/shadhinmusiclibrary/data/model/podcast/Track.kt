@@ -31,3 +31,26 @@ data class Track(
         return this.ImageUrl.replace("<\$size\$>", "300")
     }
 }
+
+
+//SongDetail(
+//ContentID = ShowId,
+//image = ImageUrl,
+//title = Name,
+//ContentType = ContentType,
+//PlayUrl = PlayUrl,
+//artist = Starring,
+//duration = Duration,
+//copyright = "",
+//labelname = Name,
+//releaseDate = CeateDate,
+//fav = fav,
+//ArtistId = "",
+//albumId = "",
+//userPlayListId = "",
+///*rootType = ContentType,*/
+//
+//rootContentID = rootContentID,
+//rootContentType = rootContentType,
+//rootImage = rootImage
+//)
