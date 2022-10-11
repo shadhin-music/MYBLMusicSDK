@@ -149,7 +149,6 @@ class AlbumDetailsFragment :
         viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 
             if (res.status == Status.SUCCESS) {
-                Log.e("TAG", "ARTISTDATA: " + res.data!!.data)
                 artistAlbumsAdapter.setData(res.data)
             } else {
                 // showDialog()

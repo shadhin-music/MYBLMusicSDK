@@ -164,7 +164,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             viewModelArtistSong.fetchArtistSongData(it!!.ArtistId)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-                    artistTrackAdapter.artistContent(res.data)
+                    artistTrackAdapter.setArtistTrack(res.data!!.data, argHomePatchDetail!!)
                 } else {
                     showDialog()
                 }
@@ -173,7 +173,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         argHomePatchDetail.let {
             viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-
                 if (res.status == Status.SUCCESS) {
                     artistAlbumsAdapter.setData(res.data)
                 } else {
@@ -207,10 +206,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
 
-    }
-
-    fun loadNewArtist(patchDetails: HomePatchDetail) {
-        Log.e("Check", "loadNewArtist")
     }
 
     override fun onArtistAlbumClick(
@@ -281,10 +276,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                Log.e(
-                    "Check",
-                    "rhs ->" + lSongDetails[clickItemPosition].AlbumId + "  lfs -> " + playerViewModel.currentMusic?.rootId
-                )
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
                     clickItemPosition
@@ -297,19 +288,28 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         mSongDetails: MutableList<ArtistContentData>,
         clickItemPosition: Int
     ) {
+        Log.e(
+            "ADF",
+            "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
+        )
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
-            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
+                    Log.e("ADF", "skipToQueueItem:")
                 } else {
+                    Log.e("ADF", "togglePlayPause:")
                     playerViewModel.togglePlayPause()
                 }
+            } else {
+                Log.e("ADF", "playItem: 1111")
+                playItem(
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    clickItemPosition
+                )
             }
         } else {
+            Log.e("ADF", "playItem: 2222")
             playItem(
                 UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                 clickItemPosition

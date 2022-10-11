@@ -1,12 +1,10 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -20,11 +18,10 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-
-class ArtistTrackAdapter(
+class SearchArtistTrackAdapter(
     private val itemClickCB: ArtistOnItemClickCallback,
     val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
-) : RecyclerView.Adapter<ArtistTrackAdapter.ArtistTrackVH>() {
+) : RecyclerView.Adapter<SearchArtistTrackAdapter.ArtistTrackVH>() {
     //   private var artistContent: ArtistContent? = null
 //    private var songDetail: MutableList<SongDetail> = ArrayList()
     var artistSongList: MutableList<ArtistContentData> = mutableListOf()
@@ -77,13 +74,13 @@ class ArtistTrackAdapter(
         return artistSongList.size
     }
 
-//    fun artistContent(artistContent: ArtistContent?) {
-//        artistContent?.data?.let {
-//            this.artistSongList.clear()
-//            this.artistSongList.addAll(it)
-//            this.notifyDataSetChanged()
-//        }
-//    }
+    fun artistContent(artistContent: ArtistContent?) {
+        artistContent?.data?.let {
+            this.artistSongList.clear()
+            this.artistSongList.addAll(it)
+            this.notifyDataSetChanged()
+        }
+    }
 
     fun setArtistTrack(data: List<ArtistContentData>, rootPatch: HomePatchDetail) {
         this.artistSongList = mutableListOf()
@@ -129,9 +126,3 @@ class ArtistTrackAdapter(
         const val VIEW_TYPE = 2
     }
 }
-
-
-
-
-
-

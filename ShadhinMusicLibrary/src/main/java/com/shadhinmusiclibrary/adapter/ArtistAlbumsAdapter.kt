@@ -50,15 +50,6 @@ class ArtistAlbumsAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(artistAlbumModel: ArtistAlbumModel?) {
-//        fun setData(data: MutableList<SongDetail>, rootPatch: HomePatchDetail) {
-//            this.dataSongDetail = mutableListOf()
-//            for (songItem in data) {
-//                dataSongDetail.add(
-//                    UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
-//                )
-//            }
-//            notifyDataSetChanged()
-//        }
         this.artistAlbumModel = artistAlbumModel
         notifyDataSetChanged()
     }

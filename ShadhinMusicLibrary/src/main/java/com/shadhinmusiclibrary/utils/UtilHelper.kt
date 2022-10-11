@@ -363,6 +363,33 @@ object UtilHelper {
         }
     }
 
+    fun getArtistContentDataToRootData(
+        mSongDet: ArtistContentData,
+        rootPatch: HomePatchDetail
+    ): ArtistContentData {
+        mSongDet.apply {
+            return ArtistContentData(
+                ContentID = ContentID,
+                image = image,
+                title = title,
+                ContentType = ContentType,
+                TotalPlay = 0,
+                PlayUrl = PlayUrl,
+                artistname = artistname,
+                duration = duration,
+                copyright = copyright,
+                labelname = labelname,
+                releaseDate = releaseDate,
+                fav = fav,
+                ArtistId = ArtistId,
+                AlbumId = AlbumId,
+                rootContentID = rootPatch.ContentID,
+                rootContentType = rootPatch.ContentType,
+                rootImage = rootPatch.image
+            )
+        }
+    }
+
     fun getHomePatchDetailToData(data: Data): HomePatchDetail {
         return HomePatchDetail(
             "0",
