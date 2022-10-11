@@ -9,20 +9,27 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibra.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
+import java.io.Serializable
 
 
-class FeaturedPodcastFragment : CommonBaseFragment(){
+class FeaturedPodcastFragment : CommonBaseFragment(),HomeCallBack{
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
@@ -45,7 +52,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.fragment_podcast, container1, false)
-       // navController = findNavController()
+        navController = findNavController()
 
         return viewRef
     }
@@ -110,22 +117,37 @@ class FeaturedPodcastFragment : CommonBaseFragment(){
 
     }
 
-//    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-//        ShadhinMusicSdkCore.pressCountIncrement()
-//        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
+
+        Log.e("TAGGGGGGGY", "MESSAGE123: "+ homePatchDetail)
+
+    }
+
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+//        Log.e("TAGGGGGGGY", "MESSAGE123: "+selectedEpisode)
+//       // ShadhinMusicSdkCore.pressCountIncrement()
+//        val sSelectedData = selectedEpisode[itemPosition]
+//       // val homePatchDetail = selectedEpisode
 //        navController.navigate(
-//            R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
+//            R.id.to_podcast_details,
 //            Bundle().apply {
 //                putSerializable(
 //                    AppConstantUtils.PatchItem,
-//                    selectedHomePatchItem as Serializable
+//                    UtilHelper.getHomePatchItemToPodcastEpisode(selectedEpisode) as Serializable
 //                )
 //                putSerializable(
 //                    AppConstantUtils.PatchDetail,
-//                    homePatchDetail as Serializable
+//                    UtilHelper.getHomePatchPodcastEpisodeDetail(sSelectedData) as Serializable
 //                )
 //            })
-//    }
+
+    }
 //
 //    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
 //

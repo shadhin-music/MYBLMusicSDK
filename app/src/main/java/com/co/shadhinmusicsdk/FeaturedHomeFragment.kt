@@ -41,13 +41,13 @@ class FeaturedHomeFragment : Fragment() {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC201")
         }
         btnFeaturedPodcast.setOnClickListener {
-          //  ShadhinMusicSdkCore.openPatch(requireContext(), "RC202")
-            val manager: FragmentManager =
-                (requireContext() as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
-                .replace(R.id.container1, FeaturedPodcastFragment() )
-                .addToBackStack("Fragment")
-                .commit()
+           ShadhinMusicSdkCore.openPatch(requireContext(), "RC202")
+//            val manager: FragmentManager =
+//                (requireContext() as AppCompatActivity).supportFragmentManager
+//            manager.beginTransaction()
+//                .replace(R.id.container1, FeaturedPodcastFragment() )
+//                .addToBackStack("Fragment")
+//                .commit()
         }
 
         btnAmartunes.setOnClickListener {

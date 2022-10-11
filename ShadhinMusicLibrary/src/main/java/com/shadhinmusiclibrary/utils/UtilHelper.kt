@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.model.*
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
@@ -341,7 +342,7 @@ object UtilHelper {
                         ArtistId = "",
                         albumId = "",
                         userPlayListId = userPlayListId?:"",
-                        rootType = rootType?:"",
+                       /* rootType = rootType?:"",*/
 
                         rootContentID = rootId?:"",
                         rootContentType = rootType?:"",
@@ -372,7 +373,7 @@ object UtilHelper {
                 ArtistId = "",
                 albumId = "",
                 userPlayListId = userPlayListId?:"",
-                rootType = rootType?:"",
+                /*rootType = rootType?:"",*/
 
                 rootContentID = rootId?:"",
                 rootContentType = rootType?:"",
@@ -501,6 +502,87 @@ object UtilHelper {
         )
     }
 
+    fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
+        return HomePatchDetail(
+            "0",
+            "",
+            "",
+            data.Name,
+            data.EpisodeId,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            "",
+            "",
+            "",
+            data.ImageUrl,
+            "",
+            ""
+        )
+    }
+    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
+        val mPatchDetail = mutableListOf<HomePatchDetail>()
+        for (patchItem in episode) {
+            mPatchDetail.add(
+                HomePatchDetail(
+                    "0",
+                    "",
+                    "",
+                    patchItem.Name,
+                    patchItem.ShowId,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    patchItem.ImageUrl,
+                    "",
+                    ""
+                )
+            )
+        }
+
+        return HomePatchItem(
+            "",
+            "",
+            mPatchDetail,
+            "",
+            "",
+            0,
+            0
+        )
+    }
     fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
         val mPatchDetail = mutableListOf<HomePatchDetail>()
         for (patchItem in data) {

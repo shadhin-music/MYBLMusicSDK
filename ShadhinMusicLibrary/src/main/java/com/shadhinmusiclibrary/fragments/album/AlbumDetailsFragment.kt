@@ -81,6 +81,7 @@ class AlbumDetailsFragment :
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
+        Log.e("i am being called", "test test ")
         observeData(
             argHomePatchDetail!!.AlbumId,
             argHomePatchDetail!!.ArtistId,
@@ -144,7 +145,7 @@ class AlbumDetailsFragment :
                 progressBar.visibility = VISIBLE
             }
         }
-
+        Log.e("I am being called", ""+artistId)
         viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
         viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
 

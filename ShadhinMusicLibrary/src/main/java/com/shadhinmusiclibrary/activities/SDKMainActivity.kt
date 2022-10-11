@@ -215,9 +215,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
-//            DataContentType.CONTENT_TYPE_R_RC202 -> {
-//                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
-//            }
+            DataContentType.CONTENT_TYPE_PD_RC202 -> {
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_featured_podcast, Bundle())
+            }
             DataContentType.CONTENT_TYPE_WV -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
             }
@@ -314,7 +314,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         })
                 }
                 DataContentType.CONTENT_TYPE_R -> {
-                    //open artist details
+                    //open album details
                     setupNavGraphAndArg(R.navigation.nav_graph_album_list,
                         Bundle().apply {
                             putSerializable(
