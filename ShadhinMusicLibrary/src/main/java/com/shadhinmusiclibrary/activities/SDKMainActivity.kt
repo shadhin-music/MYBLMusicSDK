@@ -169,7 +169,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 ////        val homePatchDetail = patch.Data[selectedPatchIndex!!]
 //        Log.d("TAG", "Patch: "+ patch.Data)
 //          if(patch.Data[selectedPatchIndex].ContentType=="A") {
-              setupNavGraphAndArg(R.navigation.nav_graph_search_artist_details,
+              setupNavGraphAndArg(R.navigation.nav_graph_search,
                   Bundle().apply {
                       putSerializable(
                           PatchItem,
@@ -216,6 +216,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
+//            DataContentType.CONTENT_TYPE_R_RC202 -> {
+//                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
+//            }
             DataContentType.CONTENT_TYPE_WV -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
             }

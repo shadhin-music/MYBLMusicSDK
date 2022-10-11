@@ -240,7 +240,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack,val searchCb: SearchClickCall
             itemView.setOnClickListener {
                 val manager: FragmentManager =
                 (mContext as AppCompatActivity).supportFragmentManager
-            manager.beginTransaction()
+               manager.beginTransaction()
                 .replace(R.id.container, AmartunesWebviewFragment.newInstance())
                 .addToBackStack("Fragment")
                 .commit()
