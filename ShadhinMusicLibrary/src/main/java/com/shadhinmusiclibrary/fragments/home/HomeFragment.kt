@@ -33,14 +33,15 @@ import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint, HomeCallBack,SearchClickCallBack {
+    FragmentEntryPoint, HomeCallBack, SearchClickCallBack {
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
+
     //var page = -1
     var isLoading = false
     var isLastPage = false
-     var rbtData :RBTDATA ?= null
+    var rbtData: RBTDATA? = null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
     override fun getViewModel(): Class<HomeViewModel> {
@@ -50,7 +51,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun getViewModelFactory(): HomeViewModelFactory {
         return injector.factoryHomeVM
     }
-//    override fun getViewModelFactory(): HomeViewModelFactory {
+
+    //    override fun getViewModelFactory(): HomeViewModelFactory {
 //        return injector.factoryAmarTuneVM
 //    }
     override fun onCreateView(
@@ -86,7 +88,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             }
             isLoading = false
         }
-        Log.e("TAG", "URL: "+ "Hello")
+        Log.e("TAG", "URL: " + "Hello")
 //        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
 //            if (res.status == Status.SUCCESS) {
 //                rbtData=res.data?.data
@@ -97,11 +99,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {
-           // Log.e("TAG", "URLRBT: "+ this.rbtData)
+            // Log.e("TAG", "URLRBT: "+ this.rbtData)
 
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this,this)
+            dataAdapter = ParentAdapter(this, this)
             //dataAdapter = ParentAdapter(this,rbtData )
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
@@ -136,12 +138,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 //            val concatAdapter=  ConcatAdapter(config,dataAdapter)
             recyclerView.adapter = dataAdapter
         }
-        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
-            Log.e("TAG", "URL: "+ res)
+        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
+            Log.e("TAG", "URL: " + res)
             if (res.status == Status.SUCCESS) {
                 this.rbtData = res.data?.data
 
-             //    dataAdapter = ParentAdapter(this)
+                //    dataAdapter = ParentAdapter(this)
 //                    //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
 //                    var url:String = res?.data?.data?.pwaUrl.toString()
 //                    var pwatopchartURL:String = res.data?.data?.pwatopchartURL.toString()
@@ -157,13 +159,13 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 dataAdapter?.notifyDataSetChanged()
             }
         }
-        if(homeData?.total == pageNum){
+        if (homeData?.total == pageNum) {
             isLastPage = true
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-            recyclerView.adapter= ConcatAdapter(config,dataAdapter,footerAdapter)
+            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
 
     }
@@ -194,12 +196,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .apply {
                 putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                 putExtra(AppConstantUtils.PatchItem, data)
-                Log.e("TAG", "DATA123: " + selectedHomePatchItem)
             })
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItem) {
@@ -211,10 +212,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         )
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
-                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Search)
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
                 putExtra(AppConstantUtils.PatchItem, data)
             })
     }
-
-
 }

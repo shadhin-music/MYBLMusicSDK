@@ -17,19 +17,20 @@ import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 class PodcastHeaderAdapter(
     private val pcOnCallback: PodcustOnItemClickCallback
-) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderViewHolder>() {
+) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
     var episode: List<Episode>? = null
     private var listTrack: MutableList<Track> = mutableListOf()
     private var parentView: View? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.podcast_header_layout, parent, false)
-        return PodcastHeaderViewHolder(parentView!!)
+        return PodcastHeaderVH(parentView!!)
     }
 
-    override fun onBindViewHolder(holder: PodcastHeaderViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
         holder.bindItems(position)
         Log.e("PHA", "onBindViewHolder: " + listTrack.size)
+        pcOnCallback.getCurrentVH(holder, listTrack)
         holder.ivPlayBtn?.setOnClickListener {
             pcOnCallback.onRootClickItem(listTrack, position)
         }
@@ -50,7 +51,7 @@ class PodcastHeaderAdapter(
 //        textView?.setText(Html.fromHtml(episode.))
     }
 
-    inner class PodcastHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PodcastHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
         var ivPlayBtn: ImageView? = null
         fun bindItems(position: Int) {

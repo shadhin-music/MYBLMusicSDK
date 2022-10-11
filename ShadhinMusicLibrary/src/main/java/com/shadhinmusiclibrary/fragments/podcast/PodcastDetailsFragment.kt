@@ -25,6 +25,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -188,10 +189,13 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
 
     override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
         Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
-        if ((mSongDetails[clickItemPosition].ShowId == playerViewModel.currentMusic?.rootId)) {
-            playerViewModel.togglePlayPause()
-        } else {
-            playItem(UtilHelper.getSongDetailToTrackList(mSongDetails), clickItemPosition)
+        val lSongDetails = podcastTrackAdapter.tracks
+        if (lSongDetails.size > clickItemPosition) {
+            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+                playerViewModel.togglePlayPause()
+            } else {
+                playItem(UtilHelper.getSongDetailToTrackList(lSongDetails), clickItemPosition)
+            }
         }
     }
 
@@ -212,6 +216,29 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     }
 
     override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
+        val mSongDet = podcastTrackAdapter.tracks
+        val mCurrentVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
+        if (mSongDet.size > 0 && isAdded) {
+            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+                if (itMusic != null) {
+                    if ((mSongDet.indexOfFirst {
+                            it.rootContentType == itMusic.rootType &&
+                                    it.ShowId == itMusic.mediaId
+                        } != -1)
+                    ) {
+                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                            playPauseState(itPla!!.isPlaying, mCurrentVH.ivPlayBtn!!)
+                        }
 
+                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                            Log.e(
+                                "ADF",
+                                "AdPosition: " + mCurrentVH.bindingAdapterPosition + " itemId: " + mCurrentVH.itemId + " musicIndex" + it
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -20,11 +20,8 @@ class MusicVideoAdapter(var data: List<LatestVideoModelData>) : RecyclerView.Ada
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-
-
     }
 
     override fun getItemCount(): Int {
@@ -60,9 +57,6 @@ class MusicVideoAdapter(var data: List<LatestVideoModelData>) : RecyclerView.Ada
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }
