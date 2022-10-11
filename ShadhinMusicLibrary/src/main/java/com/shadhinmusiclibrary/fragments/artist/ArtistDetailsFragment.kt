@@ -112,7 +112,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun setupViewModel() {
-
         viewModel =
             ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
         viewModelArtistBanner = ViewModelProvider(
@@ -271,10 +270,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = artistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            if (playerViewModel.currentMusic != null) {
-                if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
-                    playerViewModel.togglePlayPause()
-                }
+            if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+                playerViewModel.togglePlayPause()
             } else {
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
@@ -289,17 +286,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         clickItemPosition: Int
     ) {
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "currentMusic: " + mSongDetails[clickItemPosition].rootContentID + " "
-                        + playerViewModel.currentMusic?.rootId
-            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
-                    Log.e("ADF", "skipToQueueItem:")
                 } else {
-                    Log.e("ADF", "togglePlayPause:")
                     playerViewModel.togglePlayPause()
                 }
             } else {
@@ -332,7 +322,6 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-
                         playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
                         }

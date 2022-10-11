@@ -186,6 +186,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 }
                 return false
             }
+
             override fun onQueryTextSubmit(query: String): Boolean {
 
 
@@ -491,10 +492,17 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
             DataContentType.CONTENT_TYPE_S -> {
                 if (playerViewModel.currentMusic != null) {
+                    Log.e(
+                        "SF",
+                        "currentMusic: " + songItem[clickItemPosition].ContentID + " "
+                                + playerViewModel.currentMusic?.rootId
+                    )
                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                             playerViewModel.skipToQueueItem(clickItemPosition)
+                            Log.e("ADF", "skipToQueueItem:")
                         } else {
+                            Log.e("ADF", "togglePlayPause:")
                             playerViewModel.togglePlayPause()
                         }
                     } else {

@@ -213,9 +213,12 @@ object UtilHelper {
                         userPlayListId = "",
                         /*rootType = ContentType,*/
 
-                        rootContentID = trackItem.rootContentID,
-                        rootContentType = trackItem.rootContentType,
-                        rootImage = trackItem.rootImage
+                        /*  rootContentID = trackItem.rootContentID,
+                          rootContentType = trackItem.rootContentType,
+                          rootImage = trackItem.rootImage*/
+                        rootContentID = ContentID,
+                        rootContentType = ContentType,
+                        rootImage = image
                     )
                 )
             }
@@ -245,9 +248,12 @@ object UtilHelper {
                         userPlayListId = "",
                         /*rootType = contentType,*/
 
-                        rootContentID = rootContentID,
-                        rootContentType = rootContentType,
-                        rootImage = rootImage
+//                        rootContentID = rootContentID,
+//                        rootContentType = rootContentType,
+//                        rootImage = rootImage
+                        rootContentID = contentID,
+                        rootContentType = contentType,
+                        rootImage = image
                     )
                 )
             }
@@ -467,9 +473,6 @@ object UtilHelper {
                 Starring = Starring,
                 Duration = Duration,
                 fav = fav,
-                rootContentID = rootPatch.ContentID,
-                rootContentType = rootPatch.ContentType,
-                rootImage = rootPatch.image,
                 IsPaid = IsPaid,
                 TrackType = TrackType,
                 CeateDate = CeateDate,
@@ -478,7 +481,10 @@ object UtilHelper {
                 Id = Id,
                 Seekable = Seekable,
                 Sort = Sort,
-                totalStream = totalStream
+                totalStream = totalStream,
+                rootContentID = rootPatch.ContentID,
+                rootContentType = rootPatch.ContentType,
+                rootImage = rootPatch.image,
             )
         }
     }

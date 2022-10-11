@@ -17,7 +17,6 @@ data class FeaturedSongDetail(
     val releaseDate: String,
     val fav: Any,
     val artistId: String,
-    val rootType: String?,
 
     val rootContentID: String,
     val rootImage: String,

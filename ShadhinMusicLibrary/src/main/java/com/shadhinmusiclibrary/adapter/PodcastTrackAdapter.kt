@@ -16,16 +16,16 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class PodcastTrackAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
-    RecyclerView.Adapter<PodcastTrackAdapter.PodcastEpisodesViewHolder>() {
+    RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<Track> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastEpisodesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastTrackVH {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.podcast_episodes_item, parent, false)
-        return PodcastEpisodesViewHolder(v)
+        return PodcastTrackVH(v)
     }
 
-    override fun onBindViewHolder(holder: PodcastEpisodesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PodcastTrackVH, position: Int) {
         holder.bindItems(position)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
@@ -48,7 +48,7 @@ class PodcastTrackAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
         notifyDataSetChanged()
     }
 
-    inner class PodcastEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PodcastTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(position: Int) {
 
@@ -68,8 +68,6 @@ class PodcastTrackAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
     }
 

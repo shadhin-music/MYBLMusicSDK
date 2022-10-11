@@ -188,7 +188,6 @@ class AlbumDetailsFragment :
         }
     }
 
-
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
