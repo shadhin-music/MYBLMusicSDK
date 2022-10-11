@@ -57,7 +57,6 @@ class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback
                     ArtistId,
                     albumId = "",
                     userPlayListId = "",
-                    rootType = "",
                     rootContentID = "",
                     rootImage = "",
                     rootContentType = ""

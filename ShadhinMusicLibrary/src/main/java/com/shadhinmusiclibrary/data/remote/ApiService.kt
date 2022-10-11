@@ -37,7 +37,6 @@ interface ApiService {
     @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
         @Query("id") id: String?,
-
         ): ArtistContent
 
     @GET("Artist/ArtistAlbumsbyidtype")

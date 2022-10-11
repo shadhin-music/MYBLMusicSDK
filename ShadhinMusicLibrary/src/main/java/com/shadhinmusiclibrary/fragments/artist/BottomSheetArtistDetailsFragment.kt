@@ -54,7 +54,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var artistHeaderAdapter: BottomSheetArtistHeaderAdapter
     private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
-    private lateinit var artistSongAdapter: ArtistTrackAdapter
+    private lateinit var bsArtistTrackAdapter: BottomSheetArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,7 +108,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
             config,
             artistHeaderAdapter,
             HeaderAdapter(),
-            artistSongAdapter,
+            bsArtistTrackAdapter,
             artistAlbumsAdapter,
             // artistsYouMightLikeAdapter
         )
