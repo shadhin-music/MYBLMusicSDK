@@ -80,8 +80,8 @@ class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFacto
     }
 
     private fun fetchOnlineData(contentId: String) {
-        viewModel!!.fetchPlaylistContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) { res ->
+        viewModel?.fetchPlaylistContent(contentId)
+        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 updateAndSetAdapter(res!!.data!!.data)
             } else {
