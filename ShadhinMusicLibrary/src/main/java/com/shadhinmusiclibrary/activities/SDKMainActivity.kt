@@ -396,6 +396,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
+        Log.i("navgraphx", "setupNavGraphAndArg: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
     }
 
     /* private fun setupNavGraphAndArg(

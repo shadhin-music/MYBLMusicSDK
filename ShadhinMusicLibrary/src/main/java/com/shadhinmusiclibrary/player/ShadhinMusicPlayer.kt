@@ -85,7 +85,7 @@ class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPlayerConte
     private suspend fun initialization() {
         exoPlayer = ShadhinExoPlayer.build(this)
         mediaSession = MediaSessionCompat(this, MEDIA_SESSION_TAG).apply {
-            setSessionActivity(pendingIntent())
+          //  setSessionActivity(pendingIntent())
             isActive = true
 
         }

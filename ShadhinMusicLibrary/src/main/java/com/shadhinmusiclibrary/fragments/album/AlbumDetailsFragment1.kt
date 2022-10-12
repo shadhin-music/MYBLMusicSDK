@@ -77,11 +77,11 @@ class AlbumDetailsFragment1 :
 
     private fun fetchOnlineData(contentId:String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) { res ->
+        viewModel?.fetchAlbumContent(contentId)
+        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-                updateAndSetAdapter(res.data!!.data)
+                res.data?.data?.let { updateAndSetAdapter(it) }
             } else {
                 progressBar.visibility = VISIBLE
                 updateAndSetAdapter(mutableListOf())
