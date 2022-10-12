@@ -11,10 +11,12 @@ import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
 import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import kotlinx.coroutines.*
 
 @Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
+    private var  scope:CoroutineScope? = null
 
     //get Music frangment
     fun getMusicFragment(): Fragment {
@@ -22,32 +24,23 @@ object ShadhinMusicSdkCore {
     }
 
 
-    /**
-    @param username user name
-    @param msID required the mobile number
-    @param imageUrl user profile image
-    @param token required login auth code
-     */
-    fun initializeSDK(
-        userName: String = "anonymous",
-        msID: String,
-        imageUrl: String = "https://cdn-icons-png.flaticon.com/512/634/634795.png",
-        token: String
-    ) {
-
-    }
-
     fun initializeInternalSDK(context: Context) {
-        ShadhinApp.module(context)
+        ShadhinApp.module(context).musicServiceController
     }
 
     /**
     @param token required login auth code
     @param refSdkCall ShadhinSDKCallback
      */
-    fun initializeSDK(
-        token: String, refSdkCall: ShadhinSDKCallback
-    ) {
+    fun initializeSDK(context: Context,token: String, refSdkCall: ShadhinSDKCallback) {
+        scope = CoroutineScope(Dispatchers.IO)
+        scope?.launch {
+
+            val res = ShadhinApp.module(context).authRepository().login(token)
+            withContext(Dispatchers.Main) {
+                refSdkCall.tokenStatus(res.first, res.second ?: "")
+            }
+        }
 
     }
 
@@ -64,6 +57,7 @@ object ShadhinMusicSdkCore {
     }
 
     fun destroySDK(context: Context) {
+        scope?.cancel()
         ShadhinApp.module(context)
         ShadhinApp.onDestroy()
         SinglePlayerApiService.destroy()
