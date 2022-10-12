@@ -176,7 +176,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
-        //observeData()
+        observeData()
 
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData
