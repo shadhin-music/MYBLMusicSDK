@@ -31,6 +31,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -98,17 +99,31 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(
-            config,
-            artistHeaderAdapter,
-            artistTrackAdapter,
-            artistAlbumsAdapter,
-            artistsYouMightLikeAdapter,
-            footerAdapter
-        )
-        parentAdapter.notifyDataSetChanged()
-        parentRecycler.setLayoutManager(layoutManager)
-        parentRecycler.setAdapter(parentAdapter)
+           if (argHomePatchItem?.ContentType=="P"){
+               parentAdapter = ConcatAdapter(
+                   config,
+                   artistHeaderAdapter,
+                   artistTrackAdapter,
+                   artistAlbumsAdapter,
+                   footerAdapter
+               )
+               parentAdapter.notifyDataSetChanged()
+               parentRecycler.setLayoutManager(layoutManager)
+               parentRecycler.setAdapter(parentAdapter)
+             }
+        else {
+               parentAdapter = ConcatAdapter(
+                   config,
+                   artistHeaderAdapter,
+                   artistTrackAdapter,
+                   artistAlbumsAdapter,
+                   artistsYouMightLikeAdapter,
+                   footerAdapter
+               )
+               parentAdapter.notifyDataSetChanged()
+               parentRecycler.setLayoutManager(layoutManager)
+
+           }
     }
 
     private fun setupViewModel() {
@@ -179,6 +194,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 }
             }
         }
+        parentRecycler.setAdapter(parentAdapter)
     }
 
     private fun showDialog() {
@@ -258,9 +274,8 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-
+        TODO("Not yet implemented")
     }
-
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 

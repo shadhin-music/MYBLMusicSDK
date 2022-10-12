@@ -16,10 +16,10 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 

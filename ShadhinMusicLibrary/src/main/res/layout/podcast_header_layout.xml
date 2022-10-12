@@ -34,17 +34,16 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/thumb_card"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text=""
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_below="@id/thumb_card"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/desc"
@@ -54,7 +53,7 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="4dp"
-                android:text=""
+
                 android:textColor="@color/colorBlack"
                 android:textSize="12sp"
                 android:layout_below="@id/name"/>
@@ -139,7 +138,6 @@
                 android:layout_below="@id/tvBiography"
                 android:layout_marginTop="12dp"
                 android:maxLines="4"
-                android:text=""
                 android:justificationMode="inter_word"
                 android:layout_gravity="center_vertical|end"
                 app:animation_duration="750" />

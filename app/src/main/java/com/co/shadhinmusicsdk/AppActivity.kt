@@ -27,7 +27,7 @@ class AppActivity() : AppCompatActivity() {
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
                 //ShadhinMusicSdkCore.getHomeFragment()
-//            val transaction = supportFragmentManager.beginTransaction()
+//        val transaction = supportFragmentManager.beginTransaction()
 //        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
 //        transaction.commit()
 //        }

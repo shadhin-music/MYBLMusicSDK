@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack

@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class PodcastTrackAdapter(private val itemClickCB: PodcustOnItemClickCallback) :
+class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<Track> = mutableListOf()
 
