@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
 import com.shadhinmusiclibrary.fragments.MusicVideoFragment
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
@@ -29,23 +30,48 @@ class FeaturedHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnrelease: Button = requireView().findViewById(R.id.btnLatestRelease)
         val btnPopularArtist: Button = requireView().findViewById(R.id.btnPopularArtists)
-        val btnMusicVideos:Button = requireView().findViewById(R.id.btnMusicVideos)
+        val btnFeaturedPodcast: Button = requireView().findViewById(R.id.btnFeaturedPodcast)
+        val btnMusicVideos: Button = requireView().findViewById(R.id.btnMusicVideos)
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
-
+        val btnAmartunesAll: Button = requireView().findViewById(R.id.btnWebview2)
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
         btnrelease.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC201")
         }
+        btnFeaturedPodcast.setOnClickListener {
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC202")
+            /*val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1, FeaturedPodcastFragment() )
+                .addToBackStack("Fragment")
+                .commit()*/
+        }
+
         btnAmartunes.setOnClickListener {
-            ShadhinMusicSdkCore.openPatch(requireContext(), "AT")
+            ShadhinMusicSdkCore.openPatch(requireContext(), "BNMAIN01")
+        }
+        btnAmartunesAll.setOnClickListener {
+            ShadhinMusicSdkCore.openPatch(requireContext(), "BNALL01") // for all
         }
         btnMusicVideos.setOnClickListener {
-            val manager: FragmentManager =
+
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RC204")
+
+            /* val manager: FragmentManager =
                 (requireContext() as AppCompatActivity).supportFragmentManager
             manager.beginTransaction()
                 .replace(R.id.container1, MusicVideoFragment() )
+                .addToBackStack("Fragment")
+                .commit()
+        }
+        btnFeaturedPodcast.setOnClickListener {
+            val manager: FragmentManager =
+                (requireContext() as AppCompatActivity).supportFragmentManager
+            manager.beginTransaction()
+                .replace(R.id.container1, FeaturedPodcastFragment() )
                 .addToBackStack("Fragment")
                 .commit()
         }
@@ -84,4 +110,8 @@ class FeaturedHomeFragment : Fragment() {
 //    override fun getViewModelFactory(): HomeViewModelFactory {
 //        return injector.factoryHomeVM
 //    }
+
+            */
+        }
+    }
 }

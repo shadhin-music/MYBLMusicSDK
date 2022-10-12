@@ -68,11 +68,11 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 //                .replace(R.id.container1, HomeFragment())
 //                .addToBackStack(null)
 //                .commit()
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+            //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
-            } else {
+           /* } else {
                 navController.popBackStack()
-            }
+            }*/
         }
     }
 
@@ -99,8 +99,8 @@ class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
     override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
-        navController.navigate(
-            R.id.action_featured_popular_artist_fragment_to_artist_details_fragment,
+        navController?.navigate(
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

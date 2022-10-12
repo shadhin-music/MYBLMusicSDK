@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.model.*
+import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
@@ -332,17 +333,13 @@ object UtilHelper {
             musicItem.apply {
                 songDetailList.add(
                     SongDetail(
-                        ContentID = mediaId!!,
-                        image = displayIconUrl!!,
-                        title = title!!,
-                        ContentType = if (contentType != null) {
-                            contentType!!
-                        } else {
-                            ""
-                        },
-                        PlayUrl = mediaUrl!!,
-                        artist = artistName!!,
-                        duration = date!!,
+                        ContentID = mediaId?:"",
+                        image = displayIconUrl?:"",
+                        title = title?:"",
+                        ContentType = contentType?:"",
+                        PlayUrl = mediaUrl?:"",
+                        artist = artistName?:"",
+                        duration = date?:"",
                         copyright = "",
                         labelname = "",
                         releaseDate = "",
@@ -350,16 +347,12 @@ object UtilHelper {
 
                         ArtistId = "",
                         albumId = "",
-                        userPlayListId = if (userPlayListId != null) {
-                            userPlayListId!!
-                        } else {
-                            ""
-                        },
-                        /*rootType = rootType!!,*/
+                        userPlayListId = userPlayListId?:"",
+                    //    rootType = rootType?:"",
 
-                        rootContentID = rootId!!,
-                        rootContentType = rootType!!,
-                        rootImage = rootImage!!
+                        rootContentID = rootId?:"",
+                        rootContentType = rootType?:"",
+                        rootImage = rootImage?:""
                     )
                 )
             }
@@ -371,17 +364,13 @@ object UtilHelper {
     fun getSongDetailToMusic(mMusic: Music): SongDetail {
         mMusic.apply {
             return SongDetail(
-                ContentID = mediaId!!,
-                image = displayIconUrl!!,
-                title = title!!,
-                ContentType = if (contentType != null) {
-                    contentType!!
-                } else {
-                    ""
-                },
-                PlayUrl = mediaUrl!!,
-                artist = artistName!!,
-                duration = date!!,
+                ContentID = mediaId?:"",
+                image = displayIconUrl?:"",
+                title = title?:"",
+                ContentType =contentType?:"",
+                PlayUrl = mediaUrl?:"",
+                artist = artistName?:"",
+                duration = date?:"",
                 copyright = "",
                 labelname = "",
                 releaseDate = "",
@@ -389,16 +378,12 @@ object UtilHelper {
 
                 ArtistId = "",
                 albumId = "",
-                userPlayListId = if (userPlayListId != null) {
-                    userPlayListId!!
-                } else {
-                    ""
-                },
-                /*rootType = rootType!!,*/
+                userPlayListId = userPlayListId?:"",
+                //rootType = rootType?:"",
 
-                rootContentID = rootId!!,
-                rootContentType = rootType!!,
-                rootImage = rootImage!!
+                rootContentID = rootId?:"",
+                rootContentType = rootType?:"",
+                rootImage = rootImage?:""
             )
         }
     }
@@ -523,6 +508,87 @@ object UtilHelper {
         )
     }
 
+    fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
+        return HomePatchDetail(
+            "0",
+            "",
+            "",
+            data.Name,
+            data.EpisodeId,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            "",
+            "",
+            "",
+            data.ImageUrl,
+            "",
+            ""
+        )
+    }
+    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
+        val mPatchDetail = mutableListOf<HomePatchDetail>()
+        for (patchItem in episode) {
+            mPatchDetail.add(
+                HomePatchDetail(
+                    "0",
+                    "",
+                    "",
+                    patchItem.Name,
+                    patchItem.ShowId,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    patchItem.ImageUrl,
+                    "",
+                    ""
+                )
+            )
+        }
+
+        return HomePatchItem(
+            "",
+            "",
+            mPatchDetail,
+            "",
+            "",
+            0,
+            0
+        )
+    }
     fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
         val mPatchDetail = mutableListOf<HomePatchDetail>()
         for (patchItem in data) {

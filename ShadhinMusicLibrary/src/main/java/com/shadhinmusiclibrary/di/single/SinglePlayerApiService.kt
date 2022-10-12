@@ -16,6 +16,9 @@ class SinglePlayerApiService private constructor() {
         private fun newInstance(retrofit: Retrofit):PlayerApiService{
             return retrofit.create(PlayerApiService::class.java)
         }
+       fun destroy(){
+           INSTANCE = null
+       }
 
     }
 }

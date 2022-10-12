@@ -20,6 +20,8 @@ interface MusicServiceActions {
     fun unSubscribe()
     fun connect()
     fun disconnect()
+
+
     fun addToQueue(music: Music)
     fun addPlayList(playlist: MusicPlayList, responseFunc: ((size: Int?) -> Unit)?)
     fun addPlayList(playlist: MusicPlayList)

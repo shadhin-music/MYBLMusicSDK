@@ -8,21 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-
 import com.shadhinmusiclibrary.R
-
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
-
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.RBTDATA
-import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
 class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
@@ -199,12 +194,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             }
             Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
-                val manager: FragmentManager =
-                    (mContext as AppCompatActivity).supportFragmentManager
-                manager.beginTransaction()
-                    .replace(R.id.container, AmartunesWebviewFragment.newInstance())
-                    .addToBackStack("Fragment")
-                    .commit()
+                ShadhinMusicSdkCore.openPatch(itemView.context, "BNALL01")
             }
         }
 

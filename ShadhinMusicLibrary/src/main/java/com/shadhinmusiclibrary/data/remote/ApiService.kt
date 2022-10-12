@@ -58,6 +58,11 @@ interface ApiService {
         @Query("isPaid") isPaid: Boolean,
     ): PodcastModel
 
+    @GET("ClientPodcast/PodcastHomeDataV1")
+    suspend fun fetchFeturedPodcast(
+        @Query("isPaid") isPaid: Boolean,
+    ):FeaturedPodcast
+
     @GET("artist/getpopularartist")
     suspend fun fetchPopularArtist(): PopularArtistModel
 

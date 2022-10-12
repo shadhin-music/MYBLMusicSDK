@@ -11,7 +11,7 @@
         android:label="fragment_playlist_list"
         tools:layout="@layout/fragment_s_type_list">
         <action
-            android:id="@+id/action_s_type_list_fragment_to_S_type_details_fragment"
+            android:id="@+id/to_single_details"
             app:destination="@id/s_type_details_fragment" />
     </fragment>
     <fragment

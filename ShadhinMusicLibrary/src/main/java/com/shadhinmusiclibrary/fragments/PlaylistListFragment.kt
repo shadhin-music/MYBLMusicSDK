@@ -90,7 +90,7 @@ class PlaylistListFragment : Fragment(), HomeCallBack {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
-            R.id.action_playlist_list_to_playlist_details,
+            R.id.to_playlist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

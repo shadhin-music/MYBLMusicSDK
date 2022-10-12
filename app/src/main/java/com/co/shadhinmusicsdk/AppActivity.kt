@@ -1,10 +1,13 @@
 package com.co.shadhinmusicsdk
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.di.ShadhinApp
 
 
 class AppActivity() : AppCompatActivity() {
@@ -14,11 +17,16 @@ class AppActivity() : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
+
+        if(applicationContext is DemoApp){
+            Log.i("NavControllerx", "DemoApp: ")
+        }
+      //  ShadhinMusicSdkCore.playerDestroy(applicationContext)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 //        val buttonHome:Button = findViewById(R.id.buttonHome)
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
-//                ShadhinMusicSdkCore.getHomeFragment()
+                //ShadhinMusicSdkCore.getHomeFragment()
 //            val transaction = supportFragmentManager.beginTransaction()
 //        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
 //        transaction.commit()
@@ -58,5 +66,10 @@ class AppActivity() : AppCompatActivity() {
         viewPager.offscreenPageLimit = 2
         val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
+    }
+
+    override fun onDestroy() {
+        ShadhinMusicSdkCore.destroySDK(applicationContext)
+        super.onDestroy()
     }
 }

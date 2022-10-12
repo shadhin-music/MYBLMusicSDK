@@ -4,24 +4,22 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.home.HomeFragment
+
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
+import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
 
@@ -29,14 +27,16 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
-    var data:RBTDATA ?= null
+class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
+    var data: RBTDATA? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
+    private var contentType: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             data = it.getSerializable("data") as RBTDATA?
-            Log.d("TAG","DATA: "+ data)
+            contentType = it.getString(CONTENT_TYPE)
+            Log.d("TAG", "DATA: " + data)
         }
     }
 
@@ -49,7 +49,7 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-  viewModelAmaraTunes = ViewModelProvider(
+        viewModelAmaraTunes = ViewModelProvider(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
@@ -63,8 +63,8 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
 //
 //        val jsonObjectString = jsonObject.toString()
 
-     //  val token = "eN3Zs2kWO0CEvRxj08ZVFRw8f9Xn5l27PDsHZeO+tEIY3rib1TxvsH4qefC43WqNxuMMXew3gFEkvUhvl+2RRt/1G2lM1+XJ60xp7nqx/IBoaPx6OKUpih1XbQGnmXanOUvkroC4ENHC57/OLszsG2R4LY93bS3e/5TL/GBx1iXoFfnQxVyssUdmnv2DmE//gBPA9FYOHKiHs3XBClOGd+qE5b2kxnR/c9r+IPd2sodhQoeuQVfx4RWiohZRYbr/RmAYTuN5ctuxq3D2PXx+rtD5n4fFlvGNG3w2zamyCRj2+lvbYmBOJ8psphoySQx8pF6A29qVyIq+m0DkNQI21RvRqx3+/+CzNHDYx5Nq4hIxM21UfAa/6a2oNtO3NpIxSO7UUbN5s2DnqOW2Ic7yWFU7UHkrM1NYDCTwpL3nB3Esz95Zzp1uumN1689R47L7wpJuTemOY4NWruLMsEzD/btbYt00vbsnn+YZsdlyxxtUj3PghEXZ0p0p0sjlcnJef/628UpwFPr1SF4AktARDGqxGBU6r2iD4eEI7RtNdUC00mSfHmyi7r22oxygxmnXLxNNNPFZYZYC4hXGTTA9tXxoLfW5Y9woaPtZtj18Y0pkBh+vTsiGr4Bb7QNRvw3xDarR5wUrPFCRKXb/crIz+veHagvqcffQpm9UxT3eVyDZaP3/HBDuI7ZokLGvOMy8UE9NOfozgBaE/cgSi4Hr/t0d/qS1y8h4KG2gTdiGcL7j4d3wg9LsHS5nKswu99+uheceeh0K3IKp22EDZDAwWBXaCjTTAFzcX2ReGJDUu2w82dtzgtGNTD6z4m7Z/tY+2jTM/YsjsMJN5W5lFv906bZ+3K7qd/SYmksbbRyWFTaAmRb4vdX4G4UR5s/3nwLXMfLnPhlmSOOqwdWlqOxqLTgcj0HzcWY40+4HXYYo2zs=:u3Qghadl765gySHMQ8W2yA=="
-       // val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+        //  val token = "eN3Zs2kWO0CEvRxj08ZVFRw8f9Xn5l27PDsHZeO+tEIY3rib1TxvsH4qefC43WqNxuMMXew3gFEkvUhvl+2RRt/1G2lM1+XJ60xp7nqx/IBoaPx6OKUpih1XbQGnmXanOUvkroC4ENHC57/OLszsG2R4LY93bS3e/5TL/GBx1iXoFfnQxVyssUdmnv2DmE//gBPA9FYOHKiHs3XBClOGd+qE5b2kxnR/c9r+IPd2sodhQoeuQVfx4RWiohZRYbr/RmAYTuN5ctuxq3D2PXx+rtD5n4fFlvGNG3w2zamyCRj2+lvbYmBOJ8psphoySQx8pF6A29qVyIq+m0DkNQI21RvRqx3+/+CzNHDYx5Nq4hIxM21UfAa/6a2oNtO3NpIxSO7UUbN5s2DnqOW2Ic7yWFU7UHkrM1NYDCTwpL3nB3Esz95Zzp1uumN1689R47L7wpJuTemOY4NWruLMsEzD/btbYt00vbsnn+YZsdlyxxtUj3PghEXZ0p0p0sjlcnJef/628UpwFPr1SF4AktARDGqxGBU6r2iD4eEI7RtNdUC00mSfHmyi7r22oxygxmnXLxNNNPFZYZYC4hXGTTA9tXxoLfW5Y9woaPtZtj18Y0pkBh+vTsiGr4Bb7QNRvw3xDarR5wUrPFCRKXb/crIz+veHagvqcffQpm9UxT3eVyDZaP3/HBDuI7ZokLGvOMy8UE9NOfozgBaE/cgSi4Hr/t0d/qS1y8h4KG2gTdiGcL7j4d3wg9LsHS5nKswu99+uheceeh0K3IKp22EDZDAwWBXaCjTTAFzcX2ReGJDUu2w82dtzgtGNTD6z4m7Z/tY+2jTM/YsjsMJN5W5lFv906bZ+3K7qd/SYmksbbRyWFTaAmRb4vdX4G4UR5s/3nwLXMfLnPhlmSOOqwdWlqOxqLTgcj0HzcWY40+4HXYYo2zs=:u3Qghadl765gySHMQ8W2yA=="
+        // val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
         //viewModel!!.fetchRBTURL()
         observeData()
 
@@ -72,34 +72,38 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
     }
 
     private fun observeData() {
-        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
-            Log.e("TAG", "URL: "+ res)
+//        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner){res->
+//
+//            if (res.status == Status.SUCCESS) {
+//
+//                val redirectUrl: String = res?.data?.data?.redirectUrl.toString()
+//
+//
+//
+//                val url = when(contentType){
+//                      AMR_TUNE_ALL -> res?.data?.data?.pwaUrl.toString()
+//                      AMR_TUNE -> res?.data?.data?.pwatopchartURL.toString()
+//                      else -> null
+//                  }
+//                if (url != null) {
+//                    openWebView(url,redirectUrl)
+//                }
+//            }
+//        }
+        viewModelAmaraTunes!!.urlContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
-              //rbtData = res.data?.data
-
-                //    dataAdapter = ParentAdapter(this)
-//                    //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
-                    var url:String = res?.data?.data?.pwaUrl.toString()
-                    var pwatopchartURL:String = res.data?.data?.pwatopchartURL.toString()
-                    var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
-//                    Log.e("TAG", "URL123: "+ res.data?.data)
-                  OpenWebView(url,pwatopchartURL,redirectUrl)
+                //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
+                var url: String = res?.data?.data?.pwaUrl.toString()
+                var pwatopchartURL: String = res.data?.data?.pwatopchartURL.toString()
+                var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
+                Log.e("TAG", "URL: " + res.data?.data)
+                openWebView(url, pwatopchartURL, redirectUrl)
             }
         }
-//        viewModel!!.urlContent.observe(viewLifecycleOwner){res->
-//            if (res.status == Status.SUCCESS) {
-//                //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
-//                var url:String = res?.data?.data?.pwaUrl.toString()
-//                var pwatopchartURL:String = res.data?.data?.pwatopchartURL.toString()
-//                var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
-//                Log.e("TAG", "URL: "+ res.data?.data)
-              //  OpenWebView(data?.pwaUrl.toString(), data?.redirectUrl.toString())
-           // }
-        }
-  //  }
+    }
 
-    private fun OpenWebView(url: String,pwatopchartURL:String, redirectUrl: String){
-        val mWebview:WebView = requireView().findViewById(R.id.webview)
+    private fun openWebView(url: String, pwatopchartURL: String, redirectUrl: String) {
+        val mWebview: WebView = requireView().findViewById(R.id.webview)
         //  mWebview.settings.javaScriptEnabled =true
         mWebview.getSettings().setLoadsImagesAutomatically(true)
         mWebview.getSettings().setJavaScriptEnabled(true)
@@ -114,10 +118,6 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
         mWebview.setHorizontalScrollBarEnabled(false)
         mWebview.getSettings().setAppCacheEnabled(true)
         mWebview.getSettings().setDatabaseEnabled(true)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            mWebview.getSettings()
-                .setDatabasePath("/data/data/" + this.toString() + "/databases/")
-        }
         mWebview.setVerticalScrollBarEnabled(false)
         mWebview.getSettings().setBuiltInZoomControls(true)
         mWebview.getSettings().setDisplayZoomControls(false)
@@ -129,23 +129,25 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
         mWebview.setWebViewClient(WebViewClient())
         mWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH)
         mWebview.setInitialScale(1)
-        // mWebview.loadUrl("http://www.google.com")
         mWebview.loadUrl(pwatopchartURL)
-          Log.e("TAG", "URL: "+ url)
-        mWebview.setWebViewClient(MyWebViewClient(redirectUrl, context))
+        Log.e("TAG", "URL: " + pwatopchartURL)
+        mWebview.setWebViewClient(MyWebViewClient(redirectUrl))
     }
-    private class MyWebViewClient(val redirectUrl: String, context: Context?) : WebViewClient() {
+
+    inner class MyWebViewClient(val redirectUrl: String) : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-            val mWebview:WebView ?= view?.findViewById(R.id.webview)
-          //  view.loadUrl(url)
+            val mWebview: WebView? = view?.findViewById(R.id.webview)
+            //  view.loadUrl(url)
 
-             if (url.equals(redirectUrl)){
-             // Toast.makeText(mWebview?.context,"CLOSE",Toast.LENGTH_SHORT).show()
-                 (view.context as AppCompatActivity).supportFragmentManager.popBackStack()
+            if (url.equals(redirectUrl)) {
+                /*  // Toast.makeText(mWebview?.context,"CLOSE",Toast.LENGTH_SHORT).show()
+                      (view.context as AppCompatActivity).supportFragmentManager.popBackStack()*/
+
+                requireActivity().onBackPressed()
 //
-             }
+            }
 
-           // view.canGoBack()
+            // view.canGoBack()
 
             return true
         }
@@ -162,12 +164,13 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
 //                Log.e("TAG","URL123: "+ url)
 //            }
 
-           // Log.e("TAG","URL43: "+ url)
+        // Log.e("TAG","URL43: "+ url)
 //            view?.loadUrl(url.equals("https://api.shadhinmusic.com/api/v5/mybl/amartunecb").toString())
 //            view?.canGoBack()
-     //   }
+        //   }
 
     }
+
     companion object {
 
         @JvmStatic
@@ -191,12 +194,12 @@ class AmartunesWebviewFragment :Fragment(),FragmentEntryPoint {
 
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+       kotlin.runCatching { (activity as AppCompatActivity?)?.supportActionBar?.hide() }
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        (activity as AppCompatActivity?)?.supportActionBar?.show()
     }
 //    override fun getViewModel(): Class<HomeViewModel> {
 //        return HomeViewModel::class.java

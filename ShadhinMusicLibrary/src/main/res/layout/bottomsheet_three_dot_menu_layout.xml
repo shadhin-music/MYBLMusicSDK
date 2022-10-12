@@ -91,6 +91,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/line">
 
                 <ImageView
@@ -118,6 +119,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/constraintDownload">
 
                 <ImageView
@@ -172,6 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toBottomOf="@id/constraintAddtoWatch">
 
@@ -200,6 +203,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/constraintAddtoqueue">
 
                 <ImageView
@@ -243,6 +247,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="Go to Artist"
+                    android:id="@+id/tvAlbums"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@id/imgAlbum" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -255,6 +260,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="20dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/constraintAlbum">
 
                 <ImageView

@@ -11,6 +11,10 @@ object DataContentType {
     const val CONTENT_TYPE_PD_CB = "PDCB"
     const val CONTENT_TYPE_V = "V"
     const val CONTENT_TYPE_WV = "AT"
+
+    const val AMR_TUNE_ALL = "BNALL01"
+    const val AMR_TUNE = "BNMAIN01"
+    const val CONTENT_TYPE = "content_type"
     //Api from content type
 
     const val CONTENT_TYPE_R_RC201 = "RC201"

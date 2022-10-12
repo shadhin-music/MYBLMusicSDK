@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_release_list">
 
         <action
-            android:id="@+id/action_release_list_fragment_to_album_details_fragment"
+            android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
     </fragment>
     <fragment
         android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment1"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Album Details"
         tools:layout="@layout/fragment_album_details" />
 </navigation>

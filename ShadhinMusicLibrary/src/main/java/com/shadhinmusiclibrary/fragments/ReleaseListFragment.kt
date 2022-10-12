@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.e("I am being called", ""+"artistId")
         val verticalSpanCount = 1
         val horizontalSpanCount = 3
 
@@ -76,8 +77,9 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
         val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
+        Log.e("i am being called", "test test test "+navController.graph.displayName)
         navController.navigate(
-            R.id.action_release_list_fragment_to_album_details_fragment,
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

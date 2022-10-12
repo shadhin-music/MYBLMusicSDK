@@ -213,7 +213,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        navController.navigate(R.id.action_artist_details_fragment_to_album_details_fragment,
+        navController.navigate(R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -322,8 +322,9 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
+
                         playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
                         playerViewModel.musicIndexLiveData.observe(requireActivity()) {
