@@ -43,10 +43,10 @@ object ShadhinMusicSdkCore {
 
     /**
     @param token required login auth code
-    @param refSDKCall ShadhinSDKCallback
+    @param refSdkCall ShadhinSDKCallback
      */
     fun initializeSDK(
-        token: String, refSDKCall: ShadhinSDKCallback
+        token: String, refSdkCall: ShadhinSDKCallback
     ) {
 
     }
