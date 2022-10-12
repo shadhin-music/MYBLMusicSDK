@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
+import com.shadhinmusiclibrary.data.model.auth.LoginResponse
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.data.model.search.SearchModel
@@ -9,6 +10,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface ApiService {
@@ -82,4 +84,7 @@ interface ApiService {
 
     @GET("Track/TopTrending")
     suspend fun getTopTrendingItems(@Query("type") type: String): TopTrendingModel
+
+    @GET("mybl/Login")
+    suspend fun login(@Header("Authorization") token:String):LoginResponse
 }
