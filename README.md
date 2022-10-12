@@ -92,6 +92,13 @@ Open API Activity
 API Activity Request Type
      
      get rcode from API
+     
+Call destroySDK method when Root Activity will destroy
+     
+     override fun onDestroy() {
+        ShadhinMusicSdkCore.destroySDK(applicationContext)
+        super.onDestroy()
+    }
   
 ## Author
 Rezaul Khan, rezaulkhan.gakk@gmail.com
