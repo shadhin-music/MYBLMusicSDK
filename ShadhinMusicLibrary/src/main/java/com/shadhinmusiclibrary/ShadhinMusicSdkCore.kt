@@ -36,8 +36,19 @@ object ShadhinMusicSdkCore {
     ) {
 
     }
-    fun initializeSDK(context: Context){
+
+    fun initializeInternalSDK(context: Context) {
         ShadhinApp.module(context)
+    }
+
+    /**
+    @param token required login auth code
+    @param refSDKCall ShadhinSDKCallback
+     */
+    fun initializeSDK(
+        token: String, refSDKCall: ShadhinSDKCallback
+    ) {
+
     }
 
     fun openPatch(reqContext: Context, requestId: String) {
@@ -51,7 +62,8 @@ object ShadhinMusicSdkCore {
             }
         )
     }
-    fun destroySDK(context: Context){
+
+    fun destroySDK(context: Context) {
         ShadhinApp.module(context)
         ShadhinApp.onDestroy()
         SinglePlayerApiService.destroy()

@@ -115,7 +115,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
         private val mContext = itemView.context
 
         private fun bindSearch(homePatchItemModel: HomePatchItem) {
-            val search: TextView = itemView.findViewById(R.id.searchInput)
+            val search: TextView = itemView.findViewById(R.id.sv_search_input)
             search.setOnClickListener {
                 //call back SearchFragment
                 search.isEnabled = false

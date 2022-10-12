@@ -16,7 +16,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.cursoradapter.widget.CursorAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -43,7 +45,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
-class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallBack {
+class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var navController: NavController
     private lateinit var viewModel: SearchViewModel
 
@@ -79,7 +81,6 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
         val viewRef = inflater.inflate(R.layout.fragment_search, container, false)
         navController = findNavController()
         return viewRef
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,9 +105,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 
         viewModel.getTopTrendingItems("s")
         viewModel.topTrendingContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 response.data?.data?.let {
-                    recyclerViewTrending.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    recyclerViewTrending.layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewTrending.adapter = TopTenItemAdapter(it, this)
                 }
             }
@@ -127,7 +129,6 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 //                    )
 //                })
         }
-
 //        viewModel.getTopTrendingVideos("v")
 //        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
 //            if (response.status == Status.SUCCESS) {
@@ -139,20 +140,21 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
 //            }
 //        }
 //        observeData(searchText)
-        val search: android.widget.SearchView = view.findViewById(R.id.searchInput)
+        val search: SearchView = view.findViewById(R.id.sv_search_input)
+//        search.setOnClickListener {
+//            search.focusable =
+//        }
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
-        search.setSearchableInfo(searchManager?.getSearchableInfo(activity?.getComponentName()))
+        search.setSearchableInfo(searchManager?.getSearchableInfo(activity?.componentName))
 
-        mSuggestionAdapter = SearchSuggestionAdapter(context, null, 0)
-        search.suggestionsAdapter = mSuggestionAdapter!!
+        mSuggestionAdapter = SearchSuggestionAdapter(requireContext(), null, 0)
+        search.suggestionsAdapter = mSuggestionAdapter
         // search.setFocusable(true)
-        search.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 val cursor: Cursor = getRecentSuggestions(newText)!!
                 val text = newText ?: return false
                 searchText = text
-                // mSuggestionAdapter?.swapCursor(cursor)
                 if (newText.length > 1) {
 //                val text = newText ?: return false
 //                searchText = text
@@ -181,14 +183,13 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                         tvTrending.visibility = GONE
                         tvTrendingVideo.visibility = GONE
                     }
-                    //search.clearFocus()
                 }
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 // val query: String = intent.getStringExtra(SearchManager.QUERY);
-                val suggestions: SearchRecentSuggestions = SearchRecentSuggestions(
+                val suggestions = SearchRecentSuggestions(
                     context,
                     MySuggestionProvider.AUTHORITY,
                     MySuggestionProvider.MODE
@@ -200,11 +201,10 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
                 recyclerViewTrendingVideos.visibility = GONE
                 tvTrending.visibility = GONE
                 tvTrendingVideo.visibility = GONE
-                // doSearch(searchText)
                 return true
             }
         })
-        search.setOnSuggestionListener(object : android.widget.SearchView.OnSuggestionListener {
+        search.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
                 return false
             }
@@ -266,7 +266,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchTracksContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewTracks = requireView().findViewById(R.id.recyclerViewTracks)
                 tvTracks = requireView().findViewById(R.id.tvTracks)
                 if (response.data?.data?.Track?.data?.isNotEmpty() == true) {
@@ -283,7 +283,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewVideos = requireView().findViewById(R.id.recyclerViewVideos)
                 tvVideos = requireView().findViewById(R.id.tvVideos)
                 if (response.data?.data?.Video?.data?.isNotEmpty() == true) {
@@ -301,7 +301,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchPodcastShowContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewShows = requireView().findViewById(R.id.recyclerViewShows)
                 tvShows = requireView().findViewById(R.id.tvShows)
                 if (response.data?.data?.PodcastShow?.data?.isNotEmpty() == true) {
@@ -320,7 +320,7 @@ class SearchFragment : CommonBaseFragment(), FragmentEntryPoint, SearchItemCallB
             }
         }
         viewModel.searchPodcastEpisodeContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
+            if (response != null && response.status == Status.SUCCESS) {
                 recyclerViewEpisodes = requireView().findViewById(R.id.recyclerViewEpisodes)
                 tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
                 if (response.data?.data?.PodcastEpisode?.data?.isNotEmpty() == true) {
