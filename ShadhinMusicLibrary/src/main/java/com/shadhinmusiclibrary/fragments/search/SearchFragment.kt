@@ -14,11 +14,10 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
-import androidx.cursoradapter.widget.CursorAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -36,7 +35,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -113,6 +111,7 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 }
             }
         }
+        val search: SearchView = view.findViewById(R.id.sv_search_input)
         val chipArtist: Chip = requireView().findViewById(R.id.chip_1)
         val chipHabib: Chip = requireView().findViewById(R.id.chip_2)
         val chipVideo: Chip = requireView().findViewById(R.id.chip_3)
@@ -120,14 +119,28 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         val chipKona: Chip = requireView().findViewById(R.id.chip_5)
 
         chipArtist.setOnClickListener {
-            Log.e("TAG", "setOnClickListener: chipArtist")
-//            navController.navigate(R.id.action_search_fragment_to_popular_artists_fragment,
-//                Bundle().apply {
-//                    putSerializable(
-//                        AppConstantUtils.PatchItem,
-//                        HomePatchDetail() as Serializable
-//                    )
-//                })
+    
+            search.setQuery("Artist", true)
+        }
+        chipHabib.setOnClickListener {
+
+            search.setQuery("Habib Wahid", true)
+
+        }
+        chipVideo.setOnClickListener {
+
+            search.setQuery("Video", true)
+
+        }
+        chipTahsan.setOnClickListener {
+
+            search.setQuery("Tahsan", true)
+
+        }
+        chipKona.setOnClickListener {
+
+            search.setQuery("Kona", true)
+
         }
 //        viewModel.getTopTrendingVideos("v")
 //        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
@@ -140,7 +153,7 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 //            }
 //        }
 //        observeData(searchText)
-        val search: SearchView = view.findViewById(R.id.sv_search_input)
+
 //        search.setOnClickListener {
 //            search.focusable =
 //        }

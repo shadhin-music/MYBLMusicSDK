@@ -1,88 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="130dp"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp"
+    android:layout_marginTop="8dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@color/colorGrey"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:orientation="vertical"
-       >
+        android:layout_marginTop="6dp"
+        android:textAlignment="textStart"
+        android:maxLines="1"
+        android:textColor="@color/colorText"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="false">
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorGrey"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_title" />
 
-            <RelativeLayout
-                android:id="@+id/layout_parent"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center">
-
-
-                <com.shadhinmusiclibrary.utils.CircleImageView
-                    android:id="@+id/song_img"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/default_song" />
-
-
-
-
-                    <TextView
-                        android:id="@+id/song_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/song_img"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="5dp"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:textColor="@color/colorBlack"
-                        android:scrollHorizontally="true"
-                        android:textSize="16sp"
-                         />
-
-                    <TextView
-                        android:id="@+id/artist_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/song_name"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="8dp"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:textSize="12sp"
-                       />
-
-                    <TextView
-                        android:id="@+id/total_stream_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/artist_name"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="8dp"
-                        android:drawablePadding="8dp"
-                        android:visibility="gone"
-                        android:gravity="center_vertical"
-                        tools:text="9500 plays" />
-
-                </RelativeLayout>
-
-
-
-
-        </androidx.cardview.widget.CardView>
-    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

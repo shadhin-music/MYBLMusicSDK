@@ -73,7 +73,7 @@
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="170dp" />
+            android:paddingBottom="65dp" />
         <include
             layout="@layout/powered_by"
             android:layout_width="match_parent"
