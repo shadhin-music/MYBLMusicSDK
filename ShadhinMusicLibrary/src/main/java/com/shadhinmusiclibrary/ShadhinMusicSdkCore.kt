@@ -19,11 +19,13 @@ object ShadhinMusicSdkCore {
     private var  scope:CoroutineScope? = null
 
     //get Music frangment
+    @JvmStatic
     fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
 
 
+    @JvmStatic
     fun initializeInternalSDK(context: Context) {
         ShadhinApp.module(context).musicServiceController
     }
@@ -32,10 +34,10 @@ object ShadhinMusicSdkCore {
     @param token required login auth code
     @param refSdkCall ShadhinSDKCallback
      */
+    @JvmStatic
     fun initializeSDK(context: Context,token: String, refSdkCall: ShadhinSDKCallback) {
         scope = CoroutineScope(Dispatchers.IO)
         scope?.launch {
-
             val res = ShadhinApp.module(context).authRepository().login(token)
             withContext(Dispatchers.Main) {
                 refSdkCall.tokenStatus(res.first, res.second ?: "")
@@ -43,7 +45,7 @@ object ShadhinMusicSdkCore {
         }
 
     }
-
+    @JvmStatic
     fun openPatch(reqContext: Context, requestId: String) {
         reqContext.startActivity(
             Intent(
@@ -55,10 +57,9 @@ object ShadhinMusicSdkCore {
             }
         )
     }
-
+    @JvmStatic
     fun destroySDK(context: Context) {
         scope?.cancel()
-        ShadhinApp.module(context)
         ShadhinApp.onDestroy()
         SinglePlayerApiService.destroy()
         RetrofitClient.destroy()
