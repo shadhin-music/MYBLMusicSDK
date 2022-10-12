@@ -65,3 +65,4 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
         const val TOEKN:String = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2NTU2MjcyOCwiZXhwIjoxNjY1NjQyNDU1LCJpYXQiOjE2NjU1NjI3MjgsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.Oq2KFHX8Yw8u-QLapKw0hbDeHuxYMQrd3FRCHb8JGKIL5OsDEpfHiwgCOYLCAEVgTJ17rGssxXTDYW7-V89Xyw"
     }
 }
+
