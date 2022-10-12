@@ -85,7 +85,7 @@
                 <ImageView
                     android:id="@+id/playerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"></ImageView>
+                    android:layout_height="match_parent" />
 
                 <ProgressBar
                     android:id="@+id/bufferProgress"
@@ -160,7 +160,6 @@
                 app:layout_constraintTop_toTopOf="@+id/imageButton2"
                 tools:ignore="MissingPrefix"
                 tools:text="405" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
