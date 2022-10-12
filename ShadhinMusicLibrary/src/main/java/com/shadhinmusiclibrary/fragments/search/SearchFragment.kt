@@ -466,7 +466,7 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 
     //Top Tend play. whene fast search fragment came
     override fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null) {
+      /*  if (playerViewModel.currentMusic != null) {
             if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
@@ -478,72 +478,72 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             }
         } else {
             playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
-        }
+        }*/
     }
 
     //after search play item
     //TODO need delay
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
         Log.e("SF", "onClickPlaySearchItem: " + songItem[clickItemPosition].ContentType)
-        when (songItem[clickItemPosition].ContentType) {
-            DataContentType.CONTENT_TYPE_V -> {
-                //open playlist
-                val intent = Intent(context, VideoActivity::class.java)
-                val videoArray = ArrayList<Video>()
-                for (item in songItem) {
-//                    val video = Video()
-                    videoArray.add(UtilHelper.getVideoToSearchData(item))
-                }
-                val videos: ArrayList<Video> = videoArray
-                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
-                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-                startActivity(intent)
-            }
-            DataContentType.CONTENT_TYPE_S -> {
-                if (playerViewModel.currentMusic != null) {
-                    Log.e(
-                        "SF",
-                        "currentMusic: " + songItem[clickItemPosition].ContentID + " "
-                                + playerViewModel.currentMusic?.rootId
-                    )
-                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                            playerViewModel.skipToQueueItem(clickItemPosition)
-                            Log.e("ADF", "skipToQueueItem:")
-                        } else {
-                            Log.e("ADF", "togglePlayPause:")
-                            playerViewModel.togglePlayPause()
-                        }
-                    } else {
-                        playItem(
-                            UtilHelper.getSongDetailToSearchDataList(songItem),
-                            clickItemPosition
-                        )
-                    }
-                } else {
-                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
-                }
-            }
-            DataContentType.CONTENT_TYPE_PD_CB -> {
-                //TODO need delay
-                if (playerViewModel.currentMusic != null) {
-                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                            playerViewModel.skipToQueueItem(clickItemPosition)
-                        } else {
-                            playerViewModel.togglePlayPause()
-                        }
-                    } else {
-                        playItem(
-                            UtilHelper.getSongDetailToSearchDataList(songItem),
-                            clickItemPosition
-                        )
-                    }
-                } else {
-                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
-                }
-            }
-        }
+        /* when (songItem[clickItemPosition].ContentType) {
+             DataContentType.CONTENT_TYPE_V -> {
+                 //open playlist
+                 val intent = Intent(context, VideoActivity::class.java)
+                 val videoArray = ArrayList<Video>()
+                 for (item in songItem) {
+ //                    val video = Video()
+                     videoArray.add(UtilHelper.getVideoToSearchData(item))
+                 }
+                 val videos: ArrayList<Video> = videoArray
+                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
+                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                 startActivity(intent)
+             }
+             DataContentType.CONTENT_TYPE_S -> {
+                 if (playerViewModel.currentMusic != null) {
+                     Log.e(
+                         "SF",
+                         "currentMusic: " + songItem[clickItemPosition].ContentID + " "
+                                 + playerViewModel.currentMusic?.rootId
+                     )
+                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                             playerViewModel.skipToQueueItem(clickItemPosition)
+                             Log.e("ADF", "skipToQueueItem:")
+                         } else {
+                             Log.e("ADF", "togglePlayPause:")
+                             playerViewModel.togglePlayPause()
+                         }
+                     } else {
+                         playItem(
+                             UtilHelper.getSongDetailToSearchDataList(songItem),
+                             clickItemPosition
+                         )
+                     }
+                 } else {
+                     playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                 }
+             }
+             DataContentType.CONTENT_TYPE_PD_CB -> {
+                 //TODO need delay
+                 if (playerViewModel.currentMusic != null) {
+                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                             playerViewModel.skipToQueueItem(clickItemPosition)
+                         } else {
+                             playerViewModel.togglePlayPause()
+                         }
+                     } else {
+                         playItem(
+                             UtilHelper.getSongDetailToSearchDataList(songItem),
+                             clickItemPosition
+                         )
+                     }
+                 } else {
+                     playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                 }
+             }
+         }*/
     }
 
     private fun setupNavGraphAndArg(graphResId: Int, bundleData: Bundle) {
