@@ -8,22 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
-
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.RBTDATA
-import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
 
 class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
@@ -103,26 +97,17 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItem>) {
-        var size = this.homeListData.size
+        val size = this.homeListData.size
         if (this.homeListData.isEmpty()) {
             for (item in data.indices) {
-
-//             data.forEachIndexed { index, homePatchItem ->
-                // Log.d("TAG","ITEM: "+"index = $index, item = $homePatchItem ")
                 search =
                     HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-
-                // notifyDataSetChanged()
             }
             this.homeListData.add(search!!)
-            Log.d("TAG", "ITEM123: " + homeListData.size)
-
         }
         this.homeListData.addAll(data)
-        var sizeNew = this.homeListData.size
+        val sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
-        // this.homeListData.addAll(data)
-
     }
 
 
@@ -130,7 +115,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
         private val mContext = itemView.context
 
         private fun bindSearch(homePatchItemModel: HomePatchItem) {
-            val search: TextView = itemView.findViewById(R.id.searchInput)
+            val search: TextView = itemView.findViewById(R.id.sv_search_input)
             search.setOnClickListener {
                 //call back SearchFragment
                 search.isEnabled = false
@@ -144,27 +129,14 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
             seeAll.setOnClickListener {
+                //PopularArtistsFragment
                 homeCallBack.onClickSeeAll(homePatchItem)
-                Log.e("dataget", "data:" + homePatchItem)
-                // val seeAll:TextView = itemView.findViewById(R.id.tvSeeALL)
-//            seeAll.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , PopularArtistsFragment.newInstance(data))
-//                    .addToBackStack("Popular Artist")
-//                    .commit()
-
-//                Log.e("dataget","$data")
-//
             }
-            // }
 
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack)
-
-
         }
 
         fun bindRelease(homePatchItem: HomePatchItem) {
@@ -172,34 +144,26 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
             seeAll.setOnClickListener {
+                //TopTrendingFragment
                 homeCallBack.onClickSeeAll(homePatchItem)
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, TopTrendingFragment.newInstance(data))
-//                    .addToBackStack("Top Trending")
-//                    .commit()
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = HomeReleaseAdapter(homePatchItem, homeCallBack)
-
         }
-
 
         private fun bindPlaylist(homePatchItem: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
             seeAll.setOnClickListener {
-
                 homeCallBack.onClickSeeAll(homePatchItem)
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem, homeCallBack)
-
         }
 
         private fun bindPopularPodcast(homePatchItem: HomePatchItem) {
@@ -211,17 +175,9 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             recyclerView.adapter = HomePodcastAdapter(homePatchItem, homeCallBack)
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
+                //PodcastDetailsFragment
                 homeCallBack.onClickSeeAll(homePatchItem)
             }
-
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager =
-//                    (mContext as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, PodcastDetailsFragment.newInstance())
-//                    .addToBackStack("Fragment")
-//                    .commit()
-//            }
         }
 
         private fun bindPopularAmarTunes(
@@ -239,14 +195,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
                 ShadhinMusicSdkCore.openPatch(itemView.context, "BNALL01")
-                /*val manager: FragmentManager =
-                (mContext as AppCompatActivity).supportFragmentManager
-               manager.beginTransaction()
-                .replace(R.id.container, AmartunesWebviewFragment.newInstance())
-                .addToBackStack("Fragment")
-                .commit()*/
             }
-
         }
 
         private fun bindAd() {
@@ -272,7 +221,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
 //                    .add(R.id.container, DownloadFragment.newInstance())
 //                    .addToBackStack("AllGenresDetailsFragment")
 //                    .commit()
-//
 //            }
         }
 
@@ -292,7 +240,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             // recyclerView.adapter = ArtistAdapter(data)
-
         }
 
         private fun bindMadeForYou() {
@@ -302,7 +249,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             //  recyclerView.adapter = TopTrendingAdapter(data)
-
         }
 
         private fun bindLatestRelease() {
@@ -329,7 +275,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 homeCallBack.onClickSeeAll(homePatchItemModel)
-
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
@@ -339,7 +284,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
                 homePatchDetail = homeListData[absoluteAdapterPosition].Data
             )
         }
-
 
         fun bind(homePatchItemModel: HomePatchItem?) {
             when (homePatchItemModel?.Design) {
@@ -353,7 +297,6 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
-
 
             /*when (dataModel) {
                      dataModel-> bindArtist(dataModel!!)
@@ -371,11 +314,8 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
  //                is DataModel.BlOffers -> bindBlOffers()
  //                is DataModel.TrendingMusicVideo -> bindTrendingMusic()
  ////                is DataModel.BlOffers -> bindBlOffers(dataModel)
-
              }*/
         }
-
-
     }
 
     private companion object {

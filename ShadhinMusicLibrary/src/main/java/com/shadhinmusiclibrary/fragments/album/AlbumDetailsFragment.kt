@@ -136,11 +136,13 @@ class AlbumDetailsFragment :
 
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel!!.fetchAlbumContent(contentId)
-        viewModel!!.albumContent.observe(requireActivity()) { res ->
+        viewModel?.fetchAlbumContent(contentId)
+        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-                albumsTrackAdapter.setData(res.data!!.data, argHomePatchDetail!!)
+                if(res.data?.data !=null && argHomePatchDetail !=null ) {
+                    albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!)
+                }
                 //  updateAndSetAdapter(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE

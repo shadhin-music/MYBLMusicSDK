@@ -337,8 +337,9 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
+
                         playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
                         playerViewModel.musicIndexLiveData.observe(requireActivity()) {

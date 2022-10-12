@@ -85,8 +85,11 @@ class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
 
     private fun fetchOnlineData(contentId: String) {
         viewModel.fetchAlbumContent(contentId)
-        viewModel.albumContent.observe(requireActivity()) {
-            adapter.setData(it.data!!.data)
+        viewModel.albumContent.observe(viewLifecycleOwner) {
+            if(it.data?.data !=null){
+                adapter.setData(it.data.data)
+            }
+
         }
     }
 

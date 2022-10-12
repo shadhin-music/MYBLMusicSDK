@@ -252,9 +252,9 @@ object UtilHelper {
 //                        rootContentID = rootContentID,
 //                        rootContentType = rootContentType,
 //                        rootImage = rootImage
-                        rootContentID = contentID,
-                        rootContentType = contentType,
-                        rootImage = image
+                        rootContentID = contentID ?: "",
+                        rootContentType = contentType ?: "",
+                        rootImage = image ?: ""
                     )
                 )
             }
@@ -333,13 +333,13 @@ object UtilHelper {
             musicItem.apply {
                 songDetailList.add(
                     SongDetail(
-                        ContentID = mediaId?:"",
-                        image = displayIconUrl?:"",
-                        title = title?:"",
-                        ContentType = contentType?:"",
-                        PlayUrl = mediaUrl?:"",
-                        artist = artistName?:"",
-                        duration = date?:"",
+                        ContentID = mediaId ?: "",
+                        image = displayIconUrl ?: "",
+                        title = title ?: "",
+                        ContentType = contentType ?: "",
+                        PlayUrl = mediaUrl ?: "",
+                        artist = artistName ?: "",
+                        duration = date ?: "",
                         copyright = "",
                         labelname = "",
                         releaseDate = "",
@@ -347,12 +347,12 @@ object UtilHelper {
 
                         ArtistId = "",
                         albumId = "",
-                        userPlayListId = userPlayListId?:"",
-                    //    rootType = rootType?:"",
+                        userPlayListId = userPlayListId ?: "",
+                        //    rootType = rootType?:"",
 
-                        rootContentID = rootId?:"",
-                        rootContentType = rootType?:"",
-                        rootImage = rootImage?:""
+                        rootContentID = rootId ?: "",
+                        rootContentType = rootType ?: "",
+                        rootImage = rootImage ?: ""
                     )
                 )
             }
@@ -364,13 +364,13 @@ object UtilHelper {
     fun getSongDetailToMusic(mMusic: Music): SongDetail {
         mMusic.apply {
             return SongDetail(
-                ContentID = mediaId?:"",
-                image = displayIconUrl?:"",
-                title = title?:"",
-                ContentType =contentType?:"",
-                PlayUrl = mediaUrl?:"",
-                artist = artistName?:"",
-                duration = date?:"",
+                ContentID = mediaId ?: "",
+                image = displayIconUrl ?: "",
+                title = title ?: "",
+                ContentType = contentType ?: "",
+                PlayUrl = mediaUrl ?: "",
+                artist = artistName ?: "",
+                duration = date ?: "",
                 copyright = "",
                 labelname = "",
                 releaseDate = "",
@@ -378,12 +378,12 @@ object UtilHelper {
 
                 ArtistId = "",
                 albumId = "",
-                userPlayListId = userPlayListId?:"",
+                userPlayListId = userPlayListId ?: "",
                 //rootType = rootType?:"",
 
-                rootContentID = rootId?:"",
-                rootContentType = rootType?:"",
-                rootImage = rootImage?:""
+                rootContentID = rootId ?: "",
+                rootContentType = rootType ?: "",
+                rootImage = rootImage ?: ""
             )
         }
     }
@@ -508,87 +508,89 @@ object UtilHelper {
         )
     }
 
-//    fun getHomePatchPodcastEpisodeDetail(data: Episode): HomePatchDetail {
-//        return HomePatchDetail(
-//            "0",
-//            "",
-//            "",
-//            data.Name,
-//            data.ShowId,
-//            "",
-//            "",
-//            "",
-//            "",
-//            "",
-//            "",
-//            "",
-//            false,
-//            "",
-//            0,
-//            "",
-//            "",
-//            "",
-//            "",
-//            "",
-//            "",
-//            false,
-//            "",
-//            "",
-//            "",
-//            "",
-//            data.ImageUrl,
-//            "",
-//            ""
-//        )
-//    }
-//    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
-//        val mPatchDetail = mutableListOf<HomePatchDetail>()
-//        for (patchItem in episode) {
-//            mPatchDetail.add(
-//                HomePatchDetail(
-//                    "0",
-//                    "",
-//                    "",
-//                    patchItem.Name,
-//                    patchItem.ShowId,
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    false,
-//                    "",
-//                    0,
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    false,
-//                    "",
-//                    "",
-//                    "",
-//                    "",
-//                    patchItem.ImageUrl,
-//                    "",
-//                    ""
-//                )
-//            )
-//        }
-//
-//        return HomePatchItem(
-//            "",
-//            "",
-//            mPatchDetail,
-//            "",
-//            "",
-//            0,
-//            0
-//        )
-//    }
+    fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
+        return HomePatchDetail(
+            "0",
+            "",
+            "",
+            data.Name,
+            data.EpisodeId,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            0,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            false,
+            "",
+            "",
+            "",
+            "",
+            data.ImageUrl,
+            "",
+            ""
+        )
+    }
+
+    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
+        val mPatchDetail = mutableListOf<HomePatchDetail>()
+        for (patchItem in episode) {
+            mPatchDetail.add(
+                HomePatchDetail(
+                    "0",
+                    "",
+                    "",
+                    patchItem.Name,
+                    patchItem.ShowId,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    0,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    false,
+                    "",
+                    "",
+                    "",
+                    "",
+                    patchItem.ImageUrl,
+                    "",
+                    ""
+                )
+            )
+        }
+
+        return HomePatchItem(
+            "",
+            "",
+            mPatchDetail,
+            "",
+            "",
+            0,
+            0
+        )
+    }
+
     fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
         val mPatchDetail = mutableListOf<HomePatchDetail>()
         for (patchItem in data) {
