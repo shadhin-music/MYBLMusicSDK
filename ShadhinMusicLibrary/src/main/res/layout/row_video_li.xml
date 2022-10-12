@@ -107,6 +107,7 @@
             android:focusable="true"
             android:foreground="?selectableItemBackground"
             android:padding="16dp"
+            android:visibility="invisible"
             android:src="@drawable/ic_more_vert"
 
             app:layout_constraintBottom_toBottomOf="parent"
