@@ -228,7 +228,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
             }
             DataContentType.CONTENT_TYPE_PD_RC202 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_featured_podcast_fragment, Bundle())
+                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_featured_podcast, Bundle())
             }
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
@@ -993,6 +993,35 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
+//                    HomePatchDetail(AlbumId = "",
+//                        ArtistId = "",
+//                        ContentID = "",
+//                        ContentType = "",
+//                        PlayUrl = "",
+//                        AlbumName = "",
+//                        AlbumImage = "",
+//                        fav ="",
+//                        Banner = "",
+//                        Duration = "",
+//                        TrackType = "",
+//                        image = "",
+//                        ArtistImage = "",
+//                        Artist = "",
+//                        CreateDate = "",
+//                        Follower = "",
+//                        imageWeb = "",
+//                        IsPaid = false,
+//                        NewBanner = "",
+//                        PlayCount = 0,
+//                        PlayListId = "",
+//                        PlayListImage = "",
+//                        PlayListName = "",
+//                        RootId = "",
+//                        RootType = "P",
+//                        Seekable = false,
+//                        TeaserUrl = "",
+//                        title = "",
+//                        Type = "") as Serializable
                     HomePatchDetail(AlbumId = "",
                         ArtistId = mSongDetails.ArtistId?:"",
                         ContentID = mSongDetails.ContentID,

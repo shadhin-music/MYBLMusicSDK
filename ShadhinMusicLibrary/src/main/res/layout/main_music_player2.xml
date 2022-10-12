@@ -131,6 +131,7 @@
                 android:layout_weight=".50"
                 android:clickable="true"
                 android:padding="6dp"
+                android:visibility="invisible"
                 android:src="@drawable/ic_baseline_favorite_border_24" />
         </LinearLayout>
 

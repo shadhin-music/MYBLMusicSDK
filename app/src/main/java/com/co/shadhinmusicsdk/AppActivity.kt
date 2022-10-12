@@ -21,6 +21,18 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
         setContentView(R.layout.app_activity)
         ShadhinMusicSdkCore.initializeSDK(applicationContext, TOEKN, this)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        val buttonHome:Button = findViewById(R.id.buttonHome)
+//        val buttonAPI: Button = findViewById(R.id.buttonAPI)
+//        buttonHome.setOnClickListener {
+                //ShadhinMusicSdkCore.getHomeFragment()
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
+//        transaction.commit()
+//        }
+//        Handler().postDelayed({
+//            startActivity(Intent(this, com.shadhinmusiclibrary.activities.MainActivity::class.java))
+//            finish()
+//        }, 1000)
 
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)

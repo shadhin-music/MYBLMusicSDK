@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.PodcustOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
@@ -31,7 +31,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    PodcustOnItemClickCallback {
+    PodcastOnItemClickCallback {
     private lateinit var navController: NavController
 
     //    var homePatchItem: HomePatchItem? = null
@@ -82,7 +82,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
     }
 
     private fun initialize() {
-        setupAdapters()
+       setupAdapters()
         setupViewModel()
         observeData()
     }
@@ -107,7 +107,7 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         )
         parentAdapter.notifyDataSetChanged()
         parentRecycler.setLayoutManager(layoutManager)
-        parentRecycler.setAdapter(parentAdapter)
+
     }
 
     private fun setupViewModel() {
@@ -137,7 +137,9 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
                         podcastMoreEpisodesAdapter.setData(it1)
                     }
                 }
+                parentRecycler.setAdapter(parentAdapter)
             } else {
+
             }
 //            ArtistHeaderAdapter(it)
             // viewDataInRecyclerView(it)
@@ -186,6 +188,8 @@ class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCal
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
     }
+
+
 
     override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
         Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)

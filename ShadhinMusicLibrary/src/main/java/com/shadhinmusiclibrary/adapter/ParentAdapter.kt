@@ -316,6 +316,8 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
  ////                is DataModel.BlOffers -> bindBlOffers(dataModel)
              }*/
         }
+
+
     }
 
     private companion object {

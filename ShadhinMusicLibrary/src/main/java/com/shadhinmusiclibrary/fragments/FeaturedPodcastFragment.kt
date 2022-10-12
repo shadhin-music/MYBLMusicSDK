@@ -17,8 +17,10 @@ import com.shadhinmusiclibra.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
+import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -29,7 +31,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class FeaturedPodcastFragment : CommonBaseFragment(),HomeCallBack{
+class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
@@ -75,8 +77,8 @@ class FeaturedPodcastFragment : CommonBaseFragment(),HomeCallBack{
          val layoutManager =
              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
          val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-          podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter()
-          podcastJCAdapter =  FeaturePodcastJCRECAdapter()
+          podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter(this)
+          podcastJCAdapter =  FeaturePodcastJCRECAdapter(this)
          val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
          parentAdapter = ConcatAdapter(
@@ -123,42 +125,60 @@ class FeaturedPodcastFragment : CommonBaseFragment(),HomeCallBack{
 
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
-        val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
-
-        Log.e("TAGGGGGGGY", "MESSAGE123: "+ homePatchDetail)
-
-    }
-
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onRootClickItem(
+        episode: MutableList<FeaturedPodcastDetails>,
+        clickItemPosition: Int,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-//        Log.e("TAGGGGGGGY", "MESSAGE123: "+selectedEpisode)
-//       // ShadhinMusicSdkCore.pressCountIncrement()
-//        val sSelectedData = selectedEpisode[itemPosition]
-//       // val homePatchDetail = selectedEpisode
-//        navController.navigate(
-//            R.id.to_podcast_details,
-//            Bundle().apply {
-//                putSerializable(
-//                    AppConstantUtils.PatchItem,
-//                    UtilHelper.getHomePatchItemToPodcastEpisode(selectedEpisode) as Serializable
-//                )
-//                putSerializable(
-//                    AppConstantUtils.PatchDetail,
-//                    UtilHelper.getHomePatchPodcastEpisodeDetail(sSelectedData) as Serializable
-//                )
-//            })
+    override fun onClickItem(episode: MutableList<FeaturedPodcastDetails>, clickItemPosition: Int) {
+        ShadhinMusicSdkCore.pressCountIncrement()
 
+
+        val homePatchItem = argHomePatchItem
+        Log.e("Check", ""+navController.graph.displayName)
+        navController.navigate(R.id.to_podcast_details,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    homePatchItem
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetail(episode.get(clickItemPosition).EpisodeId,
+                   "",
+               episode.get(clickItemPosition).EpisodeName,
+                       "",
+                "",
+               "",
+               "",
+                "", episode.get(clickItemPosition).ContentType,
+                "",
+               "",
+                "",
+                false,
+               "",
+                0,
+                "",
+               "",
+                "", episode.get(clickItemPosition).PlayUrl,
+                                ""
+
+                ,"",
+                        false,
+               "","","","",episode.get(clickItemPosition).ImageUrl,"",
+                        episode.get(clickItemPosition).TrackName) as Serializable
+                )
+            })
     }
-//
-//    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-//
-//    }
-//
-//    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-//    }
+
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        episode: MutableList<FeaturedPodcastDetails>,
+    ) {
+        TODO("Not yet implemented")
+    }
+
+
 }

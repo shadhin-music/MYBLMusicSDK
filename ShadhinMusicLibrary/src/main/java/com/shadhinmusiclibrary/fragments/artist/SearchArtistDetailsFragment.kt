@@ -28,6 +28,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -272,7 +273,7 @@ class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack, Fragment
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-
+        TODO("Not yet implemented")
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {

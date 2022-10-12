@@ -9,6 +9,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 
@@ -48,6 +49,9 @@ class ArtistsYouMightLikeAdapter(
         fun bindItems(homePatchItem: HomePatchItem?) {
            val textView:TextView = itemView.findViewById(R.id.tvTitle)
             textView.text= "You might like also"
+//            if (homePatchItem?.ContentType=="P"){
+//                itemView.visibility = GONE
+//            }
             if(homePatchItem?.Data?.isEmpty() == true){
                 textView.visibility = View.GONE
             }

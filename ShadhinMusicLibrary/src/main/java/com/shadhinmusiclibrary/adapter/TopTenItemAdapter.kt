@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
@@ -39,9 +40,9 @@ internal class TopTenItemAdapter(
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(data: List<TopTrendingdata>, position: Int) {
             val context = itemView.context
-            val songImage: ImageView = itemView.findViewById(R.id.song_img)
-            val songName: TextView = itemView.findViewById(R.id.song_name)
-            val artistName: TextView = itemView.findViewById(R.id.artist_name)
+            val songImage: ShapeableImageView = itemView.findViewById(R.id.image)
+            val songName: TextView = itemView.findViewById(R.id.txt_title)
+            val artistName: TextView = itemView.findViewById(R.id.txt_name)
             val url: String = data[position].getImageUrl300Size()
             Glide.with(context).load(url).into(songImage)
             songName.text = data[position].title

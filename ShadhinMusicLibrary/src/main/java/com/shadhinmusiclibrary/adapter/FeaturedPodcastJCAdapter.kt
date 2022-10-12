@@ -1,16 +1,28 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment
 
-class FeaturedPodcastJCAdapter(var data: MutableList<FeaturedPodcastDetails>) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
+class FeaturedPodcastJCAdapter(
+    var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback
+) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.featured_podcast_video_list, parent, false)
@@ -20,8 +32,27 @@ class FeaturedPodcastJCAdapter(var data: MutableList<FeaturedPodcastDetails>) : 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
-
-
+        holder.itemView.setOnClickListener {
+            clickCallback.onClickItem(data,position)
+            Log.e("TAG","String: "+ data)
+//            homeCallBack.onClickItemAndAllItem(position, homePatchitem)
+           // homeCallBack.onClickItem(position, Track(data.get()) )
+        }
+//         homeCallBack.onClickItemPodcastEpisode(position, listOf(Episode(data.get(position).EpisodeId,data.get(position).ContentType,
+//            data.get(position).About,
+//             1,
+//       data.get(position).ImageUrl,
+//        false,
+//        false,
+//        data.get(position).EpisodeName,
+//             data.get(position).ShowId,
+//        0,
+//        mutableListOf(),
+//       "")))
+//         homeCallBack.onClickItemAndAllItem(position, HomePatchItem(data.get(position).EpisodeId,data.get(position).ContentType,
+//             listOf(),"",data.get(position).EpisodeName,0,0))
+//        Log.e("TAG","String: "+ HomePatchItem(data.get(position).EpisodeId,data.get(position).ContentType,
+//            listOf(),"",data.get(position).EpisodeName,0,0))
     }
 
     override fun getItemCount(): Int {
@@ -54,10 +85,10 @@ class FeaturedPodcastJCAdapter(var data: MutableList<FeaturedPodcastDetails>) : 
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
 //            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container ,PodcastDetailsFragment.newInstance())
-//                    .commit()
+////                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+////                manager.beginTransaction()
+////                    .replace(R.id.container , PodcastDetailsFragment())
+////                    .commit()
 //            }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId

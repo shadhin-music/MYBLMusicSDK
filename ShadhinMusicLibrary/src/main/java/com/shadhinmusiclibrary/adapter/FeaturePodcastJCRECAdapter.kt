@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCAdapter
+import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class FeaturePodcastJCRECAdapter() : RecyclerView.Adapter<FeaturePodcastJCRECAdapter.ViewHolder>() {
+class FeaturePodcastJCRECAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturePodcastJCRECAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     var showName:String ?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,7 +56,7 @@ class FeaturePodcastJCRECAdapter() : RecyclerView.Adapter<FeaturePodcastJCRECAda
                 2,
                 RecyclerView.HORIZONTAL,
                 false)
-            recyclerView.adapter = FeaturedPodcastJCAdapter(data)
+            recyclerView.adapter = FeaturedPodcastJCAdapter(data,cilckCallBack)
                 //ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
 
 //            val textViewName = itemView.findViewById(R.id.tvTitle) as TextView

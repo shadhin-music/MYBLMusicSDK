@@ -7,10 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastData
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
 
-class FeaturedPodcastRecyclerViewAdapter() : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
+class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     var showName:String ?=null
 

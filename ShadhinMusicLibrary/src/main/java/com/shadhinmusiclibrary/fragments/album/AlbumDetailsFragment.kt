@@ -30,6 +30,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
@@ -242,7 +243,7 @@ class AlbumDetailsFragment :
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-
+        TODO("Not yet implemented")
     }
 
     override fun onArtistAlbumClick(

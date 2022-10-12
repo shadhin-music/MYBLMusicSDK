@@ -19,6 +19,7 @@ import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
@@ -99,4 +100,6 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         TODO("Not yet implemented")
     }
+
+
 }

@@ -25,6 +25,7 @@ import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -84,7 +85,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
                 viewDataInRecyclerView(res.data)
             } else {
-                progressBar.visibility = VISIBLE
+                progressBar.visibility = GONE
             }
             isLoading = false
         }
@@ -200,7 +201,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-
+        TODO("Not yet implemented")
     }
 
     override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItem) {
