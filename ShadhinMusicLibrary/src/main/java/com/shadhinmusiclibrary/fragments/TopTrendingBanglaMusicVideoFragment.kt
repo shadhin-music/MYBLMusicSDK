@@ -26,15 +26,4 @@ class TopTrendingBanglaMusicVideoFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_top_trending_bangla_music_video, container, false)
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            TopTrendingBanglaMusicVideoFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
 }
