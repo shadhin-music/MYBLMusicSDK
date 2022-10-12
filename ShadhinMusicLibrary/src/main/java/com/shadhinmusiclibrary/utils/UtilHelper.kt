@@ -245,9 +245,9 @@ object UtilHelper {
                         userPlayListId = "",
                         /*rootType = contentType,*/
 
-                        rootContentID = rootContentID,
-                        rootContentType = rootContentType,
-                        rootImage = rootImage
+                        rootContentID = rootContentID?:"",
+                        rootContentType = rootContentType?:"",
+                        rootImage = rootImage?:""
                     )
                 )
             }
