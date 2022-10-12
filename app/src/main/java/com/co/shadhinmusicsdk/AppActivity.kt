@@ -20,8 +20,6 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
         ShadhinMusicSdkCore.initializeSDK(applicationContext, TOEKN, this)
-
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         tabLayout = findViewById(R.id.tabLayout)
