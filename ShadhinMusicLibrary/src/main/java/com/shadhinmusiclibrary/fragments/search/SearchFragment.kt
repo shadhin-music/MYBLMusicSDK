@@ -119,7 +119,7 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         val chipKona: Chip = requireView().findViewById(R.id.chip_5)
 
         chipArtist.setOnClickListener {
-    
+
             search.setQuery("Artist", true)
         }
         chipHabib.setOnClickListener {
