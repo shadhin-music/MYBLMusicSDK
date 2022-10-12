@@ -153,6 +153,8 @@ class Module(private val applicationContext: Context) {
     private fun getApiShadhinMusicServiceV5(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
+    public fun authRepository() = AuthRepository(getApiShadhinMusicServiceV5())
+
     private fun getApiShadhinMusicServiceV5withToken(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5WithBearerToken().create(ApiService::class.java)
     }

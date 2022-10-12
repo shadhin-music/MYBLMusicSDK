@@ -11,46 +11,41 @@ import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
 import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import kotlinx.coroutines.*
 
 @Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
+    private var  scope:CoroutineScope? = null
 
     //get Music frangment
+    @JvmStatic
     fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
 
 
-    /**
-    @param username user name
-    @param msID required the mobile number
-    @param imageUrl user profile image
-    @param token required login auth code
-     */
-    fun initializeSDK(
-        userName: String = "anonymous",
-        msID: String,
-        imageUrl: String = "https://cdn-icons-png.flaticon.com/512/634/634795.png",
-        token: String
-    ) {
-
-    }
-
+    @JvmStatic
     fun initializeInternalSDK(context: Context) {
-        ShadhinApp.module(context)
+        ShadhinApp.module(context).musicServiceController
     }
 
     /**
     @param token required login auth code
     @param refSdkCall ShadhinSDKCallback
      */
-    fun initializeSDK(
-        token: String, refSdkCall: ShadhinSDKCallback
-    ) {
+    @JvmStatic
+    fun initializeSDK(context: Context,token: String, refSdkCall: ShadhinSDKCallback) {
+        scope = CoroutineScope(Dispatchers.IO)
+        scope?.launch {
+            val res = ShadhinApp.module(context).authRepository().login(token)
+            withContext(Dispatchers.Main) {
+                refSdkCall.tokenStatus(res.first, res.second ?: "")
+            }
+        }
 
     }
-
+    @JvmStatic
     fun openPatch(reqContext: Context, requestId: String) {
         reqContext.startActivity(
             Intent(
@@ -62,9 +57,9 @@ object ShadhinMusicSdkCore {
             }
         )
     }
-
+    @JvmStatic
     fun destroySDK(context: Context) {
-        ShadhinApp.module(context)
+        scope?.cancel()
         ShadhinApp.onDestroy()
         SinglePlayerApiService.destroy()
         RetrofitClient.destroy()
