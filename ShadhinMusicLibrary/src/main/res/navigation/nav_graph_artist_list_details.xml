@@ -28,5 +28,9 @@
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment1"
         android:label="fragment_artist_details"
-        tools:layout="@layout/fragment_album_details" />
+        tools:layout="@layout/fragment_album_details" >
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
 </navigation>
