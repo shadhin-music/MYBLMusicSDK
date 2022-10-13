@@ -39,7 +39,7 @@ import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
 
 
-class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
+internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
 
     /**1144x480 OR 856x480*/
     private val videoWidth: Int = 856

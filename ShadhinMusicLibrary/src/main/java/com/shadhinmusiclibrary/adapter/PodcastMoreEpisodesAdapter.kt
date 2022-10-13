@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 
 
-class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: HomeCallBack) : RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
+internal class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: HomeCallBack) : RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
     var episode: MutableList<Episode> = ArrayList()
     private var filteredItem:MutableList<Episode>? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastMoreEpisodesViewHolder {

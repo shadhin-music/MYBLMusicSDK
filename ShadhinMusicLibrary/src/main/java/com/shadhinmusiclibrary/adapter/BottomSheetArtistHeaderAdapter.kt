@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
+internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
     RecyclerView.Adapter<BottomSheetArtistHeaderAdapter.HeaderViewHolder>() {
     var data:ArtistContent?= null
     var bio: LastFmResult? = null

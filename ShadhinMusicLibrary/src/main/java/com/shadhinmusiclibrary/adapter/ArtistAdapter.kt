@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class ArtistAdapter(
+internal class ArtistAdapter(
     var homePatchItem: HomePatchItem?,
     private val homeCallBack: HomeCallBack,
     var artistIDtoSkip: String? = null

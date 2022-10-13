@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class GenresAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
+internal class GenresAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

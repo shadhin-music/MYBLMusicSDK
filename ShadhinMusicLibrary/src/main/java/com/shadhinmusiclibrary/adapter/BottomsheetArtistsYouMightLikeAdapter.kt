@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class BottomsheetArtistsYouMightLikeAdapter(
+internal class BottomsheetArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
     val homeCallBack: HomeCallBack,
     var artistIDToSkip: String? = null) : RecyclerView.Adapter<BottomsheetArtistsYouMightLikeAdapter.ViewHolder>() {

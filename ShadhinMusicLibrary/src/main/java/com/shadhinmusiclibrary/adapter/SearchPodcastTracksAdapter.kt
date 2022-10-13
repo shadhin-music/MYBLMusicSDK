@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchPodcastTracksAdapter(
+internal class SearchPodcastTracksAdapter(
     private val searchPodcastTrack: List<SearchData>,
     private val seaItemCallback: SearchItemCallBack
 ) :

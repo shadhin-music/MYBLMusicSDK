@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class PodcastHeaderAdapter(
+internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
     var episode: List<Episode>? = null

@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
 
 
-class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
+internal class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
     RecyclerView.Adapter<SearchAlbumsAdapter.ViewHolder>() {
 
 

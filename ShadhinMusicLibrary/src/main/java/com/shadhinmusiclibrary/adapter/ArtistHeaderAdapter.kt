@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter(
+internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetail?,
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {

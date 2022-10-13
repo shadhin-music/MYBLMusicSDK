@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.utils.createTimeLabel
 
 
 typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
-class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
+internal class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
     VideoDiffCallBack()
 ){
     val layoutManager: GridLayoutManager = GridLayoutManager(context,1)

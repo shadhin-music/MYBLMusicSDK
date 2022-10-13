@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-open class AlbumAdapter(
+internal open class AlbumAdapter(
     private val itemClickCB: OnItemClickCallback,
     private val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
 ) :

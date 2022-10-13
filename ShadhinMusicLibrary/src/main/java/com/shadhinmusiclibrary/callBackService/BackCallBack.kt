@@ -1,4 +1,4 @@
 package com.shadhinmusiclibrary.callBackService
 
-interface BackCallBack {
+internal interface BackCallBack {
 }

@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 
 
-class PodcastMoreEpisodesListAdapter(
+internal class PodcastMoreEpisodesListAdapter(
     var episode: MutableList<Episode>,
     val homeCallBack: HomeCallBack
 ) :

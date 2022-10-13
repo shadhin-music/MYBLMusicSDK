@@ -7,7 +7,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 
-interface HomeCallBack {
+internal interface HomeCallBack {
     fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem)
     fun onClickSeeAll(selectedHomePatchItem: HomePatchItem)
     fun onArtistAlbumClick(itemPosition: Int, artistAlbumModelData: List<ArtistAlbumModelData>){}

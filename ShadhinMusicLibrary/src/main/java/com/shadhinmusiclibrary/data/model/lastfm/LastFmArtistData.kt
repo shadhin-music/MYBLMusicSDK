@@ -1,127 +1,55 @@
-package com.shadhinmusiclibrary.data.model.lastfm;
+package com.shadhinmusiclibrary.data.model.lastfm
 
-import androidx.annotation.Keep;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
+import com.shadhinmusiclibrary.data.model.lastfm.LastFmImageData
+import com.shadhinmusiclibrary.data.model.lastfm.Similar
+import com.shadhinmusiclibrary.data.model.lastfm.Tags
+import com.shadhinmusiclibrary.data.model.lastfm.Bio
 
 @Keep
-public class LastFmArtistData {
+internal class LastFmArtistData {
     @SerializedName("name")
     @Expose
-    private String name;
+    var name: String? = null
+
     @SerializedName("mbid")
     @Expose
-    private String mbid;
+    var mbid: String? = null
+
     @SerializedName("url")
     @Expose
-    private String url;
+    var url: String? = null
+
     @SerializedName("image")
     @Expose
-    private List<LastFmImageData> image = null;
+    var image: List<LastFmImageData>? = null
+
     @SerializedName("streamable")
     @Expose
-    private String streamable;
+    var streamable: String? = null
+
     @SerializedName("ontour")
     @Expose
-    private String ontour;
+    var ontour: String? = null
+
     @SerializedName("stats")
     @Expose
-    private Stats stats;
+    var stats: Stats? = null
+
     @SerializedName("similar")
     @Expose
-    private Similar similar;
+    var similar: Similar? = null
+
     @SerializedName("tags")
     @Expose
-    private Tags tags;
+    var tags: Tags? = null
+
     @SerializedName("bio")
     @Expose
-    private Bio bio;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMbid() {
-        return mbid;
-    }
-
-    public void setMbid(String mbid) {
-        this.mbid = mbid;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<LastFmImageData> getImage() {
-        return image;
-    }
-
-    public void setImage(List<LastFmImageData> image) {
-        this.image = image;
-    }
-
-    public String getStreamable() {
-        return streamable;
-    }
-
-    public void setStreamable(String streamable) {
-        this.streamable = streamable;
-    }
-
-    public String getOntour() {
-        return ontour;
-    }
-
-    public void setOntour(String ontour) {
-        this.ontour = ontour;
-    }
-
-    public Stats getStats() {
-        return stats;
-    }
-
-    public void setStats(Stats stats) {
-        this.stats = stats;
-    }
-
-    public Similar getSimilar() {
-        return similar;
-    }
-
-    public void setSimilar(Similar similar) {
-        this.similar = similar;
-    }
-
-    public Tags getTags() {
-        return tags;
-    }
-
-    public void setTags(Tags tags) {
-        this.tags = tags;
-    }
-
-    public Bio getBio() {
-        return bio;
-    }
-
-    public void setBio(Bio bio) {
-        this.bio = bio;
-    }
-
-    @Override
-    public String toString() {
+    var bio: Bio? = null
+    override fun toString(): String {
         return "LastFmArtistData{" +
                 "name='" + name + '\'' +
                 ", mbid='" + mbid + '\'' +
@@ -133,6 +61,6 @@ public class LastFmArtistData {
                 ", similar=" + similar +
                 ", tags=" + tags +
                 ", bio=" + bio +
-                '}';
+                '}'
     }
 }

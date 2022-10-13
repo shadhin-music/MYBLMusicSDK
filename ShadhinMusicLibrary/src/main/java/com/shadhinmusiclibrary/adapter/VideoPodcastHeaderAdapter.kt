@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
-class VideoPodcastHeaderAdapter : RecyclerView.Adapter<VideoPodcastHeaderAdapter.PodcastHeaderViewHolder>() {
+internal class VideoPodcastHeaderAdapter : RecyclerView.Adapter<VideoPodcastHeaderAdapter.PodcastHeaderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.podcast_header_layout, parent, false)

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.fragments.PodcastDetailsFragment
 
-class PopularVideoPodcastAdapter() : RecyclerView.Adapter<PopularVideoPodcastAdapter.ViewHolder>() {
+internal class PopularVideoPodcastAdapter() : RecyclerView.Adapter<PopularVideoPodcastAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.trending_music_video_list, parent, false)

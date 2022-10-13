@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model.search
 
-data class SearchTrackdata(
+internal data class SearchTrackdata(
     val AlbumId: String,
     val AlbumImage: Any,
     val AlbumName: Any,

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class HomeContentPlaylistAdapter(
+internal class HomeContentPlaylistAdapter(
     val homePatchItem: HomePatchItem,
     private val homeCallBack: HomeCallBack
 ) :

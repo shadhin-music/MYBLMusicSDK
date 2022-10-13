@@ -21,7 +21,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.Video
 
 
-class TopTrendingVideosAdapter(val homePatchItemModel: HomePatchItem, val homePatchDetail: List<HomePatchDetail>) : RecyclerView.Adapter<TopTrendingVideosAdapter.ViewHolder>() {
+internal class TopTrendingVideosAdapter(val homePatchItemModel: HomePatchItem, val homePatchDetail: List<HomePatchDetail>) : RecyclerView.Adapter<TopTrendingVideosAdapter.ViewHolder>() {
 
 
 

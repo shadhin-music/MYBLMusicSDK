@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model.search
 
-data class TopTrendingModel(
+internal data class TopTrendingModel(
     val data: List<TopTrendingdata>,
     val fav: Any,
     val follow: Any,

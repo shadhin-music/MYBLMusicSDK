@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class ArtistsYouMightLikeAdapter(
+internal class ArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
      val homeCallBack: HomeCallBack,
      var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {

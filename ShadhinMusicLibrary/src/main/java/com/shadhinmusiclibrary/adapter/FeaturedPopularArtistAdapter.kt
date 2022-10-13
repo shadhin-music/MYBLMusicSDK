@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.Data
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class FeaturedPopularArtistAdapter(
+internal class FeaturedPopularArtistAdapter(
     val homePatchItem1: List<Data>,
     private val homeCallBack: PatchCallBack
 ) : RecyclerView.Adapter<FeaturedPopularArtistAdapter.ViewHolder>() {

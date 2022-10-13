@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class SearchArtistAdapter(
+internal class SearchArtistAdapter(
     val searchArtistdata: MutableList<SearchData>,
     val searchCallBack: SearchItemCallBack
 ) :

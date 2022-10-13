@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
 
-class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
+internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
     RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 

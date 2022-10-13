@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.shadhinmusiclibrary.R
 
-abstract class BaseActivity : AppCompatActivity() {
+internal abstract class BaseActivity : AppCompatActivity() {
 
     var playerMode: PlayerMode? = null
 

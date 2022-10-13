@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
+internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<Track> = mutableListOf()
 

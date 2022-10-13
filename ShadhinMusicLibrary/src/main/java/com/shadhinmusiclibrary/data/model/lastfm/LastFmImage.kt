@@ -1,32 +1,16 @@
-package com.shadhinmusiclibrary.data.model.lastfm;
+package com.shadhinmusiclibrary.data.model.lastfm
 
-import androidx.annotation.Keep;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
 @Keep
-public class LastFmImage {
+internal class LastFmImage {
     @SerializedName("#text")
     @Expose
-    private String text;
+    var text: String? = null
+
     @SerializedName("size")
     @Expose
-    private String size;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
+    var size: String? = null
 }

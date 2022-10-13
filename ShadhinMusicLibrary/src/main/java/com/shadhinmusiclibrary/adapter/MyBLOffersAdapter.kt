@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class MyBLOffersAdapter() : RecyclerView.Adapter<MyBLOffersAdapter.ViewHolder>() {
+internal class MyBLOffersAdapter() : RecyclerView.Adapter<MyBLOffersAdapter.ViewHolder>() {
 
 
 

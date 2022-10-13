@@ -18,9 +18,9 @@ import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
-import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment
 
-class FeaturedPodcastJCAdapter(
+
+internal class FeaturedPodcastJCAdapter(
     var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback
 ) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
 

@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
 
 
-class SearchTracksAdapter(
+internal class SearchTracksAdapter(
     val searchTrackdata: MutableList<SearchData>,
     private val seaItemCallback: SearchItemCallBack
 ) :

@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
 import com.shadhinmusiclibrary.data.model.search.SearchVideodata
 
 
-class SearchVideoAdapter(
+internal class SearchVideoAdapter(
     val searchVideodata: List<SearchData>,
     private val seaItemCallback: SearchItemCallBack
 ) :

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
+internal class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
 
 
 

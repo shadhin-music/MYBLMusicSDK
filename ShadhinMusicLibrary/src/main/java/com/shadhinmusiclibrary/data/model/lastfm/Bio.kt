@@ -1,54 +1,24 @@
-package com.shadhinmusiclibrary.data.model.lastfm;
+package com.shadhinmusiclibrary.data.model.lastfm
 
-import androidx.annotation.Keep;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
 @Keep
-public class Bio {
+internal class Bio {
     @SerializedName("links")
     @Expose
-    private Links links;
+    var links: Links? = null
+
     @SerializedName("published")
     @Expose
-    private String published;
+    var published: String? = null
+
     @SerializedName("summary")
     @Expose
-    private String summary;
+    var summary: String? = null
+
     @SerializedName("content")
     @Expose
-    private String content;
-
-    public Links getLinks() {
-        return links;
-    }
-
-    public void setLinks(Links links) {
-        this.links = links;
-    }
-
-    public String getPublished() {
-        return published;
-    }
-
-    public void setPublished(String published) {
-        this.published = published;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    var content: String? = null
 }

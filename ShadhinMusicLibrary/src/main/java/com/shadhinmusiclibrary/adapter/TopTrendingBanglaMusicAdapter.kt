@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.Video
 
 
-class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem?) : RecyclerView.Adapter<TopTrendingBanglaMusicAdapter.ViewHolder>() {
+internal class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem?) : RecyclerView.Adapter<TopTrendingBanglaMusicAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.video_item_list, parent, false)

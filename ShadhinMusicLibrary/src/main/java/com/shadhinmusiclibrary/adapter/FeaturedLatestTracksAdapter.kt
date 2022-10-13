@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class FeaturedLatestTracksAdapter(
+internal class FeaturedLatestTracksAdapter(
     private val listSongDetail: MutableList<FeaturedSongDetail>,
     private val lrOnCallBack: LatestReleaseOnCallBack
 ) :

@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model
 import androidx.annotation.Keep
 
 @Keep
-data class PopularArtistModel(
+internal data class PopularArtistModel(
     val Total: Int,
     val `data`: List<Data>,
     val message: String,

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class PodcastTrackHeaderAdapter() : RecyclerView.Adapter<PodcastTrackHeaderAdapter.ViewHolder>() {
+internal class PodcastTrackHeaderAdapter() : RecyclerView.Adapter<PodcastTrackHeaderAdapter.ViewHolder>() {
 
 
 

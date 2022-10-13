@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class BottomSheetArtistTrackAdapter(
+internal class BottomSheetArtistTrackAdapter(
     private val itemClickCB: ArtistOnItemClickCallback,
     val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
 ) : RecyclerView.Adapter<BottomSheetArtistTrackAdapter.ArtistTrackVH>() {

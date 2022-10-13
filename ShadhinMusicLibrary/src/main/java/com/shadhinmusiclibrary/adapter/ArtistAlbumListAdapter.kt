@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 
 
-class ArtistAlbumListAdapter(
+internal class ArtistAlbumListAdapter(
     val homePatchItem: HomePatchItem,
     val artistAlbumModel: ArtistAlbumModel?,
     private val homeCallBack: HomeCallBack

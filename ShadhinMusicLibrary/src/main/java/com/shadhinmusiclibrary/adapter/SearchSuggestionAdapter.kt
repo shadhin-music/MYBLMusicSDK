@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.shadhinmusiclibrary.R
 
-class SearchSuggestionAdapter(context: Context?, c: Cursor?, flags: Int) :
+internal class SearchSuggestionAdapter(context: Context?, c: Cursor?, flags: Int) :
     CursorAdapter(context, c, flags) {
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {

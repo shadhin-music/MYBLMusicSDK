@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class HomeReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
+internal class HomeReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<HomeReleaseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-data class Track(
+internal data class Track(
     val CeateDate: String,
     val ContentType: String,
     val Details: String,

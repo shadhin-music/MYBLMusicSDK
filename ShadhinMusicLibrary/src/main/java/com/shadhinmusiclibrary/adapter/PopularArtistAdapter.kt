@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter(
+internal class PopularArtistAdapter(
     val homePatchItem1: HomePatchItem,
     private val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {

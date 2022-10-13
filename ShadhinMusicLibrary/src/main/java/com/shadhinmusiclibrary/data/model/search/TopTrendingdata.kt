@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model.search
 
-data class TopTrendingdata(
+internal data class TopTrendingdata(
     val AlbumId: String,
     val ArtistId: String,
     val ContentID: String,

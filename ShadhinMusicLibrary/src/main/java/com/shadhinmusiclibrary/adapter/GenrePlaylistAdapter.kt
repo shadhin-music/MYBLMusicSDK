@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
+internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
     RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()

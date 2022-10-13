@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class AlbumsTrackAdapter(
+internal class AlbumsTrackAdapter(
     private val itemClickCB: OnItemClickCallback,
     private val bsDialogItemCallback: BottomSheetDialogItemCallback
 ) : RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {

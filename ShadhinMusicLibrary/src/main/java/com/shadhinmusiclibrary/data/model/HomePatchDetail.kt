@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 @Parcelize
 @Keep
-data class HomePatchDetail(
+internal data class HomePatchDetail(
     val AlbumId: String,
     val AlbumImage: String,
     val AlbumName: String,

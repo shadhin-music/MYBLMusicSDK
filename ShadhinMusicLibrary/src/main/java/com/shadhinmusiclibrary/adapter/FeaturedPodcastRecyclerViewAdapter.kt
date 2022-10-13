@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.data.model.FeaturedPodcastData
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
 
-class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
+internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     var showName:String ?=null
 

@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 
 
-class BottomSheetArtistSongsAdapter:
+internal class BottomSheetArtistSongsAdapter:
     RecyclerView.Adapter<BottomSheetArtistSongsAdapter.ViewHolder>() {
  //   private var artistContent: ArtistContent? = null
     private var artistContentList:MutableList<ArtistContentData> = ArrayList()

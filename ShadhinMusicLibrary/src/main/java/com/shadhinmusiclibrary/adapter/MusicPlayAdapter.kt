@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class MusicPlayAdapter(
+internal class MusicPlayAdapter(
     private val parentContext: Context
 ) :
     RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {

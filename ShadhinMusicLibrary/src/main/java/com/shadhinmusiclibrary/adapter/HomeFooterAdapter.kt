@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class HomeFooterAdapter : RecyclerView.Adapter<HomeFooterAdapter.ViewHolder>() {
+internal class HomeFooterAdapter : RecyclerView.Adapter<HomeFooterAdapter.ViewHolder>() {
 
 
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.fragments.PodcastDetailsFragment
 
-class AudioPodcastAdapter() : RecyclerView.Adapter<AudioPodcastAdapter.ViewHolder>() {
+internal class AudioPodcastAdapter() : RecyclerView.Adapter<AudioPodcastAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.big_video_view_item, parent, false)

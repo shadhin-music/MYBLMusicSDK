@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.RBTDATA
 
 
-class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
+internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
     private var homeListData: MutableList<HomePatchItem> = mutableListOf()

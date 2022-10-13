@@ -10,7 +10,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomeData
 
 
-class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
+internal class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<HomeData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {

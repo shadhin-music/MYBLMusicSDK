@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class SearchEpisodeAdapter(
+internal class SearchEpisodeAdapter(
     val searchEpisodedata: List<SearchData>,
     private val seaItemCallback: SearchItemCallBack
 ) :

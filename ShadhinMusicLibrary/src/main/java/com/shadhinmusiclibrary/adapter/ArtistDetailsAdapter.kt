@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 
 
-class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
+internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
     RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<HomePatchDetail>()
 
