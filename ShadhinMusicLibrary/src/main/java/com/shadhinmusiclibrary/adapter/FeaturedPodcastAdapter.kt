@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 
-internal class FeaturedPodcastAdapter(val data: List<FeaturedPodcastDetails>?) : RecyclerView.Adapter<FeaturedPodcastAdapter.ViewHolder>() {
+internal class FeaturedPodcastAdapter( var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_featured_podcast_video_list, parent, false)
@@ -20,7 +22,12 @@ internal class FeaturedPodcastAdapter(val data: List<FeaturedPodcastDetails>?) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
-
+        holder.itemView.setOnClickListener {
+            data?.let { it1 -> clickCallback.onClickItem(it1,position) }
+            Log.e("TAG","String: "+ data)
+//            homeCallBack.onClickItemAndAllItem(position, homePatchitem)
+            // homeCallBack.onClickItem(position, Track(data.get()) )
+        }
 
     }
 

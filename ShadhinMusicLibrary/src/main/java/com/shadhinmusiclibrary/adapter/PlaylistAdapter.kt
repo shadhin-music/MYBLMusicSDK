@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -71,7 +72,7 @@ internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   p
                         if (holder.itemViewType == PlaylistAdapter.VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
-
+                           //holder.tvSongName?.setTextColor(Color.BLUE)
                         }
                     }
                 }
