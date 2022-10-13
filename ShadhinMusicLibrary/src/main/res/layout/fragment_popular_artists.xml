@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -77,7 +76,5 @@
             android:paddingTop="16dp"
             android:paddingEnd="4dp"
             android:paddingBottom="60dp" />
-
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

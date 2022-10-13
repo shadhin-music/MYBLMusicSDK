@@ -14,9 +14,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -60,13 +60,14 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var tvEpisodes: TextView
     private lateinit var tvPodcastTracks: TextView
 
+    private lateinit var cardView: CardView
+    private lateinit var svSearchInput: SearchView
     private lateinit var recyclerViewAlbums: RecyclerView
     private lateinit var recyclerViewVideos: RecyclerView
     private lateinit var recyclerViewTracks: RecyclerView
     private lateinit var recyclerViewShows: RecyclerView
     private lateinit var recyclerViewEpisodes: RecyclerView
     private lateinit var recyclerViewPodcastTracks: RecyclerView
-    private lateinit var cardView: CardView
     private lateinit var recyclerViewTrending: RecyclerView
     private lateinit var recyclerViewTrendingVideos: RecyclerView
     private lateinit var recyclerViewArtist: RecyclerView
@@ -111,41 +112,22 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 }
             }
         }
-        val search: SearchView = view.findViewById(R.id.sv_search_input)
+        svSearchInput = view.findViewById(R.id.sv_search_input)
         val chipArtist: Chip = requireView().findViewById(R.id.chip_1)
         val chipHabib: Chip = requireView().findViewById(R.id.chip_2)
         val chipVideo: Chip = requireView().findViewById(R.id.chip_3)
         val chipTahsan: Chip = requireView().findViewById(R.id.chip_4)
         val chipKona: Chip = requireView().findViewById(R.id.chip_5)
 
-        chipArtist.setOnClickListener {
+        setTextOnSearchBar(chipArtist)
+        setTextOnSearchBar(chipHabib)
+        setTextOnSearchBar(chipVideo)
+        setTextOnSearchBar(chipTahsan)
+        setTextOnSearchBar(chipKona)
 
-            search.setQuery("Artist", true)
-        }
-        chipHabib.setOnClickListener {
-
-            search.setQuery("Habib Wahid", true)
-
-        }
-        chipVideo.setOnClickListener {
-
-            search.setQuery("Video", true)
-
-        }
-        chipTahsan.setOnClickListener {
-
-            search.setQuery("Tahsan", true)
-
-        }
-        chipKona.setOnClickListener {
-
-            search.setQuery("Kona", true)
-
-        }
 //        viewModel.getTopTrendingVideos("v")
 //        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
 //            if (response.status == Status.SUCCESS) {
-//
 //                recyclerViewTrendingVideos.layoutManager =
 //                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 //                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
@@ -153,24 +135,21 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 //            }
 //        }
 //        observeData(searchText)
-
 //        search.setOnClickListener {
 //            search.focusable =
 //        }
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
-        search.setSearchableInfo(searchManager?.getSearchableInfo(activity?.componentName))
+        svSearchInput.setSearchableInfo(searchManager?.getSearchableInfo(activity?.componentName))
 
         mSuggestionAdapter = SearchSuggestionAdapter(requireContext(), null, 0)
-        search.suggestionsAdapter = mSuggestionAdapter
+        svSearchInput.suggestionsAdapter = mSuggestionAdapter
         // search.setFocusable(true)
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        svSearchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 val cursor: Cursor = getRecentSuggestions(newText)!!
-                val text = newText ?: return false
-                searchText = text
+//                val text = newText
+                searchText = newText
                 if (newText.length > 1) {
-//                val text = newText ?: return false
-//                searchText = text
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         Log.e("SearchFragment", "async work started...")
@@ -208,7 +187,7 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     MySuggestionProvider.MODE
                 )
                 suggestions.saveRecentQuery(query, null)
-                search.clearFocus()
+                svSearchInput.clearFocus()
                 tvTrendingItems.visibility = GONE
                 recyclerViewTrending.visibility = GONE
                 recyclerViewTrendingVideos.visibility = GONE
@@ -217,16 +196,22 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 return true
             }
         })
-        search.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
+        svSearchInput.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
                 return false
             }
 
             override fun onSuggestionClick(position: Int): Boolean {
-                search.setQuery(mSuggestionAdapter!!.getSuggestionText(position), true)
+                svSearchInput.setQuery(mSuggestionAdapter!!.getSuggestionText(position), true)
                 return true
             }
         })
+    }
+
+    private fun setTextOnSearchBar(chipCommon: Chip) {
+        chipCommon.setOnClickListener {
+            svSearchInput.setQuery(chipCommon.text, true)
+        }
     }
 
     private fun setupViewModel() {
@@ -466,19 +451,19 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 
     //Top Tend play. whene fast search fragment came
     override fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int) {
-      /*  if (playerViewModel.currentMusic != null) {
-            if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                } else {
-                    playerViewModel.togglePlayPause()
-                }
-            } else {
-                playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
-            }
-        } else {
-            playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
-        }*/
+        /*  if (playerViewModel.currentMusic != null) {
+              if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                  if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                      playerViewModel.skipToQueueItem(clickItemPosition)
+                  } else {
+                      playerViewModel.togglePlayPause()
+                  }
+              } else {
+                  playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
+              }
+          } else {
+              playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
+          }*/
     }
 
     //after search play item
@@ -544,6 +529,22 @@ class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                  }
              }
          }*/
+    }
+
+    override fun onClickPlayVideoItem(songItem: List<SearchData>, clickItemPosition: Int) {
+        when (songItem[clickItemPosition].ContentType) {
+            DataContentType.CONTENT_TYPE_V -> {
+                val intent = Intent(requireContext(), VideoActivity::class.java)
+                val videoArray = ArrayList<Video>()
+                for (item in songItem) {
+                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+                }
+                val videos: ArrayList<Video> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun setupNavGraphAndArg(graphResId: Int, bundleData: Bundle) {

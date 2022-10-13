@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
+import com.shadhinmusiclibrary.activities.MusicActivity
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.di.ShadhinApp
 import com.shadhinmusiclibrary.di.single.RetrofitClient
@@ -16,14 +17,13 @@ import kotlinx.coroutines.*
 @Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
-    private var  scope:CoroutineScope? = null
+    private var scope: CoroutineScope? = null
 
     //get Music frangment
     @JvmStatic
     fun getMusicFragment(): Fragment {
         return HomeFragment()
     }
-
 
     @JvmStatic
     fun initializeInternalSDK(context: Context) {
@@ -35,7 +35,7 @@ object ShadhinMusicSdkCore {
     @param refSdkCall ShadhinSDKCallback
      */
     @JvmStatic
-    fun initializeSDK(context: Context,token: String, refSdkCall: ShadhinSDKCallback) {
+    fun initializeSDK(context: Context, token: String, refSdkCall: ShadhinSDKCallback) {
         scope = CoroutineScope(Dispatchers.IO)
         scope?.launch {
             val res = ShadhinApp.module(context).authRepository().login(token)
@@ -45,6 +45,12 @@ object ShadhinMusicSdkCore {
         }
 
     }
+
+    @JvmStatic
+    fun openMusic(reqContext: Context) {
+        reqContext.startActivity(Intent(reqContext, MusicActivity::class.java))
+    }
+
     @JvmStatic
     fun openPatch(reqContext: Context, requestId: String) {
         reqContext.startActivity(
@@ -57,6 +63,7 @@ object ShadhinMusicSdkCore {
             }
         )
     }
+
     @JvmStatic
     fun destroySDK(context: Context) {
         scope?.cancel()

@@ -40,9 +40,9 @@
                     android:id="@+id/tv_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:ellipsize="end"
                     android:text="Ami Bhabi Tumi"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -51,10 +51,10 @@
                     android:id="@+id/tv_singer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Habib Wahid"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:ellipsize="end"
+                    android:text="Habib Wahid"
                     android:textSize="12sp" />
 
                 <TextView

@@ -34,7 +34,7 @@ class SearchVideoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchVideodata[position])
         holder.itemView.setOnClickListener {
-            seaItemCallback.onClickPlaySearchItem(searchVideodata, position)
+            seaItemCallback.onClickPlayVideoItem(searchVideodata, position)
         }
     }
 

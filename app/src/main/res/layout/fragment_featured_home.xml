@@ -11,22 +11,6 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/btnWebview2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorPrimary"
-            android:padding="15dp"
-            android:text="amar tunes All"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnWebview"
-            tools:ignore="TextContrastCheck,TextContrastCheck" />
-
-        <Button
             android:id="@+id/btnLatestRelease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,5 +78,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnMusicVideos"
             tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnWebview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:padding="15dp"
+            android:text="amar tunes All"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.511"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnWebview"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimary"
+            android:padding="15dp"
+            android:text="Open Music"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnWebview2"
+            tools:ignore="MissingConstraints,TextContrastCheck,TextContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

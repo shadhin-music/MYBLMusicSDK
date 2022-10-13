@@ -45,6 +45,5 @@
             app:layout_constraintEnd_toEndOf="@id/search_bar"
             app:layout_constraintTop_toTopOf="@+id/sv_search_input"
             app:srcCompat="@drawable/ic_clear_field" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

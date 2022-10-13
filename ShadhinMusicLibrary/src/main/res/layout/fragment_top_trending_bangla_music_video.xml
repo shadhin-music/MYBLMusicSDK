@@ -87,9 +87,8 @@
                 <ImageView
                     android:id="@+id/playerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </ImageView>
+                    android:layout_height="match_parent"
+                    android:contentDescription="TODO"></ImageView>
 
                 <ProgressBar
                     android:id="@+id/bufferProgress"
@@ -102,7 +101,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </FrameLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/videoTitleLayout"
@@ -263,8 +261,6 @@
                         android:text="Download"
                         app:layout_constraintTop_toBottomOf="@id/iv_download" />
                 </LinearLayout>
-
-
             </LinearLayout>
         </RelativeLayout>
 
@@ -288,5 +284,4 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp" />
     </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

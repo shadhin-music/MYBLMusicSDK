@@ -81,9 +81,11 @@ At first initialize SDK. And implement
 
      ShadhinMusicSdkCore.initializeSDK(token: String, refSdkCall: ShadhinSDKCallback)
 
-Open HomeFragment
+Open MusicFragment and Music Activity
 
      ShadhinMusicSdkCore.getMusicFragment()
+
+     ShadhinMusicSdkCore.openMusic(reqContext: Context)
      
 Open API Activity
 
