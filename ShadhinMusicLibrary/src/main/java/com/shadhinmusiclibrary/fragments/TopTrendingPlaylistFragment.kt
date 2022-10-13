@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
-class TopTrendingPlaylistFragment : CommonBaseFragment() {
+internal class TopTrendingPlaylistFragment : CommonBaseFragment() {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
     var homePatchDetail: HomePatchDetail? = null
@@ -22,7 +22,7 @@ class TopTrendingPlaylistFragment : CommonBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_album_details, container, false)
         navController = findNavController()
 
         return viewRef

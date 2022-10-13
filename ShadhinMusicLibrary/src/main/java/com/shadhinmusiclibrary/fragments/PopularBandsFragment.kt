@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
-class PopularBandsFragment : Fragment() {
+internal class PopularBandsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_popular_artists, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

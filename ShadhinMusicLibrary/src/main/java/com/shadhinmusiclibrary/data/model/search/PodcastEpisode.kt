@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model.search
 
-data class PodcastEpisode(
+internal data class PodcastEpisode(
     val data: List<SearchData>,
     val message: String,
     val status: String,

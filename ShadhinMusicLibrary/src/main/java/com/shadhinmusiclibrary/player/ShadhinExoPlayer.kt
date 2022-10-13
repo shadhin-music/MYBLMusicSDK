@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 
 
-class ShadhinExoPlayer private constructor(private val exoPlayer: ExoPlayer):ExoPlayer by exoPlayer{
+internal class ShadhinExoPlayer private constructor(private val exoPlayer: ExoPlayer):ExoPlayer by exoPlayer{
     override fun seekToPrevious() {
         if(!isUserLimitOver) {
             exoPlayer.seekToPrevious()

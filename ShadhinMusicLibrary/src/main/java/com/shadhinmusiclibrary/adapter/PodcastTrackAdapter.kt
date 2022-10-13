@@ -15,13 +15,13 @@ import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
+internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<Track> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastTrackVH {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.podcast_episodes_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_podcast_episodes_item, parent, false)
         return PodcastTrackVH(v)
     }
 

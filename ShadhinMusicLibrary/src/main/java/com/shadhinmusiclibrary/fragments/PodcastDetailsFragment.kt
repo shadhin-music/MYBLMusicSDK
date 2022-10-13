@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.*
 
 
-class PodcastDetailsFragment : Fragment() {
+internal class PodcastDetailsFragment : Fragment() {
 // private lateinit var  parentAdapter:ConcatAdapter
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)

@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 
 
-class ShadhinMediaSources(
+internal class ShadhinMediaSources(
     private val context: Context,
     private val musicList: List<Music>,
     private val cache: SimpleCache,

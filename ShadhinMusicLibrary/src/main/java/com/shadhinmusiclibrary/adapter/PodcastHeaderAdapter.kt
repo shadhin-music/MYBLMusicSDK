@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class PodcastHeaderAdapter(
+internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
     var episode: List<Episode>? = null
@@ -24,7 +24,7 @@ class PodcastHeaderAdapter(
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.podcast_header_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_podcast_header_layout, parent, false)
         return PodcastHeaderVH(parentView!!)
     }
 

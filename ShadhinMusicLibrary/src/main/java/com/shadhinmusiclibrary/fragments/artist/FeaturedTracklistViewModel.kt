@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
 
-class FeaturedTracklistViewModel(private val featuredTracklistRepository: FeaturedTracklistRepository) :
+internal class FeaturedTracklistViewModel(private val featuredTracklistRepository: FeaturedTracklistRepository) :
     ViewModel() {
 
     private val _featuredTracklistContent: MutableLiveData<ApiResponse<APIResponse<MutableList<FeaturedSongDetail>>>> =

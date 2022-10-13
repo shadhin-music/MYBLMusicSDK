@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.player.data.model.ErrorMessage
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
 
-interface MusicServiceListeners {
+internal interface MusicServiceListeners {
     val currentMusicLiveData: LiveData<Music?>
     val playerErrorLiveData:LiveData<ErrorMessage>
     val playListLiveData: LiveData<MusicPlayList>

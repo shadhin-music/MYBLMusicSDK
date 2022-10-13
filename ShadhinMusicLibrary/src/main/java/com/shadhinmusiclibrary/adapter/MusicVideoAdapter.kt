@@ -13,10 +13,10 @@ import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.data.model.LatestVideoModelData
 import com.shadhinmusiclibrary.data.model.Video
 
-class MusicVideoAdapter(var data: List<LatestVideoModelData>) : RecyclerView.Adapter<MusicVideoAdapter.ViewHolder>() {
+internal class MusicVideoAdapter(var data: List<LatestVideoModelData>) : RecyclerView.Adapter<MusicVideoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.video_item_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_video_item_list, parent, false)
         return ViewHolder(v)
     }
 

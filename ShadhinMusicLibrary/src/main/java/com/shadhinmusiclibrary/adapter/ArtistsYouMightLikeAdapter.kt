@@ -2,14 +2,10 @@ package com.shadhinmusiclibra
 
 import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment
-
-
 
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 
@@ -20,7 +16,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class ArtistsYouMightLikeAdapter(
+internal class ArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
      val homeCallBack: HomeCallBack,
      var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
@@ -28,7 +24,7 @@ class ArtistsYouMightLikeAdapter(
      var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

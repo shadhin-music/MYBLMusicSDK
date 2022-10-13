@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface ApiService {
+internal interface ApiService {
     @GET("ClientHomeContent/GetHomeContent")
     suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,

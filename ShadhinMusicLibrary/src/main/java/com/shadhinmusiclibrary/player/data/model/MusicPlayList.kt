@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.player.utils.makeValidUrl
 import java.io.Serializable
 
 @Keep
-data class MusicPlayList(var list: List<Music>, val defaultPosition:Int = 0): Serializable{
+internal data class MusicPlayList(var list: List<Music>, val defaultPosition:Int = 0): Serializable{
     fun isEmptyOrNull() = list.isNullOrEmpty()
     fun size() = list.size
     fun toBundle(command: ShadhinMusicServiceConnection.Command) = Bundle().apply {

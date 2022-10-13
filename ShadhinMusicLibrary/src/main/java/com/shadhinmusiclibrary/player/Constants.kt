@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.player
 
 
 
-object Constants {
+internal object Constants {
     const val ROOT_ID_PLAYLIST = "some_real_playlist"
     const val ROOT_ID_PLAYLIST_ADD = "add_some_real_playlist"
     const val ROOT_ID_EMPTY = "empty_media"

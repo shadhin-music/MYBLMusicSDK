@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-object ShadhinApp {
+internal object ShadhinApp {
     private var _module:Module?=null
    /* val module:Module
         get() = _module!!*/

@@ -19,13 +19,12 @@ import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
+internal class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
    private  lateinit var releaseAdapter:ReleaseAdapter
    private lateinit var footerAdapter: HomeFooterAdapter
@@ -33,7 +32,7 @@ class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_release_list, container, false)
+        val view = inflater.inflate(R.layout.my_bl_sdk_fragment_release_list, container, false)
         navController = findNavController()
 
         return view

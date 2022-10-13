@@ -15,7 +15,7 @@ import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import kotlinx.coroutines.*
 
-class ShadhinPlayerListener(
+internal class ShadhinPlayerListener(
     private val serviceScope: CoroutineScope?,
     private val context: Context,
     private val musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?,

@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
 
-object UtilHelper {
+internal object UtilHelper {
     fun getScreenHeightWidth(context: Context, type: Int): Int {
         val display = (context as Activity).windowManager.defaultDisplay
         val size = Point()

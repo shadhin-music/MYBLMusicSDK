@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibra.ArtistAlbumsAdapter
+import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
@@ -31,7 +31,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -40,7 +39,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
+internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContent? = null
@@ -62,7 +61,7 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -277,6 +276,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         TODO("Not yet implemented")
     }
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//        observeData()
+//        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+//        parentAdapter.notifyDataSetChanged()
+//        parentRecycler.scrollToPosition(0)
     }
 
     override fun onRootClickItem(

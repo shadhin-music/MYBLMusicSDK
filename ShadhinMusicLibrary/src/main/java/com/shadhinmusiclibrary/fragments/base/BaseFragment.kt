@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
-abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fragment(),
+internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fragment(),
     FragmentEntryPoint {
     var viewModel: V? = null
    // var viewModel2: V? = null
@@ -56,9 +56,9 @@ abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fr
 
     fun playPauseState(playing: Boolean, ivPlayPause: ImageView) {
         if (playing) {
-            ivPlayPause.setImageResource(R.drawable.ic_pause_circle_filled)
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_pause_circle_filled)
         } else {
-            ivPlayPause.setImageResource(R.drawable.ic_play_linear)
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_play_linear)
         }
     }
 }

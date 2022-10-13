@@ -5,7 +5,7 @@ import com.shadhinmusiclibrary.player.Constants.FILE_BASE_URL
 import com.shadhinmusiclibrary.player.data.model.Music
 import com.shadhinmusiclibrary.player.utils.CharParser
 
-class ArtistContentToMusic(private val data: ArtistContentData):MusicConverter {
+internal class ArtistContentToMusic(private val data: ArtistContentData):MusicConverter {
     override fun convert(): Music {
        return Music(
             mediaId = data.ContentID,

@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.data.model
 
 import java.io.Serializable
 
-data class LatestVideoModelData(
+internal data class LatestVideoModelData(
     val AlbumId: String,
     val AlbumImage: String,
     val AlbumName: String,

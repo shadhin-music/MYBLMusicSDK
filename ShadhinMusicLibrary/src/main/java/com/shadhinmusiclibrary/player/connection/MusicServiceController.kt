@@ -1,5 +1,5 @@
 package com.shadhinmusiclibrary.player.connection
 
-interface MusicServiceController :MusicServiceActions,MusicServiceListeners {
+internal interface MusicServiceController :MusicServiceActions,MusicServiceListeners {
 
 }

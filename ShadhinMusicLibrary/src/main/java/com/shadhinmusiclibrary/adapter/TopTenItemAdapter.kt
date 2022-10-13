@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,7 +20,7 @@ internal class TopTenItemAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_top_ten_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_layout_top_ten_item, parent, false)
         return ViewHolder(v)
     }
 

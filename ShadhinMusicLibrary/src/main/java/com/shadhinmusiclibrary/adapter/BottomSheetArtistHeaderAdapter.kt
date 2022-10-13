@@ -1,13 +1,8 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.content.Context
-import android.nfc.cardemulation.CardEmulation
-import android.provider.Settings.Global.getString
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,15 +11,13 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
+internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
     RecyclerView.Adapter<BottomSheetArtistHeaderAdapter.HeaderViewHolder>() {
     var data:ArtistContent?= null
     var bio: LastFmResult? = null
@@ -32,7 +25,7 @@ class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.artist_details_header, parent, false)
+            .inflate(R.layout.my_bl_sdk_artist_details_header, parent, false)
         return HeaderViewHolder(parentView!!)
     }
 

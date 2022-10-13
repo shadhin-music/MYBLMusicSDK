@@ -12,14 +12,14 @@ import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 
-class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private val itemClickCB: OnItemClickCallback,) :
+internal class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private val itemClickCB: OnItemClickCallback,) :
     RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
 
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.playlist_header, parent, false)
+            .inflate(R.layout.my_bl_sdk_playlist_header, parent, false)
         return HeaderViewHolder(parentView!!)
     }
 

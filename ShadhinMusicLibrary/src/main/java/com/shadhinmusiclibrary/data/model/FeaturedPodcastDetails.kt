@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.data.model
 
 import android.os.Parcelable
 
-data class FeaturedPodcastDetails(
+internal data class FeaturedPodcastDetails(
     val About: String,
     val CeateDate: String,
     val ContentType: String,

@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.utils
 
-object TimeParser {
+internal object TimeParser {
     fun secToMin(duration: String?): String {
         var mDuration = duration
         if (mDuration == null) {

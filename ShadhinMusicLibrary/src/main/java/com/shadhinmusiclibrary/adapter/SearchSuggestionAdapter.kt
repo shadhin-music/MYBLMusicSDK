@@ -11,12 +11,12 @@ import android.widget.TextView
 import androidx.cursoradapter.widget.CursorAdapter
 import com.shadhinmusiclibrary.R
 
-class SearchSuggestionAdapter(context: Context?, c: Cursor?, flags: Int) :
+internal class SearchSuggestionAdapter(context: Context?, c: Cursor?, flags: Int) :
     CursorAdapter(context, c, flags) {
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val view = LayoutInflater.from(context).inflate(
-            R.layout.search_suggestion_item, parent, false
+            R.layout.my_bl_sdk_search_suggestion_item, parent, false
         )
         val viewHolder = ViewHolder(view)
         view.tag = viewHolder

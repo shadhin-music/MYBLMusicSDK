@@ -14,19 +14,18 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
+internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: ArtistAlbumModelData? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-            VIEW_ALBUM -> R.layout.playlist_header
-            VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
+            VIEW_ALBUM -> R.layout.my_bl_sdk_playlist_header
+            VIEW_TRACK_ITEM -> R.layout.my_bl_sdk_latest_music_view_item
             else -> throw IllegalArgumentException("Invalid view type")
         }
         val view = LayoutInflater
@@ -126,7 +125,7 @@ class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAda
         private fun showBottomSheetDialog(context: Context) {
             val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
             val contentView =
-                View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+                View.inflate(context, R.layout.my_bl_sdk_bottomsheet_three_dot_menu_layout, null)
             bottomSheetDialog.setContentView(contentView)
             bottomSheetDialog.show()
         }

@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-fun List<Music>.toServiceMediaItemList() = exH{this.map { song -> toServiceMediaItem(song) }}
-fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMediaItemList()?.toMutableList()}
+internal fun List<Music>.toServiceMediaItemList() = exH{this.map { song -> toServiceMediaItem(song) }}
+internal fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMediaItemList()?.toMutableList()}
 
 /*fun List<Music>.toMediaSourceList(context: Context): List<ProgressiveMediaSource> {
 
@@ -45,7 +45,7 @@ fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMediaItemLi
     return concatenatingMediaSource
 }*/
 
-public fun MediaItem.toMusic(): Music {
+internal fun MediaItem.toMusic(): Music {
     val others = this.mediaMetadata.extras?.toMusicMetaData()
    return Music(
        mediaId = this.mediaId.ifEmpty { randomString(8) },
@@ -69,7 +69,7 @@ public fun MediaItem.toMusic(): Music {
 fun MediaItem.toServiceMediaItem(): MediaBrowserCompat.MediaItem {
   return this.toMusic().toServiceMediaItem()
 }
-fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
+internal fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
     val description = MediaDescriptionCompat.Builder()
         .setMediaUri(Uri.parse(music.mediaUrl))
         .setTitle(music.title)
@@ -82,7 +82,7 @@ fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
 
     return MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
 }
-fun Bundle.toMusicMetaData(): Music {
+internal fun Bundle.toMusicMetaData(): Music {
     return Music(
         artistName = this.getString(Music.ARTIST_NAME),
         date = this.getString(Music.DATE),
@@ -101,7 +101,7 @@ fun Bundle.toMusicMetaData(): Music {
         rootImage = this.getString(Music.ROOT_IMAGE)
     )
 }
-fun MediaMetadataCompat.toMusic(): Music? {
+internal fun MediaMetadataCompat.toMusic(): Music? {
     val meta = this.bundle.toMusicMetaData()
     return description?.let {
         Music(
@@ -125,7 +125,7 @@ fun MediaMetadataCompat.toMusic(): Music? {
         ).applyRootInfo(meta)
     }
 }
-fun MediaBrowserCompat.MediaItem.toMusic(): Music {
+internal fun MediaBrowserCompat.MediaItem.toMusic(): Music {
     val meta =  description.extras?.toMusicMetaData()
     return Music(
         mediaId = description.mediaId,
@@ -654,7 +654,7 @@ private fun RecommendedSongsContents.RecommendedSong.toMusic(): Music {
   return  convertToCategoryContent(this).toMusic()
 }*/
 
-fun Bundle.toMusicPlayList(command: ShadhinMusicServiceConnection.Command): MusicPlayList? {
+internal fun Bundle.toMusicPlayList(command: ShadhinMusicServiceConnection.Command): MusicPlayList? {
     val serializable = this.getSerializable(command.dataKey)
     if(serializable is MusicPlayList){
         return serializable
@@ -662,14 +662,14 @@ fun Bundle.toMusicPlayList(command: ShadhinMusicServiceConnection.Command): Musi
     return null
 
 }
-fun Bundle?.toPlayerProgress(key: String): PlayerProgress? {
+internal fun Bundle?.toPlayerProgress(key: String): PlayerProgress? {
     val serializable = this?.getSerializable(key)
     if(serializable is PlayerProgress){
         return serializable
     }
     return null
 }
-fun List<MediaBrowserCompat.MediaItem>.toMusicList() = this.map { mediaItem -> mediaItem.toMusic() }
+internal fun List<MediaBrowserCompat.MediaItem>.toMusicList() = this.map { mediaItem -> mediaItem.toMusic() }
 
 inline val PlaybackStateCompat.isPrepare:Boolean
     get() = state == PlaybackStateCompat.STATE_BUFFERING ||
@@ -697,7 +697,7 @@ inline val PlaybackStateCompat.isBuffering
 
 
 
-fun getRandomString(length: Int) : String {
+internal fun getRandomString(length: Int) : String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
     return (1..length)
         .map { allowedChars.random() }

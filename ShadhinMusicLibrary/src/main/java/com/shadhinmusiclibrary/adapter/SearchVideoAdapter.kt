@@ -14,11 +14,9 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
-import com.shadhinmusiclibrary.data.model.search.SearchVideodata
 
 
-class SearchVideoAdapter(
+internal class SearchVideoAdapter(
     val searchVideodata: List<SearchData>,
     private val seaItemCallback: SearchItemCallBack
 ) :
@@ -27,7 +25,7 @@ class SearchVideoAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_video_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_search_video_layout, parent, false)
         return ViewHolder(v)
     }
 

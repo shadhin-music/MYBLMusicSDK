@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.annotation.Keep
 
 @Keep
-data class ErrorMessage(val isDataSourceError:Boolean?, val message:String?, val errorCode:Int?=null,val  currentMusic: Music?=null){
+internal data class ErrorMessage(val isDataSourceError:Boolean?, val message:String?, val errorCode:Int?=null,val  currentMusic: Music?=null){
     fun toBundle(): Bundle {
         val bundle = Bundle().apply {
             putBoolean("isDataSourceError",isDataSourceError?:false)

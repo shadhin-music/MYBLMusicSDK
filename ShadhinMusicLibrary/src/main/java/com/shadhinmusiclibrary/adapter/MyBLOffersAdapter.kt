@@ -4,20 +4,17 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-
-import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class MyBLOffersAdapter() : RecyclerView.Adapter<MyBLOffersAdapter.ViewHolder>() {
+internal class MyBLOffersAdapter() : RecyclerView.Adapter<MyBLOffersAdapter.ViewHolder>() {
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.bl_music_offers_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_bl_music_offers_list, parent, false)
         return ViewHolder(v)
     }
 

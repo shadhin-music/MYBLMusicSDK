@@ -9,12 +9,12 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.net.UnknownHostException
 
-enum class Status {
+internal enum class Status {
     SUCCESS,
     ERROR, LOADING
 }
 
-data class ApiResponse<out T>(
+internal data class ApiResponse<out T>(
     val status: Status,
     val data: T?,
     val message: String?,
@@ -47,7 +47,7 @@ data class ApiResponse<out T>(
     }
 }
 
-suspend inline fun <T> safeApiCall(crossinline responseFunction: suspend () -> T): ApiResponse<T> {
+internal suspend inline fun <T> safeApiCall(crossinline responseFunction: suspend () -> T): ApiResponse<T> {
     return withContext(Dispatchers.IO) {
         try {
             val response = responseFunction.invoke()
@@ -93,14 +93,14 @@ suspend inline fun <T> safeApiCall(crossinline responseFunction: suspend () -> T
 //    emitAll(flow)
 //}
 
-sealed class Resource<T>(
+internal sealed class Resource<T>(
     val status: Status,
     val data: T,
     val error: Throwable? = null
 ) {
-    class Success<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
-    class Loading<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
-    class Error<T>(throwable: Throwable, data: T) : Resource<T>(Status.ERROR, data, throwable)
+    internal class Success<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
+    internal class Loading<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
+    internal class Error<T>(throwable: Throwable, data: T) : Resource<T>(Status.ERROR, data, throwable)
 }
 
 

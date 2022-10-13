@@ -16,15 +16,15 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
+internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
     RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenrePlaylistVH {
         val layout = when (viewType) {
-            VIEW_ALBUM -> R.layout.playlist_header
-            VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
+            VIEW_ALBUM -> R.layout.my_bl_sdk_playlist_header
+            VIEW_TRACK_ITEM -> R.layout.my_bl_sdk_latest_music_view_item
             else -> throw IllegalArgumentException("Invalid view type")
         }
         val view = LayoutInflater

@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.repository.HomeContentRepository
 import com.shadhinmusiclibrary.data.repository.PopularArtistRepository
 
 
-class FeaturedTracklistViewModelFactory(private val featuredTracklistRepository: FeaturedTracklistRepository) : ViewModelProvider.Factory{
+internal class FeaturedTracklistViewModelFactory(private val featuredTracklistRepository: FeaturedTracklistRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
        return FeaturedTracklistViewModel(featuredTracklistRepository) as T
     }

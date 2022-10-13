@@ -2,6 +2,6 @@ package com.shadhinmusiclibrary.player.data.source
 
 import com.google.android.exoplayer2.source.MediaSource
 
-interface MediaSources {
+internal interface MediaSources {
     fun createSources(): List<MediaSource>
 }

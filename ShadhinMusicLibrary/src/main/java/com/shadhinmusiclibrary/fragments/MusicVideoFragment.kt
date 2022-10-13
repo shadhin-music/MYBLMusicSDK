@@ -1,14 +1,11 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +15,7 @@ import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.utils.Status
 
-class MusicVideoFragment : Fragment(), FragmentEntryPoint {
+internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -37,7 +34,7 @@ class MusicVideoFragment : Fragment(), FragmentEntryPoint {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_featured_popular_artist, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_featured_popular_artist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,8 +1,11 @@
 package com.co.shadhinmusicsdk
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -10,6 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.data.repository.AuthRepository
+
+
 
 class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     lateinit var tabLayout: TabLayout
@@ -78,6 +83,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
 
     override fun tokenStatus(isTokenValid: Boolean, error: String) {
         Log.i("TAG", "isTokenValid: $isTokenValid $error ${AuthRepository.appToken}")
+        Log.i(TAG, "isTokenValid: $isTokenValid $error ")
     }
 
     companion object {

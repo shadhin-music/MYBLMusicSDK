@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 
 
-class ArtistAlbumListAdapter(
+internal class ArtistAlbumListAdapter(
     val homePatchItem: HomePatchItem,
     val artistAlbumModel: ArtistAlbumModel?,
     private val homeCallBack: HomeCallBack
@@ -25,7 +25,7 @@ class ArtistAlbumListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 

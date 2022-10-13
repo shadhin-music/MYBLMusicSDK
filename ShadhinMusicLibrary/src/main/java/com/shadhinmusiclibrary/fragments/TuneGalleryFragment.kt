@@ -10,12 +10,12 @@ import com.shadhinmusiclibrary.R
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class TuneGalleryFragment : Fragment() {
+internal class TuneGalleryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tune_gallery, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_tune_gallery, container, false)
     }
 }

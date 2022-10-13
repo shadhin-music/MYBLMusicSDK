@@ -26,7 +26,7 @@ import java.io.ObjectOutputStream
 import java.io.Serializable
 
 
-fun createMusicNotificationChannel(context: Context) {
+internal fun createMusicNotificationChannel(context: Context) {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 MUSIC_NOTIFICATION_CHANNEL_ID,
@@ -38,7 +38,7 @@ fun createMusicNotificationChannel(context: Context) {
             manager.createNotificationChannel(channel)
         }
  }
- fun isServiceRunning(context: Context,serviceName: String): Boolean {
+internal  fun isServiceRunning(context: Context,serviceName: String): Boolean {
     var serviceRunning = false
     val am: ActivityManager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
     val l: List<ActivityManager.RunningServiceInfo> = am.getRunningServices(50)
@@ -61,7 +61,7 @@ fun createMusicNotificationChannel(context: Context) {
     }
     return serviceRunning
 }
-fun bitmapFromUri(context: Context, imageUrl: Uri?, onBitmap: (image: Bitmap?) -> Unit) {
+internal fun bitmapFromUri(context: Context, imageUrl: Uri?, onBitmap: (image: Bitmap?) -> Unit) {
     imageUrl?.let { uri->
         Glide.with(context).asBitmap()
             .load(uri)
@@ -87,7 +87,7 @@ fun bitmapFromUri(context: Context, imageUrl: Uri?, onBitmap: (image: Bitmap?) -
     }
 
 }
-fun bitmapFromUri(context: Context, imageUrl: Uri?, size: Int, onBitmap: (image: Bitmap?) -> Unit) {
+internal fun bitmapFromUri(context: Context, imageUrl: Uri?, size: Int, onBitmap: (image: Bitmap?) -> Unit) {
     imageUrl?.let { uri->
         Glide.with(context).asBitmap()
             .load(uri)
@@ -113,7 +113,7 @@ fun bitmapFromUri(context: Context, imageUrl: Uri?, size: Int, onBitmap: (image:
     }
 
 }
-fun bitmapFromUriS(context: Context, imageUrl: Uri?, onBitmap: (Bitmap) -> Unit) {
+internal fun bitmapFromUriS(context: Context, imageUrl: Uri?, onBitmap: (Bitmap) -> Unit) {
     imageUrl?.let { uri->
         Glide.with(context).asBitmap()
             .load(uri)
@@ -130,30 +130,30 @@ fun bitmapFromUriS(context: Context, imageUrl: Uri?, onBitmap: (Bitmap) -> Unit)
     }
 
 }
-fun String?.nullFix(): String {
+internal fun String?.nullFix(): String {
     if(this !=null && this != "null"){
         return this
     }
     return ""
 }
-fun Int?.nullFix(): String {
+internal fun Int?.nullFix(): String {
     if(this ==null){
         return "0"
     }
     return this.toString()
 }
-fun CharSequence?.nullFix(): CharSequence {
+internal fun CharSequence?.nullFix(): CharSequence {
     if(this !=null && this != "null"){
         return this
     }
     return ""
 }
-fun delay(time: Long, callBack: () -> Unit){
+internal fun delay(time: Long, callBack: () -> Unit){
     Handler(Looper.getMainLooper()).postDelayed(Runnable {
         callBack()
     }, time)
 }
-fun Serializable.sizeInByte(): Int {
+internal fun Serializable.sizeInByte(): Int {
     val baos = ByteArrayOutputStream()
     val oos = ObjectOutputStream(baos)
     oos.writeObject(this)
@@ -162,7 +162,7 @@ fun Serializable.sizeInByte(): Int {
 }
 
 //copy from DownloadService
-fun isConnectedToInternet(context: Context): Boolean {
+internal fun isConnectedToInternet(context: Context): Boolean {
     var isConnected = false
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -191,10 +191,10 @@ fun isConnectedToInternet(context: Context): Boolean {
 
 
 private val bitmapHasMap:HashMap<String,Bitmap?> = HashMap()
-fun preloadBitmapClear(){
+internal fun preloadBitmapClear(){
     bitmapHasMap.clear()
 }
-fun preLoadBitmap(playlist: MusicPlayList, context: Context){
+internal fun preLoadBitmap(playlist: MusicPlayList, context: Context){
 
     playlist.list.forEach { music ->
 
@@ -226,7 +226,7 @@ fun preLoadBitmap(playlist: MusicPlayList, context: Context){
         }*/
     }
 }
-fun getPreloadBitmap(mediaId:String):Bitmap?{
+internal fun getPreloadBitmap(mediaId:String):Bitmap?{
     return bitmapHasMap[mediaId.toString()]
 }
 

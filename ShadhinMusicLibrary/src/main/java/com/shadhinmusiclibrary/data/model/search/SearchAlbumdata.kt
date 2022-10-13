@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.data.model.search
 
 import java.io.Serializable
 
-data class SearchAlbumdata(
+internal data class SearchAlbumdata(
     val AlbumId: String,
     val AlbumImage: Any,
     val AlbumName: Any,

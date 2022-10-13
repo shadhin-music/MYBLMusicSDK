@@ -1,29 +1,23 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
-import com.shadhinmusiclibrary.fragments.GenrePlaylistFragment
 
-
-class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
+internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
     RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_playlist_item, parent, false)
         return ViewHolder(v)
     }
 

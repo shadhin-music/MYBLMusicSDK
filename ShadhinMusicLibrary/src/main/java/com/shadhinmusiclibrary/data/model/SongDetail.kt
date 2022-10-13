@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model
 import androidx.annotation.Keep
 import java.io.Serializable
 @Keep
-data class SongDetail(
+internal data class SongDetail(
     val ContentID: String,
     val image: String,
     val title: String,

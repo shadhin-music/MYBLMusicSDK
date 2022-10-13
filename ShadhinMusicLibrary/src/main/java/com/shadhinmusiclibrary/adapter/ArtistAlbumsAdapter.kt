@@ -1,4 +1,4 @@
-package com.shadhinmusiclibra
+package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -6,7 +6,6 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 
@@ -14,23 +13,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ArtistAlbumListAdapter
-import com.shadhinmusiclibrary.adapter.ReleaseAdapter
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class ArtistAlbumsAdapter(
+internal class ArtistAlbumsAdapter(
     var homePatchItem: HomePatchItem?,
     val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<ArtistAlbumsAdapter.ViewHolder>() {
     var artistAlbumModel: ArtistAlbumModel? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

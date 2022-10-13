@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
-class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
+internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
     private lateinit var listSongDetail: MutableList<SongDetail>
@@ -30,7 +28,7 @@ class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_s_type_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_s_type_details, container, false)
         navController = findNavController()
 
         return viewRef

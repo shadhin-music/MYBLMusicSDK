@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.adapter.TopTrendingBanglaMusicAdapter
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
-class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
+internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 
        private lateinit var adapter: TopTrendingBanglaMusicAdapter
        private lateinit var footerAdapter: HomeFooterAdapter
@@ -33,7 +32,7 @@ class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_top_trending_bangla_music, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_top_trending_bangla_music, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

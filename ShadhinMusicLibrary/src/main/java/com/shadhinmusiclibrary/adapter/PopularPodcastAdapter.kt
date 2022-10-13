@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,17 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomeData
 
 
-class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
+internal class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<HomeData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
 
-            VIEW_TRENDING_PODCAST ->  R.layout.item_you_might_like
-            VIEW_VIDEO_PODCASTS -> R.layout.item_genres
-            VIEW_BHOOT -> R.layout.item_you_might_like
-            VIEW_POPULAR_SHOWS-> R.layout.item_you_might_like
-            VIEW_MORE_VIDEO ->R.layout.item_genres
+            VIEW_TRENDING_PODCAST ->  R.layout.my_bl_sdk_item_you_might_like
+            VIEW_VIDEO_PODCASTS -> R.layout.my_bl_sdk_item_genres
+            VIEW_BHOOT -> R.layout.my_bl_sdk_item_you_might_like
+            VIEW_POPULAR_SHOWS-> R.layout.my_bl_sdk_item_you_might_like
+            VIEW_MORE_VIDEO ->R.layout.my_bl_sdk_item_genres
             else -> throw IllegalArgumentException("Invalid view type")
         }
 

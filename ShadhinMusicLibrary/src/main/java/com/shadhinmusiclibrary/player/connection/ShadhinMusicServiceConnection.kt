@@ -27,8 +27,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.absoluteValue
 
-typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
-class ShadhinMusicServiceConnection(
+internal typealias BundleCallbackFunc = (resultData: Bundle?)->Unit
+internal class ShadhinMusicServiceConnection(
      private val  context: Context,
     /*private val downloadAccess: OfflineDownloadDaoAccess,
     private val cacheRepository: CacheRepository*/
@@ -138,7 +138,7 @@ class ShadhinMusicServiceConnection(
     }
     override fun connect() {
         if (!mediaBrowser.isConnected){
-            mediaBrowser.connect()
+          kotlin.runCatching {mediaBrowser.connect()}
         }
     }
 

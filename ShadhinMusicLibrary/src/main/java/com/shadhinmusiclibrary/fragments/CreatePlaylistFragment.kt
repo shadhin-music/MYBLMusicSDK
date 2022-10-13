@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
 
 
-class CreatePlaylistFragment : Fragment() {
+internal class CreatePlaylistFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_create_playlist, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_create_playlist, container, false)
     }
 }

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
-open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
+internal open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
     var argHomePatchItem: HomePatchItem? = null
     var argHomePatchDetail: HomePatchDetail? = null
     lateinit var playerViewModel: PlayerViewModel
@@ -42,9 +42,9 @@ open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
 
     fun playPauseState(playing: Boolean, ivPlayPause: ImageView) {
         if (playing) {
-            ivPlayPause.setImageResource(R.drawable.ic_pause_circle_filled)
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_pause_circle_filled)
         } else {
-            ivPlayPause.setImageResource(R.drawable.ic_play_linear)
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_play_linear)
         }
     }
 }

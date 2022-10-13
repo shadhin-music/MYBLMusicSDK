@@ -39,7 +39,7 @@ import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
 
 
-class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
+internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
 
     /**1144x480 OR 856x480*/
     private val videoWidth: Int = 856
@@ -71,7 +71,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private lateinit var playerViewModel: PlayerViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video)
+        setContentView(R.layout.my_bl_sdk_activity_video)
 
         createPlayerVM()
         playerViewModel.togglePlayPause()
@@ -102,7 +102,7 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.my_bl_sdk_ic_arrow_back)
         supportActionBar?.title = "Back"
 
         mainLayout = findViewById(R.id.main)
@@ -145,11 +145,11 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private fun observe() {
         viewModel.isListLiveData.observe(this, Observer { isListLayout->
             if (isListLayout) {
-                layoutToggle.setImageResource(R.drawable.ic_grid_view)
+                layoutToggle.setImageResource(R.drawable.my_bl_sdk_ic_grid_view)
                 adapter.changeToList()
                 videoRecyclerView.setPadding(0,  8.px, 0, 16.px)
             } else {
-                layoutToggle.setImageResource(R.drawable.ic_list_view_do)
+                layoutToggle.setImageResource(R.drawable.my_bl_sdk_ic_list_view_do)
                 adapter.changeToGrid()
                 videoRecyclerView.setPadding(
                     8.px,
@@ -269,11 +269,11 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private fun toggleOrientation() {
         requestedOrientation = when (resources.configuration.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> {
-                fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen_minimize)
+                fullscreenToggleButton.setImageResource(R.drawable.my_bl_sdk_ic_video_fullscreen_minimize)
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             }
             Configuration.ORIENTATION_LANDSCAPE -> {
-                fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen)
+                fullscreenToggleButton.setImageResource(R.drawable.my_bl_sdk_ic_video_fullscreen)
                 ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
             else -> {
@@ -294,13 +294,13 @@ class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         Handler(Looper.getMainLooper()).postDelayed(Runnable {
             setPortraitPlayerSize()
         }, 100)
-        fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen)
+        fullscreenToggleButton.setImageResource(R.drawable.my_bl_sdk_ic_video_fullscreen)
     }
     private fun prepareLandscapeUI() {
         hideSystemUI()
         supportActionBar?.hide()
         setLandscapePlayerSize()
-        fullscreenToggleButton.setImageResource(R.drawable.ic_video_fullscreen_minimize)
+        fullscreenToggleButton.setImageResource(R.drawable.my_bl_sdk_ic_video_fullscreen_minimize)
     }
     private fun setPortraitPlayerSize() {
         val displayWidth = UtilHelper.getScreenSize(this)?.x

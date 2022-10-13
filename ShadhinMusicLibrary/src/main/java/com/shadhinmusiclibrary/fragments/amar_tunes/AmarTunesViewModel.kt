@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
 
-class AmarTunesViewModel(private val amartunesContentRepository: AmartunesContentRepository): ViewModel() {
+internal class AmarTunesViewModel(private val amartunesContentRepository: AmartunesContentRepository): ViewModel() {
 
 
 

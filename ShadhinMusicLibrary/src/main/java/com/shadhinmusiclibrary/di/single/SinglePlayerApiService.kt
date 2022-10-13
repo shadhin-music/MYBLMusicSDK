@@ -4,7 +4,7 @@ package com.shadhinmusiclibrary.di.single
 import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
 import retrofit2.Retrofit
 
-class SinglePlayerApiService private constructor() {
+internal class SinglePlayerApiService private constructor() {
    companion object {
         @Volatile
         private var INSTANCE: PlayerApiService? = null

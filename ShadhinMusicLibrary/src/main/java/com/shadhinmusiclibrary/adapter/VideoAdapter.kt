@@ -17,8 +17,8 @@ import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.utils.createTimeLabel
 
 
-typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
-class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
+internal typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
+internal class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
     VideoDiffCallBack()
 ){
     val layoutManager: GridLayoutManager = GridLayoutManager(context,1)
@@ -74,12 +74,12 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
     }
     private fun crateListViewHolder(parent:ViewGroup): ListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.row_video_li,parent,false)
+        val view = layoutInflater.inflate(R.layout.my_bl_sdk_row_video_li,parent,false)
         return ListViewHolder(view)
     }
     private fun crateGridViewHolder(parent:ViewGroup): GridViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.row_video_gr,parent,false)
+        val view = layoutInflater.inflate(R.layout.my_bl_sdk_row_video_gr,parent,false)
         return GridViewHolder(view)
     }
 
@@ -113,22 +113,22 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
             titleTextView.text = item.title
             durationTextView.text = createTimeLabel(item.duration?.toLong()?:0L)
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
             }
             subTitleTextView.text = item.artist
 
             Glide.with(itemView.context)
                 .load(item.image)
-                .placeholder(R.drawable.default_video)
+                .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
 
 
                 if (item.isPlaystate) {
-                    playPauseImage.setImageResource(R.drawable.ic_pause_n)
+                    playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
                 } else {
-                    playPauseImage.setImageResource(R.drawable.ic_play_n)
+                    playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_play_n)
                 }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
@@ -147,22 +147,22 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
 
             titleTextView.text = item.title
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
             }
             subTitleTextView.text = item.artist
 
             Glide.with(itemView.context)
                 .load(item.image)
-                .placeholder(R.drawable.default_video)
+                .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
 
 
             if (item.isPlaystate) {
-                playPauseImage.setImageResource(R.drawable.ic_pause_n)
+                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
             } else {
-                playPauseImage.setImageResource(R.drawable.ic_play_n)
+                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_play_n)
             }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
@@ -175,7 +175,7 @@ class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.
         GRID
     }
 }
-class  VideoDiffCallBack: DiffUtil.ItemCallback<Video>() {
+internal class  VideoDiffCallBack: DiffUtil.ItemCallback<Video>() {
     override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
         return oldItem.contentID == newItem.contentID
     }

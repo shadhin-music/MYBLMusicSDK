@@ -5,7 +5,7 @@ import com.shadhinmusiclibrary.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection
 
 
-class SingleMusicServiceConnection private constructor() {
+internal class SingleMusicServiceConnection private constructor() {
     companion object {
         @Volatile
         private var INSTANCE: MusicServiceController? = null

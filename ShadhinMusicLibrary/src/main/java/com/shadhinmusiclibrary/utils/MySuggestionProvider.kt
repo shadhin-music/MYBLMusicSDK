@@ -2,7 +2,7 @@ package com.shadhinmusiclibrary.utils
 
 import android.content.SearchRecentSuggestionsProvider
 
-class MySuggestionProvider : SearchRecentSuggestionsProvider() {
+internal class MySuggestionProvider : SearchRecentSuggestionsProvider() {
     init {
         setupSuggestions(AUTHORITY, MODE)
     }

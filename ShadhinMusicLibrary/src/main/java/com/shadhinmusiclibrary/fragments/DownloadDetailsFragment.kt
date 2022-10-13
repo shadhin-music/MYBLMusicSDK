@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class DownloadDetailsFragment : Fragment() {
+internal class DownloadDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class DownloadDetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_download_details, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_download_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

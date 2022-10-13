@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.data.repository.AmartunesContentRepository
 import com.shadhinmusiclibrary.data.repository.HomeContentRepository
 
-class AmarTunesViewModelFactory(private val amartunesContentRepository: AmartunesContentRepository) :
+internal class AmarTunesViewModelFactory(private val amartunesContentRepository: AmartunesContentRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AmarTunesViewModel(amartunesContentRepository) as T

@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class FeaturedLatestTracksAdapter(
+internal class FeaturedLatestTracksAdapter(
     private val listSongDetail: MutableList<FeaturedSongDetail>,
     private val lrOnCallBack: LatestReleaseOnCallBack
 ) :
@@ -25,7 +25,7 @@ class FeaturedLatestTracksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
     }
 

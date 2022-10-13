@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class BottomsheetArtistsYouMightLikeAdapter(
+internal class BottomsheetArtistsYouMightLikeAdapter(
      var homePatchItem: HomePatchItem?,
     val homeCallBack: HomeCallBack,
     var artistIDToSkip: String? = null) : RecyclerView.Adapter<BottomsheetArtistsYouMightLikeAdapter.ViewHolder>() {
@@ -23,7 +23,7 @@ class BottomsheetArtistsYouMightLikeAdapter(
     var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

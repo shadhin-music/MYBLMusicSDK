@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.safeApiCall
 import kotlinx.coroutines.runBlocking
 
-class ShadhinMusicRepository(private val playerApiService:PlayerApiService):MusicRepository {
+internal class ShadhinMusicRepository(private val playerApiService:PlayerApiService):MusicRepository {
 
     override fun fetchURL(music: Music): String  = runBlocking {
         val response = safeApiCall {

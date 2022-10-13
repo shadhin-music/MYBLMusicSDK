@@ -18,13 +18,12 @@ import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
+internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 
     private lateinit var navController: NavController
     private lateinit var footerAdapter: HomeFooterAdapter
@@ -33,7 +32,7 @@ class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewR = inflater.inflate(R.layout.fragment_popular_artists, container, false)
+        val viewR = inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
         navController = findNavController()
 
         return viewR;

@@ -4,7 +4,7 @@ import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.safeApiCall
 
-class AuthRepository (private val apiService: ApiService) {
+internal class AuthRepository (private val apiService: ApiService) {
 
     suspend fun login(token:String):Pair<Boolean,String?>{
        val response =  safeApiCall { apiService.login("Bearer $token") }

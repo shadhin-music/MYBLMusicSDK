@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibra.ArtistAlbumsAdapter
+import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
@@ -32,14 +32,13 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 
-class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
+internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
@@ -71,7 +70,7 @@ class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCal
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
         navController = findNavController()
         return viewRef
     }

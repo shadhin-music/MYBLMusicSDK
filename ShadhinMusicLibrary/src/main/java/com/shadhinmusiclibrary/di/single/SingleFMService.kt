@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.di.single
 import com.shadhinmusiclibrary.data.remote.ApiService
 import retrofit2.Retrofit
 
-class SingleFMService private constructor() {
+internal class SingleFMService private constructor() {
     companion object {
         @Volatile
         private var INSTANCE: ApiService? = null

@@ -6,7 +6,7 @@ import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvicto
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import java.io.File
 
-object PlayerCache {
+internal object PlayerCache {
     @Volatile
     private var INSTANCE: SimpleCache? = null
     fun getInstance(context: Context): SimpleCache =

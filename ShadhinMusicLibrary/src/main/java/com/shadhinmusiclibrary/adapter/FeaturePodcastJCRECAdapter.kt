@@ -1,4 +1,4 @@
-package com.shadhinmusiclibra
+package com.shadhinmusiclibrary.adapter
 
 
 import android.view.LayoutInflater
@@ -9,19 +9,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.FeaturedPodcastJCAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
-import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class FeaturePodcastJCRECAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturePodcastJCRECAdapter.ViewHolder>() {
+internal class FeaturePodcastJCRECAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturePodcastJCRECAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     var showName:String ?= null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

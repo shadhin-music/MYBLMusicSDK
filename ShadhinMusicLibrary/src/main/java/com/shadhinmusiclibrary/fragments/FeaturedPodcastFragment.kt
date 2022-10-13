@@ -13,25 +13,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibra.FeaturePodcastJCRECAdapter
+import com.shadhinmusiclibrary.adapter.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
+internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
@@ -53,7 +50,7 @@ class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickC
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_podcast, container1, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container1, false)
         navController = findNavController()
 
         return viewRef

@@ -14,12 +14,12 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 
-class HomeReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
+internal class HomeReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
     RecyclerView.Adapter<HomeReleaseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 

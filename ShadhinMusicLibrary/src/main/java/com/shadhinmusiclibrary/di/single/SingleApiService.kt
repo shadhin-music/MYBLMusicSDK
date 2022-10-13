@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.di.single
 import com.shadhinmusiclibrary.data.remote.ApiService
 import retrofit2.Retrofit
 
-class SingleApiService private constructor() {
+internal class SingleApiService private constructor() {
     companion object {
         @Volatile
         private var INSTANCE: ApiService? = null

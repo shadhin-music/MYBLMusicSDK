@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.data.model.Video
 import java.util.ArrayList
 
 
-open class VideoViewModel :ViewModel() {
+internal open class VideoViewModel :ViewModel() {
 
     private val _progressbarVisibility: MutableLiveData<Int> = MutableLiveData<Int>(View.GONE)
     val progressbarVisibility: LiveData<Int> = _progressbarVisibility

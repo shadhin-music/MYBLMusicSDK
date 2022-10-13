@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-class SearchData(
+internal class SearchData(
     val AlbumId: String,
     val AlbumImage: String,
     val AlbumName: String,

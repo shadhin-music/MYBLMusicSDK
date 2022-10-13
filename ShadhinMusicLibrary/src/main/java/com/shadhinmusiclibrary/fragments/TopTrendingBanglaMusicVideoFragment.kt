@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.R
 
 
 
-class TopTrendingBanglaMusicVideoFragment : Fragment() {
+internal class TopTrendingBanglaMusicVideoFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,6 @@ class TopTrendingBanglaMusicVideoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_trending_bangla_music_video, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_top_trending_bangla_music_video, container, false)
     }
 }

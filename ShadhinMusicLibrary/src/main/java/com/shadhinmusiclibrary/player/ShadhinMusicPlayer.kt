@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
  */
 private const val TAG = "ShadhinMusicPlayer"
 
-class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPlayerContext,
+internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPlayerContext,
     ServiceEntryPoint {
 
 

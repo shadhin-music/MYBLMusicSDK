@@ -25,7 +25,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 
 
-class MusicPlayBS : Fragment(),
+internal class MusicPlayBS : Fragment(),
     DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
     DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {
 
@@ -56,7 +56,7 @@ class MusicPlayBS : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.main_music_player2, container, false)
+        val view = inflater.inflate(R.layout.my_bl_sdk_main_music_player2, container, false)
         initUI(view)
 
         setMusicBannerAdapter()
@@ -144,7 +144,7 @@ class MusicPlayBS : Fragment(),
         ibtnControl.setColorFilter(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.colorAccent
+                R.color.my_sdk_color_accent
             ), PorterDuff.Mode.SRC_IN
         )
     }
@@ -192,7 +192,7 @@ class MusicPlayBS : Fragment(),
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM,
             intArrayOf(
-                ContextCompat.getColor(requireContext(), R.color.shadinRequiredColor),
+                ContextCompat.getColor(requireContext(), R.color.my_sdk_shadin_required_color),
                 vibrant.rgb
             )
         );

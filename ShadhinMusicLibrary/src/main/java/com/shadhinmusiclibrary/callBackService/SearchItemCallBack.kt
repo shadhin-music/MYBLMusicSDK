@@ -7,7 +7,7 @@ import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.search.*
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 
-interface SearchItemCallBack {
+internal interface SearchItemCallBack {
     fun onClickSearchItem(searchData: SearchData)
     fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int)
     fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int)

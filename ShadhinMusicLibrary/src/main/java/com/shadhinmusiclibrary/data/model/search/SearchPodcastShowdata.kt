@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.data.model.search
 
-data class SearchPodcastShowdata(
+internal data class SearchPodcastShowdata(
     val AlbumId: String,
     val AlbumImage: Any,
     val AlbumName: Any,

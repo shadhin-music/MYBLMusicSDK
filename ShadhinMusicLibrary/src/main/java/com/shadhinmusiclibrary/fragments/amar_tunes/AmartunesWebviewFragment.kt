@@ -1,7 +1,5 @@
 package com.shadhinmusiclibrary.fragments.amar_tunes
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +15,6 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 
-import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
-import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
@@ -27,7 +23,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
+internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
     var data: RBTDATA? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     private var contentType: String? = null
@@ -44,7 +40,7 @@ class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_amar_tunes_webview, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_amar_tunes_webview, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

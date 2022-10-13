@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
-data class Video(
+internal data class Video(
     @SerializedName("AlbumId")
     var albumId: String? = null,
     @SerializedName("AlbumImage")

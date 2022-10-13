@@ -18,14 +18,14 @@ import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
-import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment
 
-class FeaturedPodcastJCAdapter(
+
+internal class FeaturedPodcastJCAdapter(
     var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback
 ) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.featured_podcast_video_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_featured_podcast_video_list, parent, false)
         return ViewHolder(v)
     }
 

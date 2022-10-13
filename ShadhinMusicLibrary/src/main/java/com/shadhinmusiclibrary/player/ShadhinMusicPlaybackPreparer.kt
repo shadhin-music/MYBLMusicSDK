@@ -29,10 +29,10 @@ import com.shadhinmusiclibrary.utils.normalize
 import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection.*
 import java.util.*
 
-typealias PlayListUpdateFunc = (position:Int) -> Unit
-typealias ErrorCallbackFunc = (isDataSourceError:Boolean,message:String?,errorCode:Int?,currentMusic: Music?) -> Unit
-typealias UnsubscribeFunc = ()->Unit
-class ShadhinMusicPlaybackPreparer(
+internal typealias PlayListUpdateFunc = (position:Int) -> Unit
+internal typealias ErrorCallbackFunc = (isDataSourceError:Boolean,message:String?,errorCode:Int?,currentMusic: Music?) -> Unit
+internal typealias UnsubscribeFunc = ()->Unit
+internal class ShadhinMusicPlaybackPreparer(
     private val context: Context,
     private val exoPlayer: ExoPlayer?,
     private val exoplayerCache: SimpleCache,

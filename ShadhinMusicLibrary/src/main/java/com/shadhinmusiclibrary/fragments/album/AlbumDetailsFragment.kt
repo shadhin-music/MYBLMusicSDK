@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibra.ArtistAlbumsAdapter
+import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
@@ -30,7 +30,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
@@ -39,7 +38,7 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class AlbumDetailsFragment :
+internal class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
     FragmentEntryPoint,
     OnItemClickCallback,
@@ -69,7 +68,7 @@ class AlbumDetailsFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_album_details, container, false)
         navController = findNavController()
 
         return viewRef
@@ -82,7 +81,8 @@ class AlbumDetailsFragment :
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
-        Log.e("i am being called", "test test ")
+        Log.e("i am being called", "test test: ")
+        Log.e("i am being called", "test test: "+  argHomePatchDetail!!.AlbumId)
         observeData(
             argHomePatchDetail!!.AlbumId,
             argHomePatchDetail!!.ArtistId,

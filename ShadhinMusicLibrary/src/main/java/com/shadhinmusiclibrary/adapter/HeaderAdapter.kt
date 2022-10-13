@@ -4,7 +4,6 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 
 import android.widget.TextView
 
@@ -12,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
+internal class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.ViewHolder>() {
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.header_layout, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_header_layout, parent, false)
         return ViewHolder(v)
     }
 

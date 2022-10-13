@@ -3,7 +3,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class APIResponse<ResultType>(
+internal data class APIResponse<ResultType>(
     val data: ResultType,
     val fav: Any,
     val follow: Any,

@@ -3,17 +3,15 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class PodcastCommentAdapter : RecyclerView.Adapter<PodcastCommentAdapter.ViewHolder>() {
+internal class PodcastCommentAdapter : RecyclerView.Adapter<PodcastCommentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_podcast_comment, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_layout_podcast_comment, parent, false)
         return ViewHolder(v)
     }
 

@@ -13,14 +13,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.MUSIC_NOTIFICATION_ID
-import com.shadhinmusiclibrary.player.utils.bitmapFromUri
 import com.shadhinmusiclibrary.player.utils.getPreloadBitmap
 import com.shadhinmusiclibrary.player.utils.nullFix
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.R
 
-class  ShadhinMusicNotificationManager(
+internal class  ShadhinMusicNotificationManager(
     private val context: Context,
     private val token: MediaSessionCompat.Token?,
     private val notificationListener:PlayerNotificationManager.NotificationListener?
@@ -43,7 +42,7 @@ class  ShadhinMusicNotificationManager(
 
         }
             .build().apply {
-            setSmallIcon(R.drawable.ic_shadhin_icon_gray_vector)
+            setSmallIcon(R.drawable.my_bl_sdk_ic_shadhin_icon_gray_vector)
             token?.let { setMediaSessionToken(it) }
         }
     }
@@ -111,7 +110,7 @@ class  ShadhinMusicNotificationManager(
     }
 
     private fun defaultArtwork(): Bitmap? {
-      return  BitmapFactory.decodeResource(context.resources, R.drawable.default_song)
+      return  BitmapFactory.decodeResource(context.resources, R.drawable.my_bl_sdk_default_song)
     }
 
 

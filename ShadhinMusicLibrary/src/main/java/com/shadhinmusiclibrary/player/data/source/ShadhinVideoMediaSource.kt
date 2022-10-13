@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.player.utils.CharParser
 import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.randomString
 
-class ShadhinVideoMediaSource(
+internal class ShadhinVideoMediaSource(
     private val context: Context,
     private val videoList: List<Video>,
     private val cache: SimpleCache,

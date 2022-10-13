@@ -9,7 +9,7 @@ import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.shadhinmusiclibrary.R
 
-class MusicPlayerML(
+internal class MusicPlayerML(
     context: Context,
     attributeSet: AttributeSet? = null
 ) :

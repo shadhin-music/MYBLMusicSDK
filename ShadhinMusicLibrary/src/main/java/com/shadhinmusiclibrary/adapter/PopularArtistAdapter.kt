@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +12,14 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.utils.CircleImageView
 
-class PopularArtistAdapter(
+internal class PopularArtistAdapter(
     val homePatchItem1: HomePatchItem,
     private val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<PopularArtistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_circle_image_view, parent, false)
+            .inflate(R.layout.my_bl_sdk_layout_circle_image_view, parent, false)
         return ViewHolder(v)
     }
 

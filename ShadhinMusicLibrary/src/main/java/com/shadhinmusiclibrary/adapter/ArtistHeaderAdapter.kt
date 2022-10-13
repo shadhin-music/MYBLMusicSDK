@@ -14,13 +14,12 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-class ArtistHeaderAdapter(
+internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetail?,
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
@@ -32,7 +31,7 @@ class ArtistHeaderAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.artist_details_header, parent, false)
+            .inflate(R.layout.my_bl_sdk_artist_details_header, parent, false)
         return ArtistHeaderVH(parentView!!)
     }
 

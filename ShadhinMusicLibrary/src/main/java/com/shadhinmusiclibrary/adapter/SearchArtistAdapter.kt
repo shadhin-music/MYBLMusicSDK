@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
-class SearchArtistAdapter(
+internal class SearchArtistAdapter(
     val searchArtistdata: MutableList<SearchData>,
     val searchCallBack: SearchItemCallBack
 ) :
@@ -25,7 +25,7 @@ class SearchArtistAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_artist_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_search_artist_layout, parent, false)
         return ViewHolder(v)
     }
 

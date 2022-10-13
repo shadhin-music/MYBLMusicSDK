@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
 
 @Keep
-data class LoginResponse(
+internal data class LoginResponse(
     @SerializedName("data")
     var `data`: Data? = null,
     @SerializedName("message")
@@ -14,7 +14,7 @@ data class LoginResponse(
     var status: String? = null
 ) {
     @Keep
-    data class Data(
+    internal data class Data(
         @SerializedName("fullName")
         var fullName: Any? = null,
         @SerializedName("gender")

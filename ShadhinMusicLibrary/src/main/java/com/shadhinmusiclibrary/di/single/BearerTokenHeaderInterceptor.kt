@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.token
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class BearerTokenHeaderInterceptor : Interceptor {
+internal class BearerTokenHeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response  {
         val finalToken = ("Bearer ${AuthRepository.appToken?:AppConstantUtils.token}")

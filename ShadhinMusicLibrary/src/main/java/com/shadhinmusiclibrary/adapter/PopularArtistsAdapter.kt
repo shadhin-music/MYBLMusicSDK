@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 /**
@@ -20,7 +19,7 @@ internal class PopularArtistsAdapter() :
         return PopularArtistsVH(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.layout_circle_image_view, parent, false)
+                .inflate(R.layout.my_bl_sdk_layout_circle_image_view, parent, false)
         )
     }
 

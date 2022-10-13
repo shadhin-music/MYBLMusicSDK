@@ -15,11 +15,11 @@ import com.shadhinmusiclibrary.utils.exH
 import com.shadhinmusiclibrary.utils.find
 import java.io.Serializable
 
-const val regexMp3Url = "\\w[A-Za-z\\S ]+(\\b.mp3\\b)"
-const val regexMp4Url = "\\w[A-Za-z\\S ]+(\\b.mp4\\b)"
+internal const val regexMp3Url = "\\w[A-Za-z\\S ]+(\\b.mp3\\b)"
+internal const val regexMp4Url = "\\w[A-Za-z\\S ]+(\\b.mp4\\b)"
 
 @Keep
-data class Music(
+internal data class Music(
     var mediaId: String? = null,
     var title: String? = null,
     var displayDescription: String? = null,

@@ -16,13 +16,13 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
 
 
-class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
+internal class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
     RecyclerView.Adapter<SearchAlbumsAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_album_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_search_album_layout, parent, false)
         return ViewHolder(v)
     }
 
