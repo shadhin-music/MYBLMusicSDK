@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicVideoAdapter
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
+import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 
 internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
@@ -41,6 +43,10 @@ internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
         observeData()
+        kotlin.runCatching {
+            val title = arguments?.getString(DataContentType.TITLE)
+            view.findViewById<TextView>(R.id.tvTitle)?.text = title
+        }
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()

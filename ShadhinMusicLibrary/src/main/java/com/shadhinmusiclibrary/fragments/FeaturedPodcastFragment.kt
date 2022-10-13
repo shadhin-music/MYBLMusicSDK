@@ -24,6 +24,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
@@ -60,6 +61,12 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         super.onViewCreated(view, savedInstanceState)
         Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
+
+        kotlin.runCatching {
+            val title = arguments?.getString(DataContentType.TITLE)
+            view.findViewById<TextView>(R.id.tvTitle)?.text = title
+        }
+
         //tvTitle.text =  homePatchitem?.Name
         setupViewModel()
         setAdapter()
