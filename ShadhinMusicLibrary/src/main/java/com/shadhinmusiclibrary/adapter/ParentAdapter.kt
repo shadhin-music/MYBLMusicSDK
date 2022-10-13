@@ -225,21 +225,19 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
         }
 
 
-        private fun bindPopularBands() {
+        private fun bindPopularBands(homePatchItemModel: HomePatchItem) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.text = homePatchItemModel.Name
             seeAll.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, PopularBandsFragment.newInstance())
-//                    .commit()
-//               homeCallBack.onClickSeeAll()
+                //PopularArtistsFragment
+                homeCallBack.onClickSeeAll(homePatchItemModel)
             }
-            val title: TextView = itemView.findViewById(R.id.tvTitle)
-            title.text = "Popular Bands"
+
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            // recyclerView.adapter = ArtistAdapter(data)
+                LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
+           // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
         }
 
         private fun bindMadeForYou() {
@@ -295,6 +293,7 @@ class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCal
                 "Podcast" -> bindPopularPodcast(homePatchItemModel)
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
+                "Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
 

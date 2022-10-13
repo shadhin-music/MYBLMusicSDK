@@ -1022,7 +1022,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 //                        TeaserUrl = "",
 //                        title = "",
 //                        Type = "") as Serializable
-                    HomePatchDetail(AlbumId = "",
+                    HomePatchDetail(AlbumId ="",
                         ArtistId = mSongDetails.ArtistId?:"",
                         ContentID = mSongDetails.ContentID,
                         ContentType = "",
@@ -1074,7 +1074,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     )
                     putSerializable(
                         AppConstantUtils.PatchDetail,
-                        HomePatchDetail(AlbumId = mSongDetails.albumId?:"",
+                        HomePatchDetail(
+                            AlbumId = mSongDetails.albumId?:mSongDetails.ContentID,
                             ArtistId = mSongDetails.ArtistId?:"",
                             ContentID = mSongDetails.ContentID,
                             ContentType = "",

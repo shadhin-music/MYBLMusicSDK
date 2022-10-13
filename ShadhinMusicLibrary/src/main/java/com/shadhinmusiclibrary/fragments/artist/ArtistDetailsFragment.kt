@@ -277,6 +277,10 @@ class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         TODO("Not yet implemented")
     }
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+//        observeData()
+//        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+//        parentAdapter.notifyDataSetChanged()
+//        parentRecycler.scrollToPosition(0)
     }
 
     override fun onRootClickItem(

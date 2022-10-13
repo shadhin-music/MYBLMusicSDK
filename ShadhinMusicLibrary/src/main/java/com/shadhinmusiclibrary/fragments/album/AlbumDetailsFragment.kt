@@ -82,7 +82,8 @@ class AlbumDetailsFragment :
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
-        Log.e("i am being called", "test test ")
+        Log.e("i am being called", "test test: ")
+        Log.e("i am being called", "test test: "+  argHomePatchDetail!!.AlbumId)
         observeData(
             argHomePatchDetail!!.AlbumId,
             argHomePatchDetail!!.ArtistId,

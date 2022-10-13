@@ -25,44 +25,44 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
                 //ShadhinMusicSdkCore.getHomeFragment()
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
-//        transaction.commit()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
+        transaction.commit()
 //        }
 //        Handler().postDelayed({
 //            startActivity(Intent(this, com.shadhinmusiclibrary.activities.MainActivity::class.java))
 //            finish()
 //        }, 1000)
 
-        tabLayout = findViewById(R.id.tabLayout)
-        viewPager = findViewById(R.id.viewPager)
-
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-
-        val adapter = ViewPagerAdapter(
-            this, supportFragmentManager,
-            tabLayout.tabCount
-        )
-
-        viewPager.adapter = adapter
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-            }
-        })
-
-        viewPager.offscreenPageLimit = 2
-        val selectedTabIndex = 0
-        viewPager.setCurrentItem(selectedTabIndex, false)
+//        tabLayout = findViewById(R.id.tabLayout)
+//        viewPager = findViewById(R.id.viewPager)
+//
+//        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+//
+//        val adapter = ViewPagerAdapter(
+//            this, supportFragmentManager,
+//            tabLayout.tabCount
+//        )
+//
+//        viewPager.adapter = adapter
+//        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                viewPager.currentItem = tab.position
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {
+//            }
+//        })
+//
+//        viewPager.offscreenPageLimit = 2
+//        val selectedTabIndex = 0
+//        viewPager.setCurrentItem(selectedTabIndex, false)
     }
 
     override fun onDestroy() {
