@@ -76,7 +76,7 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         mSongDetails: MutableList<FeaturedSongDetail>,
         clickItemPosition: Int
     ) {
-        if (playerViewModel.currentMusic != null) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
