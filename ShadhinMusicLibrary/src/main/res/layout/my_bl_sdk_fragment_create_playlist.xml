@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="My Playlist"
+                android:textColor="@color/my_sdk_white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

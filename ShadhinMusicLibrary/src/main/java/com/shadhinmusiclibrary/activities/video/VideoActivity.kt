@@ -37,6 +37,7 @@ import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
+import com.shadhinmusiclibrary.utils.textColor
 
 
 internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
@@ -99,11 +100,19 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private fun setupUI() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+       /* supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.my_bl_sdk_ic_arrow_back)
-        supportActionBar?.title = "Back"
+        supportActionBar?.setHomeButtonEnabled(true)*/
+       // supportActionBar?.setHomeAsUpIndicator(R.drawable.my_bl_sdk_ic_arrow_back)
+        
+        supportActionBar?.title = ""
+        findViewById<ImageView>(R.id.imageBack).setOnClickListener {
+            onBackPressed()
+        }
+
+
+
+
 
         mainLayout = findViewById(R.id.main)
         videoRecyclerView = findViewById(R.id.videoRecyclerView)
@@ -343,7 +352,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+   /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
@@ -351,7 +360,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             }
             else -> false
         }
-    }
+    }*/
 
     override fun onBackPressed() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
