@@ -10,7 +10,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.R
 
 
-class PlayerOnScaleGestureListener(
+internal class PlayerOnScaleGestureListener(
     private val playerView: PlayerView,
     val context:Context,
     ): ScaleGestureDetector.SimpleOnScaleGestureListener() {

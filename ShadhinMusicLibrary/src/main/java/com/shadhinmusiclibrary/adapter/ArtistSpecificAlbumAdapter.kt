@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
+internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: ArtistAlbumModelData? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 

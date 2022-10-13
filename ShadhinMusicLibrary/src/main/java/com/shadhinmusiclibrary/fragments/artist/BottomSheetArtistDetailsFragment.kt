@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibra.ArtistAlbumsAdapter
-import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
+import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*

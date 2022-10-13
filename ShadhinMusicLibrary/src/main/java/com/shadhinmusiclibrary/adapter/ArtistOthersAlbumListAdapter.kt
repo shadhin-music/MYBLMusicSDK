@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 
 
-class ArtistOthersAlbumListAdapter(
+internal class ArtistOthersAlbumListAdapter(
     val artistAlbumModel: MutableList<ArtistAlbumModelData>,
     private val homeCallBack: HomeCallBack
 ) :
