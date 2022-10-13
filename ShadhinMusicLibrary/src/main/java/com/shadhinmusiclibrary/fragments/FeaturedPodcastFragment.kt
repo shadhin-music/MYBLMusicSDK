@@ -134,7 +134,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
 
 
         val homePatchItem = argHomePatchItem
-        Log.e("Check", ""+navController.graph.displayName)
+      //  Log.e("Check", ""+navController.graph.displayName)
         navController.navigate(R.id.to_podcast_details,
             Bundle().apply {
                 putSerializable(
