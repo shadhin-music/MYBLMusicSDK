@@ -34,7 +34,7 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
 
 
 
-       
+
 
 //        }
 //        Handler().postDelayed({
