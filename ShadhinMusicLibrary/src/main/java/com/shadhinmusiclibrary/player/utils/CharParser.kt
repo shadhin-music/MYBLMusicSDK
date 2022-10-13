@@ -47,3 +47,8 @@ internal object CharParser {
         //return data.replaceAll("^ +| +$|( )+", "$1");
     }
 }
+internal class TestCat{
+    fun getName(): String {
+        return "cat cat"
+    }
+}

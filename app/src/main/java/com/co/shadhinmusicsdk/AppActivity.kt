@@ -1,13 +1,17 @@
 package com.co.shadhinmusicsdk
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.ShadhinSDKCallback
+
 
 
 private const val TAG = "AppActivity"
@@ -27,6 +31,14 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
         transaction.commit()
+
+
+
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+
+            Toast.makeText(this,  DDD.faf(), Toast.LENGTH_SHORT).show();
+        },1000)
+
 //        }
 //        Handler().postDelayed({
 //            startActivity(Intent(this, com.shadhinmusiclibrary.activities.MainActivity::class.java))
