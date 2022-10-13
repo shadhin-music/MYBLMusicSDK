@@ -14,7 +14,6 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.SearchTrackdata
 
 
 internal class SearchTracksAdapter(
@@ -26,7 +25,7 @@ internal class SearchTracksAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_track_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_search_track_layout, parent, false)
         return ViewHolder(v)
     }
 

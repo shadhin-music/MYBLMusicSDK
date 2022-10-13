@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.fragments.search
 import android.app.SearchManager
 import android.content.ContentResolver
 import android.content.Context
-import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -27,12 +26,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -76,7 +73,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_search, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_search, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -283,8 +280,10 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 recyclerViewTracks = requireView().findViewById(R.id.recyclerViewTracks)
                 tvTracks = requireView().findViewById(R.id.tvTracks)
                 if (response.data?.data?.Track?.data?.isNotEmpty() == true) {
-                    tvTracks.visibility = VISIBLE
-                    recyclerViewTracks.visibility = VISIBLE
+                    recyclerViewTracks.visibility = GONE
+                    tvTracks.visibility = GONE
+//                    tvTracks.visibility = VISIBLE
+//                    recyclerViewTracks.visibility = VISIBLE
                     recyclerViewTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewTracks.adapter =
@@ -318,8 +317,10 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 recyclerViewShows = requireView().findViewById(R.id.recyclerViewShows)
                 tvShows = requireView().findViewById(R.id.tvShows)
                 if (response.data?.data?.PodcastShow?.data?.isNotEmpty() == true) {
-                    recyclerViewShows.visibility = VISIBLE
-                    tvShows.visibility = VISIBLE
+                    recyclerViewShows.visibility = GONE
+                    tvShows.visibility = GONE
+//                    recyclerViewShows.visibility = VISIBLE
+//                    tvShows.visibility = VISIBLE
                     recyclerViewShows.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewShows.adapter =
@@ -337,8 +338,10 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 recyclerViewEpisodes = requireView().findViewById(R.id.recyclerViewEpisodes)
                 tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
                 if (response.data?.data?.PodcastEpisode?.data?.isNotEmpty() == true) {
-                    recyclerViewEpisodes.visibility = VISIBLE
-                    tvEpisodes.visibility = VISIBLE
+                    recyclerViewEpisodes.visibility = GONE
+                    tvEpisodes.visibility = GONE
+//                    recyclerViewEpisodes.visibility = VISIBLE
+//                    tvEpisodes.visibility = VISIBLE
                     recyclerViewEpisodes.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewEpisodes.adapter =
@@ -356,8 +359,10 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     requireView().findViewById(R.id.recyclerViewPodcastTracks)
                 tvPodcastTracks = requireView().findViewById(R.id.tvPodcastTracks)
                 if (response?.data?.data?.PodcastTrack?.data?.isNotEmpty() == true) {
-                    recyclerViewPodcastTracks.visibility = VISIBLE
-                    tvPodcastTracks.visibility = VISIBLE
+                    recyclerViewPodcastTracks.visibility = GONE
+                    tvPodcastTracks.visibility = GONE
+//                    recyclerViewPodcastTracks.visibility = VISIBLE
+//                    tvPodcastTracks.visibility = VISIBLE
                     recyclerViewPodcastTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     recyclerViewPodcastTracks.adapter =

@@ -8,16 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
-import com.shadhinmusiclibrary.utils.CircleImageView
 
 internal class TrendingItemsAdapter(var data: List<TopTrendingdata>) :
     RecyclerView.Adapter<TrendingItemsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_search_top_trending_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_layout_search_top_trending_item, parent, false)
         return ViewHolder(v)
     }
 

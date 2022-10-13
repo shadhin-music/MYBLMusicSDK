@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,7 @@ internal class HomeContentPlaylistAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.browse_all_genre, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_browse_all_genre, parent, false)
         return ViewHolder(v)
     }
 

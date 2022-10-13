@@ -19,7 +19,6 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
@@ -40,7 +39,7 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_playlist_list, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_list, container, false)
         navController = findNavController()
 
         return viewRef

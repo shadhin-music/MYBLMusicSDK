@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.*
 
 
 internal class PodcastVideoFragment : Fragment() {
@@ -27,7 +26,7 @@ internal class PodcastVideoFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_podcast_video, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_podcast_video, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

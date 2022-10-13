@@ -14,9 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
@@ -37,7 +35,7 @@ internal class MusicPlayAdapter(
         return MusicPlayVH(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.music_play_item_view, parent, false)
+                .inflate(R.layout.my_bl_sdk_music_play_item_view, parent, false)
         )
     }
 
@@ -95,8 +93,8 @@ internal class MusicPlayAdapter(
                 .load(sMusicData.getImageUrl300Size())
                 .transition(DrawableTransitionOptions().crossFade(500))
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-                .placeholder(R.drawable.default_song)
-                .error(R.drawable.default_song)
+                .placeholder(R.drawable.my_bl_sdk_default_song)
+                .error(R.drawable.my_bl_sdk_default_song)
                 .into(ivCurrentPlayImage)
         }
     }

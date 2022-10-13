@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -332,9 +331,9 @@ public class SlidingUpPanelLayout extends ViewGroup {
         // If the shadow height is zero, don't show the shadow
         if (mShadowHeight > 0) {
             if (mIsSlidingUp) {
-                mShadowDrawable = getResources().getDrawable(R.drawable.above_shadow);
+                mShadowDrawable = getResources().getDrawable(R.drawable.my_bl_sdk_above_shadow);
             } else {
-                mShadowDrawable = getResources().getDrawable(R.drawable.below_shadow);
+                mShadowDrawable = getResources().getDrawable(R.drawable.my_bl_sdk_below_shadow);
             }
         } else {
             mShadowDrawable = null;

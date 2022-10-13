@@ -15,7 +15,6 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -33,7 +32,7 @@ internal class ArtistTrackAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistTrackVH {
         val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.video_podcast_epi_single_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ArtistTrackVH(parentView!!)
     }
 

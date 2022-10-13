@@ -74,12 +74,12 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
     }
     private fun crateListViewHolder(parent:ViewGroup): ListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.row_video_li,parent,false)
+        val view = layoutInflater.inflate(R.layout.my_bl_sdk_row_video_li,parent,false)
         return ListViewHolder(view)
     }
     private fun crateGridViewHolder(parent:ViewGroup): GridViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.row_video_gr,parent,false)
+        val view = layoutInflater.inflate(R.layout.my_bl_sdk_row_video_gr,parent,false)
         return GridViewHolder(view)
     }
 
@@ -121,14 +121,14 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
 
             Glide.with(itemView.context)
                 .load(item.image)
-                .placeholder(R.drawable.default_video)
+                .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
 
 
                 if (item.isPlaystate) {
-                    playPauseImage.setImageResource(R.drawable.ic_pause_n)
+                    playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
                 } else {
-                    playPauseImage.setImageResource(R.drawable.ic_play_n)
+                    playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_play_n)
                 }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
@@ -155,14 +155,14 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
 
             Glide.with(itemView.context)
                 .load(item.image)
-                .placeholder(R.drawable.default_video)
+                .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
 
 
             if (item.isPlaystate) {
-                playPauseImage.setImageResource(R.drawable.ic_pause_n)
+                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
             } else {
-                playPauseImage.setImageResource(R.drawable.ic_play_n)
+                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_play_n)
             }
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)

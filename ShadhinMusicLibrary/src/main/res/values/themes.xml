@@ -44,7 +44,7 @@
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:background">@drawable/my_bl_sdk_dialog_bg</item>
     </style>
 
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
@@ -54,7 +54,7 @@
         <item name="tabPaddingEnd">16dp</item>
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabMode">scrollable</item>
-        <item name="tabIndicator">@drawable/ic_tab_indicator</item>
+        <item name="tabIndicator">@drawable/my_bl_sdk_ic_tab_indicator</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/my_sdk_color_white</item>
     </style>

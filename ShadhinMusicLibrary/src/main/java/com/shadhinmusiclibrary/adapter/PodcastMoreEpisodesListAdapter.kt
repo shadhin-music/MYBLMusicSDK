@@ -23,7 +23,7 @@ internal class PodcastMoreEpisodesListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 

@@ -17,7 +17,7 @@ internal class LatestFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_latest, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_latest, container, false)
         rvLatestMusic = viewRef.findViewById(R.id.rv_latest_music)
 
         return viewRef;

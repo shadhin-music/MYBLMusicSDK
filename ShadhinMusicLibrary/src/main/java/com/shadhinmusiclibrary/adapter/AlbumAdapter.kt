@@ -16,7 +16,6 @@ import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
@@ -32,9 +31,9 @@ internal open class AlbumAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumVH {
         val layout = when (viewType) {
-            VIEW_ALBUM -> R.layout.playlist_header
-            VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
-            VIEW_OTHER_ALBUM -> R.layout.item_release_patch
+            VIEW_ALBUM -> R.layout.my_bl_sdk_playlist_header
+            VIEW_TRACK_ITEM -> R.layout.my_bl_sdk_latest_music_view_item
+            VIEW_OTHER_ALBUM -> R.layout.my_bl_sdk_item_release_patch
             else -> throw IllegalArgumentException("Invalid view type")
         }
         val view = LayoutInflater

@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,7 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_featured_popular_artist, container1, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_featured_popular_artist, container1, false)
         navController = findNavController()
 
         return viewRef

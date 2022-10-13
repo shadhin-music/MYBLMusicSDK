@@ -24,7 +24,7 @@ internal class ArtistAlbumsAdapter(
     var artistAlbumModel: ArtistAlbumModel? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

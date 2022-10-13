@@ -1,13 +1,11 @@
 package com.shadhinmusiclibrary.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
@@ -16,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
@@ -48,7 +45,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_playlist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_details, container, false)
         navController = findNavController()
 
         return viewRef

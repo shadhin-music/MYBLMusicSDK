@@ -138,7 +138,7 @@ internal class ShadhinMusicServiceConnection(
     }
     override fun connect() {
         if (!mediaBrowser.isConnected){
-            mediaBrowser.connect()
+          kotlin.runCatching {mediaBrowser.connect()}
         }
     }
 
