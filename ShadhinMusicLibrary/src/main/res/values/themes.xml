@@ -1,12 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="light_theme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="android:statusBarColor">#D8F83E3E</item>
     </style>
+
+    <style name="light_theme_music_activity" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/my_sdk_color_primary</item>
+        <item name="colorPrimaryDark">@color/my_sdk_color_primary_dark</item>
+        <item name="colorAccent">@color/my_sdk_color_accent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:statusBarColor">#D8F83E3E</item>
+    </style>
+
 
     <style name="videoAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/my_sdk_color_primary</item>
@@ -17,7 +30,8 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true
         </item>
-        <item name="android:navigationBarColor" tools:ignore="NewApi">@color/my_sdk_color_primary</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">@color/my_sdk_color_primary
+        </item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/my_sdk_color_primary</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>

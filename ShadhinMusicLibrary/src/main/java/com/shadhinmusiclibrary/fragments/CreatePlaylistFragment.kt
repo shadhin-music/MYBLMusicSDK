@@ -14,7 +14,6 @@ internal class CreatePlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_create_playlist, container, false)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.my_bl_sdk_fragment_create_playlist, container, false)
     }
