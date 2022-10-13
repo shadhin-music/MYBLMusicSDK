@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/my_sdk_black1"
-                app:controller_layout_id="@layout/exo_video_controller_view">
+                app:controller_layout_id="@layout/my_bl_sdk_exo_video_controller_view">
 
 
             </com.google.android.exoplayer2.ui.PlayerView>

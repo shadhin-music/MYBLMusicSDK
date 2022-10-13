@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.ShadhinMusicSDK" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/my_sdk_color_primary</item>
-        <item name="colorPrimaryVariant">@color/my_sdk_color_primary</item>
-        <item name="colorOnPrimary">@color/my_sdk_color_primary</item>
+        <item name="colorPrimary">#00E809</item>
+        <item name="colorPrimaryVariant">#00E809</item>
+        <item name="colorOnPrimary">#00E809</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/my_sdk_teal_200</item>
-        <item name="colorSecondaryVariant">@color/my_sdk_teal_700</item>
-        <item name="colorOnSecondary">@color/my_sdk_color_primary</item>
+        <item name="colorSecondary">#00E809</item>
+        <item name="colorSecondaryVariant">#00E809</item>
+        <item name="colorOnSecondary">#00E809</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#D8F83E3E</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
