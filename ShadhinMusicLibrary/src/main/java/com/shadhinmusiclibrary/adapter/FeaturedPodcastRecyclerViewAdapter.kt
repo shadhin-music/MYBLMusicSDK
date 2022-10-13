@@ -47,7 +47,7 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
                     2,
                     RecyclerView.HORIZONTAL,
                     false)
-              recyclerView.adapter = FeaturedPodcastAdapter(this@FeaturedPodcastRecyclerViewAdapter.data)
+              recyclerView.adapter = FeaturedPodcastAdapter(this@FeaturedPodcastRecyclerViewAdapter.data,cilckCallBack)
 //            val textViewName = itemView.findViewById(R.id.txt_title) as TextView
 //            val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView = itemView.findViewById(R.id.image) as ImageView

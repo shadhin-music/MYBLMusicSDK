@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
+import com.shadhinmusiclibrary.adapter.PlaylistAdapter.PlaylistVH
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -100,17 +102,25 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
             playerViewModel.togglePlayPause()
+
+           // Log.e("TAG","Post: ")
         } else {
             playItem(mSongDetails, clickItemPosition)
         }
     }
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+
         if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+
             if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
+
+
             } else {
                 playerViewModel.togglePlayPause()
+
+               // Log.e("TAG","Post123: ")
             }
         } else {
             playItem(mSongDetails, clickItemPosition)
@@ -121,10 +131,12 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-        val albumVH = currentVH as PlaylistAdapter.PlaylistVH
+        val albumVH = currentVH as PlaylistVH
         if (songDetails.size > 0 && isAdded) {
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
+                   // view?.let { adapter.PlaylistVH(it).tvSongName?.setTextColor(Color.BLUE) }
+                   // Log.e("TAG","Position : ")
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ContentID == itMusic.mediaId
@@ -132,6 +144,9 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                            //albumVH.tvSongName?.setTextColor(Color.BLUE)
+
+
                         }
 
                         playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
