@@ -13,8 +13,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
-import androidx.collection.SparseArrayCompat
-import androidx.collection.forEach
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.blue
@@ -23,10 +21,7 @@ import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavAction
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -39,9 +34,6 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.Artist
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.data.model.search.SearchModelData
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -270,7 +262,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_album_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
