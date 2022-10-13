@@ -170,7 +170,7 @@
                 app:customFloatValue="1.0" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/colorBlack" />
+                app:customColorValue="@color/my_sdk_color_black" />
         </Constraint>
 
         <Constraint
@@ -319,7 +319,7 @@
                 app:customFloatValue="0.0" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/colorAccent" />
+                app:customColorValue="@color/my_sdk_color_accent" />
         </Constraint>
 
         <Constraint
@@ -346,7 +346,7 @@
                 app:customFloatValue="1.0" />
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/colorPrimary" />
+                app:customColorValue="@color/my_sdk_color_primary" />
         </Constraint>
 
         <Constraint

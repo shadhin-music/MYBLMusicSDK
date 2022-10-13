@@ -195,7 +195,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun patchFragmentAccess() {
         val dataContentType =
-            intent.extras!!.getString(AppConstantUtils.DataContentRequestId) as String
+            intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
 
         routeDataPatch(dataContentType)
     }
@@ -649,7 +649,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     ibtnShuffle.setColorFilter(
                         ContextCompat.getColor(
                             this,
-                            R.color.colorTransparent
+                            R.color.my_sdk_color_transparent
                         ), PorterDuff.Mode.SRC_IN
                     )
                 }
@@ -768,7 +768,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 val gradientDrawable = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     intArrayOf(
-                        ContextCompat.getColor(this, R.color.shadinRequiredColor),
+                        ContextCompat.getColor(this, R.color.my_sdk_shadin_required_color),
                         vibrantSwatch.rgb
                     )
                 )

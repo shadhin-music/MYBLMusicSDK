@@ -16,14 +16,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/my_sdk_color_primary"
             tools:layout_height="56dp">
 
             <TextView
                 android:id="@+id/custom_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black1"
+                android:textColor="@color/my_sdk_black1"
                 android:textSize="16sp"
                 tools:text="Back" />
         </androidx.appcompat.widget.Toolbar>
@@ -32,7 +32,7 @@
             android:id="@+id/playerLayout"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/black_overlay"
+            android:background="@color/my_sdk_black_overlay"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                 android:id="@+id/playerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/black1"
+                android:background="@color/my_sdk_black1"
                 app:controller_layout_id="@layout/my_bl_sdk_exo_video_controller_view">
 
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/colorPrimary"
+                android:indeterminateTint="@color/my_sdk_color_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
             android:id="@+id/parent_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/down_background"
+            android:background="@color/my_sdk_down_background"
 
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textColor="@color/down_title"
+                    android:textColor="@color/my_sdk_down_title"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:textColor="@color/down_item_desc"
+                    android:textColor="@color/my_sdk_down_item_desc"
 
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -149,7 +149,7 @@
                             android:gravity="center"
                             android:padding="4dp"
                             android:text="Favorite"
-                            android:textColor="@color/down_item_desc"
+                            android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -183,7 +183,7 @@
                             android:gravity="center"
                             android:padding="4dp"
                             android:text="Watch later"
-                            android:textColor="@color/down_item_desc"
+                            android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -216,7 +216,7 @@
                             android:gravity="center"
                             android:padding="4dp"
                             android:text="Share"
-                            android:textColor="@color/down_item_desc"
+                            android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -249,7 +249,7 @@
                             android:gravity="center"
                             android:padding="4dp"
                             android:text="Download"
-                            android:textColor="@color/down_item_desc"
+                            android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -270,7 +270,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="You Might Like"
-                    android:textColor="@color/down_title"
+                    android:textColor="@color/my_sdk_down_title"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

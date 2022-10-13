@@ -113,9 +113,9 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
             titleTextView.text = item.title
             durationTextView.text = createTimeLabel(item.duration?.toLong()?:0L)
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
             }
             subTitleTextView.text = item.artist
 
@@ -147,9 +147,9 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
 
             titleTextView.text = item.title
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.colorPrimary))
+                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.down_title))
+                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
             }
             subTitleTextView.text = item.artist
 

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="60dp"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/my_sdk_color_white"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 

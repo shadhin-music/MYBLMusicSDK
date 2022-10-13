@@ -25,14 +25,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List of"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/my_sdk_color_white" />
 
             <TextView
                 android:id="@+id/tv_thousand_song_message2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1000+ Songs"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/my_sdk_color_white"
                 android:textSize="26dp" />
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="to set as you Amar Tune"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/my_sdk_color_white" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,8 +59,8 @@
                 android:padding="10dp"
                 android:text="Explore"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                app:backgroundTint="@color/colorWhite" />
+                android:textColor="@color/my_sdk_color_black"
+                app:backgroundTint="@color/my_sdk_color_white" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

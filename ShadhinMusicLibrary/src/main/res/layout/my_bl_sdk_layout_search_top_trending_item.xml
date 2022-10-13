@@ -7,7 +7,7 @@
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:cardBackgroundColor="@color/colorBackground"
+        app:cardBackgroundColor="@color/my_sdk_color_background"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/my_sdk_color_black"
                 android:textSize="16sp"
                 tools:text="In My Feeling" />
 

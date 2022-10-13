@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/reply"
                 android:text="14 reply"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/my_sdk_color_primary"
                 android:textSize="14sp"
                 android:visibility="gone"/>
 

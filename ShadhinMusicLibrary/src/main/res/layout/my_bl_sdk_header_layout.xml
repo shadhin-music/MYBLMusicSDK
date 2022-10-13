@@ -18,6 +18,6 @@
         android:textStyle="bold"
         android:id="@+id/tvTitle"
         android:text="Songs"
-        android:textColor="@color/colorText"
+        android:textColor="@color/my_sdk_color_text"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

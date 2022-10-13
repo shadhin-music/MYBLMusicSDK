@@ -55,7 +55,7 @@
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:text="title"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/my_sdk_color_black" />
 
         <TextView
             android:id="@+id/similarArtist"

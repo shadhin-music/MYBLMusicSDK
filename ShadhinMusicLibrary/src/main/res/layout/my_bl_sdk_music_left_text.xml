@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:text="Amer Tunes"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/my_sdk_color_black"
         android:textStyle="bold" />
 </LinearLayout>
