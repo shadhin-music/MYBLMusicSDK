@@ -98,7 +98,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sdk_main)
+        setContentView(R.layout.my_bl_sdk_activity_sdk_main)
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
@@ -163,7 +163,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 ////        val homePatchDetail = patch.Data[selectedPatchIndex!!]
 //        Log.d("TAG", "Patch: "+ patch.Data)
 //          if(patch.Data[selectedPatchIndex].ContentType=="A") {
-              setupNavGraphAndArg(R.navigation.nav_graph_search,
+              setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
                   Bundle().apply {
                       putSerializable(
                           PatchItem,
@@ -217,26 +217,26 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }*/
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle())
             }
             DataContentType.CONTENT_TYPE_PD_RC202 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_featured_podcast, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast, Bundle())
             }
             DataContentType.CONTENT_TYPE_A_RC203 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_a, Bundle())
             }
             DataContentType.AMR_TUNE_ALL -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune, Bundle().apply {
                     putString(DataContentType.CONTENT_TYPE,contentType)
                 })
             }
             DataContentType.AMR_TUNE -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle().apply {
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune, Bundle().apply {
                     putString(DataContentType.CONTENT_TYPE,contentType)
                 })
             }
             DataContentType.CONTENT_TYPE_V_RC204 ->{
-                setupNavGraphAndArg(R.navigation.nav_graph_music_video, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle())
             }
         }
     }
@@ -248,7 +248,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             when (homePatchDetail.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -276,7 +276,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_playlist_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -290,7 +290,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
-                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_s_type_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -304,7 +304,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_PD -> {
                     //open podcast
-                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -322,7 +322,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-                    setupNavGraphAndArg(R.navigation.nav_graph_artist_list_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_artist_list_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -332,7 +332,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
-                    setupNavGraphAndArg(R.navigation.nav_graph_album_list,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_album_list,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -342,7 +342,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.nav_graph_playlist_list,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_playlist_list,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -352,7 +352,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
-                    setupNavGraphAndArg(R.navigation.nav_graph_s_type_list_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_s_type_list_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -362,7 +362,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_PD -> {
                     //open podcast
-                    setupNavGraphAndArg(R.navigation.nav_graph_podcast_list_and_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -372,7 +372,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 }
                 DataContentType.CONTENT_TYPE_V -> {
                     //open podcast
-                    setupNavGraphAndArg(R.navigation.nav_graph_video_list_and_details,
+                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_video_list_and_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -509,17 +509,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun miniPlayerPlayPauseState(playing: Boolean) {
         if (playing) {
-            ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_pause_24)
+            ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_pause_24)
         } else {
-            ibtnPlayPauseMini.setImageResource(R.drawable.ic_baseline_play_arrow_black_24)
+            ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_arrow_black_24)
         }
     }
 
     private fun mainPlayerPlayPauseState(playing: Boolean) {
         if (playing) {
-            ibtnPlayPause.setImageResource(R.drawable.ic_baseline_pause_circle_filled_60)
+            ibtnPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_baseline_pause_circle_filled_60)
         } else {
-            ibtnPlayPause.setImageResource(R.drawable.ic_baseline_play_circle_filled_60)
+            ibtnPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_circle_filled_60)
         }
     }
 
@@ -638,13 +638,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.repeatModeLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.REPEAT_MODE_NONE -> {
-                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_24)
+                    setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_24)
                     ibtnShuffle.isEnabled = true
                     ibtnShuffle.setColorFilter(0)
 //                setControlColor(false, ibtnControl)
                 }
                 PlaybackStateCompat.REPEAT_MODE_ONE -> {
-                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_one_on_24)
+                    setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_one_on_24)
                     ibtnShuffle.isEnabled = false
                     ibtnShuffle.setColorFilter(
                         ContextCompat.getColor(
@@ -654,7 +654,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     )
                 }
                 PlaybackStateCompat.REPEAT_MODE_ALL -> {
-                    setResource(ibtnRepeatSong, R.drawable.ic_baseline_repeat_on_24)
+                    setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_on_24)
                     ibtnShuffle.isEnabled = true
                     ibtnShuffle.setColorFilter(0)
                 }
@@ -664,10 +664,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.shuffleLiveData.observe(this) {
             when (it) {
                 PlaybackStateCompat.SHUFFLE_MODE_NONE -> {
-                    ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_24)
+                    ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
                 }
                 PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
-                    ibtnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_on_24)
+                    ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_on_24)
                 }
             }
         }
@@ -726,8 +726,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-            .placeholder(R.drawable.default_song)
-            .error(R.drawable.default_song)
+            .placeholder(R.drawable.my_bl_sdk_default_song)
+            .error(R.drawable.my_bl_sdk_default_song)
             .into(ivSongThumbMini)
         setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
@@ -818,7 +818,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
-            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+            View.inflate(context, R.layout.my_bl_sdk_bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
         val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
@@ -865,7 +865,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
-            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+            View.inflate(context, R.layout.my_bl_sdk_bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
         val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
@@ -910,7 +910,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
         val contentView =
-            View.inflate(context, R.layout.bottomsheet_three_dot_menu_layout, null)
+            View.inflate(context, R.layout.my_bl_sdk_bottomsheet_three_dot_menu_layout, null)
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
         val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)

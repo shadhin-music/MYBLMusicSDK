@@ -24,7 +24,7 @@ internal class PodcastHeaderAdapter(
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.podcast_header_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_podcast_header_layout, parent, false)
         return PodcastHeaderVH(parentView!!)
     }
 

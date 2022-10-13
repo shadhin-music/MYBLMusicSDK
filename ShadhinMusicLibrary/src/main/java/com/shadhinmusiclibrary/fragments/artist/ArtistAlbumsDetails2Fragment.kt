@@ -42,7 +42,7 @@ internal class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_album_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_album_details, container, false)
         navController = findNavController()
 
         return viewRef

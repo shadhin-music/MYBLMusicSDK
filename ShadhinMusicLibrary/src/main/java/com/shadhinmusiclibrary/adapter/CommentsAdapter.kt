@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.R
 internal class CommentsAdapter() : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.layout_child_comment_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_layout_child_comment_item, parent, false)
         return ViewHolder(v)
     }
 

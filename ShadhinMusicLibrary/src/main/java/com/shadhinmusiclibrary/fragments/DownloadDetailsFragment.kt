@@ -24,7 +24,7 @@ internal class DownloadDetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_download_details, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_download_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -19,7 +19,7 @@ internal class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.playlist_header, parent, false)
+            .inflate(R.layout.my_bl_sdk_playlist_header, parent, false)
         return HeaderViewHolder(parentView!!)
     }
 

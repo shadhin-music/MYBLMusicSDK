@@ -24,8 +24,8 @@ internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   p
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistVH {
         val layout = when (viewType) {
-            VIEW_ALBUM -> R.layout.playlist_header
-            VIEW_TRACK_ITEM -> R.layout.latest_music_view_item
+            VIEW_ALBUM -> R.layout.my_bl_sdk_playlist_header
+            VIEW_TRACK_ITEM -> R.layout.my_bl_sdk_latest_music_view_item
             else -> throw IllegalArgumentException("Invalid view type")
         }
         val view = LayoutInflater

@@ -21,7 +21,7 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastTrackVH {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.podcast_episodes_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_podcast_episodes_item, parent, false)
         return PodcastTrackVH(v)
     }
 

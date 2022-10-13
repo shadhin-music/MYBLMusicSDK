@@ -50,7 +50,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.fragment_podcast, container1, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container1, false)
         navController = findNavController()
 
         return viewRef

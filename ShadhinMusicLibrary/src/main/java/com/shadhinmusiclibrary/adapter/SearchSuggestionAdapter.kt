@@ -16,7 +16,7 @@ internal class SearchSuggestionAdapter(context: Context?, c: Cursor?, flags: Int
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val view = LayoutInflater.from(context).inflate(
-            R.layout.search_suggestion_item, parent, false
+            R.layout.my_bl_sdk_search_suggestion_item, parent, false
         )
         val viewHolder = ViewHolder(view)
         view.tag = viewHolder

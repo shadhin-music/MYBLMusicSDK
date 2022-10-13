@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.content.Intent
-import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,7 @@ internal class TopTrendingVideosAdapter(val homePatchItemModel: HomePatchItem, v
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.trending_music_video_list, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_trending_music_video_list, parent, false)
         return ViewHolder(v)
     }
 

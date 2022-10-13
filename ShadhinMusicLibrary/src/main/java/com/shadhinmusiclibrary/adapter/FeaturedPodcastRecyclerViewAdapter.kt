@@ -8,17 +8,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastData
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
-import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
 
 internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
     var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
     var showName:String ?=null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_you_might_like, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 

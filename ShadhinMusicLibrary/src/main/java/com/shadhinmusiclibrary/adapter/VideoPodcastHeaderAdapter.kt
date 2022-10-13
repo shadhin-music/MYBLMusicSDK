@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.R
 internal class VideoPodcastHeaderAdapter : RecyclerView.Adapter<VideoPodcastHeaderAdapter.PodcastHeaderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.podcast_header_layout, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_podcast_header_layout, parent, false)
         return PodcastHeaderViewHolder(v)
     }
 

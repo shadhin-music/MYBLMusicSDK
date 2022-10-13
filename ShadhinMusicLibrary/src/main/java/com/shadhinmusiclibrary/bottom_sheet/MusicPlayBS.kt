@@ -56,7 +56,7 @@ internal class MusicPlayBS : Fragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.main_music_player2, container, false)
+        val view = inflater.inflate(R.layout.my_bl_sdk_main_music_player2, container, false)
         initUI(view)
 
         setMusicBannerAdapter()

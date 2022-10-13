@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +18,10 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-            VIEW_ARTIST_HEADER -> R.layout.artist_details_header
-            VIEW_DOWNLOAD -> R.layout.latest_music_view_item
-            VIEW_ALBUM -> R.layout.item_release_patch
-            VIEW_YOU_MIGHT_LIKE -> R.layout.item_you_might_like
+            VIEW_ARTIST_HEADER -> R.layout.my_bl_sdk_artist_details_header
+            VIEW_DOWNLOAD -> R.layout.my_bl_sdk_latest_music_view_item
+            VIEW_ALBUM -> R.layout.my_bl_sdk_item_release_patch
+            VIEW_YOU_MIGHT_LIKE -> R.layout.my_bl_sdk_item_you_might_like
             else -> throw IllegalArgumentException("Invalid view type")
         }
 

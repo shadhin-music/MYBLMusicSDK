@@ -13,12 +13,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.SearchPodcastEpisodedata
-import com.shadhinmusiclibrary.data.model.search.SearchPodcastShowdata
-import com.shadhinmusiclibrary.utils.CircleImageView
-import com.shadhinmusiclibrary.utils.TimeParser
 
 
 internal class SearchShowAdapter(
@@ -30,7 +25,7 @@ internal class SearchShowAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_album_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_search_album_layout, parent, false)
         return ViewHolder(v)
     }
 

@@ -16,6 +16,6 @@ internal class TuneGalleryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tune_gallery, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_fragment_tune_gallery, container, false)
     }
 }

@@ -10,7 +10,7 @@
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="fragment_albums_details"
-        tools:layout="@layout/fragment_album_details">
+        tools:layout="@layout/my_bl_sdk_fragment_album_details">
 
         <action
             android:id="@+id/to_artist_details"
@@ -19,7 +19,7 @@
    <fragment  android:id="@+id/artist_details_fragment"
        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
        android:label="fragment_artist_details"
-       tools:layout="@layout/fragment_artist_details">
+       tools:layout="@layout/my_bl_sdk_fragment_artist_details">
 
    </fragment>
 </navigation>

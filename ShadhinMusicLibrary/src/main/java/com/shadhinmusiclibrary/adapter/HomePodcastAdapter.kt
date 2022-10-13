@@ -12,7 +12,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class HomePodcastAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
@@ -20,7 +19,7 @@ internal class HomePodcastAdapter(val homePatchItem: HomePatchItem, private val 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.top_trending_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 

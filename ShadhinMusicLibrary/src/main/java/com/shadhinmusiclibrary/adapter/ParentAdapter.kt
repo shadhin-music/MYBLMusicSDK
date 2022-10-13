@@ -28,15 +28,15 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     private var rbtData: MutableList<RBTDATA> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
-            VIEW_SEARCH -> R.layout.item_search
-            VIEW_ARTIST -> R.layout.item_artist
-            VIEW_PLAYLIST -> R.layout.item_playlist
-            VIEW_RELEASE -> R.layout.item_release_patch
-            VIEW_POPULAR_PODCAST -> R.layout.item_release_patch
-            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.item_trending_music_videos
+            VIEW_SEARCH -> R.layout.my_bl_sdk_item_search
+            VIEW_ARTIST -> R.layout.my_bl_sdk_item_artist
+            VIEW_PLAYLIST -> R.layout.my_bl_sdk_item_playlist
+            VIEW_RELEASE -> R.layout.my_bl_sdk_item_release_patch
+            VIEW_POPULAR_PODCAST -> R.layout.my_bl_sdk_item_release_patch
+            VIEW_TRENDING_MUSIC_VIDEO -> R.layout.my_bl_sdk_item_trending_music_videos
             // VIEW_AD -> R.layout.item_ad
 //            VIEW_DOWNLOAD -> R.layout.item_my_fav
-            VIEW_POPULAR_AMAR_TUNES -> R.layout.item_popular_amar_tunes
+            VIEW_POPULAR_AMAR_TUNES -> R.layout.my_bl_sdk_item_popular_amar_tunes
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
