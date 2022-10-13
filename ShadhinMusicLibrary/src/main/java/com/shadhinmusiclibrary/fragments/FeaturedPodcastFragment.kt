@@ -67,7 +67,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             Log.d("TAGGGGGGGY", "MESSAGE: ")
-
+            requireActivity().finish()
         }
     }
      fun setAdapter(){
