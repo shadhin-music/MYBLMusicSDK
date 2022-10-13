@@ -13,7 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-object ImageSizeParser {
+internal object ImageSizeParser {
     fun getDPfromPX(pixel: Int, context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody
 
-class HomeViewModel(private val homeContentRepository: HomeContentRepository): ViewModel() {
+internal class HomeViewModel(private val homeContentRepository: HomeContentRepository): ViewModel() {
 
     private val _homeContent:MutableLiveData<ApiResponse<HomeData>> = MutableLiveData()
     val homeContent:LiveData<ApiResponse<HomeData>> = _homeContent

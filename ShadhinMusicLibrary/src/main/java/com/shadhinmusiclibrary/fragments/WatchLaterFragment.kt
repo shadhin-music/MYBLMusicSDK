@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
 
 
-class WatchLaterFragment : Fragment() {
+internal class WatchLaterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

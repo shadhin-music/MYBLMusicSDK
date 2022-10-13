@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack, FragmentEntryPoint,
+internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack, FragmentEntryPoint,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContent? = null

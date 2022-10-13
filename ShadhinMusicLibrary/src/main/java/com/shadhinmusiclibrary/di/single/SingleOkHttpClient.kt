@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.di.single
 import com.shadhinmusiclibrary.fragments.artist.LastFmApiKeyInterceptor
 import okhttp3.OkHttpClient
 
-class SingleOkHttpClient private constructor() {
+internal class SingleOkHttpClient private constructor() {
     companion object {
         @Volatile
         private var INSTANCE: OkHttpClient? = null

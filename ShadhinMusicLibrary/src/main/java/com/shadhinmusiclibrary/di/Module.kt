@@ -26,7 +26,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class Module(private val applicationContext: Context) {
+internal class Module(private val applicationContext: Context) {
 /*
     private fun getRetrofitInstance(): Retrofit {
         return  RetrofitClient.getInstance()

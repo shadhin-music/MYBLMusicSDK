@@ -20,7 +20,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.R
 
-class  ShadhinMusicNotificationManager(
+internal class  ShadhinMusicNotificationManager(
     private val context: Context,
     private val token: MediaSessionCompat.Token?,
     private val notificationListener:PlayerNotificationManager.NotificationListener?

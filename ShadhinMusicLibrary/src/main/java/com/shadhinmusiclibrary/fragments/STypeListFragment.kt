@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
-class STypeListFragment : CommonBaseFragment(), HomeCallBack {
+internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
    private  lateinit var releaseAdapter:ReleaseAdapter
    private lateinit var footerAdapter:HomeFooterAdapter

@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 
-class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
+internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null

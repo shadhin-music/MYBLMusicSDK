@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.data.repository.ArtistContentRepository
 
 
-class ArtistViewModelFactory(private val artistContentRepository: ArtistContentRepository) : ViewModelProvider.Factory{
+internal class ArtistViewModelFactory(private val artistContentRepository: ArtistContentRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
        return ArtistViewModel(artistContentRepository) as T
     }

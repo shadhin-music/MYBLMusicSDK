@@ -10,7 +10,7 @@ import com.shadhinmusiclibrary.data.repository.PodcastRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 
-class PodcastViewModel (private val podcastRepository: PodcastRepository): ViewModel() {
+internal class PodcastViewModel (private val podcastRepository: PodcastRepository): ViewModel() {
     private val  _podcastContent: MutableLiveData<ApiResponse<PodcastModel>> = MutableLiveData()
 
      val podcastDetailsContent: LiveData<ApiResponse<PodcastModel>> = _podcastContent

@@ -8,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(private val musicServiceController: MusicServiceController): ViewModel(),
+internal class PlayerViewModel(private val musicServiceController: MusicServiceController): ViewModel(),
     MusicServiceController by  musicServiceController{
 
     private val _playerProgress: MutableLiveData<PlayerProgress> = MutableLiveData()

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
-open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
+internal open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
     var argHomePatchItem: HomePatchItem? = null
     var argHomePatchDetail: HomePatchDetail? = null
     lateinit var playerViewModel: PlayerViewModel

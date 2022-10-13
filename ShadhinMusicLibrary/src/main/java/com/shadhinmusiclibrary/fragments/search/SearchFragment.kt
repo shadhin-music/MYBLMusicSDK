@@ -43,7 +43,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
 
-class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
+internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var navController: NavController
     private lateinit var viewModel: SearchViewModel
 

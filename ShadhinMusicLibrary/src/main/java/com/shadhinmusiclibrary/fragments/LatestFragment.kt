@@ -11,7 +11,7 @@ import com.shadhinmusiclibrary.R
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class LatestFragment : Fragment() {
+internal class LatestFragment : Fragment() {
     private lateinit var rvLatestMusic: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

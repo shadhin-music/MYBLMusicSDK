@@ -1,7 +1,6 @@
-package com.shadhinmusiclibrary.player.utils;
+package com.shadhinmusiclibrary.player.utils
 
-public class CharParser {
-
+internal object CharParser {
     /**
      * Replaces <...> tag inside the url with a image size
      *
@@ -9,29 +8,18 @@ public class CharParser {
      * @param type of the image
      * @return replaced url
      */
-    public static String getImageFromTypeUrl(String url, String type) {
-        if (url == null || url.isEmpty()) {
-            return "";
-        }
-
-        switch (type) {
-            case "A":
-                return url.replaceAll("</?.*?>", "300");
-            case "PDB":
-                return url.replaceAll("</?.*?>", "450");
-            case "M":
-                return url.replaceAll("</?.*?>", "1200");
-            case "V":
-                return url.replaceAll("</?.*?>", "1280");
-            case "PP":
-                return url.replaceAll("</?.*?>", "320");
-            case "PL":
-                return url.replaceAll("</?.*?>", "225");
-
-            case "PLB":
-                return url.replaceAll("</?.*?>", "780");
-            default:
-                return url.replaceAll("</?.*?>", "300");
+    fun getImageFromTypeUrl(url: String?, type: String?): String {
+        return if (url == null || url.isEmpty()) {
+            ""
+        } else when (type) {
+            "A" -> url.replace("</?.*?>".toRegex(), "300")
+            "PDB" -> url.replace("</?.*?>".toRegex(), "450")
+            "M" -> url.replace("</?.*?>".toRegex(), "1200")
+            "V" -> url.replace("</?.*?>".toRegex(), "1280")
+            "PP" -> url.replace("</?.*?>".toRegex(), "320")
+            "PL" -> url.replace("</?.*?>".toRegex(), "225")
+            "PLB" -> url.replace("</?.*?>".toRegex(), "780")
+            else -> url.replace("</?.*?>".toRegex(), "300")
         }
     }
 
@@ -41,20 +29,21 @@ public class CharParser {
      * @param data to be processed
      * @return replaced data
      */
-    public static String removeEmptySpaces(String data) {
-        return data.replaceAll("\\s+", "");
+    fun removeEmptySpaces(data: String): String {
+        return data.replace("\\s+".toRegex(), "")
     }
 
     /**
      * Removes multiple spaces and replaces them with a single space
-     * <p>
+     *
+     *
      * https://stackoverflow.com/questions/2932392/java-how-to-replace-2-or-more-spaces-with-single-space-in-string-and-delete-lead
      *
      * @param data to be processed
      * @return replaced data
      */
-    public static String replaceMultipleSpaces(String data) {
-        return data.replaceAll("\\s{2,}", " ").trim();
+    fun replaceMultipleSpaces(data: String): String {
+        return data.replace("\\s{2,}".toRegex(), " ").trim { it <= ' ' }
         //return data.replaceAll("^ +| +$|( )+", "$1");
     }
 }

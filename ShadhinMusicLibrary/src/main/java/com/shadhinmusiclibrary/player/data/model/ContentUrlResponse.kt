@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class ContentUrlResponse(
+internal data class ContentUrlResponse(
     @SerializedName("Data")
     var `data`: String? = null,
     @SerializedName("Message")

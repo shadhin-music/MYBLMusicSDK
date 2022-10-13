@@ -9,11 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment
-import com.shadhinmusiclibrary.fragments.MusicVideoFragment
-import com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment
 
-class FeaturedHomeFragment : Fragment() {
+
+internal class FeaturedHomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

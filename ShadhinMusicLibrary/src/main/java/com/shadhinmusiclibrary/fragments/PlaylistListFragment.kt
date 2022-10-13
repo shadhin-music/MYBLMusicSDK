@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class PlaylistListFragment : Fragment(), HomeCallBack {
+internal class PlaylistListFragment : Fragment(), HomeCallBack {
     var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
      private lateinit var footerAdapter: HomeFooterAdapter

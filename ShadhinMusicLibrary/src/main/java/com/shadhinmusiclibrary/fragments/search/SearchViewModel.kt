@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 
 
-class SearchViewModel(private val searchRepository: SearchRepository): ViewModel() {
+internal class SearchViewModel(private val searchRepository: SearchRepository): ViewModel() {
 
     private val _searchArtistContent: MutableLiveData<ApiResponse<SearchModel>> = MutableLiveData()
     val searchArtistContent: LiveData<ApiResponse<SearchModel>> = _searchArtistContent

@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.utils.Status
 
-class MusicVideoFragment : Fragment(), FragmentEntryPoint {
+internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null

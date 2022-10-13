@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.player.utils.convater
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.data.model.Music
 
-class MusicConverterFactory private constructor(private val obj:Any){
+internal class MusicConverterFactory private constructor(private val obj:Any){
     private  var converter:MusicConverter?=null
     init { initialization() }
     private fun initialization(){

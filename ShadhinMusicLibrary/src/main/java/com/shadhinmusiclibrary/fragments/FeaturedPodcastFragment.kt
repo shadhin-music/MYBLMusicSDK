@@ -28,7 +28,7 @@ import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
 
-class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
+internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null

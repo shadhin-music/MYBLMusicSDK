@@ -6,8 +6,8 @@ import com.shadhinmusiclibrary.player.data.model.PlayerProgress
 import kotlinx.coroutines.CoroutineScope
 import java.util.*
 
-typealias CurrentMusicCallbackFunc = (music: Music?)->Unit
-interface MusicServiceActions {
+internal typealias CurrentMusicCallbackFunc = (music: Music?)->Unit
+internal interface MusicServiceActions {
     val currentMusic: Music?
     val musicList:List<Music>?
     val musicIndex: Int

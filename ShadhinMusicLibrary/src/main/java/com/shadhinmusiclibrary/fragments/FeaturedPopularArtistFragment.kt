@@ -26,7 +26,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
+internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null

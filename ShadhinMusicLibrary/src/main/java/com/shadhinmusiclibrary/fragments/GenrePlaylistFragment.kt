@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
-class GenrePlaylistFragment : Fragment() {
+internal class GenrePlaylistFragment : Fragment() {
 
     var homePatchItem: HomePatchItem? = null
     var homePatchDetail: HomePatchDetail? = null

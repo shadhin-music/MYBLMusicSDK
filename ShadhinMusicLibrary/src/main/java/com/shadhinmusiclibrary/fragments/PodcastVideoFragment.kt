@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.*
 
 
-class PodcastVideoFragment : Fragment() {
+internal class PodcastVideoFragment : Fragment() {
 
     private lateinit var parentAdapter: ConcatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -17,7 +17,7 @@ import okhttp3.OkHttpClient
 
 
 private const val TAG = "DataSourceFactory"
-open class ShadhinDataSourceFactory private constructor(
+internal open class ShadhinDataSourceFactory private constructor(
     private val context: Context,
     private val music: Music,
     private val musicRepository: MusicRepository

@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.R
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class AllFragment : Fragment() {
+internal class AllFragment : Fragment() {
 //    private lateinit var allAdapter: AllAdapter
 //    private lateinit var rvAllHome: RecyclerView
 //    override fun onCreateView(

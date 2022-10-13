@@ -4,7 +4,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitClient private constructor() {
+internal class RetrofitClient private constructor() {
     companion object {
         @Volatile
         private var INSTANCE: Retrofit? = null

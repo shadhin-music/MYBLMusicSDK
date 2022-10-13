@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.R
 
 
 
-class TopTrendingBanglaMusicVideoFragment : Fragment() {
+internal class TopTrendingBanglaMusicVideoFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

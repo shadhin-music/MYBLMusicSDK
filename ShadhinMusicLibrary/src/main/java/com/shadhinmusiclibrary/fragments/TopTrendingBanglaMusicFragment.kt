@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.adapter.TopTrendingBanglaMusicAdapter
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
-class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
+internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 
        private lateinit var adapter: TopTrendingBanglaMusicAdapter
        private lateinit var footerAdapter: HomeFooterAdapter

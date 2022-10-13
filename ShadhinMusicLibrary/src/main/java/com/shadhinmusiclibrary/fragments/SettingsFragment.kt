@@ -10,7 +10,7 @@ import com.shadhinmusiclibrary.R
  * Rezaul Khan
  * https://github.com/rezaulkhan111
  **/
-class SettingsFragment : Fragment() {
+internal class SettingsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

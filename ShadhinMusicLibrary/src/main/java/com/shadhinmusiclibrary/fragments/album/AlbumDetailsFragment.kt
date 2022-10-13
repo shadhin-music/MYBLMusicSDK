@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class AlbumDetailsFragment :
+internal class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
     FragmentEntryPoint,
     OnItemClickCallback,

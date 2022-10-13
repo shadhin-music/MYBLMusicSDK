@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 
 
-class PopularAlbumFragment : Fragment() {
+internal class PopularAlbumFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

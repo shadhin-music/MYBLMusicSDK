@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.data.repository.ArtistSongContentRepository
 import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
-class ArtistContentViewModel (private val artistContentRepository: ArtistSongContentRepository): ViewModel() {
+internal class ArtistContentViewModel (private val artistContentRepository: ArtistSongContentRepository): ViewModel() {
 
     private val _artistSongContent: MutableLiveData<ApiResponse<ArtistContent>> = MutableLiveData()
     val artistSongContent: LiveData<ApiResponse<ArtistContent>> = _artistSongContent

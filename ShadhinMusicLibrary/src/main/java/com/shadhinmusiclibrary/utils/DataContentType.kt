@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.utils
 
-object DataContentType {
+internal object DataContentType {
     //fragment conten type
     const val CONTENT_TYPE_R = "R"
     const val CONTENT_TYPE_A = "A"

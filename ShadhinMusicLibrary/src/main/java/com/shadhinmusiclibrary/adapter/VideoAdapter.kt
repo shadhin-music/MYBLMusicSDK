@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.utils.createTimeLabel
 
 
-typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
+internal typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
 internal class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
     VideoDiffCallBack()
 ){
@@ -175,7 +175,7 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
         GRID
     }
 }
-class  VideoDiffCallBack: DiffUtil.ItemCallback<Video>() {
+internal class  VideoDiffCallBack: DiffUtil.ItemCallback<Video>() {
     override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
         return oldItem.contentID == newItem.contentID
     }

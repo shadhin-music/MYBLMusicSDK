@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
 
 
-class DownloadFragment : Fragment() {
+internal class DownloadFragment : Fragment() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager
 

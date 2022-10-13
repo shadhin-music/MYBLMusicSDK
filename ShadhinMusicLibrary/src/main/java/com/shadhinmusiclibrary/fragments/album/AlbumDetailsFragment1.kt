@@ -26,7 +26,7 @@ import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class AlbumDetailsFragment1 :
+internal class AlbumDetailsFragment1 :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,
     BottomSheetDialogItemCallback {
 

@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
+internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 
     private lateinit var navController: NavController
     private lateinit var footerAdapter: HomeFooterAdapter

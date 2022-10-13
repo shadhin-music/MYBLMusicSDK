@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import com.google.android.exoplayer2.ExoPlayer
 import java.io.Serializable
 @Keep
-data class PlayerProgress(
+internal data class PlayerProgress(
     var currentPosition:Long?=0,
     val bufferPosition:Long?=0,
     val duration:Long?=0,

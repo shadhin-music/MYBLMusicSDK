@@ -27,7 +27,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
+internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
     var data: RBTDATA? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     private var contentType: String? = null

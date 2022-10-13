@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.player.ShadhinMusicPlayer
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.utils.exH
 
-class ShadhinMusicPlayerNotificationListener(
+internal class ShadhinMusicPlayerNotificationListener(
     private val musicService: ShadhinMusicPlayer
 ) : PlayerNotificationManager.NotificationListener {
 

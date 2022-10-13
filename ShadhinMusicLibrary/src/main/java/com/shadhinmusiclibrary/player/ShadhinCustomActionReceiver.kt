@@ -9,7 +9,7 @@ import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.R.*
 
-class ShadhinCustomActionReceiver(
+internal class ShadhinCustomActionReceiver(
     private val context: Context,
     var notificationManager: PlayerNotificationManager?=null
 ) : PlayerNotificationManager.CustomActionReceiver {

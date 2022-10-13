@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.BASE_URL_API_shadhinmusic
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetroClient {
+internal class RetroClient {
     companion object {
 
     }

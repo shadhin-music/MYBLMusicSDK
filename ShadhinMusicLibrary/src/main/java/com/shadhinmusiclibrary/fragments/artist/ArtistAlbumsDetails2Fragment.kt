@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
+internal class ArtistAlbumsDetails2Fragment : Fragment(), FragmentEntryPoint {
     private lateinit var navController: NavController
     private lateinit var adapter: ArtistSpecificAlbumAdapter
     private var param1: ArtistAlbumModel? = null

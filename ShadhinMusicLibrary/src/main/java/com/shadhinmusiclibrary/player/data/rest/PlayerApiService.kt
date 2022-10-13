@@ -5,7 +5,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
-interface PlayerApiService {
+internal interface PlayerApiService {
 
     @GET("streaming/getpth")
     suspend fun fetchContentUrl(

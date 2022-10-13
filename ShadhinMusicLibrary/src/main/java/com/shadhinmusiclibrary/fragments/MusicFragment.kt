@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AudioPodcastAdapter
 
 
-class MusicFragment : Fragment() {
+internal class MusicFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

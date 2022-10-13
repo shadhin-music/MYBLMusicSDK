@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 
 
-class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
+internal class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
     TimelineQueueNavigator(sessionCompat) {
     override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
 

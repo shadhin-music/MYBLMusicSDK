@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.fragments.artist
 
-data class ArtistBanner(
+internal data class ArtistBanner(
     val PlayListId: String,
     val PlayListImage: String,
     val `data`: List<Any>,

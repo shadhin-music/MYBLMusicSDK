@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.fragments.artist
 import androidx.annotation.Keep
 
 @Keep
-data class ArtistContentData(
+internal data class ArtistContentData(
     val AlbumId: String,
     val ArtistId: String,
     val ContentID: String,

@@ -10,7 +10,7 @@ import com.shadhinmusiclibrary.utils.ApiResponse
 import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
-class ArtistBannerViewModel (private val artistBannerContentRepository: ArtistBannerContentRepository): ViewModel() {
+internal class ArtistBannerViewModel (private val artistBannerContentRepository: ArtistBannerContentRepository): ViewModel() {
     private val  _artistBannerContent: MutableLiveData<ApiResponse<ArtistBanner>> = MutableLiveData()
 
      val artistBannerContent: LiveData<ApiResponse<ArtistBanner>> = _artistBannerContent

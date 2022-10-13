@@ -8,8 +8,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.ShadhinSDKCallback
-import com.shadhinmusiclibrary.data.repository.AuthRepository
-import com.shadhinmusiclibrary.di.ShadhinApp
+
 
 private const val TAG = "AppActivity"
 class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
@@ -71,7 +70,7 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
     }
 
     override fun tokenStatus(isTokenValid: Boolean, error: String) {
-        Log.i(TAG, "isTokenValid: $isTokenValid $error ${AuthRepository.appToken}")
+        Log.i(TAG, "isTokenValid: $isTokenValid $error ")
     }
     companion object{
         const val TOEKN:String = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2NTU2MjcyOCwiZXhwIjoxNjY1NjQyNDU1LCJpYXQiOjE2NjU1NjI3MjgsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.Oq2KFHX8Yw8u-QLapKw0hbDeHuxYMQrd3FRCHb8JGKIL5OsDEpfHiwgCOYLCAEVgTJ17rGssxXTDYW7-V89Xyw"

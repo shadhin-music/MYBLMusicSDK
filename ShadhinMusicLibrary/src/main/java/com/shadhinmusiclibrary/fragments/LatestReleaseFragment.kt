@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
+internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
     lateinit var viewModel: FeaturedTracklistViewModel
 
     override fun onCreateView(
