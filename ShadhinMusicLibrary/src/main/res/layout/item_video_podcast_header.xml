@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/cardBiography"
-        app:cardBackgroundColor="@color/colorWhite"
+        app:cardBackgroundColor="@color/my_sdk_color_white"
         app:cardCornerRadius="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="10dp"
@@ -47,7 +47,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="4dp"
                 android:text="Read More"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/my_sdk_color_primary" />
 
 
 

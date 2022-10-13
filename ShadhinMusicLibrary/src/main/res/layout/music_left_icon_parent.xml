@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:text="Music"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/my_sdk_color_primary"
         android:textStyle="bold" />
 </LinearLayout>

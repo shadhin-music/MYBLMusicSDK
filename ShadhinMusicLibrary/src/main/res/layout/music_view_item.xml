@@ -23,7 +23,7 @@
         android:layout_marginBottom="20dp"
         android:maxLines="2"
         android:text="Latest Release"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/my_sdk_color_white"
         android:textSize="16dp"
         android:textStyle="bold" />
 </androidx.cardview.widget.CardView>

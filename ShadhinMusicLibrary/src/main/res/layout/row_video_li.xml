@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
 
                 android:scaleType="centerCrop"
-                tools:background="@color/colorPrimary" />
+                tools:background="@color/my_sdk_color_primary" />
 
             <ImageView
                 android:id="@+id/play_pause"
@@ -65,7 +65,7 @@
 
 
                 android:lines="1"
-                android:textColor="@color/down_title"
+                android:textColor="@color/my_sdk_down_title"
                 android:textSize="16sp"
                 tools:text="God’s Plan" />
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
 
                 android:lines="1"
-                android:textColor="@color/down_title"
+                android:textColor="@color/my_sdk_down_title"
                 android:textSize="12sp"
                 tools:text="Drake" />
 
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
 
                 android:lines="1"
-                android:textColor="@color/down_title"
+                android:textColor="@color/my_sdk_down_title"
                 android:textSize="12sp"
                 tools:text="3:10" />
         </LinearLayout>

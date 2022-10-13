@@ -34,10 +34,7 @@ class AppActivity : AppCompatActivity(),ShadhinSDKCallback {
 
 
 
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
-
-            Toast.makeText(this,  DDD.faf(), Toast.LENGTH_SHORT).show();
-        },1000)
+       
 
 //        }
 //        Handler().postDelayed({

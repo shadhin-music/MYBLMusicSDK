@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/my_sdk_color_primary"
             app:layout_constraintTop_toTopOf="@id/parentRelative"
 
             >
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_search_download"
-            android:tint="@color/colorBlack"
+            android:tint="@color/my_sdk_color_black"
             app:layout_constraintBottom_toBottomOf="@id/parentRelative"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/parentRelative"

@@ -144,7 +144,7 @@ internal class MusicPlayBS : Fragment(),
         ibtnControl.setColorFilter(
             ContextCompat.getColor(
                 requireContext(),
-                R.color.colorAccent
+                R.color.my_sdk_color_accent
             ), PorterDuff.Mode.SRC_IN
         )
     }
@@ -192,7 +192,7 @@ internal class MusicPlayBS : Fragment(),
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM,
             intArrayOf(
-                ContextCompat.getColor(requireContext(), R.color.shadinRequiredColor),
+                ContextCompat.getColor(requireContext(), R.color.my_sdk_shadin_required_color),
                 vibrant.rgb
             )
         );

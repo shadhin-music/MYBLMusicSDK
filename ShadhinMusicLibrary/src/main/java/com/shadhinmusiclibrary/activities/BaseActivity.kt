@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.activities
 
 import android.graphics.PorterDuff
-import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,7 +21,7 @@ internal abstract class BaseActivity : AppCompatActivity() {
             ibtnControl.setColorFilter(
                 ContextCompat.getColor(
                     this,
-                    R.color.colorAccent
+                    R.color.my_sdk_color_accent
                 ), PorterDuff.Mode.SRC_IN
             )
         } else {

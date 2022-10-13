@@ -14,7 +14,7 @@
         android:id="@+id/cl_parent_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:background="@color/my_sdk_transparent"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="@+id/cl_main_music_player">
@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/transparent"
+            android:background="@color/my_sdk_transparent"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
@@ -76,7 +76,7 @@
         android:id="@+id/dsv_current_play_songs_thumb"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/transparent"
+        android:background="@color/my_sdk_transparent"
         app:layout_constraintBottom_toTopOf="@+id/ll_control_view"
         app:layout_constraintTop_toBottomOf="@+id/cl_parent_relative" />
 
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:maxLines="1"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/my_sdk_color_black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -142,9 +142,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:progressTint="@color/colorPrimary"
-            android:secondaryProgressTint="@color/colorWhite"
-            android:thumbTint="@color/colorPrimary" />
+            android:progressTint="@color/my_sdk_color_primary"
+            android:secondaryProgressTint="@color/my_sdk_color_white"
+            android:thumbTint="@color/my_sdk_color_primary" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -67,7 +67,7 @@
                     android:lines="1"
 
                     tools:text="God’s Plan"
-                    android:textColor="@color/down_title"
+                    android:textColor="@color/my_sdk_down_title"
                     android:textSize="16sp"
                     />
 
@@ -82,7 +82,7 @@
                     tools:text="Drake"
 
                     android:lines="1"
-                    android:textColor="@color/down_title"
+                    android:textColor="@color/my_sdk_down_title"
                     android:textSize="12sp" />
             </LinearLayout>
 

@@ -53,7 +53,7 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:text="playlist name"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/my_sdk_color_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -69,7 +69,7 @@
                 android:paddingEnd="8dp"
                 android:text=""
                 android:visibility="gone"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/my_sdk_color_black"
                 android:textSize="12sp" />
 
             <View
@@ -137,7 +137,7 @@
     android:visibility="gone"
     app:cardElevation="0dp"
     android:elevation="1dp"
-    app:cardBackgroundColor="@color/colorWhite"
+    app:cardBackgroundColor="@color/my_sdk_color_white"
     app:cardCornerRadius="16dp"
     android:layout_marginBottom="12dp"
     android:layout_marginTop="12dp"
@@ -177,7 +177,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="4dp"
             android:text="Read More"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/my_sdk_color_primary" />
 
 
 
@@ -217,7 +217,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_toRightOf="@id/imageArtist"
                 android:text="Listen to"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/my_sdk_color_white"
                 android:textSize="12sp" />
 
             <TextView
@@ -228,7 +228,7 @@
                 android:maxLines="1"
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/imageArtist"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/my_sdk_color_white"
                 android:textSize="24sp" />
 
             <TextView
@@ -238,7 +238,7 @@
                 android:layout_below="@+id/tvName"
                 android:layout_toRightOf="@id/imageArtist"
                 android:text="Favourite song"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/my_sdk_color_white"
                 android:textSize="12sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -261,7 +261,7 @@
             android:layout_marginStart="16dp"
             android:layout_toStartOf="@+id/switch_layout"
             android:text="Download all"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/my_sdk_color_black"
             android:textSize="16sp" />
 
         <FrameLayout

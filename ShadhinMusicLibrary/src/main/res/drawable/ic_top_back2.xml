@@ -4,5 +4,5 @@
     android:height="30dp"
     android:shape="oval">
 
-    <solid android:color="@color/colorPrimary"/>
+    <solid android:color="@color/my_sdk_color_primary"/>
 </shape>
