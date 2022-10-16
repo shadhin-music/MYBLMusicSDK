@@ -6,11 +6,11 @@ class AudioFocusManagerFactory {
     companion object{
         @JvmStatic
         fun createAudioFocusManager(): AudioFocusManager {
-           /* return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 PostOreoAudioFocusManager()
-            }else{*/
-              return  PreOreoAudioFocusManager()
-          //  }
+            }else{
+                PreOreoAudioFocusManager()
+            }
         }
     }
 }
