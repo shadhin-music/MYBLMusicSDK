@@ -14,6 +14,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
@@ -47,30 +48,53 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var navController: NavController
     private lateinit var viewModel: SearchViewModel
 
-    private lateinit var searchText: String
+    private var searchText: String = ""
     private var queryTextChangedJob: Job? = null
-    private lateinit var tvTrending: TextView
-    private lateinit var tvTrendingItems: TextView
-    private lateinit var tvTrendingVideo: TextView
-    private lateinit var tvArtist: TextView
-    private lateinit var tvAlbums: TextView
-    private lateinit var tvTracks: TextView
-    private lateinit var tvVideos: TextView
-    private lateinit var tvShows: TextView
-    private lateinit var tvEpisodes: TextView
-    private lateinit var tvPodcastTracks: TextView
 
-    private lateinit var cardView: CardView
     private lateinit var svSearchInput: SearchView
-    private lateinit var recyclerViewAlbums: RecyclerView
-    private lateinit var recyclerViewVideos: RecyclerView
-    private lateinit var recyclerViewTracks: RecyclerView
-    private lateinit var recyclerViewShows: RecyclerView
-    private lateinit var recyclerViewEpisodes: RecyclerView
-    private lateinit var recyclerViewPodcastTracks: RecyclerView
-    private lateinit var recyclerViewTrending: RecyclerView
-    private lateinit var recyclerViewTrendingVideos: RecyclerView
-    private lateinit var recyclerViewArtist: RecyclerView
+    private lateinit var tvNoDataFound: TextView
+
+
+    private lateinit var llTrendingSearchItem: LinearLayout
+    private lateinit var tvTrendingSearchItem: TextView
+    private lateinit var cvTrendingSearchItem: CardView
+
+    private lateinit var llWeeklyTrending: LinearLayout
+    private lateinit var tvWeeklyTrending: TextView
+    private lateinit var rvWeeklyTrending: RecyclerView
+
+    private lateinit var llTrendingVideo: LinearLayout
+    private lateinit var tvTrendingVideo: TextView
+    private lateinit var rvTrendingVideos: RecyclerView
+
+    private lateinit var llArtist: LinearLayout
+    private lateinit var tvArtist: TextView
+    private lateinit var rvArtist: RecyclerView
+
+    private lateinit var llAlbum: LinearLayout
+    private lateinit var tvAlbums: TextView
+    private lateinit var rvAlbums: RecyclerView
+
+    private lateinit var llTracks: LinearLayout
+    private lateinit var tvTracks: TextView
+    private lateinit var rvTracks: RecyclerView
+
+    private lateinit var llVideos: LinearLayout
+    private lateinit var tvVideos: TextView
+    private lateinit var rvVideos: RecyclerView
+
+    private lateinit var llShows: LinearLayout
+    private lateinit var tvShows: TextView
+    private lateinit var rvShows: RecyclerView
+
+    private lateinit var llEpisode: LinearLayout
+    private lateinit var tvEpisodes: TextView
+    private lateinit var rvEpisodes: RecyclerView
+
+    private lateinit var llPodcastTracks: LinearLayout
+    private lateinit var tvPodcastTracks: TextView
+    private lateinit var rvPodcastTracks: RecyclerView
+
     var mSuggestionAdapter: SearchSuggestionAdapter? = null
 
     override fun onCreateView(
@@ -84,6 +108,8 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUI()
+
         setupViewModel()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -93,25 +119,9 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 navController.popBackStack()
             }
         }
-        cardView = requireView().findViewById(R.id.cardView)
-        tvTrendingItems = requireView().findViewById(R.id.tvTrendingItems)
-        recyclerViewTrending = requireView().findViewById(R.id.recyclerViewTrending)
-        recyclerViewTrendingVideos = requireView().findViewById(R.id.recyclerViewTrendingVideos)
-        recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
 
-        tvTrending = requireView().findViewById(R.id.tvTrending)
-        tvTrendingVideo = requireView().findViewById(R.id.tvTrendingVideo)
+        observeDataTrendingItems("S")
 
-        viewModel.getTopTrendingItems("s")
-        viewModel.topTrendingContent.observe(viewLifecycleOwner) { response ->
-            if (response != null && response.status == Status.SUCCESS) {
-                response.data?.data?.let {
-                    recyclerViewTrending.layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewTrending.adapter = TopTenItemAdapter(it, this)
-                }
-            }
-        }
         svSearchInput = view.findViewById(R.id.sv_search_input)
         val chipArtist: Chip = requireView().findViewById(R.id.chip_1)
         val chipHabib: Chip = requireView().findViewById(R.id.chip_2)
@@ -147,40 +157,40 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         svSearchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 val cursor: Cursor = getRecentSuggestions(newText)!!
-//                val text = newText
-                searchText = newText
+                Log.e("TAG", "After: $searchText")
                 if (newText.length > 1) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
-                        Log.e("SearchFragment", "async work started...")
                         delay(2000)
+                        observeDataTrendingItems("\"\"")
                         observeData(searchText)
                     }
-                } else if (searchText.isEmpty()) {
+                    searchText = newText
+                    Log.e("TAG", "After: $searchText")
+                } else if (newText.isEmpty()) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
-                        // Log.e("SearchFragment", "async work started...")
                         delay(1000)
-                        //  doSearch(searchText)
-//                        rvTrending = requireView().findViewById(R.id.rvTrending)
-//                        rvTrending.visibility = VISIBLE
-//                        recyclerViewSearch.visibility = GONE
-                        //searchAlbumsAdapter =null
+//                        observeData(searchText)
+                        observeDataTrendingItems("S")
+                        observeData("\"\"")
                         mSuggestionAdapter?.swapCursor(cursor)
-                        //getData()
-                        tvTrendingItems.visibility = GONE
-                        cardView.visibility = GONE
-                        recyclerViewTrending.visibility = GONE
-                        recyclerViewTrendingVideos.visibility = GONE
-                        tvTrending.visibility = GONE
-                        tvTrendingVideo.visibility = GONE
+//                        tvTrendingSearchItem.visibility = GONE
+//                        cvTrendingSearchItem.visibility = GONE
+//                        rvWeeklyTrending.visibility = GONE
+//                        rvTrendingVideos.visibility = GONE
+//                        tvWeeklyTrending.visibility = GONE
+//                        tvTrendingVideo.visibility = GONE
                     }
+                    Log.e("TAG", "After: $searchText")
                 }
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                Log.e("TAG", "onQueryTextSubmit: $query")
                 // val query: String = intent.getStringExtra(SearchManager.QUERY);
+                searchText = query
                 val suggestions = SearchRecentSuggestions(
                     context,
                     MySuggestionProvider.AUTHORITY,
@@ -188,14 +198,16 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 )
                 suggestions.saveRecentQuery(query, null)
                 svSearchInput.clearFocus()
-                tvTrendingItems.visibility = GONE
-                recyclerViewTrending.visibility = GONE
-                recyclerViewTrendingVideos.visibility = GONE
-                tvTrending.visibility = GONE
-                tvTrendingVideo.visibility = GONE
+                observeData(searchText)
+//                tvTrendingSearchItem.visibility = GONE
+//                rvWeeklyTrending.visibility = GONE
+//                rvTrendingVideos.visibility = GONE
+//                tvWeeklyTrending.visibility = GONE
+//                tvTrendingVideo.visibility = GONE
                 return true
             }
         })
+
         svSearchInput.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
             override fun onSuggestionSelect(position: Int): Boolean {
                 return false
@@ -206,6 +218,20 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 return true
             }
         })
+    }
+
+    private fun initUI() {
+        tvNoDataFound = requireView().findViewById(R.id.tvNoDataFound)
+        llTrendingSearchItem = requireView().findViewById(R.id.llTrendingSearchItem)
+        llWeeklyTrending = requireView().findViewById(R.id.llWeeklyTrending)
+        llTrendingVideo = requireView().findViewById(R.id.llTrendingVideo)
+        llArtist = requireView().findViewById(R.id.llArtist)
+        llAlbum = requireView().findViewById(R.id.llAlbum)
+        llTracks = requireView().findViewById(R.id.llTracks)
+        llVideos = requireView().findViewById(R.id.llVideos)
+        llShows = requireView().findViewById(R.id.llShows)
+        llEpisode = requireView().findViewById(R.id.llEpisode)
+        llPodcastTracks = requireView().findViewById(R.id.llPodcastTracks)
     }
 
     private fun setTextOnSearchBar(chipCommon: Chip) {
@@ -219,7 +245,44 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             ViewModelProvider(this, injector.searchViewModelFactory)[SearchViewModel::class.java]
     }
 
+    private fun observeDataTrendingItems(type: String) {
+        viewModel.getTopTrendingItems(type)
+        viewModel.topTrendingContent.observe(viewLifecycleOwner) { response ->
+            if (response != null && response.status == Status.SUCCESS) {
+                if (response.data?.data?.isNotEmpty() == true) {
+                    tvTrendingSearchItem = requireView().findViewById(R.id.tvTrendingSearchItem)
+                    cvTrendingSearchItem = requireView().findViewById(R.id.cvTrendingSearchItem)
+                    llTrendingSearchItem.visibility = VISIBLE
+
+                    tvWeeklyTrending = requireView().findViewById(R.id.tvWeeklyTrending)
+                    rvWeeklyTrending = requireView().findViewById(R.id.rvWeeklyTrending)
+
+                    llWeeklyTrending.visibility = VISIBLE
+//                tvTrendingVideo = requireView().findViewById(R.id.tvTrendingVideo)
+//                rvTrendingVideos = requireView().findViewById(R.id.rvTrendingVideos)
+//                llTrendingVideo.visibility = VISIBLE
+
+                    tvNoDataFound.visibility = GONE
+                    response.data.data.let {
+                        rvWeeklyTrending.layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        rvWeeklyTrending.adapter = TopTenItemAdapter(it, this)
+                    }
+                } else {
+                    llTrendingSearchItem.visibility = GONE
+                    llWeeklyTrending.visibility = GONE
+
+                    tvNoDataFound.visibility = VISIBLE
+//                llTrendingVideo.visibility = GONE
+                }
+            }
+        }
+    }
+
     private fun observeData(searchText: String) {
+//        llTrendingSearchItem.visibility = GONE
+//        llWeeklyTrending.visibility = GONE
+
         viewModel.getSearchArtist(searchText)
         viewModel.getSearchAlbum(searchText)
         viewModel.getSearchTracks(searchText)
@@ -230,135 +293,167 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 
         viewModel.searchArtistContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewArtist = requireView().findViewById(R.id.recyclerViewArtist)
-                tvArtist = requireView().findViewById(R.id.tvArtist)
                 if (response.data?.data?.Artist?.data?.isNotEmpty() == true) {
-                    recyclerViewArtist.visibility = VISIBLE
-                    tvArtist.visibility = VISIBLE
-                    recyclerViewArtist.layoutManager =
+                    tvArtist = requireView().findViewById(R.id.tvArtist)
+                    rvArtist = requireView().findViewById(R.id.rvArtist)
+
+                    tvNoDataFound.visibility = GONE
+                    llArtist.visibility = VISIBLE
+//                    rvArtist.visibility = VISIBLE
+//                    tvArtist.visibility = VISIBLE
+                    rvArtist.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewArtist.adapter =
+                    rvArtist.adapter =
                         SearchArtistAdapter(response.data.data.Artist.data, this)
-                    Log.e("TAG", "DATASearch: " + response.data.data)
                 } else {
-                    recyclerViewArtist.visibility = GONE
-                    tvArtist.visibility = GONE
+                    llArtist.visibility = GONE
+//                    rvArtist.visibility = GONE
+//                    tvArtist.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchAlbumContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewAlbums = requireView().findViewById(R.id.recyclerViewAlbums)
-                tvAlbums = requireView().findViewById(R.id.tvAlbums)
                 if (response.data?.data?.Album?.data?.isNotEmpty() == true) {
-                    recyclerViewAlbums.visibility = VISIBLE
-                    tvAlbums.visibility = VISIBLE
-                    recyclerViewAlbums.layoutManager =
+                    rvAlbums = requireView().findViewById(R.id.rvAlbums)
+                    tvAlbums = requireView().findViewById(R.id.tvAlbums)
+
+                    tvNoDataFound.visibility = GONE
+                    llAlbum.visibility = VISIBLE
+//                    rvAlbums.visibility = VISIBLE
+//                    tvAlbums.visibility = VISIBLE
+                    rvAlbums.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewAlbums.adapter =
+                    rvAlbums.adapter =
                         SearchAlbumsAdapter(response.data.data.Album.data, this)
                 } else {
-                    recyclerViewAlbums.visibility = GONE
-                    tvAlbums.visibility = GONE
+                    llAlbum.visibility = GONE
+//                    rvAlbums.visibility = GONE
+//                    tvAlbums.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchTracksContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewTracks = requireView().findViewById(R.id.recyclerViewTracks)
-                tvTracks = requireView().findViewById(R.id.tvTracks)
                 if (response.data?.data?.Track?.data?.isNotEmpty() == true) {
-                    recyclerViewTracks.visibility = GONE
-                    tvTracks.visibility = GONE
+                    rvTracks = requireView().findViewById(R.id.rvTracks)
+                    tvTracks = requireView().findViewById(R.id.tvTracks)
+
+                    tvNoDataFound.visibility = GONE
+                    llTracks.visibility = VISIBLE
+//                    rvTracks.visibility = GONE
+//                    tvTracks.visibility = GONE
 //                    tvTracks.visibility = VISIBLE
 //                    recyclerViewTracks.visibility = VISIBLE
-                    recyclerViewTracks.layoutManager =
+                    rvTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewTracks.adapter =
+                    rvTracks.adapter =
                         SearchTracksAdapter(response.data.data.Track.data, this)
                 } else {
-                    recyclerViewTracks.visibility = GONE
-                    tvTracks.visibility = GONE
+                    llTracks.visibility = GONE
+//                    rvTracks.visibility = GONE
+//                    tvTracks.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewVideos = requireView().findViewById(R.id.recyclerViewVideos)
-                tvVideos = requireView().findViewById(R.id.tvVideos)
                 if (response.data?.data?.Video?.data?.isNotEmpty() == true) {
-                    tvVideos.visibility = VISIBLE
-                    recyclerViewVideos.visibility = VISIBLE
-                    recyclerViewVideos.layoutManager =
+                    rvVideos = requireView().findViewById(R.id.rvVideos)
+                    tvVideos = requireView().findViewById(R.id.tvVideos)
+
+                    tvNoDataFound.visibility = GONE
+                    llVideos.visibility = VISIBLE
+//                    tvVideos.visibility = VISIBLE
+//                    rvVideos.visibility = VISIBLE
+                    rvVideos.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewVideos.adapter =
+                    rvVideos.adapter =
                         SearchVideoAdapter(response.data.data.Video.data, this)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
                 } else {
-                    recyclerViewVideos.visibility = GONE
-                    tvVideos.visibility = GONE
+                    llVideos.visibility = GONE
+//                    rvVideos.visibility = GONE
+//                    tvVideos.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchPodcastShowContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewShows = requireView().findViewById(R.id.recyclerViewShows)
-                tvShows = requireView().findViewById(R.id.tvShows)
                 if (response.data?.data?.PodcastShow?.data?.isNotEmpty() == true) {
-                    recyclerViewShows.visibility = GONE
-                    tvShows.visibility = GONE
+                    rvShows = requireView().findViewById(R.id.rvShows)
+                    tvShows = requireView().findViewById(R.id.tvShows)
+
+                    tvNoDataFound.visibility = GONE
+                    llShows.visibility = VISIBLE
+//                    rvShows.visibility = GONE
+//                    tvShows.visibility = GONE
 //                    recyclerViewShows.visibility = VISIBLE
 //                    tvShows.visibility = VISIBLE
-                    recyclerViewShows.layoutManager =
+                    rvShows.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewShows.adapter =
+                    rvShows.adapter =
                         SearchShowAdapter(response.data.data.PodcastShow.data, this)
                     Log.e("TAG", "DATA123: " + response.data.data.PodcastShow.data)
                 } else {
-                    recyclerViewShows.visibility = GONE
-                    tvShows.visibility = GONE
-
+                    llShows.visibility = GONE
+//                    rvShows.visibility = GONE
+//                    tvShows.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchPodcastEpisodeContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                recyclerViewEpisodes = requireView().findViewById(R.id.recyclerViewEpisodes)
-                tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
                 if (response.data?.data?.PodcastEpisode?.data?.isNotEmpty() == true) {
-                    recyclerViewEpisodes.visibility = GONE
-                    tvEpisodes.visibility = GONE
+                    rvEpisodes = requireView().findViewById(R.id.rvEpisodes)
+                    tvEpisodes = requireView().findViewById(R.id.tvEpisodes)
+
+                    tvNoDataFound.visibility = GONE
+                    llEpisode.visibility = VISIBLE
+//                    rvEpisodes.visibility = GONE
+//                    tvEpisodes.visibility = GONE
 //                    recyclerViewEpisodes.visibility = VISIBLE
 //                    tvEpisodes.visibility = VISIBLE
-                    recyclerViewEpisodes.layoutManager =
+                    rvEpisodes.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewEpisodes.adapter =
+                    rvEpisodes.adapter =
                         SearchEpisodeAdapter(response.data.data.PodcastEpisode.data, this)
                     Log.e("TAG", "DATA123: " + response.data.data)
                 } else {
-                    recyclerViewEpisodes.visibility = GONE
-                    tvEpisodes.visibility = GONE
+                    llEpisode.visibility = GONE
+//                    rvEpisodes.visibility = GONE
+//                    tvEpisodes.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
         viewModel.searchPodcastTrackContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-                recyclerViewPodcastTracks =
-                    requireView().findViewById(R.id.recyclerViewPodcastTracks)
-                tvPodcastTracks = requireView().findViewById(R.id.tvPodcastTracks)
-                if (response?.data?.data?.PodcastTrack?.data?.isNotEmpty() == true) {
-                    recyclerViewPodcastTracks.visibility = GONE
-                    tvPodcastTracks.visibility = GONE
+            if (response != null && response.status == Status.SUCCESS) {
+                if (response.data?.data?.PodcastTrack?.data?.isNotEmpty() == true) {
+                    rvPodcastTracks = requireView().findViewById(R.id.rvPodcastTracks)
+                    tvPodcastTracks = requireView().findViewById(R.id.tvPodcastTracks)
+
+                    tvNoDataFound.visibility = GONE
+                    llPodcastTracks.visibility = VISIBLE
+//                    rvPodcastTracks.visibility = GONE
+//                    tvPodcastTracks.visibility = GONE
 //                    recyclerViewPodcastTracks.visibility = VISIBLE
 //                    tvPodcastTracks.visibility = VISIBLE
-                    recyclerViewPodcastTracks.layoutManager =
+                    rvPodcastTracks.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    recyclerViewPodcastTracks.adapter =
+                    rvPodcastTracks.adapter =
                         SearchPodcastTracksAdapter(response.data.data.PodcastTrack.data, this)
                     Log.e("TAG", "DATA123: " + response.data.data)
                 } else {
-                    recyclerViewPodcastTracks.visibility = GONE
-                    tvPodcastTracks.visibility = GONE
+                    llPodcastTracks.visibility = GONE
+//                    rvPodcastTracks.visibility = GONE
+//                    tvPodcastTracks.visibility = GONE
+                    tvNoDataFound.visibility = VISIBLE
                 }
             }
         }
