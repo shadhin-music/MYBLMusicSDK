@@ -217,17 +217,24 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }*/
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle().apply {
+                    putString(DataContentType.TITLE,"Latest Release")
+                })
             }
             DataContentType.CONTENT_TYPE_PD_RC202 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast, Bundle().apply {
+                    putString(DataContentType.TITLE,"Featured Podcast")
+                })
             }
             DataContentType.CONTENT_TYPE_A_RC203 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_a, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_a, Bundle().apply {
+                    putString(DataContentType.TITLE,"Popular Artists")
+                })
             }
             DataContentType.AMR_TUNE_ALL -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune, Bundle().apply {
                     putString(DataContentType.CONTENT_TYPE,contentType)
+
                 })
             }
             DataContentType.AMR_TUNE -> {
@@ -236,7 +243,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 })
             }
             DataContentType.CONTENT_TYPE_V_RC204 ->{
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle())
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle().apply {
+                    putString(DataContentType.TITLE,"Music Video")
+                })
+
             }
         }
     }

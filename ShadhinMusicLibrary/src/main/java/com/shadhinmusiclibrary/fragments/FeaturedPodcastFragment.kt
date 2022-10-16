@@ -24,6 +24,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 import java.io.Serializable
 
@@ -60,6 +61,12 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         super.onViewCreated(view, savedInstanceState)
         Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
+
+        kotlin.runCatching {
+            val title = arguments?.getString(DataContentType.TITLE)
+            view.findViewById<TextView>(R.id.tvTitle)?.text = title
+        }
+
         //tvTitle.text =  homePatchitem?.Name
         setupViewModel()
         setAdapter()
@@ -143,14 +150,48 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(episode.get(clickItemPosition).EpisodeId,
+                    HomePatchDetail(
+                        AlbumId = episode.get(clickItemPosition).EpisodeId,
+                        AlbumImage = "",
+                        AlbumName = episode.get(clickItemPosition).EpisodeName,
+                        Artist = "",
+                        ArtistId = "",
+                        ArtistImage = "",
+                        Banner = "",
+                        ContentID = episode.get(clickItemPosition).EpisodeId,
+                        ContentType =  episode.get(clickItemPosition).ContentType,
+                        CreateDate = "",
+                        Duration = "",
+                        Follower = "",
+                        IsPaid = false,
+                        NewBanner = "",
+                        PlayCount = 0,
+                        PlayListId = "",
+                        PlayListImage = "",
+                        PlayListName = "",
+                        PlayUrl =episode.get(clickItemPosition).PlayUrl,
+                        RootId = "",
+                        RootType = "",
+                        Seekable = false,
+                        TeaserUrl = "",
+                        TrackType = "",
+                        Type = "",
+                        fav = "",
+                        image = episode.get(clickItemPosition).ImageUrl,
+                        imageWeb = episode.get(clickItemPosition).ImageUrl,
+                        title = episode.get(clickItemPosition).TrackName
+
+                    ) as Serializable)
+
+                    /*HomePatchDetail(
+                        episode.get(clickItemPosition).EpisodeId,
                    "",
                episode.get(clickItemPosition).EpisodeName,
                        "",
                 "",
                "",
                "",
-                "", episode.get(clickItemPosition).ContentType,
+                "", episode.get(clickItemPosition).EpisodeId,
                 "",
                "",
                 "",
@@ -166,7 +207,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
                         false,
                "","","","",episode.get(clickItemPosition).ImageUrl,"",
                         episode.get(clickItemPosition).TrackName) as Serializable
-                )
+                )*/
             })
     }
 

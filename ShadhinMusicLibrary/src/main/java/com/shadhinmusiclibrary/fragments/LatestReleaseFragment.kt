@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
 import com.shadhinmusiclibrary.fragments.artist.FeaturedTracklistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.utils.DataContentType.TITLE
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -39,6 +41,11 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         view?.findViewById<ImageView>(R.id.imageBack)?.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        kotlin.runCatching {
+            val title = arguments?.getString(TITLE)
+            view?.findViewById<TextView>(R.id.tvTitle)?.text = title
+        }
+
     }
 
     private fun setupViewModel() {
@@ -70,7 +77,7 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         mSongDetails: MutableList<FeaturedSongDetail>,
         clickItemPosition: Int
     ) {
-        if (playerViewModel.currentMusic != null) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
                 Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID )
                 Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )

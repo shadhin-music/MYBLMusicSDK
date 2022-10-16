@@ -20,6 +20,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
@@ -72,6 +73,10 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
            /* } else {
                 navController.popBackStack()
             }*/
+        }
+        kotlin.runCatching {
+            val title = arguments?.getString(DataContentType.TITLE)
+            view.findViewById<TextView>(R.id.tvTitle)?.text = title
         }
     }
 

@@ -252,8 +252,8 @@ internal object UtilHelper {
 //                        rootContentID = rootContentID,
 //                        rootContentType = rootContentType,
 //                        rootImage = rootImage
-                        rootContentID = contentID ?: "",
-                        rootContentType = contentType ?: "",
+                        rootContentID = contentID ?: "00007",
+                        rootContentType = contentType ?: "R",
                         rootImage = image ?: ""
                     )
                 )
