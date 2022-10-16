@@ -124,6 +124,7 @@ internal class AlbumDetailsFragment1 :
     ) {
         val albumVH = currentVH as AlbumAdapter.AlbumVH
         if (songDetails.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((songDetails.indexOfFirst {

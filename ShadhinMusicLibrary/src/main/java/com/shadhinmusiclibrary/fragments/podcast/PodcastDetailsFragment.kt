@@ -224,6 +224,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         val mSongDet = podcastTrackAdapter.tracks
         val mCurrentVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
         if (mSongDet.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {

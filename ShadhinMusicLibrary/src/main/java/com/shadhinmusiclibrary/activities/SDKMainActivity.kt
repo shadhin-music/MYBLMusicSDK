@@ -149,6 +149,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             //Mini player show. when mini player click
             toggleMiniPlayerView(false)
         }
+        //DO NOT Call this function multiple times
         playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }

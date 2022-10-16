@@ -114,6 +114,7 @@ internal class AlbumDetailsFragment :
         }
 
         try {
+            //DO NOT USE requireActivity()
             playerViewModel.playListLiveData.observe(viewLifecycleOwner) { itMusicPlay ->
                 playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayItem ->
                     albumsTrackAdapter.setPlayingSong(
@@ -199,6 +200,7 @@ internal class AlbumDetailsFragment :
         val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
         if (mSongDet.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
@@ -206,10 +208,12 @@ internal class AlbumDetailsFragment :
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
+                        //DO NOT USE requireActivity()
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
+                        //DO NOT USE requireActivity()
                         playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",

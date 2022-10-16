@@ -338,6 +338,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val mSongDet = artistTrackAdapter.artistSongList
         val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {

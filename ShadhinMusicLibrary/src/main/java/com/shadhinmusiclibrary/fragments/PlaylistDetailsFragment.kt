@@ -133,6 +133,8 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     ) {
         val albumVH = currentVH as PlaylistVH
         if (songDetails.size > 0 && isAdded) {
+
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                    // view?.let { adapter.PlaylistVH(it).tvSongName?.setTextColor(Color.BLUE) }
@@ -142,13 +144,14 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
+                        //DO NOT USE requireActivity()
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
                             //albumVH.tvSongName?.setTextColor(Color.BLUE)
 
 
                         }
-
+                        //DO NOT USE requireActivity()
                         playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",

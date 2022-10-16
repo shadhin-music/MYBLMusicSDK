@@ -333,6 +333,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val mSongDet = searchartistTrackAdapter.artistSongList
         val albumVH = currentVH as SearchArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
