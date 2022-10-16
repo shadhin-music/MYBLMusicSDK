@@ -141,7 +141,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             Log.e("TAG", "URL: " + res)
             if (res.status == Status.SUCCESS) {
                 this.rbtData = res.data?.data
-
                 //    dataAdapter = ParentAdapter(this)
 //                    //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
 //                    var url:String = res?.data?.data?.pwaUrl.toString()
@@ -166,7 +165,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
-
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {

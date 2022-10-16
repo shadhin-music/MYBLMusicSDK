@@ -39,7 +39,7 @@ internal interface ApiService {
     @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
         @Query("id") id: String?,
-        ): ArtistContent
+    ): ArtistContent
 
     @GET("Artist/ArtistAlbumsbyidtype")
     suspend fun fetchArtistAlbum(
@@ -63,7 +63,7 @@ internal interface ApiService {
     @GET("ClientPodcast/PodcastHomeDataV1")
     suspend fun fetchFeturedPodcast(
         @Query("isPaid") isPaid: Boolean,
-    ):FeaturedPodcast
+    ): FeaturedPodcast
 
     @GET("artist/getpopularartist")
     suspend fun fetchPopularArtist(): PopularArtistModel
@@ -86,5 +86,5 @@ internal interface ApiService {
     suspend fun getTopTrendingItems(@Query("type") type: String): TopTrendingModel
 
     @GET("mybl/Login")
-    suspend fun login(@Header("Authorization") token:String):LoginResponse
+    suspend fun login(@Header("Authorization") token: String): LoginResponse
 }
