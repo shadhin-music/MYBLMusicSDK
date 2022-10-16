@@ -1,7 +1,9 @@
 package com.shadhinmusiclibrary.data.model
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 
+@Keep
 internal data class FeaturedPodcastDetails(
     val About: String,
     val CeateDate: String,
