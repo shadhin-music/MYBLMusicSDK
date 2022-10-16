@@ -12,7 +12,7 @@ internal class PlayerInterceptor(private val musicRepository: MusicRepository, p
     override fun intercept(chain: Interceptor.Chain): Response {
         DataSourceInfo.isDataSourceError = false
         val newUrl = musicRepository.fetchURL(music)
-        Log.i("music_payer", "intercept: $newUrl")
+     //   Log.i("music_payer", "intercept: $newUrl")
         val newRequest =
             chain.request().newBuilder()
                 .url(newUrl.toString())

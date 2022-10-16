@@ -2,16 +2,18 @@ package com.shadhinmusiclibrary.activities.video
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
-import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +29,8 @@ import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.video.audio_focus.AudioFocusManager
+import com.shadhinmusiclibrary.activities.video.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
@@ -37,10 +41,10 @@ import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
-import com.shadhinmusiclibrary.utils.textColor
 
 
-internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
+internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
+    AudioManager.OnAudioFocusChangeListener {
 
     /**1144x480 OR 856x480*/
     private val videoWidth: Int = 856
@@ -59,12 +63,14 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     private lateinit var playerLayout: FrameLayout
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var playerOnScaleGestureListener: PlayerOnScaleGestureListener
+
     private  var exoPlayer: ExoPlayer?=null
     private lateinit var playerView:PlayerView
     private lateinit var mediaSession:MediaSessionCompat
     private val contactMediaSource = ConcatenatingMediaSource()
     private lateinit var shadhinQueueNavigator: TimelineQueueNavigator
     private var  videoMediaSource: MediaSources?=null
+    private lateinit var audioFocusManager: AudioFocusManager
 
     private var currentPosition = 0
     private var videoList: ArrayList<Video>? = ArrayList()
@@ -74,7 +80,8 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_bl_sdk_activity_video)
 
-        createPlayerVM()
+        createPlayerViewModel()
+        initAudioFocus()
         playerViewModel.togglePlayPause()
         setupUI()
         setupViewModel()
@@ -86,7 +93,20 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
 
     }
 
-    private fun createPlayerVM() {
+
+    private fun initAudioFocus() {
+        audioFocusManager = AudioFocusManagerFactory.createAudioFocusManager()
+        audioFocusManager.initialize(applicationContext,this)
+    }
+
+
+    override fun onAudioFocusChange(focusChange: Int) {
+        if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+            exoPlayer?.pause()
+        }
+    }
+
+    private fun createPlayerViewModel() {
         playerViewModel = ViewModelProvider(
             this, injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
@@ -220,6 +240,9 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
             super.onIsPlayingChanged(isPlaying)
             adapter.currentItem(isPlaying, exoPlayer?.currentMediaItem?.mediaId)
             playerView.keepScreenOn = isPlaying
+            if(isPlaying){
+               audioFocusManager.requestAudioFocus()
+            }
         }
 
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
@@ -234,7 +257,9 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         playerOnScaleGestureListener = PlayerOnScaleGestureListener(playerView, this)
         scaleGestureDetector = ScaleGestureDetector(this, playerOnScaleGestureListener)
     }
+
     private fun togglePlayPause(item: Video) {
+
         if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
             if (exoPlayer?.isPlaying == true) {
                 exoPlayer?.pause()
@@ -352,15 +377,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
     }
 
 
-   /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> false
-        }
-    }*/
+
 
     override fun onBackPressed() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -390,5 +407,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint {
         const val LAST_PLAYED_TRACK = "last_track"
         const val LAST_PLAYED_POSITION = "last_position"
     }
+
+
 
 }
