@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
-import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
+import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
@@ -98,31 +98,30 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
         footerAdapter = HomeFooterAdapter()
-           if (argHomePatchItem?.ContentType=="P"){
-               parentAdapter = ConcatAdapter(
-                   config,
-                   artistHeaderAdapter,
-                   artistTrackAdapter,
-                   artistAlbumsAdapter,
-                   footerAdapter
-               )
-               parentAdapter.notifyDataSetChanged()
-               parentRecycler.setLayoutManager(layoutManager)
-               parentRecycler.setAdapter(parentAdapter)
-             }
-        else {
-               parentAdapter = ConcatAdapter(
-                   config,
-                   artistHeaderAdapter,
-                   artistTrackAdapter,
-                   artistAlbumsAdapter,
-                   artistsYouMightLikeAdapter,
-                   footerAdapter
-               )
-               parentAdapter.notifyDataSetChanged()
-               parentRecycler.setLayoutManager(layoutManager)
+        if (argHomePatchItem?.ContentType == "P") {
+            parentAdapter = ConcatAdapter(
+                config,
+                artistHeaderAdapter,
+                artistTrackAdapter,
+                artistAlbumsAdapter,
+                footerAdapter
+            )
+            parentAdapter.notifyDataSetChanged()
+            parentRecycler.setLayoutManager(layoutManager)
+            parentRecycler.setAdapter(parentAdapter)
+        } else {
+            parentAdapter = ConcatAdapter(
+                config,
+                artistHeaderAdapter,
+                artistTrackAdapter,
+                artistAlbumsAdapter,
+                artistsYouMightLikeAdapter,
+                footerAdapter
+            )
+            parentAdapter.notifyDataSetChanged()
+            parentRecycler.setLayoutManager(layoutManager)
 
-           }
+        }
     }
 
     private fun setupViewModel() {
@@ -275,6 +274,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
         TODO("Not yet implemented")
     }
+
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
 //        observeData()
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
