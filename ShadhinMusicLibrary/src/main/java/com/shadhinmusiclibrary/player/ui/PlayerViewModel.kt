@@ -15,6 +15,7 @@ internal class PlayerViewModel(private val musicServiceController: MusicServiceC
     public val playerProgress: LiveData<PlayerProgress> = _playerProgress
 
 
+    //You must call only one time . Do not call multiple time
     fun startObservePlayerProgress(viewLifecycleOwner: LifecycleOwner) {
         fun update() = viewModelScope.launch {
             while (true) {

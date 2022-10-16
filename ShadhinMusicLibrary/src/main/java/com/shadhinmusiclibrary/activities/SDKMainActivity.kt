@@ -149,6 +149,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             //Mini player show. when mini player click
             toggleMiniPlayerView(false)
         }
+        playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }
 
@@ -201,20 +202,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun routeDataPatch(contentType: String) {
-       /* when (contentType.toUpperCase()) {
-            DataContentType.CONTENT_TYPE_A_RC203 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_a, Bundle())
-            }
-            DataContentType.CONTENT_TYPE_R_RC201 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_r, Bundle())
-            }
-            DataContentType.CONTENT_TYPE_PD_RC202 -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_featured_podcast, Bundle())
-            }
-            DataContentType.CONTENT_TYPE_WV -> {
-                setupNavGraphAndArg(R.navigation.nav_graph_patch_type_amar_tune, Bundle())
-            }
-        }*/
+
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle().apply {
@@ -512,7 +500,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             false,
             clickItemPosition
         )
-        playerViewModel.startObservePlayerProgress(viewLifecycleOwner = this)
+
         miniPlayerHideShow(true)
         setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
     }
@@ -746,7 +734,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
-        playerViewModel.startObservePlayerProgress(this)
+      //  playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }

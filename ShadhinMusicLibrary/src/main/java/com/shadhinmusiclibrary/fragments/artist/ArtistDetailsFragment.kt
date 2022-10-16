@@ -172,18 +172,20 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 }
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistSong.fetchArtistSongData(it!!.ArtistId)
+        argHomePatchDetail?.let { homeDetails->
+            viewModelArtistSong.fetchArtistSongData(homeDetails.ArtistId)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-                    artistTrackAdapter.setArtistTrack(res.data!!.data, argHomePatchDetail!!)
+                    if(res.data?.data !=null){
+                        artistTrackAdapter.setArtistTrack(res.data.data, homeDetails)
+                    }
                 } else {
                     showDialog()
                 }
             }
         }
-        argHomePatchDetail.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it!!.ArtistId)
+        argHomePatchDetail?.let {
+            viewModelArtistAlbum.fetchArtistAlbum("r", it.ArtistId)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     artistAlbumsAdapter.setData(res.data)
@@ -333,7 +335,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val mSongDet = artistTrackAdapter.artistSongList
         val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
@@ -341,11 +343,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                         } != -1)
                     ) {
 
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",
                                 "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
