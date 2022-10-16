@@ -92,6 +92,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private fun initAudioFocus() {
         audioFocusManager = AudioFocusManagerFactory.createAudioFocusManager()
         audioFocusManager.initialize(applicationContext,this)
+        audioFocusManager.requestAudioFocus()
     }
 
 
