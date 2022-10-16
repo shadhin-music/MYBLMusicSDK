@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.activities.video.audio_focus
+package com.shadhinmusiclibrary.player.audio_focus
 
 import android.os.Build
 

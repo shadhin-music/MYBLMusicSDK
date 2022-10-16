@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.activities.video
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,8 +27,8 @@ import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.activities.video.audio_focus.AudioFocusManager
-import com.shadhinmusiclibrary.activities.video.audio_focus.AudioFocusManagerFactory
+import com.shadhinmusiclibrary.player.audio_focus.AudioFocusManager
+import com.shadhinmusiclibrary.player.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
@@ -75,14 +73,11 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private var currentPosition = 0
     private var videoList: ArrayList<Video>? = ArrayList()
     private lateinit var viewModel: VideoViewModel
-    private lateinit var playerViewModel: PlayerViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_bl_sdk_activity_video)
-
-        createPlayerViewModel()
         initAudioFocus()
-        playerViewModel.togglePlayPause()
         setupUI()
         setupViewModel()
         setupAdapter()
@@ -106,12 +101,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         }
     }
 
-    private fun createPlayerViewModel() {
-        playerViewModel = ViewModelProvider(
-            this, injector.playerViewModelFactory
-        )[PlayerViewModel::class.java]
-        playerViewModel.connect()
-    }
+
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[VideoViewModel::class.java]

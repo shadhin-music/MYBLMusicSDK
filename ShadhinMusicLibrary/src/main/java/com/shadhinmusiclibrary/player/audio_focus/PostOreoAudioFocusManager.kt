@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.activities.video.audio_focus
+package com.shadhinmusiclibrary.player.audio_focus
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -6,7 +6,6 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 
 @RequiresApi(Build.VERSION_CODES.O)
 class PostOreoAudioFocusManager:AudioFocusManager {
