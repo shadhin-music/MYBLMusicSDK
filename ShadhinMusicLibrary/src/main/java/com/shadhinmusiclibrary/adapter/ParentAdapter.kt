@@ -226,7 +226,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             }
             Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
-                ShadhinMusicSdkCore.openPatch(itemView.context, "BNALL01")
+                ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
             }
         }
 
