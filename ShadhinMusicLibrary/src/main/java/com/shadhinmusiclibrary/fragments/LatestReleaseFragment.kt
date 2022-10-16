@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,8 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
     ) {
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
+                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID )
+                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
