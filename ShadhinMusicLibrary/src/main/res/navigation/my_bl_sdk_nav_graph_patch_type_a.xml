@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment1"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="fragment_artist_details"
         tools:layout="@layout/my_bl_sdk_fragment_album_details" >
         <action

@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:visibility="invisible"
+                    android:visibility="visible"
                     android:src="@drawable/my_bl_sdk_ic_more_vert" />
             </LinearLayout>
         </LinearLayout>

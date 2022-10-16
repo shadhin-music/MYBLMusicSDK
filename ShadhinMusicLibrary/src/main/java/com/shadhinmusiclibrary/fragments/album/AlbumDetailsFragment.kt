@@ -155,6 +155,8 @@ internal class AlbumDetailsFragment :
             if (res.status == Status.SUCCESS) {
                 artistAlbumsAdapter.setData(res.data)
             } else {
+                Log.e("TAG","ID: "+ res.message)
+
                 // showDialog()
             }
         }

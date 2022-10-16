@@ -1067,7 +1067,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             argHomePatchDetail: HomePatchDetail?,
 
             ) {
-          //  Log.e("Check", ""+bsdNavController.graph.displayName)
+            Log.e("Check", ""+bsdNavController.graph.displayName)
             bsdNavController.navigate(R.id.to_album_details,
                 Bundle().apply {
                     putSerializable(

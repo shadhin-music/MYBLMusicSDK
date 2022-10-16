@@ -35,7 +35,7 @@ internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         val viewR = inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
         navController = findNavController()
 
-        return viewR;
+        return viewR
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

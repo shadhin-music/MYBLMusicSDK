@@ -103,7 +103,7 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
     override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
-        navController?.navigate(
+        navController.navigate(
             R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
