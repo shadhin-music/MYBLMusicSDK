@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
+import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
 
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
@@ -86,19 +89,26 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
 //                }
 //            }
 //        }
-        viewModelAmaraTunes!!.urlContent.observe(viewLifecycleOwner) { res ->
+        viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
-                //  viewDataInRecyclerView(argHomePatchItem, rbt!!.data)
-                var url: String = res?.data?.data?.pwaUrl.toString()
-                var pwatopchartURL: String = res.data?.data?.pwatopchartURL.toString()
-                var redirectUrl: String = res?.data?.data?.redirectUrl.toString()
-                Log.e("TAG", "URL: " + res.data?.data)
-                openWebView(url, pwatopchartURL, redirectUrl)
+
+                val redirectUrl: String = res?.data?.data?.redirectUrl.toString()
+
+                val url = when(contentType){
+                    AMR_TUNE_ALL -> res?.data?.data?.pwaUrl
+                    AMR_TUNE -> res?.data?.data?.pwatopchartURL
+                    else -> null
+                }
+                if (url != null) {
+                    openWebView(url,redirectUrl)
+                }else{
+                    Toast.makeText(requireActivity(), "URL NULL", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
-    private fun openWebView(url: String, pwatopchartURL: String, redirectUrl: String) {
+    private fun openWebView(url: String, redirectUrl: String) {
         val mWebview: WebView = requireView().findViewById(R.id.webview)
         //  mWebview.settings.javaScriptEnabled =true
         mWebview.getSettings().setLoadsImagesAutomatically(true)
@@ -125,8 +135,8 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
         mWebview.setWebViewClient(WebViewClient())
         mWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH)
         mWebview.setInitialScale(1)
-        mWebview.loadUrl(pwatopchartURL)
-        Log.e("TAG", "URL: " + pwatopchartURL)
+        mWebview.loadUrl(url)
+        //Log.e("TAG", "URL: " + pwatopchartURL)
         mWebview.setWebViewClient(MyWebViewClient(redirectUrl))
     }
 

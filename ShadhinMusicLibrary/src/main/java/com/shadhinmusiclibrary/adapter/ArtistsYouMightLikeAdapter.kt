@@ -1,6 +1,5 @@
-package com.shadhinmusiclibra
+package com.shadhinmusiclibrary.adapter
 
-import com.shadhinmusiclibrary.adapter.ArtistAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 
 
@@ -57,21 +56,21 @@ internal class ArtistsYouMightLikeAdapter(
             adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack,artistIDToSkip)
             recyclerView.adapter = adapter
 
-//            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
-//            val imageView2 = itemView.findViewById(R.id.image) as ImageView
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , PlaylistFragment.newInstance())
-//                    .commit()
-//            }
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
-            //getActorName(entityId!!)
-
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
+//             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
+////            val imageView2 = itemView.findViewById(R.id.image) as ImageView
+////            itemView.setOnClickListener {
+////                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
+////                manager.beginTransaction()
+////                    .replace(R.id.container , PlaylistFragment.newInstance())
+////                    .commit()
+////            }
+////            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
+////            entityId = banner.entityId
+//            //getActorName(entityId!!)
+//
+////            //textViewName.setText(banner.name)
+////            textViewName.text = LOADING_TXT
+////           textViewName.tag = banner.entityId
 
 
         }

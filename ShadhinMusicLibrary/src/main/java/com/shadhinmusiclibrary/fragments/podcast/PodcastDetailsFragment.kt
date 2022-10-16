@@ -224,18 +224,19 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         val mSongDet = podcastTrackAdapter.tracks
         val mCurrentVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
         if (mSongDet.size > 0 && isAdded) {
-            playerViewModel.currentMusicLiveData.observe(requireActivity()) { itMusic ->
+            //DO NOT USE requireActivity()
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.ShowId == itMusic.mediaId
                         } != -1)
                     ) {
-                        playerViewModel.playbackStateLiveData.observe(requireActivity()) { itPla ->
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             playPauseState(itPla!!.isPlaying, mCurrentVH.ivPlayBtn!!)
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(requireActivity()) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
                             Log.e(
                                 "ADF",
                                 "AdPosition: " + mCurrentVH.bindingAdapterPosition + " itemId: " + mCurrentVH.itemId + " musicIndex" + it

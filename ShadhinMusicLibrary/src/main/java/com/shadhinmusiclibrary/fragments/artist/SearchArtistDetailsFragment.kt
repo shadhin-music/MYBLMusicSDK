@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
-import com.shadhinmusiclibra.ArtistsYouMightLikeAdapter
+import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
@@ -333,6 +333,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val mSongDet = searchartistTrackAdapter.artistSongList
         val albumVH = currentVH as SearchArtistHeaderAdapter.ArtistHeaderVH
         if (mSongDet.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
