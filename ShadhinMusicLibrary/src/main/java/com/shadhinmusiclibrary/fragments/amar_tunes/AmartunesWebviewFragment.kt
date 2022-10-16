@@ -91,7 +91,7 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
 //        }
         viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
-
+ 
                 val redirectUrl: String = res?.data?.data?.redirectUrl.toString()
 
                 val url = when(contentType){
