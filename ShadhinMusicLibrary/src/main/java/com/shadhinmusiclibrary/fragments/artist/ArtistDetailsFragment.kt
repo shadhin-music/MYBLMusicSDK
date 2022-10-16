@@ -215,6 +215,9 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
+        if(argHomePatchDetail?.ContentID.isNullOrEmpty()){
+            argHomePatchDetail?.ContentID = argHomePatchDetail?.ArtistId?:""
+        }
         artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
         artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
