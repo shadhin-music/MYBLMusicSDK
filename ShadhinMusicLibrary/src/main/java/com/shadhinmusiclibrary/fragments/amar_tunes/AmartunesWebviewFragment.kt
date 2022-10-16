@@ -94,16 +94,18 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
 
                 val redirectUrl: String = res?.data?.data?.redirectUrl.toString()
 
-                val url = when(contentType){
+                val url = when (contentType) {
                     AMR_TUNE_ALL -> res?.data?.data?.pwaUrl
                     AMR_TUNE -> res?.data?.data?.pwatopchartURL
                     else -> null
                 }
                 if (url != null) {
-                    openWebView(url,redirectUrl)
-                }else{
+                    openWebView(url, redirectUrl)
+                } else {
                     Toast.makeText(requireActivity(), "URL NULL", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(requireActivity(), "Server Error", Toast.LENGTH_SHORT).show();
             }
         }
     }

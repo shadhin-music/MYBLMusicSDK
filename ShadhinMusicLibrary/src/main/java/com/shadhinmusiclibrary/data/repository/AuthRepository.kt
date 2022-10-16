@@ -12,6 +12,7 @@ internal class AuthRepository (private val apiService: ApiService) {
             appToken = response.data?.data?.token
             Pair(true,response.message)
         }else{
+            appToken = null
            Pair(false,response.message)
         }
     }
