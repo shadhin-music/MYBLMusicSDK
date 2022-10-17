@@ -68,9 +68,10 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 //        val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
 //        textTitle.text= homePatchItem!!.Name
         imageBackBtn.setOnClickListener {
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
-            }
+            }*/
+            requireActivity().onBackPressed()
         }
     }
     companion object {

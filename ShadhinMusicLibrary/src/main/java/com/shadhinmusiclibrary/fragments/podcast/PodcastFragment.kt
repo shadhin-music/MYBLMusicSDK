@@ -64,9 +64,10 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
-            }
+            }*/
+            requireActivity().onBackPressed()
         }
 //        val button:Button = requireView().findViewById(R.id.btn)
 //        button.setOnClickListener {
