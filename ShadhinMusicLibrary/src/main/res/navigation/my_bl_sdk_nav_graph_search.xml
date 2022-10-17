@@ -19,6 +19,9 @@
         <action
             android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />
+        <action
+            android:id="@+id/to_music_video"
+            app:destination="@id/music_video_fragment" />
     </fragment>
 
     <!--    <fragment-->
@@ -38,6 +41,9 @@
         <!--        <action-->
         <!--            android:id="@+id/action_search_fragment_to_artist_details_fragment_to_album_details_fragment"-->
         <!--            app:destination="@id/album_details_fragment" />-->
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
     </fragment>
 
     <fragment
@@ -48,6 +54,9 @@
         <!--    <action-->
         <!--            android:id="@+id/action_album_details_fragment_to_artist_details_fragment"-->
         <!--            app:destination="@id/artist_details_fragment" />-->
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
     </fragment>
 
 
@@ -59,5 +68,18 @@
         <!--    <action-->
         <!--            android:id="@+id/action_album_details_fragment_to_artist_details_fragment"-->
         <!--            app:destination="@id/artist_details_fragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/music_video_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.MusicVideoFragment"
+        android:label="Music Video" />
+
+    <fragment
+        android:id="@+id/featured_popular_artist_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
     </fragment>
 </navigation>
