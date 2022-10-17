@@ -61,7 +61,14 @@ internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 recyclerView.layoutManager =
                     GridLayoutManager(requireContext(), 2)
-                recyclerView.adapter = MusicVideoAdapter(response.data!!.data)
+
+                response.data?.data?.let {
+                    for (item in it) {
+                        item.Artist = item.fav
+                    }
+                    recyclerView.adapter = MusicVideoAdapter(it)
+                }
+
             } else {
             }
         }

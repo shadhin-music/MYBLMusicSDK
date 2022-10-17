@@ -39,15 +39,15 @@ internal class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem
         fun bindItems() {
             val textArtist = itemView.findViewById(R.id.txt_title) as TextView
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
-            textArtist.text = argHomePatchItem!!.Data[absoluteAdapterPosition].Artist
-            textViewName.text = argHomePatchItem!!.Data[absoluteAdapterPosition].title
+            textViewName.text = argHomePatchItem!!.Data[absoluteAdapterPosition].Artist
+            textArtist.text = argHomePatchItem!!.Data[absoluteAdapterPosition].title
             val imageView = itemView.findViewById(R.id.image) as ImageView
-            val url:String = argHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
+            val url: String = argHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
             Glide.with(itemView.context).load(url).into(imageView)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<Video>()
-                for (item in  argHomePatchItem.Data){
+                for (item in argHomePatchItem.Data) {
                     val video = Video()
                     video.setData(item)
                     videoArray.add(video)

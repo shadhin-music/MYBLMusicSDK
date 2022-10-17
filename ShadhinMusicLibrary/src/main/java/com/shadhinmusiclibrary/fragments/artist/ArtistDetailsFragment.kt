@@ -108,8 +108,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 footerAdapter
             )
             parentAdapter.notifyDataSetChanged()
-            parentRecycler.setLayoutManager(layoutManager)
-            parentRecycler.setAdapter(parentAdapter)
+            parentRecycler.layoutManager = layoutManager
+            parentRecycler.adapter = parentAdapter
         } else {
             parentAdapter = ConcatAdapter(
                 config,
@@ -120,8 +120,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 footerAdapter
             )
             parentAdapter.notifyDataSetChanged()
-            parentRecycler.setLayoutManager(layoutManager)
-
+            parentRecycler.layoutManager = layoutManager
         }
     }
 
@@ -173,11 +172,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 }
             }
         }
-        argHomePatchDetail?.let { homeDetails->
+        argHomePatchDetail?.let { homeDetails ->
             viewModelArtistSong.fetchArtistSongData(homeDetails.ArtistId)
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-                    if(res.data?.data !=null){
+                    if (res.data?.data != null) {
                         artistTrackAdapter.setArtistTrack(res.data.data, homeDetails)
                     }
                 } else {
@@ -195,7 +194,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 }
             }
         }
-        parentRecycler.setAdapter(parentAdapter)
+        parentRecycler.adapter = parentAdapter
     }
 
     private fun showDialog() {
@@ -216,8 +215,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        if(argHomePatchDetail?.ContentID.isNullOrEmpty()){
-            argHomePatchDetail?.ContentID = argHomePatchDetail?.ArtistId?:""
+        if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
+            argHomePatchDetail?.ContentID = argHomePatchDetail?.ArtistId ?: ""
         }
         artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()

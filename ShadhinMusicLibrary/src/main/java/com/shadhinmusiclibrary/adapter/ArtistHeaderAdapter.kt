@@ -57,6 +57,7 @@ internal class ArtistHeaderAdapter(
 
     fun artistBio(bio: LastFmResult?) {
         this.bio = bio
+        notifyDataSetChanged()
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
 //            moreText.setOnClickListener { e ->
@@ -73,6 +74,7 @@ internal class ArtistHeaderAdapter(
 
     fun artistBanner(banner: ArtistBanner?) {
         this.banner = banner
+        notifyDataSetChanged()
     }
 
     inner class ArtistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -84,9 +86,8 @@ internal class ArtistHeaderAdapter(
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
             val url: String = homePatchDetail!!.getImageUrl300Size()
-            Log.e("TAG", "DATA: " + url)
             val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.setText(homePatchDetail.Artist)
+            textArtist.text = homePatchDetail.Artist
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
@@ -95,15 +96,15 @@ internal class ArtistHeaderAdapter(
                 cardBiography.visibility = VISIBLE
             }
             // textView?.text = bio?.artist?.bio?.summary
-            textView?.setText(updatedbio)
+            textView?.text = updatedbio
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
             tvName.text = homePatchDetail.Artist + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             if (banner?.image?.isEmpty() == false) {
                 val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)
                 cardListen.visibility = VISIBLE
-                if (context != null) {
-                    Glide.with(context)
+                if (itemView.context != null) {
+                    Glide.with(itemView.context)
                         .load(banner?.image)
                         .into(imageArtist)
                 }

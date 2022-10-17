@@ -32,8 +32,8 @@ internal class MusicVideoAdapter(var data: List<LatestVideoModelData>) : Recycle
         fun bindItems() {
             val textArtist = itemView.findViewById(R.id.txt_title) as TextView
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
-            textArtist.text = data[absoluteAdapterPosition].Artist
-            textViewName.text = data[absoluteAdapterPosition].title
+            textViewName.text = data[absoluteAdapterPosition].fav
+            textArtist.text = data[absoluteAdapterPosition].title
             val imageView = itemView.findViewById(R.id.image) as ImageView
             val url: String = data[absoluteAdapterPosition].getImageUrl300Size()
             Glide.with(itemView.context).load(url).into(imageView)

@@ -24,17 +24,18 @@ internal class ArtistAlbumsAdapter(
     var artistAlbumModel: ArtistAlbumModel? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(homePatchItem, artistAlbumModel)
+        if (homePatchItem?.Code != "") {
+            holder.bindItems(homePatchItem, artistAlbumModel)
+        }
 //         holder.itemView.setOnClickListener {
-//
 //         }
-
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -56,8 +57,6 @@ internal class ArtistAlbumsAdapter(
 //            if(homePatchItem?.Data?.isEmpty() == true){
 //                tvTitle.visibility = GONE
 //            }
-
-
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
@@ -79,10 +78,7 @@ internal class ArtistAlbumsAdapter(
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 
     companion object {

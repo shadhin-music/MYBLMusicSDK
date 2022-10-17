@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.search
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.ContentResolver
 import android.content.Context
@@ -14,9 +15,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
@@ -70,8 +73,8 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var rvTrendingVideos: RecyclerView
 
     private lateinit var llArtist: LinearLayout
-    private var tvArtist: TextView? = null
-    private var rvArtist: RecyclerView? = null
+    private lateinit var tvArtist: TextView
+    private lateinit var rvArtist: RecyclerView
 
     private lateinit var llAlbum: LinearLayout
     private var tvAlbums: TextView? = null
@@ -116,11 +119,11 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
 
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
+            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                 requireActivity().finish()
+             } else {
+                 navController.popBackStack()
+             }*/
             requireActivity().onBackPressed()
         }
 
@@ -164,18 +167,16 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         svSearchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 val cursor: Cursor = getRecentSuggestions(newText)!!
-                Log.e("TAG", "After: $searchText")
                 if (newText.length > 1) {
-                    observeDataTrendingItems("\"\"")
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         delay(2000)
                         observeData(searchText)
                     }
+                    observeDataTrendingItems("\"\"")
                     searchText = newText
-                    Log.e("TAG", "After: $searchText")
+                    Log.e("SF", "After if: $searchText")
                 } else if (newText.isEmpty()) {
-                    observeDataTrendingItems("S")
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         delay(1000)
@@ -189,13 +190,14 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 //                        tvWeeklyTrending.visibility = GONE
 //                        tvTrendingVideo.visibility = GONE
                     }
-                    Log.e("TAG", "After: $searchText")
+                    observeDataTrendingItems("S")
+                    Log.e("SF", "After: else if $searchText")
                 }
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                Log.e("TAG", "onQueryTextSubmit: $query")
+                Log.e("SF", "onQueryTextSubmit: $query")
                 // val query: String = intent.getStringExtra(SearchManager.QUERY);
                 searchText = query
                 val suggestions = SearchRecentSuggestions(
@@ -205,6 +207,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 )
                 suggestions.saveRecentQuery(query, null)
                 svSearchInput.clearFocus()
+                observeDataTrendingItems("\"\"")
                 observeData(searchText)
 //                tvTrendingSearchItem.visibility = GONE
 //                rvWeeklyTrending.visibility = GONE
@@ -242,12 +245,12 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         llTrendingVideo = viewRef.findViewById(R.id.llTrendingVideo)
 
         llArtist = viewRef.findViewById(R.id.llArtist)
-        tvArtist = view?.findViewById(R.id.tvArtist)
-        rvArtist = view?.findViewById(R.id.rvArtist)
+        tvArtist = viewRef.findViewById(R.id.tvArtist)
+        rvArtist = viewRef.findViewById(R.id.rvArtist)
 
         llAlbum = viewRef.findViewById(R.id.llAlbum)
-        rvAlbums = view?.findViewById(R.id.rvAlbums)
-        tvAlbums = view?.findViewById(R.id.tvAlbums)
+        rvAlbums = viewRef.findViewById(R.id.rvAlbums)
+        tvAlbums = viewRef.findViewById(R.id.tvAlbums)
 
         llTracks = viewRef.findViewById(R.id.llTracks)
         llVideos = viewRef.findViewById(R.id.llVideos)
@@ -312,7 +315,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 //        viewModel.getSearchPodcastShow(searchText)
 //        viewModel.getSearchPodcastTrack(searchText)
 
-        searchViewModel.searchArtistContent.observe(viewLifecycleOwner) { response ->
+        searchViewModel.searchArtistContent.observe(requireActivity()) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 if (response.data?.data?.Artist?.data?.isNotEmpty() == true) {
 //                    tvArtist = view?.findViewById(R.id.tvArtist)
@@ -334,7 +337,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 }
             }
         }
-        searchViewModel.searchAlbumContent.observe(viewLifecycleOwner) { response ->
+        searchViewModel.searchAlbumContent.observe(requireActivity()) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 if (response.data?.data?.Album?.data?.isNotEmpty() == true) {
 //                    rvAlbums = view?.findViewById(R.id.rvAlbums)
@@ -380,7 +383,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                  }
              }
          }*/
-        searchViewModel.searchVideoContent.observe(viewLifecycleOwner) { response ->
+        searchViewModel.searchVideoContent.observe(requireActivity()) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 if (response.data?.data?.Video?.data?.isNotEmpty() == true) {
                     rvVideos = view?.findViewById(R.id.rvVideos)
@@ -481,6 +484,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     }
 
     private fun routeDataPatch(contentType: String) {
+//        hideKeyboard(requireActivity())
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.id.featured_popular_artist_fragment, Bundle().apply {
@@ -548,7 +552,6 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 ) as Serializable
             )
         }
-        Log.e("TAG", "onClickSearchItem: " + searchData.ContentType + " " + searchData.ContentID)
         when (searchData.ContentType.toUpperCase()) {
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
@@ -591,12 +594,6 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     //Top Tend play. whene fast search fragment came
     //TODO this Task are testing purpose on
     override fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int) {
-        Log.e(
-            "SF",
-            "onClickPlayItem: "
-                    + songItem[clickItemPosition].ContentID + " "
-                    + playerViewModel.currentMusic?.rootId
-        )
         if (playerViewModel.currentMusic != null) {
             if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
@@ -615,7 +612,6 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     //after search play item
     //TODO need delay
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        Log.e("SF", "onClickPlaySearchItem: " + songItem[clickItemPosition].ContentType)
         /* when (songItem[clickItemPosition].ContentType) {
              DataContentType.CONTENT_TYPE_V -> {
                  //open playlist
@@ -697,55 +693,65 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         navController.navigate(graphResId, bundleData)
     }
 
-//    override fun onClickAlbumItem(albumModelData: SearchAlbumdata) {
-//        Log.e("TAG", "albumModelData: " + albumModelData)
-//        ShadhinMusicSdkCore.pressCountIncrement()
-//        val data2 = Bundle()
-//        data2.putSerializable(
-//            AppConstantUtils.Album,
-//            albumModelData as Serializable
-//        )
-////        navController.navigate(R.id.action_search_fragment_to_album_details_fragment,
-//            Bundle().apply {
-//                putSerializable(
-//                    AppConstantUtils.PatchItem,
-//                    HomePatchItem("", "", listOf(), "", "", 0, 0)
-//                )
-//                putSerializable(
-//                    AppConstantUtils.PatchDetail,
-//                    HomePatchDetail(
-//                        AlbumId = albumModelData.AlbumId,
-//                        ArtistId = albumModelData.ContentID,
-//                        ContentID = albumModelData.ContentID,
-//                        ContentType = albumModelData.ContentType,
-//                        PlayUrl = albumModelData.PlayUrl,
-//                        AlbumName = albumModelData.title,
-//                        AlbumImage = albumModelData.image,
-//                        fav = "",
-//                        Banner = "",
-//                        Duration = albumModelData.Duration,
-//                        TrackType = "",
-//                        image = albumModelData.image,
-//                        ArtistImage = "",
-//                        Artist = albumModelData.Artist,
-//                        CreateDate = "",
-//                        Follower = "",
-//                        imageWeb = "",
-//                        IsPaid = false,
-//                        NewBanner = "",
-//                        PlayCount = 0,
-//                        PlayListId = "",
-//                        PlayListImage = "",
-//                        PlayListName = "",
-//                        RootId = "",
-//                        RootType = "",
-//                        Seekable = false,
-//                        TeaserUrl = "",
-//                        title = albumModelData.title,
-//                        Type = ""
-//
-//                    ) as Serializable
-//                )
-//            })
-//    }
+    private fun hideKeyboard(mContext: Context) {
+        val imm: InputMethodManager =
+            activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity?.currentFocus
+        if (view == null) {
+            view = View(mContext)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+/*    override fun onClickAlbumItem(albumModelData: SearchAlbumdata) {
+        Log.e("TAG", "albumModelData: " + albumModelData)
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data2 = Bundle()
+        data2.putSerializable(
+            AppConstantUtils.Album,
+            albumModelData as Serializable
+        )
+//        navController.navigate(R.id.action_search_fragment_to_album_details_fragment,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetail(
+                        AlbumId = albumModelData.AlbumId,
+                        ArtistId = albumModelData.ContentID,
+                        ContentID = albumModelData.ContentID,
+                        ContentType = albumModelData.ContentType,
+                        PlayUrl = albumModelData.PlayUrl,
+                        AlbumName = albumModelData.title,
+                        AlbumImage = albumModelData.image,
+                        fav = "",
+                        Banner = "",
+                        Duration = albumModelData.Duration,
+                        TrackType = "",
+                        image = albumModelData.image,
+                        ArtistImage = "",
+                        Artist = albumModelData.Artist,
+                        CreateDate = "",
+                        Follower = "",
+                        imageWeb = "",
+                        IsPaid = false,
+                        NewBanner = "",
+                        PlayCount = 0,
+                        PlayListId = "",
+                        PlayListImage = "",
+                        PlayListName = "",
+                        RootId = "",
+                        RootType = "",
+                        Seekable = false,
+                        TeaserUrl = "",
+                        title = albumModelData.title,
+                        Type = ""
+
+                    ) as Serializable
+                )
+            })
+    }*/
 }

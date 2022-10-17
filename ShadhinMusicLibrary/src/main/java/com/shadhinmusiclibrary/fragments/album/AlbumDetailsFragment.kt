@@ -15,14 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
-import com.shadhinmusiclibrary.adapter.AlbumHeaderAdapter
-import com.shadhinmusiclibrary.adapter.AlbumsTrackAdapter
-import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
@@ -46,14 +41,13 @@ internal class AlbumDetailsFragment :
     HomeCallBack {
 
     private lateinit var navController: NavController
-    private lateinit var adapter: AlbumAdapter
+
+    //    private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albumHeaderAdapter: AlbumHeaderAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var albumsTrackAdapter: AlbumsTrackAdapter
-    var artistAlbumModelData: ArtistAlbumModelData? = null
-
-    //private lateinit var albumViewModel: AlbumViewModel
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+    var artistAlbumModelData: ArtistAlbumModelData? = null
 
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     override fun getViewModel(): Class<AlbumViewModel> {
@@ -81,8 +75,6 @@ internal class AlbumDetailsFragment :
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
-        Log.e("i am being called", "test test: ")
-        Log.e("i am being called", "test test: "+  argHomePatchDetail!!.AlbumId)
         observeData(
             argHomePatchDetail!!.AlbumId,
             argHomePatchDetail!!.ArtistId,
@@ -106,11 +98,11 @@ internal class AlbumDetailsFragment :
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
+            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                 requireActivity().finish()
+             } else {
+                 navController.popBackStack()
+             }*/
             requireActivity().onBackPressed()
         }
 
@@ -142,7 +134,7 @@ internal class AlbumDetailsFragment :
         viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-                if(res.data?.data !=null && argHomePatchDetail !=null ) {
+                if (res.data?.data != null && argHomePatchDetail != null) {
                     albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!)
                 }
                 //  updateAndSetAdapter(res.data!!.data)
@@ -150,16 +142,11 @@ internal class AlbumDetailsFragment :
                 progressBar.visibility = VISIBLE
             }
         }
-        Log.e("I am being called", ""+artistId)
         viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
         viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-
             if (res.status == Status.SUCCESS) {
                 artistAlbumsAdapter.setData(res.data)
             } else {
-                Log.e("TAG","ID: "+ res.message)
-
-                // showDialog()
             }
         }
     }
@@ -250,7 +237,7 @@ internal class AlbumDetailsFragment :
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onArtistAlbumClick(
