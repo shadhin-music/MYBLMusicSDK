@@ -73,11 +73,12 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
             } else {
                 navController.popBackStack()
-            }
+            }*/
+            requireActivity().onBackPressed()
         }
     }
 

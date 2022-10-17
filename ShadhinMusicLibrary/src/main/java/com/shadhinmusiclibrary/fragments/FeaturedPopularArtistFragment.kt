@@ -69,10 +69,12 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
 //                .addToBackStack(null)
 //                .commit()
             //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
+               // requireActivity().finish()
            /* } else {
                 navController.popBackStack()
             }*/
+
+            requireActivity().onBackPressed()
         }
         kotlin.runCatching {
             val title = arguments?.getString(DataContentType.TITLE)
