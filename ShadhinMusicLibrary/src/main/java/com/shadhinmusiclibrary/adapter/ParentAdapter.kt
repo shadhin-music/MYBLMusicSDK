@@ -36,7 +36,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             VIEW_POPULAR_PODCAST -> R.layout.my_bl_sdk_item_release_patch
             VIEW_TRENDING_MUSIC_VIDEO -> R.layout.my_bl_sdk_item_trending_music_videos
             // VIEW_AD -> R.layout.item_ad
-         //   VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
+            VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
             VIEW_POPULAR_AMAR_TUNES -> R.layout.my_bl_sdk_item_popular_amar_tunes
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
@@ -72,7 +72,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             "Podcast" -> VIEW_POPULAR_PODCAST
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
-          //  "download" -> VIEW_DOWNLOAD
+            "download" -> VIEW_DOWNLOAD
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -110,30 +110,31 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 
             //this.homeListData.add(download!!)
         }
-//        var exists :Boolean = false
-//        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 2) {
-//
-//            for (item in data.indices) {
-//               Log.e("TaG","Items: "+ data[item].ContentType)
-//                download = HomePatchItem("002",
-//                    "download",
-//                    data[item].Data,
-//                    "download",
-//                    "download",
-//                    0,
-//                    0)
-//
-//                if(!exists) {
-//                    Log.e("TaG","Items321: "+ exists)
-//                    this.homeListData.add(download!!)
-//
-//                }
-//            }
-//            if (data[item].Code.equals("002")){
-//                exists = true
-//                Log.e("TaG","Items123: "+ exists)
-//            }
-        //}
+        var exists :Boolean = false
+        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 2) {
+
+//            for (item in data) {
+              // Log.e("TaG","Items: "+ data[item].ContentType)
+                download = HomePatchItem("002",
+                    "download",
+                    listOf(),
+                    "download",
+                    "download",
+                    0,
+                    0)
+
+
+            if(!exists) {
+                Log.e("TaG","Items321: "+ exists)
+                this.homeListData.add(download!!)
+
+            }
+            if (homeListData[3].ContentType=="download"){
+                exists = true
+                Log.e("TaG","Items123: "+ exists)
+
+            }
+        }
 
         this.homeListData.addAll(data)
         val sizeNew = this.homeListData.size
