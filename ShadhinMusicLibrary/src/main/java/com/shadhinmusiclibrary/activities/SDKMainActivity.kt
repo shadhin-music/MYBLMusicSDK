@@ -150,7 +150,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             toggleMiniPlayerView(false)
         }
         //DO NOT Call this function multiple times
-        playerViewModel.startObservePlayerProgress(this)
+      //  playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }
 
@@ -404,7 +404,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel = ViewModelProvider(
             this, injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
-        playerViewModel.connect()
+
     }
 
     private fun miniPlayerHideShow(playing: Boolean) {
@@ -735,7 +735,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
-      //  playerViewModel.startObservePlayerProgress(this)
+        playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
@@ -804,7 +804,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     override fun onDestroy() {
         super.onDestroy()
-        playerViewModel.disconnect()
+     //   playerViewModel.disconnect()
     }
 
     fun showBottomSheetDialog(

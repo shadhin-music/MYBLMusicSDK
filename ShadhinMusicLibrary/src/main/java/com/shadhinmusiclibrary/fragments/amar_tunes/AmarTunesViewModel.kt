@@ -23,9 +23,7 @@ internal class AmarTunesViewModel(private val amartunesContentRepository: Amartu
      val urlContent:LiveData<ApiResponse<RBT>> = _urlContent
 
     fun fetchRBTURL() = viewModelScope.launch {
-
         val response = amartunesContentRepository.rbtURL()
-        Log.e("HOME", "PAGE CALLED "+ response)
         _urlContent.postValue(response)
 
     }

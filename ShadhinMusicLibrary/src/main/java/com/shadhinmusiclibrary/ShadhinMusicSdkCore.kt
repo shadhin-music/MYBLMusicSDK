@@ -67,6 +67,7 @@ object ShadhinMusicSdkCore {
     @JvmStatic
     fun destroySDK(context: Context) {
         scope?.cancel()
+        ShadhinApp.module(context).musicServiceController.disconnect()
         ShadhinApp.onDestroy()
         SinglePlayerApiService.destroy()
         RetrofitClient.destroy()
