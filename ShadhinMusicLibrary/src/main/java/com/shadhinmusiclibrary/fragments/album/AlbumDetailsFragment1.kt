@@ -1,29 +1,6 @@
 package com.shadhinmusiclibrary.fragments.album
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
-import com.shadhinmusiclibrary.adapter.AlbumAdapter
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.player.utils.isPlaying
-import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
-
+/*
 internal class AlbumDetailsFragment1 :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(), OnItemClickCallback,
     BottomSheetDialogItemCallback {
@@ -65,11 +42,13 @@ internal class AlbumDetailsFragment1 :
         recyclerView.adapter = adapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+            */
+/*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                 requireActivity().finish()
             } else {
                 navController.popBackStack()
-            }*/
+            }*//*
+
             requireActivity().onBackPressed()
         }
     }
@@ -161,4 +140,4 @@ internal class AlbumDetailsFragment1 :
 //            argHomePatchDetail
 //        )
     }
-}
+}*/

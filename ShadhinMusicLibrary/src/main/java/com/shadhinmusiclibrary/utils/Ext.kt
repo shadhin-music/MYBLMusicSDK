@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import androidx.annotation.RawRes
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
@@ -409,6 +410,7 @@ internal fun Long.toDate() = Date(this)
 internal operator fun TimeDistance.plus(time: TimeDistance): TimeDistance = TimeDistance(this.totalMilliseconds+time.totalMilliseconds)
 internal operator fun TimeDistance.minus(time: TimeDistance): TimeDistance = TimeDistance(this.totalMilliseconds-time.totalMilliseconds)
 
+@Keep
 internal data class TimeDistance(val totalMilliseconds:Long){
     val totalDays:Long = TimeUnit.DAYS.convert(totalMilliseconds, TimeUnit.MILLISECONDS)
     val totalHours:Long = TimeUnit.HOURS.convert(totalMilliseconds, TimeUnit.MILLISECONDS)

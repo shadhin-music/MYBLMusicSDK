@@ -1,5 +1,8 @@
 package com.shadhinmusiclibrary.fragments.artist
 
+import androidx.annotation.Keep
+
+@Keep
 internal data class ArtistBanner(
     val PlayListId: String,
     val PlayListImage: String,

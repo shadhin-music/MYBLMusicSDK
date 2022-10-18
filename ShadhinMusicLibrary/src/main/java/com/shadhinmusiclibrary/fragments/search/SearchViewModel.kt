@@ -93,6 +93,4 @@ internal class SearchViewModel(private val searchRepository: SearchRepository) :
         val response = searchRepository.getTopTrendingItems(type)
         _topTrendingVideoContent.postValue(response)
     }
-
-
 }

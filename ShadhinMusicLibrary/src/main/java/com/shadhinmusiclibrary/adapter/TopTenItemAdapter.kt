@@ -27,7 +27,7 @@ internal class TopTenItemAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(data, position)
         holder.itemView.setOnClickListener {
-            val songData: TopTrendingdata = data[position]
+//            val songData: TopTrendingdata = data[position]
             seaItemCallback.onClickPlayItem(data, position)
         }
     }

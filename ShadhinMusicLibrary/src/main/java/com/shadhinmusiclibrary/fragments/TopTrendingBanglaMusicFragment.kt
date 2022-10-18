@@ -74,7 +74,7 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
             requireActivity().onBackPressed()
         }
     }
-    companion object {
+    /*companion object {
 
         @JvmStatic
         fun newInstance() =
@@ -83,5 +83,5 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 
                 }
             }
-    }
+    }*/
 }

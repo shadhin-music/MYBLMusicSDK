@@ -19,24 +19,25 @@ import com.shadhinmusiclibrary.utils.Status
 
 internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    lateinit var viewModel:PopularArtistViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-    private fun setupViewModel() {
+    lateinit var viewModel: PopularArtistViewModel
 
+    private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.popularArtistViewModelFactory)[PopularArtistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.popularArtistViewModelFactory
+            )[PopularArtistViewModel::class.java]
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_featured_popular_artist, container, false)
+        return inflater.inflate(
+            R.layout.my_bl_sdk_fragment_featured_popular_artist,
+            container,
+            false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,33 +53,25 @@ internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
             requireActivity().onBackPressed()
         }
     }
-        fun observeData() {
-            viewModel.fetchLatestVideo()
-            viewModel.latestVideoContent.observe(viewLifecycleOwner) { response ->
-                if (response.status == Status.SUCCESS) {
-                    val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-                    recyclerView.layoutManager =
-                        GridLayoutManager(requireContext(), 2)
 
-                    recyclerView.adapter = MusicVideoAdapter(response.data!!.data)
+    fun observeData() {
+        viewModel.fetchLatestVideo()
+        viewModel.latestVideoContent.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+                val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+                recyclerView.layoutManager =
+                    GridLayoutManager(requireContext(), 2)
 
-                } else {
-
+                response.data?.data?.let {
+                    for (item in it) {
+                        item.Artist = item.fav
+                    }
+                    recyclerView.adapter = MusicVideoAdapter(it)
                 }
+
+            } else {
             }
         }
-
-    companion object {
-
-
-        @JvmStatic
-        fun newInstance() =
-            MusicVideoFragment().apply {
-                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
 
