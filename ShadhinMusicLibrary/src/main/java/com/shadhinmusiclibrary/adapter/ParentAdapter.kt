@@ -108,13 +108,13 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             }
             this.homeListData.add(search!!)
 
-            //this.homeListData.add(download!!)
+
         }
         var exists :Boolean = false
         if (this.homeListData.isNotEmpty() && this.homeListData.size >= 2) {
 
-//            for (item in data) {
-              // Log.e("TaG","Items: "+ data[item].ContentType)
+            for (item in data.indices) {
+                Log.e("TaG","Items: "+ data[item].ContentType)
                 download = HomePatchItem("002",
                     "download",
                     listOf(),
@@ -122,18 +122,19 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
                     "download",
                     0,
                     0)
+                if (homeListData[item].ContentType==data[item].ContentType){
+                    exists = true
+                    Log.e("TaG","Items123: "+ exists)
 
+                }
+            }
 
-            if(!exists) {
+            if(exists) {
                 Log.e("TaG","Items321: "+ exists)
                 this.homeListData.add(download!!)
 
             }
-            if (homeListData[3].ContentType=="download"){
-                exists = true
-                Log.e("TaG","Items123: "+ exists)
 
-            }
         }
 
         this.homeListData.addAll(data)

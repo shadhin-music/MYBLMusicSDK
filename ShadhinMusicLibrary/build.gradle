@@ -61,6 +61,7 @@ dependencies {
 
     //image to get color and set in player background
     implementation 'androidx.palette:palette:1.0.0'
+    implementation 'org.chromium.net:cronet-api:105.5195.68'
 }
 //For Maven Publish
 afterEvaluate {
