@@ -48,6 +48,7 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
             requireActivity(),
             injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
+
     }
 
     fun playItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
