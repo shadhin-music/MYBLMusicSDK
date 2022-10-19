@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
+import java.util.ArrayList
 
 internal object UtilHelper {
     fun getScreenHeightWidth(context: Context, type: Int): Int {
@@ -712,8 +713,17 @@ internal object UtilHelper {
         }
     }
 
-//    fun getArtistContentToArtistContentList(musicList: MutableList<ArtistContentData>): MutableList<ArtistContentData>{
-//
-//
-//    }
+    fun artistNewList(mediaId: String?, aaa: List<SongDetail>): List<SongDetail> {
+        val newList: MutableList<SongDetail> = ArrayList()
+        aaa.forEach {
+            if (it.ContentID == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
 }

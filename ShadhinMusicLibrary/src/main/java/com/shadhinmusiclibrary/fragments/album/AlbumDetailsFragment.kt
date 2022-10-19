@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -70,7 +72,6 @@ internal class AlbumDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
         albumsTrackAdapter = AlbumsTrackAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
@@ -106,19 +107,30 @@ internal class AlbumDetailsFragment :
             requireActivity().onBackPressed()
         }
 
-        try {
-            //DO NOT USE requireActivity()
-            playerViewModel.playListLiveData.observe(viewLifecycleOwner) { itMusicPlay ->
-                playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayItem ->
-                    albumsTrackAdapter.setPlayingSong(
-                        itCurrPlayItem.toString(),
-                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
-                    )
+        Handler(Looper.getMainLooper()).postDelayed({
+            Log.i("getMainLooper", "postDelayed: ")
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+                if (music?.mediaId != null) {
+                    albumsTrackAdapter.setPlayingSong(music.mediaId!!)
                 }
             }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
+        }, 1000 * 5)
+
+        /*   try {
+               //DO NOT USE requireActivity()
+               playerViewModel.playListLiveData.observe(viewLifecycleOwner) { itMusicPlay ->
+                   playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayItem ->
+                       albumsTrackAdapter.setPlayingSong(itMusicPlay.list[itCurrPlayItem].mediaId!!)
+                       albumsTrackAdapter.notifyDataSetChanged()
+   //                    albumsTrackAdapter.setPlayingSong(
+   //                        itCurrPlayItem.toString(),
+   //                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
+   //                    )
+                   }
+               }
+           } catch (ex: Exception) {
+               ex.printStackTrace()
+           }*/
     }
 
     private fun setupViewModel() {
@@ -136,6 +148,7 @@ internal class AlbumDetailsFragment :
                 progressBar.visibility = GONE
                 if (res.data?.data != null && argHomePatchDetail != null) {
                     albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!)
+                    albumHeaderAdapter.setSongAndData(res.data.data, argHomePatchDetail!!)
                 }
                 //  updateAndSetAdapter(res.data!!.data)
             } else {
@@ -153,22 +166,19 @@ internal class AlbumDetailsFragment :
 
     override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         val lSongDetails = albumsTrackAdapter.dataSongDetail
-        Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
         if (lSongDetails.size > clickItemPosition) {
             if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(lSongDetails, clickItemPosition)
             }
+            //  albumsTrackAdapter.setPlayingSong(mSongDetails[clickItemPosition].ContentID)
+            // albumsTrackAdapter.notifyDataSetChanged()
         }
     }
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
-            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
@@ -181,20 +191,24 @@ internal class AlbumDetailsFragment :
         } else {
             playItem(mSongDetails, clickItemPosition)
         }
+        // albumsTrackAdapter.setPlayingSong(mSongDetails[clickItemPosition].ContentID)
+        //  albumsTrackAdapter.notifyDataSetChanged()
     }
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
+        Log.e("ADF", "getCurrentVH: ")
         val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
-        if (mSongDet.size > 0 && isAdded) {
+        if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mSongDet.indexOfFirst {
+                    if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
+                                    it.rootContentID == itMusic.rootId &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
@@ -202,13 +216,20 @@ internal class AlbumDetailsFragment :
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
+                        //   albumsTrackAdapter.setPlayingSong(itMusic.mediaId!!)
 
                         //DO NOT USE requireActivity()
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
-                            Log.e(
-                                "ADF",
-                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
-                            )
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayPos ->
+//                            albumsTrackAdapter.getItemId(albumsTrackAdapter)
+//                            if ((mSongDet[itCurrPlayPos].rootContentType == playerViewModel.currentMusic?.rootId))
+//                            albumsTrackAdapter.notifyDataSetChanged()
+//                            Log.e(
+//                                "AlbumDF",
+//                                "albumVH\n rootId: " + songDetails[itCurrPlayPos].rootContentID + " " + itMusic.rootId
+//                                        + "\n ContentID: " + songDetails[itCurrPlayPos].ContentID + " " + itMusic.mediaId
+//                                        + "\n rootType: " + songDetails[itCurrPlayPos].rootContentType + " " + itMusic.rootType
+//                                        + "\n ContentType: " + songDetails[itCurrPlayPos].ContentType + " " + itMusic.contentType
+//                            )
                         }
                     }
                 }

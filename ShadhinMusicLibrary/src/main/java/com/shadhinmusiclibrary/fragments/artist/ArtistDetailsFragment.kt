@@ -148,11 +148,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
-
             if (response.status == Status.SUCCESS) {
                 artistHeaderAdapter.artistBio(response.data)
-                Log.e("TAG", "DATA321: " + response.data?.artist)
-//                Log.e("TAG","DATA: "+ response.message)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
@@ -212,7 +209,6 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
         if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
@@ -277,7 +273,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
@@ -316,14 +312,12 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                Log.e("ADF", "playItem: 1111")
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                     clickItemPosition
                 )
             }
         } else {
-            Log.e("ADF", "playItem: 2222")
             playItem(
                 UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                 clickItemPosition
@@ -351,10 +345,13 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
 
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
+                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayPos ->
                             Log.e(
-                                "ADF",
-                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
+                                "ArtistDF",
+                                "artistVH\n rootId: " + mSongDet[itCurrPlayPos].rootContentID + " " + itMusic.rootId +
+                                        "\n ContentID: " + mSongDet[itCurrPlayPos].ContentID + " " + itMusic.mediaId
+                                        + "\n rootType: " + mSongDet[itCurrPlayPos].rootContentType + " " + itMusic.rootType
+                                        + "\n ContentType: " + mSongDet[itCurrPlayPos].ContentType + " " + itMusic.contentType
                             )
                         }
                     }

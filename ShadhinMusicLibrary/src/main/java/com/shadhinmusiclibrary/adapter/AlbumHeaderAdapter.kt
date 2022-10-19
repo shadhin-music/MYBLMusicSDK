@@ -11,8 +11,12 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private val itemClickCB: OnItemClickCallback,) :
+internal class AlbumHeaderAdapter(
+    var homePatchDetail: HomePatchDetail?,
+    private val itemClickCB: OnItemClickCallback,
+) :
     RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
 
@@ -23,7 +27,6 @@ internal class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private
         return HeaderViewHolder(parentView!!)
     }
 
-
     override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
@@ -33,15 +36,26 @@ internal class AlbumHeaderAdapter(var homePatchDetail: HomePatchDetail?, private
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
+
     override fun getItemCount(): Int {
         return 1
+    }
+
+    fun setSongAndData(data: MutableList<SongDetail>, homePatchDetail: HomePatchDetail) {
+        this.dataSongDetail = mutableListOf()
+        for (songItem in data) {
+            dataSongDetail.add(
+                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail)
+            )
+        }
+        this.homePatchDetail = homePatchDetail
+        notifyDataSetChanged()
     }
 
     fun setData(homePatchDetail: HomePatchDetail) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
-
 
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mContext = itemView.context

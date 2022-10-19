@@ -1,6 +1,8 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,16 +27,18 @@ internal class AlbumsTrackAdapter(
 ) : RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {
     var dataSongDetail: MutableList<SongDetail> = mutableListOf()
     private var parentView: View? = null
+    private var contentId: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context)
+//        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(dataSongDetail[position])
+        val mSongDetails = dataSongDetail[position]
+        holder.bindItems(mSongDetails)
 
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(dataSongDetail, position)
@@ -44,6 +48,12 @@ internal class AlbumsTrackAdapter(
         ivSongMenuIcon.setOnClickListener {
             val songDetail = dataSongDetail[position]
             bsDialogItemCallback.onClickBottomItem(songDetail)
+        }
+
+        if (mSongDetails.isPlaying) {
+            holder.tvSongName?.setTextColor(Color.YELLOW)
+        } else {
+            holder.tvSongName?.setTextColor(holder.context.resources.getColor(R.color.my_sdk_black2))
         }
     }
 
@@ -63,11 +73,13 @@ internal class AlbumsTrackAdapter(
         notifyDataSetChanged()
     }
 
-    fun setPlayingSong(mediaId: String, newSongDetails: List<SongDetail>) {
-        val callback = AlbumTrackDiffCB(dataSongDetail, newSongDetails)
+    fun setPlayingSong(mediaId: String) {
+        contentId = mediaId
+        val newList: List<SongDetail> = UtilHelper.artistNewList(mediaId, dataSongDetail)
+        val callback = AlbumTrackDiffCB(dataSongDetail, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
         dataSongDetail.clear()
-        dataSongDetail.addAll(newSongDetails)
+        dataSongDetail.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -100,7 +112,6 @@ internal class AlbumsTrackAdapter(
         var tvSongName: TextView? = null
         fun bindItems(dataSongDetail: SongDetail) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-
             Glide.with(context)
                 .load(dataSongDetail.getImageUrl300Size())
                 .into(imageView!!)
@@ -110,9 +121,6 @@ internal class AlbumsTrackAdapter(
             tvSongName!!.text = dataSongDetail.title
             textArtist.text = dataSongDetail.artist
             tvSongLength.text = TimeParser.secToMin(dataSongDetail.duration)
-            itemView.setOnClickListener {
-
-            }
         }
     }
 
