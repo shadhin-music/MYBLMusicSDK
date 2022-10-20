@@ -217,7 +217,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 
     override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
 //        val mSongDet = podcastTrackAdapter.tracks
-        val mCurrentVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
+        val podcastHeaderVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
         if (mTracks.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
@@ -229,9 +229,11 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            playPauseState(itPla!!.isPlaying, mCurrentVH.ivPlayBtn!!)
+                            playPauseState(itPla!!.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
                     }
+                } else {
+                    podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                 }
             }
         }

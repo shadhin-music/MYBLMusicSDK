@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -168,7 +169,7 @@ internal class AlbumDetailsFragment :
         songDetails: MutableList<SongDetail>
     ) {
 //        val mSongDet = albumsTrackAdapter.dataSongDetail
-        val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
+        val albumHeaderVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
         if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
@@ -180,8 +181,10 @@ internal class AlbumDetailsFragment :
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            albumHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
+                    } else {
+                        albumHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
                 }
             }

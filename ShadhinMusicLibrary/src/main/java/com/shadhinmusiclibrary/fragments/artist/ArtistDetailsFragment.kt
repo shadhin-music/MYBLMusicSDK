@@ -340,7 +340,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         songDetails: MutableList<ArtistContentData>
     ) {
 //        val mSongDet = artistTrackAdapter.artistSongList
-        val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
+        val artistHeaderVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
         if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
@@ -352,17 +352,10 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            artistHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
-//                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayPos ->
-//                            Log.e(
-//                                "ArtistDF",
-//                                "artistVH\n rootId: " + mSongDet[itCurrPlayPos].rootContentID + " " + itMusic.rootId +
-//                                        "\n ContentID: " + mSongDet[itCurrPlayPos].ContentID + " " + itMusic.mediaId
-//                                        + "\n rootType: " + mSongDet[itCurrPlayPos].rootContentType + " " + itMusic.rootType
-//                                        + "\n ContentType: " + mSongDet[itCurrPlayPos].ContentType + " " + itMusic.contentType
-//                            )
-//                        }
+                    } else {
+                        artistHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
                 }
             }

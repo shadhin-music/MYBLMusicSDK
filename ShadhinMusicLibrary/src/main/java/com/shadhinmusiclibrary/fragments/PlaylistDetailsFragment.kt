@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.adapter.PlaylistAdapter
-import com.shadhinmusiclibrary.adapter.PlaylistAdapter.PlaylistVH
 import com.shadhinmusiclibrary.adapter.PlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistTrackAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
@@ -157,7 +153,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<SongDetail>
     ) {
-        val albumVH = currentVH as PlaylistHeaderAdapter.PlaylistHeaderVH
+        val playlistHeaderVH = currentVH as PlaylistHeaderAdapter.PlaylistHeaderVH
         if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
@@ -170,8 +166,10 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                     ) {
                         //DO NOT USE requireActivity()
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            playPauseState(itPla!!.isPlaying, albumVH.ivPlayBtn!!)
+                            playPauseState(itPla!!.isPlaying, playlistHeaderVH.ivPlayBtn!!)
                         }
+                    } else {
+                        playlistHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
                 }
             }
