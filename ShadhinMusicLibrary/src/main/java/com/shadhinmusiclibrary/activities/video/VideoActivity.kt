@@ -198,6 +198,8 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
 
            if(exoPlayer == null) {
                exoPlayer = ExoPlayer.Builder(this)
+                   .setSeekBackIncrementMs(1000*10)
+                   .setSeekForwardIncrementMs(1000*10)
                    .build()
 
                exoPlayer?.addListener(playbackStatus())
