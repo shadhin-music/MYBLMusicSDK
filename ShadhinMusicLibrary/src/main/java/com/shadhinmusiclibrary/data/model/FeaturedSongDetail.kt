@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.data.model
 
 import androidx.annotation.Keep
 import java.io.Serializable
+
 @Keep
 internal data class FeaturedSongDetail(
     val contentID: String,
@@ -20,7 +21,8 @@ internal data class FeaturedSongDetail(
 
     val rootContentID: String,
     val rootImage: String,
-    val rootContentType: String
+    val rootContentType: String,
+    var isPlaying: Boolean = false
 ) : Serializable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")

@@ -11,7 +11,6 @@ import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
-import java.util.ArrayList
 
 internal object UtilHelper {
     fun getScreenHeightWidth(context: Context, type: Int): Int {
@@ -263,6 +262,39 @@ internal object UtilHelper {
         return songDetailList
     }
 
+//    fun getFeaturedSongDetailToRootData(
+//        trackList: FeaturedSongDetail,
+//        rootPatch: HomePatchDetail
+//    ): MutableList<SongDetail> {
+//        val songDetailList = mutableListOf<SongDetail>()
+//        for (trackItem in trackList) {
+//            trackItem.apply {
+//                songDetailList.add(
+//                    SongDetail(
+//                        ContentID = contentID,
+//                        image = image,
+//                        title = title,
+//                        ContentType = contentType,
+//                        PlayUrl = playUrl,
+//                        artist = artistname,
+//                        duration = duration,
+//                        copyright = copyright,
+//                        labelname = labelname,
+//                        releaseDate = releaseDate,
+//                        fav = "",
+//                        ArtistId = artistId,
+//                        albumId = albumId,
+//                        userPlayListId = "",
+//                        rootContentID = contentID ?: "00007",
+//                        rootContentType = contentType ?: "R",
+//                        rootImage = image ?: ""
+//                    )
+//                )
+//            }
+//        }
+//        return songDetailList
+//    }
+
 //    fun getSongDetailToFeaturedSongDetailList(trackList: MutableList<FeaturedSongDetail>): MutableList<SongDetail> {
 //        val songDetailList = mutableListOf<SongDetail>()
 //        for (trackItem in trackList) {
@@ -414,6 +446,35 @@ internal object UtilHelper {
                 rootContentID = rootPatch.ContentID,
                 rootContentType = rootPatch.ContentType,
                 rootImage = rootPatch.image
+            )
+        }
+    }
+
+    fun getFeaturedSongDetailAndRootData(
+        mSongDet: FeaturedSongDetail/*,
+        rootPatch: HomePatchDetail*/
+    ): FeaturedSongDetail {
+        mSongDet.apply {
+            return FeaturedSongDetail(
+                contentID = contentID,
+                image = image,
+                title = title,
+                contentType = contentType,
+                playUrl = playUrl,
+                artistname = artistname,
+                duration = duration,
+                copyright = copyright,
+                labelname = labelname,
+                releaseDate = releaseDate,
+                fav = "",
+                artistId = artistId,
+                albumId = albumId,
+                /*rootType = rootPatch.ContentType,*/
+
+                rootContentID = "",
+                rootContentType = "",
+                rootImage = "",
+                isPlaying = false
             )
         }
     }
@@ -751,6 +812,23 @@ internal object UtilHelper {
         val newList: MutableList<Track> = ArrayList()
         aaa.forEach {
             if (it.Id.toString() == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
+
+    fun featuredSongDetailNewList(
+        mediaId: String?,
+        aaa: List<FeaturedSongDetail>
+    ): List<FeaturedSongDetail> {
+        val newList: MutableList<FeaturedSongDetail> = ArrayList()
+        aaa.forEach {
+            if (it.contentID == mediaId) {
                 val newItem = it.copy(isPlaying = true)
                 //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
                 newList.add(newItem)
