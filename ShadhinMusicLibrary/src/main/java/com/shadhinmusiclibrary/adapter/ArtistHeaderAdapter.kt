@@ -14,10 +14,12 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.utils.ExpandableTextView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetail?,
@@ -48,6 +50,17 @@ internal class ArtistHeaderAdapter(
 
     override fun getItemCount(): Int {
         return 1
+    }
+
+    fun setSongAndData(data: MutableList<ArtistContentData>, rootPatch: HomePatchDetail) {
+        this.dataSongDetail = mutableListOf()
+        for (songItem in data) {
+            dataSongDetail.add(
+                UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
+            )
+        }
+        this.homePatchDetail = homePatchDetail
+        notifyDataSetChanged()
     }
 
     fun setData(homePatchDetail: HomePatchDetail) {

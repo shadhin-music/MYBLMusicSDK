@@ -79,6 +79,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }*/
             requireActivity().onBackPressed()
         }
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music?.mediaId != null) {
+                artistTrackAdapter.setPlayingSong(music.mediaId!!)
+            }
+        }
     }
 
     private fun initialize() {
@@ -174,7 +179,12 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     if (res.data?.data != null) {
-                        artistTrackAdapter.setArtistTrack(res.data.data, homeDetails)
+                        artistTrackAdapter.setArtistTrack(
+                            res.data.data,
+                            homeDetails,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                        artistHeaderAdapter.setSongAndData(res.data.data, homeDetails)
                     }
                 } else {
                     showDialog()
@@ -287,13 +297,13 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         mSongDetails: MutableList<ArtistContentData>,
         clickItemPosition: Int
     ) {
-        val lSongDetails = artistTrackAdapter.artistSongList
-        if (lSongDetails.size > clickItemPosition) {
-            if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+//        val lSongDetails = artistTrackAdapter.artistSongList
+        if (mSongDetails.size > clickItemPosition) {
+            if (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                     clickItemPosition
                 )
             }
@@ -329,31 +339,30 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<ArtistContentData>
     ) {
-        val mSongDet = artistTrackAdapter.artistSongList
+//        val mSongDet = artistTrackAdapter.artistSongList
         val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
-        if (mSongDet.size > 0 && isAdded) {
+        if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mSongDet.indexOfFirst {
+                    if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
+                                    it.rootContentID == itMusic.rootId &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
-
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayPos ->
-                            Log.e(
-                                "ArtistDF",
-                                "artistVH\n rootId: " + mSongDet[itCurrPlayPos].rootContentID + " " + itMusic.rootId +
-                                        "\n ContentID: " + mSongDet[itCurrPlayPos].ContentID + " " + itMusic.mediaId
-                                        + "\n rootType: " + mSongDet[itCurrPlayPos].rootContentType + " " + itMusic.rootType
-                                        + "\n ContentType: " + mSongDet[itCurrPlayPos].ContentType + " " + itMusic.contentType
-                            )
-                        }
+//                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayPos ->
+//                            Log.e(
+//                                "ArtistDF",
+//                                "artistVH\n rootId: " + mSongDet[itCurrPlayPos].rootContentID + " " + itMusic.rootId +
+//                                        "\n ContentID: " + mSongDet[itCurrPlayPos].ContentID + " " + itMusic.mediaId
+//                                        + "\n rootType: " + mSongDet[itCurrPlayPos].rootContentType + " " + itMusic.rootType
+//                                        + "\n ContentType: " + mSongDet[itCurrPlayPos].ContentType + " " + itMusic.contentType
+//                            )
+//                        }
                     }
                 }
             }

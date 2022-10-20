@@ -13,21 +13,20 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class AlbumHeaderAdapter(
+internal class PlaylistHeaderAdapter(
     var homePatchDetail: HomePatchDetail?,
     private val itemClickCB: OnItemClickCallback,
-) :
-    RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
+) : RecyclerView.Adapter<PlaylistHeaderAdapter.PlaylistHeaderVH>() {
 
     private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
     private var parentView: View? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_playlist_header, parent, false)
-        return HeaderViewHolder(parentView!!)
+        return PlaylistHeaderVH(parentView!!)
     }
 
-    override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistHeaderVH, position: Int) {
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
@@ -35,7 +34,7 @@ internal class AlbumHeaderAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int) = VIEW_TYPE
+    override fun getItemViewType(position: Int) = AlbumHeaderAdapter.VIEW_TYPE
 
     override fun getItemCount(): Int {
         return 1
@@ -57,7 +56,7 @@ internal class AlbumHeaderAdapter(
         notifyDataSetChanged()
     }
 
-    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class PlaylistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mContext = itemView.context
         private lateinit var ivThumbCurrentPlayItem: ImageView
         private lateinit var tvCurrentAlbumName: TextView
