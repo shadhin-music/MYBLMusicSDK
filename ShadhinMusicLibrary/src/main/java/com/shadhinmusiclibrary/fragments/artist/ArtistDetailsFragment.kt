@@ -214,7 +214,6 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             ) { _, _ ->
                 requireActivity().finish()
             }
-
             .show()
     }
 
@@ -246,38 +245,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = mArtAlbumMod.AlbumId,
-                        ArtistId = mArtAlbumMod.ArtistId,
-                        ContentID = mArtAlbumMod.ContentID,
-                        ContentType = mArtAlbumMod.ContentType,
-                        PlayUrl = mArtAlbumMod.PlayUrl,
-                        AlbumName = mArtAlbumMod.title,
-                        AlbumImage = "",
-                        fav = mArtAlbumMod.fav,
-                        Banner = "",
-                        Duration = mArtAlbumMod.duration,
-                        TrackType = "",
-                        image = mArtAlbumMod.image,
-                        ArtistImage = "",
-                        Artist = mArtAlbumMod.artistname,
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = "",
-                        Type = ""
-
-                    ) as Serializable
+                    UtilHelper.getHomePatchDetailToAlbumModel(mArtAlbumMod) as Serializable
                 )
             })
     }

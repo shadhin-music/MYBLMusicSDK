@@ -33,7 +33,6 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     private lateinit var playlistHeaderAdapter: PlaylistHeaderAdapter
     private lateinit var playlistTrackAdapter: PlaylistTrackAdapter
 
-    //    private lateinit var adapter: PlaylistAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
 
     override fun getViewModel(): Class<AlbumViewModel> {
@@ -51,7 +50,6 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         val viewRef =
             inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_details, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -59,11 +57,9 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         super.onViewCreated(view, savedInstanceState)
         playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this)
         playlistTrackAdapter = PlaylistTrackAdapter(this)
-//        adapter = PlaylistAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
-        ///read data from online
+        //read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID)
-
 //        adapter.setRootData(argHomePatchDetail!!)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -126,7 +122,6 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         if (lSongDetails.size > clickItemPosition) {
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
-                // Log.e("TAG","Post: ")
             } else {
                 playItem(mSongDetails, clickItemPosition)
             }

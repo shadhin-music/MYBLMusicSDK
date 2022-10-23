@@ -41,6 +41,5 @@ internal class GenrePlaylistFragment : Fragment() {
 //            manager.popBackStack("GenrePlaylistFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
 //        }
-
     }
 }

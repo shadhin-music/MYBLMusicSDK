@@ -17,7 +17,6 @@ internal class PodcastVideoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -25,7 +24,6 @@ internal class PodcastVideoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         return inflater.inflate(R.layout.my_bl_sdk_fragment_podcast_video, container, false)
     }
 
@@ -47,20 +45,8 @@ internal class PodcastVideoFragment : Fragment() {
 //            HeaderAdapter(),
 //            PodcastMoreEpisodesAdapter(data),
 //            PodcastCommentAdapter()
-//
 //        )
 //        parentRecycler.setLayoutManager(layoutManager)
 //        parentRecycler.setAdapter(parentAdapter)
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            PodcastVideoFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }

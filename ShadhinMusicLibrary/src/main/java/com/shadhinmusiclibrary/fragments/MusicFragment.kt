@@ -14,11 +14,9 @@ import com.shadhinmusiclibrary.adapter.AudioPodcastAdapter
 
 internal class MusicFragment : Fragment() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -26,9 +24,9 @@ internal class MusicFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         return inflater.inflate(R.layout.my_bl_sdk_fragment_music, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -37,16 +35,5 @@ internal class MusicFragment : Fragment() {
         recyclerView.adapter = AudioPodcastAdapter()
 
         val back: ImageView = view.findViewById(R.id.imageBack)
-
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            MusicFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }

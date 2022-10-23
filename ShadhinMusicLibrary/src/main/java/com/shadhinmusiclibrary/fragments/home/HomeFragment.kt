@@ -26,7 +26,6 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
-import com.shadhinmusiclibrary.adapter.SpaceAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
@@ -76,9 +75,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         return injector.factoryHomeVM
     }
 
-    //    override fun getViewModelFactory(): HomeViewModelFactory {
-//        return injector.factoryAmarTuneVM
-//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -96,7 +92,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
         viewModelAmaraTunes.fetchRBTURL()
-
 
         observeData()
     }
@@ -122,30 +117,25 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             }
         }
         playerViewModel.playerProgress.observe(viewLifecycleOwner) {
-        //    Log.i("Homexy", "observeData: ${it.toString()} ${Thread.currentThread().name}")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
             miniPlayerPlayPauseState(it.isPlaying)
         }
-        if(playerViewModel.isMediaDataAvailable()){
+        if (playerViewModel.isMediaDataAvailable()) {
             llMiniMusicPlayer.visibility = View.VISIBLE
-        }else{
+        } else {
             llMiniMusicPlayer.visibility = View.GONE
         }
-
     }
 
 
     private fun viewDataInRecyclerView(homeData: HomeData?) {
         if (dataAdapter == null) {
-            // Log.e("TAG", "URLRBT: "+ this.rbtData)
-
             footerAdapter = HomeFooterAdapter()
 
             dataAdapter = ParentAdapter(this, this)
-            //dataAdapter = ParentAdapter(this,rbtData )
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -157,18 +147,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            //loadMoreItems()
-                            //Log.e("TAG", "pagenumber: " + pageNum++)
-                            //pageNum++
                             isLoading = true
                             viewModel!!.fetchHomeData(++pageNum, false)
-
-                            //observeData()
                         }
-
                     }
                     super.onScrolled(recyclerView, dx, dy)
                 }
@@ -177,7 +160,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             recyclerView.adapter = dataAdapter
         }
         viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
-            Log.e("TAG", "URL: " + res)
             if (res.status == Status.SUCCESS) {
                 this.rbtData = res.data?.data
             }
@@ -260,9 +242,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         ibtnPlayPauseMini = view.findViewById(R.id.ibtn_play_pause_mini)
         ibtnSkipNextMini = view.findViewById(R.id.ibtn_skip_next_mini)
     }
+
     //Copy paste from SDKMainActivity
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
-        Log.e("Check", "Fired 0")
         Glide.with(this)
             .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -279,11 +261,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         llMiniMusicPlayer.visibility = View.VISIBLE
 
 
-
         ibtnSkipPreviousMini.setOnClickListener {
             playerViewModel.skipToPrevious()
         }
-
 
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
@@ -293,6 +273,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             playerViewModel.skipToNext()
         }
     }
+
     //Copy paste from SDKMainActivity
     private fun miniPlayerPlayPauseState(playing: Boolean) {
         if (playing) {

@@ -18,7 +18,6 @@ import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 
 internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
-
     lateinit var viewModel: PopularArtistViewModel
 
     private fun setupViewModel() {
@@ -68,7 +67,6 @@ internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
                     }
                     recyclerView.adapter = MusicVideoAdapter(it)
                 }
-
             } else {
             }
         }

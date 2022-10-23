@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.fragments.artist
 
 import androidx.annotation.Keep
 import java.io.Serializable
+
 @Keep
 internal data class ArtistAlbumModel(
     val `data`: MutableList<ArtistAlbumModelData>,
@@ -12,4 +13,4 @@ internal data class ArtistAlbumModel(
     val message: String,
     val status: String,
     val type: String
-):Serializable
+) : Serializable

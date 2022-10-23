@@ -11,22 +11,19 @@ import com.shadhinmusiclibrary.utils.ApiResponse
 import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
-internal class AlbumViewModel(private val albumContentRepository: AlbumContentRepository) : ViewModel() {
+internal class AlbumViewModel(private val albumContentRepository: AlbumContentRepository) :
+    ViewModel() {
     private val _albumContent: MutableLiveData<ApiResponse<APIResponse<MutableList<SongDetail>>>> =
         MutableLiveData()
     val albumContent: LiveData<ApiResponse<APIResponse<MutableList<SongDetail>>>> = _albumContent
 
     fun fetchAlbumContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchAlbumContent(contentId)
-
         _albumContent.postValue(response)
-
     }
 
     fun fetchPlaylistContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchPlaylistContent(contentId)
-
         _albumContent.postValue(response)
     }
-
 }

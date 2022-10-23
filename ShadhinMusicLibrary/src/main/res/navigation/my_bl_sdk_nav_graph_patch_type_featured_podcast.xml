@@ -18,9 +18,5 @@
         android:id="@+id/podcast_details"
         android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
         android:label="fragment_featuredPodcast_details"
-        tools:layout="@layout/my_bl_sdk_fragment_artist_details">
-
-    </fragment>
-
-
+        tools:layout="@layout/my_bl_sdk_fragment_artist_details" />
 </navigation>

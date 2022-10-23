@@ -54,12 +54,12 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
     private lateinit var searchArtistdata: SearchArtistdata
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
-//        navController = findNavController()
         return viewRef
     }
 
@@ -67,25 +67,17 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         super.onCreate(savedInstanceState)
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-
             searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistdata?)!!
         }
-
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Check", "yes iam called" + searchArtistdata)
         initialize()
 
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-          /*  if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
     }
@@ -97,7 +89,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun setupAdapters() {
-
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -122,7 +113,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     private fun setupViewModel() {
-
         viewModel =
             ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
         viewModelArtistBanner = ViewModelProvider(
@@ -215,7 +205,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //        parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
-
     }
 
     fun loadNewArtist(patchDetails: HomePatchDetail) {
@@ -236,44 +225,12 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = mArtAlbumMod.AlbumId,
-                        ArtistId = mArtAlbumMod.ArtistId,
-                        ContentID = mArtAlbumMod.ContentID,
-                        ContentType = mArtAlbumMod.ContentType,
-                        PlayUrl = mArtAlbumMod.PlayUrl,
-                        AlbumName = mArtAlbumMod.title,
-                        AlbumImage = "",
-                        fav = mArtAlbumMod.fav,
-                        Banner = "",
-                        Duration = mArtAlbumMod.duration,
-                        TrackType = "",
-                        image = mArtAlbumMod.image,
-                        ArtistImage = "",
-                        Artist = mArtAlbumMod.artistname,
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = "",
-                        Type = ""
-
-                    ) as Serializable
+                    UtilHelper.getHomePatchDetailToAlbumModel(mArtAlbumMod) as Serializable
                 )
             })
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
@@ -285,16 +242,11 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ) {
         val lSongDetails = searchartistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
-            Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
             if (playerViewModel.currentMusic != null) {
                 if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                Log.e(
-                    "Check",
-                    "rhs ->" + lSongDetails[clickItemPosition].AlbumId + "  lfs -> " + playerViewModel.currentMusic?.rootId
-                )
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
                     clickItemPosition
@@ -308,10 +260,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         clickItemPosition: Int
     ) {
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " rooId" + playerViewModel.currentMusic?.rootId
-            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
@@ -342,16 +290,8 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
-                        }
-
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
-                            Log.e(
-                                "ADF",
-                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
-                            )
                         }
                     }
                 }

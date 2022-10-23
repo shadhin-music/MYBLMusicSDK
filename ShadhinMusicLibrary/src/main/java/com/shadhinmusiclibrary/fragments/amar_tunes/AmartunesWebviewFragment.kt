@@ -21,11 +21,6 @@ import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
 internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
     var data: RBTDATA? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
@@ -35,7 +30,6 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
         arguments?.let {
             data = it.getSerializable("data") as RBTDATA?
             contentType = it.getString(CONTENT_TYPE)
-            Log.d("TAG", "DATA: " + data)
         }
     }
 
@@ -66,8 +60,6 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
         // val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
         //viewModel!!.fetchRBTURL()
         observeData()
-
-
     }
 
     private fun observeData() {
@@ -152,11 +144,8 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
                       (view.context as AppCompatActivity).supportFragmentManager.popBackStack()*/
 
                 requireActivity().onBackPressed()
-//
             }
-
             // view.canGoBack()
-
             return true
         }
 
@@ -171,49 +160,19 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
 //              // view?.destroy()
 //                Log.e("TAG","URL123: "+ url)
 //            }
-
         // Log.e("TAG","URL43: "+ url)
 //            view?.loadUrl(url.equals("https://api.shadhinmusic.com/api/v5/mybl/amartunecb").toString())
 //            view?.canGoBack()
         //   }
-
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            AmartunesWebviewFragment().apply {
-                arguments = Bundle().apply {
-                    //putSerializable("data", data)
-//                    putString(ARG_PARAM2, param2)
-                }
-            }
-//        @JvmStatic
-//        fun newInstance(data: RBTDATA) =
-//            AmartunesWebviewFragment().apply {
-//                arguments = Bundle().apply {
-//                    putSerializable("data", data)
-////                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-    }
-
 
     override fun onResume() {
         super.onResume()
-       kotlin.runCatching { (activity as AppCompatActivity?)?.supportActionBar?.hide() }
+        kotlin.runCatching { (activity as AppCompatActivity?)?.supportActionBar?.hide() }
     }
 
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)?.supportActionBar?.show()
     }
-//    override fun getViewModel(): Class<HomeViewModel> {
-//        return HomeViewModel::class.java
-//    }
-
-//    override fun getViewModelFactory(): HomeViewModelFactory {
-//        return injector.factoryAmarTuneVM
-//    }
 }

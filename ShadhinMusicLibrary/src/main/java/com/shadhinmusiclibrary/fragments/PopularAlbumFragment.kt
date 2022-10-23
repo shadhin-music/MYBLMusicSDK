@@ -12,12 +12,9 @@ import com.shadhinmusiclibrary.R
 
 
 internal class PopularAlbumFragment : Fragment() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
         }
     }
 
@@ -25,28 +22,15 @@ internal class PopularAlbumFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         return inflater.inflate(R.layout.my_bl_sdk_fragment_release_list, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         val toolBarTitle: TextView = view.findViewById(R.id.tvTitle)
-        toolBarTitle.text ="Popular Album"
+        val toolBarTitle: TextView = view.findViewById(R.id.tvTitle)
+        toolBarTitle.text = "Popular Album"
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             GridLayoutManager(requireContext(), 3)
-       // recyclerView.adapter = TopTrendingAdapter(data)
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            PopularAlbumFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }

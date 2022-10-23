@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.fragments.artist
 
 import androidx.annotation.Keep
 import java.io.Serializable
+
 @Keep
 internal data class ArtistAlbumModelData(
     val AlbumId: String,
@@ -18,4 +19,4 @@ internal data class ArtistAlbumModelData(
     val labelname: String,
     val releaseDate: String,
     val title: String
-):Serializable
+) : Serializable

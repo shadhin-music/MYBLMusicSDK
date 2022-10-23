@@ -33,7 +33,6 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -43,7 +42,6 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         val verticalSpanCount = 1
         val horizontalSpanCount = 3
 
-        //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         releaseAdapter = ReleaseAdapter(argHomePatchItem!!, this)
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
@@ -64,20 +62,8 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
-//        val button:Button = requireView().findViewById(R.id.btn)
-//        button.setOnClickListener {
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager.beginTransaction()
-//                .replace(R.id.parentRelative, AmartunesWebviewFragment.newInstance())
-//                .addToBackStack("Fragment")
-//                .commit()
-//        }
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
@@ -98,11 +84,8 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
     }
-
 }

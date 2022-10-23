@@ -26,8 +26,8 @@ import java.io.Serializable
 internal class PlaylistListFragment : Fragment(), HomeCallBack {
     var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
-     private lateinit var footerAdapter: HomeFooterAdapter
-     private lateinit var genresAdapter: GenresAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var genresAdapter: GenresAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -53,16 +53,15 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
         footerAdapter = HomeFooterAdapter()
-        genresAdapter = GenresAdapter(homePatchItem!!,this)
+        genresAdapter = GenresAdapter(homePatchItem!!, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,genresAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, genresAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -75,13 +74,10 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         recyclerView.adapter = concatAdapter
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-       // recyclerView.adapter = concatAdapter
-         val textTitle:TextView= requireView().findViewById(R.id.tvTitle)
-        textTitle.text= homePatchItem!!.Name
+        // recyclerView.adapter = concatAdapter
+        val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
+        textTitle.text = homePatchItem!!.Name
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
@@ -104,10 +100,9 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 }

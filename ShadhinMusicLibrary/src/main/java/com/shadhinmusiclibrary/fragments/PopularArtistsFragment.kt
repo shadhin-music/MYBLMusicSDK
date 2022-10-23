@@ -34,7 +34,6 @@ internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
     ): View? {
         val viewR = inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
         navController = findNavController()
-
         return viewR
     }
 
@@ -69,13 +68,10 @@ internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
 //        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager =
 //            GridLayoutManager(requireContext(), 4)
-      //  recyclerView.adapter = concatAdapter
+        //  recyclerView.adapter = concatAdapter
         // recyclerView.adapter =
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
@@ -98,12 +94,8 @@ internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
     }
-
-
 }

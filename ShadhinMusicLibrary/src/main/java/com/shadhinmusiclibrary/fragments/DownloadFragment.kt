@@ -37,10 +37,7 @@ internal class DownloadFragment : Fragment() {
         tabLayout = view.findViewById(R.id.tab)
         viewPager = view.findViewById(R.id.viewpager)
 
-
-
         val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-
 
         val adapter = DownlodViewPagerAdapter(
             requireContext(), manager,
@@ -49,37 +46,15 @@ internal class DownloadFragment : Fragment() {
         viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
-
-
-
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-
             }
         })
-
-
-//       scope?.launch(Dispatchers.Main) {
-       // viewPager.offscreenPageLimit = 3
-//        val selectedTabIndex = 0
-//        viewPager.setCurrentItem(selectedTabIndex, false)
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            DownloadFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }

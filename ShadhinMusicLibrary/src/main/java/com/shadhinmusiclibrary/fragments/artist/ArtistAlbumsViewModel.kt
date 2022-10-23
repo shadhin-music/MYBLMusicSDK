@@ -14,17 +14,11 @@ import kotlinx.coroutines.launch
 
 
 internal class ArtistAlbumsViewModel (private val artistAlbumRepository: ArtistAlbumContentRepository): ViewModel() {
-
     private val _artistAlbumContent: MutableLiveData<ApiResponse<ArtistAlbumModel>> = MutableLiveData()
     val artistAlbumContent: LiveData<ApiResponse<ArtistAlbumModel>> = _artistAlbumContent
-
-
 
     fun fetchArtistAlbum(type: String,id:String) = viewModelScope.launch {
         val response = artistAlbumRepository.fetchArtistAlbum(type,id)
         _artistAlbumContent.postValue(response)
     }
-
-
-
 }

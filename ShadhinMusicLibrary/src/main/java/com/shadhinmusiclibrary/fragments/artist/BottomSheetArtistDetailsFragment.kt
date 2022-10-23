@@ -20,10 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
-import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
@@ -33,7 +30,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
@@ -61,7 +57,8 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
         super.onCreate(savedInstanceState)
         arguments?.let {
             homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-            songDetail = it.getSerializable("songDetail") as SongDetail?
+            AppConstantUtils.SongDetail
+            songDetail = it.getSerializable(AppConstantUtils.SongDetail) as SongDetail?
             homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetail?
         }
     }
@@ -80,11 +77,6 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
     }
@@ -111,15 +103,13 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
             HeaderAdapter(),
             bsArtistTrackAdapter,
             artistAlbumsAdapter,
-            // artistsYouMightLikeAdapter
         )
         parentAdapter.notifyDataSetChanged()
-        parentRecycler.setLayoutManager(layoutManager)
-        parentRecycler.setAdapter(parentAdapter)
+        parentRecycler.layoutManager = layoutManager
+        parentRecycler.adapter = parentAdapter
     }
 
     private fun setupViewModel() {
-
         viewModel =
             ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
         viewModelArtistBanner = ViewModelProvider(
@@ -139,15 +129,12 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
     private fun observeData() {
         songDetail?.let {
             viewModel.fetchArtistBioData(it.artist)
-            Log.e("TAG", "DATA: " + it.artist)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
 
             if (response.status == Status.SUCCESS) {
                 artistHeaderAdapter.artistBio(response.data)
-                Log.e("TAG", "DATA321: " + response.data?.artist)
-//                Log.e("TAG","DATA: "+ response.message)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
