@@ -117,11 +117,6 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
 
         imageBackBtn.setOnClickListener {
-            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                 requireActivity().finish()
-             } else {
-                 navController.popBackStack()
-             }*/
             requireActivity().onBackPressed()
         }
 
@@ -144,19 +139,6 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         setTextOnSearchBar(chipTahsan)
         setTextOnSearchBar(chipKona)
 
-//        viewModel.getTopTrendingVideos("v")
-//        viewModel.topTrendingVideoContent.observe(viewLifecycleOwner) { response ->
-//            if (response.status == Status.SUCCESS) {
-//                recyclerViewTrendingVideos.layoutManager =
-//                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//                recyclerViewTrendingVideos.adapter = TrendingItemsAdapter(response?.data?.data!!)
-//                Log.e("TAG", "DATA123: " + response.data?.data)
-//            }
-//        }
-//        observeData(searchText)
-//        search.setOnClickListener {
-//            search.focusable =
-//        }
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager?
         svSearchInput.setSearchableInfo(searchManager?.getSearchableInfo(activity?.componentName))
 

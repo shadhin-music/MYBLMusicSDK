@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.utils
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -19,9 +18,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Keep
 import androidx.annotation.RawRes
 import androidx.annotation.RequiresApi
-import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +31,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
-import kotlin.system.measureTimeMillis
 
 /**
  * @AUTHOR: Mehedi Hasan

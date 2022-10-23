@@ -13,15 +13,15 @@ internal class RetrofitClient private constructor() {
                 INSTANCE ?: newInstance().also { INSTANCE = it }
             }
 
-        private fun newInstance():Retrofit{
+        private fun newInstance(): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
-        fun destroy(){
+
+        fun destroy() {
             INSTANCE = null
         }
-
     }
 }

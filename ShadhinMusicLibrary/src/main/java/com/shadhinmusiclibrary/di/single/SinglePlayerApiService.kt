@@ -1,11 +1,11 @@
 package com.shadhinmusiclibrary.di.single
 
 
-import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
+import com.shadhinmusiclibrary.library.player.data.rest.PlayerApiService
 import retrofit2.Retrofit
 
 internal class SinglePlayerApiService private constructor() {
-   companion object {
+    companion object {
         @Volatile
         private var INSTANCE: PlayerApiService? = null
         fun getInstance(retrofit: Retrofit): PlayerApiService =
@@ -13,12 +13,12 @@ internal class SinglePlayerApiService private constructor() {
                 INSTANCE ?: newInstance(retrofit).also { INSTANCE = it }
             }
 
-        private fun newInstance(retrofit: Retrofit):PlayerApiService{
+        private fun newInstance(retrofit: Retrofit): PlayerApiService {
             return retrofit.create(PlayerApiService::class.java)
         }
-       fun destroy(){
-           INSTANCE = null
-       }
 
+        fun destroy() {
+            INSTANCE = null
+        }
     }
 }

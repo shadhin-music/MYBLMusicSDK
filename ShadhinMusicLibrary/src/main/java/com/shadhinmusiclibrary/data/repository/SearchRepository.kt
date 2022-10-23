@@ -11,7 +11,4 @@ internal class SearchRepository(private val apiService: ApiService) {
     suspend fun getTopTrendingItems(type: String) = safeApiCall {
         apiService.getTopTrendingItems(type)
     }
-//    suspend fun fetchPodcastByID(podType:String,episodeId: Int, contentType:String,isPaid:Boolean) = safeApiCall {
-//        apiService.fetchPodcastByID(podType,episodeId,contentType,isPaid)
-//    }
 }

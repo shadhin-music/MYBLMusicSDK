@@ -24,6 +24,5 @@ internal class RetrofitFMClient private constructor() {
         fun destroy(){
            INSTANCE = null
         }
-
     }
 }

@@ -21,23 +21,10 @@ internal class WatchLaterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.my_bl_sdk_fragment_watch_later, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-
-     companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            WatchLaterFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }

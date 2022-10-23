@@ -6,6 +6,5 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 internal object MusicPlayerControl : MusicControlCallback {
 
     override fun playSong(mSongDetail: SongDetail) {
-        TODO("Not yet implemented")
     }
 }

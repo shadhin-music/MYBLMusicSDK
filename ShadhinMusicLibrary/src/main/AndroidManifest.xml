@@ -29,7 +29,7 @@
             android:theme="@style/light_theme" />
 
         <service
-            android:name=".player.ShadhinMusicPlayer"
+            android:name="com.shadhinmusiclibrary.library.player.ShadhinMusicPlayer"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />

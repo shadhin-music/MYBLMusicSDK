@@ -12,9 +12,8 @@ internal class SingleFMService private constructor() {
                 INSTANCE ?: newInstance(fmClient).also { INSTANCE = it }
             }
 
-        private fun newInstance(fmClient: Retrofit):ApiService{
+        private fun newInstance(fmClient: Retrofit): ApiService {
             return fmClient.create(ApiService::class.java)
         }
-
     }
 }

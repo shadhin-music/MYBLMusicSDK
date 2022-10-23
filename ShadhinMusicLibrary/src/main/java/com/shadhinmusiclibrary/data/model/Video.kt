@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+
 @Keep
 @Parcelize
 internal data class Video(
@@ -70,9 +71,9 @@ internal data class Video(
     var type: String? = null,
     var isPlaying: Boolean = false,
     var isPlaystate: Boolean = false
-): Parcelable{
+) : Parcelable {
 
-    fun setData(data: HomePatchDetail){
+    fun setData(data: HomePatchDetail) {
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName
@@ -104,7 +105,8 @@ internal data class Video(
         trackType = data.TrackType
         type = data.Type
     }
-    fun setData2(data: LatestVideoModelData){
+
+    fun setData2(data: LatestVideoModelData) {
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName

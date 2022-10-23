@@ -1,11 +1,7 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.podcast.Data
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.search.*
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
+import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 
 internal interface SearchItemCallBack {
     fun onClickSearchItem(searchData: SearchData)

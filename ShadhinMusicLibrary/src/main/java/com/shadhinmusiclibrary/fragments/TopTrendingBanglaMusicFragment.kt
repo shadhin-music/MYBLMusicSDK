@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.TopTrendingBanglaMusicAdapter
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -18,8 +17,8 @@ import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 
-       private lateinit var adapter: TopTrendingBanglaMusicAdapter
-       private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var adapter: TopTrendingBanglaMusicAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -32,7 +31,11 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_top_trending_bangla_music, container, false)
+        return inflater.inflate(
+            R.layout.my_bl_sdk_fragment_top_trending_bangla_music,
+            container,
+            false
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +51,7 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, adapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -68,20 +71,7 @@ internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
 //        val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
 //        textTitle.text= homePatchItem!!.Name
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
-    /*companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            TopTrendingBanglaMusicFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }*/
 }

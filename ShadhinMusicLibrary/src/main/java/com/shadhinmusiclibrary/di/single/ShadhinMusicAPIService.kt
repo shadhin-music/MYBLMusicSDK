@@ -12,9 +12,8 @@ internal class ShadhinMusicAPIService private constructor() {
                 INSTANCE ?: newInstance(retrofit).also { INSTANCE = it }
             }
 
-        private fun newInstance(retrofit: Retrofit):ApiService{
+        private fun newInstance(retrofit: Retrofit): ApiService {
             return retrofit.create(ApiService::class.java)
         }
-
     }
 }

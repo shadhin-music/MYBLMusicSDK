@@ -1,10 +1,9 @@
 package com.shadhinmusiclibrary.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
 internal class MusicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

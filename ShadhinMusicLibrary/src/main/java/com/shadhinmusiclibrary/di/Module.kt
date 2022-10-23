@@ -14,12 +14,12 @@ import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
 
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
 import com.shadhinmusiclibrary.fragments.search.SearchViewModelFactory
-import com.shadhinmusiclibrary.player.connection.MusicServiceController
-import com.shadhinmusiclibrary.player.data.rest.MusicRepository
-import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
-import com.shadhinmusiclibrary.player.data.rest.ShadhinMusicRepository
-import com.shadhinmusiclibrary.player.singleton.PlayerCache
-import com.shadhinmusiclibrary.player.ui.PlayerViewModelFactory
+import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
+import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.library.player.data.rest.PlayerApiService
+import com.shadhinmusiclibrary.library.player.data.rest.ShadhinMusicRepository
+import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
+import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
 
@@ -99,11 +99,6 @@ internal class Module(private val applicationContext: Context) {
         get() = PodcastViewModelFactory(podcastRepository)*/
 
 
-
-
-
-
-
     /*private fun getRetrofitInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL)
@@ -119,7 +114,7 @@ internal class Module(private val applicationContext: Context) {
 //        return RetrofitFMClient.getInstance(getClient())
 //    }
 
-//    private fun getFMService(): ApiService {
+    //    private fun getFMService(): ApiService {
 //        return SingleFMService.getInstance(getFMClient())
 //    }
     private fun getRetrofitAPIShadhinMusicInstanceV5(): Retrofit {
@@ -129,6 +124,7 @@ internal class Module(private val applicationContext: Context) {
             .client(getBaseClient())
             .build()
     }
+
     private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerToken(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
@@ -136,6 +132,7 @@ internal class Module(private val applicationContext: Context) {
             .client(getBaseClientWITHtOKEN())
             .build()
     }
+
     private fun getBaseClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
@@ -143,6 +140,7 @@ internal class Module(private val applicationContext: Context) {
             )
             .build()
     }
+
     private fun getBaseClientWITHtOKEN(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
@@ -150,9 +148,11 @@ internal class Module(private val applicationContext: Context) {
             )
             .build()
     }
+
     private fun getApiShadhinMusicServiceV5(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
+
     public fun authRepository() = AuthRepository(getApiShadhinMusicServiceV5())
 
     private fun getApiShadhinMusicServiceV5withToken(): ApiService {
@@ -167,18 +167,21 @@ internal class Module(private val applicationContext: Context) {
             .client(getClient())
             .build()
     }
- private fun getClient(): OkHttpClient {
+
+    private fun getClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 LastFmApiKeyInterceptor()
             )
             .build()
     }
+
     private fun getFMService(): ApiService {
         return getFMClient().create(ApiService::class.java)
     }
-    private val artistAlbumApiService:ApiService = getApiShadhinMusicServiceV5()
-    private val podcastApiService:ApiService = getApiShadhinMusicServiceV5()
+
+    private val artistAlbumApiService: ApiService = getApiShadhinMusicServiceV5()
+    private val podcastApiService: ApiService = getApiShadhinMusicServiceV5()
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
     private val repositoryHomeContent: HomeContentRepository =
@@ -213,47 +216,67 @@ internal class Module(private val applicationContext: Context) {
 
     val factoryArtistSongVM: ArtistContentViewModelFactory
         get() = ArtistContentViewModelFactory(repositoryArtistSongContent)
-    private val artistAlbumContentRepository: ArtistAlbumContentRepository get() = ArtistAlbumContentRepository(
-        artistAlbumApiService)
+    private val artistAlbumContentRepository: ArtistAlbumContentRepository
+        get() = ArtistAlbumContentRepository(
+            artistAlbumApiService
+        )
 
     val artistAlbumViewModelFactory: ArtistAlbumViewModelFactory
         get() = ArtistAlbumViewModelFactory(
-            artistAlbumContentRepository)
+            artistAlbumContentRepository
+        )
 
-    private val featuredpodcastRepository: FeaturedPodcastRepository get() = FeaturedPodcastRepository(
-        getApiShadhinMusicServiceV5())
-    val featuredpodcastViewModelFactory:FeaturedPodcastViewModelFactory
+    private val featuredpodcastRepository: FeaturedPodcastRepository
+        get() = FeaturedPodcastRepository(
+            getApiShadhinMusicServiceV5()
+        )
+    val featuredpodcastViewModelFactory: FeaturedPodcastViewModelFactory
         get() = FeaturedPodcastViewModelFactory(featuredpodcastRepository)
 
-    private val podcastRepository: PodcastRepository get() = PodcastRepository(
-        podcastApiService)
-    val podcastViewModelFactory:PodcastViewModelFactory
+    private val podcastRepository: PodcastRepository
+        get() = PodcastRepository(
+            podcastApiService
+        )
+    val podcastViewModelFactory: PodcastViewModelFactory
         get() = PodcastViewModelFactory(podcastRepository)
 
-    val popularArtistRepository:PopularArtistRepository get() = PopularArtistRepository(
-        artistAlbumApiService)
-    val popularArtistViewModelFactory: PopularArtistViewModelFactory get()= PopularArtistViewModelFactory(
-        popularArtistRepository)
+    val popularArtistRepository: PopularArtistRepository
+        get() = PopularArtistRepository(
+            artistAlbumApiService
+        )
+    val popularArtistViewModelFactory: PopularArtistViewModelFactory
+        get() = PopularArtistViewModelFactory(
+            popularArtistRepository
+        )
 
 
-    val featuredtrackListRepository:FeaturedTracklistRepository get() = FeaturedTracklistRepository(
-        artistAlbumApiService)
-    val featuredtrackListViewModelFactory:FeaturedTracklistViewModelFactory get()= FeaturedTracklistViewModelFactory(
-        featuredtrackListRepository)
+    val featuredtrackListRepository: FeaturedTracklistRepository
+        get() = FeaturedTracklistRepository(
+            artistAlbumApiService
+        )
+    val featuredtrackListViewModelFactory: FeaturedTracklistViewModelFactory
+        get() = FeaturedTracklistViewModelFactory(
+            featuredtrackListRepository
+        )
 
 
-    val searchRepository: SearchRepository get() = SearchRepository(
-        artistAlbumApiService)
-    val searchViewModelFactory: SearchViewModelFactory get()= SearchViewModelFactory(
-        searchRepository)
+    val searchRepository: SearchRepository
+        get() = SearchRepository(
+            artistAlbumApiService
+        )
+    val searchViewModelFactory: SearchViewModelFactory
+        get() = SearchViewModelFactory(
+            searchRepository
+        )
 
 
     val exoplayerCache: SimpleCache
         get() = PlayerCache.getInstance(applicationContext)
 
     private fun getRetrofitInstance(): Retrofit {
-        return  RetrofitClient.getInstance()
+        return RetrofitClient.getInstance()
     }
+
     private val playerApiService: PlayerApiService
         get() = SinglePlayerApiService.getInstance(getRetrofitInstance())
 
@@ -264,9 +287,6 @@ internal class Module(private val applicationContext: Context) {
 
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
-
-
-
 }
 
 

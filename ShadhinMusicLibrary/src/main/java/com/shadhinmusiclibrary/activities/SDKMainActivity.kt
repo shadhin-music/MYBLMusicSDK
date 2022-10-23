@@ -39,9 +39,9 @@ import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
-import com.shadhinmusiclibrary.player.data.model.MusicPlayList
-import com.shadhinmusiclibrary.player.ui.PlayerViewModel
-import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import java.io.Serializable
@@ -115,7 +115,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
             homeFragmentAccess()
         }
-     //  homeFragmentAccess()
+        //  homeFragmentAccess()
         if (uiRequest == AppConstantUtils.Requester_Name_API) {
             patchFragmentAccess()
         }
@@ -150,7 +150,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             toggleMiniPlayerView(false)
         }
         //DO NOT Call this function multiple times
-      //  playerViewModel.startObservePlayerProgress(this)
+        //  playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }
 
@@ -165,13 +165,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 ////        val homePatchDetail = patch.Data[selectedPatchIndex!!]
 //        Log.d("TAG", "Patch: "+ patch.Data)
 //          if(patch.Data[selectedPatchIndex].ContentType=="A") {
-              setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
-                  Bundle().apply {
-                      putSerializable(
-                          PatchItem,
-                          patch as Serializable
-                      )
-                  })
+        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            })
 //          } else {
 //              setupNavGraphAndArg(R.navigation.nav_graph_search_album_details,
 //                  Bundle().apply {
@@ -207,33 +207,39 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle().apply {
-                    putString(DataContentType.TITLE,"Latest Release")
+                    putString(DataContentType.TITLE, "Latest Release")
                 })
             }
             DataContentType.CONTENT_TYPE_PD_RC202 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast, Bundle().apply {
-                    putString(DataContentType.TITLE,"Featured Podcast")
-                })
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast,
+                    Bundle().apply {
+                        putString(DataContentType.TITLE, "Featured Podcast")
+                    })
             }
             DataContentType.CONTENT_TYPE_A_RC203 -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_a, Bundle().apply {
-                    putString(DataContentType.TITLE,"Popular Artists")
+                    putString(DataContentType.TITLE, "Popular Artists")
                 })
             }
             DataContentType.AMR_TUNE_ALL -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune, Bundle().apply {
-                    putString(DataContentType.CONTENT_TYPE,contentType)
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune,
+                    Bundle().apply {
+                        putString(DataContentType.CONTENT_TYPE, contentType)
 
-                })
+                    })
             }
             DataContentType.AMR_TUNE -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune, Bundle().apply {
-                    putString(DataContentType.CONTENT_TYPE,contentType)
-                })
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune,
+                    Bundle().apply {
+                        putString(DataContentType.CONTENT_TYPE, contentType)
+                    })
             }
-            DataContentType.CONTENT_TYPE_V_RC204 ->{
+            DataContentType.CONTENT_TYPE_V_RC204 -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle().apply {
-                    putString(DataContentType.TITLE,"Music Video")
+                    putString(DataContentType.TITLE, "Music Video")
                 })
 
             }
@@ -387,7 +393,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
-        Log.i("navgraphx", "setupNavGraphAndArg: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
+        Log.i(
+            "navgraphx",
+            "setupNavGraphAndArg: ${
+                Thread.currentThread().stackTrace.map { it.methodName }.toString()
+            }"
+        )
     }
 
     /* private fun setupNavGraphAndArg(
@@ -804,7 +815,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     override fun onDestroy() {
         super.onDestroy()
-     //   playerViewModel.disconnect()
+        //   playerViewModel.disconnect()
     }
 
     fun showBottomSheetDialog(
@@ -824,8 +835,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
-        val imageArtist:ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
-        val textAlbum:TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
+        val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
+        val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = argHomePatchDetail?.image
@@ -925,8 +936,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
-        val imageArtist:ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
-        val textAlbum:TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
+        val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
+        val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Album"
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
@@ -953,7 +964,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetail?,
 
         ) {
-      //  Log.e("Check", ""+bsdNavController.graph.displayName)
+        //  Log.e("Check", ""+bsdNavController.graph.displayName)
         bsdNavController.navigate(R.id.artist_details_fragment,
             Bundle().apply {
                 putSerializable(
@@ -968,6 +979,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
 
     }
+
     private fun gotoArtistFromPlaylist(
         bsdNavController: NavController,
         context: Context,
@@ -1013,14 +1025,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 //                        TeaserUrl = "",
 //                        title = "",
 //                        Type = "") as Serializable
-                    HomePatchDetail(AlbumId ="",
-                        ArtistId = mSongDetails.ArtistId?:"",
+                    HomePatchDetail(
+                        AlbumId = "",
+                        ArtistId = mSongDetails.ArtistId ?: "",
                         ContentID = mSongDetails.ContentID,
                         ContentType = "",
                         PlayUrl = "",
                         AlbumName = "",
                         AlbumImage = "",
-                        fav ="",
+                        fav = "",
                         Banner = "",
                         Duration = "",
                         TrackType = "",
@@ -1041,64 +1054,30 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         Seekable = false,
                         TeaserUrl = "",
                         title = "",
-                        Type = "") as Serializable
+                        Type = ""
+                    ) as Serializable
                 )
             })
-        Log.e("TAG", "DATA321: " + mSongDetails.ArtistId)
-
     }
 
-        private fun gotoAlbum(
-            bsdNavController: NavController,
-            context: Context,
-            mSongDetails: SongDetail,
-            argHomePatchItem: HomePatchItem?,
-            argHomePatchDetail: HomePatchDetail?,
+    private fun gotoAlbum(
+        bsdNavController: NavController,
+        context: Context,
+        mSongDetails: SongDetail,
+        argHomePatchItem: HomePatchItem?,
+        argHomePatchDetail: HomePatchDetail?,
 
-            ) {
-            Log.e("Check", ""+bsdNavController.graph.displayName)
-            bsdNavController.navigate(R.id.to_album_details,
-                Bundle().apply {
-                    putSerializable(
-                        PatchItem,
-                        argHomePatchItem
-                    )
-                    putSerializable(
-                        AppConstantUtils.PatchDetail,
-                        HomePatchDetail(
-                            AlbumId = mSongDetails.albumId?:mSongDetails.ContentID,
-                            ArtistId = mSongDetails.ArtistId?:"",
-                            ContentID = mSongDetails.ContentID,
-                            ContentType = "",
-                            PlayUrl = "",
-                            AlbumName = "",
-                            AlbumImage = "",
-                            fav = "",
-                            Banner = "",
-                            Duration = "",
-                            TrackType = "",
-                            image = mSongDetails.image,
-                            ArtistImage = "",
-                            Artist = mSongDetails.artist,
-                            CreateDate = "",
-                            Follower = "",
-                            imageWeb = "",
-                            IsPaid = false,
-                            NewBanner = "",
-                            PlayCount = 0,
-                            PlayListId = "",
-                            PlayListImage = "",
-                            PlayListName = "",
-                            RootId = "",
-                            RootType = "",
-                            Seekable = false,
-                            TeaserUrl = "",
-                            title = mSongDetails.title,
-                            Type = ""
-                        ) as Serializable
-                    )
-                })
-        }
-
-
+        ) {
+        bsdNavController.navigate(R.id.to_album_details,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    argHomePatchItem
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    UtilHelper.getHomePatchDetailToSongDetail(mSongDetails) as Serializable
+                )
+            })
+    }
 }

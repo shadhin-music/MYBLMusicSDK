@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.data.model
 
 import androidx.annotation.Keep
 import java.io.Serializable
+
 @Keep
 internal data class LatestVideoModelData(
     val AlbumId: String,
@@ -34,7 +35,7 @@ internal data class LatestVideoModelData(
     val image: String,
     val imageWeb: String,
     val title: String
-): Serializable {
+) : Serializable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
     }

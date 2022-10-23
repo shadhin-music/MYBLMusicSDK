@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
+
 @Parcelize
 @Keep
 internal data class HomePatchDetail(
@@ -22,7 +23,7 @@ internal data class HomePatchDetail(
     val IsPaid: Boolean,
     val NewBanner: String,
     val PlayCount: Int,
-    val PlayListId:String,
+    val PlayListId: String,
     val PlayListImage: String,
     val PlayListName: String,
     val PlayUrl: String,

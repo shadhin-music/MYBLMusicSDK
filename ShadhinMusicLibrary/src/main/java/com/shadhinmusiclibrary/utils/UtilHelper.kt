@@ -10,8 +10,8 @@ import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.model.Music
+import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.library.player.data.model.Music
 
 internal object UtilHelper {
     fun getScreenHeightWidth(context: Context, type: Int): Int {
@@ -593,7 +593,6 @@ internal object UtilHelper {
                 )
             )
         }
-
         return HomePatchItem(
             "",
             "",
@@ -636,6 +635,42 @@ internal object UtilHelper {
                 Seekable = false,
                 TeaserUrl = "",
                 title = "",
+                Type = ""
+            )
+        }
+    }
+
+    fun getHomePatchDetailToSongDetail(songDetail: SongDetail): HomePatchDetail {
+        songDetail.apply {
+            return HomePatchDetail(
+                AlbumId = albumId ?: ContentID,
+                ArtistId = ArtistId ?: "",
+                ContentID = ContentID,
+                ContentType = "",
+                PlayUrl = "",
+                AlbumName = "",
+                AlbumImage = "",
+                fav = "",
+                Banner = "",
+                Duration = "",
+                TrackType = "",
+                image = image,
+                ArtistImage = "",
+                Artist = artist,
+                CreateDate = "",
+                Follower = "",
+                imageWeb = "",
+                IsPaid = false,
+                NewBanner = "",
+                PlayCount = 0,
+                PlayListId = "",
+                PlayListImage = "",
+                PlayListName = "",
+                RootId = "",
+                RootType = "",
+                Seekable = false,
+                TeaserUrl = "",
+                title = title,
                 Type = ""
             )
         }

@@ -12,13 +12,9 @@ internal class SingleOkHttpClient private constructor() {
                 INSTANCE ?: newInstance().also { INSTANCE = it }
             }
 
-        private fun newInstance(): OkHttpClient{
+        private fun newInstance(): OkHttpClient {
             return OkHttpClient.Builder()
-                .addInterceptor(
-                    LastFmApiKeyInterceptor()
-                )
-                .build()
+                .addInterceptor(LastFmApiKeyInterceptor()).build()
         }
-
     }
 }

@@ -32,7 +32,6 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_s_type_list, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -58,18 +57,13 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
                 }
             }
         recyclerView.layoutManager = layoutManager
-        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+        layoutManager.spanSizeLookup = onSpanSizeLookup
         recyclerView.adapter = concatAdapter
 
-//        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-//        recyclerView.adapter = ReleaseAdapter(argHomePatchItem!!, this)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }

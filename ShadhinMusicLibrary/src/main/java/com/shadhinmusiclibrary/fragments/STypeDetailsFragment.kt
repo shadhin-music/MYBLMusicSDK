@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
@@ -23,14 +22,13 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
     private lateinit var listSongDetail: MutableList<SongDetail>
-    private  lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_s_type_details, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -65,7 +63,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
             .setIsolateViewTypes(false)
             .build()
         adapter = GenrePlaylistAdapter(this)
-        val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, adapter, footerAdapter)
 
         adapter.setRootData(argHomePatchDetail!!)
         //adapter.setData(listSongDetail)
@@ -75,14 +73,10 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
     }
+
     override fun onClickBottomItem(mSongDetails: SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
