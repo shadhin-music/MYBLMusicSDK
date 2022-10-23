@@ -39,7 +39,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/parentRelative"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/parentRelative"
-
                 />
 
             <TextView
@@ -84,7 +83,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
-        <!--        app:layout_constraintTop_toBottomOf="@id/tv_add_to_playlist"-->
 
         <TextView
             android:id="@+id/tv_description"
@@ -108,5 +106,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_description" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

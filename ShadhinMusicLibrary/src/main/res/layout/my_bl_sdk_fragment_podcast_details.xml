@@ -37,19 +37,16 @@
                 android:src="@drawable/my_bl_sdk_ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="@id/parentRelative"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/parentRelative"
-
-                />
+                app:layout_constraintTop_toTopOf="@id/parentRelative" />
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
-                android:textSize="16sp"
                 android:textColor="@color/my_sdk_white"
+                android:textSize="16sp"
                 android:textStyle="bold" />
-
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.AppCompatImageView

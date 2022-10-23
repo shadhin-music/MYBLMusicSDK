@@ -50,12 +50,8 @@ internal class AllGenresDetailsFragment : Fragment() {
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.setText(homePatchItem!!.Name)
         val button: AppCompatImageView = view.findViewById(R.id.imageBack)
-        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
         button.setOnClickListener {
-            manager.popBackStack(
-                "AllGenresDetailsFragment",
-                FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
+
         }
     }
 }

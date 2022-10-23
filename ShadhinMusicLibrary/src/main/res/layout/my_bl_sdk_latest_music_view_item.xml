@@ -6,8 +6,8 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="12dp"
-    android:elevation="6dp"
     android:clickable="true"
+    android:elevation="6dp"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="10dp">
@@ -45,9 +45,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/my_sdk_black2"
                     android:singleLine="true"
                     android:text="Ami Bhabi Tumi"
+                    android:textColor="@color/my_sdk_black2"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -91,8 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:visibility="invisible"
-                    android:src="@drawable/my_bl_sdk_ic_more_vert" />
+                    android:src="@drawable/my_bl_sdk_ic_more_vert"
+                    android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
