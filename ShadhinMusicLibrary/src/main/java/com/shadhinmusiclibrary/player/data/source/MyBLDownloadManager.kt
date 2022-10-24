@@ -3,30 +3,40 @@ package com.shadhinmusiclibrary.player.data.source
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
 import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.cache.Cache
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.Util
+import com.shadhinmusiclibrary.di.ShadhinApp
+import com.shadhinmusiclibrary.player.data.model.Music
+import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import java.io.File
 
 
-class MyBLDownloadManager( private val context: Context) {
-    var dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
-        context, Util.getUserAgent(context, "uamp"), null)
+internal class MyBLDownloadManager( private val context: Context,musicRepository: MusicRepository) {
+//    var dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
+//        context, Util.getUserAgent(context, "my bl"), null)
+
+   var dataSourceFactory : DataSource.Factory = DownloadDataSourceFactory.build(context,musicRepository)
 
     private  var dataBase: DatabaseProvider
-    private var downloadContentDirectory: File
-    var downloadCache: Cache
+
+  //  var downloadCache: Cache
     var downloadManager: DownloadManager
 
     init {
-        dataBase = ExoDatabaseProvider(context)
-        downloadContentDirectory = File(context.getExternalFilesDir(null), "my app")
-        downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), dataBase)
-        downloadManager = DownloadManager(context, dataBase, downloadCache,dataSourceFactory)
+
+
+        dataBase = StandaloneDatabaseProvider(context)
+
+        //downloadCache = SimpleCache(downloadContentDirectory, NoOpCacheEvictor(), dataBase)
+        downloadManager = DownloadManager(context,dataBase , ShadhinApp.module(context).exoplayerCache,dataSourceFactory,Runnable::run)
     }
 
 }

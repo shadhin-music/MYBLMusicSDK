@@ -66,7 +66,6 @@
         <item name="tabIndicatorHeight">4dp</item>
         <item name="tabPaddingStart">16dp</item>
         <item name="tabPaddingEnd">16dp</item>
-        <item name="tabIndicatorFullWidth">false</item>
         <item name="tabMode">scrollable</item>
         <item name="tabIndicator">@drawable/my_bl_sdk_ic_tab_indicator</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>

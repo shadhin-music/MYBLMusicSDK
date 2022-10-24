@@ -1,5 +1,9 @@
 package com.shadhinmusiclibrary.fragments.album
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +12,10 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
@@ -32,6 +38,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
+
 
 internal class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -72,7 +79,7 @@ internal class AlbumDetailsFragment :
         super.onViewCreated(view, savedInstanceState)
 
         albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
-        albumsTrackAdapter = AlbumsTrackAdapter(this, this)
+        albumsTrackAdapter = AlbumsTrackAdapter(this, this,MyBroadcastReceiver())
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         observeData(
@@ -135,7 +142,7 @@ internal class AlbumDetailsFragment :
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 if (res.data?.data != null && argHomePatchDetail != null) {
-                    albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!)
+                    albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!,MyBroadcastReceiver())
                 }
                 //  updateAndSetAdapter(res.data!!.data)
             } else {
@@ -183,9 +190,15 @@ internal class AlbumDetailsFragment :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val f = IntentFilter("ACTION")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), f)
+    }
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<SongDetail>
+        songDetails: MutableList<SongDetail>,
     ) {
         val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
@@ -242,7 +255,7 @@ internal class AlbumDetailsFragment :
 
     override fun onArtistAlbumClick(
         itemPosition: Int,
-        artistAlbumModelData: List<ArtistAlbumModelData>
+        artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         val data = HomePatchDetail(
@@ -279,5 +292,18 @@ internal class AlbumDetailsFragment :
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
         observeData(mArtAlbumMod.ContentID, mArtAlbumMod.ArtistId, "r")
+    }
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            when (intent.action) {
+                "ACTION" -> {
+                    val data = intent.getIntExtra("currentProgress",0)
+                     val id = intent.getIntExtra("contentId",0)
+                    Log.e("Your Received data : ", "habijabi: $data $id")
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+            }
+
+        }
     }
 }

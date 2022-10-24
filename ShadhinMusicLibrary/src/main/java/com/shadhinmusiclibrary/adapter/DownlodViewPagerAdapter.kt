@@ -23,22 +23,14 @@ internal class DownlodViewPagerAdapter(
                DownloadDetailsFragment()
             }
             1 -> {
-                HomeFragment();
+                DownloadDetailsFragment()
 
-                // DownloadDetailsFragment.newInstance()
             }
            2-> {
                DownloadDetailsFragment()
-                //DownloadDetailsFragment.newInstance()
-//                st artActivity(Intent(this, LoginActivity::class.java))
-                //HomeFragment();
+
             }
-//            3 -> {
-//                HomeFragment();
-//            }
-//            4 -> {
-//                HomeFragment();
-//            }
+
             else -> getItem(position)
         }
     }

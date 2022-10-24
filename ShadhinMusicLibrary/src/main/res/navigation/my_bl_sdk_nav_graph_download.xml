@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/download">
+
+    <fragment
+        android:id="@+id/download"
+        android:name="com.shadhinmusiclibrary.fragments.DownloadFragment"
+        android:label="fragment_download"
+        tools:layout="@layout/my_bl_sdk_fragment_download"/>
+
+</navigation>

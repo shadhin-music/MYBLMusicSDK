@@ -16,10 +16,9 @@ import com.shadhinmusiclibrary.player.singleton.DataSourceInfo.isDataSourceError
 import okhttp3.OkHttpClient
 
 
-private const val TAG = "DataSourceFactory"
-internal open class ShadhinDataSourceFactory  constructor(
+private const val TAG = "DownloadDataSourceFactory"
+internal open class DownloadDataSourceFactory private constructor(
     private val context: Context,
-    private val music: Music,
     private val musicRepository: MusicRepository
 ) :DataSource.Factory {
     private lateinit var factory: DataSource.Factory
@@ -29,9 +28,10 @@ internal open class ShadhinDataSourceFactory  constructor(
 
     private fun initialization() {
         isDataSourceError = false
+
         val client = OkHttpClient()
             .newBuilder()
-            .addInterceptor(PlayerInterceptor(musicRepository,music))
+            .addInterceptor(DownloadInterceptor(musicRepository))
             .build()
 
 
@@ -45,20 +45,9 @@ internal open class ShadhinDataSourceFactory  constructor(
         @JvmStatic
         fun build(
             context: Context,
-            music: Music,
-            cache: SimpleCache,
             musicRepository: MusicRepository
         ): DataSource.Factory {
-
-            return CacheDataSource.Factory()
-                .setCache(cache)
-                .setUpstreamDataSourceFactory(
-                    ShadhinDataSourceFactory(context,music,musicRepository)
-                )
-                // TODO must be remove setCacheWriteDataSinkFactory(null) this line when download done . but this time for testing
-                .setCacheWriteDataSinkFactory(null)
-                .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-
+            return DownloadDataSourceFactory(context,musicRepository)
         }
 
 

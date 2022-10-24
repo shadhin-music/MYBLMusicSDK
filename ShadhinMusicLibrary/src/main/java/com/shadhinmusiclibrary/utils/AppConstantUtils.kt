@@ -30,6 +30,7 @@ internal object AppConstantUtils {
     const val UI_Request_Type = "UIName"
     const val Requester_Name_Home = "HomeFragment"
     const val Requester_Name_Search = "SearchFragment"
+    const val Requester_Name_Download = "DownloadFragment"
     const val Requester_Name_API = "AllMusic"
 
     const val token:String = "/2xJxYK6natDU+aqxGB4ZRJeniScy21pZSEmyPmkpk3O29Oa/NwY9mcbQS2Rih3mR75S5tUsdkbKk6eJgAtfgEyYMaHtk++KDIauuJJnxnKHVQzmGxkL3qtu1mYZi4CgS3pCRRwbmbPb/rMMA0tfqnGqibA73nBDFhZiQqx0LpgEpEDC2RAl1fEGOj9BGs+tPTjl8Et9FYGLtih8L7RKJcV4kd5Epa6bEitbU0Tfxb9AKEWHMAMF5KNjRNB33+wVYmGT0Pl5plifHR4UVhTYmEosBVlkrymhj05/Ed0qzAmBdUpgOtvnT/jIKzh4yIYTEY9XI33WqDtUCpV356M5pir9B7M+UNVPuY4jO3z7p9jl3G0DwlvzYQVZidAdrSO6UlxF0q5sidnPVWUaheapiN3vrpLgeHsM2s/1wW9CSSRsLhbVP30P2yfFqnwDSN1v2TtfusKWQD73BfnKiLzfRx9g7sUP9Vvx/+bLFWzekpN3exz8x/ZMBhQAJYVMyw6zzQwvW/VkY1nGbMcrDJfUB+CdKfQy5x6n3qluoH6UGBEysGowCQUKMYJKApfKi5WOokfttnh82KuENoT0jJNH7JFVQU8hRNjvDCfObbk/88nXc2XKSkAUwW0MA+6V/8dxfqFDc/v+hTqSqVAOyBECN2wgquygOaWA9h5BKnTdEEw4FUhUySnfuu/ZPsnF4NMB1v5NWrAFWx7yR5seEqRaKobnvAC1pOHEqTcQpA+8PDaZ/DAU7Q8KklSZYaIIlcIzCRSgGjH0oUt47AAsfldKOpi5qKEzITRXyRBCNT9HLGQKBWcU39AieYb9pt8eohFcTI2vJELmkBawqh+khr+hLzN8azDoLutX1vU/jcvZWZcAe2B0LnEmEKyL4w1eIl/4a5DhHmMLlVdMX5UW9T+ByfsYjGRepcEHdhgW4/RStO8=:YkWvJzb5tonDMnzNcsTq9Q=="

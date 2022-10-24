@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.activities
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
@@ -19,6 +20,7 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -28,19 +30,29 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.exoplayer2.offline.*
+import com.google.android.exoplayer2.scheduler.Requirements
+import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shadhinmusiclibrary.BuildConfig
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
+import com.shadhinmusiclibrary.download.MyBLDownloadService
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
+import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.player.data.source.MyBLDownloadManager
+import com.shadhinmusiclibrary.player.data.source.ShadhinDataSourceFactory
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
@@ -104,7 +116,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
-
+        DownloadProgressObserver.setCacheRepository(cacheRepository)
         createPlayerVM()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
@@ -121,6 +133,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
         if (uiRequest == AppConstantUtils.Requester_Name_Search) {
             searchFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_Download) {
+            downloadFragmentAccess()
         }
         //routeDataArtistType()
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
@@ -153,18 +168,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
       //  playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }
+    val cacheRepository by lazy {
+        CacheRepository(this)
+    }
 
     private fun searchFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItem
 
-//        var selectedPatchIndex: Int? = null
-////        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
-//            selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
-////        }
-////        val homePatchDetail = patch.Data[selectedPatchIndex!!]
-//        Log.d("TAG", "Patch: "+ patch.Data)
-//          if(patch.Data[selectedPatchIndex].ContentType=="A") {
+
               setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
                   Bundle().apply {
                       putSerializable(
@@ -172,17 +184,21 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                           patch as Serializable
                       )
                   })
-//          } else {
-//              setupNavGraphAndArg(R.navigation.nav_graph_search_album_details,
-//                  Bundle().apply {
-//                      putSerializable(
-//                          PatchItem,
-//                          patch as Serializable
-//                      )
-//                  })
-//          }
-    }
 
+    }
+    private fun downloadFragmentAccess() {
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+
+        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_download,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            })
+
+    }
     private fun homeFragmentAccess() {
         //Will received data from Home Fragment from MYBLL App
         val patch = intent.extras!!.getBundle(PatchItem)!!
@@ -492,6 +508,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+       /* if(BuildConfig.DEBUG){
+            mSongDetails.forEach {
+                it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+            }
+        }*/
         playerViewModel.unSubscribe()
         playerViewModel.subscribe(
             MusicPlayList(
@@ -567,13 +588,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
             override fun onScrollStart(
                 currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-                adapterPosition: Int
+                adapterPosition: Int,
             ) {
             }
 
             override fun onScrollEnd(
                 currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-                adapterPosition: Int
+                adapterPosition: Int,
             ) {
                 currentItemHolder.sMusicData.artist
                 playerViewModel.skipToQueueItem(adapterPosition)
@@ -587,7 +608,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 currentPosition: Int,
                 newPosition: Int,
                 currentHolder: MusicPlayAdapter.MusicPlayVH?,
-                newCurrent: MusicPlayAdapter.MusicPlayVH?
+                newCurrent: MusicPlayAdapter.MusicPlayVH?,
             ) {
             }
         })
@@ -836,6 +857,51 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
+        val constraintDownload:ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintDownload)
+        constraintDownload?.setOnClickListener {
+           val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+           // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+
+                .build()
+
+//            DownloadHelper.createMediaSource(downloadRequest,DefaultDataSource.Factory(this))
+//            getDownloadManager().apply {
+//                addDownload(downloadRequest)
+//
+//               this.resumeDownloads()
+//                Log.i("getDownloadManager", "showBottomSheetDialog: ${this.currentDownloads.toString()}")
+            cacheRepository.insertDownload(DownloadedContent(mSongDetails.rootContentID,mSongDetails.albumId.toString(),
+                mSongDetails.image,
+                mSongDetails.title,
+            mSongDetails.ContentType,
+            mSongDetails.PlayUrl,
+                mSongDetails.ContentType,
+           0,
+            0,
+                mSongDetails.artist,
+           mSongDetails.duration))
+            Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
+            DownloadService.sendAddDownload(
+              applicationContext,
+                MyBLDownloadService::class.java,
+                        downloadRequest,
+                /* foreground= */ false)
+
+
+
+          //  }
+//            Intent(this, MyBLDownloadService::class.java).also {
+//
+//                startService(it)
+//                DownloadService.sendAddDownload(
+//                    context,
+//                    MyDownloadService.class,
+//                            downloadRequest,
+//                    /* foreground= */ false)
+         //  }
+        }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         constraintAlbum?.setOnClickListener {
@@ -968,6 +1034,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
 
     }
+    private fun getDownloadSongURL(){
+
+    }
     private fun gotoArtistFromPlaylist(
         bsdNavController: NavController,
         context: Context,
@@ -1056,7 +1125,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             argHomePatchDetail: HomePatchDetail?,
 
             ) {
-            Log.e("Check", ""+bsdNavController.graph.displayName)
+            //Log.e("Check", ""+bsdNavController.graph.displayName)
             bsdNavController.navigate(R.id.to_album_details,
                 Bundle().apply {
                     putSerializable(

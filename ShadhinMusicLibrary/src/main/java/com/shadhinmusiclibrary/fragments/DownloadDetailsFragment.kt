@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 
 
 internal class DownloadDetailsFragment : Fragment() {
@@ -29,17 +31,21 @@ internal class DownloadDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // val dataAdapter = PodcastEpisodesAdapter()
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
-       // recyclerView.adapter = dataAdapter
-       // val back: ImageView = view.findViewById(R.id.imageBack)
+      loadData()
 
 
     }
+      fun loadData(){
+          val cacheRepository= CacheRepository(requireContext())
+          val dataAdapter = DownloadedSongsAdapter(cacheRepository.getAllDownloads()!!)
 
+          val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+          recyclerView.layoutManager =
+              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
+          recyclerView.adapter = dataAdapter
+
+      }
 
     companion object {
 
@@ -51,4 +57,8 @@ internal class DownloadDetailsFragment : Fragment() {
                 }
             }
     }
+
+}
+interface DownloadItemUpdateListener {
+    fun loadData()
 }

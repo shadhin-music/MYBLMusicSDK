@@ -25,6 +25,7 @@ import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
 /*
@@ -252,7 +253,8 @@ internal class Module(private val applicationContext: Context) {
         get() = PlayerCache.getInstance(applicationContext)
 
     private fun getRetrofitInstance(): Retrofit {
-        return  RetrofitClient.getInstance()
+        val client = getBaseClient()
+        return  RetrofitClient.getInstance(client)
     }
     private val playerApiService: PlayerApiService
         get() = SinglePlayerApiService.getInstance(getRetrofitInstance())

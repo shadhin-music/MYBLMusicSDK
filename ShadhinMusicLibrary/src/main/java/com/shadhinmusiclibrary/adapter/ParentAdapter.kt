@@ -14,13 +14,14 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.RBTDATA
 
 
-internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
+internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack, val downloadClickCallBack: DownloadClickCallBack) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
     private var homeListData: MutableList<HomePatchItem> = mutableListOf()
@@ -73,6 +74,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
+
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -97,6 +99,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         }
     }
 
+    var downloadNotAdded = true
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItem>) {
         val size = this.homeListData.size
@@ -104,38 +107,44 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             for (item in data.indices) {
                 search =
                     HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-               // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
             }
             this.homeListData.add(search!!)
+            //this.homeListData.add(download!!)
 
 
         }
-        var exists :Boolean = false
-        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 2) {
-
-            for (item in data.indices) {
-                Log.e("TaG","Items: "+ data[item].ContentType)
-                download = HomePatchItem("002",
-                    "download",
-                    listOf(),
-                    "download",
-                    "download",
-                    0,
-                    0)
-                if (homeListData[item].ContentType==data[item].ContentType){
-                    exists = true
-                    Log.e("TaG","Items123: "+ exists)
-
-                }
-            }
-
-            if(exists) {
-                Log.e("TaG","Items321: "+ exists)
-                this.homeListData.add(download!!)
-
-            }
-
+        if (this.homeListData.size >= 3 && downloadNotAdded){
+            downloadNotAdded = false
+            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
+            this.homeListData.add(download!!)
         }
+//        var exists :Boolean = false
+//        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
+//
+//            for (item in data.indices) {
+//                Log.e("TaG","Items: "+ data[item].ContentType)
+//                download = HomePatchItem("002",
+//                    "download",
+//                    listOf(),
+//                    "download",
+//                    "download",
+//                    0,
+//                    0)
+//                if (homeListData[item].ContentType==data[item].ContentType){
+//                    exists = true
+//                    Log.e("TaG","Items123: "+ exists)
+//
+//                }
+//            }
+//
+//            if(exists) {
+//                Log.e("TaG","Items321: "+ exists)
+//                this.homeListData.add(download!!)
+//
+//            }
+//
+//        }
 
         this.homeListData.addAll(data)
         val sizeNew = this.homeListData.size
@@ -246,16 +255,17 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 //            }
         }
 
-        private fun bindDownload() {
+        private fun bindDownload(homePatchItemModel: HomePatchItem) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
-//            download.setOnClickListener {
+            download.setOnClickListener {
+                downloadClickCallBack.clickOnDownload(homePatchItemModel)
 //                val manager: FragmentManager =
 //                    (mContext as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()
 //                    .add(R.id.container, DownloadFragment.newInstance())
 //                    .addToBackStack("AllGenresDetailsFragment")
 //                    .commit()
-//            }
+            }
         }
 
 
@@ -327,7 +337,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
                 "Podcast" -> bindPopularPodcast(homePatchItemModel)
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
-               // "download" -> bindDownload()
+                "download" -> bindDownload(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
             }

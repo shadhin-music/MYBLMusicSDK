@@ -26,7 +26,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
-import com.shadhinmusiclibrary.adapter.SpaceAdapter
+import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
@@ -45,7 +45,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint, HomeCallBack, SearchClickCallBack {
+    FragmentEntryPoint, HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -144,7 +144,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this, this)
+            dataAdapter = ParentAdapter(this, this,this)
             //dataAdapter = ParentAdapter(this,rbtData )
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
@@ -300,5 +300,22 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         } else {
             ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_arrow_black_24)
         }
+    }
+
+    override fun clickOnDownload(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Download
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
     }
 }

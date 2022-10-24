@@ -18,6 +18,6 @@ internal object PlayerCache {
         val evictor =
             LeastRecentlyUsedCacheEvictor((100 * 1024 * 1024).toLong())
         val databaseProvider = StandaloneDatabaseProvider(context)
-        return SimpleCache(File(context.cacheDir, "media"), evictor, databaseProvider)
+        return SimpleCache(File(context.filesDir, "media"), evictor, databaseProvider)
     }
 }

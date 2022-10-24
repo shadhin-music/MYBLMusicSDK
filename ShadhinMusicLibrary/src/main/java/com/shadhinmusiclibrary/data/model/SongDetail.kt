@@ -8,7 +8,7 @@ internal data class SongDetail(
     val image: String,
     val title: String,
     val ContentType: String,
-    val PlayUrl: String,
+    var PlayUrl: String,
     val artist: String,
     val duration: String,
     val copyright: String,
