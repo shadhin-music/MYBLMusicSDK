@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 @Keep
 internal data class ArtistContent(
     val MonthlyListener: String,
-    val `data`: List<ArtistContentData>,
+    val `data`: MutableList<ArtistContentData>,
     val fav: String,
     val follow: String,
     val image: String,

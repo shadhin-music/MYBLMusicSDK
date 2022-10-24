@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
@@ -32,15 +31,15 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
     PodcastOnItemClickCallback {
+
+    private lateinit var viewModel: PodcastViewModel
     private lateinit var navController: NavController
 
-    //    var homePatchItem: HomePatchItem? = null
-//    var homePatchDetail: HomePatchDetail? = null
-    private lateinit var viewModel: PodcastViewModel
-    private lateinit var parentAdapter: ConcatAdapter
     private lateinit var podcastHeaderAdapter: PodcastHeaderAdapter
     private lateinit var podcastTrackAdapter: PodcastTrackAdapter
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
+    private lateinit var concatAdapter: ConcatAdapter
+
     var data: Data? = null
     var episode: List<Episode>? = null
 
@@ -66,24 +65,21 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
-            //  Log.d("TAG", "PODCAST DATA: " + contentType + podcastType+it.AlbumId+false)
-            //viewModel.fetchPodcastContent(podcastType,it.AlbumId.toInt(),contentType,false)
         }
-        // Log.e("Check", "yes iam called")
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
+        }
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music?.mediaId != null) {
+                podcastTrackAdapter.setPlayingSong(music.mediaId!!)
+            }
         }
     }
 
     private fun initialize() {
-       setupAdapters()
+        setupAdapters()
         setupViewModel()
         observeData()
     }
@@ -99,16 +95,15 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
 //            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
-        parentAdapter = ConcatAdapter(
+        concatAdapter = ConcatAdapter(
             config,
             podcastHeaderAdapter,
             PodcastTrackHeaderAdapter(),
             podcastTrackAdapter,
             podcastMoreEpisodesAdapter, footerAdapter
         )
-        parentAdapter.notifyDataSetChanged()
-        parentRecycler.setLayoutManager(layoutManager)
-
+        concatAdapter.notifyDataSetChanged()
+        parentRecycler.layoutManager = layoutManager
     }
 
     private fun setupViewModel() {
@@ -120,17 +115,23 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                response?.data?.data?.EpisodeList?.let {
-                    podcastHeaderAdapter.setHeader(
-                        it,
-                        it[0].TrackList
+                response?.data?.data?.EpisodeList?.let { itEpisod ->
+//                    podcastHeaderAdapter.setHeader(
+//                        itEpisod,
+//                        itEpisod[0].TrackList
+//                    )
+                    podcastHeaderAdapter.setTrackData(
+                        itEpisod,
+                        itEpisod[0].TrackList,
+                        argHomePatchDetail!!
                     )
                 }
                 response.data?.data?.EpisodeList?.get(0)
                     ?.let {
                         podcastTrackAdapter.setData(
                             it.TrackList.toMutableList(),
-                            argHomePatchDetail!!
+                            argHomePatchDetail!!,
+                            playerViewModel.currentMusic?.mediaId
                         )
                     }
                 response.data?.data?.let {
@@ -138,13 +139,9 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                         podcastMoreEpisodesAdapter.setData(it1)
                     }
                 }
-                parentRecycler.setAdapter(parentAdapter)
+                parentRecycler.adapter = concatAdapter
             } else {
-
             }
-//            ArtistHeaderAdapter(it)
-            // viewDataInRecyclerView(it)
-            //Log.e("TAG","DATA: "+ it.artist)
         }
     }
 
@@ -179,7 +176,6 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         selectedEpisodeID = episode.Id
         argHomePatchDetail?.ContentID = episode.Id.toString()
         observeData()
-
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -187,11 +183,9 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //    parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
-        parentAdapter.notifyDataSetChanged()
+        concatAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
     }
-
-
 
     override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
         Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
@@ -208,7 +202,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
             if ((mTracks[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mTracks[clickItemPosition].ShowId != playerViewModel.currentMusic?.mediaId)) {
+                if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
@@ -222,28 +216,24 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     }
 
     override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
-        val mSongDet = podcastTrackAdapter.tracks
-        val mCurrentVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
-        if (mSongDet.size > 0 && isAdded) {
+//        val mSongDet = podcastTrackAdapter.tracks
+        val podcastHeaderVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
+        if (mTracks.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mSongDet.indexOfFirst {
+                    if ((mTracks.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.ShowId == itMusic.mediaId
+                                    it.rootContentID == itMusic.rootId &&
+                                    it.Id.toString() == itMusic.mediaId
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            playPauseState(itPla!!.isPlaying, mCurrentVH.ivPlayBtn!!)
-                        }
-
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
-                            Log.e(
-                                "ADF",
-                                "AdPosition: " + mCurrentVH.bindingAdapterPosition + " itemId: " + mCurrentVH.itemId + " musicIndex" + it
-                            )
+                            playPauseState(itPla!!.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
                     }
+                } else {
+                    podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                 }
             }
         }
