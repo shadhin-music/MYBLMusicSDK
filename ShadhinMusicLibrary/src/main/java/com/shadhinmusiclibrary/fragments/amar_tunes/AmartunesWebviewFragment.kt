@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.amar_tunes
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -78,7 +80,16 @@ internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
                 }
             } else {
                if(res.errorCode == 401){
-                   Toast.makeText(requireActivity(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                   AlertDialog.Builder(requireActivity())
+                       .setTitle("Error")
+                       .setMessage("Unauthorized")
+                       .setPositiveButton("Close",object :DialogInterface.OnClickListener{
+                           override fun onClick(dialog: DialogInterface?, which: Int) {
+                               requireActivity().onBackPressed()
+                           }
+                       })
+                       .show()
+                  // Toast.makeText(requireActivity(), "Unauthorized", Toast.LENGTH_SHORT).show();
                }else{
                    Toast.makeText(requireActivity(), "Something is wrong", Toast.LENGTH_SHORT).show();
                }
