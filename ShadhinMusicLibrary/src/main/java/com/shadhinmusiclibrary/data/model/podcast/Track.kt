@@ -25,8 +25,9 @@ internal data class Track(
 
     val rootContentID: String,
     val rootImage: String,
-    val rootContentType: String
-): Serializable {
+    val rootContentType: String,
+    var isPlaying: Boolean = false
+) : Serializable {
     fun getImageUrl300Size(): String {
         return this.ImageUrl.replace("<\$size\$>", "300")
     }

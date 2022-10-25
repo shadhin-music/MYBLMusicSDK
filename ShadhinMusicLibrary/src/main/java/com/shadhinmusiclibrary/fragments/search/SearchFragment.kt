@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.fragments.search
 
-import android.app.Activity
 import android.app.SearchManager
 import android.content.ContentResolver
 import android.content.Context
@@ -47,7 +46,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     private lateinit var navController: NavController
@@ -172,6 +170,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         delay(2000)
                         observeData(searchText)
+                        hideKeyboard(requireActivity())
                     }
                     observeDataTrendingItems("\"\"")
                     searchText = newText
@@ -199,6 +198,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.e("SF", "onQueryTextSubmit: $query")
                 // val query: String = intent.getStringExtra(SearchManager.QUERY);
+                hideKeyboard(requireActivity())
                 searchText = query
                 val suggestions = SearchRecentSuggestions(
                     context,
@@ -612,65 +612,65 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     //after search play item
     //TODO need delay
     override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        /* when (songItem[clickItemPosition].ContentType) {
-             DataContentType.CONTENT_TYPE_V -> {
-                 //open playlist
-                 val intent = Intent(context, VideoActivity::class.java)
-                 val videoArray = ArrayList<Video>()
-                 for (item in songItem) {
- //                    val video = Video()
-                     videoArray.add(UtilHelper.getVideoToSearchData(item))
-                 }
-                 val videos: ArrayList<Video> = videoArray
-                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
-                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-                 startActivity(intent)
-             }
-             DataContentType.CONTENT_TYPE_S -> {
-                 if (playerViewModel.currentMusic != null) {
-                     Log.e(
-                         "SF",
-                         "currentMusic: " + songItem[clickItemPosition].ContentID + " "
-                                 + playerViewModel.currentMusic?.rootId
-                     )
-                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                             playerViewModel.skipToQueueItem(clickItemPosition)
-                             Log.e("ADF", "skipToQueueItem:")
-                         } else {
-                             Log.e("ADF", "togglePlayPause:")
-                             playerViewModel.togglePlayPause()
-                         }
-                     } else {
-                         playItem(
-                             UtilHelper.getSongDetailToSearchDataList(songItem),
-                             clickItemPosition
-                         )
-                     }
-                 } else {
-                     playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
-                 }
-             }
-             DataContentType.CONTENT_TYPE_PD_CB -> {
-                 //TODO need delay
-                 if (playerViewModel.currentMusic != null) {
-                     if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                         if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
-                             playerViewModel.skipToQueueItem(clickItemPosition)
-                         } else {
-                             playerViewModel.togglePlayPause()
-                         }
-                     } else {
-                         playItem(
-                             UtilHelper.getSongDetailToSearchDataList(songItem),
-                             clickItemPosition
-                         )
-                     }
-                 } else {
-                     playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
-                 }
-             }
-         }*/
+        when (songItem[clickItemPosition].ContentType) {
+            DataContentType.CONTENT_TYPE_V -> {
+                //open playlist
+                val intent = Intent(context, VideoActivity::class.java)
+                val videoArray = ArrayList<Video>()
+                for (item in songItem) {
+                    //                    val video = Video()
+                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+                }
+                val videos: ArrayList<Video> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                startActivity(intent)
+            }
+            DataContentType.CONTENT_TYPE_S -> {
+                if (playerViewModel.currentMusic != null) {
+                    Log.e(
+                        "SF",
+                        "currentMusic: " + songItem[clickItemPosition].ContentID + " "
+                                + playerViewModel.currentMusic?.rootId
+                    )
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                            Log.e("ADF", "skipToQueueItem:")
+                        } else {
+                            Log.e("ADF", "togglePlayPause:")
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
+            DataContentType.CONTENT_TYPE_PD_CB -> {
+                //TODO need delay
+                if (playerViewModel.currentMusic != null) {
+                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                            playerViewModel.skipToQueueItem(clickItemPosition)
+                        } else {
+                            playerViewModel.togglePlayPause()
+                        }
+                    } else {
+                        playItem(
+                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            clickItemPosition
+                        )
+                    }
+                } else {
+                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                }
+            }
+        }
     }
 
     override fun onClickPlayVideoItem(songItem: List<SearchData>, clickItemPosition: Int) {

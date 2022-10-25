@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -29,23 +27,22 @@ internal class AlbumsTrackAdapter(
 ) : RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {
     var dataSongDetail: MutableList<SongDetail> = mutableListOf()
     private var parentView: View? = null
+    private var contentId: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context)
+//        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(dataSongDetail[position])
-
+        val mSongDetails = dataSongDetail[position]
+        holder.bindItems(mSongDetails)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(dataSongDetail, position)
         }
 
-//        DownloadProgressObserver.addViewHolder(holder, dataSongDetail[position].rootContentID)
-//        DownloadProgressObserver.updateProgress(holder)
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
             val songDetail = dataSongDetail[position]
@@ -54,6 +51,19 @@ internal class AlbumsTrackAdapter(
 
 
 
+
+        if (mSongDetails.isPlaying) {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
+            )
+        } else {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(
+                    holder.context,
+                    R.color.my_sdk_black2
+                )
+            )
+        }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -67,6 +77,7 @@ internal class AlbumsTrackAdapter(
         rootPatch: HomePatchDetail,
 
     ) {
+    fun setData(data: MutableList<SongDetail>, rootPatch: HomePatchDetail, mediaId: String?) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
@@ -74,13 +85,19 @@ internal class AlbumsTrackAdapter(
             )
         }
         notifyDataSetChanged()
+
+        if (mediaId != null) {
+            setPlayingSong(mediaId)
+        }
     }
 
-    fun setPlayingSong(mediaId: String, newSongDetails: List<SongDetail>) {
-        val callback = AlbumTrackDiffCB(dataSongDetail, newSongDetails)
+    fun setPlayingSong(mediaId: String) {
+        contentId = mediaId
+        val newList: List<SongDetail> = UtilHelper.albumSongDetailsNewList(mediaId, dataSongDetail)
+        val callback = AlbumTrackDiffCB(dataSongDetail, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
         dataSongDetail.clear()
-        dataSongDetail.addAll(newSongDetails)
+        dataSongDetail.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -101,11 +118,7 @@ internal class AlbumsTrackAdapter(
             oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
-
-        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-            return super.getChangePayload(oldItemPosition, newItemPosition)
-        }
+            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

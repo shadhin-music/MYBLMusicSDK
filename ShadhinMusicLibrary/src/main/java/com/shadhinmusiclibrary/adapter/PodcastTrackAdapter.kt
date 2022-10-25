@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -26,9 +28,23 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
     }
 
     override fun onBindViewHolder(holder: PodcastTrackVH, position: Int) {
+        val trackItem = tracks[position]
         holder.bindItems(position)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
+        }
+
+        if (trackItem.isPlaying) {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
+            )
+        } else {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(
+                    holder.context,
+                    R.color.my_sdk_black2
+                )
+            )
         }
     }
 
@@ -38,20 +54,58 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         return tracks.size
     }
 
-    fun setData(data: MutableList<Track>, rootPatch: HomePatchDetail) {
-        this.tracks =  mutableListOf()
+    fun setData(
+        data: MutableList<Track>,
+        rootPatch: HomePatchDetail,
+        mediaId: String?
+    ) {
+        this.tracks = mutableListOf()
         for (songItem in data) {
             tracks.add(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
         notifyDataSetChanged()
+
+        if (mediaId != null) {
+            setPlayingSong(mediaId)
+        }
+    }
+
+    fun setPlayingSong(mediaId: String) {
+        val newList: List<Track> = UtilHelper.podcastTrackNewList(mediaId, tracks)
+        val callback = PodcastTrackDiffCB(tracks, newList)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        tracks.clear()
+        tracks.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private class PodcastTrackDiffCB() : DiffUtil.Callback() {
+        private lateinit var oldSongDetails: List<Track>
+        private lateinit var newSongDetails: List<Track>
+
+        constructor(oldSongDetails: List<Track>, newSongDetails: List<Track>) : this() {
+            this.oldSongDetails = oldSongDetails
+            this.newSongDetails = newSongDetails
+        }
+
+        override fun getOldListSize(): Int = oldSongDetails.size
+
+        override fun getNewListSize(): Int = newSongDetails.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].Id == newSongDetails[newItemPosition].Id
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
     }
 
     inner class PodcastTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(position: Int) {
 
+        var tvSongName: TextView? = null
+        fun bindItems(position: Int) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
             val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
             textArtistName.text = tracks[position].Duration
@@ -59,8 +113,8 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(image)
-            val textView: TextView = itemView.findViewById(R.id.tv_song_name)
-            textView.text = tracks[position].Name
+            tvSongName = itemView.findViewById(R.id.tv_song_name)
+            tvSongName?.text = tracks[position].Name
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityIdo
             //getActorName(entityId!!)

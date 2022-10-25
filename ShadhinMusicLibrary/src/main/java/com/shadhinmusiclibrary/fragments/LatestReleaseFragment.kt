@@ -23,6 +23,8 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
     lateinit var viewModel: FeaturedTracklistViewModel
 
+    private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,9 +34,18 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        featuredLatestTracksAdapter =
+            FeaturedLatestTracksAdapter(this)
+
         setupViewModel()
         setupUI()
         observeData()
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music?.mediaId != null) {
+                featuredLatestTracksAdapter.setPlayingSong(music.mediaId!!)
+            }
+        }
     }
 
     private fun setupUI() {
@@ -45,7 +56,6 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
             val title = arguments?.getString(TITLE)
             view?.findViewById<TextView>(R.id.tvTitle)?.text = title
         }
-
     }
 
     private fun setupViewModel() {
@@ -63,8 +73,14 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 recyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                recyclerView.adapter =
-                    response?.data?.data?.let { FeaturedLatestTracksAdapter(it, this) }
+                response?.data?.data?.let {
+                    featuredLatestTracksAdapter.setData(
+                        it,
+                        playerViewModel.currentMusic?.mediaId
+                    )
+                }
+                recyclerView.adapter = featuredLatestTracksAdapter
+//                    response?.data?.data?.let { FeaturedLatestTracksAdapter(it, this) }
             } else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
@@ -77,10 +93,10 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         mSongDetails: MutableList<FeaturedSongDetail>,
         clickItemPosition: Int
     ) {
-        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+        if (playerViewModel.currentMusic != null &&
+            (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)
+        ) {
             if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
-                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID )
-                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
@@ -92,5 +108,4 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
             )
         }
     }
-
 }

@@ -24,8 +24,8 @@ import java.io.Serializable
 
 internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
-   private  lateinit var releaseAdapter:ReleaseAdapter
-   private lateinit var footerAdapter:HomeFooterAdapter
+    private lateinit var releaseAdapter: ReleaseAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,7 +49,7 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,releaseAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, releaseAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -95,6 +95,6 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 }

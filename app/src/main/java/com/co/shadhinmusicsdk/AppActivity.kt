@@ -18,7 +18,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        ShadhinMusicSdkCore.initializeSDK(applicationContext, TOKEN, this)
+        ShadhinMusicSdkCore.initializeSDK(applicationContext, TOEKN, this)
 
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {

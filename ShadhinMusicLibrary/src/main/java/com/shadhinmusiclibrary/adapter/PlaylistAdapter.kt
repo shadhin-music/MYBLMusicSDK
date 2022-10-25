@@ -57,7 +57,7 @@ internal class PlaylistAdapter(
             // val mSongDetItem = dataSongDetail[position-1]
             when (holder.itemViewType) {
                 0 -> {
-                    itemClickCB.getCurrentVH(holder, dataSongDetail)
+//                    itemClickCB.getCurrentVH(holder, dataSongDetail)
                     holder.ivPlayBtn?.setOnClickListener {
                         /*
                         if player.state == playing && player.rootid == this.rootId{

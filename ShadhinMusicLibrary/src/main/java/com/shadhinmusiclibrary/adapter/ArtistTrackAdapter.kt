@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,20 +30,19 @@ internal class ArtistTrackAdapter(
     val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback,
     val cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<ArtistTrackAdapter.ArtistTrackVH>() {
-    //   private var artistContent: ArtistContent? = null
-//    private var songDetail: MutableList<SongDetail> = ArrayList()
     var artistSongList: MutableList<ArtistContentData> = mutableListOf()
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistTrackVH {
-        val v = LayoutInflater.from(parent.context)
+//        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ArtistTrackVH(parentView!!)
     }
 
     override fun onBindViewHolder(holder: ArtistTrackVH, position: Int) {
-        holder.bindItems(artistSongList[position])
+        val mArtistConData = artistSongList[position]
+        holder.bindItems(mArtistConData)
 
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(artistSongList, position)
@@ -72,6 +73,19 @@ internal class ArtistTrackAdapter(
                 )
             )
         }
+
+        if (mArtistConData.isPlaying) {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
+            )
+        } else {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(
+                    holder.context,
+                    R.color.my_sdk_black2
+                )
+            )
+        }
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -88,7 +102,11 @@ internal class ArtistTrackAdapter(
 //        }
 //    }
 
-    fun setArtistTrack(data: List<ArtistContentData>, rootPatch: HomePatchDetail) {
+    fun setArtistTrack(
+        data: MutableList<ArtistContentData>,
+        rootPatch: HomePatchDetail,
+        mediaId: String?
+    ) {
         this.artistSongList = mutableListOf()
         this.artistSongList.clear()
         for (songItem in data) {
@@ -96,11 +114,49 @@ internal class ArtistTrackAdapter(
                 UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
             )
         }
-        this.notifyDataSetChanged()
+        notifyDataSetChanged()
+
+        if (mediaId != null) {
+            setPlayingSong(mediaId)
+        }
+    }
+
+    fun setPlayingSong(mediaId: String) {
+        val newList: List<ArtistContentData> =
+            UtilHelper.artistArtistContentDataNewList(mediaId, artistSongList)
+        val callback = ArtistTrackDiffCB(artistSongList, newList)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        artistSongList.clear()
+        artistSongList.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private class ArtistTrackDiffCB() : DiffUtil.Callback() {
+        private lateinit var oldSongDetails: List<ArtistContentData>
+        private lateinit var newSongDetails: List<ArtistContentData>
+
+        constructor(
+            oldSongDetails: List<ArtistContentData>,
+            newSongDetails: List<ArtistContentData>
+        ) : this() {
+            this.oldSongDetails = oldSongDetails
+            this.newSongDetails = newSongDetails
+        }
+
+        override fun getOldListSize(): Int = oldSongDetails.size
+
+        override fun getNewListSize(): Int = newSongDetails.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
     }
 
     inner class ArtistTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
+        var tvSongName: TextView? = null
         fun bindItems(artistContent: ArtistContentData) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
@@ -109,10 +165,10 @@ internal class ArtistTrackAdapter(
             Glide.with(context)
                 .load(artistContent.getImageUrl300Size())
                 .into(imageView!!)
-            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            tvSongName = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = artistContent.title
+            tvSongName?.text = artistContent.title
             textArtist.text = artistContent.artistname
             textDuration.text = TimeParser.secToMin(artistContent.duration)
             val progressIndicatorArtist: CircularProgressIndicator = itemView.findViewById(R.id.progress)

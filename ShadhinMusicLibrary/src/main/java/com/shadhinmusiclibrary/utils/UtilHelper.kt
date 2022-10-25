@@ -106,7 +106,7 @@ internal object UtilHelper {
             trackItem.apply {
                 songDetailList.add(
                     SongDetail(
-                        ContentID = ShowId,
+                        ContentID = Id.toString(),
                         image = ImageUrl,
                         title = Name,
                         ContentType = ContentType,
@@ -718,8 +718,68 @@ internal object UtilHelper {
         }
     }
 
-//    fun getArtistContentToArtistContentList(musicList: MutableList<ArtistContentData>): MutableList<ArtistContentData>{
-//
-//
-//    }
+    fun albumSongDetailsNewList(mediaId: String?, aaa: List<SongDetail>): List<SongDetail> {
+        val newList: MutableList<SongDetail> = ArrayList()
+        aaa.forEach {
+            if (it.ContentID == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
+
+    fun artistArtistContentDataNewList(
+        mediaId: String?,
+        aaa: List<ArtistContentData>
+    ): List<ArtistContentData> {
+        val newList: MutableList<ArtistContentData> = ArrayList()
+        aaa.forEach {
+            if (it.ContentID == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
+
+    fun podcastTrackNewList(
+        mediaId: String?,
+        aaa: List<Track>
+    ): List<Track> {
+        val newList: MutableList<Track> = ArrayList()
+        aaa.forEach {
+            if (it.Id.toString() == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
+
+    fun featuredSongDetailNewList(
+        mediaId: String?,
+        aaa: List<FeaturedSongDetail>
+    ): List<FeaturedSongDetail> {
+        val newList: MutableList<FeaturedSongDetail> = ArrayList()
+        aaa.forEach {
+            if (it.contentID == mediaId) {
+                val newItem = it.copy(isPlaying = true)
+                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+                newList.add(newItem)
+            } else {
+                newList.add(it.copy(isPlaying = false))
+            }
+        }
+        return newList
+    }
 }

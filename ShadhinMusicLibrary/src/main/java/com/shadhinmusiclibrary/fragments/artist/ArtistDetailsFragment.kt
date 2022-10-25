@@ -90,6 +90,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }*/
             requireActivity().onBackPressed()
         }
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music?.mediaId != null) {
+                artistTrackAdapter.setPlayingSong(music.mediaId!!)
+            }
+        }
     }
 
     private fun initialize() {
@@ -159,11 +164,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
-
             if (response.status == Status.SUCCESS) {
                 artistHeaderAdapter.artistBio(response.data)
-                Log.e("TAG", "DATA321: " + response.data?.artist)
-//                Log.e("TAG","DATA: "+ response.message)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
@@ -188,7 +190,12 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     if (res.data?.data != null) {
-                        artistTrackAdapter.setArtistTrack(res.data.data, homeDetails)
+                        artistTrackAdapter.setArtistTrack(
+                            res.data.data,
+                            homeDetails,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                        artistHeaderAdapter.setSongAndData(res.data.data, homeDetails)
                     }
                 } else {
                     showDialog()
@@ -223,7 +230,6 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
         if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
@@ -288,7 +294,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
@@ -302,13 +308,13 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         mSongDetails: MutableList<ArtistContentData>,
         clickItemPosition: Int
     ) {
-        val lSongDetails = artistTrackAdapter.artistSongList
-        if (lSongDetails.size > clickItemPosition) {
-            if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+//        val lSongDetails = artistTrackAdapter.artistSongList
+        if (mSongDetails.size > clickItemPosition) {
+            if (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
+                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                     clickItemPosition
                 )
             }
@@ -332,14 +338,12 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                Log.e("ADF", "playItem: 1111")
                 playItem(
                     UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                     clickItemPosition
                 )
             }
         } else {
-            Log.e("ADF", "playItem: 2222")
             playItem(
                 UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
                 clickItemPosition
@@ -351,28 +355,23 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<ArtistContentData>
     ) {
-        val mSongDet = artistTrackAdapter.artistSongList
-        val albumVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
-        if (mSongDet.size > 0 && isAdded) {
+//        val mSongDet = artistTrackAdapter.artistSongList
+        val artistHeaderVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
+        if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mSongDet.indexOfFirst {
+                    if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
+                                    it.rootContentID == itMusic.rootId &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            artistHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
-
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
-                            Log.e(
-                                "ADF",
-                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
-                            )
-                        }
+                    } else {
+                        artistHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
                 }
             }

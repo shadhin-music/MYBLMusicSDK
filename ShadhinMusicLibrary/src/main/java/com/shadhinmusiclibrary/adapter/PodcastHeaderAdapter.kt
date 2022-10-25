@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.utils.ExpandableTextView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
@@ -30,7 +33,6 @@ internal class PodcastHeaderAdapter(
 
     override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
         holder.bindItems(position)
-        Log.e("PHA", "onBindViewHolder: " + listTrack.size)
         pcOnCallback.getCurrentVH(holder, listTrack)
         holder.ivPlayBtn?.setOnClickListener {
             pcOnCallback.onRootClickItem(listTrack, position)
@@ -43,14 +45,23 @@ internal class PodcastHeaderAdapter(
         return 1
     }
 
+    fun setTrackData(episode: List<Episode>, data: MutableList<Track>, rootPatch: HomePatchDetail) {
+        this.listTrack = mutableListOf()
+        for (songItem in data) {
+            listTrack.add(
+                UtilHelper.getTrackToRootData(songItem, rootPatch)
+            )
+        }
+        this.episode = episode
+        this.listTrack = listTrack
+        notifyDataSetChanged()
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun setHeader(episode: List<Episode>, trackList: MutableList<Track>) {
         this.episode = episode
         listTrack = trackList
         notifyDataSetChanged()
-//       val textView: ExpandableTextView? = parentView?.findViewById(R.id.tvDescription)
-//////         textView?.text = bio?.artist?.bio?.summary
-//        textView?.setText(Html.fromHtml(episode.))
     }
 
     inner class PodcastHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -64,7 +75,7 @@ internal class PodcastHeaderAdapter(
             val details: String = episode?.get(position)?.Details.toString()
             val result = Html.fromHtml(details).toString()
 //            if(textArtist?.text.isNullOrEmpty())
-           // Log.e("TAG","Name :"+episode?.get(position))
+            // Log.e("TAG","Name :"+episode?.get(position))
             textArtist?.text = episode?.get(position)?.Name.toString()
             val textView: ExpandableTextView? = itemView.findViewById(R.id.tvDescription)
             val moreText: TextView? = itemView.findViewById(R.id.tvReadMore)

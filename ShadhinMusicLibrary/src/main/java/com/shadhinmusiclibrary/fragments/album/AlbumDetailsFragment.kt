@@ -1,9 +1,5 @@
 package com.shadhinmusiclibrary.fragments.album
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,25 +7,20 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -38,11 +29,9 @@ import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
-
 
 internal class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
@@ -52,12 +41,10 @@ internal class AlbumDetailsFragment :
     HomeCallBack {
     private var cacheRepository: CacheRepository? = null
     private lateinit var navController: NavController
-
-    //    private lateinit var albumAdapter: AlbumAdapter
     private lateinit var albumHeaderAdapter: AlbumHeaderAdapter
-    private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var albumsTrackAdapter: AlbumsTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     var artistAlbumModelData: ArtistAlbumModelData? = null
 
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
@@ -109,31 +96,13 @@ internal class AlbumDetailsFragment :
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                 requireActivity().finish()
-             } else {
-                 navController.popBackStack()
-             }*/
             requireActivity().onBackPressed()
         }
-
-        try {
-            //DO NOT USE requireActivity()
-            playerViewModel.playListLiveData.observe(viewLifecycleOwner) { itMusicPlay ->
-                playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) { itCurrPlayItem ->
-                    albumsTrackAdapter.setPlayingSong(
-                        itCurrPlayItem.toString(),
-                        UtilHelper.getSongDetailToMusicList(itMusicPlay.list.toMutableList())
-                    )
-                }
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music?.mediaId != null) {
+                albumsTrackAdapter.setPlayingSong(music.mediaId!!)
             }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
         }
-//        Log.e("getDownloadManagerx",
-//            "habijabi:"+ argHomePatchDetail?.AlbumId)
-//        Log.e("getDownloadManagerx",
-//            "habijabi:"+ argHomePatchDetail?.ContentID)
     }
 
     private fun setupViewModel() {
@@ -150,9 +119,13 @@ internal class AlbumDetailsFragment :
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 if (res.data?.data != null && argHomePatchDetail != null) {
-                    albumsTrackAdapter.setData(res.data.data, argHomePatchDetail!!)
+                    albumsTrackAdapter.setData(
+                        res.data.data,
+                        argHomePatchDetail!!,
+                        playerViewModel.currentMusic?.mediaId
+                    )
+                    albumHeaderAdapter.setSongAndData(res.data.data, argHomePatchDetail!!)
                 }
-                //  updateAndSetAdapter(res.data!!.data)
             } else {
                 progressBar.visibility = VISIBLE
             }
@@ -164,21 +137,10 @@ internal class AlbumDetailsFragment :
             } else {
             }
         }
-
-//        val downloaded: ImageView ?= view?.findViewWithTag(200)
-//        val isDownloaded = cacheRepository?.isTrackDownloaded(argHomePatchDetail?.) ?: false
-//       Log.e("Tag","Downloaded: "+ isDownloaded)
-////        Log.e("Tag","Downloaded: "+ it.contentId)
-//        if(isDownloaded){
-//
-//            downloaded?.visibility = VISIBLE
-//        }
-
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         val lSongDetails = albumsTrackAdapter.dataSongDetail
-        Log.e("Check", "array size ->" + lSongDetails.size + "  index -> " + clickItemPosition)
         if (lSongDetails.size > clickItemPosition) {
             if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
@@ -190,10 +152,6 @@ internal class AlbumDetailsFragment :
 
     override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            Log.e(
-                "ADF",
-                "onClickItem: " + mSongDetails[clickItemPosition].rootContentID + " " + playerViewModel.currentMusic?.rootId
-            )
             if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
@@ -216,31 +174,25 @@ internal class AlbumDetailsFragment :
     }
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<SongDetail>,
+        songDetails: MutableList<SongDetail>
     ) {
-        val mSongDet = albumsTrackAdapter.dataSongDetail
-        val albumVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
-        if (mSongDet.size > 0 && isAdded) {
+//        val mSongDet = albumsTrackAdapter.dataSongDetail
+        val albumHeaderVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
+        if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mSongDet.indexOfFirst {
+                    if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
+                                    it.rootContentID == itMusic.rootId &&
                                     it.ContentID == itMusic.mediaId
                         } != -1)
                     ) {
-                        //DO NOT USE requireActivity()
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            albumHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
-
-                        //DO NOT USE requireActivity()
-                        playerViewModel.musicIndexLiveData.observe(viewLifecycleOwner) {
-                            Log.e(
-                                "ADF",
-                                "AdPosition: " + albumVH.bindingAdapterPosition + " itemId: " + albumVH.itemId + " musicIndex" + it
-                            )
-                        }
+                    } else {
+                        albumHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
                 }
             }
@@ -273,7 +225,7 @@ internal class AlbumDetailsFragment :
 
     override fun onArtistAlbumClick(
         itemPosition: Int,
-        artistAlbumModelData: List<ArtistAlbumModelData>,
+        artistAlbumModelData: List<ArtistAlbumModelData>
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         val data = HomePatchDetail(
