@@ -17,13 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
 
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
-internal class AmartunesWebviewFragment : Fragment(), FragmentEntryPoint {
+internal class AmartunesWebviewFragment : CommonBaseFragment() {
     var data: RBTDATA? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     private var contentType: String? = null

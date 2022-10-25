@@ -14,10 +14,11 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicVideoAdapter
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 
-internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
+internal class MusicVideoFragment : CommonBaseFragment() {
     lateinit var viewModel: PopularArtistViewModel
 
     private fun setupViewModel() {

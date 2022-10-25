@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack, FragmentEntryPoint,
+internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContent? = null
@@ -70,7 +70,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistdata?)!!
         }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

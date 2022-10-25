@@ -33,7 +33,6 @@ import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment :
     BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
-    FragmentEntryPoint,
     OnItemClickCallback,
     BottomSheetDialogItemCallback,
     HomeCallBack {

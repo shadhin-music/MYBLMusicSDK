@@ -14,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.BrowseAllPlaylistAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
-internal class AllGenresDetailsFragment : Fragment() {
+internal class AllGenresDetailsFragment : CommonBaseFragment() {
     var homePatchItem: HomePatchItem? = null
 
     override fun onCreateView(

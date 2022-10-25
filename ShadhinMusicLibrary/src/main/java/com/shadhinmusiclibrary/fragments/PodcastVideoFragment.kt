@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,10 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
-internal class PodcastVideoFragment : Fragment() {
+internal class PodcastVideoFragment : CommonBaseFragment() {
 
     private lateinit var parentAdapter: ConcatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ internal class PodcastVideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAdapters()
+//        setupAdapters()
     }
 
     private fun setupAdapters() {

@@ -19,11 +19,12 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-internal class PlaylistListFragment : Fragment(), HomeCallBack {
+internal class PlaylistListFragment : CommonBaseFragment(), HomeCallBack {
     var homePatchItem: HomePatchItem? = null
     private lateinit var navController: NavController
     private lateinit var footerAdapter: HomeFooterAdapter

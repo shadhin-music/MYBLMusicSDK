@@ -30,7 +30,7 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
+internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     PodcastOnItemClickCallback {
 
     private lateinit var viewModel: PodcastViewModel

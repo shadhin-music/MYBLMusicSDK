@@ -1,11 +1,10 @@
 package com.shadhinmusiclibrary.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import com.shadhinmusiclibrary.R
 
-internal class MusicActivity : AppCompatActivity() {
+internal class MusicActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_music)
@@ -14,5 +13,9 @@ internal class MusicActivity : AppCompatActivity() {
         imageBackBtn.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun changePlayerView(playerMode: PlayerMode?) {
+
     }
 }
