@@ -15,7 +15,7 @@ internal class PopularBandsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
