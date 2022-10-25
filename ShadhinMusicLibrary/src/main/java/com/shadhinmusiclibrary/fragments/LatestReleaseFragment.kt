@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,7 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,10 +68,12 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
     }
 
     fun observeData() {
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedTrackList()
         viewModel.featuredTracklistContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+
                 recyclerView.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 response?.data?.data?.let {
@@ -81,8 +84,9 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
                 }
                 recyclerView.adapter = featuredLatestTracksAdapter
 //                    response?.data?.data?.let { FeaturedLatestTracksAdapter(it, this) }
+                progressBar.visibility = View.GONE
             } else {
-//                progressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
             }

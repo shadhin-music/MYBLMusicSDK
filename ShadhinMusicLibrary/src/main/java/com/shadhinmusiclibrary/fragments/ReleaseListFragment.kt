@@ -31,7 +31,7 @@ internal class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.my_bl_sdk_fragment_release_list, container, false)
+        val view = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
         return view
     }

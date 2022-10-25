@@ -9,7 +9,7 @@
         android:id="@+id/podcast_list_fragment"
         android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastFragment"
         android:label="fragment_podcast_list"
-        tools:layout="@layout/my_bl_sdk_fragment_podcast">
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
         <action
             android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />
@@ -18,5 +18,5 @@
         android:id="@+id/podcast_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
         android:label="Podcast Details"
-        tools:layout="@layout/my_bl_sdk_fragment_artist_details" />
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
 </navigation>

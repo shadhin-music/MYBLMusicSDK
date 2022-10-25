@@ -32,7 +32,7 @@ internal class PopularArtistsFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewR = inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
+        val viewR = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
         return viewR
     }

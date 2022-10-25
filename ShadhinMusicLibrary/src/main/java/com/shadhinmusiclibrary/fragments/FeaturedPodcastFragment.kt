@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -51,7 +52,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container1, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container1, false)
         navController = findNavController()
 
         return viewRef
@@ -98,17 +99,19 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
     }
 
     fun observeData() {
-
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedPodcast(false)
-
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 if (response.data?.data?.get(0)?.Data != null) {
                     podcastJBAdapter.setData(
-                        response.data.data.get(0).Data,
-                        response.data.data.get(0).Data.get(0).ShowName
+                        response.data.data[0].Data,
+                        response.data.data[0].Data[0].ShowName
                     )
                 }
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
             }
         }
         viewModel.fetchFeaturedPodcastJC(false)
@@ -119,7 +122,9 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
                     response?.data?.data?.get(1)?.Data,
                     response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
                 )
+                progressBar.visibility = View.GONE
             } else {
+                progressBar.visibility = View.GONE
             }
         }
 
@@ -145,32 +150,6 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
                     AppConstantUtils.PatchDetail,
                     UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(mEpisod) as Serializable
                 )
-
-                /*HomePatchDetail(
-                    episode.get(clickItemPosition).EpisodeId,
-               "",
-           episode.get(clickItemPosition).EpisodeName,
-                   "",
-            "",
-           "",
-           "",
-            "", episode.get(clickItemPosition).EpisodeId,
-            "",
-           "",
-            "",
-            false,
-           "",
-            0,
-            "",
-           "",
-            "", episode.get(clickItemPosition).PlayUrl,
-                            ""
-
-            ,"",
-                    false,
-           "","","","",episode.get(clickItemPosition).ImageUrl,"",
-                    episode.get(clickItemPosition).TrackName) as Serializable
-            )*/
             })
     }
 

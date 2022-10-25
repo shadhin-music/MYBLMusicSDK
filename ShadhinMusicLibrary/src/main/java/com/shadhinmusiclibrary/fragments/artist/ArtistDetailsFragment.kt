@@ -60,7 +60,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -71,11 +71,6 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->

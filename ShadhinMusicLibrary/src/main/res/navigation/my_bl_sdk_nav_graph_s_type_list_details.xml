@@ -9,7 +9,7 @@
         android:id="@+id/s_type_list_fragment"
         android:name="com.shadhinmusiclibrary.fragments.STypeListFragment"
         android:label="fragment_playlist_list"
-        tools:layout="@layout/my_bl_sdk_fragment_s_type_list">
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
         <action
             android:id="@+id/to_single_details"
             app:destination="@id/s_type_details_fragment" />

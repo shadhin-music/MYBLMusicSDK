@@ -67,7 +67,7 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }

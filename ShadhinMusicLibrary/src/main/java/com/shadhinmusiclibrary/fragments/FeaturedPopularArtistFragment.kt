@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -44,7 +45,8 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_featured_popular_artist, container1, false)
+        val viewRef =
+            inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container1, false)
         navController = findNavController()
 
         return viewRef
@@ -58,22 +60,6 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager?.popBackStack("Fragment", 0);
-            // ShadhinMusicSdkCore.getHomeFragment()
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager.beginTransaction()
-//                .replace(R.id.container1, HomeFragment())
-//                .addToBackStack(null)
-//                .commit()
-            //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-               // requireActivity().finish()
-           /* } else {
-                navController.popBackStack()
-            }*/
-
             requireActivity().onBackPressed()
         }
         kotlin.runCatching {
@@ -83,6 +69,7 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
     }
 
     fun observeData() {
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchPouplarArtist()
         viewModel.popularArtistContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
@@ -94,8 +81,9 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
                             FeaturedPopularArtistAdapter(it1, this)
                         }
                     }
+                progressBar.visibility = View.GONE
             } else {
-//                progressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
             }

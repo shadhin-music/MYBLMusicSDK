@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -48,7 +49,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         savedInstanceState: Bundle?
     ): View? {
         val viewRef =
-            inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_details, container, false)
+            inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -88,6 +89,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     }
 
     private fun fetchOnlineData(contentId: String) {
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel?.fetchPlaylistContent(contentId)
         viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.data?.data != null && res.status == Status.SUCCESS) {
@@ -101,7 +103,9 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                     argHomePatchDetail!!
                 )
 //                updateAndSetAdapter(res!!.data!!.data)
+                progressBar.visibility = View.GONE
             } else {
+                progressBar.visibility = View.GONE
 //                updateAndSetAdapter(mutableListOf())
             }
         }

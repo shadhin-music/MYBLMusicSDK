@@ -39,7 +39,7 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_list, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
 
         return viewRef
@@ -70,7 +70,7 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
                 }
             }
         recyclerView.layoutManager = layoutManager
-        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+        layoutManager.spanSizeLookup = onSpanSizeLookup
         recyclerView.adapter = concatAdapter
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)

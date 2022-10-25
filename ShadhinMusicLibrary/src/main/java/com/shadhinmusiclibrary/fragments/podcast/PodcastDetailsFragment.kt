@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -53,7 +54,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -113,6 +114,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 
     private fun observeData() {
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 response?.data?.data?.EpisodeList?.let { itEpisod ->
@@ -140,7 +142,9 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                     }
                 }
                 parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
             } else {
+                progressBar.visibility = View.GONE
             }
         }
     }
