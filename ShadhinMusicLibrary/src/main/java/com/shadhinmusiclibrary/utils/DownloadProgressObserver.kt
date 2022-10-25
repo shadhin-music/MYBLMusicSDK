@@ -81,13 +81,13 @@ object DownloadProgressObserver {
                             progress.visibility= VISIBLE
                             imageView.visibility = GONE
                               //val percent= currentProgress
-                            val percent = MyBLDownloadService.getCurrentProgress(id)
-//                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDtag: " + holder.tag )
-                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDpercent: " + percent )
-                            progress.setProgressCompat(
-                                percent,
-                                true
-                            )
+//
+////                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDtag: " + holder.tag )
+//                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDpercent: " + percent )
+//                            progress.setProgressCompat(
+//                                percent,
+//                                true
+//                            )
 
                         }
                     }

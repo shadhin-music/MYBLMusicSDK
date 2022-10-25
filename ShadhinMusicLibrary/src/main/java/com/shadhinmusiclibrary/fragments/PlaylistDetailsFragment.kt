@@ -1,29 +1,37 @@
 package com.shadhinmusiclibrary.fragments
 
-import android.graphics.Color
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistAdapter.PlaylistVH
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -34,7 +42,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     private lateinit var navController: NavController
     private lateinit var adapter: PlaylistAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
-
+    private var cacheRepository: CacheRepository? = null
     override fun getViewModel(): Class<AlbumViewModel> {
         return AlbumViewModel::class.java
     }
@@ -55,7 +63,8 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = PlaylistAdapter(this,this)
+        cacheRepository= CacheRepository(requireContext())
+        adapter = PlaylistAdapter(this,this, cacheRepository!!)
         footerAdapter = HomeFooterAdapter()
         ///read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID)
@@ -164,7 +173,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
             }
         }
     }
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails:SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
             context = requireContext(),
@@ -172,5 +181,56 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
             argHomePatchItem,
             argHomePatchDetail
         )
+    }
+    override fun onStart() {
+        super.onStart()
+        val f = IntentFilter("ACTION")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), f)
+    }
+    private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
+
+        downloadingItems.forEach {
+
+
+            val progressIndicator: CircularProgressIndicator? =
+                view?.findViewWithTag(it.contentId)
+            val downloaded: ImageView?= view?.findViewWithTag(200)
+            progressIndicator?.visibility = View.VISIBLE
+            progressIndicator?.progress = it.progress.toInt()
+
+
+//                if(!isDownloaded){
+//                    progressIndicator?.visibility = GONE
+//                    downloaded?.visibility = VISIBLE
+//                }
+
+            Log.e("getDownloadManagerx",
+                "habijabi: ${it.toString()} ${progressIndicator == null}")
+
+
+        }
+
+
+    }
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            when (intent.action) {
+                "ACTION" -> {
+
+                    //val data = intent.getIntExtra("currentProgress",0)
+                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+
+                    downloadingItems?.let {
+
+                        progressIndicatorUpdate(it)
+//                        Log.e("getDownloadManagerx",
+//                            "habijabi: ${it.toString()} ")
+                    }
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+            }
+
+        }
     }
 }

@@ -15,7 +15,7 @@ internal class AuthRepository (private val apiService: ApiService) {
             Pair(true,response.message)
         }else{
             appToken = null
-            Log.e("TAG","Login: " + appToken)
+            Log.e("TAG","Login: " + appToken+" "+response.errorCode+" "+response.message)
            Pair(false,response.message)
         }
     }

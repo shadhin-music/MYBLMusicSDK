@@ -871,8 +871,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 //                addDownload(downloadRequest)
 //
 //               this.resumeDownloads()
-//                Log.i("getDownloadManager", "showBottomSheetDialog: ${this.currentDownloads.toString()}")
-            cacheRepository.insertDownload(DownloadedContent(mSongDetails.rootContentID,mSongDetails.albumId.toString(),
+//               Log.e("getDownloadManager", "showBottomSheetDialog:" +mSongDetails.ContentID )
+//            Log.e("getDownloadManager", "showBottomSheetDialog:" +mSongDetails.rootContentID )
+            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
                 mSongDetails.image,
                 mSongDetails.title,
             mSongDetails.ContentType,
@@ -882,25 +883,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             0,
                 mSongDetails.artist,
            mSongDetails.duration))
-            Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
+           // Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
             DownloadService.sendAddDownload(
               applicationContext,
                 MyBLDownloadService::class.java,
                         downloadRequest,
                 /* foreground= */ false)
 
-
-
-          //  }
-//            Intent(this, MyBLDownloadService::class.java).also {
-//
-//                startService(it)
-//                DownloadService.sendAddDownload(
-//                    context,
-//                    MyDownloadService.class,
-//                            downloadRequest,
-//                    /* foreground= */ false)
-         //  }
+            bottomSheetDialog.dismiss()
         }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
@@ -960,6 +950,34 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
             bottomSheetDialog.dismiss()
         }
+        val constraintDownload:ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintDownload)
+        if(cacheRepository.isTrackDownloaded(mSongDetails.ContentID).equals(true)){
+
+        }
+        constraintDownload?.setOnClickListener {
+            val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+            // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+
+                .build()
+            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
+                mSongDetails.image,
+                mSongDetails.title,
+                mSongDetails.ContentType,
+                mSongDetails.PlayUrl,
+                mSongDetails.ContentType,
+                0,
+                0,
+                mSongDetails.artist,
+                mSongDetails.duration))
+            DownloadService.sendAddDownload(
+                applicationContext,
+                MyBLDownloadService::class.java,
+                downloadRequest,
+                /* foreground= */ false)
+            bottomSheetDialog.dismiss()
+        }
         Log.d("TAG", "CLICKArtist: " + argHomePatchItem)
         Log.d("TAG", "CLICKArtist: " + argHomePatchDetail)
         Log.d("TAG", "CLICKArtist: " + mSongDetails)
@@ -1004,10 +1022,35 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 argHomePatchItem,
                 argHomePatchDetail
             )
-//            Log.d("TAG","CLICK: " + argHomePatchItem)
-//            Log.d("TAG","CLICK: " + argHomePatchDetail)
-//            Log.d("TAG","CLICK: " + mSongDetails)
+            Log.d("TAG","CLICK: " + argHomePatchItem)
+            Log.d("TAG","CLICK: " + argHomePatchDetail)
+            Log.d("TAG","CLICK: " + mSongDetails)
             bottomSheetDialog.dismiss()
+        }
+        val constraintDownload:ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintDownload)
+        constraintDownload?.setOnClickListener {
+            val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+            // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+
+                .build()
+            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
+                mSongDetails.image,
+                mSongDetails.title,
+                mSongDetails.ContentType,
+                mSongDetails.PlayUrl,
+                mSongDetails.ContentType,
+                0,
+                0,
+                mSongDetails.artist,
+                mSongDetails.duration))
+            DownloadService.sendAddDownload(
+                applicationContext,
+                MyBLDownloadService::class.java,
+                downloadRequest,
+                /* foreground= */ false)
+           bottomSheetDialog.dismiss()
         }
     }
 

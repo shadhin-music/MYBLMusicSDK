@@ -3,11 +3,13 @@ package com.shadhinmusiclibrary.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
+import android.util.Log
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
@@ -67,13 +69,16 @@ internal object UtilHelper {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
             songItem.apply {
+
+                val newPlayUrl = if(PlayUrl.contains("http",true)) PlayUrl else Constants.FILE_BASE_URL + PlayUrl
+
                 musicList.add(
                     Music(
                         mediaId = ContentID,
                         title = title,
                         displayDescription = "",
                         displayIconUrl = getImageUrl300Size(),
-                        mediaUrl = Constants.FILE_BASE_URL + PlayUrl,
+                        mediaUrl = newPlayUrl,
                         artistName = artist,
                         date = releaseDate,
                         contentType = ContentType,
@@ -262,37 +267,38 @@ internal object UtilHelper {
         return songDetailList
     }
 
-//    fun getSongDetailToFeaturedSongDetailList(trackList: MutableList<FeaturedSongDetail>): MutableList<SongDetail> {
-//        val songDetailList = mutableListOf<SongDetail>()
-//        for (trackItem in trackList) {
-//            trackItem.apply {
-//                songDetailList.add(
-//                    SongDetail(
-//                        ContentID = contentID,
-//                        image = image,
-//                        title = title,
-//                        ContentType = contentType,
-//                        PlayUrl = playUrl,
-//                        artist = artistname,
-//                        duration = duration,
-//                        copyright = copyright,
-//                        labelname = labelname,
-//                        releaseDate = releaseDate,
-//                        fav = "",
-//                        ArtistId = artistId,
-//                        albumId = albumId,
-//                        userPlayListId = "",
-//                        /*rootType = contentType,*/
-//
-//                        rootContentID = contentID,
-//                        rootContentType = contentType,
-//                        rootImage = image
-//                    )
-//                )
-//            }
-//        }
-//        return songDetailList
-//    }
+    fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
+        for (trackItem in trackList) {
+            trackItem.apply {
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = contentId,
+                        image = rootImg ,
+                        title = rootTitle,
+                        ContentType = rootType,
+                        PlayUrl = ""+track,
+                        artist = artist,
+                        duration = timeStamp,
+                        copyright = "",
+                        labelname = "",
+                        releaseDate = "",
+                        fav = "",
+                        ArtistId = "",
+                        albumId = rootId,
+                        userPlayListId = "",
+                        /*rootType = contentType,*/
+
+                        rootContentID = rootId,
+                        rootContentType = rootType,
+                        rootImage = rootImg
+                    )
+                )
+                Log.e("PlayUrl", ""+ track)
+            }
+        }
+        return songDetailList
+    }
 
     fun getSongDetailToArtistContentDataList(musicList: MutableList<ArtistContentData>): MutableList<SongDetail> {
         val songDetailList = mutableListOf<SongDetail>()

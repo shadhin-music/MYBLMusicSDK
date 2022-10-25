@@ -18,28 +18,33 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/my_sdk_color_primary"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
 
-            >
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageBack"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/my_bl_sdk_ic_arrow_back"
                 android:padding="12dp"
+                android:src="@drawable/my_bl_sdk_ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="@id/parentRelative"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/parentRelative"
-                android:layout_marginEnd="10dp"
-                android:id="@+id/imageBack"
+                app:layout_constraintTop_toTopOf="@id/parentRelative" />
 
-                />
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvTitle"
-                android:text="Downloads"
+                android:text="Back"
                 android:textColor="@color/my_sdk_white"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -82,12 +87,12 @@
                 android:text="Songs"
                 android:clickable="true"
                 />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Album"
-                android:clickable="true"
-                />
+<!--            <com.google.android.material.tabs.TabItem-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Album"-->
+<!--                android:clickable="true"-->
+<!--                />-->
         </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

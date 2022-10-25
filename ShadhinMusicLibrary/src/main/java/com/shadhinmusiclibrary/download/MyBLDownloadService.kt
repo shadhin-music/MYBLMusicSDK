@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -17,9 +18,10 @@ import com.google.android.exoplayer2.scheduler.Scheduler
 import com.google.android.exoplayer2.ui.DownloadNotificationHelper
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.di.ServiceEntryPoint
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.fragments.DownloadItemUpdateListener
+
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.Constants.DOWNLOAD_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.SHOULD_OPEN_DOWNLOADS_ACTIVITY
@@ -27,6 +29,7 @@ import com.shadhinmusiclibrary.player.data.source.MyBLDownloadManager
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.DownloadProgressObserver
 import kotlinx.coroutines.*
+import java.util.ArrayList
 
 private val NOTIFICATION_ID=2
 
@@ -42,20 +45,10 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
 
 
         var isRunning: Boolean = true
-        var downloadUpdateListener: DownloadItemUpdateListener?=null
+
         var currentId:String?=null
         var currentProgress:Int?= null
-        fun getCurrentProgress(id:String):Int{
-            if(!isRunning){
-                return 0
-            }
-            if(currentId==id){
-                return currentProgress!!
 
-            }
-            return 0
-
-        }
 
     }
 
@@ -65,6 +58,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         isRunning = true
         notificationHelper= DownloadNotificationHelper(this, "my app")
         cacheRepository = CacheRepository(applicationContext)
+
     }
    override fun getDownloadManager(): DownloadManager {
 
@@ -74,6 +68,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         val manager = myBlDownloadmanager.downloadManager
         //Set the maximum number of parallel downloads
         manager.maxParallelDownloads = 5
+
 
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
@@ -102,23 +97,12 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 super.onDownloadChanged(downloadManager, download, finalException)
                 //getDownloadingNotification("Song Downloading",100)
                val currentItemID =download.request.id
-                var percent = download.percentDownloaded
-                //startForeground(NOTIFICATION_ID,getDownloadingNotification(downloadedContent.name,percent.toInt()))
-                currentProgress=percent.toInt()
-                currentId=download.request.id
-                var localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-                val localIntent = Intent("ACTION")
-                    .putExtra("currentProgress", currentProgress)
-                    .putExtra("contentId",currentItemID.toString())
-                localBroadcastManager.sendBroadcast(localIntent)
-                 saveDownloadedContent(DownloadedContent(currentItemID,"","","","",download.request.uri.toString(),
-                 "",0,0,"",""))
-                //DownloadProgressObserver.updateProgressForAllHolder()
-                   Log.e("getDownloadManager", "onDownloadChanged123 "+ currentProgress)
+                Log.e("getDownloadManagerx", "getForegroundNotification:" + currentItemID)
+                cacheRepository.setDownloadedContentPath(download.request.id,
+                    download.request.uri.toString())
+                 //saveDownloadedContent(DownloadedContent(currentItemID,"","","","",download.request.uri.toString(),
+                // "",0,0,"",""))
 
-                 //getCurrentProgress(currentId!!)
-
-                Log.e("getDownloadManager", "onDownloadChanged ${download.percentDownloaded } / ${download.bytesDownloaded}")
             }
 
             override fun onInitialized(downloadManager: DownloadManager) {
@@ -165,6 +149,18 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         downloads: MutableList<Download>,
         notMetRequirements: Int,
     ): Notification {
+       // Log.e("getDownloadManagerx", "getForegroundNotification: ${downloads.map { it.request.id }}")
+
+        val downloadingItems = downloads.map {
+            DownloadingItem(contentId =  it.request.id, progress = it.percentDownloaded )
+        }
+
+        val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+        val localIntent = Intent("ACTION")
+            .putParcelableArrayListExtra("downloading_items",downloadingItems as ArrayList<out Parcelable>)
+        localBroadcastManager.sendBroadcast(localIntent)
+
+
         return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light, null,"Song Downloading!!!",downloads, notMetRequirements)
     }
 
@@ -195,7 +191,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 cacheRepository.setDownloadedContentPath(downloadedContent.contentId,
                     downloadedContent.track!!)
                 delay(Constants.DELAY_DURATION)
-                downloadUpdateListener?.loadData()
+               // downloadUpdateListener?.loadData()
                 withContext(Dispatchers.Main) {
                     currentItem = null
                     //DownloadProgressObserver.updateProgressForAllHolder()

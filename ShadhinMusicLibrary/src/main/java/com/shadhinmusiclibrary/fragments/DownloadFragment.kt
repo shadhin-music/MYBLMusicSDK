@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -70,7 +71,15 @@ internal class DownloadFragment : Fragment() {
         viewPager.offscreenPageLimit = 2
         val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
-
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
+                 requireActivity().finish()
+             } else {
+                 navController.popBackStack()
+             }*/
+            requireActivity().onBackPressed()
+        }
     }
     companion object {
 

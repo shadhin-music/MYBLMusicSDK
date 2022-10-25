@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.download.room.DownloadedContent
     entities = [
         DownloadedContent::class
     ],
-    version = 4
+    version = 5
 )
 
 abstract class DownloadDatabase :RoomDatabase(){

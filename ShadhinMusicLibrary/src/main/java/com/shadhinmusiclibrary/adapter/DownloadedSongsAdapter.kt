@@ -8,10 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 
-internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
+internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
@@ -21,7 +23,9 @@ internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
-
+        holder.itemView.setOnClickListener {
+            lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
+        }
 
     }
 

@@ -1,37 +1,31 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
-import com.shadhinmusiclibrary.utils.get
 
 
 internal class AlbumsTrackAdapter(
     private val itemClickCB: OnItemClickCallback,
     private val bsDialogItemCallback: BottomSheetDialogItemCallback,
-   val myBroadcastReceiver: AlbumDetailsFragment.MyBroadcastReceiver,
+    var cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {
     var dataSongDetail: MutableList<SongDetail> = mutableListOf()
     private var parentView: View? = null
@@ -49,6 +43,7 @@ internal class AlbumsTrackAdapter(
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(dataSongDetail, position)
         }
+
 //        DownloadProgressObserver.addViewHolder(holder, dataSongDetail[position].rootContentID)
 //        DownloadProgressObserver.updateProgress(holder)
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
@@ -56,6 +51,9 @@ internal class AlbumsTrackAdapter(
             val songDetail = dataSongDetail[position]
             bsDialogItemCallback.onClickBottomItem(songDetail)
         }
+
+
+
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -67,7 +65,7 @@ internal class AlbumsTrackAdapter(
     fun setData(
         data: MutableList<SongDetail>,
         rootPatch: HomePatchDetail,
-        myBroadcastReceiver: AlbumDetailsFragment.MyBroadcastReceiver
+
     ) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
@@ -115,17 +113,10 @@ internal class AlbumsTrackAdapter(
         val context = itemView.getContext()
         var tvSongName: TextView? = null
         fun bindItems(dataSongDetail: SongDetail) {
-            itemView.tag = dataSongDetail.rootContentID
+            //itemView.tag = dataSongDetail.rootContentID
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-//            imageView?.tag = dataSongDetail.albumId
-//            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDAdapter: " + dataSongDetail.albumId)
-        //    Log.e("TAGDOWNLOADED","TAGDOWNLOADEDAdapter: " + itemView.tag)
-//
-//            LocalBroadcastManager.getInstance(context).registerReceiver(MyBroadcastReceiver(),
-//                IntentFilter())
-//           //val listener = MyBroadcastReceiver()
-           // Log.e("TAGDOWNLOADED","TAGDOWNLOADEDAdapter: " + myBroadcastReceiver.toString())
-             //myBroadcastReceiver.resultData
+            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
             Glide.with(context)
                 .load(dataSongDetail.getImageUrl300Size())
                 .into(imageView!!)
@@ -138,6 +129,21 @@ internal class AlbumsTrackAdapter(
             itemView.setOnClickListener {
 
             }
+
+            progressIndicator.tag = dataSongDetail.ContentID
+            downloaded.tag = 200
+            progressIndicator.visibility = View.GONE
+            downloaded?.visibility = View.GONE
+            val isDownloaded = cacheRepository?.isTrackDownloaded(dataSongDetail.ContentID) ?: false
+//            Log.e("Tag","Downloaded: cacheRepository is null"+ (cacheRepository == null))
+//            Log.e("Tag","Downloaded: "+ isDownloaded)
+//            Log.e("Tag","Downloaded: "+ dataSongDetail.ContentID)
+//            Log.e("Tag","Downloaded: "+ cacheRepository?.getAllDownloads())
+            if(isDownloaded){
+                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+                downloaded?.visibility = View.VISIBLE
+            }
+
         }
 
 
@@ -145,9 +151,6 @@ internal class AlbumsTrackAdapter(
     }
 
     companion object {
-        fun sendData(data: Int) {
-
-        }
 
         const val VIEW_TYPE = 2
     }

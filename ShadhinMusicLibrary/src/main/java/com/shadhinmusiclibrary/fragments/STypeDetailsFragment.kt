@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
@@ -83,7 +82,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
             requireActivity().onBackPressed()
         }
     }
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails:SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
             context = requireContext(),
