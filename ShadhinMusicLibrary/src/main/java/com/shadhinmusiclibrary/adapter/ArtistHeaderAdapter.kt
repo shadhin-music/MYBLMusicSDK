@@ -98,22 +98,23 @@ internal class ArtistHeaderAdapter(
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
-            val url: String = homePatchDetail!!.getImageUrl300Size()
+            val url: String = homePatchDetail!!.getImage()!!
             val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.text = homePatchDetail.Artist
+            textArtist.text = homePatchDetail.getArtist()
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
-            if(homePatchDetail.Artist.equals("Elita",true)){
+            if (homePatchDetail.getArtist().equals("Elita", true)) {
 
-                val elitaBio = "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
+                val elitaBio =
+                    "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
                 // val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-                Log.e("TAG","ARTIST: "+ elitaBio)
+                Log.e("TAG", "ARTIST: " + elitaBio)
                 textView?.setText(elitaBio)
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
 
                 cardBiography.visibility = VISIBLE
 //
-            }else{
+            } else {
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
                 val updatedbio = Html.fromHtml(bio).toString()
                 if (updatedbio.length > 25) {
@@ -130,7 +131,7 @@ internal class ArtistHeaderAdapter(
 //            // textView?.text = bio?.artist?.bio?.summary
 //            textView?.text = updatedbio
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text = homePatchDetail.Artist + "'s"
+            tvName.text = homePatchDetail.getArtist() + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             if (banner?.image?.isEmpty() == false) {
                 val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)
