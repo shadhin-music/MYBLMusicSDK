@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,9 +69,9 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cacheRepository= CacheRepository(requireContext())
-        adapter = PlaylistAdapter(this,this, cacheRepository!!)
+       // playlistTrackAdapter = PlaylistTrackAdapter(this, cacheRepository!!)
         playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this)
-        playlistTrackAdapter = PlaylistTrackAdapter(this)
+        playlistTrackAdapter = PlaylistTrackAdapter(this, this,cacheRepository!!)
 //        adapter = PlaylistAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
         ///read data from online
@@ -198,9 +199,12 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     }
     override fun onStart() {
         super.onStart()
-        val f = IntentFilter("ACTION")
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED")
+        intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(MyBroadcastReceiver(), f)
+            .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
@@ -209,15 +213,15 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
-            val downloaded: ImageView?= view?.findViewWithTag(200)
+//                val downloaded: ImageView?= view?.findViewWithTag(200)
             progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-
-
-//                if(!isDownloaded){
-//                    progressIndicator?.visibility = GONE
-//                    downloaded?.visibility = VISIBLE
-//                }
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+            if(!isDownloaded){
+                progressIndicator?.visibility = View.GONE
+                // downloaded?.visibility = VISIBLE
+            }
 
             Log.e("getDownloadManagerx",
                 "habijabi: ${it.toString()} ${progressIndicator == null}")
@@ -227,8 +231,11 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 
 
     }
+
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
+            Log.e("DELETED", "onReceive "+intent.action)
+            Log.e("PROGRESS", "onReceive "+intent)
             when (intent.action) {
                 "ACTION" -> {
 
@@ -238,13 +245,26 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                     downloadingItems?.let {
 
                         progressIndicatorUpdate(it)
+
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
+                }
+                "DELETED" -> {
+                    playlistTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+                "PROGRESS" -> {
+
+                    playlistTrackAdapter.notifyDataSetChanged()
+                    Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
 
         }
     }
+}
+interface DownloadOrDeleteActionSubscriber {
+    fun notifyOnChange()
 }

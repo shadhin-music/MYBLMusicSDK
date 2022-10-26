@@ -3,8 +3,11 @@ package com.shadhinmusiclibrary.player.utils
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.room.util.FileUtil
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 class CacheRepository(val context: Context) {
     val databaseClient = DatabaseClient(context)
@@ -36,19 +39,17 @@ class CacheRepository(val context: Context) {
 //
 //    fun getPendingDownloadCount() = downloadDb?.DownloadedContentDao()?.getPendingDownloadCount()
     fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
-//    fun deleteDownloadById(id: String) {
-//        val path=downloadDb?.DownloadedContentDao()?.getTrackPathById(id)
-//        downloadDb?.DownloadedContentDao()?.deleteDownloadById(id)
-//
-//        try {
-//            FileUtil.deleteFileIfExists(Uri.parse(path))
-//        }catch (e:NullPointerException){
-//
-//        }
-//
-//        DownloadOrDeleteMp3Observer.notifySubscriber()
-//
-//    }
+    fun deleteDownloadById(id: String) {
+        val path=downloadDb?.DownloadedContentDao()?.getTrackById(id)
+        downloadDb?.DownloadedContentDao()?.deleteDownloadById(id)
+        try {
+            UtilHelper.deleteFileIfExists(Uri.parse(path))
+        }catch (e:NullPointerException){
+
+        }
+        DownloadOrDeleteObserver.notifySubscriber()
+
+    }
 //
 //    fun deleteDownloadByAlbumId(albumId: String) {
 //        val list=downloadDb?.DownloadedContentDao()?.getDownloadsByAlbumId(albumId)
@@ -71,6 +72,15 @@ fun isTrackDownloaded(contentId:String):Boolean {
     }
 
 }
-
+fun isDownloadCompleted(contentId:String):Boolean{
+    var path = downloadDb?.DownloadedContentDao()?.getDownloadById(contentId)
+    Log.e("TAG", "TrackDownload123: " + path)
+    if (path == null) {
+        Log.e("TAG", "TrackDownload: " + path)
+        return false
+    } else {
+        return true
+    }
+}
 
 }

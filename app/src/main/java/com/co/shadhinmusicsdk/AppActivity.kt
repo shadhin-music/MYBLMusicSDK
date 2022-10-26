@@ -18,7 +18,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        ShadhinMusicSdkCore.initializeSDK(applicationContext, TOEKN, this)
+        ShadhinMusicSdkCore.initializeSDK(applicationContext, TOKEN, this)
 
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {
@@ -80,7 +80,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     companion object {
-        const val TOKEN: String ="eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2NjY4NzU2OCwiZXhwIjoxNjY2NzU0OTU3LCJpYXQiOjE2NjY2ODc1NjgsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.0Ih0VsNWVqvkNUaEqvzYL8hl47IWsbiMcvSN_jV4zTYlbJfM5LudPZbUA3M6f_T4Hq0edFk5hAHmPfnHQ-eM0A"
+        const val TOKEN: String ="eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2Njc1ODI4NiwiZXhwIjoxNjY2ODM4MTA0LCJpYXQiOjE2NjY3NTgyODYsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.AFB0jgBDWgScJzDZymyaiiJ8YSv4I6Ix7W6u3Fs-7XF-iC8bH70fv9pbLDU9oNC4LdmzcXa6lmAsk0oNpTbtew"
 
     }
 }

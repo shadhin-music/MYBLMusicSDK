@@ -3,6 +3,7 @@ package com.shadhinmusiclibrary.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
+import android.net.Uri
 import android.util.Log
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.Episode
@@ -13,6 +14,7 @@ import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
+import java.io.File
 
 internal object UtilHelper {
     fun getScreenHeightWidth(context: Context, type: Int): Int {
@@ -131,7 +133,34 @@ internal object UtilHelper {
         }
         return songDetailList
     }
+    fun getFeaturedSongDetailAndRootData(
+        mSongDet: FeaturedSongDetail/*,
+        rootPatch: HomePatchDetail*/
+    ): FeaturedSongDetail {
+        mSongDet.apply {
+            return FeaturedSongDetail(
+                contentID = contentID,
+                image = image,
+                title = title,
+                contentType = contentType,
+                playUrl = playUrl,
+                artistname = artistname,
+                duration = duration,
+                copyright = copyright,
+                labelname = labelname,
+                releaseDate = releaseDate,
+                fav = "",
+                artistId = artistId,
+                albumId = albumId,
+                /*rootType = rootPatch.ContentType,*/
 
+                rootContentID = "",
+                rootContentType = "",
+                rootImage = "",
+                isPlaying = false
+            )
+        }
+    }
 //    fun getSongDetailToTrackList(trackList: MutableList<Track>): MutableList<SongDetail> {
 //        val songDetailList = mutableListOf<SongDetail>()
 //        for (trackItem in trackList) {
@@ -781,5 +810,12 @@ internal object UtilHelper {
             }
         }
         return newList
+    }
+    fun deleteFileIfExists(uri: Uri){
+        val fdelete: File = File(uri.path)
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+            }
+        }
     }
 }

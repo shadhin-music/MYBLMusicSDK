@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.utils.TimeParser
 internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
         return ViewHolder(v)
     }
 

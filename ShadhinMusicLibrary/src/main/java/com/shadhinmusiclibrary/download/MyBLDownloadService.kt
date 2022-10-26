@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.offline.Download
+import com.google.android.exoplayer2.offline.Download.STATE_COMPLETED
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.scheduler.Requirements
@@ -43,9 +44,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
 
     companion object {
 
-
         var isRunning: Boolean = true
-
         var currentId:String?=null
         var currentProgress:Int?= null
 
@@ -73,12 +72,17 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
                 Toast.makeText(applicationContext, "Deleted", Toast.LENGTH_SHORT).show()
+//                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+//                val localIntent = Intent("DOWNLOADREMOVE")
+//                    .putExtra("Deleted",0)
+//                localBroadcastManager.sendBroadcast(localIntent)
             }
 
             override fun onDownloadsPausedChanged(downloadManager: DownloadManager, downloadsPaused: Boolean) {
                 if (downloadsPaused){
                     Toast.makeText(applicationContext, "paused", Toast.LENGTH_SHORT).show()
-                } else{
+
+                  } else{
 
                     Toast.makeText(applicationContext, "Download Started", Toast.LENGTH_SHORT).show()
 
@@ -95,6 +99,14 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 finalException: java.lang.Exception?
             ) {
                 super.onDownloadChanged(downloadManager, download, finalException)
+                if(download.state == STATE_COMPLETED){
+                    currentProgress= 100
+                    val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                    val localIntent = Intent("PROGRESS")
+                        .putExtra("progress",100)
+                    localBroadcastManager.sendBroadcast(localIntent)
+                }
+
                 //getDownloadingNotification("Song Downloading",100)
                val currentItemID =download.request.id
                 Log.e("getDownloadManagerx", "getForegroundNotification:" + currentItemID)
@@ -138,12 +150,11 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         return manager
     }
 
-
-
-    //If you want to restart the download when it failed, you the can override this method, it uses Jobscheduler.
     override fun getScheduler(): Scheduler? {
+
         return null
     }
+
 
     override fun getForegroundNotification(
         downloads: MutableList<Download>,
@@ -152,7 +163,11 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
        // Log.e("getDownloadManagerx", "getForegroundNotification: ${downloads.map { it.request.id }}")
 
         val downloadingItems = downloads.map {
-            DownloadingItem(contentId =  it.request.id, progress = it.percentDownloaded )
+//            if(it.percentDownloaded in 0f..100f) {
+                DownloadingItem(contentId = it.request.id, progress = it.percentDownloaded)
+//            }else{
+//                DownloadingItem(contentId = it.request.id, progress = 0f)
+//            }
         }
 
         val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)

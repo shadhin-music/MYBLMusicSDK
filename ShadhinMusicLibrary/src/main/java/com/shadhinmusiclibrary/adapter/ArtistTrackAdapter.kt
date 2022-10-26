@@ -185,6 +185,7 @@ internal class ArtistTrackAdapter(
             if(isDownloaded){
                 Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
                 downloaded.visibility = View.VISIBLE
+                progressIndicatorArtist.visibility = View.GONE
             }
             itemView.setOnClickListener {
 

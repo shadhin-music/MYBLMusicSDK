@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
@@ -23,9 +24,11 @@ import androidx.core.graphics.red
 import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
+import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -56,6 +59,11 @@ import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.Serializable
 import java.util.*
 import androidx.annotation.NavigationRes as NavigationRes1
@@ -824,6 +832,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     override fun onDestroy() {
+        DownloadOrDeleteObserver.removeSubscriber()
         super.onDestroy()
      //   playerViewModel.disconnect()
     }
@@ -857,39 +866,62 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
+        val downloadImage:ImageView ?= bottomSheetDialog.findViewById(R.id.imgDownload)
+        val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
+        var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
+        if(downloaded?.track != null){
+                isDownloaded=true
+                downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+        }else{
+                isDownloaded=false
+                downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+            }
+
+        if(isDownloaded){
+            textViewDownloadTitle?.text="Remove From Download"
+        }else{
+            textViewDownloadTitle?.text="Download Offline"
+        }
         val constraintDownload:ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-           val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
-           // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
-            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+            if(isDownloaded.equals(true)){
+                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
+                Log.e("TAG","DELETED: "+ isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", mSongDetails.ContentID)
+                localBroadcastManager.sendBroadcast(localIntent)
 
-                .build()
+            } else {
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val downloadRequest: DownloadRequest =
+                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                        .build()
+                DownloadService.sendAddDownload(
+                    applicationContext,
+                    MyBLDownloadService::class.java,
+                    downloadRequest,
+                    /* foreground= */ false)
 
-//            DownloadHelper.createMediaSource(downloadRequest,DefaultDataSource.Factory(this))
-//            getDownloadManager().apply {
-//                addDownload(downloadRequest)
-//
-//               this.resumeDownloads()
-//               Log.e("getDownloadManager", "showBottomSheetDialog:" +mSongDetails.ContentID )
-//            Log.e("getDownloadManager", "showBottomSheetDialog:" +mSongDetails.rootContentID )
-            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
-                mSongDetails.image,
-                mSongDetails.title,
-            mSongDetails.ContentType,
-            mSongDetails.PlayUrl,
-                mSongDetails.ContentType,
-           0,
-            0,
-                mSongDetails.artist,
-           mSongDetails.duration))
-           // Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
-            DownloadService.sendAddDownload(
-              applicationContext,
-                MyBLDownloadService::class.java,
-                        downloadRequest,
-                /* foreground= */ false)
-
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                        mSongDetails.rootContentID,
+                        mSongDetails.image,
+                        mSongDetails.title,
+                        mSongDetails.ContentType,
+                        mSongDetails.PlayUrl,
+                        mSongDetails.ContentType,
+                        0,
+                        0,
+                        mSongDetails.artist,
+                        mSongDetails.duration))
+                    Log.e("TAGGG",
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
+                }
+            }
             bottomSheetDialog.dismiss()
         }
         val constraintAlbum: ConstraintLayout? =
@@ -950,32 +982,62 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
             bottomSheetDialog.dismiss()
         }
+        val downloadImage:ImageView ?= bottomSheetDialog.findViewById(R.id.imgDownload)
+        val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
+        var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
+        if(downloaded?.track != null){
+            isDownloaded=true
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+        }else{
+            isDownloaded=false
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+        }
+
+        if(isDownloaded){
+            textViewDownloadTitle?.text="Remove From Download"
+        }else{
+            textViewDownloadTitle?.text="Download Offline"
+        }
         val constraintDownload:ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
-        if(cacheRepository.isTrackDownloaded(mSongDetails.ContentID).equals(true)){
-
-        }
         constraintDownload?.setOnClickListener {
-            val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
-            // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
-            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+            if(isDownloaded.equals(true)){
+                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
+                Log.e("TAG","DELETED: "+ isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", mSongDetails.ContentID)
+                localBroadcastManager.sendBroadcast(localIntent)
 
-                .build()
-            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
-                mSongDetails.image,
-                mSongDetails.title,
-                mSongDetails.ContentType,
-                mSongDetails.PlayUrl,
-                mSongDetails.ContentType,
-                0,
-                0,
-                mSongDetails.artist,
-                mSongDetails.duration))
-            DownloadService.sendAddDownload(
-                applicationContext,
-                MyBLDownloadService::class.java,
-                downloadRequest,
-                /* foreground= */ false)
+            } else {
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val downloadRequest: DownloadRequest =
+                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                        .build()
+                DownloadService.sendAddDownload(
+                    applicationContext,
+                    MyBLDownloadService::class.java,
+                    downloadRequest,
+                    /* foreground= */ false)
+
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                        mSongDetails.rootContentID,
+                        mSongDetails.image,
+                        mSongDetails.title,
+                        mSongDetails.ContentType,
+                        mSongDetails.PlayUrl,
+                        mSongDetails.ContentType,
+                        0,
+                        0,
+                        mSongDetails.artist,
+                        mSongDetails.duration))
+                    Log.e("TAGGG",
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
+                }
+            }
             bottomSheetDialog.dismiss()
         }
         Log.d("TAG", "CLICKArtist: " + argHomePatchItem)
@@ -1027,30 +1089,63 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             Log.d("TAG","CLICK: " + mSongDetails)
             bottomSheetDialog.dismiss()
         }
+        val downloadImage:ImageView ?= bottomSheetDialog.findViewById(R.id.imgDownload)
+        val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
+        var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
+        if(downloaded?.track != null){
+            isDownloaded=true
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+        }else{
+            isDownloaded=false
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+        }
+
+        if(isDownloaded){
+            textViewDownloadTitle?.text="Remove From Download"
+        }else{
+            textViewDownloadTitle?.text="Download Offline"
+        }
         val constraintDownload:ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            val url =  "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
-            // val urlStr = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
-            val downloadRequest: DownloadRequest = DownloadRequest.Builder(mSongDetails.ContentID,url.toUri())
+            if(isDownloaded.equals(true)){
+                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
+                Log.e("TAG","DELETED: "+ isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", mSongDetails.ContentID)
+                localBroadcastManager.sendBroadcast(localIntent)
 
-                .build()
-            cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),mSongDetails.rootContentID,
-                mSongDetails.image,
-                mSongDetails.title,
-                mSongDetails.ContentType,
-                mSongDetails.PlayUrl,
-                mSongDetails.ContentType,
-                0,
-                0,
-                mSongDetails.artist,
-                mSongDetails.duration))
-            DownloadService.sendAddDownload(
-                applicationContext,
-                MyBLDownloadService::class.java,
-                downloadRequest,
-                /* foreground= */ false)
-           bottomSheetDialog.dismiss()
+            } else {
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val downloadRequest: DownloadRequest =
+                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                        .build()
+                DownloadService.sendAddDownload(
+                    applicationContext,
+                    MyBLDownloadService::class.java,
+                    downloadRequest,
+                    /* foreground= */ false)
+
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                        mSongDetails.rootContentID,
+                        mSongDetails.image,
+                        mSongDetails.title,
+                        mSongDetails.ContentType,
+                        mSongDetails.PlayUrl,
+                        mSongDetails.ContentType,
+                        0,
+                        0,
+                        mSongDetails.artist,
+                        mSongDetails.duration))
+                    Log.e("TAGGG",
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
+                }
+            }
+            bottomSheetDialog.dismiss()
         }
     }
 
@@ -1077,9 +1172,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
 
     }
-    private fun getDownloadSongURL(){
 
-    }
     private fun gotoArtistFromPlaylist(
         bsdNavController: NavController,
         context: Context,

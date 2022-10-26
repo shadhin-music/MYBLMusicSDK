@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +10,19 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistTrackAdapter(
-    private val itemClickCB: OnItemClickCallback
+    private val itemClickCB: OnItemClickCallback, private val bsDialogItemCallback: BottomSheetDialogItemCallback,
+    val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<PlaylistTrackAdapter.PlaylistTrackVH>() {
     var dataSongDetail: MutableList<SongDetail> = mutableListOf()
     private var parentView: View? = null
@@ -36,11 +41,11 @@ internal class PlaylistTrackAdapter(
             itemClickCB.onClickItem(dataSongDetail, position)
         }
 
-//        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
-//        ivSongMenuIcon.setOnClickListener {
-//            val songDetail = dataSongDetail[position]
-//            bsDialogItemCallback.onClickBottomItem(songDetail)
-//        }
+        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
+        ivSongMenuIcon.setOnClickListener {
+            val songDetail = dataSongDetail[position]
+            bsDialogItemCallback.onClickBottomItem(songDetail)
+        }
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
@@ -122,6 +127,18 @@ internal class PlaylistTrackAdapter(
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
+            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator.tag = mSongDetail.ContentID
+            progressIndicator.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.ContentID) ?: false
+
+            if(isDownloaded){
+                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+            }
             ivSongMenuIcon.setOnClickListener {
 //                bsDialogItemCallback.onClickBottomItem(mSongDetail)
 //                Log.e("TAGGY", "ID: " + mSongDetail)

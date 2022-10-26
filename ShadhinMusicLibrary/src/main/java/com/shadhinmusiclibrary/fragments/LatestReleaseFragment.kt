@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
@@ -72,7 +73,7 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 recyclerView.layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                   GridLayoutManager(requireContext(), 3)
                 response?.data?.data?.let {
                     featuredLatestTracksAdapter.setData(
                         it,

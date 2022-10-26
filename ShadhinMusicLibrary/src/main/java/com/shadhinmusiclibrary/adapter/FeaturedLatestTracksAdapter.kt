@@ -25,7 +25,7 @@ internal class FeaturedLatestTracksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 //        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_release_item_list, parent, false)
         return ViewHolder(parentView!!)
     }
 
@@ -109,21 +109,28 @@ internal class FeaturedLatestTracksAdapter(
         val context = itemView.getContext()
         var tvSongName: TextView? = null
         fun bindItems(mSongDetails: FeaturedSongDetail) {
-            val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = mSongDetails.image
-            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
+            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
+            val textView: TextView = itemView.findViewById(R.id.txt_title)
+            val url: String =  mSongDetails.image
+            textView.text =  mSongDetails.title
+            val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
+            textViewArtist.text = mSongDetails.artistname
 
+//            val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
+//            val url: String = mSongDetails.image
+//            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
+//            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
+//            // textView.setText(data.Data[absoluteAdapterPosition].title)
+//
             Glide.with(context)
                 .load(mSongDetails.getImageUrl300Size())
                 .into(imageView!!)
-            tvSongName = itemView.findViewById(R.id.tv_song_name)
-            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            tvSongName?.text = mSongDetails.title
-            textArtist.text = mSongDetails.artistname
-            textDuration.text = TimeParser.secToMin(mSongDetails.duration)
+//            tvSongName = itemView.findViewById(R.id.tv_song_name)
+//            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
+//            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+//            tvSongName?.text = mSongDetails.title
+//            textArtist.text = mSongDetails.artistname
+//            textDuration.text = TimeParser.secToMin(mSongDetails.duration)
 /*            itemView.setOnClickListener {
 
             }*/

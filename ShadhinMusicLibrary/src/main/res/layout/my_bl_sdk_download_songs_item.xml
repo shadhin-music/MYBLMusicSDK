@@ -21,7 +21,7 @@
             android:id="@+id/siv_song_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/my_bl_sdk_default_song" />
+            android:src="@drawable/my_bl_sdk_ic_launcher_background" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +33,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="2"
@@ -43,11 +44,9 @@
                     android:id="@+id/tv_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/my_sdk_black2"
-                    android:singleLine="true"
-                    android:text="Ami Bhabi Tumi"
+                    android:ellipsize="end"
+                    android:text=""
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -55,17 +54,15 @@
                     android:id="@+id/tv_singer_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
+                    android:text=""
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:text="Habib Wahid"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_song_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.32"
+                    android:text=""
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -81,9 +78,10 @@
                     android:id="@+id/iv_song_type_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:src="@drawable/my_bl_sdk_ic_downloaded"
-                    android:visibility="gone" />
+                    android:visibility="invisible"
+                    />
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
                     app:indicatorSize="15dp"
@@ -91,6 +89,7 @@
                     android:indeterminate="false"
                     android:layout_width="15dp"
                     android:layout_height="25dp"
+                    android:visibility="gone"
                     app:trackColor="@color/my_sdk_color_grey"
                     app:indicatorColor="@color/my_sdk_color_primary"
                     android:layout_margin="5dp"

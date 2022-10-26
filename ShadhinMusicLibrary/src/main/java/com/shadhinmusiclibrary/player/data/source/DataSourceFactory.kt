@@ -56,7 +56,7 @@ internal open class ShadhinDataSourceFactory  constructor(
                     ShadhinDataSourceFactory(context,music,musicRepository)
                 )
                 // TODO must be remove setCacheWriteDataSinkFactory(null) this line when download done . but this time for testing
-                .setCacheWriteDataSinkFactory(null)
+               // .setCacheWriteDataSinkFactory(null)
                 .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
 
         }

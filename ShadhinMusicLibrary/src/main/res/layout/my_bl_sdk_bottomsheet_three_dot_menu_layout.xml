@@ -106,6 +106,7 @@
                     android:layout_marginStart="8dp"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
+                    android:id="@+id/tv_download"
                     android:text="Download Offline"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@id/imgDownload" />

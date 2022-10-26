@@ -84,13 +84,14 @@
                     />
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    app:indicatorSize="10dp"
+                    app:indicatorSize="15dp"
                     app:trackThickness="1dp"
                     android:indeterminate="false"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="15dp"
+                    android:layout_height="25dp"
+                    app:trackColor="@color/my_sdk_color_grey"
                     app:indicatorColor="@color/my_sdk_color_primary"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_centerInParent="true"
                     android:progress="0"
                     android:max="100" />

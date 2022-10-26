@@ -320,12 +320,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
     }
-    override fun onStart() {
-        super.onStart()
-        val f = IntentFilter("ACTION")
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(MyBroadcastReceiver(), f)
-    }
+
     override fun onClickItem(
         mSongDetails: MutableList<ArtistContentData>,
         clickItemPosition: Int
@@ -377,6 +372,15 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
     }
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED")
+        intentFilter.addAction("PROGRESS")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
         downloadingItems.forEach {
@@ -384,15 +388,15 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
-            val downloaded: ImageView?= view?.findViewWithTag(200)
-            progressIndicator?.visibility = VISIBLE
+//                val downloaded: ImageView?= view?.findViewWithTag(200)
+            progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-
-
-//                if(!isDownloaded){
-//                    progressIndicator?.visibility = GONE
-//                    downloaded?.visibility = VISIBLE
-//                }
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+            if(!isDownloaded){
+                progressIndicator?.visibility = View.GONE
+                // downloaded?.visibility = VISIBLE
+            }
 
             Log.e("getDownloadManagerx",
                 "habijabi: ${it.toString()} ${progressIndicator == null}")
@@ -402,8 +406,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
 
     }
+
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
+            Log.e("DELETED", "onReceive "+intent.action)
+            Log.e("PROGRESS", "onReceive "+intent)
             when (intent.action) {
                 "ACTION" -> {
 
@@ -413,9 +420,19 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                     downloadingItems?.let {
 
                         progressIndicatorUpdate(it)
+
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
+                }
+                "DELETED" -> {
+                    artistTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+                "PROGRESS" -> {
+
+                    artistTrackAdapter.notifyDataSetChanged()
+                    Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
