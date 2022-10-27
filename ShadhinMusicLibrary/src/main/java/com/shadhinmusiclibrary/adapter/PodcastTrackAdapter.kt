@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-
 internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<IMusicModel> = mutableListOf()
@@ -31,7 +29,7 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
 
     override fun onBindViewHolder(holder: PodcastTrackVH, position: Int) {
         val trackItem = tracks[position]
-        holder.bindItems(position)
+        holder.bindItems(trackItem)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
         }
@@ -57,21 +55,21 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
     }
 
     fun setData(
-        data: MutableList<SongTrack>,
+        songTrack: MutableList<SongTrack>,
         rootPatch: HomePatchDetail,
         mediaId: String?
     ) {
         this.tracks = mutableListOf()
-        for (songItem in data) {
+        for (songItem in songTrack) {
             tracks.add(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
-        notifyDataSetChanged()
-
         if (mediaId != null) {
             setPlayingSong(mediaId)
         }
+
+        notifyDataSetChanged()
     }
 
     fun setPlayingSong(mediaId: String) {
@@ -82,50 +80,23 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         tracks.clear()
         tracks.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
-
-//    private class PodcastTrackDiffCB() : DiffUtil.Callback() {
-//        private lateinit var oldSongDetails: List<IMusicModel>
-//        private lateinit var newSongDetails: List<IMusicModel>
-//
-//        constructor(oldSongDetails: List<IMusicModel>, newSongDetails: List<IMusicModel>) : this() {
-//            this.oldSongDetails = oldSongDetails
-//            this.newSongDetails = newSongDetails
-//        }
-//
-//        override fun getOldListSize(): Int = oldSongDetails.size
-//
-//        override fun getNewListSize(): Int = newSongDetails.size
-//
-//        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-////            oldSongDetails[oldItemPosition].Id == newSongDetails[newItemPosition].Id
-//            oldSongDetails[oldItemPosition].content_Id == newSongDetails[newItemPosition].content_Id
-//
-//        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-//            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
-//    }
 
     inner class PodcastTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
 
         var tvSongName: TextView? = null
-        fun bindItems(position: Int) {
+        fun bindItems(iMusicModel: IMusicModel) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
             val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
-            textArtistName.text = tracks[position].total_duration
-            val url: String = tracks[position].imageUrl!!
+            textArtistName.text = iMusicModel.total_duration
+            val url: String? = iMusicModel.imageUrl
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url))
+                .load(UtilHelper.getImageUrlSize300(url!!))
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
-            tvSongName?.text = tracks[position].titleName
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityIdo
-            //getActorName(entityId!!)
-
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
+            tvSongName?.text = iMusicModel.titleName
         }
     }
 

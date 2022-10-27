@@ -637,7 +637,7 @@ internal object UtilHelper {
         }
     }
 
-    /* fun getVideoToSearchData(data: SearchData): Video {
+     fun getVideoToSearchData(data: SearchData): Video {
          data.apply {
              return Video(
                  albumId = album_Id,
@@ -671,7 +671,7 @@ internal object UtilHelper {
                  title = titleName
              )
          }
-     }*/
+     }
 
 //    fun albumSongDetailsNewList(mediaId: String?, aaa: List<IMusicModel>): List<IMusicModel> {
 //        val newList: MutableList<IMusicModel> = ArrayList()

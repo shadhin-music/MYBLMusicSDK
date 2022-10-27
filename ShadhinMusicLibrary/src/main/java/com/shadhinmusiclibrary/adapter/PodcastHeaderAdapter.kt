@@ -22,7 +22,7 @@ internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
     var episode: List<Episode>? = null
-    private var listTrack: MutableList<IMusicModel> = mutableListOf()
+    private var listSongTrack: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
@@ -32,9 +32,9 @@ internal class PodcastHeaderAdapter(
 
     override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
         holder.bindItems(position)
-        pcOnCallback.getCurrentVH(holder, listTrack)
+        pcOnCallback.getCurrentVH(holder, listSongTrack)
         holder.ivPlayBtn?.setOnClickListener {
-            pcOnCallback.onRootClickItem(listTrack, position)
+            pcOnCallback.onRootClickItem(listSongTrack, position)
         }
     }
 
@@ -49,14 +49,14 @@ internal class PodcastHeaderAdapter(
         data: MutableList<SongTrack>,
         rootPatch: HomePatchDetail
     ) {
-        this.listTrack = mutableListOf()
+        this.listSongTrack = mutableListOf()
         for (songItem in data) {
-            listTrack.add(
+            listSongTrack.add(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
         this.episode = episode
-        this.listTrack = listTrack
+        this.listSongTrack = listSongTrack
         notifyDataSetChanged()
     }
 

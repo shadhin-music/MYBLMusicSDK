@@ -71,11 +71,12 @@ internal class PlaylistTrackAdapter(
                 UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
             )
         }
-        notifyDataSetChanged()
 
         if (mediaId != null) {
             setPlayingSong(mediaId)
         }
+
+        notifyDataSetChanged()
     }
 
     fun setPlayingSong(mediaId: String) {
@@ -86,6 +87,7 @@ internal class PlaylistTrackAdapter(
         dataSongDetail.clear()
         dataSongDetail.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     inner class PlaylistTrackVH(private val viewItem: View) : RecyclerView.ViewHolder(viewItem) {

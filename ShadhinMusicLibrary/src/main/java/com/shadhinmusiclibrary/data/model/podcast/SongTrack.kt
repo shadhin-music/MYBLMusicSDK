@@ -7,8 +7,12 @@ import com.shadhinmusiclibrary.data.IMusicModel
 
 @Keep
 internal class SongTrack : IMusicModel {
+    override var content_Id: String?
+        get() = id.toString()
+        set(value) {}
+
     @SerializedName("Id")
-    override var content_Id: String? = null
+    var id: Int? = null
 
     @SerializedName("ShowId")
     @Expose
@@ -18,7 +22,7 @@ internal class SongTrack : IMusicModel {
     @Expose
     var episodeId: String? = null
 
-    @SerializedName("image")
+    @SerializedName("ImageUrl")
     @Expose
     override var imageUrl: String? = null
 
@@ -32,40 +36,40 @@ internal class SongTrack : IMusicModel {
     @Expose
     override var content_Type: String? = null
 
-    @SerializedName("playUrl")
+    @SerializedName("PlayUrl")
     @Expose
     override var playingUrl: String? = null
 
-    @SerializedName("artistname")
-    @Expose
-    var artistname: String? = null
+/*    @SerializedName("artistname")
+    @Expose*/
+//    var artistname: String? = null
 
-    @SerializedName("duration")
+    @SerializedName("Duration")
     @Expose
     override var total_duration: String? = null
 
-    @SerializedName("copyright")
-    @Expose
-    var copyright: String? = null
+//    @SerializedName("copyright")
+//    @Expose
+//    var copyright: String? = null
 
-    @SerializedName("labelname")
-    @Expose
-    var labelname: String? = null
+//    @SerializedName("labelname")
+//    @Expose
+//    var labelname: String? = null
 
-    @SerializedName("releaseDate")
-    @Expose
+    //    @SerializedName("releaseDate")
+//    @Expose
     var releaseDate: String? = null
 
     @SerializedName("fav")
     @Expose
     var fav: String? = null
 
-    @SerializedName("albumId")
-    @Expose
+    //    @SerializedName("albumId")
+//    @Expose
     override var album_Id: String? = null
 
-    @SerializedName("artistId")
-    @Expose
+    //    @SerializedName("artistId")
+//    @Expose
     override var artist_Id: String? = null
 
     @SerializedName("Starring")

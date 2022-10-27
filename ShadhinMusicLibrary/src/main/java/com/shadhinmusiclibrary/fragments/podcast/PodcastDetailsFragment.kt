@@ -122,14 +122,14 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //                    )
                     podcastHeaderAdapter.setTrackData(
                         itEpisod,
-                        itEpisod[0].songTrackList,
+                        itEpisod[0].TrackList,
                         argHomePatchDetail!!
                     )
                 }
                 response.data?.data?.EpisodeList?.get(0)
                     ?.let {
                         podcastTrackAdapter.setData(
-                            it.songTrackList,
+                            it.TrackList,
                             argHomePatchDetail!!,
                             playerViewModel.currentMusic?.mediaId
                         )

@@ -604,7 +604,8 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 val videoArray = ArrayList<Video>()
                 for (item in songItem) {
                     //                    val video = Video()
-//                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+                    //TODO need add this line of code
+                    videoArray.add(UtilHelper.getVideoToSearchData(item as SearchData))
                 }
                 val videos: ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)

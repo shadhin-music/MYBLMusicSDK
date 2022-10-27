@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetail
 
 class AnyTrackDiffCB() : DiffUtil.Callback() {
     private lateinit var oldSongDetails: List<IMusicModel>

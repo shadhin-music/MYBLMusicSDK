@@ -93,11 +93,12 @@ internal class ArtistTrackAdapter(
                 UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
             )
         }
-        notifyDataSetChanged()
 
         if (mediaId != null) {
             setPlayingSong(mediaId)
         }
+
+        notifyDataSetChanged()
     }
 
     fun setPlayingSong(mediaId: String) {
@@ -108,30 +109,8 @@ internal class ArtistTrackAdapter(
         artistSongList.clear()
         artistSongList.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
-
-//    private class ArtistTrackDiffCB() : DiffUtil.Callback() {
-//        private lateinit var oldSongDetails: List<IMusicModel>
-//        private lateinit var newSongDetails: List<IMusicModel>
-//
-//        constructor(
-//            oldSongDetails: List<IMusicModel>,
-//            newSongDetails: List<IMusicModel>
-//        ) : this() {
-//            this.oldSongDetails = oldSongDetails
-//            this.newSongDetails = newSongDetails
-//        }
-//
-//        override fun getOldListSize(): Int = oldSongDetails.size
-//
-//        override fun getNewListSize(): Int = newSongDetails.size
-//
-//        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-//            oldSongDetails[oldItemPosition].content_Id == newSongDetails[newItemPosition].content_Id
-//
-//        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-//            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
-//    }
 
     inner class ArtistTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
