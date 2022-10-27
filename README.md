@@ -53,13 +53,19 @@
 
     
 ## Setup
+**Add the token to $HOME/.gradle/gradle.properties**
+
+    authToken=jp_12s9tb2nvm8g1hqpskmsnqc28f
+    
 **Root level**
       
     allprojects {
 	repositories {
 		...
-		maven { url 'https://jitpack.io' }
-		}
+		maven {
+            url "https://jitpack.io"
+            credentials { username authToken }
+        }
     }
 
 **Gradle**
