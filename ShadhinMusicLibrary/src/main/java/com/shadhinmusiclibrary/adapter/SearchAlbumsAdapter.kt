@@ -56,20 +56,20 @@ internal class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(searchAlbumdata: SearchData) {
-            val imageView:ImageView = itemView.findViewById(R.id.thumb)
-            val url: String = searchAlbumdata.image
-             val textTitle:TextView = itemView.findViewById(R.id.title)
+            val imageView: ImageView = itemView.findViewById(R.id.thumb)
+            val url: String = searchAlbumdata.imageUrl!!
+            val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-             //textView.setText(data.Data[absoluteAdapterPosition].title)
+            //textView.setText(data.Data[absoluteAdapterPosition].title)
             Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.similarArtist)
-          //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchAlbumdata.title
-            textArtist.text = searchAlbumdata.Artist
-           // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
+            //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            textTitle.text = searchAlbumdata.titleName
+            textArtist.text = searchAlbumdata.artistName
+            // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
                 searchCallBack.onClickSearchItem(searchAlbumdata)

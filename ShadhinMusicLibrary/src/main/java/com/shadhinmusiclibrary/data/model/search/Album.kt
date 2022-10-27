@@ -9,3 +9,11 @@ internal data class Album(
     val status: String,
     val type: String
 )
+
+@Keep
+internal data class CommonSearchData(
+    val data: MutableList<SearchData>,
+    val message: String,
+    val status: String,
+    val type: String
+)

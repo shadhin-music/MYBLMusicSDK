@@ -14,6 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ArtistAlbumListAdapter(
@@ -25,7 +26,8 @@ internal class ArtistAlbumListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -33,7 +35,7 @@ internal class ArtistAlbumListAdapter(
         holder.bindItems(artistAlbumModel)
         holder.itemView.setOnClickListener {
             homeCallBack.onArtistAlbumClick(position, artistAlbumModel!!.data)
-           // homeCallBack.onClickItemAndAllItem(position,homePatchItem)
+            // homeCallBack.onClickItemAndAllItem(position,homePatchItem)
             //homeCallBack.onAlbumClick(position,artistAlbumModel!!.data)
         }
     }
@@ -48,14 +50,14 @@ internal class ArtistAlbumListAdapter(
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String =
-                artistAlbumModel?.data?.get(absoluteAdapterPosition)?.image.toString()
+                artistAlbumModel?.data?.get(absoluteAdapterPosition)?.imageUrl.toString()
             textView.text =
-                this@ArtistAlbumListAdapter.artistAlbumModel?.data!![absoluteAdapterPosition]?.title
+                this@ArtistAlbumListAdapter.artistAlbumModel?.data!![absoluteAdapterPosition].titleName
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
             textViewArtist.text =
-                this@ArtistAlbumListAdapter.artistAlbumModel.data.get(absoluteAdapterPosition).artistname
+                this@ArtistAlbumListAdapter.artistAlbumModel.data[absoluteAdapterPosition].artistName
             Glide.with(mContext)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(url))
                 .into(imageView)
 //            itemView.setOnClickListener {
 //                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager

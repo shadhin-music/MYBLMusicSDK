@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedLatestTracksAdapter
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
-import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.fragments.artist.FeaturedTracklistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.TITLE
@@ -93,21 +92,18 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         }
     }
 
-    override fun onClickItem(
-        mSongDetails: MutableList<FeaturedSongDetail>,
-        clickItemPosition: Int
-    ) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null &&
-            (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)
+            (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
         ) {
-            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToFeaturedSongDetailList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }

@@ -44,10 +44,10 @@ internal class ArtistOthersAlbumListAdapter(
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String =
-                artistAlbumModel.image
-            textView.text = artistAlbumModel.title
+                artistAlbumModel.imageUrl!!
+            textView.text = artistAlbumModel.titleName
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
-            textViewArtist.text = artistAlbumModel.artistname
+            textViewArtist.text = artistAlbumModel.artistName
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(mContext)
                 .load(url.replace("<\$size\$>", "300"))

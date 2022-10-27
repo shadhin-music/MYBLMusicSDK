@@ -80,7 +80,7 @@ internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
 
             var url: String = data?.getImageUrl300Size().toString()
             val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.setText(songDetail?.artist)
+            textArtist.setText(songDetail?.artistName)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
@@ -91,7 +91,7 @@ internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text = songDetail?.artist + "'s"
+            tvName.text = songDetail?.artistName + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             if (banner?.image?.isEmpty() == false) {
                 val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)

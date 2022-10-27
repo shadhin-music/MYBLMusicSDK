@@ -1,13 +1,14 @@
-package com.shadhinmusiclibrary.data.model
+package com.shadhinmusiclibrary.data.model.search
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
+
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
 
 
 @Keep
-internal class SongDetail : IMusicModel {
+internal class TopTrendingData : IMusicModel {
     @SerializedName("ContentID")
     @Expose
     override var content_Id: String? = null
@@ -28,7 +29,7 @@ internal class SongDetail : IMusicModel {
     @Expose
     override var playingUrl: String? = null
 
-    @SerializedName("artist")
+    @SerializedName("artistname")
     @Expose
     override var artistName: String? = null
 
@@ -38,7 +39,7 @@ internal class SongDetail : IMusicModel {
 
     @SerializedName("copyright")
     @Expose
-    var copyright: String? = null
+    var copyright: Any? = null
 
     @SerializedName("labelname")
     @Expose
@@ -46,18 +47,25 @@ internal class SongDetail : IMusicModel {
 
     @SerializedName("releaseDate")
     @Expose
-    var releaseDate: String? = null
+    var releaseDate: Any? = null
 
     @SerializedName("fav")
     @Expose
-    var fav: String? = null
+    var fav: Any? = null
+
+    @SerializedName("AlbumId")
+    @Expose
+    override var album_Id: String? = null
 
     @SerializedName("ArtistId")
     @Expose
     override var artist_Id: String? = null
 
+    @SerializedName("TotalStream")
+    @Expose
+    var totalStream: String? = null
+
     override var bannerImage: String? = null
-    override var album_Id: String? = null
     override var album_Name: String? = null
     override var rootContentId: String? = null
     override var rootContentType: String? = null
@@ -69,66 +77,66 @@ internal class SongDetail : IMusicModel {
     }
 
 //    fun getContentID(): String? {
-//        return content_Id
+//        return contentID
 //    }
 //
 //    fun setContentID(contentID: String?) {
-//        this.content_Id = contentID
+//        this.contentID = contentID
 //    }
 //
 //    fun getImage(): String? {
-//        return imageUrl?.replace("<\$size\$>", "300")
+//        return image
 //    }
 //
 //    fun setImage(image: String) {
-//        this.imageUrl = image
+//        this.image = image
 //    }
 //
 //    fun getTitle(): String? {
-//        return titleName
+//        return title
 //    }
 //
 //    fun setTitle(title: String) {
-//        this.titleName = title
+//        this.title = title
 //    }
 //
 //    fun getContentType(): String? {
-//        return content_Type
+//        return contentType
 //    }
 //
 //    fun setContentType(contentType: String?) {
-//        this.content_Type = contentType
+//        this.contentType = contentType
 //    }
 //
 //    fun getPlayUrl(): String? {
-//        return playingUrl
+//        return playUrl
 //    }
 //
 //    fun setPlayUrl(playUrl: String?) {
-//        this.playingUrl = playUrl
+//        this.playUrl = playUrl
 //    }
 //
-//    fun getArtist(): String? {
-//        return artistName
+//    fun getArtistname(): String? {
+//        return artistname
 //    }
 //
-//    fun setArtist(artist: String) {
-//        this.artistName = artist
+//    fun setArtistname(artistname: String) {
+//        this.artistname = artistname
 //    }
 //
 //    fun getDuration(): String? {
-//        return total_duration
+//        return duration
 //    }
 //
 //    fun setDuration(duration: String) {
-//        this.total_duration = duration
+//        this.duration = duration
 //    }
 //
-//    fun getCopyright(): String? {
+//    fun getCopyright(): Any? {
 //        return copyright
 //    }
 //
-//    fun setCopyright(copyright: String) {
+//    fun setCopyright(copyright: Any) {
 //        this.copyright = copyright
 //    }
 //
@@ -140,35 +148,43 @@ internal class SongDetail : IMusicModel {
 //        this.labelname = labelname
 //    }
 //
-//    fun getReleaseDate(): String? {
+//    fun getReleaseDate(): Any? {
 //        return releaseDate
 //    }
 //
-//    fun setReleaseDate(releaseDate: String) {
+//    fun setReleaseDate(releaseDate: Any) {
 //        this.releaseDate = releaseDate
 //    }
 //
-//    fun getFav(): String? {
+//    fun getFav(): Any? {
 //        return fav
 //    }
 //
-//    fun setFav(fav: String) {
+//    fun setFav(fav: Any) {
 //        this.fav = fav
 //    }
 //
+//    fun getAlbumId(): String? {
+//        return albumId
+//    }
+//
+//    fun setAlbumId(albumId: String?) {
+//        this.albumId = albumId
+//    }
+//
 //    fun getArtistId(): String? {
-//        return artist_Id
+//        return artistId
 //    }
 //
 //    fun setArtistId(artistId: String?) {
-//        this.artist_Id = artistId
+//        this.artistId = artistId
 //    }
-
-//    fun getImageUrl300Size(): String? {
-//        return this.imageUrl.replace("<\$size\$>", "300")
+//
+//    fun getTotalStream(): String? {
+//        return totalStream
 //    }
-
-//    fun getRootImageUrl300Size(): String {
-//        return this.rootImage?.replace("<\$size\$>", "300")
+//
+//    fun setTotalStream(totalStream: String?) {
+//        this.totalStream = totalStream
 //    }
 }

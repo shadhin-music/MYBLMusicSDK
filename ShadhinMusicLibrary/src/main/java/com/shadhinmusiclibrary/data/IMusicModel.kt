@@ -1,30 +1,23 @@
 package com.shadhinmusiclibrary.data
 
+import androidx.annotation.Keep
+
+@Keep
 interface IMusicModel {
-    var mediaId: String?
-    var title: String?
-    var displayDescription: String?
-    var displayIconUrl: String
-    var mediaUrl: String
-    var artistName: String
-    var date: String
-    var contentType: String
-    var userPlayListId: String
+    var content_Id: String?
+    var content_Type: String?
+    var titleName: String?
+    var bannerImage: String?
+    var imageUrl: String?
+    var playingUrl: String?
+    var artist_Id: String?
+    var artistName: String?
+    var album_Id: String?
+    var album_Name: String?
+    var total_duration: String?
 
-    var episodeId: String
-    var starring: String
-    var seekable: Boolean
-    var details: String
-    var totalStream: Long
-    var fav: String
-    var trackType: String
-    var isPaid: Boolean
-
-    var rootId: String
-    var rootType: String
-    var rootTitle: String
-    var rootImage: String
-
-    var isPrepare: Boolean
+    var rootContentId: String?
+    var rootContentType: String?
+    var rootImage: String?
     var isPlaying: Boolean
 }

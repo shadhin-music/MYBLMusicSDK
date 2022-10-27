@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
@@ -26,7 +27,7 @@ internal class ArtistHeaderAdapter(
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
 
-    private var dataSongDetail: MutableList<ArtistContentData> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
     var banner: ArtistBanner? = null
     private var parentView: View? = null
@@ -103,17 +104,18 @@ internal class ArtistHeaderAdapter(
             textArtist.text = homePatchDetail.Artist
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
-            if(homePatchDetail.Artist.equals("Elita",true)){
+            if (homePatchDetail.Artist.equals("Elita", true)) {
 
-                val elitaBio = "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
+                val elitaBio =
+                    "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
                 // val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-                Log.e("TAG","ARTIST: "+ elitaBio)
+                Log.e("TAG", "ARTIST: " + elitaBio)
                 textView?.setText(elitaBio)
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
 
                 cardBiography.visibility = VISIBLE
 //
-            }else{
+            } else {
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
                 val updatedbio = Html.fromHtml(bio).toString()
                 if (updatedbio.length > 25) {

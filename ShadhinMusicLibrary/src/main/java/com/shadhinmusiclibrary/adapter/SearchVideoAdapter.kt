@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
 
 
 internal class SearchVideoAdapter(
-    val searchVideodata: List<SearchData>,
+    val searchVideodata: MutableList<IMusicModel>,
     private val seaItemCallback: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchVideoAdapter.ViewHolder>() {
@@ -56,9 +57,9 @@ internal class SearchVideoAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchVideodata: SearchData) {
+        fun bindItems(searchVideodata: IMusicModel) {
             val imageView: ImageView = itemView.findViewById(R.id.video_thumb)
-            val url: String = searchVideodata.image
+            val url: String = searchVideodata.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.song_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
@@ -68,8 +69,8 @@ internal class SearchVideoAdapter(
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchVideodata.title
-            textArtist.text = searchVideodata.Artist
+            textTitle.text = searchVideodata.titleName
+            textArtist.text = searchVideodata.artistName
             // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {

@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -22,7 +23,7 @@ internal class MusicPlayAdapter(
     private val parentContext: Context
 ) :
     RecyclerView.Adapter<MusicPlayAdapter.MusicPlayVH>() {
-    private var listMusicData: MutableList<SongDetail>? = null
+    private var listMusicData: MutableList<IMusicModel>? = null
     private var finalWidth = 0
     private var mpHolder: MusicPlayVH? = null
 
@@ -39,7 +40,7 @@ internal class MusicPlayAdapter(
         )
     }
 
-    fun setMusicData(data: MutableList<SongDetail>) {
+    fun setMusicData(data: MutableList<IMusicModel>) {
         this.listMusicData = data
         notifyDataSetChanged()
     }
@@ -83,14 +84,14 @@ internal class MusicPlayAdapter(
             itemView.findViewById(R.id.cv_banner_parent)
         val ivCurrentPlayImage: ImageView =
             itemView.findViewById(R.id.iv_current_play_image)
-        lateinit var sMusicData: SongDetail
+        lateinit var sMusicData: IMusicModel
 
         override fun onBind(position: Int) {
             super.onBind(position)
             sMusicData = listMusicData!![position]
 
             Glide.with(itemView.context)
-                .load(sMusicData.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(sMusicData.imageUrl!!))
                 .transition(DrawableTransitionOptions().crossFade(500))
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
                 .placeholder(R.drawable.my_bl_sdk_default_song)

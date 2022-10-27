@@ -15,6 +15,7 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
@@ -38,25 +39,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         listSongDetail = mutableListOf()
         argHomePatchDetail!!.apply {
             listSongDetail.add(
-                SongDetail(
-                    ContentID,
-                    image,
-                    title,
-                    ContentType,
-                    PlayUrl,
-                    Artist,
-                    Duration,
-                    copyright = "",
-                    labelname = "",
-                    releaseDate = "",
-                    fav,
-                    ArtistId,
-                    albumId = "",
-                    userPlayListId = "",
-                    rootContentID = "",
-                    rootImage = "",
-                    rootContentType = ""
-                )
+                SongDetail()
             )
         }
         val config = ConcatAdapter.Config.Builder()
@@ -77,7 +60,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
             context = requireContext(),

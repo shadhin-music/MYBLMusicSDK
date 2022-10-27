@@ -19,15 +19,15 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
@@ -131,7 +131,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 response.data?.data?.EpisodeList?.get(0)
                     ?.let {
                         podcastTrackAdapter.setData(
-                            it.TrackList.toMutableList(),
+                            it.TrackList,
                             argHomePatchDetail!!,
                             playerViewModel.currentMusic?.mediaId
                         )
@@ -191,35 +191,39 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
         parentRecycler.scrollToPosition(0)
     }
 
-    override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
         val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
-            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
-                playItem(UtilHelper.getSongDetailToTrackList(lSongDetails), clickItemPosition)
+                playItem(lSongDetails, clickItemPosition)
             }
         }
     }
 
-    override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
+    override fun onClickItem(mTracks: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mTracks[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {
+            if ((mTracks[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
+                if ((mTracks[clickItemPosition].content_Id.toString() != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+                playItem(mTracks, clickItemPosition)
             }
         } else {
-            playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+            playItem(mTracks, clickItemPosition)
         }
     }
 
-    override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        mTracks: MutableList<IMusicModel>
+    ) {
 //        val mSongDet = podcastTrackAdapter.tracks
         val podcastHeaderVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
         if (mTracks.size > 0 && isAdded) {
@@ -228,8 +232,9 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 if (itMusic != null) {
                     if ((mTracks.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.rootContentID == itMusic.rootId &&
-                                    it.Id.toString() == itMusic.mediaId
+                                    it.rootContentId == itMusic.rootId &&
+                                    it.content_Id.toString() == itMusic.mediaId
+                            /*     it.Id.toString() == itMusic.mediaId*/
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->

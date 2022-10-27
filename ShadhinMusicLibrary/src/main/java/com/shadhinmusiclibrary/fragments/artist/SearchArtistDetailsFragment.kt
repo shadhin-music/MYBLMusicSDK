@@ -24,6 +24,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -235,32 +236,26 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
-    override fun onRootClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = searchartistTrackAdapter.artistSongList
         if (lSongDetails.size > clickItemPosition) {
             if (playerViewModel.currentMusic != null) {
-                if (lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+                if (lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId) {
                     playerViewModel.togglePlayPause()
                 }
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(lSongDetails),
+                    lSongDetails,
                     clickItemPosition
                 )
             }
         }
     }
 
-    override fun onClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
@@ -268,7 +263,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }
@@ -276,7 +271,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<ArtistContentData>
+        songDetails: MutableList<IMusicModel>
     ) {
         val mSongDet = searchartistTrackAdapter.artistSongList
         val albumVH = currentVH as SearchArtistHeaderAdapter.ArtistHeaderVH
@@ -286,7 +281,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 if (itMusic != null) {
                     if ((mSongDet.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.ContentID == itMusic.mediaId
+                                    it.content_Id == itMusic.mediaId
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
@@ -298,6 +293,6 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
     }
 }

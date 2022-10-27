@@ -20,6 +20,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -135,10 +136,10 @@ internal class AlbumDetailsFragment :
         }
     }
 
-    override fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = albumsTrackAdapter.dataSongDetail
         if (lSongDetails.size > clickItemPosition) {
-            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(lSongDetails, clickItemPosition)
@@ -146,10 +147,10 @@ internal class AlbumDetailsFragment :
         }
     }
 
-    override fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
@@ -164,7 +165,7 @@ internal class AlbumDetailsFragment :
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<SongDetail>
+        songDetails: MutableList<IMusicModel>
     ) {
 //        val mSongDet = albumsTrackAdapter.dataSongDetail
         val albumHeaderVH = currentVH as AlbumHeaderAdapter.HeaderViewHolder
@@ -174,8 +175,8 @@ internal class AlbumDetailsFragment :
                 if (itMusic != null) {
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.rootContentID == itMusic.rootId &&
-                                    it.ContentID == itMusic.mediaId
+                                    it.rootContentId == itMusic.rootId &&
+                                    it.content_Id == itMusic.mediaId
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
@@ -189,7 +190,7 @@ internal class AlbumDetailsFragment :
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -219,20 +220,20 @@ internal class AlbumDetailsFragment :
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         val data = HomePatchDetail(
-            AlbumId = mArtAlbumMod.AlbumId,
-            ArtistId = mArtAlbumMod.ArtistId,
-            ContentID = mArtAlbumMod.ContentID,
-            ContentType = mArtAlbumMod.ContentType,
-            PlayUrl = mArtAlbumMod.PlayUrl,
-            AlbumName = mArtAlbumMod.title,
+            AlbumId = mArtAlbumMod.album_Id ?: "",
+            ArtistId = mArtAlbumMod.album_Id ?: "",
+            ContentID = mArtAlbumMod.content_Id ?: "",
+            ContentType = mArtAlbumMod.content_Type ?: "",
+            PlayUrl = mArtAlbumMod.playingUrl ?: "",
+            AlbumName = mArtAlbumMod.titleName ?: "",
             AlbumImage = "",
-            fav = mArtAlbumMod.fav,
+            fav = mArtAlbumMod.fav ?: "",
             Banner = "",
-            Duration = mArtAlbumMod.duration,
+            Duration = mArtAlbumMod.total_duration ?: "",
             TrackType = "",
-            image = mArtAlbumMod.image,
+            image = mArtAlbumMod.imageUrl ?: "",
             ArtistImage = "",
-            Artist = mArtAlbumMod.artistname,
+            Artist = mArtAlbumMod.artistName ?: "",
             CreateDate = "",
             Follower = "",
             imageWeb = "",
@@ -246,11 +247,11 @@ internal class AlbumDetailsFragment :
             RootType = "",
             Seekable = false,
             TeaserUrl = "",
-            title = mArtAlbumMod.title,
+            title = mArtAlbumMod.titleName ?: "",
             Type = ""
         )
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
-        observeData(mArtAlbumMod.ContentID, mArtAlbumMod.ArtistId, "r")
+        observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
     }
 }
