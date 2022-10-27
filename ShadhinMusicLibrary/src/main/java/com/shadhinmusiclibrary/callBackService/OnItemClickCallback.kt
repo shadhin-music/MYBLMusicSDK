@@ -1,10 +1,11 @@
 package com.shadhinmusiclibrary.callBackService
 
 import androidx.recyclerview.widget.RecyclerView
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 
 internal interface OnItemClickCallback {
-    fun onRootClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int)
-    fun onClickItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int)
-    fun getCurrentVH(currentVH: RecyclerView.ViewHolder, songDetails: MutableList<SongDetail>)
+    fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
+    fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
+    fun getCurrentVH(currentVH: RecyclerView.ViewHolder, songDetails: MutableList<IMusicModel>)
 }

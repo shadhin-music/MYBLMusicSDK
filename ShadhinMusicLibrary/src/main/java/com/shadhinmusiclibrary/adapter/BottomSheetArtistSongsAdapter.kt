@@ -54,19 +54,19 @@ internal class BottomSheetArtistSongsAdapter:
         val context = itemView.getContext()
         fun bindItems(artistContent: ArtistContentData) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = artistContent.image
+            val url: String = artistContent.imageUrl!!
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView!!)
-            val textTitle:TextView = itemView.findViewById(R.id.tv_song_name)
-            val textArtist:TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration:TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text= artistContent.title
-            textArtist.text = artistContent.artistname
-            textDuration.text = artistContent.duration
+            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            textTitle.text = artistContent.titleName
+            textArtist.text = artistContent.artistName
+            textDuration.text = artistContent.total_duration
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager

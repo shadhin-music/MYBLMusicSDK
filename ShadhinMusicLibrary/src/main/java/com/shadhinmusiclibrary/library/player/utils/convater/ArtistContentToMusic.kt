@@ -5,15 +5,15 @@ import com.shadhinmusiclibrary.library.player.Constants.FILE_BASE_URL
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.utils.CharParser
 
-internal class ArtistContentToMusic(private val data: ArtistContentData):MusicConverter {
+internal class ArtistContentToMusic(private val data: ArtistContentData) : MusicConverter {
     override fun convert(): Music {
-       return Music(
-            mediaId = data.ContentID,
-            title = data.title,
+        return Music(
+            mediaId = data.content_Id,
+            title = data.titleName,
             displayDescription = null,
-            displayIconUrl = CharParser.getImageFromTypeUrl(data.image,"A"),
-            mediaUrl = "${FILE_BASE_URL}${data.PlayUrl}",
-            artistName = data.artistname,
+            displayIconUrl = CharParser.getImageFromTypeUrl(data.imageUrl, "A"),
+            mediaUrl = "${FILE_BASE_URL}${data.playingUrl}",
+            artistName = data.artistName,
             date = null,
             contentType = null,
             userPlayListId = null,

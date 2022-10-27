@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -23,7 +22,7 @@ internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
     var episode: List<Episode>? = null
-    private var listTrack: MutableList<Track> = mutableListOf()
+    private var listTrack: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
@@ -45,7 +44,11 @@ internal class PodcastHeaderAdapter(
         return 1
     }
 
-    fun setTrackData(episode: List<Episode>, data: MutableList<Track>, rootPatch: HomePatchDetail) {
+    fun setTrackData(
+        episode: List<Episode>,
+        data: MutableList<SongTrack>,
+        rootPatch: HomePatchDetail
+    ) {
         this.listTrack = mutableListOf()
         for (songItem in data) {
             listTrack.add(
@@ -58,11 +61,11 @@ internal class PodcastHeaderAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setHeader(episode: List<Episode>, trackList: MutableList<Track>) {
-        this.episode = episode
-        listTrack = trackList
-        notifyDataSetChanged()
-    }
+//    fun setHeader(episode: List<Episode>, trackList: MutableList<Track>) {
+//        this.episode = episode
+//        listTrack = trackList
+//        notifyDataSetChanged()
+//    }
 
     inner class PodcastHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context

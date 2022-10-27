@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.SearchData
 
 
 internal class SearchTracksAdapter(
-    val searchTrackdata: MutableList<SearchData>,
+    val searchTrackdata: MutableList<IMusicModel>,
     private val seaItemCallback: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchTracksAdapter.ViewHolder>() {
@@ -57,9 +58,9 @@ internal class SearchTracksAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchTrackdata: SearchData) {
+        fun bindItems(searchTrackdata: IMusicModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            val url: String = searchTrackdata.image
+            val url: String = searchTrackdata.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
@@ -69,8 +70,8 @@ internal class SearchTracksAdapter(
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.similarArtist)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchTrackdata.title
-            textArtist.text = searchTrackdata.Artist
+            textTitle.text = searchTrackdata.titleName
+            textArtist.text = searchTrackdata.artistName
             // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -19,7 +20,7 @@ internal class AlbumHeaderAdapter(
 ) :
     RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
 
-    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)

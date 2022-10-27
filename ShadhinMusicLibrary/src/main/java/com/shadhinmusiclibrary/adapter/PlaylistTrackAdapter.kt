@@ -11,15 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistTrackAdapter(
     private val itemClickCB: OnItemClickCallback
 ) : RecyclerView.Adapter<PlaylistTrackAdapter.PlaylistTrackVH>() {
-    var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistTrackVH {
@@ -77,50 +79,31 @@ internal class PlaylistTrackAdapter(
     }
 
     fun setPlayingSong(mediaId: String) {
-        val newList: List<SongDetail> = UtilHelper.albumSongDetailsNewList(mediaId, dataSongDetail)
-        val callback = PlaylistTrackDiffCB(dataSongDetail, newList)
+        val newList: List<IMusicModel> =
+            UtilHelper.getCurrentRunningSongToNewSongList(mediaId, dataSongDetail)
+        val callback = AnyTrackDiffCB(dataSongDetail, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
         dataSongDetail.clear()
         dataSongDetail.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private class PlaylistTrackDiffCB() : DiffUtil.Callback() {
-        private lateinit var oldSongDetails: List<SongDetail>
-        private lateinit var newSongDetails: List<SongDetail>
-
-        constructor(oldSongDetails: List<SongDetail>, newSongDetails: List<SongDetail>) : this() {
-            this.oldSongDetails = oldSongDetails
-            this.newSongDetails = newSongDetails
-        }
-
-        override fun getOldListSize(): Int = oldSongDetails.size
-
-        override fun getNewListSize(): Int = newSongDetails.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldSongDetails[oldItemPosition].ContentID == newSongDetails[newItemPosition].ContentID
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
-    }
-
     inner class PlaylistTrackVH(private val viewItem: View) : RecyclerView.ViewHolder(viewItem) {
         val mContext = itemView.getContext()
         var tvSongName: TextView? = null
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: IMusicModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(mSongDetail.imageUrl!!))
                 .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName!!.text = mSongDetail.title
+            tvSongName!!.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
 //                bsDialogItemCallback.onClickBottomItem(mSongDetail)

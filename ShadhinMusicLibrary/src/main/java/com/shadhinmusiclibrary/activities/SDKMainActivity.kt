@@ -31,6 +31,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
@@ -502,7 +503,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         })
     }
 
-    fun setMusicPlayerInitData(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+    fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         playerViewModel.unSubscribe()
         playerViewModel.subscribe(
             MusicPlayList(
@@ -556,7 +557,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun setupMainMusicPlayerAdapter(
-        mSongDetails: MutableList<SongDetail>,
+        mSongDetails: MutableList<IMusicModel>,
         clickItemPosition: Int,
     ) {
         mainMusicPlayerAdapter.setMusicData(mSongDetails)
@@ -586,10 +587,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 currentItemHolder: MusicPlayAdapter.MusicPlayVH,
                 adapterPosition: Int
             ) {
-                currentItemHolder.sMusicData.artist
+                currentItemHolder.sMusicData.album_Name
                 playerViewModel.skipToQueueItem(adapterPosition)
-                tvSongName.text = currentItemHolder.sMusicData.title
-                tvSingerName.text = currentItemHolder.sMusicData.artist
+                tvSongName.text = currentItemHolder.sMusicData.titleName
+                tvSingerName.text = currentItemHolder.sMusicData.artistName
                 setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
             }
 
@@ -603,8 +604,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         })
 
-        tvSongName.text = mSongDetails[clickItemPosition].title
-        tvSingerName.text = mSongDetails[clickItemPosition].artist
+        tvSongName.text = mSongDetails[clickItemPosition].titleName
+        tvSingerName.text = mSongDetails[clickItemPosition].artistName
 
         dsvCurrentPlaySongsThumb.addOnItemChangedListener { viewHolder, _ ->
             if (viewHolder != null) {
@@ -729,10 +730,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
+    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: IMusicModel) {
         Log.e("Check", "Fired 0")
         Glide.with(this)
-            .load(mSongDetails.getImageUrl300Size())
+            .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
@@ -741,9 +742,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             .into(ivSongThumbMini)
         setMainPlayerBackgroundColor(getBitmapFromIV(ivSongThumbMini))
 
-        tvSongNameMini.text = mSongDetails.title
-        tvSingerNameMini.text = mSongDetails.artist
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
+        tvSongNameMini.text = mSongDetails.titleName
+        tvSingerNameMini.text = mSongDetails.artistName
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
         playerViewModel.startObservePlayerProgress(this)
@@ -821,7 +822,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
     ) {
@@ -843,7 +844,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = mSongDetails.artist
+        artistname?.text = mSongDetails.artistName
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
@@ -856,11 +857,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 mSongDetails,
                 argHomePatchItem,
                 argHomePatchDetail
-
             )
-
-            Log.d("TAG", "CLICKArtist: " + argHomePatchItem)
-            Log.d("TAG", "CLICKArtist: " + argHomePatchDetail)
             bottomSheetDialog.dismiss()
         }
     }
@@ -868,7 +865,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     fun showBottomSheetDialogForPlaylist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
     ) {
@@ -883,13 +880,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = mSongDetails.image
+        val url = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = mSongDetails.title
+        title?.text = mSongDetails.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = mSongDetails.artist
+        artistname?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context).load(UtilHelper.getImageUrlSize300(url!!)).into(image)
         }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
@@ -900,20 +897,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 mSongDetails,
                 argHomePatchItem,
                 argHomePatchDetail
-
             )
-
             bottomSheetDialog.dismiss()
         }
-        Log.d("TAG", "CLICKArtist: " + argHomePatchItem)
-        Log.d("TAG", "CLICKArtist: " + argHomePatchDetail)
-        Log.d("TAG", "CLICKArtist: " + mSongDetails)
     }
 
     fun showBottomSheetDialogGoTOALBUM(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
     ) {
@@ -928,13 +920,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = mSongDetails.artist
+        artistname?.text = mSongDetails.artistName
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = mSongDetails.image
+        val url = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = mSongDetails?.title
+        title?.text = mSongDetails?.titleName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context).load(UtilHelper.getImageUrlSize300(url!!)).into(image)
         }
         val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
@@ -959,7 +951,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
 
@@ -983,7 +975,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun gotoArtistFromPlaylist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
 
@@ -998,8 +990,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     AppConstantUtils.PatchDetail,
                     HomePatchDetail(
                         AlbumId = "",
-                        ArtistId = mSongDetails.ArtistId ?: "",
-                        ContentID = mSongDetails.ContentID,
+                        ArtistId = mSongDetails.artist_Id ?: "",
+                        ContentID = mSongDetails.content_Id ?: "",
                         ContentType = "",
                         PlayUrl = "",
                         AlbumName = "",
@@ -1008,9 +1000,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         Banner = "",
                         Duration = "",
                         TrackType = "",
-                        image = mSongDetails.image,
+                        image = mSongDetails.imageUrl ?: "",
                         ArtistImage = "",
-                        Artist = mSongDetails.artist,
+                        Artist = mSongDetails.artistName ?: "",
                         CreateDate = "",
                         Follower = "",
                         imageWeb = "",
@@ -1034,7 +1026,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun gotoAlbum(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
         argHomePatchDetail: HomePatchDetail?,
 

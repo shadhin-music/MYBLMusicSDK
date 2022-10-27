@@ -56,7 +56,7 @@ internal class SearchShowAdapter(
         val context = itemView.getContext()
         fun bindItems(searchshowdata: SearchData) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            val url: String = searchshowdata.image
+            val url: String = searchshowdata.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
@@ -66,8 +66,8 @@ internal class SearchShowAdapter(
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.similarArtist)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchshowdata.title
-            textArtist.text = searchshowdata.Artist
+            textTitle.text = searchshowdata.titleName
+            textArtist.text = searchshowdata.artistName
             // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {

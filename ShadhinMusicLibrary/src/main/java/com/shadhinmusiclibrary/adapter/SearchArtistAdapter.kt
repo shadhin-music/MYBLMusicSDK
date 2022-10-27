@@ -56,15 +56,15 @@ internal class SearchArtistAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         fun bindItems(artistDetails: SearchData) {
-            val imageView:CircleImageView = itemView.findViewById(R.id.artist_img)
-            val url: String = artistDetails.image
+            val imageView: CircleImageView = itemView.findViewById(R.id.artist_img)
+            val url: String = artistDetails.imageUrl!!
             Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
 
-            textArtist.text = artistDetails.Artist
+            textArtist.text = artistDetails.artistName
 
             itemView.setOnClickListener {
                 searchCallBack.onClickSearchItem(artistDetails)

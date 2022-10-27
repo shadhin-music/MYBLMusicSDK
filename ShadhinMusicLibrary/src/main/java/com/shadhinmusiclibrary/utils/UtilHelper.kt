@@ -3,11 +3,10 @@ package com.shadhinmusiclibrary.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 import com.shadhinmusiclibrary.library.player.Constants
@@ -39,55 +38,55 @@ internal object UtilHelper {
         return imageUrl.replace("<\$size\$>", "300")
     }
 
-    fun getMusicToSongDetail(mSongDet: SongDetail): Music {
-        mSongDet.apply {
-            return Music(
-                mediaId = ContentID,
-                title = title,
-                displayDescription = "",
-                displayIconUrl = getImageUrl300Size(),
-                mediaUrl = Constants.FILE_BASE_URL + PlayUrl,
-                artistName = artist,
-                date = releaseDate,
-                contentType = ContentType,
-                userPlayListId = userPlayListId,
-                episodeId = "",
-                starring = "",
-                seekable = false,
-                details = "",
-                totalStream = 0L,
-                rootId = rootContentID,
-                rootImage = rootImage,
-                rootType = rootContentType,
-                rootTitle = title
-            )
-        }
-    }
+    /* fun getMusicToSongDetail(mSongDet: SongDetail): Music {
+         mSongDet.apply {
+             return Music(
+                 mediaId = ContentID,
+                 title = title,
+                 displayDescription = "",
+                 displayIconUrl = getImageUrl300Size(),
+                 mediaUrl = Constants.FILE_BASE_URL + PlayUrl,
+                 artistName = artist,
+                 date = releaseDate,
+                 contentType = ContentType,
+                 userPlayListId = userPlayListId,
+                 episodeId = "",
+                 starring = "",
+                 seekable = false,
+                 details = "",
+                 totalStream = 0L,
+                 rootId = rootContentID,
+                 rootImage = rootImage,
+                 rootType = rootContentType,
+                 rootTitle = title
+             )
+         }
+     }*/
 
-    fun getMusicListToSongDetailList(mSongDetails: MutableList<SongDetail>): MutableList<Music> {
+    fun getMusicListToSongDetailList(mSongDetails: MutableList<IMusicModel>): MutableList<Music> {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
             songItem.apply {
                 musicList.add(
                     Music(
-                        mediaId = ContentID,
-                        title = title,
+                        mediaId = content_Id,
+                        title = titleName,
                         displayDescription = "",
-                        displayIconUrl = getImageUrl300Size(),
-                        mediaUrl = Constants.FILE_BASE_URL + PlayUrl,
-                        artistName = artist,
-                        date = releaseDate,
-                        contentType = ContentType,
-                        userPlayListId = userPlayListId,
+                        displayIconUrl = getImageUrlSize300(imageUrl!!),
+                        mediaUrl = Constants.FILE_BASE_URL + playingUrl,
+                        artistName = artistName,
+                        date = "",
+                        contentType = content_Type,
+                        userPlayListId = "",
                         episodeId = "",
                         starring = "",
                         seekable = false,
                         details = "",
                         totalStream = 0L,
-                        rootId = rootContentID,
+                        rootId = rootContentId,
                         rootImage = rootImage,
                         rootType = rootContentType,
-                        rootTitle = title
+                        rootTitle = titleName
                     )
                 )
             }
@@ -96,27 +95,27 @@ internal object UtilHelper {
         return musicList
     }
 
-    fun getSongDetailToTrackList(trackList: MutableList<Track>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
-        for (trackItem in trackList) {
-            trackItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = Id.toString(),
-                        image = ImageUrl,
-                        title = Name,
-                        ContentType = ContentType,
-                        PlayUrl = PlayUrl,
-                        artist = Starring,
-                        duration = Duration,
-                        copyright = "",
-                        labelname = Name,
-                        releaseDate = CeateDate,
-                        fav = fav,
-                        ArtistId = "",
-                        albumId = "",
-                        userPlayListId = "",
-                        /*rootType = ContentType,*/
+    /* fun getSongDetailToTrackList(trackList: MutableList<Track>): MutableList<SongDetail> {
+         val songDetailList = mutableListOf<SongDetail>()
+         for (trackItem in trackList) {
+             trackItem.apply {
+                 songDetailList.add(
+                     SongDetail(
+                         ContentID = Id.toString(),
+                         image = ImageUrl,
+                         title = Name,
+                         ContentType = ContentType,
+                         PlayUrl = PlayUrl,
+                         artist = Starring,
+                         duration = Duration,
+                         copyright = "",
+                         labelname = Name,
+                         releaseDate = CeateDate,
+                         fav = fav,
+                         ArtistId = "",
+                         albumId = "",
+                         userPlayListId = "",
+                         *//*rootType = ContentType,*//*
 
                         rootContentID = rootContentID,
                         rootContentType = rootContentType,
@@ -126,29 +125,29 @@ internal object UtilHelper {
             }
         }
         return songDetailList
-    }
+    }*/
 
-    fun getSongDetailToTopTrendingDataList(topTrandList: List<TopTrendingdata>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
-        for (trackItem in topTrandList) {
-            trackItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = ContentID,
-                        image = image,
-                        title = title,
-                        ContentType = ContentType,
-                        PlayUrl = PlayUrl,
-                        artist = artistname,
-                        duration = duration,
-                        copyright = "",
-                        labelname = labelname,
-                        releaseDate = "",
-                        fav = "",
-                        ArtistId = ArtistId,
-                        albumId = AlbumId,
-                        userPlayListId = "",
-                        /*rootType = ContentType,*/
+    /* fun getSongDetailToTopTrendingDataList(topTrandList: List<TopTrendingData>): MutableList<SongDetail> {
+         val songDetailList = mutableListOf<SongDetail>()
+         for (trackItem in topTrandList) {
+             trackItem.apply {
+                 songDetailList.add(
+                     SongDetail(
+                         ContentID = ContentID,
+                         image = image,
+                         title = title,
+                         ContentType = ContentType,
+                         PlayUrl = PlayUrl,
+                         artist = artistname,
+                         duration = duration,
+                         copyright = "",
+                         labelname = labelname,
+                         releaseDate = "",
+                         fav = "",
+                         ArtistId = ArtistId,
+                         albumId = AlbumId,
+                         userPlayListId = "",
+                         *//*rootType = ContentType,*//*
 
                         rootContentID = ContentID,
                         rootContentType = ContentType,
@@ -158,33 +157,33 @@ internal object UtilHelper {
             }
         }
         return songDetailList
-    }
+    }*/
 
-    fun getSongDetailToSearchDataList(topTrandList: List<SearchData>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
-        for (trackItem in topTrandList) {
-            trackItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = ContentID,
-                        image = image,
-                        title = title,
-                        ContentType = ContentType,
-                        PlayUrl = PlayUrl ?: "",
-                        artist = Artist,
-                        duration = "120",
-                        copyright = "",
-                        labelname = "",
-                        releaseDate = "",
-                        fav = "",
-                        ArtistId = ArtistId,
-                        albumId = AlbumId,
-                        userPlayListId = "",
-                        /*rootType = ContentType,*/
+    /* fun getSongDetailToSearchDataList(topTrandList: List<SearchData>): MutableList<SongDetail> {
+         val songDetailList = mutableListOf<SongDetail>()
+         for (trackItem in topTrandList) {
+             trackItem.apply {
+                 songDetailList.add(
+                     SongDetail(
+                         ContentID = ContentID,
+                         image = image,
+                         title = title,
+                         ContentType = ContentType,
+                         PlayUrl = PlayUrl ?: "",
+                         artist = Artist,
+                         duration = "120",
+                         copyright = "",
+                         labelname = "",
+                         releaseDate = "",
+                         fav = "",
+                         ArtistId = ArtistId,
+                         albumId = AlbumId,
+                         userPlayListId = "",
+                         *//*rootType = ContentType,*//*
 
-                        /*  rootContentID = trackItem.rootContentID,
+                        *//*  rootContentID = trackItem.rootContentID,
                           rootContentType = trackItem.rootContentType,
-                          rootImage = trackItem.rootImage*/
+                          rootImage = trackItem.rootImage*//*
                         rootContentID = ContentID,
                         rootContentType = ContentType,
                         rootImage = image
@@ -193,64 +192,41 @@ internal object UtilHelper {
             }
         }
         return songDetailList
-    }
+    }*/
 
-    fun getSongDetailToFeaturedSongDetailList(trackList: MutableList<FeaturedSongDetail>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
-        for (trackItem in trackList) {
-            trackItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = contentID,
-                        image = image,
-                        title = title,
-                        ContentType = contentType,
-                        PlayUrl = playUrl,
-                        artist = artistname,
-                        duration = duration,
-                        copyright = copyright,
-                        labelname = labelname,
-                        releaseDate = releaseDate,
-                        fav = "",
-                        ArtistId = artistId,
-                        albumId = albumId,
-                        userPlayListId = "",
-                        /*rootType = contentType,*/
+//    fun getSongDetailToFeaturedSongDetailList(trackList: MutableList<IMusicModel>): MutableList<IMusicModel> {
+//        val songDetailList = mutableListOf<IMusicModel>()
+//        for (trackItem in trackList) {
+//            trackItem.apply {
+//                songDetailList.add(
+//                    trackItem
+//                )
+//            }
+//        }
+//        return songDetailList
+//    }
 
-//                        rootContentID = rootContentID,
-//                        rootContentType = rootContentType,
-//                        rootImage = rootImage
-                        rootContentID = contentID ?: "00007",
-                        rootContentType = contentType ?: "R",
-                        rootImage = image ?: ""
-                    )
-                )
-            }
-        }
-        return songDetailList
-    }
-
-    fun getSongDetailToArtistContentDataList(musicList: MutableList<ArtistContentData>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
-        for (musicItem in musicList) {
-            musicItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = ContentID,
-                        image = image,
-                        title = title,
-                        ContentType = ContentType,
-                        PlayUrl = PlayUrl,
-                        artist = artistname,
-                        duration = duration,
-                        copyright = copyright,
-                        labelname = labelname,
-                        releaseDate = releaseDate,
-                        fav = fav,
-                        ArtistId = "",
-                        albumId = "",
-                        userPlayListId = "",
-                        /*rootType = rootContentType,*/
+    /* fun getSongDetailToArtistContentDataList(musicList: MutableList<ArtistContentData>): MutableList<SongDetail> {
+         val songDetailList = mutableListOf<SongDetail>()
+         for (musicItem in musicList) {
+             musicItem.apply {
+                 songDetailList.add(
+                     SongDetail(
+                         ContentID = ContentID,
+                         image = image,
+                         title = title,
+                         ContentType = ContentType,
+                         PlayUrl = PlayUrl,
+                         artist = artistname,
+                         duration = duration,
+                         copyright = copyright,
+                         labelname = labelname,
+                         releaseDate = releaseDate,
+                         fav = fav,
+                         ArtistId = "",
+                         albumId = "",
+                         userPlayListId = "",
+                         *//*rootType = rootContentType,*//*
 
                         rootContentID = rootContentID,
                         rootContentType = rootContentType,
@@ -261,35 +237,32 @@ internal object UtilHelper {
         }
 
         return songDetailList
-    }
+    }*/
 
-    fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
+    fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
+        val songDetailList = mutableListOf<IMusicModel>()
         for (musicItem in musicList) {
             musicItem.apply {
                 songDetailList.add(
-                    SongDetail(
-                        ContentID = mediaId ?: "",
-                        image = displayIconUrl ?: "",
-                        title = title ?: "",
-                        ContentType = contentType ?: "",
-                        PlayUrl = mediaUrl ?: "",
-                        artist = artistName ?: "",
-                        duration = date ?: "",
-                        copyright = "",
-                        labelname = "",
-                        releaseDate = "",
-                        fav = "",
-
-                        ArtistId = "",
-                        albumId = "",
-                        userPlayListId = userPlayListId ?: "",
-                        //    rootType = rootType?:"",
-
-                        rootContentID = rootId ?: "",
-                        rootContentType = rootType ?: "",
+                    SongDetail().apply {
+                        content_Id = mediaId ?: ""
+                        imageUrl = displayIconUrl ?: ""
+                        titleName = title ?: ""
+                        content_Type = contentType ?: ""
+                        playingUrl = mediaUrl ?: ""
+                        artistName = artistName ?: ""
+                        total_duration = date ?: ""
+                        copyright = ""
+                        labelname = ""
+                        releaseDate = ""
+                        fav = ""
+                        artist_Id = ""
+                        album_Id = ""
+                        userPlayListId = userPlayListId ?: ""
+                        rootContentId = rootId ?: ""
+                        rootContentType = rootType ?: ""
                         rootImage = rootImage ?: ""
-                    )
+                    }
                 )
             }
         }
@@ -299,28 +272,26 @@ internal object UtilHelper {
 
     fun getSongDetailToMusic(mMusic: Music): SongDetail {
         mMusic.apply {
-            return SongDetail(
-                ContentID = mediaId ?: "",
-                image = displayIconUrl ?: "",
-                title = title ?: "",
-                ContentType = contentType ?: "",
-                PlayUrl = mediaUrl ?: "",
-                artist = artistName ?: "",
-                duration = date ?: "",
-                copyright = "",
-                labelname = "",
-                releaseDate = "",
-                fav = "",
-
-                ArtistId = "",
-                albumId = "",
-                userPlayListId = userPlayListId ?: "",
-                //rootType = rootType?:"",
-
-                rootContentID = rootId ?: "",
-                rootContentType = rootType ?: "",
+//            val songDetail = SongDetail()
+            return SongDetail().apply {
+                content_Id = mediaId ?: ""
+                imageUrl = displayIconUrl ?: ""
+                titleName = title ?: ""
+                content_Type = contentType ?: ""
+                playingUrl = mediaUrl ?: ""
+                artistName = artistName ?: ""
+                total_duration = date ?: ""
+                copyright = ""
+                labelname = ""
+                releaseDate = ""
+                fav = ""
+                artist_Id = ""
+                album_Id = ""
+                userPlayListId = userPlayListId ?: ""
+                rootContentId = rootId ?: ""
+                rootContentType = rootType ?: ""
                 rootImage = rootImage ?: ""
-            )
+            }
         }
     }
 
@@ -329,57 +300,40 @@ internal object UtilHelper {
         rootPatch: HomePatchDetail
     ): SongDetail {
         mSongDet.apply {
-            return SongDetail(
-                ContentID = ContentID,
-                image = image,
-                title = title,
-                ContentType = ContentType,
-                PlayUrl = PlayUrl,
-                artist = artist,
-                duration = duration,
-                copyright = copyright,
-                labelname = labelname,
-                releaseDate = releaseDate,
-                fav = fav,
-                ArtistId = ArtistId,
-                albumId = albumId,
-                userPlayListId = userPlayListId,
-                /*rootType = rootPatch.ContentType,*/
-
-                rootContentID = rootPatch.ContentID,
-                rootContentType = rootPatch.ContentType,
-                rootImage = rootPatch.image
-            )
+            rootContentId = rootPatch.ContentID
+            rootContentType = rootPatch.ContentType
+            rootImage = rootPatch.image
         }
+        return mSongDet
     }
 
     fun getFeaturedSongDetailAndRootData(
         mSongDet: FeaturedSongDetail/*,
         rootPatch: HomePatchDetail*/
-    ): FeaturedSongDetail {
-        mSongDet.apply {
-            return FeaturedSongDetail(
-                contentID = contentID,
-                image = image,
-                title = title,
-                contentType = contentType,
-                playUrl = playUrl,
-                artistname = artistname,
-                duration = duration,
-                copyright = copyright,
-                labelname = labelname,
-                releaseDate = releaseDate,
-                fav = "",
-                artistId = artistId,
-                albumId = albumId,
-                /*rootType = rootPatch.ContentType,*/
-
-                rootContentID = "",
-                rootContentType = "",
-                rootImage = "",
-                isPlaying = false
-            )
-        }
+    ): IMusicModel {
+//        val aaa = IMu
+//        mSongDet.apply {
+//            return IMusicModel().apply {
+//                content_Id = content_Id
+//                imageUrl = imageUrl
+//                titleName = titleName
+//                content_Type = content_Type
+//                playingUrl = playingUrl
+//                artistName = artistName
+//                total_duration = total_duration
+//                copyright = copyright
+//                labelname = labelname
+//                releaseDate = releaseDate
+//                fav = ""
+//                artist_Id = artistId
+//                album_Id = albumId
+//                rootContentId = ""
+//                rootContentType = ""
+//                rootImage = ""
+//                isPlaying = false
+//            }
+//        }
+        return mSongDet
     }
 
     fun getArtistContentDataToRootData(
@@ -387,56 +341,27 @@ internal object UtilHelper {
         rootPatch: HomePatchDetail
     ): ArtistContentData {
         mSongDet.apply {
-            return ArtistContentData(
-                ContentID = ContentID,
-                image = image,
-                title = title,
-                ContentType = ContentType,
-                TotalPlay = 0,
-                PlayUrl = PlayUrl,
-                artistname = artistname,
-                duration = duration,
-                copyright = copyright,
-                labelname = labelname,
-                releaseDate = releaseDate,
-                fav = fav,
-                ArtistId = ArtistId,
-                AlbumId = AlbumId,
-                rootContentID = rootPatch.ContentID,
-                rootContentType = rootPatch.ContentType,
+            mSongDet.apply {
+                artist_Id = album_Id
+
+                rootContentId = rootPatch.ContentID
+                rootContentType = rootPatch.ContentType
                 rootImage = rootPatch.image
-            )
+            }
+            return mSongDet
         }
     }
 
     fun getTrackToRootData(
-        mTrack: Track,
+        mSongTrack: SongTrack,
         rootPatch: HomePatchDetail
-    ): Track {
-        mTrack.apply {
-            return Track(
-                ShowId = ShowId,
-                ImageUrl = ImageUrl,
-                Name = Name,
-                ContentType = ContentType,
-                PlayUrl = PlayUrl,
-                Starring = Starring,
-                Duration = Duration,
-                fav = fav,
-                IsPaid = IsPaid,
-                TrackType = TrackType,
-                CeateDate = CeateDate,
-                Details = Details,
-                EpisodeId = EpisodeId,
-                Id = Id,
-                Seekable = Seekable,
-                Sort = Sort,
-                totalStream = totalStream,
-                rootContentID = rootPatch.ContentID,
-                rootContentType = rootPatch.ContentType,
-                rootImage = rootPatch.image,
-            )
+    ): SongTrack {
+        mSongTrack.apply {
+            rootContentId = rootPatch.ContentID
+            rootContentType = rootPatch.ContentType
+            rootImage = rootPatch.image
         }
+        return mSongTrack
     }
 
     fun getHomePatchDetailToData(data: Data): HomePatchDetail {
@@ -451,10 +376,10 @@ internal object UtilHelper {
             data.Id,
             "A",
             "",
-            0,
+            "0",
             data.Follower,
             false,
-            false,
+            "",
             0,
             "",
             "",
@@ -473,41 +398,41 @@ internal object UtilHelper {
         )
     }
 
-    fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
-        return HomePatchDetail(
-            "0",
-            "",
-            "",
-            data.Name,
-            data.EpisodeId,
-            "",
-            "",
-            "",
-            "",
-            "",
-            0,
-            "",
-            false,
-            false,
-            0,
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            false,
-            "",
-            "",
-            "",
-            "",
-            data.ImageUrl,
-            "",
-            ""
-        )
-    }
+    /* fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
+         return HomePatchDetail(
+             "0",
+             "",
+             "",
+             data.Name,
+             data.EpisodeId,
+             "",
+             "",
+             "",
+             "",
+             "",
+             0,
+             "",
+             false,
+             false,
+             0,
+             "",
+             "",
+             "",
+             "",
+             "",
+             "",
+             false,
+             "",
+             "",
+             "",
+             "",
+             data.ImageUrl,
+             "",
+             ""
+         )
+     }*/
 
-    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
+/*    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
         val mPatchDetail = mutableListOf<HomePatchDetail>()
         for (patchItem in episode) {
             mPatchDetail.add(
@@ -522,11 +447,11 @@ internal object UtilHelper {
                     "",
                     "",
                     "",
+                    "0",
+                    "",
+                    false,
+                    "",
                     0,
-                    "",
-                    false,
-                    false,
-                    "",
                     "",
                     "",
                     "",
@@ -554,7 +479,7 @@ internal object UtilHelper {
             0,
             0
         )
-    }
+    }*/
 
     fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
         val mPatchDetail = mutableListOf<HomePatchDetail>()
@@ -571,10 +496,10 @@ internal object UtilHelper {
                     "",
                     "",
                     "",
-                    0,
+                    "0",
                     patchItem.Follower,
                     false,
-                    false,
+                    "",
                     0,
                     "",
                     "",
@@ -594,33 +519,33 @@ internal object UtilHelper {
             )
         }
         return HomePatchItem(
+            "",
+            "",
+            mPatchDetail,
+            "",
+            "",
             0,
-            0,
-            "",
-            "",
-            "",
-            "",
-            mPatchDetail
+            0
         )
     }
 
     fun getHomePatchDetailToAlbumModel(albumModel: ArtistAlbumModelData): HomePatchDetail {
         albumModel.apply {
             return HomePatchDetail(
-                AlbumId = AlbumId,
-                ArtistId = ArtistId,
-                ContentID = ContentID,
-                ContentType = ContentType,
-                PlayUrl = PlayUrl,
-                AlbumName = title,
+                AlbumId = album_Id ?: "",
+                ArtistId = album_Id ?: "",
+                ContentID = content_Id ?: "",
+                ContentType = content_Type ?: "",
+                PlayUrl = playingUrl ?: "",
+                AlbumName = titleName ?: "",
                 AlbumImage = "",
-                fav = fav,
+                fav = fav ?: "",
                 Banner = "",
-                Duration = duration,
+                Duration = total_duration ?: "",
                 TrackType = "",
-                image = image,
+                image = imageUrl ?: "",
                 ArtistImage = "",
-                Artist = artistname,
+                Artist = artistName ?: "",
                 CreateDate = "",
                 Follower = "",
                 imageWeb = "",
@@ -640,12 +565,12 @@ internal object UtilHelper {
         }
     }
 
-    fun getHomePatchDetailToSongDetail(songDetail: SongDetail): HomePatchDetail {
+    fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetail {
         songDetail.apply {
             return HomePatchDetail(
-                AlbumId = albumId ?: ContentID,
-                ArtistId = ArtistId ?: "",
-                ContentID = ContentID,
+                AlbumId = album_Id ?: content_Id!!,
+                ArtistId = artist_Id ?: "",
+                ContentID = content_Id ?: "",
                 ContentType = "",
                 PlayUrl = "",
                 AlbumName = "",
@@ -654,9 +579,9 @@ internal object UtilHelper {
                 Banner = "",
                 Duration = "",
                 TrackType = "",
-                image = image,
+                image = imageUrl ?: "",
                 ArtistImage = "",
-                Artist = artist,
+                Artist = artistName ?: "",
                 CreateDate = "",
                 Follower = "",
                 imageWeb = "",
@@ -670,7 +595,7 @@ internal object UtilHelper {
                 RootType = "",
                 Seekable = false,
                 TeaserUrl = "",
-                title = title,
+                title = titleName ?: "",
                 Type = ""
             )
         }
@@ -712,104 +637,128 @@ internal object UtilHelper {
         }
     }
 
-    fun getVideoToSearchData(data: SearchData): Video {
-        data.apply {
-            return Video(
-                albumId = AlbumId,
-                albumImage = AlbumImage,
-                albumName = AlbumName,
-                artist = Artist,
-                artistId = AlbumId,
-                artistImage = ArtistImage,
-                banner = Banner,
-                contentID = ContentID,
-                contentType = ContentType,
-                createDate = CreateDate,
-                duration = Duration,
-                follower = Follower,
-                isPaid = IsPaid,
-                newBanner = NewBanner,
-                playCount = PlayCount,
-                playListId = PlayListId,
-                playListImage = PlayListImage,
-                playListName = PlayListName,
-                playUrl = PlayUrl,
-                rootId = RootId,
-                rootType = Type,
-                seekable = Seekable,
-                teaserUrl = TeaserUrl,
-                trackType = TrackType,
-                type = Type,
-                fav = fav,
-                image = image,
-                imageWeb = imageWeb,
-                title = title
-            )
-        }
-    }
+    /* fun getVideoToSearchData(data: SearchData): Video {
+         data.apply {
+             return Video(
+                 albumId = album_Id,
+                 albumImage = albumImage,
+                 albumName = album_Name,
+                 artist = artistName,
+                 artistId = album_Id,
+                 artistImage = artistImage,
+                 banner = bannerImage,
+                 contentID = content_Id,
+                 contentType = content_Type,
+                 createDate = createDate,
+                 duration = total_duration,
+                 follower = follower,
+                 isPaid = isPaid,
+                 newBanner = newBanner,
+                 playCount = playCount,
+                 playListId = playListId,
+                 playListImage = playListImage,
+                 playListName = playListName,
+                 playUrl = playingUrl,
+                 rootId = rootContentId,
+                 rootType = rootContentType,
+                 seekable = seekable,
+                 teaserUrl = teaserUrl,
+                 trackType = trackType,
+                 type = rootContentType,
+                 fav = fav,
+                 image = imageUrl,
+                 imageWeb = imageWeb,
+                 title = titleName
+             )
+         }
+     }*/
 
-    fun albumSongDetailsNewList(mediaId: String?, aaa: List<SongDetail>): List<SongDetail> {
-        val newList: MutableList<SongDetail> = ArrayList()
-        aaa.forEach {
-            if (it.ContentID == mediaId) {
-                val newItem = it.copy(isPlaying = true)
-                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-                newList.add(newItem)
-            } else {
-                newList.add(it.copy(isPlaying = false))
-            }
-        }
-        return newList
-    }
+//    fun albumSongDetailsNewList(mediaId: String?, aaa: List<IMusicModel>): List<IMusicModel> {
+//        val newList: MutableList<IMusicModel> = ArrayList()
+//        aaa.forEach {
+//            if (it.content_Id == mediaId) {
+//                it.isPlaying = true
+//                val newItem = it
+//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+//                newList.add(newItem)
+//            } else {
+//                it.isPlaying = false
+//                newList.add(it)
+//            }
+//        }
+//        return newList
+//    }
 
-    fun artistArtistContentDataNewList(
+    fun getCurrentRunningSongToNewSongList(
         mediaId: String?,
-        aaa: List<ArtistContentData>
-    ): List<ArtistContentData> {
-        val newList: MutableList<ArtistContentData> = ArrayList()
+        aaa: List<IMusicModel>
+    ): List<IMusicModel> {
+        val newList: MutableList<IMusicModel> = ArrayList()
         aaa.forEach {
-            if (it.ContentID == mediaId) {
-                val newItem = it.copy(isPlaying = true)
+            if (it.content_Id == mediaId) {
+                it.isPlaying = true
                 //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-                newList.add(newItem)
+                newList.add(it)
             } else {
-                newList.add(it.copy(isPlaying = false))
+                it.isPlaying = false
+                newList.add(it)
             }
         }
         return newList
     }
 
-    fun podcastTrackNewList(
-        mediaId: String?,
-        aaa: List<Track>
-    ): List<Track> {
-        val newList: MutableList<Track> = ArrayList()
-        aaa.forEach {
-            if (it.Id.toString() == mediaId) {
-                val newItem = it.copy(isPlaying = true)
-                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-                newList.add(newItem)
-            } else {
-                newList.add(it.copy(isPlaying = false))
-            }
-        }
-        return newList
-    }
-
-    fun featuredSongDetailNewList(
-        mediaId: String?,
-        aaa: List<FeaturedSongDetail>
-    ): List<FeaturedSongDetail> {
-        val newList: MutableList<FeaturedSongDetail> = ArrayList()
-        aaa.forEach {
-            if (it.contentID == mediaId) {
-                val newItem = it.copy(isPlaying = true)
-                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-                newList.add(newItem)
-            } else {
-                newList.add(it.copy(isPlaying = false))
-            }
-        }
-        return newList
-    }
+//    fun artistArtistContentDataNewList(
+//        mediaId: String?,
+//        aaa: List<IMusicModel>
+//    ): List<IMusicModel> {
+//        val newList: MutableList<IMusicModel> = ArrayList()
+//        aaa.forEach {
+//            if (it.content_Id == mediaId) {
+//                it.isPlaying = true
+//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+//                newList.add(it)
+//            } else {
+//                it.isPlaying = false
+//                newList.add(it)
+//            }
+//        }
+//        return newList
+//    }
+//
+//    fun podcastTrackNewList(
+//        mediaId: String?,
+//        aaa: List<IMusicModel>
+//    ): List<IMusicModel> {
+//        val newList: MutableList<IMusicModel> = ArrayList()
+//        aaa.forEach {
+////            if (it.Id.toString() == mediaId) {
+//            if (it.content_Id == mediaId) {
+//                it.isPlaying = true
+//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+//                newList.add(it)
+//            } else {
+//                it.isPlaying = false
+//                newList.add(it)
+//            }
+//        }
+//        return newList
+//    }
+//
+//    fun featuredSongDetailNewList(
+//        mediaId: String?,
+//        aaa: List<IMusicModel>
+//    ): List<IMusicModel> {
+//        val newList: MutableList<IMusicModel> = ArrayList()
+//        aaa.forEach {
+//            if (it.content_Id == mediaId) {
+//                it.isPlaying = true
+//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
+//                newList.add(it)
+//            } else {
+//                it.isPlaying = false
+//                newList.add(it)
+//            }
+//        }
+//        return newList
+//    }
 }

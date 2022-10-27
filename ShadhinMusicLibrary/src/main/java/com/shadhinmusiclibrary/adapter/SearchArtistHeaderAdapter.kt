@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
 import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
@@ -23,7 +24,7 @@ internal class SearchArtistHeaderAdapter(
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<SearchArtistHeaderAdapter.ArtistHeaderVH>() {
 
-    private var dataSongDetail: MutableList<ArtistContentData> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
     var banner: ArtistBanner? = null
     private var parentView: View? = null

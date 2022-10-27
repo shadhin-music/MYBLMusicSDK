@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.search
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.ContentResolver
 import android.content.Context
@@ -33,11 +34,12 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
+import com.shadhinmusiclibrary.data.model.search.TopTrendingData
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -273,7 +275,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     response.data.data.let {
                         rvWeeklyTrending?.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        rvWeeklyTrending?.adapter = TopTenItemAdapter(it, this)
+                        rvWeeklyTrending?.adapter = TopTenItemAdapter(it.toMutableList(), this)
                     }
                 } else {
                     llTrendingSearchItem.visibility = GONE
@@ -378,7 +380,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     rvVideos?.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     rvVideos?.adapter =
-                        SearchVideoAdapter(response.data.data.Video.data, this)
+                        SearchVideoAdapter(response.data.data.Video.data.toMutableList(), this)
                     Log.e("TAG", "DATA: " + response.data.data.Track.data)
                 } else {
                     llVideos.visibility = GONE
@@ -492,6 +494,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         return requireActivity().contentResolver.query(uri, null, selection, selArgs, null)
     }
 
+    @SuppressLint("DefaultLocale")
     override fun onClickSearchItem(searchData: SearchData) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val patchItem = Bundle().apply {
@@ -502,20 +505,20 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             putSerializable(
                 AppConstantUtils.PatchDetail,
                 HomePatchDetail(
-                    AlbumId = searchData.AlbumId,
-                    ArtistId = searchData.ContentID,
-                    ContentID = searchData.ContentID,
-                    ContentType = searchData.ContentType,
-                    PlayUrl = searchData.PlayUrl ?: "",
-                    AlbumName = searchData.title,
+                    AlbumId = searchData.album_Id ?: "",
+                    ArtistId = searchData.content_Id ?: "",
+                    ContentID = searchData.content_Id ?: "",
+                    ContentType = searchData.content_Type ?: "",
+                    PlayUrl = searchData.playingUrl ?: "",
+                    AlbumName = searchData.titleName ?: "",
                     AlbumImage = "",
                     fav = "",
                     Banner = "",
-                    Duration = searchData.Duration,
+                    Duration = searchData.total_duration ?: "",
                     TrackType = "",
-                    image = searchData.image,
+                    image = searchData.imageUrl ?: "",
                     ArtistImage = "",
-                    Artist = searchData.Artist,
+                    Artist = searchData.artistName ?: "",
                     CreateDate = "",
                     Follower = "",
                     imageWeb = "",
@@ -529,12 +532,12 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                     RootType = "",
                     Seekable = false,
                     TeaserUrl = "",
-                    title = searchData.title,
+                    title = searchData.titleName ?: "",
                     Type = ""
                 ) as Serializable
             )
         }
-        when (searchData.ContentType.toUpperCase()) {
+        when (searchData.content_Type?.toUpperCase()) {
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
                 setupNavGraphAndArg(
@@ -575,33 +578,33 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
 
     //Top Tend play. whene fast search fragment came
     //TODO this Task are testing purpose on
-    override fun onClickPlayItem(songItem: List<TopTrendingdata>, clickItemPosition: Int) {
+    override fun onClickPlayItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((songItem[clickItemPosition].content_Id == playerViewModel.currentMusic?.rootId)) {
+                if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
+                playItem(songItem, clickItemPosition)
             }
         } else {
-            playItem(UtilHelper.getSongDetailToTopTrendingDataList(songItem), clickItemPosition)
+            playItem(songItem, clickItemPosition)
         }
     }
 
     //after search play item
     //TODO need delay
-    override fun onClickPlaySearchItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        when (songItem[clickItemPosition].ContentType) {
+    override fun onClickPlaySearchItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int) {
+        when (songItem[clickItemPosition].content_Type) {
             DataContentType.CONTENT_TYPE_V -> {
                 //open playlist
                 val intent = Intent(context, VideoActivity::class.java)
                 val videoArray = ArrayList<Video>()
                 for (item in songItem) {
                     //                    val video = Video()
-                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+//                    videoArray.add(UtilHelper.getVideoToSearchData(item))
                 }
                 val videos: ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
@@ -612,11 +615,11 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 if (playerViewModel.currentMusic != null) {
                     Log.e(
                         "SF",
-                        "currentMusic: " + songItem[clickItemPosition].ContentID + " "
+                        "currentMusic: " + songItem[clickItemPosition].content_Id + " "
                                 + playerViewModel.currentMusic?.rootId
                     )
-                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                    if ((songItem[clickItemPosition].content_Id == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                             playerViewModel.skipToQueueItem(clickItemPosition)
                             Log.e("ADF", "skipToQueueItem:")
                         } else {
@@ -625,43 +628,43 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                         }
                     } else {
                         playItem(
-                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            songItem,
                             clickItemPosition
                         )
                     }
                 } else {
-                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                    playItem(songItem, clickItemPosition)
                 }
             }
             DataContentType.CONTENT_TYPE_PD_CB -> {
                 //TODO need delay
                 if (playerViewModel.currentMusic != null) {
-                    if ((songItem[clickItemPosition].ContentID == playerViewModel.currentMusic?.rootId)) {
-                        if ((songItem[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+                    if ((songItem[clickItemPosition].content_Id == playerViewModel.currentMusic?.rootId)) {
+                        if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                             playerViewModel.skipToQueueItem(clickItemPosition)
                         } else {
                             playerViewModel.togglePlayPause()
                         }
                     } else {
                         playItem(
-                            UtilHelper.getSongDetailToSearchDataList(songItem),
+                            songItem,
                             clickItemPosition
                         )
                     }
                 } else {
-                    playItem(UtilHelper.getSongDetailToSearchDataList(songItem), clickItemPosition)
+                    playItem(songItem, clickItemPosition)
                 }
             }
         }
     }
 
-    override fun onClickPlayVideoItem(songItem: List<SearchData>, clickItemPosition: Int) {
-        when (songItem[clickItemPosition].ContentType) {
+    override fun onClickPlayVideoItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int) {
+        when (songItem[clickItemPosition].content_Type) {
             DataContentType.CONTENT_TYPE_V -> {
                 val intent = Intent(requireContext(), VideoActivity::class.java)
                 val videoArray = ArrayList<Video>()
                 for (item in songItem) {
-                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+//                    videoArray.add(UtilHelper.getVideoToSearchData(item))
                 }
                 val videos: ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)

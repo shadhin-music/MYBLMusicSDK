@@ -16,9 +16,11 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
+internal class ArtistSpecificAlbumAdapter() :
+    RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: ArtistAlbumModelData? = null
     private var dataSongDetail: List<SongDetail> = mutableListOf()
 
@@ -88,15 +90,15 @@ internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecifi
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(root.image.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(root.imageUrl!!))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = root.title
+            tvCurrentAlbumName.text = root.titleName
 
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = root.artistname
+            tvArtistName.text = root.artistName
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
@@ -109,13 +111,13 @@ internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecifi
                 .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName.text = mSongDetail.title
+            tvSongName.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
 //                showBottomSheetDialog(viewItem.context)

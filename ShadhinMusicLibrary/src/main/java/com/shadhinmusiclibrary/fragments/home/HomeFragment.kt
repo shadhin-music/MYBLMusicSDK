@@ -63,7 +63,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     //var page = -1
     var isLoading = false
     var isLastPage = false
-   // var rbtData: RBTDATA? = null
+
+    // var rbtData: RBTDATA? = null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
 
@@ -91,7 +92,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
-       // viewModelAmaraTunes.fetchRBTURL()
+        // viewModelAmaraTunes.fetchRBTURL()
 
         observeData()
     }
@@ -159,12 +160,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
             recyclerView.adapter = dataAdapter
         }
-       /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
-            Log.e("TAG", "URL: " + res)
-            if (res.status == Status.SUCCESS) {
-                this.rbtData = res.data?.data
-            }
-        }*/
+        /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
+             Log.e("TAG", "URL: " + res)
+             if (res.status == Status.SUCCESS) {
+                 this.rbtData = res.data?.data
+             }
+         }*/
 
         homeData.let {
             it?.data?.let { it1 ->
@@ -256,9 +257,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .into(ivSongThumbMini)
 
 
-        tvSongNameMini.text = mSongDetails.title
-        tvSingerNameMini.text = mSongDetails.artist
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
+        tvSongNameMini.text = mSongDetails.titleName
+        tvSingerNameMini.text = mSongDetails.artistName
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
 

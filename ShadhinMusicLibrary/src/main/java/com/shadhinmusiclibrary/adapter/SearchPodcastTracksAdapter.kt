@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.search.*
 
 
 internal class SearchPodcastTracksAdapter(
-    private val searchPodcastTrack: List<SearchData>,
+    private val searchPodcastTrack: MutableList<IMusicModel>,
     private val seaItemCallback: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchPodcastTracksAdapter.ViewHolder>() {
@@ -53,10 +54,10 @@ internal class SearchPodcastTracksAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchPodcastTrack: SearchData) {
+        fun bindItems(searchPodcastTrack: IMusicModel) {
 
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            val url: String = searchPodcastTrack.image
+            val url: String = searchPodcastTrack.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.title)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             //textView.setText(data.Data[absoluteAdapterPosition].title)
@@ -66,8 +67,8 @@ internal class SearchPodcastTracksAdapter(
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.similarArtist)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchPodcastTrack.title
-            textArtist.text = searchPodcastTrack.Artist
+            textTitle.text = searchPodcastTrack.titleName
+            textArtist.text = searchPodcastTrack.artistName
             // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
             //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {

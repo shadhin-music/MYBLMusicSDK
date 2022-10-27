@@ -115,13 +115,13 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
                 .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName.text = mSongDetail.title
+            tvSongName.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
 
                 ivSongMenuIcon.setOnClickListener {

@@ -12,15 +12,19 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   private val bsDialogItemCallback: BottomSheetDialogItemCallback) :
+internal class PlaylistAdapter(
+    private val itemClickCB: OnItemClickCallback,
+    private val bsDialogItemCallback: BottomSheetDialogItemCallback
+) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
     private var rootDataContent: HomePatchDetail? = null
-    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistVH {
         val layout = when (viewType) {
@@ -71,7 +75,7 @@ internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   p
                         if (holder.itemViewType == PlaylistAdapter.VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
-                           //holder.tvSongName?.setTextColor(Color.BLUE)
+                            //holder.tvSongName?.setTextColor(Color.BLUE)
                         }
                     }
                 }
@@ -98,7 +102,7 @@ internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   p
 
     @SuppressLint("NotifyDataSetChanged")
     fun setSongData(data: MutableList<SongDetail>) {
-        this.dataSongDetail = data
+//        this.dataSongDetail = data
         notifyDataSetChanged()
     }
 
@@ -139,23 +143,23 @@ internal class PlaylistAdapter(private val itemClickCB: OnItemClickCallback,   p
         }
 
         var tvSongName: TextView? = null
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: IMusicModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(mSongDetail.imageUrl!!))
                 .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName!!.text = mSongDetail.title
+            tvSongName!!.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-              bsDialogItemCallback.onClickBottomItem(mSongDetail)
-                Log.e("TAGGY","ID: "+ mSongDetail)
+                bsDialogItemCallback.onClickBottomItem(mSongDetail)
+                Log.e("TAGGY", "ID: " + mSongDetail)
             }
         }
     }

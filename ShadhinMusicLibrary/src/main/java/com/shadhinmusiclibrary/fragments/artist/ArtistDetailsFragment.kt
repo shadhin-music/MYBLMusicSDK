@@ -27,6 +27,7 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
@@ -260,43 +261,37 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 //        parentRecycler.scrollToPosition(0)
     }
 
-    override fun onRootClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
 //        val lSongDetails = artistTrackAdapter.artistSongList
         if (mSongDetails.size > clickItemPosition) {
-            if (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+            if (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    mSongDetails,
                     clickItemPosition
                 )
             }
         }
     }
 
-    override fun onClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    mSongDetails,
                     clickItemPosition
                 )
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }
@@ -304,7 +299,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<ArtistContentData>
+        songDetails: MutableList<IMusicModel>
     ) {
 //        val mSongDet = artistTrackAdapter.artistSongList
         val artistHeaderVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
@@ -314,8 +309,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 if (itMusic != null) {
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.rootContentID == itMusic.rootId &&
-                                    it.ContentID == itMusic.mediaId
+                                    it.rootContentId == itMusic.rootId &&
+                                    it.content_Id == itMusic.mediaId
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
@@ -329,7 +324,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
             context = requireContext(),

@@ -12,14 +12,16 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.SongTrack
+import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
-    var tracks: MutableList<Track> = mutableListOf()
+    var tracks: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastTrackVH {
         val v = LayoutInflater.from(parent.context)
@@ -55,7 +57,7 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
     }
 
     fun setData(
-        data: MutableList<Track>,
+        data: MutableList<SongTrack>,
         rootPatch: HomePatchDetail,
         mediaId: String?
     ) {
@@ -73,33 +75,35 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
     }
 
     fun setPlayingSong(mediaId: String) {
-        val newList: List<Track> = UtilHelper.podcastTrackNewList(mediaId, tracks)
-        val callback = PodcastTrackDiffCB(tracks, newList)
+        val newList: List<IMusicModel> =
+            UtilHelper.getCurrentRunningSongToNewSongList(mediaId, tracks)
+        val callback = AnyTrackDiffCB(tracks, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
         tracks.clear()
         tracks.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
     }
 
-    private class PodcastTrackDiffCB() : DiffUtil.Callback() {
-        private lateinit var oldSongDetails: List<Track>
-        private lateinit var newSongDetails: List<Track>
-
-        constructor(oldSongDetails: List<Track>, newSongDetails: List<Track>) : this() {
-            this.oldSongDetails = oldSongDetails
-            this.newSongDetails = newSongDetails
-        }
-
-        override fun getOldListSize(): Int = oldSongDetails.size
-
-        override fun getNewListSize(): Int = newSongDetails.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldSongDetails[oldItemPosition].Id == newSongDetails[newItemPosition].Id
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
-    }
+//    private class PodcastTrackDiffCB() : DiffUtil.Callback() {
+//        private lateinit var oldSongDetails: List<IMusicModel>
+//        private lateinit var newSongDetails: List<IMusicModel>
+//
+//        constructor(oldSongDetails: List<IMusicModel>, newSongDetails: List<IMusicModel>) : this() {
+//            this.oldSongDetails = oldSongDetails
+//            this.newSongDetails = newSongDetails
+//        }
+//
+//        override fun getOldListSize(): Int = oldSongDetails.size
+//
+//        override fun getNewListSize(): Int = newSongDetails.size
+//
+//        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+////            oldSongDetails[oldItemPosition].Id == newSongDetails[newItemPosition].Id
+//            oldSongDetails[oldItemPosition].content_Id == newSongDetails[newItemPosition].content_Id
+//
+//        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+//            oldSongDetails[oldItemPosition].isPlaying == newSongDetails[newItemPosition].isPlaying
+//    }
 
     inner class PodcastTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
@@ -108,13 +112,13 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         fun bindItems(position: Int) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
             val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
-            textArtistName.text = tracks[position].Duration
-            val url: String = tracks[position].ImageUrl
+            textArtistName.text = tracks[position].total_duration
+            val url: String = tracks[position].imageUrl!!
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(url))
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
-            tvSongName?.text = tracks[position].Name
+            tvSongName?.text = tracks[position].titleName
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityIdo
             //getActorName(entityId!!)

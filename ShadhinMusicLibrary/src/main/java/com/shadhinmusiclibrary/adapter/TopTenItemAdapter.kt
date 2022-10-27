@@ -9,18 +9,21 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.search.TopTrendingData
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class TopTenItemAdapter(
-    val data: List<TopTrendingdata>,
+    val data: MutableList<IMusicModel>,
     private val seaItemCallback: SearchItemCallBack
 ) :
     RecyclerView.Adapter<TopTenItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_layout_top_ten_item, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_layout_top_ten_item, parent, false)
         return ViewHolder(v)
     }
 
@@ -37,15 +40,15 @@ internal class TopTenItemAdapter(
     }
 
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(data: List<TopTrendingdata>, position: Int) {
+        fun bindItems(data: MutableList<IMusicModel>, position: Int) {
             val context = itemView.context
             val songImage: ShapeableImageView = itemView.findViewById(R.id.image)
             val songName: TextView = itemView.findViewById(R.id.txt_title)
             val artistName: TextView = itemView.findViewById(R.id.txt_name)
-            val url: String = data[position].getImageUrl300Size()
+            val url: String = UtilHelper.getImageUrlSize300(data[position].imageUrl!!)
             Glide.with(context).load(url).into(songImage)
-            songName.text = data[position].title
-            artistName.text = data[position].artistname
+            songName.text = data[position].titleName
+            artistName.text = data[position].artistName
         }
     }
 }
