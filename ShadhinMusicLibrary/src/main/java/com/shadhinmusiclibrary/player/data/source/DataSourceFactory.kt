@@ -61,6 +61,25 @@ internal open class ShadhinDataSourceFactory  constructor(
 
         }
 
+        @JvmStatic
+        fun buildWithoutWriteCache(
+            context: Context,
+            music: Music,
+            cache: SimpleCache,
+            musicRepository: MusicRepository
+        ): DataSource.Factory {
+
+            return CacheDataSource.Factory()
+                .setCache(cache)
+                .setUpstreamDataSourceFactory(
+                    ShadhinDataSourceFactory(context,music,musicRepository)
+                )
+                // TODO must be remove setCacheWriteDataSinkFactory(null) this line when download done . but this time for testing
+                .setCacheWriteDataSinkFactory(null)
+                .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
+
+        }
+
 
     }
 }

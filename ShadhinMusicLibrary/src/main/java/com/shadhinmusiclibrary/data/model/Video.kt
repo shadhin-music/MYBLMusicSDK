@@ -4,10 +4,11 @@ package com.shadhinmusiclibrary.data.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
-internal data class Video(
+data class Video(
     @SerializedName("AlbumId")
     var albumId: String? = null,
     @SerializedName("AlbumImage")
@@ -72,7 +73,7 @@ internal data class Video(
     var isPlaystate: Boolean = false
 ): Parcelable{
 
-    fun setData(data: HomePatchDetail){
+    internal fun setData(data: HomePatchDetail){
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName
@@ -104,7 +105,7 @@ internal data class Video(
         trackType = data.TrackType
         type = data.Type
     }
-    fun setData2(data: LatestVideoModelData){
+    internal fun setData2(data: LatestVideoModelData){
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName
@@ -135,5 +136,37 @@ internal data class Video(
         title = data.title
         trackType = data.TrackType
         type = data.Type
+    }
+    internal fun setDataDownload(data: DownloadedContent){
+        albumId =""
+        albumImage =""
+        albumName = ""
+        artist = data.artist
+        artistId = ""
+        artistImage =""
+        banner =""
+        clientValue = 2
+        contentID = data.contentId
+        contentType = data.type
+        createDate = ""
+        duration = data.timeStamp
+        fav = ""
+        follower = ""
+        image = data.rootImg
+        imageWeb = ""
+        isPaid = false
+        newBanner = ""
+        playCount = 0
+        playListId = ""
+        playListImage = ""
+        playListName = ""
+        playUrl = data.track
+        rootId = data.rootId
+        rootType = data.rootType
+        seekable = false
+        teaserUrl = ""
+        title = data.rootTitle
+        trackType = ""
+        type = data.type
     }
 }

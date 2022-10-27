@@ -1,9 +1,11 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -12,13 +14,23 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.video.BottomsheetDialog
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.createTimeLabel
+import java.util.ArrayList
 
 
 internal typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
-internal class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
+internal class VideoAdapter(
+    private val context: Context,
+    val bottomsheetDialog: BottomsheetDialog,
+    val cacheRepository: CacheRepository
+): ListAdapter<Video,RecyclerView.ViewHolder>(
     VideoDiffCallBack()
 ){
     val layoutManager: GridLayoutManager = GridLayoutManager(context,1)
@@ -98,6 +110,14 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
         }
         submitList(newItem)
     }
+    fun setProgress(progressIndicatorUpdate: ArrayList<DownloadingItem>) {
+
+        progressIndicatorUpdate.forEach {
+
+
+        }
+    }
+
 
     inner class ListViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){
         private var titleTextView: TextView = itemView.findViewById(R.id.videoTitle)
@@ -105,13 +125,13 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
         private var durationTextView:TextView = itemView.findViewById(R.id.video_duration)
         private var playPauseImage:ImageView = itemView.findViewById(R.id.play_pause)
         private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
-
+        private var threeDotButton:ImageButton =itemView.findViewById(R.id.threeDotButton)
 
         fun bind(item: Video){
 
 
             titleTextView.text = item.title
-            durationTextView.text = createTimeLabel(item.duration?.toLong()?:0L)
+            durationTextView.text = TimeParser.secToMin(item.duration)
             if (item.isPlaying) {
                 titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
             } else {
@@ -133,7 +153,21 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
             itemView.setOnClickListener {
                 videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
             }
+           threeDotButton.setOnClickListener {
+               bottomsheetDialog.openDialog(item)
+           }
+            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator.tag = item.contentID
+            progressIndicator.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded = cacheRepository.isTrackDownloaded(item.contentID.toString()) ?: false
 
+            if(isDownloaded){
+                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+            }
         }
 
     }

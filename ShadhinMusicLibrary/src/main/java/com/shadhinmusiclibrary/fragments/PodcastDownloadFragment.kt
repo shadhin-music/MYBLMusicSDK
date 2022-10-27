@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
@@ -17,7 +16,7 @@ import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class DownloadDetailsFragment : CommonBaseFragment(),DownloadedSongOnCallBack {
+internal class PodcastDownloadFragment : CommonBaseFragment(),DownloadedSongOnCallBack {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +42,14 @@ internal class DownloadDetailsFragment : CommonBaseFragment(),DownloadedSongOnCa
     }
       fun loadData(){
           val cacheRepository= CacheRepository(requireContext())
-          val dataAdapter = DownloadedSongsAdapter(cacheRepository.getAllDownloads()!!,this)
+          val dataAdapter =
+              cacheRepository.getAllPodcastDownloads()?.let { DownloadedSongsAdapter(it,this) }
 
           val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
           recyclerView.layoutManager =
               LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
           recyclerView.adapter = dataAdapter
+         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
 
       }
 
@@ -56,7 +57,7 @@ internal class DownloadDetailsFragment : CommonBaseFragment(),DownloadedSongOnCa
 
         @JvmStatic
         fun newInstance() =
-            DownloadDetailsFragment().apply {
+            PodcastDownloadFragment().apply {
                 arguments = Bundle().apply {
 
                 }

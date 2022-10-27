@@ -87,12 +87,18 @@
                 android:text="Songs"
                 android:clickable="true"
                 />
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Album"-->
-<!--                android:clickable="true"-->
-<!--                />-->
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Video"
+                android:clickable="true"
+                />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Podcast"
+                android:clickable="true"
+                />
         </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

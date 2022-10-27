@@ -14,15 +14,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.adapter.ArtistHeaderAdapter.Companion.VIEW_TYPE
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.download.MyBLDownloadService
-import com.shadhinmusiclibrary.download.MyBLDownloadService.Companion.currentProgress
 import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 

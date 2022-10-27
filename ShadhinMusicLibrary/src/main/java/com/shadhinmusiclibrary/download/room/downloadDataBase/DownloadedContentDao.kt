@@ -16,6 +16,15 @@ interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE type IS NOT NULL ORDER By timeStamp DESC ")
     fun getAllDownloads():List<DownloadedContent>
 
+    @Query("SELECT * FROM DownloadedContent WHERE rootType='V' ORDER By timeStamp DESC ")
+    fun getAllVideosDownloads():List<DownloadedContent>
+
+    @Query("SELECT * FROM DownloadedContent WHERE rootType='S' ORDER By timeStamp DESC ")
+    fun getAllSongsDownloads():List<DownloadedContent>
+
+    @Query("SELECT * FROM DownloadedContent WHERE rootType='PDJG' ORDER By timeStamp DESC ")
+    fun getAllPodcastDownloads():List<DownloadedContent>
+
     @Query("SELECT * FROM DownloadedContent where contentId = :id")
     fun getDownloadById(id:String):List<DownloadedContent>
 
@@ -42,4 +51,5 @@ interface DownloadedContentDao {
 
     @Query("DELETE FROM DownloadedContent")
     fun deleteAllDownloads():Unit
+
 }

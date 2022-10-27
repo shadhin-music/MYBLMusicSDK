@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
@@ -82,7 +83,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
             requireActivity().onBackPressed()
         }
     }
-    override fun onClickBottomItem(mSongDetails:SongDetail) {
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
             context = requireContext(),

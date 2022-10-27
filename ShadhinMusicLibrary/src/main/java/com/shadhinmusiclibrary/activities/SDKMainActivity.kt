@@ -11,6 +11,7 @@ import android.os.Parcelable
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
@@ -43,6 +44,7 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
@@ -124,7 +126,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         navController = navHostFragment.navController
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         rlContentMain = findViewById(R.id.rl_content_main)
-        DownloadProgressObserver.setCacheRepository(cacheRepository)
+        //DownloadProgressObserver.setCacheRepository(cacheRepository)
         createPlayerVM()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
@@ -394,7 +396,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         })
                 }
                 DataContentType.CONTENT_TYPE_V -> {
-                    //open podcast
+                    //open video
                     setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_video_list_and_details,
                         Bundle().apply {
                             putSerializable(
@@ -941,7 +943,108 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             bottomSheetDialog.dismiss()
         }
     }
+    fun showBottomSheetDialogForPodcast(
+        bsdNavController: NavController,
+        context: Context,
+        track: Track,
+        argHomePatchItem: HomePatchItem?,
+        argHomePatchDetail: HomePatchDetail?,
+    ) {
+        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
+        val contentView =
+            View.inflate(context, R.layout.my_bl_sdk_bottomsheet_three_dot_menu_layout, null)
+        bottomSheetDialog.setContentView(contentView)
+        bottomSheetDialog.show()
+        val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+        val url = track.ImageUrl
+        val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
+        title?.text = track.Name
+        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        artistname?.text = track.EpisodeId
+        if (image != null) {
+            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+        }
+
+        val constraintAlbum: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        constraintAlbum?.setOnClickListener {
+//            gotoArtistFromPlaylist(
+//                bsdNavController,
+//                context,
+//                mSongDetails,
+//                argHomePatchItem,
+//                argHomePatchDetail
+//
+//            )
+
+            bottomSheetDialog.dismiss()
+        }
+        constraintAlbum?.visibility= GONE
+        val downloadImage:ImageView ?= bottomSheetDialog.findViewById(R.id.imgDownload)
+        val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
+        var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(track.EpisodeId)
+        if(downloaded?.track != null){
+            isDownloaded=true
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+        }else{
+            isDownloaded=false
+            downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+        }
+
+        if(isDownloaded){
+            textViewDownloadTitle?.text="Remove From Download"
+        }else{
+            textViewDownloadTitle?.text="Download Offline"
+        }
+        val constraintDownload:ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintDownload)
+        constraintDownload?.setOnClickListener {
+            if(isDownloaded.equals(true)){
+                cacheRepository.deleteDownloadById(track.EpisodeId)
+                DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,track.EpisodeId, false)
+                Log.e("TAG","DELETED: "+ isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", track.EpisodeId)
+                localBroadcastManager.sendBroadcast(localIntent)
+
+            } else {
+                val url = "${Constants.FILE_BASE_URL}${track.PlayUrl}"
+                val downloadRequest: DownloadRequest =
+                    DownloadRequest.Builder(track.EpisodeId, url.toUri())
+                        .build()
+                DownloadService.sendAddDownload(
+                    applicationContext,
+                    MyBLDownloadService::class.java,
+                    downloadRequest,
+                    /* foreground= */ false)
+
+                if (cacheRepository.isDownloadCompleted(track.EpisodeId).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(track.EpisodeId.toString(),
+                        track.rootContentID,
+                        track.ImageUrl,
+                        track.Name,
+                        track.ContentType,
+                        track.PlayUrl,
+                        track.TrackType,
+                        0,
+                        0,
+                        track.Name,
+                        track.Duration))
+                    Log.e("TAGGG",
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(track.EpisodeId))
+                }
+            }
+            bottomSheetDialog.dismiss()
+        }
+
+    }
     fun showBottomSheetDialogForPlaylist(
         bsdNavController: NavController,
         context: Context,

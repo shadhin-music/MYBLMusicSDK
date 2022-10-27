@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 
-internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
+internal class AllDownloadedAdapter(val allDownloads: List<DownloadedContent>, private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
@@ -29,29 +29,29 @@ internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
 //
-//        if(allDownloads[position].rootType.equals("V")){
-//
-//             holder.itemView.setOnClickListener {
-//                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
-//                 val videoArray = ArrayList<Video>()
-//                 for (item in allDownloads) {
-//                     val video = Video()
-//                     video.setDataDownload(item)
-//                     videoArray.add(video)
-//                 }
-//                 val videos :ArrayList<Video> = videoArray
-//                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
-//                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
-//                 holder.itemView.context.startActivity(intent)
-//             }
-//        }
-//        if(allDownloads[position].rootType.equals("S")){
+        if(allDownloads[position].rootType.equals("V")){
+
+             holder.itemView.setOnClickListener {
+                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
+                 val videoArray = ArrayList<Video>()
+                 for (item in allDownloads) {
+                     val video = Video()
+                     video.setDataDownload(item)
+                     videoArray.add(video)
+                 }
+                 val videos :ArrayList<Video> = videoArray
+                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
+                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                 holder.itemView.context.startActivity(intent)
+             }
+        }
+        if(allDownloads[position].rootType.equals("S")){
             holder.itemView.setOnClickListener {
             lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
              Log.e("TAG","ALL Downloads: "+ allDownloads)
         }
 
-        //}
+        }
 
     }
 

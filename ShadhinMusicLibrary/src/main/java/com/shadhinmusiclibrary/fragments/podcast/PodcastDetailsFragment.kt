@@ -1,36 +1,44 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    PodcastOnItemClickCallback {
+    PodcastOnItemClickCallback , PodcastBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: PodcastViewModel
     private lateinit var navController: NavController
@@ -48,7 +56,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     var selectedEpisodeID: Int = 0
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
-
+    private var cacheRepository: CacheRepository? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -66,6 +74,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
         }
+        cacheRepository= CacheRepository(requireContext())
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -90,7 +99,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         podcastHeaderAdapter = PodcastHeaderAdapter(this)
-        podcastTrackAdapter = PodcastTrackAdapter(this)
+        podcastTrackAdapter = PodcastTrackAdapter(this,this, cacheRepository!! )
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
@@ -236,6 +245,84 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                     podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                 }
             }
+        }
+    }
+
+    override fun onClickBottomItem(track: Track) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
+            navController,
+            context = requireContext(),
+            track,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED")
+        intentFilter.addAction("PROGRESS")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+    private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
+
+        downloadingItems.forEach {
+
+
+            val progressIndicator: CircularProgressIndicator? =
+                view?.findViewWithTag(it.contentId)
+//                val downloaded: ImageView?= view?.findViewWithTag(200)
+            progressIndicator?.visibility = View.VISIBLE
+            progressIndicator?.progress = it.progress.toInt()
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+            if(!isDownloaded){
+                progressIndicator?.visibility = View.GONE
+                // downloaded?.visibility = VISIBLE
+            }
+
+            Log.e("getDownloadManagerx",
+                "habijabi: ${it.toString()} ${progressIndicator == null}")
+
+
+        }
+
+
+    }
+
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            Log.e("DELETED", "onReceive "+intent.action)
+            Log.e("PROGRESS", "onReceive "+intent)
+            when (intent.action) {
+                "ACTION" -> {
+
+                    //val data = intent.getIntExtra("currentProgress",0)
+                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+
+                    downloadingItems?.let {
+
+                        progressIndicatorUpdate(it)
+
+//                        Log.e("getDownloadManagerx",
+//                            "habijabi: ${it.toString()} ")
+                    }
+                }
+                "DELETED" -> {
+                   podcastTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+                "PROGRESS" -> {
+
+                    podcastTrackAdapter.notifyDataSetChanged()
+                    Log.e("PROGRESS", "broadcast fired")
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+            }
+
         }
     }
 }

@@ -5,6 +5,6 @@ import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
 
-internal interface BottomSheetDialogItemCallback {
-    fun onClickBottomItem(mSongDetails: SongDetail)
+internal interface PodcastBottomSheetDialogItemCallback {
+    fun onClickBottomItem(track: Track)
 }

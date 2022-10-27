@@ -1,23 +1,30 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
+internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback, private val bsDialogItemCallback: PodcastBottomSheetDialogItemCallback, val cacheRepository: CacheRepository
+) :
     RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<Track> = mutableListOf()
 
@@ -33,7 +40,11 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
         }
+        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
+        ivSongMenuIcon.setOnClickListener {
 
+            bsDialogItemCallback.onClickBottomItem(trackItem)
+        }
         if (trackItem.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
@@ -115,13 +126,18 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             tvSongName?.text = tracks[position].Name
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityIdo
-            //getActorName(entityId!!)
+            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator.tag = tracks[position].EpisodeId
+            progressIndicator.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded = cacheRepository.isTrackDownloaded(tracks[position].EpisodeId) ?: false
 
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
+            if(isDownloaded){
+                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+            }
         }
     }
 

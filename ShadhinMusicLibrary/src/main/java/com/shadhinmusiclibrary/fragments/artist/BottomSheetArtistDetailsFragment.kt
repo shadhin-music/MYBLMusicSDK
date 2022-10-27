@@ -31,6 +31,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetail
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -300,6 +301,6 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
 
     }
 
-    override fun onClickBottomItem(mSongDetails:SongDetail) {
+    override fun onClickBottomItem(mSongDetails: SongDetail) {
     }
 }

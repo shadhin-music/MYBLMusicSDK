@@ -28,7 +28,7 @@ internal class ShadhinVideoMediaSource(
     }
 
     private fun createSource(video: Video): ProgressiveMediaSource {
-        val dataSource: DataSource.Factory = ShadhinDataSourceFactory.build(context,toMusic(video),cache,musicRepository)
+        val dataSource: DataSource.Factory = ShadhinDataSourceFactory.buildWithoutWriteCache(context,toMusic(video),cache,musicRepository)
         val pla = toVideoMediaItem(video)
         return ProgressiveMediaSource.Factory(dataSource)
             .createMediaSource(pla)

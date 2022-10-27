@@ -22,15 +22,13 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.di.ServiceEntryPoint
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.Constants.DOWNLOAD_CHANNEL_ID
 import com.shadhinmusiclibrary.player.Constants.SHOULD_OPEN_DOWNLOADS_ACTIVITY
 import com.shadhinmusiclibrary.player.data.source.MyBLDownloadManager
 import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.utils.DownloadProgressObserver
 import kotlinx.coroutines.*
-import java.util.ArrayList
+
 
 private val NOTIFICATION_ID=2
 
@@ -96,7 +94,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
             override fun onDownloadChanged(
                 downloadManager: DownloadManager,
                 download: Download,
-                finalException: java.lang.Exception?
+                finalException: java.lang.Exception?,
             ) {
                 super.onDownloadChanged(downloadManager, download, finalException)
                 if(download.state == STATE_COMPLETED){
@@ -105,6 +103,10 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                     val localIntent = Intent("PROGRESS")
                         .putExtra("progress",100)
                     localBroadcastManager.sendBroadcast(localIntent)
+                    val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+                    val Progress = sharedPreferences.edit()
+                    Progress.putInt("progress",100)
+                    Progress.apply()
                 }
 
                 //getDownloadingNotification("Song Downloading",100)
@@ -130,7 +132,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
             override fun onRequirementsStateChanged(
                 downloadManager: DownloadManager,
                 requirements: Requirements,
-                notMetRequirements: Int
+                notMetRequirements: Int,
             ) {
                 super.onRequirementsStateChanged(downloadManager, requirements, notMetRequirements)
                 Log.i("getDownloadManager", "onRequirementsStateChanged")
@@ -138,7 +140,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
 
             override fun onWaitingForRequirementsChanged(
                 downloadManager: DownloadManager,
-                waitingForRequirements: Boolean
+                waitingForRequirements: Boolean,
             ) {
                 super.onWaitingForRequirementsChanged(downloadManager, waitingForRequirements)
                 Log.i("getDownloadManager", "onWaitingForRequirementsChanged")
@@ -160,7 +162,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         downloads: MutableList<Download>,
         notMetRequirements: Int,
     ): Notification {
-       // Log.e("getDownloadManagerx", "getForegroundNotification: ${downloads.map { it.request.id }}")
+        Log.e("getDownloadManagerx", "getForegroundNotification: ${downloads.map { it.percentDownloaded }}")
 
         val downloadingItems = downloads.map {
 //            if(it.percentDownloaded in 0f..100f) {

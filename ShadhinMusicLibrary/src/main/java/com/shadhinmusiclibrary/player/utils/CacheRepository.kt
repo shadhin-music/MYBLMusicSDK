@@ -1,15 +1,20 @@
 package com.shadhinmusiclibrary.player.utils
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import androidx.room.util.FileUtil
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
 import com.shadhinmusiclibrary.utils.UtilHelper
 
+
 class CacheRepository(val context: Context) {
+    var sh: SharedPreferences = context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
+
+
     val databaseClient = DatabaseClient(context)
 
     val downloadDb = databaseClient.getDownloadDatabase()
@@ -28,6 +33,9 @@ class CacheRepository(val context: Context) {
 //    }
     fun getAllPendingDownloads() = downloadDb?.DownloadedContentDao()?.getAllPendingDownloads()
     fun getAllDownloads() = downloadDb?.DownloadedContentDao()?.getAllDownloads()
+    fun getAllVideosDownloads() = downloadDb?.DownloadedContentDao()?.getAllVideosDownloads()
+    fun getAllSongsDownloads() = downloadDb?.DownloadedContentDao()?.getAllSongsDownloads()
+    fun getAllPodcastDownloads() = downloadDb?.DownloadedContentDao()?.getAllPodcastDownloads()
 //
     fun getDownloadById(id: String): DownloadedContent? {
         var contents = downloadDb?.DownloadedContentDao()?.getDownloadById(id)
@@ -39,6 +47,7 @@ class CacheRepository(val context: Context) {
 //
 //    fun getPendingDownloadCount() = downloadDb?.DownloadedContentDao()?.getPendingDownloadCount()
     fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
+    //fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
     fun deleteDownloadById(id: String) {
         val path=downloadDb?.DownloadedContentDao()?.getTrackById(id)
         downloadDb?.DownloadedContentDao()?.deleteDownloadById(id)
@@ -82,5 +91,8 @@ fun isDownloadCompleted(contentId:String):Boolean{
         return true
     }
 }
+
+
+
 
 }
