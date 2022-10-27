@@ -8,16 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 internal open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
     var argHomePatchItem: HomePatchItem? = null
-    var argHomePatchDetail: HomePatchDetail? = null
+    var argHomePatchDetail: HomePatchDetailModel? = null
     lateinit var playerViewModel: PlayerViewModel
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -25,7 +24,7 @@ internal open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
             argHomePatchDetail =
-                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
+                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }
         createPlayerVM()
     }

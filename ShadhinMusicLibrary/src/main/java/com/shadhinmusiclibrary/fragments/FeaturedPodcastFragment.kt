@@ -19,8 +19,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
@@ -35,8 +34,8 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItem? = null
     lateinit var viewModel: FeaturedPodcastViewModel
-    private lateinit var data: List<FeaturedPodcastDetails>
-    private lateinit var dataJc: List<FeaturedPodcastDetails>
+    private lateinit var data: List<FeaturedPodcastDetailsModel>
+    private lateinit var dataJc: List<FeaturedPodcastDetailsModel>
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
     private lateinit var podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
@@ -131,16 +130,20 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
     }
 
     override fun onRootClickItem(
-        episode: MutableList<FeaturedPodcastDetails>,
+        episode: MutableList<FeaturedPodcastDetailsModel>,
         clickItemPosition: Int,
     ) {
     }
 
-    override fun onClickItem(episode: MutableList<FeaturedPodcastDetails>, clickItemPosition: Int) {
+    override fun onClickItem(
+        episode: MutableList<FeaturedPodcastDetailsModel>,
+        clickItemPosition: Int
+    ) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
         val mEpisod = episode[clickItemPosition]
-        navController.navigate(R.id.to_podcast_details,
+        navController.navigate(
+            R.id.to_podcast_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -155,7 +158,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        episode: MutableList<FeaturedPodcastDetails>,
+        episode: MutableList<FeaturedPodcastDetailsModel>,
     ) {
     }
 }

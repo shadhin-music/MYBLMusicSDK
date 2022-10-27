@@ -12,10 +12,9 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -56,7 +55,7 @@ internal class SearchArtistTrackAdapter(
         return artistSongList.size
     }
 
-    fun artistContent(artistContent: ArtistContent?) {
+    fun artistContent(artistContent: ArtistContentModel?) {
         artistContent?.data?.let {
             this.artistSongList.clear()
             this.artistSongList.addAll(it)
@@ -64,7 +63,7 @@ internal class SearchArtistTrackAdapter(
         }
     }
 
-    fun setArtistTrack(data: List<ArtistContentData>, rootPatch: HomePatchDetail) {
+    fun setArtistTrack(data: List<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
         this.artistSongList = mutableListOf()
         this.artistSongList.clear()
         for (songItem in data) {

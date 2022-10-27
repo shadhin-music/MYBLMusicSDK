@@ -15,8 +15,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -70,7 +70,11 @@ internal class AlbumsTrackAdapter(
         return dataSongDetail.size
     }
 
-    fun setData(data: MutableList<SongDetail>, rootPatch: HomePatchDetail, mediaId: String?) {
+    fun setData(
+        data: MutableList<SongDetailModel>,
+        rootPatch: HomePatchDetailModel,
+        mediaId: String?
+    ) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(

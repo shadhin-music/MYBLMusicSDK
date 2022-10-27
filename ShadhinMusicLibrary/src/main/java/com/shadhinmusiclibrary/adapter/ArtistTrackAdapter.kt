@@ -16,9 +16,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -82,8 +81,8 @@ internal class ArtistTrackAdapter(
 //    }
 
     fun setArtistTrack(
-        data: MutableList<ArtistContentData>,
-        rootPatch: HomePatchDetail,
+        data: MutableList<ArtistContentDataModel>,
+        rootPatch: HomePatchDetailModel,
         mediaId: String?
     ) {
         this.artistSongList = mutableListOf()

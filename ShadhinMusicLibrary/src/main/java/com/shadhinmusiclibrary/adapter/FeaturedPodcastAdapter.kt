@@ -10,18 +10,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 
-internal class FeaturedPodcastAdapter( var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastAdapter.ViewHolder>() {
+internal class FeaturedPodcastAdapter(
+    var data: MutableList<FeaturedPodcastDetailsModel>,
+    var clickCallback: FeaturedPodcastOnItemClickCallback
+) : RecyclerView.Adapter<FeaturedPodcastAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_featured_podcast_video_list, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_featured_podcast_video_list, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems()
+        holder.bindItems()
         holder.itemView.setOnClickListener {
             data?.let { it1 -> clickCallback.onClickItem(it1,position) }
             Log.e("TAG","String: "+ data)

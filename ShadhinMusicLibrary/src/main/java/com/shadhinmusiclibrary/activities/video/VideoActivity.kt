@@ -30,7 +30,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManager
 import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.adapter.VideoAdapter
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.player.ShadhinMusicQueueNavigator
 import com.shadhinmusiclibrary.library.player.data.source.MediaSources
@@ -70,7 +70,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private lateinit var audioFocusManager: AudioFocusManager
 
     private var currentPosition = 0
-    private var videoList: ArrayList<Video>? = ArrayList()
+    private var videoList: ArrayList<VideoModel>? = ArrayList()
     private lateinit var viewModel: VideoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -250,7 +250,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         scaleGestureDetector = ScaleGestureDetector(this, playerOnScaleGestureListener)
     }
 
-    private fun togglePlayPause(item: Video) {
+    private fun togglePlayPause(item: VideoModel) {
 
         if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
             if (exoPlayer?.isPlaying == true) {
@@ -267,16 +267,18 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         }
 
     }
-    private fun addOnPlayerQueue(videoList: List<Video>) {
+
+    private fun addOnPlayerQueue(videoList: List<VideoModel>) {
         contactMediaSource.clear()
         exoPlayer?.clearMediaItems()
-        videoMediaSource = ShadhinVideoMediaSource(this.applicationContext,
+        videoMediaSource = ShadhinVideoMediaSource(
+            this.applicationContext,
             videoList,
             injector.exoplayerCache,
             injector.musicRepository
         )
         val mediaSources = videoMediaSource?.createSources()
-        if(!mediaSources.isNullOrEmpty()){
+        if (!mediaSources.isNullOrEmpty()) {
             contactMediaSource.addMediaSources(mediaSources)
             exoPlayer?.addMediaSource(contactMediaSource)
             exoPlayer?.seekTo(currentPosition, 0)

@@ -3,8 +3,8 @@ package com.shadhinmusiclibrary.data.model
 import androidx.annotation.Keep
 
 @Keep
-internal data class RBT(
-    val `data`: RBTDATA,
+internal data class RBTModel(
+    val `data`: RBTDATAModel,
     val message: String,
     val status: String
 )

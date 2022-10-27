@@ -13,18 +13,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.utils.createTimeLabel
 
 
-internal typealias VideoItemClickFunc = (Video, isMenuClick:Boolean)-> Unit
-internal class VideoAdapter(private val context:Context): ListAdapter<Video,RecyclerView.ViewHolder>(
-    VideoDiffCallBack()
-){
-    val layoutManager: GridLayoutManager = GridLayoutManager(context,1)
-    val isList:Boolean
+internal typealias VideoItemClickFunc = (VideoModel, isMenuClick: Boolean) -> Unit
+
+internal class VideoAdapter(private val context: Context) :
+    ListAdapter<VideoModel, RecyclerView.ViewHolder>(
+        VideoDiffCallBack()
+    ) {
+    val layoutManager: GridLayoutManager = GridLayoutManager(context, 1)
+    val isList: Boolean
         get() = layoutManager.spanCount == 1
-    val isGrid:Boolean
+    val isGrid: Boolean
         get() = layoutManager.spanCount == 2
     private var videoItemClickFunc: VideoItemClickFunc? = null
 
@@ -107,15 +109,25 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
         private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
 
 
-        fun bind(item: Video){
+        fun bind(item: VideoModel) {
 
 
             titleTextView.text = item.title
-            durationTextView.text = createTimeLabel(item.duration?.toLong()?:0L)
+            durationTextView.text = createTimeLabel(item.duration?.toLong() ?: 0L)
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
+                titleTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.my_sdk_color_primary
+                    )
+                )
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
+                titleTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.my_sdk_down_title
+                    )
+                )
             }
             subTitleTextView.text = item.artist
 
@@ -143,13 +155,23 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
         private var playPauseImage:ImageView = itemView.findViewById(R.id.play_pause)
         private var videoImage:ImageView = itemView.findViewById(R.id.videoImage)
 
-        fun bind(item: Video){
+        fun bind(item: VideoModel) {
 
             titleTextView.text = item.title
             if (item.isPlaying) {
-                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
+                titleTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.my_sdk_color_primary
+                    )
+                )
             } else {
-                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
+                titleTextView.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.my_sdk_down_title
+                    )
+                )
             }
             subTitleTextView.text = item.artist
 
@@ -165,22 +187,23 @@ internal class VideoAdapter(private val context:Context): ListAdapter<Video,Recy
                 playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_play_n)
             }
             itemView.setOnClickListener {
-                videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
+                videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition), false)
             }
         }
     }
 
-    enum class ViewType{
+    enum class ViewType {
         LIST,
         GRID
     }
 }
-internal class  VideoDiffCallBack: DiffUtil.ItemCallback<Video>() {
-    override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
+
+internal class VideoDiffCallBack : DiffUtil.ItemCallback<VideoModel>() {
+    override fun areItemsTheSame(oldItem: VideoModel, newItem: VideoModel): Boolean {
         return oldItem.contentID == newItem.contentID
     }
 
-    override fun areContentsTheSame(oldItem: Video, newItem: Video): Boolean {
+    override fun areContentsTheSame(oldItem: VideoModel, newItem: VideoModel): Boolean {
         return oldItem == newItem
     }
 

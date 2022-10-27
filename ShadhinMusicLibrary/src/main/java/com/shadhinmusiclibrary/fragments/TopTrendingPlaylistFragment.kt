@@ -8,14 +8,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 internal class TopTrendingPlaylistFragment : CommonBaseFragment() {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
-    var homePatchDetail: HomePatchDetail? = null
+    var homePatchDetail: HomePatchDetailModel? = null
 
 
     override fun onCreateView(

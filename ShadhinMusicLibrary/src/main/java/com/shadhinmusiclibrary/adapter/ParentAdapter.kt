@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.RBTDATA
+import com.shadhinmusiclibrary.data.model.RBTDATAModel
 
 
 internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
@@ -26,7 +26,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     private var homeListData: MutableList<HomePatchItem> = mutableListOf()
     var search: HomePatchItem? = null
     var download: HomePatchItem? = null
-    private var rbtData: MutableList<RBTDATA> = mutableListOf()
+    private var rbtData: MutableList<RBTDATAModel> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
             VIEW_SEARCH -> R.layout.my_bl_sdk_item_search

@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 
 
 internal class SearchTracksAdapter(
@@ -43,7 +42,7 @@ internal class SearchTracksAdapter(
 
     }
 
-    fun trackContent(dataSongDetail: SongDetail?) {
+    fun trackContent(dataSongDetail: SongDetailModel?) {
 
 //        trackContent?.let {
 //

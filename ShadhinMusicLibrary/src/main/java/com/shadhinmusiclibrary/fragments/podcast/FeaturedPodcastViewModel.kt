@@ -1,26 +1,25 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shadhinmusiclibrary.data.model.FeaturedPodcast
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastData
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastModel
 import com.shadhinmusiclibrary.data.repository.FeaturedPodcastRepository
 
-import com.shadhinmusiclibrary.data.repository.PodcastRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 
 internal class FeaturedPodcastViewModel(private val featuredPodcastRepository: FeaturedPodcastRepository) :
     ViewModel() {
-    private val _featuredpodcastContent: MutableLiveData<ApiResponse<FeaturedPodcast>> =
+    private val _featuredpodcastContent: MutableLiveData<ApiResponse<FeaturedPodcastModel>> =
         MutableLiveData()
-    val featuredpodcastContent: LiveData<ApiResponse<FeaturedPodcast>> = _featuredpodcastContent
-    private val _featuredpodcastContentJC: MutableLiveData<ApiResponse<FeaturedPodcast>> =
+    val featuredpodcastContent: LiveData<ApiResponse<FeaturedPodcastModel>> =
+        _featuredpodcastContent
+    private val _featuredpodcastContentJC: MutableLiveData<ApiResponse<FeaturedPodcastModel>> =
         MutableLiveData()
-    val featuredpodcastContentJC: LiveData<ApiResponse<FeaturedPodcast>> = _featuredpodcastContentJC
+    val featuredpodcastContentJC: LiveData<ApiResponse<FeaturedPodcastModel>> =
+        _featuredpodcastContentJC
 
     fun fetchFeaturedPodcast(isPaid: Boolean) = viewModelScope.launch {
         val response = featuredPodcastRepository.fetchFeaturedPodcast(isPaid)

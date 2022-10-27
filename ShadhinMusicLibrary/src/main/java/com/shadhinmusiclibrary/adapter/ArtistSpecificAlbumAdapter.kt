@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -22,7 +22,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class ArtistSpecificAlbumAdapter() :
     RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: ArtistAlbumModelData? = null
-    private var dataSongDetail: List<SongDetail> = mutableListOf()
+    private var dataSongDetail: List<SongDetailModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -63,7 +63,7 @@ internal class ArtistSpecificAlbumAdapter() :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<SongDetail>) {
+    fun setData(data: List<SongDetailModel>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
         Log.e("PLA", ": $dataSongDetail")
@@ -105,7 +105,7 @@ internal class ArtistSpecificAlbumAdapter() :
 //            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
         }
 
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: SongDetailModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
                 .load(mSongDetail.getImageUrl300Size())

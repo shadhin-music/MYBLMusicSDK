@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.HomeDataModel
 
 
 internal class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<HomeData>()
+    private val adapterData = mutableListOf<HomeDataModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -88,7 +88,7 @@ internal class PopularPodcastAdapter() : RecyclerView.Adapter<PopularPodcastAdap
         }
 
 
-        fun bind(dataModel: HomeData) {
+        fun bind(dataModel: HomeDataModel) {
             when (dataModel) {
 //                is GenreDataModel.Artist -> bindArtist()
 //                is GenreDataModel.Artist2 -> bindArtist2()

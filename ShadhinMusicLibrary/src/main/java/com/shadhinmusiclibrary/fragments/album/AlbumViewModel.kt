@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shadhinmusiclibrary.data.model.APIResponse
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.repository.AlbumContentRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
-import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
 internal class AlbumViewModel(private val albumContentRepository: AlbumContentRepository) :
     ViewModel() {
-    private val _albumContent: MutableLiveData<ApiResponse<APIResponse<MutableList<SongDetail>>>> =
+    private val _albumContent: MutableLiveData<ApiResponse<APIResponse<MutableList<SongDetailModel>>>> =
         MutableLiveData()
-    val albumContent: LiveData<ApiResponse<APIResponse<MutableList<SongDetail>>>> = _albumContent
+    val albumContent: LiveData<ApiResponse<APIResponse<MutableList<SongDetailModel>>>> =
+        _albumContent
 
     fun fetchAlbumContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchAlbumContent(contentId)

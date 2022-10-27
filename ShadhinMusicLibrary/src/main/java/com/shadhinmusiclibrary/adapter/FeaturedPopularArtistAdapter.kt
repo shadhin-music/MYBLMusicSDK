@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 internal class FeaturedPopularArtistAdapter(
-    val homePatchItem1: List<Data>,
+    val homePatchItem1: List<PodcastDetailsModel>,
     private val homeCallBack: PatchCallBack
 ) : RecyclerView.Adapter<FeaturedPopularArtistAdapter.ViewHolder>() {
 

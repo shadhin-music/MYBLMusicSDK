@@ -12,7 +12,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -56,7 +56,7 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
 
     fun setData(
         songTrack: MutableList<SongTrack>,
-        rootPatch: HomePatchDetail,
+        rootPatch: HomePatchDetailModel,
         mediaId: String?
     ) {
         this.tracks = mutableListOf()

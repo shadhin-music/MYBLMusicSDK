@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import java.io.Serializable
 
 @Keep
-internal class FeaturedSongDetail : IMusicModel {
+internal class FeaturedSongDetailModel : IMusicModel {
     @SerializedName("contentID")
     override var content_Id: String? = null
 

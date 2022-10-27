@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.adapter.PlaylistTrackAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -112,7 +112,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         }
     }
 
-    private fun updateAndSetAdapter(songList: MutableList<SongDetail>) {
+    private fun updateAndSetAdapter(songList: MutableList<SongDetailModel>) {
         updatedSongList = mutableListOf()
         for (songItem in songList) {
             updatedSongList.add(

@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 
 
 internal class BottomSheetArtistSongsAdapter:
     RecyclerView.Adapter<BottomSheetArtistSongsAdapter.ViewHolder>() {
- //   private var artistContent: ArtistContent? = null
-    private var artistContentList:MutableList<ArtistContentData> = ArrayList()
-    private var parentView:View?=null
+    //   private var artistContent: ArtistContent? = null
+    private var artistContentList: MutableList<ArtistContentDataModel> = ArrayList()
+    private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
@@ -38,7 +38,7 @@ internal class BottomSheetArtistSongsAdapter:
 
     }
 
-    fun artistContent(artistContent: ArtistContent?) {
+    fun artistContent(artistContent: ArtistContentModel?) {
 
         artistContent?.data?.let {
 
@@ -52,7 +52,7 @@ internal class BottomSheetArtistSongsAdapter:
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistContent: ArtistContentData) {
+        fun bindItems(artistContent: ArtistContentDataModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             val url: String = artistContent.imageUrl!!
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)

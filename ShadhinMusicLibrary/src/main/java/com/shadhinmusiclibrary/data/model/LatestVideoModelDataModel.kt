@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-internal data class LatestVideoModelData(
+internal data class LatestVideoModelDataModel(
     val AlbumId: String,
     val AlbumImage: String,
     val AlbumName: String,

@@ -14,22 +14,21 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
-import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
+    var homePatchDetail: HomePatchDetailModel?,
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
 
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
-    var banner: ArtistBanner? = null
+    var banner: ArtistBannerModel? = null
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
@@ -53,7 +52,7 @@ internal class ArtistHeaderAdapter(
         return 1
     }
 
-    fun setSongAndData(data: MutableList<ArtistContentData>, rootPatch: HomePatchDetail) {
+    fun setSongAndData(data: MutableList<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
@@ -64,7 +63,7 @@ internal class ArtistHeaderAdapter(
         notifyDataSetChanged()
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
+    fun setData(homePatchDetail: HomePatchDetailModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -86,7 +85,7 @@ internal class ArtistHeaderAdapter(
 //        }
     }
 
-    fun artistBanner(banner: ArtistBanner?) {
+    fun artistBanner(banner: ArtistBannerModel?) {
         this.banner = banner
         notifyDataSetChanged()
     }
@@ -95,7 +94,7 @@ internal class ArtistHeaderAdapter(
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
 
-        fun bindItems(homePatchDetail: HomePatchDetail?) {
+        fun bindItems(homePatchDetail: HomePatchDetailModel?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 

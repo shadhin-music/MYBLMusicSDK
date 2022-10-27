@@ -10,12 +10,12 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
+    var homePatchDetail: HomePatchDetailModel?,
     private val itemClickCB: OnItemClickCallback,
 ) : RecyclerView.Adapter<PlaylistHeaderAdapter.PlaylistHeaderVH>() {
 
@@ -41,7 +41,7 @@ internal class PlaylistHeaderAdapter(
         return 1
     }
 
-    fun setSongAndData(data: MutableList<SongDetail>, homePatchDetail: HomePatchDetail) {
+    fun setSongAndData(data: MutableList<SongDetailModel>, homePatchDetail: HomePatchDetailModel) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
@@ -52,7 +52,7 @@ internal class PlaylistHeaderAdapter(
         notifyDataSetChanged()
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
+    fun setData(homePatchDetail: HomePatchDetailModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -66,7 +66,7 @@ internal class PlaylistHeaderAdapter(
         //        private lateinit var ivFavorite: ImageView
         var ivPlayBtn: ImageView? = null
         var menu: ImageView? = null
-        fun bindItems(homePatchDetail: HomePatchDetail?) {
+        fun bindItems(homePatchDetail: HomePatchDetailModel?) {
 
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)

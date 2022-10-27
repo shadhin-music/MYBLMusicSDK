@@ -13,8 +13,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -23,7 +23,7 @@ internal class PlaylistAdapter(
     private val bsDialogItemCallback: BottomSheetDialogItemCallback
 ) :
     RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
-    private var rootDataContent: HomePatchDetail? = null
+    private var rootDataContent: HomePatchDetailModel? = null
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistVH {
@@ -101,13 +101,13 @@ internal class PlaylistAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongData(data: MutableList<SongDetail>) {
+    fun setSongData(data: MutableList<SongDetailModel>) {
 //        this.dataSongDetail = data
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRootData(data: HomePatchDetail?) {
+    fun setRootData(data: HomePatchDetailModel?) {
         this.rootDataContent = data
         notifyDataSetChanged()
     }
@@ -123,7 +123,7 @@ internal class PlaylistAdapter(
         var ivPlayBtn: ImageView? = null
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(root: HomePatchDetail) {
+        fun bindRoot(root: HomePatchDetailModel) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)

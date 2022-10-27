@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 
@@ -244,7 +244,7 @@ internal object UtilHelper {
         for (musicItem in musicList) {
             musicItem.apply {
                 songDetailList.add(
-                    SongDetail().apply {
+                    SongDetailModel().apply {
                         content_Id = mediaId ?: ""
                         imageUrl = displayIconUrl ?: ""
                         titleName = title ?: ""
@@ -270,10 +270,10 @@ internal object UtilHelper {
         return songDetailList
     }
 
-    fun getSongDetailToMusic(mMusic: Music): SongDetail {
+    fun getSongDetailToMusic(mMusic: Music): SongDetailModel {
         mMusic.apply {
 //            val songDetail = SongDetail()
-            return SongDetail().apply {
+            return SongDetailModel().apply {
                 content_Id = mediaId ?: ""
                 imageUrl = displayIconUrl ?: ""
                 titleName = title ?: ""
@@ -296,9 +296,9 @@ internal object UtilHelper {
     }
 
     fun getSongDetailAndRootData(
-        mSongDet: SongDetail,
-        rootPatch: HomePatchDetail
-    ): SongDetail {
+        mSongDet: SongDetailModel,
+        rootPatch: HomePatchDetailModel
+    ): SongDetailModel {
         mSongDet.apply {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
@@ -308,7 +308,7 @@ internal object UtilHelper {
     }
 
     fun getFeaturedSongDetailAndRootData(
-        mSongDet: FeaturedSongDetail/*,
+        mSongDet: FeaturedSongDetailModel/*,
         rootPatch: HomePatchDetail*/
     ): IMusicModel {
 //        val aaa = IMu
@@ -337,9 +337,9 @@ internal object UtilHelper {
     }
 
     fun getArtistContentDataToRootData(
-        mSongDet: ArtistContentData,
-        rootPatch: HomePatchDetail
-    ): ArtistContentData {
+        mSongDet: ArtistContentDataModel,
+        rootPatch: HomePatchDetailModel
+    ): ArtistContentDataModel {
         mSongDet.apply {
             mSongDet.apply {
                 artist_Id = album_Id
@@ -354,7 +354,7 @@ internal object UtilHelper {
 
     fun getTrackToRootData(
         mSongTrack: SongTrack,
-        rootPatch: HomePatchDetail
+        rootPatch: HomePatchDetailModel
     ): SongTrack {
         mSongTrack.apply {
             rootContentId = rootPatch.ContentID
@@ -364,20 +364,20 @@ internal object UtilHelper {
         return mSongTrack
     }
 
-    fun getHomePatchDetailToData(data: Data): HomePatchDetail {
-        return HomePatchDetail(
+    fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel): HomePatchDetailModel {
+        return HomePatchDetailModel(
             "0",
             "",
             "",
-            data.ArtistName,
-            data.Id,
+            podcastDetails.ArtistName,
+            podcastDetails.Id,
             "",
             "",
-            data.Id,
+            podcastDetails.Id,
             "A",
             "",
             "0",
-            data.Follower,
+            podcastDetails.Follower,
             false,
             "",
             0,
@@ -392,7 +392,7 @@ internal object UtilHelper {
             "",
             "",
             "",
-            data.Image,
+            podcastDetails.Image,
             "",
             ""
         )
@@ -481,11 +481,11 @@ internal object UtilHelper {
         )
     }*/
 
-    fun getHomePatchItemToData(data: List<Data>): HomePatchItem {
-        val mPatchDetail = mutableListOf<HomePatchDetail>()
+    fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItem {
+        val mPatchDetail = mutableListOf<HomePatchDetailModel>()
         for (patchItem in data) {
             mPatchDetail.add(
-                HomePatchDetail(
+                HomePatchDetailModel(
                     "0",
                     "",
                     "",
@@ -529,9 +529,9 @@ internal object UtilHelper {
         )
     }
 
-    fun getHomePatchDetailToAlbumModel(albumModel: ArtistAlbumModelData): HomePatchDetail {
+    fun getHomePatchDetailToAlbumModel(albumModel: ArtistAlbumModelData): HomePatchDetailModel {
         albumModel.apply {
-            return HomePatchDetail(
+            return HomePatchDetailModel(
                 AlbumId = album_Id ?: "",
                 ArtistId = album_Id ?: "",
                 ContentID = content_Id ?: "",
@@ -565,9 +565,9 @@ internal object UtilHelper {
         }
     }
 
-    fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetail {
+    fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetailModel {
         songDetail.apply {
-            return HomePatchDetail(
+            return HomePatchDetailModel(
                 AlbumId = album_Id ?: content_Id!!,
                 ArtistId = artist_Id ?: "",
                 ContentID = content_Id ?: "",
@@ -601,9 +601,9 @@ internal object UtilHelper {
         }
     }
 
-    fun getHomePatchDetailToFeaturedPodcastDetails(episode: FeaturedPodcastDetails): HomePatchDetail {
+    fun getHomePatchDetailToFeaturedPodcastDetails(episode: FeaturedPodcastDetailsModel): HomePatchDetailModel {
         episode.apply {
-            return HomePatchDetail(
+            return HomePatchDetailModel(
                 AlbumId = EpisodeId,
                 AlbumImage = "",
                 AlbumName = EpisodeName,
@@ -637,19 +637,19 @@ internal object UtilHelper {
         }
     }
 
-     fun getVideoToSearchData(data: SearchData): Video {
-         data.apply {
-             return Video(
-                 albumId = album_Id,
-                 albumImage = albumImage,
-                 albumName = album_Name,
-                 artist = artistName,
-                 artistId = album_Id,
-                 artistImage = artistImage,
-                 banner = bannerImage,
-                 contentID = content_Id,
-                 contentType = content_Type,
-                 createDate = createDate,
+    fun getVideoToSearchData(data: SearchData): VideoModel {
+        data.apply {
+            return VideoModel(
+                albumId = album_Id,
+                albumImage = albumImage,
+                albumName = album_Name,
+                artist = artistName,
+                artistId = album_Id,
+                artistImage = artistImage,
+                banner = bannerImage,
+                contentID = content_Id,
+                contentType = content_Type,
+                createDate = createDate,
                  duration = total_duration,
                  follower = follower,
                  isPaid = isPaid,

@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.library.player.utils.convater
 
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.data.model.Music
 
 internal class MusicConverterFactory private constructor(private val obj:Any){
@@ -8,7 +8,7 @@ internal class MusicConverterFactory private constructor(private val obj:Any){
     init { initialization() }
     private fun initialization(){
         converter = when(obj){
-            is ArtistContentData -> ArtistContentToMusic(obj)
+            is ArtistContentDataModel -> ArtistContentToMusic(obj)
             else -> null
         }
     }

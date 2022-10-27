@@ -16,13 +16,13 @@ import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
-    private lateinit var listSongDetail: MutableList<SongDetail>
+    private lateinit var listSongDetail: MutableList<SongDetailModel>
     private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +39,7 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         listSongDetail = mutableListOf()
         argHomePatchDetail!!.apply {
             listSongDetail.add(
-                SongDetail()
+                SongDetailModel()
             )
         }
         val config = ConcatAdapter.Config.Builder()

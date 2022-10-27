@@ -28,12 +28,10 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
-import com.shadhinmusiclibrary.data.model.HomeData
+import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.RBTDATA
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
@@ -132,7 +130,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     }
 
 
-    private fun viewDataInRecyclerView(homeData: HomeData?) {
+    private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
         if (dataAdapter == null) {
             footerAdapter = HomeFooterAdapter()
 
@@ -246,7 +244,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     }
 
     //Copy paste from SDKMainActivity
-    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
+    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetailModel) {
         Glide.with(this)
             .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))

@@ -21,11 +21,9 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -219,7 +217,7 @@ internal class AlbumDetailsFragment :
         artistAlbumModelData: List<ArtistAlbumModelData>
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        val data = HomePatchDetail(
+        val data = HomePatchDetailModel(
             AlbumId = mArtAlbumMod.album_Id ?: "",
             ArtistId = mArtAlbumMod.album_Id ?: "",
             ContentID = mArtAlbumMod.content_Id ?: "",

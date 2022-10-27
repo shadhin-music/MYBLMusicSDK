@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 
 
 internal class FeaturePodcastJCRECAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturePodcastJCRECAdapter.ViewHolder>() {
-    var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
-    var showName:String ?= null
+    var data: MutableList<FeaturedPodcastDetailsModel> = mutableListOf()
+    var showName: String? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
             LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
@@ -37,8 +37,8 @@ internal class FeaturePodcastJCRECAdapter(var cilckCallBack: FeaturedPodcastOnIt
     }
 
     @JvmName("setData1")
-    fun setData(data: List<FeaturedPodcastDetails>?,showName:String) {
-        this.data= data as MutableList<FeaturedPodcastDetails>
+    fun setData(data: List<FeaturedPodcastDetailsModel>?, showName: String) {
+        this.data = data as MutableList<FeaturedPodcastDetailsModel>
         this.showName = showName
         notifyDataSetChanged()
     }

@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.fragments.amar_tunes
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,9 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.RBTDATA
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.data.model.RBTDATAModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
@@ -25,13 +22,13 @@ import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
 internal class AmartunesWebviewFragment : CommonBaseFragment() {
-    var data: RBTDATA? = null
+    var data: RBTDATAModel? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     private var contentType: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            data = it.getSerializable("data") as RBTDATA?
+            data = it.getSerializable("data") as RBTDATAModel?
             contentType = it.getString(CONTENT_TYPE)
         }
     }

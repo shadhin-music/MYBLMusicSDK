@@ -16,7 +16,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -90,7 +90,7 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<PodcastDetailsModel>) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
         navController.navigate(

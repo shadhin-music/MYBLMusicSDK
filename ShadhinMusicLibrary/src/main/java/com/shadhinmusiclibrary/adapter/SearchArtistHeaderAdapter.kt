@@ -15,8 +15,7 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 internal class SearchArtistHeaderAdapter(
@@ -26,7 +25,7 @@ internal class SearchArtistHeaderAdapter(
 
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
-    var banner: ArtistBanner? = null
+    var banner: ArtistBannerModel? = null
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
@@ -71,7 +70,7 @@ internal class SearchArtistHeaderAdapter(
 //        }
     }
 
-    fun artistBanner(banner: ArtistBanner?) {
+    fun artistBanner(banner: ArtistBannerModel?) {
         this.banner = banner
     }
 

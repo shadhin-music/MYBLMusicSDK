@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.SongTrack
 import com.shadhinmusiclibrary.utils.ExpandableTextView
@@ -47,7 +47,7 @@ internal class PodcastHeaderAdapter(
     fun setTrackData(
         episode: List<Episode>,
         data: MutableList<SongTrack>,
-        rootPatch: HomePatchDetail
+        rootPatch: HomePatchDetailModel
     ) {
         this.listSongTrack = mutableListOf()
         for (songItem in data) {

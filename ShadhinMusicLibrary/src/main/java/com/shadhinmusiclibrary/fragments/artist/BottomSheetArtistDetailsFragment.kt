@@ -26,9 +26,9 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -39,11 +39,11 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItem? = null
-    var songDetail: SongDetail? = null
-    var homePatchDetail: HomePatchDetail? = null
+    var songDetail: SongDetailModel? = null
+    var homePatchDetail: HomePatchDetailModel? = null
 
 
-    var artistContent: ArtistContent? = null
+    var artistContent: ArtistContentModel? = null
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
@@ -59,8 +59,8 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
         arguments?.let {
             homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
             AppConstantUtils.SongDetail
-            songDetail = it.getSerializable(AppConstantUtils.SongDetail) as SongDetail?
-            homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetail?
+            songDetail = it.getSerializable(AppConstantUtils.SongDetail) as SongDetailModel?
+            homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetailModel?
         }
     }
 
@@ -199,7 +199,7 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
         parentRecycler.scrollToPosition(0)
     }
 
-    fun loadNewArtist(patchDetails: HomePatchDetail) {
+    fun loadNewArtist(patchDetails: HomePatchDetailModel) {
         Log.e("Check", "loadNewArtist")
     }
 

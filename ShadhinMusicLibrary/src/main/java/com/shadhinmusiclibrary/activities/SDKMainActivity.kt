@@ -32,9 +32,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -95,7 +94,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
 
-    private lateinit var listData: MutableList<HomePatchDetail>
+    private lateinit var listData: MutableList<HomePatchDetailModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -824,7 +823,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -867,7 +866,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -907,7 +906,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -953,7 +952,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
@@ -977,7 +976,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
         bsdNavController.navigate(R.id.artist_details_fragment,
@@ -988,7 +987,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
+                    HomePatchDetailModel(
                         AlbumId = "",
                         ArtistId = mSongDetails.artist_Id ?: "",
                         ContentID = mSongDetails.content_Id ?: "",
@@ -1028,7 +1027,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
         bsdNavController.navigate(R.id.to_album_details,

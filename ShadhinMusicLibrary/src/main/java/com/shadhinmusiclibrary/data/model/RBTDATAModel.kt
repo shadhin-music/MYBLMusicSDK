@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-internal data class RBTDATA(
+internal data class RBTDATAModel(
     val pwaUrl: String,
     val pwatopchartURL: String,
     val redirectUrl: String

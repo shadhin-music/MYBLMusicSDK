@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.VideoModel
 
 
 internal class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem?) : RecyclerView.Adapter<TopTrendingBanglaMusicAdapter.ViewHolder>() {
@@ -46,13 +46,13 @@ internal class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem
             Glide.with(itemView.context).load(url).into(imageView)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)
-                val videoArray = ArrayList<Video>()
+                val videoArray = ArrayList<VideoModel>()
                 for (item in argHomePatchItem.Data) {
-                    val video = Video()
+                    val video = VideoModel()
                     video.setData(item)
                     videoArray.add(video)
                 }
-                val videos :ArrayList<Video> = videoArray
+                val videos: ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, absoluteAdapterPosition)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 itemView.context.startActivity(intent)

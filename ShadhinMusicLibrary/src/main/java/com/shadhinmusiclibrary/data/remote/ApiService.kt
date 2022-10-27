@@ -7,8 +7,8 @@ import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.data.model.search.SearchModel
 import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
+import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
@@ -18,12 +18,12 @@ internal interface ApiService {
     suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?,
-    ): HomeData
+    ): HomeDataModel
 
     @GET("Album/GetAlbumContent")
     suspend fun fetchAlbumContent(
         @Query("id") contentId: String,
-    ): APIResponse<MutableList<SongDetail>>
+    ): APIResponse<MutableList<SongDetailModel>>
 
     @GET("?method=artist.getinfo")
     suspend fun fetchArtistBiography(
@@ -34,12 +34,12 @@ internal interface ApiService {
     suspend fun fetchArtistBannerData(
         @Query("id") id: String?,
 
-        ): ArtistBanner
+        ): ArtistBannerModel
 
     @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
         @Query("id") id: String?,
-    ): ArtistContent
+    ): ArtistContentModel
 
     @GET("Artist/ArtistAlbumsbyidtype")
     suspend fun fetchArtistAlbum(
@@ -50,7 +50,7 @@ internal interface ApiService {
     @GET("Playlist/GetPlaylistContentById")
     suspend fun fetchGetPlaylistContentById(
         @Query("id") id: String,
-    ): APIResponse<MutableList<SongDetail>>
+    ): APIResponse<MutableList<SongDetailModel>>
 
     @GET("Podcast/PodcastbyepisodeIdV3")
     suspend fun fetchPodcastByID(
@@ -63,7 +63,7 @@ internal interface ApiService {
     @GET("ClientPodcast/PodcastHomeDataV1")
     suspend fun fetchFeturedPodcast(
         @Query("isPaid") isPaid: Boolean,
-    ): FeaturedPodcast
+    ): FeaturedPodcastModel
 
     @GET("artist/getpopularartist")
     suspend fun fetchPopularArtist(): PopularArtistModel
@@ -72,10 +72,10 @@ internal interface ApiService {
     suspend fun fetchLatestVideo(): LatestVideoModel
 
     @GET("track/GetLatestTrack")
-    suspend fun fetchFeaturedTrackList(): APIResponse<MutableList<FeaturedSongDetail>>
+    suspend fun fetchFeaturedTrackList(): APIResponse<MutableList<FeaturedSongDetailModel>>
 
     @GET("RBTPWA/GETPWATOKEN")
-    suspend fun rbtURL(): RBT
+    suspend fun rbtURL(): RBTModel
 
     @GET("Search/SearchByKeyword")
     suspend fun getSearch(

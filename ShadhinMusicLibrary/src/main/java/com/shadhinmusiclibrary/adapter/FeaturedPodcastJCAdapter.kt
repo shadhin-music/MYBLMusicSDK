@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 
 
 internal class FeaturedPodcastJCAdapter(
-    var data: MutableList<FeaturedPodcastDetails>,var clickCallback: FeaturedPodcastOnItemClickCallback
+    var data: MutableList<FeaturedPodcastDetailsModel>,
+    var clickCallback: FeaturedPodcastOnItemClickCallback
 ) : RecyclerView.Adapter<FeaturedPodcastJCAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,8 +54,8 @@ internal class FeaturedPodcastJCAdapter(
     }
 
     @JvmName("setData1")
-    fun setData(data: List<FeaturedPodcastDetails>?) {
-        this.data= data as MutableList<FeaturedPodcastDetails>
+    fun setData(data: List<FeaturedPodcastDetailsModel>?) {
+        this.data = data as MutableList<FeaturedPodcastDetailsModel>
         notifyDataSetChanged()
     }
 

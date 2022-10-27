@@ -7,7 +7,7 @@ import java.io.Serializable
 
 @Parcelize
 @Keep
-internal data class HomePatchDetail(
+internal data class HomePatchDetailModel(
     val AlbumId: String,
     val AlbumImage: String,
     val AlbumName: String,

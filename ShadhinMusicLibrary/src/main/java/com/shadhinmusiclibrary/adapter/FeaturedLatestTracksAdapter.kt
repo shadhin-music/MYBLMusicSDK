@@ -13,7 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
+import com.shadhinmusiclibrary.data.model.FeaturedSongDetailModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -57,7 +57,7 @@ internal class FeaturedLatestTracksAdapter(
     }
 
     fun setData(
-        data: MutableList<FeaturedSongDetail>,
+        data: MutableList<FeaturedSongDetailModel>,
         /*   rootPatch: HomePatchDetail,*/
         mediaId: String?
     ) {

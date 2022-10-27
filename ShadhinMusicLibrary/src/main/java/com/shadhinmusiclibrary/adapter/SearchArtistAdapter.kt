@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.utils.CircleImageView
 
@@ -42,7 +42,7 @@ internal class SearchArtistAdapter(
 
     }
 
-    fun trackContent(dataSongDetail: SongDetail?) {
+    fun trackContent(dataSongDetail: SongDetailModel?) {
 //        trackContent?.let {
 //            this.artistContentList.clear()
 //            this.artistContentList.addAll(it)

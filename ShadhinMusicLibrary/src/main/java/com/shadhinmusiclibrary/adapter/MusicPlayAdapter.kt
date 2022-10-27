@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 

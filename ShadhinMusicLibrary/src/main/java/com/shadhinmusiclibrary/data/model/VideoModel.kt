@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
-internal data class Video(
+internal data class VideoModel(
     @SerializedName("AlbumId")
     var albumId: String? = null,
     @SerializedName("AlbumImage")
@@ -73,7 +73,7 @@ internal data class Video(
     var isPlaystate: Boolean = false
 ) : Parcelable {
 
-    fun setData(data: HomePatchDetail) {
+    fun setData(data: HomePatchDetailModel) {
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName
@@ -106,7 +106,7 @@ internal data class Video(
         type = data.Type
     }
 
-    fun setData2(data: LatestVideoModelData) {
+    fun setData2(data: LatestVideoModelDataModel) {
         albumId = data.AlbumId
         albumImage = data.AlbumImage
         albumName = data.AlbumName

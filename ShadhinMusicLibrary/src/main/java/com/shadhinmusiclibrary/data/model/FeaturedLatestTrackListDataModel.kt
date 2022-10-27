@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model
 import androidx.annotation.Keep
 
 @Keep
-internal data class FeaturedLatestTrackListData(
+internal data class FeaturedLatestTrackListDataModel(
     val contentID: String,
     val image: String,
     val title: String,

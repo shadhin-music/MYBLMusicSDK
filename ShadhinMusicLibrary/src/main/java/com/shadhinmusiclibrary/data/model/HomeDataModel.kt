@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model
 import androidx.annotation.Keep
 
 @Keep
-internal data class HomeData(
+internal data class HomeDataModel(
     val data: List<HomePatchItem>,
     val fav: Any,
     val follow: Any,

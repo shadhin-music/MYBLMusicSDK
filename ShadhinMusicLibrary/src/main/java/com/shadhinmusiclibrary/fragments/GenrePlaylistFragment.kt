@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 
 internal class GenrePlaylistFragment : Fragment() {
 
     var homePatchItem: HomePatchItem? = null
-    var homePatchDetail: HomePatchDetail? = null
+    var homePatchDetail: HomePatchDetailModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

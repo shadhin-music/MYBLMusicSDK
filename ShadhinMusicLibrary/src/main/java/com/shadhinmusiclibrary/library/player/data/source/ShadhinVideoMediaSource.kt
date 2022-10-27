@@ -9,7 +9,7 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
@@ -19,7 +19,7 @@ import com.shadhinmusiclibrary.utils.randomString
 
 internal class ShadhinVideoMediaSource(
     private val context: Context,
-    private val videoList: List<Video>,
+    private val videoList: List<VideoModel>,
     private val cache: SimpleCache,
     private val musicRepository: MusicRepository
 ) :MediaSources{
@@ -27,13 +27,15 @@ internal class ShadhinVideoMediaSource(
         return videoList.map { createSource(it) }
     }
 
-    private fun createSource(video: Video): ProgressiveMediaSource {
-        val dataSource: DataSource.Factory = ShadhinDataSourceFactory.build(context,toMusic(video),cache,musicRepository)
+    private fun createSource(video: VideoModel): ProgressiveMediaSource {
+        val dataSource: DataSource.Factory =
+            ShadhinDataSourceFactory.build(context, toMusic(video), cache, musicRepository)
         val pla = toVideoMediaItem(video)
         return ProgressiveMediaSource.Factory(dataSource)
             .createMediaSource(pla)
     }
-    private fun toMusic(video: Video): Music {
+
+    private fun toMusic(video: VideoModel): Music {
         return Music(
             mediaId = video.contentID,
             title = video.title,
@@ -50,15 +52,16 @@ internal class ShadhinVideoMediaSource(
         ).applyRootInfo(
             rootId = video.rootId,
             rootType = video.rootType,
-           // rootTitle = video.rootTitle,
-           // rootImage = video.rootImage
+            // rootTitle = video.rootTitle,
+            // rootImage = video.rootImage
         )
     }
-   private fun toVideoMediaItem(video: Video): MediaItem {
+
+    private fun toVideoMediaItem(video: VideoModel): MediaItem {
         val videoUrl = "${Constants.FILE_BASE_URL}${video.playUrl}"
 
         return MediaItem.Builder()
-            .setMediaId(video.contentID?: randomString(5))
+            .setMediaId(video.contentID ?: randomString(5))
             .setUri(videoUrl)
             .setMediaMetadata(
                 MediaMetadata.Builder()

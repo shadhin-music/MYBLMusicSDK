@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
     RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
-    private var rootDataContent: HomePatchDetail? = null
-    private var dataSongDetail: List<SongDetail> = mutableListOf()
+    private var rootDataContent: HomePatchDetailModel? = null
+    private var dataSongDetail: List<SongDetailModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenrePlaylistVH {
         val layout = when (viewType) {
@@ -67,14 +67,14 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongData(data: List<SongDetail>) {
+    fun setSongData(data: List<SongDetailModel>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
         Log.e("PLA", ": $dataSongDetail")
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRootData(data: HomePatchDetail?) {
+    fun setRootData(data: HomePatchDetailModel?) {
         this.rootDataContent = data
         notifyDataSetChanged()
     }
@@ -90,7 +90,7 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
         private lateinit var ivPlayBtn: ImageView
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(root: HomePatchDetail) {
+        fun bindRoot(root: HomePatchDetailModel) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
@@ -109,7 +109,7 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
 //            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
         }
 
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: SongDetailModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
                 .load(mSongDetail.getImageUrl300Size())

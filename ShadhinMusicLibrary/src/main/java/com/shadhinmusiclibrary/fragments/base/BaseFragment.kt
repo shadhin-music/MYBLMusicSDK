@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -20,10 +20,11 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fragment(),
     FragmentEntryPoint {
     var viewModel: V? = null
-   // var viewModel2: V? = null
+
+    // var viewModel2: V? = null
     var argHomePatchItem: HomePatchItem? = null
-    var argHomePatchDetail: HomePatchDetail? = null
-    lateinit var updatedSongList: MutableList<SongDetail>
+    var argHomePatchDetail: HomePatchDetailModel? = null
+    lateinit var updatedSongList: MutableList<SongDetailModel>
     lateinit var playerViewModel: PlayerViewModel
 //    var viewModelFactory: VMF? = null
 
@@ -36,7 +37,7 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
             argHomePatchDetail =
-                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
+                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }
         createPlayerVM()
         viewModel = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
