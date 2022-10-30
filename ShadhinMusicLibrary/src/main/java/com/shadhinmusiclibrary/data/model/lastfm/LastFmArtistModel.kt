@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Keep
-internal class LastFmArtist {
+internal class LastFmArtistModel {
     @SerializedName("name")
     @Expose
     var name: String? = null
@@ -16,5 +16,5 @@ internal class LastFmArtist {
 
     @SerializedName("image")
     @Expose
-    var image: List<LastFmImage>? = null
+    var image: List<LastFmImageModel>? = null
 }

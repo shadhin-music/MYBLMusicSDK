@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model.podcast
 import androidx.annotation.Keep
 
 @Keep
-internal data class Data(
+internal data class DataModel(
     val About: String,
     val Code: String,
     val ContentType: String,

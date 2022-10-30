@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 @Keep
-internal class Tag {
+internal class TagModel {
     @SerializedName("name")
     @Expose
     var name: String? = null

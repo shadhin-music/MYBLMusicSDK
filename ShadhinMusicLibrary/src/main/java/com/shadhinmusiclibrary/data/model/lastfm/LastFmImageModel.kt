@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 @Keep
-internal class LastFmImage {
+internal class LastFmImageModel {
     @SerializedName("#text")
     @Expose
     var text: String? = null

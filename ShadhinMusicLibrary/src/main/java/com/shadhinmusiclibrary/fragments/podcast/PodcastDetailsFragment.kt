@@ -21,7 +21,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Data
+import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
@@ -39,7 +39,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
-    var data: Data? = null
+    var data: DataModel? = null
     var episode: List<EpisodeModel>? = null
 
     var podcastType: String = ""

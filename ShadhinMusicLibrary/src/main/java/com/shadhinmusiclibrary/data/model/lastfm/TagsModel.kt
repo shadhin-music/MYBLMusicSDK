@@ -5,12 +5,8 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 @Keep
-internal class Stats {
-    @SerializedName("listeners")
+internal class TagsModel {
+    @SerializedName("tag")
     @Expose
-    var listeners: String? = null
-
-    @SerializedName("playcount")
-    @Expose
-    var playcount: String? = null
+    var tag: List<TagModel>? = null
 }

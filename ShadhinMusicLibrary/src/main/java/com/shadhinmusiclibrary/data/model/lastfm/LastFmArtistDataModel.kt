@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Keep
-internal class LastFmArtistData {
+internal class LastFmArtistDataModel {
     @SerializedName("name")
     @Expose
     var name: String? = null
@@ -20,7 +20,7 @@ internal class LastFmArtistData {
 
     @SerializedName("image")
     @Expose
-    var image: List<LastFmImageData>? = null
+    var image: List<LastFmImageDataModel>? = null
 
     @SerializedName("streamable")
     @Expose
@@ -32,7 +32,7 @@ internal class LastFmArtistData {
 
     @SerializedName("stats")
     @Expose
-    var stats: Stats? = null
+    var stats: StatsModel? = null
 
     @SerializedName("similar")
     @Expose
@@ -40,11 +40,11 @@ internal class LastFmArtistData {
 
     @SerializedName("tags")
     @Expose
-    var tags: Tags? = null
+    var tags: TagsModel? = null
 
     @SerializedName("bio")
     @Expose
-    var bio: Bio? = null
+    var bio: BioModel? = null
     override fun toString(): String {
         return "LastFmArtistData{" +
                 "name='" + name + '\'' +

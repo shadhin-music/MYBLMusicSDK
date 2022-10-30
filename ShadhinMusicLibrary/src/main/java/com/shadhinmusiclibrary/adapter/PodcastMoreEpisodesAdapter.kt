@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.podcast.Data
+import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 
 
-internal class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: HomeCallBack) : RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
+internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack: HomeCallBack) :
+    RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
     var episode: MutableList<EpisodeModel> = ArrayList()
     private var filteredItem: MutableList<EpisodeModel>? = null
     override fun onCreateViewHolder(

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 @Keep
-internal class Bio {
+internal class BioModel {
     @SerializedName("links")
     @Expose
     var links: Links? = null

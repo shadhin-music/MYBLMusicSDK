@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName
 internal class Similar {
     @SerializedName("artist")
     @Expose
-    var artist: List<LastFmArtist>? = null
+    var artist: List<LastFmArtistModel>? = null
 }

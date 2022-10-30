@@ -8,5 +8,5 @@ import com.google.gson.annotations.Expose
 internal class Links {
     @SerializedName("link")
     @Expose
-    var link: Link? = null
+    var link: LinkModel? = null
 }

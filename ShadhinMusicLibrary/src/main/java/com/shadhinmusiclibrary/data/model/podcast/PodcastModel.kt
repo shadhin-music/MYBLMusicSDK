@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class PodcastModel(
-    val `data`: Data,
+    val `data`: DataModel,
     val message: String,
     val status: String
 )

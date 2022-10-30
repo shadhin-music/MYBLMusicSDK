@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.google.gson.annotations.Expose
 
 @Keep
-internal class LastFmImageData {
+internal class LastFmImageDataModel {
     @SerializedName("#text")
     @Expose
     var text: String? = null
@@ -13,6 +13,7 @@ internal class LastFmImageData {
     @SerializedName("size")
     @Expose
     var size: String? = null
+
     override fun toString(): String {
         return "LastFmImageData{" +
                 "text='" + text + '\'' +

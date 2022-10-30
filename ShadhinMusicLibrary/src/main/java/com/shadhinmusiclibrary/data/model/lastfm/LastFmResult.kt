@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName
 internal class LastFmResult {
     @SerializedName("artist")
     @Expose
-    var artist: LastFmArtistData? = null
+    var artist: LastFmArtistDataModel? = null
 }
