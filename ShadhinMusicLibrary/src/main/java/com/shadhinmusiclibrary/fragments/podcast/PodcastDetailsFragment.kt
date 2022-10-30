@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -159,7 +159,10 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         Log.e("TAG", "onClickItemAndAllItem: " + selectedHomePatchItem)
         //  setAdapter(patch)
 //        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
@@ -170,7 +173,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
 //        parentRecycler.scrollToPosition(0)
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {

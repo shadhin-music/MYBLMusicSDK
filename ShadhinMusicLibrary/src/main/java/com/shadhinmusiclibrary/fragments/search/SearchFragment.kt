@@ -36,7 +36,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -499,7 +499,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         val patchItem = Bundle().apply {
             putSerializable(
                 AppConstantUtils.PatchItem,
-                HomePatchItem("", "A", listOf(), "", "", 0, 0)
+                HomePatchItemModel("", "A", listOf(), "", "", 0, 0)
             )
             putSerializable(
                 AppConstantUtils.PatchDetail,
@@ -602,9 +602,9 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 val intent = Intent(context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
                 for (item in songItem) {
-                    //                    val video = Video()
+                    //val video = Video()
                     //TODO need add this line of code
-                    videoArray.add(UtilHelper.getVideoToSearchData(item as SearchDataModel))
+                    videoArray.add(UtilHelper.getVideoToIMusic(item))
                 }
                 val videos: ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
@@ -665,6 +665,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 val videoArray = ArrayList<VideoModel>()
                 for (item in songItem) {
 //                    videoArray.add(UtilHelper.getVideoToSearchData(item))
+                    videoArray.add(UtilHelper.getVideoToIMusic(item))
                 }
                 val videos: ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)

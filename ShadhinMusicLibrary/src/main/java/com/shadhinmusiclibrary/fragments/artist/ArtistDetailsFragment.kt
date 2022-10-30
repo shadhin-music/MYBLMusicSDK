@@ -28,7 +28,7 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
@@ -211,7 +211,10 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             .show()
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
         if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
@@ -235,7 +238,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+                    HomePatchItemModel("", "", listOf(), "", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
@@ -248,7 +251,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        observeData()
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //        parentAdapter.notifyDataSetChanged()

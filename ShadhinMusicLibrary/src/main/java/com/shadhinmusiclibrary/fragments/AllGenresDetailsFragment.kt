@@ -1,24 +1,21 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.BrowseAllPlaylistAdapter
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
 internal class AllGenresDetailsFragment : CommonBaseFragment() {
-    var homePatchItem: HomePatchItem? = null
+    var homePatchItem: HomePatchItemModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +27,7 @@ internal class AllGenresDetailsFragment : CommonBaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            homePatchItem = it.getSerializable("data") as HomePatchItem?
+            homePatchItem = it.getSerializable("data") as HomePatchItemModel?
         }
     }
 

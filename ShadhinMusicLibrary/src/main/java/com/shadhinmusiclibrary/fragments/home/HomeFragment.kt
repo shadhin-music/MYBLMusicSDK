@@ -29,7 +29,7 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeDataModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
@@ -181,32 +181,37 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
-                putExtra(AppConstantUtils.PatchItem, data)
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
+                    putExtra(AppConstantUtils.PatchItem, data)
                 putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
             })
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
-                putExtra(AppConstantUtils.PatchItem, data)
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
+                    putExtra(AppConstantUtils.PatchItem, data)
             })
     }
 
@@ -214,17 +219,18 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     }
 
-    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItem) {
+    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(
-                    AppConstantUtils.UI_Request_Type,
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
                     AppConstantUtils.Requester_Name_Search
                 )
                 putExtra(AppConstantUtils.PatchItem, data)

@@ -16,12 +16,12 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 
 
 internal class TopTrendingVideosAdapter(
-    val homePatchItemModel: HomePatchItem,
+    val homePatchItemModel: HomePatchItemModel,
     val homePatchDetail: List<HomePatchDetailModel>
 ) : RecyclerView.Adapter<TopTrendingVideosAdapter.ViewHolder>() {
 

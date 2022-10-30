@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 
 
-internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
+internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
     RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
     private val adapterData = mutableListOf<HomePatchDetailModel>()
 

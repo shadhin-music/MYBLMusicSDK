@@ -9,20 +9,20 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 internal open class CommonBaseFragment : Fragment(), FragmentEntryPoint {
-    var argHomePatchItem: HomePatchItem? = null
+    var argHomePatchItem: HomePatchItemModel? = null
     var argHomePatchDetail: HomePatchDetailModel? = null
     lateinit var playerViewModel: PlayerViewModel
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
             argHomePatchDetail =
                 it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }

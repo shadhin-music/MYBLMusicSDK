@@ -12,13 +12,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ArtistAlbumListAdapter(
-    val homePatchItem: HomePatchItem,
+    val homePatchItem: HomePatchItemModel,
     val artistAlbumModel: ArtistAlbumModel?,
     private val homeCallBack: HomeCallBack
 ) :

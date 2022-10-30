@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-internal data class HomePatchItem(
+internal data class HomePatchItemModel(
     val Code: String,
     var ContentType: String,
     var Data: List<HomePatchDetailModel>,

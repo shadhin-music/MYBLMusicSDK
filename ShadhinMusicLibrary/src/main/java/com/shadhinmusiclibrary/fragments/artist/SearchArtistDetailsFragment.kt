@@ -26,7 +26,7 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -65,7 +65,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
             searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistDataModel?)!!
         }
     }
@@ -194,7 +194,10 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             .show()
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         Log.e("TAG", "DATA ARtist: " + selectedHomePatchItem)
         //  setAdapter(patch)
 //        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
@@ -219,7 +222,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+                    HomePatchItemModel("", "", listOf(), "", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
@@ -231,7 +234,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

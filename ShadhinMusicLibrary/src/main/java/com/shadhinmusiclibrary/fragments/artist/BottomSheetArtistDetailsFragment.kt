@@ -27,7 +27,7 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
@@ -38,7 +38,7 @@ import com.shadhinmusiclibrary.utils.Status
 internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
-    var homePatchItem: HomePatchItem? = null
+    var homePatchItem: HomePatchItemModel? = null
     var songDetail: SongDetailModel? = null
     var homePatchDetail: HomePatchDetailModel? = null
 
@@ -57,7 +57,7 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
             AppConstantUtils.SongDetail
             songDetail = it.getSerializable(AppConstantUtils.SongDetail) as SongDetailModel?
             homePatchDetail = it.getSerializable("argHomePatchDetail") as HomePatchDetailModel?
@@ -189,7 +189,10 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
             .show()
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         //  setAdapter(patch)
         //songDetail = selectedHomePatchItem.Data[itemPosition]
         // artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -267,7 +270,7 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

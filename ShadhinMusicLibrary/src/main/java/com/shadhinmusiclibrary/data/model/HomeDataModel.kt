@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class HomeDataModel(
-    val data: List<HomePatchItem>,
+    val data: List<HomePatchItemModel>,
     val fav: Any,
     val follow: Any,
     val image: Any,

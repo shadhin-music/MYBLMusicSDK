@@ -12,18 +12,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
 internal class ArtistsYouMightLikeAdapter(
-     var homePatchItem: HomePatchItem?,
-     val homeCallBack: HomeCallBack,
-     var artistIDToSkip: String? = null) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
+    var homePatchItem: HomePatchItemModel?,
+    val homeCallBack: HomeCallBack,
+    var artistIDToSkip: String? = null
+) : RecyclerView.Adapter<ArtistsYouMightLikeAdapter.ViewHolder>() {
 
-     var adapter: ArtistAdapter? = null
+    var adapter: ArtistAdapter? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 
@@ -41,13 +43,13 @@ internal class ArtistsYouMightLikeAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?) {
-           val textView:TextView = itemView.findViewById(R.id.tvTitle)
-            textView.text= "You might like also"
+        fun bindItems(homePatchItem: HomePatchItemModel?) {
+            val textView: TextView = itemView.findViewById(R.id.tvTitle)
+            textView.text = "You might like also"
 //            if (homePatchItem?.ContentType=="P"){
 //                itemView.visibility = GONE
 //            }
-            if(homePatchItem?.Data?.isEmpty() == true){
+            if (homePatchItem?.Data?.isEmpty() == true) {
                 textView.visibility = View.GONE
             }
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)

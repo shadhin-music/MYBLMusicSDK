@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -32,7 +32,7 @@ import java.io.Serializable
 
 internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOnItemClickCallback {
     private lateinit var navController: NavController
-    private var homePatchitem: HomePatchItem? = null
+    private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel
     private lateinit var data: List<FeaturedPodcastDetailsModel>
     private lateinit var dataJc: List<FeaturedPodcastDetailsModel>

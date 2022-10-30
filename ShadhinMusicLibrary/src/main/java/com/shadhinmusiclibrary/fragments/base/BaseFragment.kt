@@ -10,7 +10,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
@@ -22,7 +22,7 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
     var viewModel: V? = null
 
     // var viewModel2: V? = null
-    var argHomePatchItem: HomePatchItem? = null
+    var argHomePatchItem: HomePatchItemModel? = null
     var argHomePatchDetail: HomePatchDetailModel? = null
     lateinit var updatedSongList: MutableList<SongDetailModel>
     lateinit var playerViewModel: PlayerViewModel
@@ -35,7 +35,7 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
             argHomePatchDetail =
                 it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }

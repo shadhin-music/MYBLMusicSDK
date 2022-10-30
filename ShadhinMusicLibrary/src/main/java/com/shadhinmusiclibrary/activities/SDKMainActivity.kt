@@ -33,7 +33,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -156,7 +156,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private fun searchFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
-            .getSerializable(PatchItem) as HomePatchItem
+            .getSerializable(PatchItem) as HomePatchItemModel
 
 //        var selectedPatchIndex: Int? = null
 ////        if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
@@ -186,7 +186,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private fun homeFragmentAccess() {
         //Will received data from Home Fragment from MYBLL App
         val patch = intent.extras!!.getBundle(PatchItem)!!
-            .getSerializable(PatchItem) as HomePatchItem
+            .getSerializable(PatchItem) as HomePatchItemModel
         var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
@@ -246,14 +246,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
     }
 
-    private fun routeDataHomeFragment(homePatchItem: HomePatchItem, selectedIndex: Int?) {
+    private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
             when (homePatchDetail.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_artist_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_artist_details,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -822,7 +823,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -865,7 +866,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -905,7 +906,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -951,7 +952,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
@@ -975,7 +976,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
@@ -1026,7 +1027,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         bsdNavController: NavController,
         context: Context,
         mSongDetails: IMusicModel,
-        argHomePatchItem: HomePatchItem?,
+        argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
 
         ) {

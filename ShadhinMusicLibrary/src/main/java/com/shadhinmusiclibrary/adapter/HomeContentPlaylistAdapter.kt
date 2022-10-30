@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
 internal class HomeContentPlaylistAdapter(
-    val homePatchItem: HomePatchItem,
+    val homePatchItem: HomePatchItemModel,
     private val homeCallBack: HomeCallBack
 ) :
     RecyclerView.Adapter<HomeContentPlaylistAdapter.ViewHolder>() {

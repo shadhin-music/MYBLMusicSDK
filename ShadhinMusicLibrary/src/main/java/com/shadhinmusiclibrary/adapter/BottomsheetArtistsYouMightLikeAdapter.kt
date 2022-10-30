@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
 internal class BottomsheetArtistsYouMightLikeAdapter(
-     var homePatchItem: HomePatchItem?,
+    var homePatchItem: HomePatchItemModel?,
     val homeCallBack: HomeCallBack,
-    var artistIDToSkip: String? = null) : RecyclerView.Adapter<BottomsheetArtistsYouMightLikeAdapter.ViewHolder>() {
+    var artistIDToSkip: String? = null
+) : RecyclerView.Adapter<BottomsheetArtistsYouMightLikeAdapter.ViewHolder>() {
 
     var adapter: ArtistAdapter? = null
 
@@ -41,13 +42,13 @@ internal class BottomsheetArtistsYouMightLikeAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?) {
-           val textView:TextView = itemView.findViewById(R.id.tvTitle)
-            textView.text= "You might like also"
+        fun bindItems(homePatchItem: HomePatchItemModel?) {
+            val textView: TextView = itemView.findViewById(R.id.tvTitle)
+            textView.text = "You might like also"
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack,artistIDToSkip)
+            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack, artistIDToSkip)
             recyclerView.adapter = adapter
 
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView

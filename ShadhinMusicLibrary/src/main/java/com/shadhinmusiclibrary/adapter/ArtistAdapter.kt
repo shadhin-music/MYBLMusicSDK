@@ -11,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
 internal class ArtistAdapter(
-    var homePatchItem: HomePatchItem?,
+    var homePatchItem: HomePatchItemModel?,
     private val homeCallBack: HomeCallBack,
     var artistIDtoSkip: String? = null
 ) :
     RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
-    private var filteredHomePatchItem: HomePatchItem? = null
+    private var filteredHomePatchItem: HomePatchItemModel? = null
 
     init {
         initialize()

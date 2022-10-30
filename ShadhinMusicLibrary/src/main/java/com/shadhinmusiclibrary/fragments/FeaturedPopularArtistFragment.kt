@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
 import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -30,7 +30,7 @@ import java.io.Serializable
 internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
 
     private lateinit var navController: NavController
-    private var homePatchitem: HomePatchItem? = null
+    private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: PopularArtistViewModel
 
     private fun setupViewModel() {

@@ -9,15 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
-internal class GenresAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
+internal class GenresAdapter(
+    val homePatchItem: HomePatchItemModel,
+    private val homeCallBack: HomeCallBack
+) :
     RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_big_video_view_item, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_big_video_view_item, parent, false)
         return ViewHolder(v)
     }
 

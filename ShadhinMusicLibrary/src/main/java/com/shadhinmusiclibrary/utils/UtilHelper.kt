@@ -481,7 +481,7 @@ internal object UtilHelper {
         )
     }*/
 
-    fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItem {
+    fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItemModel {
         val mPatchDetail = mutableListOf<HomePatchDetailModel>()
         for (patchItem in data) {
             mPatchDetail.add(
@@ -518,7 +518,7 @@ internal object UtilHelper {
                 )
             )
         }
-        return HomePatchItem(
+        return HomePatchItemModel(
             "",
             "",
             mPatchDetail,
@@ -650,28 +650,64 @@ internal object UtilHelper {
                 contentID = content_Id,
                 contentType = content_Type,
                 createDate = createDate,
-                 duration = total_duration,
-                 follower = follower,
-                 isPaid = isPaid,
-                 newBanner = newBanner,
-                 playCount = playCount,
-                 playListId = playListId,
-                 playListImage = playListImage,
-                 playListName = playListName,
-                 playUrl = playingUrl,
-                 rootId = rootContentId,
-                 rootType = rootContentType,
-                 seekable = seekable,
-                 teaserUrl = teaserUrl,
-                 trackType = trackType,
-                 type = rootContentType,
-                 fav = fav,
-                 image = imageUrl,
-                 imageWeb = imageWeb,
-                 title = titleName
-             )
-         }
-     }
+                duration = total_duration,
+                follower = follower,
+                isPaid = isPaid,
+                newBanner = newBanner,
+                playCount = playCount,
+                playListId = playListId,
+                playListImage = playListImage,
+                playListName = playListName,
+                playUrl = playingUrl,
+                rootId = rootContentId,
+                rootType = rootContentType,
+                seekable = seekable,
+                teaserUrl = teaserUrl,
+                trackType = trackType,
+                type = rootContentType,
+                fav = fav,
+                image = imageUrl,
+                imageWeb = imageWeb,
+                title = titleName
+            )
+        }
+    }
+
+    fun getVideoToIMusic(data: IMusicModel): VideoModel {
+        data.apply {
+            return VideoModel(
+                albumId = album_Id,
+                albumImage = "",
+                albumName = album_Name,
+                artist = artistName,
+                artistId = album_Id,
+                artistImage = "",
+                banner = bannerImage,
+                contentID = content_Id,
+                contentType = content_Type,
+                createDate = "",
+                duration = total_duration,
+                follower = "",
+                isPaid = false,
+                newBanner = "",
+                playCount = 0,
+                playListId = "",
+                playListImage = "",
+                playListName = "",
+                playUrl = playingUrl,
+                rootId = rootContentId,
+                rootType = rootContentType,
+                seekable = false,
+                teaserUrl = "",
+                trackType = "",
+                type = rootContentType,
+                fav = "",
+                image = imageUrl,
+                imageWeb = "",
+                title = titleName
+            )
+        }
+    }
 
 //    fun albumSongDetailsNewList(mediaId: String?, aaa: List<IMusicModel>): List<IMusicModel> {
 //        val newList: MutableList<IMusicModel> = ArrayList()

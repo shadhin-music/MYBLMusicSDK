@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
 
 
 internal class ArtistAlbumsAdapter(
-    var homePatchItem: HomePatchItem?,
+    var homePatchItem: HomePatchItemModel?,
     val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<ArtistAlbumsAdapter.ViewHolder>() {
     var artistAlbumModel: ArtistAlbumModel? = null
@@ -51,7 +51,7 @@ internal class ArtistAlbumsAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?, artistAlbumModel: ArtistAlbumModel?) {
+        fun bindItems(homePatchItem: HomePatchItemModel?, artistAlbumModel: ArtistAlbumModel?) {
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = "Albums"
 //            if(homePatchItem?.Data?.isEmpty() == true){
