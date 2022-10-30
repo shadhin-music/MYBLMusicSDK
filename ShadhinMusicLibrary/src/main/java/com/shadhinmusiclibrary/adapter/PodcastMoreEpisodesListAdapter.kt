@@ -12,11 +12,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 
 
 internal class PodcastMoreEpisodesListAdapter(
-    var episode: MutableList<Episode>,
+    var episode: MutableList<EpisodeModel>,
     val homeCallBack: HomeCallBack
 ) :
     RecyclerView.Adapter<PodcastMoreEpisodesListAdapter.ViewHolder>() {
@@ -27,7 +27,7 @@ internal class PodcastMoreEpisodesListAdapter(
         return ViewHolder(v)
     }
 
-    private var filteredItem: MutableList<Episode>? = null
+    private var filteredItem: MutableList<EpisodeModel>? = null
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

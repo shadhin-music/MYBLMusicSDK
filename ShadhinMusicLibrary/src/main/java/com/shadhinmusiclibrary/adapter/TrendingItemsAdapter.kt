@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.search.TopTrendingData
+import com.shadhinmusiclibrary.data.model.search.TopTrendingDataModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class TrendingItemsAdapter(var data: List<TopTrendingData>) :
+internal class TrendingItemsAdapter(var data: List<TopTrendingDataModel>) :
     RecyclerView.Adapter<TrendingItemsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

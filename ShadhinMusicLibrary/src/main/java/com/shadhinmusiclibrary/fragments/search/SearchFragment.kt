@@ -35,11 +35,10 @@ import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.Video
-import com.shadhinmusiclibrary.data.model.search.SearchData
-import com.shadhinmusiclibrary.data.model.search.TopTrendingData
+import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -495,7 +494,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
     }
 
     @SuppressLint("DefaultLocale")
-    override fun onClickSearchItem(searchData: SearchData) {
+    override fun onClickSearchItem(searchData: SearchDataModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val patchItem = Bundle().apply {
             putSerializable(
@@ -504,7 +503,7 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             )
             putSerializable(
                 AppConstantUtils.PatchDetail,
-                HomePatchDetail(
+                HomePatchDetailModel(
                     AlbumId = searchData.album_Id ?: "",
                     ArtistId = searchData.content_Id ?: "",
                     ContentID = searchData.content_Id ?: "",
@@ -601,13 +600,13 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
             DataContentType.CONTENT_TYPE_V -> {
                 //open playlist
                 val intent = Intent(context, VideoActivity::class.java)
-                val videoArray = ArrayList<Video>()
+                val videoArray = ArrayList<VideoModel>()
                 for (item in songItem) {
                     //                    val video = Video()
                     //TODO need add this line of code
-                    videoArray.add(UtilHelper.getVideoToSearchData(item as SearchData))
+                    videoArray.add(UtilHelper.getVideoToSearchData(item as SearchDataModel))
                 }
-                val videos: ArrayList<Video> = videoArray
+                val videos: ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 startActivity(intent)
@@ -663,11 +662,11 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
         when (songItem[clickItemPosition].content_Type) {
             DataContentType.CONTENT_TYPE_V -> {
                 val intent = Intent(requireContext(), VideoActivity::class.java)
-                val videoArray = ArrayList<Video>()
+                val videoArray = ArrayList<VideoModel>()
                 for (item in songItem) {
 //                    videoArray.add(UtilHelper.getVideoToSearchData(item))
                 }
-                val videos: ArrayList<Video> = videoArray
+                val videos: ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickItemPosition)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 startActivity(intent)

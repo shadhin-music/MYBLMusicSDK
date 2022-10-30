@@ -22,9 +22,7 @@ import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.data.model.podcast.Data
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.SongTrack
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
@@ -42,7 +40,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var concatAdapter: ConcatAdapter
 
     var data: Data? = null
-    var episode: List<Episode>? = null
+    var episode: List<EpisodeModel>? = null
 
     var podcastType: String = ""
     var contentType: String = ""
@@ -175,7 +173,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
         argHomePatchDetail?.ContentID = episode.Id.toString()

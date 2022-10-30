@@ -10,7 +10,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.search.TopTrendingData
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 

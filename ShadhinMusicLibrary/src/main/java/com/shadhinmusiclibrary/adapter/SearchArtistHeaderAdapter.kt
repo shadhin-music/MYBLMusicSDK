@@ -14,12 +14,12 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 internal class SearchArtistHeaderAdapter(
-    var homePatchDetail: SearchArtistdata?,
+    var homePatchDetail: SearchArtistDataModel?,
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<SearchArtistHeaderAdapter.ArtistHeaderVH>() {
 
@@ -49,7 +49,7 @@ internal class SearchArtistHeaderAdapter(
         return 1
     }
 
-    fun setData(homePatchDetail: SearchArtistdata) {
+    fun setData(homePatchDetail: SearchArtistDataModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -78,7 +78,7 @@ internal class SearchArtistHeaderAdapter(
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
 
-        fun bindItems(homePatchDetail: SearchArtistdata) {
+        fun bindItems(homePatchDetail: SearchArtistDataModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 

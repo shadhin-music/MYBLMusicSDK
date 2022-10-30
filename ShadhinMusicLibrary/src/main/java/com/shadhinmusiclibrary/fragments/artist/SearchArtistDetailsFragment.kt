@@ -27,8 +27,8 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -52,7 +52,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var searchartistTrackAdapter: SearchArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
-    private lateinit var searchArtistdata: SearchArtistdata
+    private lateinit var searchArtistdata: SearchArtistDataModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +66,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         super.onCreate(savedInstanceState)
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
-            searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistdata?)!!
+            searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistDataModel?)!!
         }
     }
 
@@ -228,7 +228,7 @@ internal class SearchArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             })
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {

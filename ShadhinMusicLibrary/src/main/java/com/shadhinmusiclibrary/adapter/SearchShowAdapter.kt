@@ -13,11 +13,11 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 
 
 internal class SearchShowAdapter(
-    val searchshowdata: List<SearchData>,
+    val searchshowdata: List<SearchDataModel>,
     private val seaItemCallback: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchShowAdapter.ViewHolder>() {
@@ -32,7 +32,7 @@ internal class SearchShowAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(searchshowdata[position])
-        val searchData: SearchData = searchshowdata[position]
+        val searchData: SearchDataModel = searchshowdata[position]
         holder.itemView.setOnClickListener {
             seaItemCallback.onClickSearchItem(searchData)
         }
@@ -54,7 +54,7 @@ internal class SearchShowAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchshowdata: SearchData) {
+        fun bindItems(searchshowdata: SearchDataModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchshowdata.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.title)

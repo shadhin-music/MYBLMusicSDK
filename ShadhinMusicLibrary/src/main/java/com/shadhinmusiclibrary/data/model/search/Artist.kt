@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class Artist(
-    val data: MutableList<SearchData>,
+    val data: MutableList<SearchDataModel>,
     val message: String,
     val status: String,
     val type: String

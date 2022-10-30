@@ -13,15 +13,15 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.SongTrack
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
-    var episode: List<Episode>? = null
+    var episode: List<EpisodeModel>? = null
     private var listSongTrack: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
@@ -45,8 +45,8 @@ internal class PodcastHeaderAdapter(
     }
 
     fun setTrackData(
-        episode: List<Episode>,
-        data: MutableList<SongTrack>,
+        episode: List<EpisodeModel>,
+        data: MutableList<SongTrackModel>,
         rootPatch: HomePatchDetailModel
     ) {
         this.listSongTrack = mutableListOf()

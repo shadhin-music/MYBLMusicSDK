@@ -3,10 +3,10 @@ package com.shadhinmusiclibrary.data.model.search
 import androidx.annotation.Keep
 import java.io.Serializable
 @Keep
-internal data class SearchArtistdata(
+internal data class SearchArtistDataModel(
     val AlbumId: String,
     val AlbumImage: String,
-    val AlbumName:String,
+    val AlbumName: String,
     val Artist: String,
     val ArtistId: String,
     val ArtistImage: String,
@@ -16,7 +16,7 @@ internal data class SearchArtistdata(
     val ContentType: String,
     val CreateDate: String,
     val Duration: String,
-    val Follower:String,
+    val Follower: String,
     val IsPaid: Boolean,
     val NewBanner: String,
     val PlayCount: Int,

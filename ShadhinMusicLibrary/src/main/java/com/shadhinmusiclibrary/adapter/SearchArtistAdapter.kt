@@ -12,12 +12,12 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 import com.shadhinmusiclibrary.utils.CircleImageView
 
 
 internal class SearchArtistAdapter(
-    val searchArtistdata: MutableList<SearchData>,
+    val searchArtistdata: MutableList<SearchDataModel>,
     val searchCallBack: SearchItemCallBack
 ) :
     RecyclerView.Adapter<SearchArtistAdapter.ViewHolder>() {
@@ -55,7 +55,7 @@ internal class SearchArtistAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistDetails: SearchData) {
+        fun bindItems(artistDetails: SearchDataModel) {
             val imageView: CircleImageView = itemView.findViewById(R.id.artist_img)
             val url: String = artistDetails.imageUrl!!
             Log.d("TAG", "ImageUrl: " + url)

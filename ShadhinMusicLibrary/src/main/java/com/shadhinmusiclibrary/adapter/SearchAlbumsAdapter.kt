@@ -13,10 +13,13 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 
 
-internal class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>, val searchCallBack: SearchItemCallBack) :
+internal class SearchAlbumsAdapter(
+    val searchAlbumdata: MutableList<SearchDataModel>,
+    val searchCallBack: SearchItemCallBack
+) :
     RecyclerView.Adapter<SearchAlbumsAdapter.ViewHolder>() {
 
 
@@ -55,7 +58,7 @@ internal class SearchAlbumsAdapter(val searchAlbumdata: MutableList<SearchData>,
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchAlbumdata: SearchData) {
+        fun bindItems(searchAlbumdata: SearchDataModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val url: String = searchAlbumdata.imageUrl!!
             val textTitle: TextView = itemView.findViewById(R.id.title)

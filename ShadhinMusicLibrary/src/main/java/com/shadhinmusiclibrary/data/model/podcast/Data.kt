@@ -8,7 +8,7 @@ internal data class Data(
     val Code: String,
     val ContentType: String,
     val Duration: String,
-    val EpisodeList: MutableList<Episode>,
+    val EpisodeList: MutableList<EpisodeModel>,
     val Id: Int,
     val ImageUrl: String,
     val IsComingSoon: Boolean,

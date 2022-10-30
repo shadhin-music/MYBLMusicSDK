@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 
 
 @Keep
-internal class TopTrendingData : IMusicModel {
+internal class TopTrendingDataModel : IMusicModel {
     @SerializedName("ContentID")
     @Expose
     override var content_Id: String? = null

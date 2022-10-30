@@ -7,7 +7,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 
 
 @Keep
-internal class SearchData : IMusicModel {
+internal class SearchDataModel : IMusicModel {
     @SerializedName("ContentID")
     @Expose
     override var content_Id: String? = null

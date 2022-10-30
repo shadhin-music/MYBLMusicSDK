@@ -5,8 +5,8 @@ import android.content.Context
 import android.graphics.Point
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
-import com.shadhinmusiclibrary.data.model.podcast.SongTrack
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants
@@ -353,9 +353,9 @@ internal object UtilHelper {
     }
 
     fun getTrackToRootData(
-        mSongTrack: SongTrack,
+        mSongTrack: SongTrackModel,
         rootPatch: HomePatchDetailModel
-    ): SongTrack {
+    ): SongTrackModel {
         mSongTrack.apply {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
@@ -637,7 +637,7 @@ internal object UtilHelper {
         }
     }
 
-    fun getVideoToSearchData(data: SearchData): VideoModel {
+    fun getVideoToSearchData(data: SearchDataModel): VideoModel {
         data.apply {
             return VideoModel(
                 albumId = album_Id,

@@ -13,7 +13,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.podcast.SongTrack
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -55,7 +55,7 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
     }
 
     fun setData(
-        songTrack: MutableList<SongTrack>,
+        songTrack: MutableList<SongTrackModel>,
         rootPatch: HomePatchDetailModel,
         mediaId: String?
     ) {

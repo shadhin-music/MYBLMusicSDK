@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.data.model.podcast
 import androidx.annotation.Keep
 
 @Keep
-internal data class Episode(
+internal data class EpisodeModel(
     val Code: String,
     val ContentType: String,
     val Details: String,
@@ -14,6 +14,6 @@ internal data class Episode(
     val Name: String,
     val ShowId: String,
     val Sort: Int,
-    val TrackList: MutableList<SongTrack>,
+    val TrackList: MutableList<SongTrackModel>,
     val fav: String
 )

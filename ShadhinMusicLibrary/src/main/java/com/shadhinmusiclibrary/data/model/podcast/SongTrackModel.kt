@@ -6,13 +6,9 @@ import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
 
 @Keep
-internal class SongTrack : IMusicModel {
-    override var content_Id: String?
-        get() = id.toString()
-        set(value) {}
-
+internal class SongTrackModel : IMusicModel {
     @SerializedName("Id")
-    var id: Int? = null
+    override var content_Id: String? = null
 
     @SerializedName("ShowId")
     @Expose
