@@ -9,123 +9,93 @@ import com.shadhinmusiclibrary.data.IMusicModel
 @Keep
 internal class SearchDataModel : IMusicModel {
     @SerializedName("ContentID")
-    @Expose
     override var content_Id: String? = null
 
     @SerializedName("image")
-    @Expose
     override var imageUrl: String? = null
 
     @SerializedName("imageWeb")
-    @Expose
     var imageWeb: String? = null
 
     @SerializedName("title")
-    @Expose
     override var titleName: String? = null
 
     @SerializedName("ContentType")
-    @Expose
     override var content_Type: String? = null
 
     @SerializedName("PlayUrl")
-    @Expose
     override var playingUrl: String? = null
 
     @SerializedName("Duration")
-    @Expose
     override var total_duration: String? = null
 
     @SerializedName("fav")
-    @Expose
     var fav: String? = null
 
     @SerializedName("Banner")
-    @Expose
     override var bannerImage: String? = null
 
     @SerializedName("NewBanner")
-    @Expose
     var newBanner: String? = null
 
     @SerializedName("PlayCount")
-    @Expose
     var playCount: Int? = null
 
     @SerializedName("Type")
-    @Expose
     var type: String? = null
 
     @SerializedName("IsPaid")
-    @Expose
     var isPaid: Boolean? = null
 
     @SerializedName("Seekable")
-    @Expose
     var seekable: Boolean? = null
 
     @SerializedName("TrackType")
-    @Expose
     var trackType: String? = null
 
     @SerializedName("ArtistId")
-    @Expose
     override var artist_Id: String? = null
 
     @SerializedName("Artist")
-    @Expose
     override var artistName: String? = null
 
     @SerializedName("ArtistImage")
-    @Expose
     var artistImage: String? = null
 
     @SerializedName("AlbumId")
-    @Expose
     override var album_Id: String? = null
 
     @SerializedName("AlbumName")
-    @Expose
     override var album_Name: String? = null
 
     @SerializedName("AlbumImage")
-    @Expose
     var albumImage: String? = null
 
     @SerializedName("PlayListId")
-    @Expose
     var playListId: String? = null
 
     @SerializedName("PlayListName")
-    @Expose
     var playListName: String? = null
 
     @SerializedName("PlayListImage")
-    @Expose
     var playListImage: String? = null
 
     @SerializedName("CreateDate")
-    @Expose
     var createDate: String? = null
 
     @SerializedName("RootId")
-    @Expose
     override var rootContentId: String? = null
 
     @SerializedName("RootType")
-    @Expose
     override var rootContentType: String? = null
 
     @SerializedName("TeaserUrl")
-    @Expose
     var teaserUrl: String? = null
 
     @SerializedName("Follower")
-    @Expose
     var follower: String? = null
 
     @SerializedName("ClientValue")
-    @Expose
     var clientValue: Int? = null
 
     override var rootImage: String? = null

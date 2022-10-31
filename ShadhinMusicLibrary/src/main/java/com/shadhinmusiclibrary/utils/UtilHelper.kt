@@ -6,7 +6,9 @@ import android.graphics.Point
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
+import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
+import com.shadhinmusiclibrary.data.model.search.SearchModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants
@@ -307,33 +309,36 @@ internal object UtilHelper {
         return mSongDet
     }
 
-    fun getFeaturedSongDetailAndRootData(
-        mSongDet: FeaturedSongDetailModel/*,
-        rootPatch: HomePatchDetail*/
-    ): IMusicModel {
-//        val aaa = IMu
-//        mSongDet.apply {
-//            return IMusicModel().apply {
-//                content_Id = content_Id
-//                imageUrl = imageUrl
-//                titleName = titleName
-//                content_Type = content_Type
-//                playingUrl = playingUrl
-//                artistName = artistName
-//                total_duration = total_duration
-//                copyright = copyright
-//                labelname = labelname
-//                releaseDate = releaseDate
-//                fav = ""
-//                artist_Id = artistId
-//                album_Id = albumId
-//                rootContentId = ""
-//                rootContentType = ""
-//                rootImage = ""
-//                isPlaying = false
-//            }
-//        }
-        return mSongDet
+    fun getIMusicModelAndRootData(
+        mSongDet: MutableList<SearchDataModel>
+    ): MutableList<IMusicModel> {
+        val iMusicData = mutableListOf<IMusicModel>()
+        for (seaDataItem in mSongDet) {
+            iMusicData.add(
+                SearchDataModel().apply {
+                    content_Id = seaDataItem.content_Id
+                    imageUrl = seaDataItem.imageUrl
+                    imageWeb = seaDataItem.imageWeb
+                    titleName = seaDataItem.titleName
+                    content_Type = seaDataItem.content_Type
+                    playingUrl = seaDataItem.playingUrl
+                    total_duration = seaDataItem.total_duration
+                    fav = seaDataItem.fav
+                    bannerImage = seaDataItem.bannerImage
+                    playCount = seaDataItem.playCount
+                    type = seaDataItem.type
+                    isPaid = seaDataItem.isPaid
+                    seekable = seaDataItem.seekable
+                    trackType = seaDataItem.trackType
+                    artist_Id = seaDataItem.artist_Id
+                    artistName = seaDataItem.artistName
+                    album_Id = seaDataItem.album_Id
+                    rootContentId = seaDataItem.album_Id
+                    rootContentType = seaDataItem.content_Type
+                }
+            )
+        }
+        return iMusicData
     }
 
     fun getArtistContentDataToRootData(
@@ -364,122 +369,132 @@ internal object UtilHelper {
         return mSongTrack
     }
 
-    fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel): HomePatchDetailModel {
-        return HomePatchDetailModel(
-            "0",
-            "",
-            "",
-            podcastDetails.ArtistName,
-            podcastDetails.Id,
-            "",
-            "",
-            podcastDetails.Id,
-            "A",
-            "",
-            "0",
-            podcastDetails.Follower,
-            false,
-            "",
-            0,
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            false,
-            "",
-            "",
-            "",
-            "",
-            podcastDetails.Image,
-            "",
-            ""
-        )
+//    fun getSearchDataToRootData(
+//        mSongDet: MutableList<SearchDataModel>,
+//        rootPatch: CommonSearchData
+//    ): MutableList<IMusicModel> {
+//        return mutableListOf<IMusicModel>()
+//            .apply {
+//                for (seDaMoItem in mSongDet) {
+//                    add(SearchDataModel().apply {
+//                        content_Id = seDaMoItem.content_Id
+//                        imageUrl = seDaMoItem.imageUrl
+//                        imageWeb = seDaMoItem.imageWeb
+//                        titleName = seDaMoItem.titleName
+//                        content_Type = seDaMoItem.content_Type
+//                        playingUrl = seDaMoItem.playingUrl
+//                        total_duration = seDaMoItem.total_duration
+//                        fav = seDaMoItem.fav
+//                        bannerImage = seDaMoItem.bannerImage
+//                        playCount = seDaMoItem.playCount
+//                        type = seDaMoItem.type
+//                        isPaid = seDaMoItem.isPaid
+//                        seekable = seDaMoItem.seekable
+//                        trackType = seDaMoItem.trackType
+//                        artist_Id = seDaMoItem.artist_Id
+//                        artistName = seDaMoItem.artistName
+//                        album_Id = seDaMoItem.album_Id
+//                        rootContentId = seDaMoItem.album_Id
+//                        rootContentType = rootPatch.type
+//                    })
+//                }
+//            }
+//    }
+
+    fun getSearchDataToRootData(
+        rootPatch: CommonSearchData
+    ): MutableList<IMusicModel> {
+        return mutableListOf<IMusicModel>()
+            .apply {
+                for (seDaMoItem in rootPatch.data) {
+                    add(SearchDataModel().apply {
+                        content_Id = seDaMoItem.content_Id
+                        imageUrl = seDaMoItem.imageUrl
+                        imageWeb = seDaMoItem.imageWeb
+                        titleName = seDaMoItem.titleName
+                        content_Type = seDaMoItem.content_Type
+                        playingUrl = seDaMoItem.playingUrl
+                        total_duration = seDaMoItem.total_duration
+                        fav = seDaMoItem.fav
+                        bannerImage = seDaMoItem.bannerImage
+                        playCount = seDaMoItem.playCount
+                        type = seDaMoItem.type
+                        isPaid = seDaMoItem.isPaid
+                        seekable = seDaMoItem.seekable
+                        trackType = seDaMoItem.trackType
+                        artist_Id = seDaMoItem.artist_Id
+                        artistName = seDaMoItem.artistName
+                        album_Id = seDaMoItem.album_Id
+                        rootContentId = seDaMoItem.album_Id
+                        rootContentType = rootPatch.type
+                    })
+                }
+            }
     }
 
-    /* fun getHomePatchPodcastEpisodeDetail(data: Track): HomePatchDetail {
-         return HomePatchDetail(
-             "0",
-             "",
-             "",
-             data.Name,
-             data.EpisodeId,
-             "",
-             "",
-             "",
-             "",
-             "",
-             0,
-             "",
-             false,
-             false,
-             0,
-             "",
-             "",
-             "",
-             "",
-             "",
-             "",
-             false,
-             "",
-             "",
-             "",
-             "",
-             data.ImageUrl,
-             "",
-             ""
-         )
-     }*/
+    fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel) = HomePatchDetailModel(
+        "0",
+        "",
+        "",
+        podcastDetails.ArtistName,
+        podcastDetails.Id,
+        "",
+        "",
+        podcastDetails.Id,
+        "A",
+        "",
+        "0",
+        podcastDetails.Follower,
+        false,
+        "",
+        0,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        false,
+        "",
+        "",
+        "",
+        "",
+        podcastDetails.Image,
+        "",
+        ""
+    )
 
-/*    fun getHomePatchItemToPodcastEpisode(episode: List<Episode>): HomePatchItem {
-        val mPatchDetail = mutableListOf<HomePatchDetail>()
-        for (patchItem in episode) {
-            mPatchDetail.add(
-                HomePatchDetail(
-                    "0",
-                    "",
-                    "",
-                    patchItem.Name,
-                    patchItem.ShowId,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "0",
-                    "",
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    patchItem.ImageUrl,
-                    "",
-                    ""
-                )
-            )
-        }
-
-        return HomePatchItem(
-            "",
-            "",
-            mPatchDetail,
-            "",
-            "",
-            0,
-            0
-        )
-    }*/
+    fun getHomePatchDetailToSearchDataModel(searchData: IMusicModel) = HomePatchDetailModel(
+        AlbumId = searchData.album_Id ?: "",
+        ArtistId = searchData.content_Id ?: "",
+        ContentID = searchData.content_Id ?: "",
+        ContentType = searchData.content_Type ?: "",
+        PlayUrl = searchData.playingUrl ?: "",
+        AlbumName = searchData.titleName ?: "",
+        AlbumImage = "",
+        fav = "",
+        Banner = "",
+        Duration = searchData.total_duration ?: "",
+        TrackType = "",
+        image = searchData.imageUrl ?: "",
+        ArtistImage = "",
+        Artist = searchData.artistName ?: "",
+        CreateDate = "",
+        Follower = "",
+        imageWeb = "",
+        IsPaid = false,
+        NewBanner = "",
+        PlayCount = 0,
+        PlayListId = "",
+        PlayListImage = "",
+        PlayListName = "",
+        RootId = "",
+        RootType = "",
+        Seekable = false,
+        TeaserUrl = "",
+        title = searchData.titleName ?: "",
+        Type = ""
+    )
 
     fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItemModel {
         val mPatchDetail = mutableListOf<HomePatchDetailModel>()
@@ -673,6 +688,7 @@ internal object UtilHelper {
         }
     }
 
+
     fun getVideoToIMusic(data: IMusicModel): VideoModel {
         data.apply {
             return VideoModel(
@@ -709,22 +725,6 @@ internal object UtilHelper {
         }
     }
 
-//    fun albumSongDetailsNewList(mediaId: String?, aaa: List<IMusicModel>): List<IMusicModel> {
-//        val newList: MutableList<IMusicModel> = ArrayList()
-//        aaa.forEach {
-//            if (it.content_Id == mediaId) {
-//                it.isPlaying = true
-//                val newItem = it
-//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-//                newList.add(newItem)
-//            } else {
-//                it.isPlaying = false
-//                newList.add(it)
-//            }
-//        }
-//        return newList
-//    }
-
     fun getCurrentRunningSongToNewSongList(
         mediaId: String?,
         aaa: List<IMusicModel>
@@ -742,59 +742,4 @@ internal object UtilHelper {
         }
         return newList
     }
-
-//    fun artistArtistContentDataNewList(
-//        mediaId: String?,
-//        aaa: List<IMusicModel>
-//    ): List<IMusicModel> {
-//        val newList: MutableList<IMusicModel> = ArrayList()
-//        aaa.forEach {
-//            if (it.content_Id == mediaId) {
-//                it.isPlaying = true
-//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-//                newList.add(it)
-//            } else {
-//                it.isPlaying = false
-//                newList.add(it)
-//            }
-//        }
-//        return newList
-//    }
-//
-//    fun podcastTrackNewList(
-//        mediaId: String?,
-//        aaa: List<IMusicModel>
-//    ): List<IMusicModel> {
-//        val newList: MutableList<IMusicModel> = ArrayList()
-//        aaa.forEach {
-////            if (it.Id.toString() == mediaId) {
-//            if (it.content_Id == mediaId) {
-//                it.isPlaying = true
-//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-//                newList.add(it)
-//            } else {
-//                it.isPlaying = false
-//                newList.add(it)
-//            }
-//        }
-//        return newList
-//    }
-//
-//    fun featuredSongDetailNewList(
-//        mediaId: String?,
-//        aaa: List<IMusicModel>
-//    ): List<IMusicModel> {
-//        val newList: MutableList<IMusicModel> = ArrayList()
-//        aaa.forEach {
-//            if (it.content_Id == mediaId) {
-//                it.isPlaying = true
-//                //   newItem.isPlaying = it.ContentID == mediaId || !it.isPlaying
-//                newList.add(it)
-//            } else {
-//                it.isPlaying = false
-//                newList.add(it)
-//            }
-//        }
-//        return newList
-//    }
 }

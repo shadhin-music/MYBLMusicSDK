@@ -7,8 +7,11 @@ internal object DataContentType {
     const val CONTENT_TYPE_P = "P"
     const val CONTENT_TYPE_S = "S"
     const val CONTENT_TYPE_PD = "PDJG"
-    const val CONTENT_TYPE_PD_BC = "PDBC"
+    const val CONTENT_TYPE_PD_BC = "PDJC"
     const val CONTENT_TYPE_PD_CB = "PDCB"
+    const val CONTENT_TYPE_PT = "PT"
+    const val CONTENT_TYPE_PS = "PS"
+    const val CONTENT_TYPE_PE = "PE"
     const val CONTENT_TYPE_V = "V"
     const val CONTENT_TYPE_WV = "AT"
 
