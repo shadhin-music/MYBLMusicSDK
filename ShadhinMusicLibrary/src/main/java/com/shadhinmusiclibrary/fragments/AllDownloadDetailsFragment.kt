@@ -39,11 +39,11 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
 
       loadData()
 
-
     }
       fun loadData(){
           val cacheRepository= CacheRepository(requireContext())
           val dataAdapter = AllDownloadedAdapter(cacheRepository.getAllDownloads()!!,this)
+         // Log.e("TAG", "Track123: " + cacheRepository.getDownloadedContent())
           val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
           recyclerView.layoutManager =
               LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )

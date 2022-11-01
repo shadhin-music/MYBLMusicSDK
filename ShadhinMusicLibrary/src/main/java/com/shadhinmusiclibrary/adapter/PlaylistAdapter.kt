@@ -169,12 +169,13 @@ internal class PlaylistAdapter(
             progressIndicator1.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.ContentID) ?: false
-            if (progressIndicator1.progress.equals(97)){
-                downloaded?.visibility= View.VISIBLE
-            }
+//            if (progressIndicator1.progress.equals(97)){
+//                downloaded?.visibility= View.VISIBLE
+//            }
             if(isDownloaded){
                 Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
                 downloaded.visibility = View.VISIBLE
+                progressIndicator1.visibility = View.GONE
             }
         }
     }

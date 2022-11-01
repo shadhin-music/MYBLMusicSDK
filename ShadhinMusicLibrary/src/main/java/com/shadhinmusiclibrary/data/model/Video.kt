@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
@@ -138,6 +139,38 @@ data class Video(
         type = data.Type
     }
     internal fun setDataDownload(data: DownloadedContent){
+        albumId =""
+        albumImage =""
+        albumName = ""
+        artist = data.artist
+        artistId = ""
+        artistImage =""
+        banner =""
+        clientValue = 2
+        contentID = data.contentId
+        contentType = data.type
+        createDate = ""
+        duration = data.timeStamp
+        fav = ""
+        follower = ""
+        image = data.rootImg
+        imageWeb = ""
+        isPaid = false
+        newBanner = ""
+        playCount = 0
+        playListId = ""
+        playListImage = ""
+        playListName = ""
+        playUrl = data.track
+        rootId = data.rootId
+        rootType = data.rootType
+        seekable = false
+        teaserUrl = ""
+        title = data.rootTitle
+        trackType = ""
+        type = data.type
+    }
+    internal fun setDataWatchlater(data: WatchLaterContent){
         albumId =""
         albumImage =""
         albumName = ""

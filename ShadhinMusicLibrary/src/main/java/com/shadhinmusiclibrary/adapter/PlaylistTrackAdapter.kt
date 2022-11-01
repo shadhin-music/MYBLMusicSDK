@@ -123,7 +123,6 @@ internal class PlaylistTrackAdapter(
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
             tvSingerName.text = mSongDetail.artist
-
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)

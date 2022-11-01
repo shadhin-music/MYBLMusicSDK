@@ -7,6 +7,7 @@ import android.net.Uri
 import android.util.Log
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -17,9 +18,23 @@ class CacheRepository(val context: Context) {
 
     val databaseClient = DatabaseClient(context)
 
+    val watchLaterDb = databaseClient.getWatchlaterDatabase()
+
     val downloadDb = databaseClient.getDownloadDatabase()
     fun insertDownload(downloadedContent: DownloadedContent) {
         downloadDb?.DownloadedContentDao()?.insert(downloadedContent)
+    }
+    fun insertWatchLater(watchLaterContent: WatchLaterContent){
+        watchLaterDb?.WatchlaterContentDao()?.insert(watchLaterContent)
+    }
+    fun getAllWatchlater() = watchLaterDb?.WatchlaterContentDao()?.getAllWatchLater()
+
+    fun getWatchedVideoById(id: String): WatchLaterContent? {
+        var contents =watchLaterDb?.WatchlaterContentDao()?.getWatchLaterById(id)
+        if (contents?.size ?: 0 > 0) {
+            return contents!![0]
+        }
+        return null
     }
 //    fun deleteAllDownloads() {
 //        val list=downloadDb?.DownloadedContentDao()?.getAllDownloads()
@@ -49,14 +64,23 @@ class CacheRepository(val context: Context) {
     fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
     //fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
     fun deleteDownloadById(id: String) {
-        val path=downloadDb?.DownloadedContentDao()?.getTrackById(id)
+        val path = downloadDb?.DownloadedContentDao()?.getTrackById(id)
         downloadDb?.DownloadedContentDao()?.deleteDownloadById(id)
         try {
             UtilHelper.deleteFileIfExists(Uri.parse(path))
-        }catch (e:NullPointerException){
+        } catch (e: NullPointerException) {
 
         }
-        DownloadOrDeleteObserver.notifySubscriber()
+    }
+        fun deleteWatchlaterById(id: String) {
+            val path=watchLaterDb?.WatchlaterContentDao()?.getWatchlaterTrackById(id)
+            watchLaterDb?.WatchlaterContentDao()?.deleteWatchlaterById(id)
+            try {
+                UtilHelper.deleteFileIfExists(Uri.parse(path))
+            }catch (e:NullPointerException){
+
+            }
+       // DownloadOrDeleteObserver.notifySubscriber()
 
     }
 //
@@ -70,6 +94,7 @@ class CacheRepository(val context: Context) {
 //            }
 //        }
 //    }
+
 fun isTrackDownloaded(contentId:String):Boolean {
     var path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
     Log.e("TAG", "Track: " + path)
@@ -81,18 +106,30 @@ fun isTrackDownloaded(contentId:String):Boolean {
     }
 
 }
-fun isDownloadCompleted(contentId:String):Boolean{
-    var path = downloadDb?.DownloadedContentDao()?.getDownloadById(contentId)
-    Log.e("TAG", "TrackDownload123: " + path)
-    if (path == null) {
-        Log.e("TAG", "TrackDownload: " + path)
-        return false
-    } else {
+   fun getDownloadedContent()=downloadDb?.DownloadedContentDao()?.getAllDownloadedTrackById()
+
+//fun getDownlodById(contentId:String):Boolean{
+//    var path = downloadDb?.DownloadedContentDao()?.getDownloadedTrackById(contentId)
+//    Log.e("TAG", "TrackDownloadTrue: " + path)
+//    if (path == null) {
+//        Log.e("TAG", "TrackDownload: " + path)
+//        return false
+//    } else {
+//        return true
+//    }
+//}
+
+fun isDownloadCompleted():Boolean{
+    val progress = sh.getInt("progress", 0)
+    Log.e("TAG", "TrackDownload: " + progress)
+    if(progress.equals(3)){
+        Log.e("TAG", "TrackDownload: " + progress)
         return true
     }
+    else{
+        return false
+    }
 }
-
-
 
 
 }

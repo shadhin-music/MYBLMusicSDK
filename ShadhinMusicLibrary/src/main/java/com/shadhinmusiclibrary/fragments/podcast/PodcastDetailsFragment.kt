@@ -277,12 +277,12 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //                val downloaded: ImageView?= view?.findViewWithTag(200)
             progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
-            if(!isDownloaded){
-                progressIndicator?.visibility = View.GONE
-                // downloaded?.visibility = VISIBLE
-            }
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if(isDownloaded){
+//                progressIndicator?.visibility = View.GONE
+//                // downloaded?.visibility = VISIBLE
+//            }
 
             Log.e("getDownloadManagerx",
                 "habijabi: ${it.toString()} ${progressIndicator == null}")

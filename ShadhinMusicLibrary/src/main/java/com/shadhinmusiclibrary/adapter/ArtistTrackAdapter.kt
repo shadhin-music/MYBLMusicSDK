@@ -159,9 +159,6 @@ internal class ArtistTrackAdapter(
         var tvSongName: TextView? = null
         fun bindItems(artistContent: ArtistContentData) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
                 .load(artistContent.getImageUrl300Size())
                 .into(imageView!!)

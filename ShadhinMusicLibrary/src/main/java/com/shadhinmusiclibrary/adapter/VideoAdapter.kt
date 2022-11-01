@@ -110,13 +110,7 @@ internal class VideoAdapter(
         }
         submitList(newItem)
     }
-    fun setProgress(progressIndicatorUpdate: ArrayList<DownloadingItem>) {
 
-        progressIndicatorUpdate.forEach {
-
-
-        }
-    }
 
 
     inner class ListViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView){

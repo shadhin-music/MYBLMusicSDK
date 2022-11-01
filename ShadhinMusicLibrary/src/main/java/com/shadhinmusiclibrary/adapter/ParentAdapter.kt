@@ -257,14 +257,12 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 
         private fun bindDownload(homePatchItemModel: HomePatchItem) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
+            val watchlater:LinearLayout = itemView.findViewById(R.id.WatchLater)
             download.setOnClickListener {
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
-//                val manager: FragmentManager =
-//                    (mContext as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .add(R.id.container, DownloadFragment.newInstance())
-//                    .addToBackStack("AllGenresDetailsFragment")
-//                    .commit()
+            }
+            watchlater.setOnClickListener {
+                downloadClickCallBack.clickOnWatchlater(homePatchItemModel)
             }
         }
 

@@ -99,13 +99,15 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 super.onDownloadChanged(downloadManager, download, finalException)
                 if(download.state == STATE_COMPLETED){
                     currentProgress= 100
+//                    Log.e("TAGGG",
+//                        "COMPLETED: " + download.state)
                     val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                     val localIntent = Intent("PROGRESS")
                         .putExtra("progress",100)
                     localBroadcastManager.sendBroadcast(localIntent)
                     val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
                     val Progress = sharedPreferences.edit()
-                    Progress.putInt("progress",100)
+                    Progress.putInt("progress",3)
                     Progress.apply()
                 }
 

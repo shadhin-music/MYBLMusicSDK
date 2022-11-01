@@ -116,7 +116,6 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:textColor="@color/my_sdk_down_item_desc"
-
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +156,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-
+                            android:id="@+id/txtFav"
                             android:gravity="center"
                             android:padding="4dp"
                             android:text="Favorite"
@@ -181,7 +180,6 @@
 
                         <ImageView
                             android:id="@+id/watchIcon"
-
                             android:layout_width="match_parent"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
@@ -194,6 +192,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:padding="4dp"
+                            android:id="@+id/txtWatch"
                             android:text="Watch later"
                             android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
@@ -208,6 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:visibility="gone"
                         android:background="@drawable/my_bl_sdk_ripple_video"
                         android:clickable="true"
                         android:focusable="true"
@@ -237,7 +237,7 @@
                         android:layout_height="match_parent" />
 
                     <LinearLayout
-
+                         android:id="@+id/download"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -251,15 +251,16 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="4dp"
+                            android:id="@+id/imageDownload"
                             android:src="@drawable/my_bl_sdk_download" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-
                             android:gravity="center"
                             android:padding="4dp"
+                            android:id="@+id/txtDownload"
                             android:text="Download"
                             android:textColor="@color/my_sdk_down_item_desc"
                             android:textSize="12sp" />
