@@ -179,6 +179,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         backButton.setOnClickListener { onBackPressed() }
         fullscreenToggleButton.setOnClickListener {  toggleOrientation() }
         configOrientation(resources.configuration.orientation)
+
     }
     private fun setupAdapter() {
         adapter = VideoAdapter(this,this,cacheRepository)
@@ -188,8 +189,26 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         adapter.onItemClickListeners { item, isMenu ->
             if (!isMenu) {
                 togglePlayPause(item)
+                var iswatched = false
+                var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
+                if (watched?.track != null) {
+                    iswatched = true
+                   // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+                    watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+                } else {
+                    iswatched = false
+                    watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+                   // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
+                }
+
+//                if (iswatched) {
+//                    watchlatertext.text = "Remove From Watchlater"
+//                } else {
+//                    watchlatertext.text = "Watch Later"
+//                }
             }
         }
+
     }
     private fun initData() {
         if (intent.hasExtra(INTENT_KEY_DATA_LIST) &&
@@ -226,30 +245,35 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             adapter.submitList(videoList)
             addOnPlayerQueue(videoList)
         })
-        viewModel.currentVideo.observe(this, Observer {  video->
+        viewModel.currentVideo.observe(this, Observer { video ->
             videoTitleTextView.text = video.title
             videoDescTextView.text = video.artist
-//            var iswatched = false
-//            var watched = cacheRepository.getWatchedVideoById(video.contentID.toString())
-//            if (watched?.track != null) {
-//                iswatched = true
-//                watchIcon?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+            var iswatched = false
+            var watched = cacheRepository.getWatchedVideoById(video.contentID.toString())
+            if (watched?.track != null) {
+                iswatched = true
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+            } else {
+                iswatched = false
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+               // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
+            }
+
+//            if (iswatched) {
+//                watchlatertext?.text = "Remove From Watchlater"
 //            } else {
-//                iswatched = false
-//                //watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
+//                watchlatertext?.text = "Watch Later"
 //            }
-//
-////            if (iswatched) {
-////                textViewWatchlaterTitle?.text = "Remove From Watchlater"
-////            } else {
-////                textViewWatchlaterTitle?.text = "Watch Later"
-////            }
 //            watchlaterLayout.setOnClickListener {
 //               if(iswatched.equals(true)){
 //
 //                    cacheRepository.deleteWatchlaterById(video.contentID.toString())
+//                   watchIcon?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+//                   watchlatertext?.text = "Remove From Watchlater"
 //                    Log.e("TAG","CLICKED: "+ video.contentID)
 //                }else{
+//                   watchIcon.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
+//                   watchlatertext.text = "Watch Later"
 //                    val url = "${Constants.FILE_BASE_URL}${video.playUrl}"
 //                    cacheRepository.insertWatchLater(WatchLaterContent(video.contentID.toString(),
 //                        video.rootId.toString(),
@@ -321,6 +345,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             super.onMediaItemTransition(mediaItem, reason)
             adapter.currentItem(false, mediaItem?.mediaId)
             viewModel.currentVideo(mediaItem?.mediaId)
+
         }
 
     }
@@ -569,9 +594,12 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         if (watched?.track != null) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+
         } else {
             iswatched = false
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
+            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
         }
 
         if (iswatched) {

@@ -236,6 +236,18 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         routeDataHomeFragment(patch, selectedPatchIndex)
     }
+    private fun playlistFragmentAccess() {
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+
+        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_create_playlist,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            })
+    }
 
     private fun patchFragmentAccess() {
         val dataContentType =
