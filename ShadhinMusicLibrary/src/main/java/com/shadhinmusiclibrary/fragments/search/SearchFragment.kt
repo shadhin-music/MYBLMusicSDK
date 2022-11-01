@@ -223,6 +223,14 @@ internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
                 return true
             }
         })
+//        var url = ""
+//        var GET_PODCAST_DETAILS = "\(BASE_URL)/Podcast/Podcast"
+//        if (0 == 0) {
+//            url = "V3?podType=\(podcastType)&contentTYpe=\(podcastShowCode.lowercased())"
+//        } else {
+//            url += "byepisodeIdV3?podType=\(podcastType)&episodeId=\(specificEpisodeID)&contentTYpe=\(podcastShowCode.lowercased())"
+//        }
+//        url = url + "&isPaid=\(ShadhinCore.instance.isUserPro)"
     }
 
     private fun initUI(viewRef: View) {
