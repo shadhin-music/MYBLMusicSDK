@@ -44,7 +44,8 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     var podcastType: String = ""
     var contentType: String = ""
-    var selectedEpisodeID: Int = 0
+    private var selectedEpisodeID: Int = 0
+    var contentId: Int = 0
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
 
@@ -63,9 +64,17 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
             val Type: String = it.ContentType
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
+            contentId = it.ContentID.toInt()
             selectedEpisodeID = it.AlbumId.toInt()
         }
-        initialize()
+
+        setupViewModel()
+        if (selectedEpisodeID == contentId) {
+            getPodcastShowDetailsInitialize()
+        } else {
+            getPodcastDetailsInitialize()
+        }
+
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
@@ -77,10 +86,14 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
     }
 
-    private fun initialize() {
+    private fun getPodcastShowDetailsInitialize() {
         setupAdapters()
-        setupViewModel()
-        observeData()
+        observePodcastShowData()
+    }
+
+    private fun getPodcastDetailsInitialize() {
+        setupAdapters()
+        observePodcastDetailsData()
     }
 
     private fun setupAdapters() {
@@ -110,7 +123,44 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
             ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
     }
 
-    private fun observeData() {
+    private fun observePodcastShowData() {
+        viewModel.fetchPodcastShowContent(podcastType, contentType, false)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+                response?.data?.data?.EpisodeList?.let { itEpisod ->
+//                    podcastHeaderAdapter.setHeader(
+//                        itEpisod,
+//                        itEpisod[0].TrackList
+//                    )
+                    podcastHeaderAdapter.setTrackData(
+                        itEpisod,
+                        itEpisod[0].TrackList,
+                        argHomePatchDetail!!
+                    )
+                }
+                response.data?.data?.EpisodeList?.get(0)
+                    ?.let {
+                        podcastTrackAdapter.setData(
+                            it.TrackList,
+                            argHomePatchDetail!!,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                    }
+                response.data?.data?.let {
+                    it.EpisodeList.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1)
+                    }
+                }
+                parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun observePodcastDetailsData() {
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
@@ -180,7 +230,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
         argHomePatchDetail?.ContentID = episode.Id.toString()
-        observeData()
+        observePodcastDetailsData()
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)

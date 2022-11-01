@@ -4,16 +4,16 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class EpisodeModel(
-    val Code: String,
-    val ContentType: String,
-    val Details: String,
     var Id: Int,
-    val ImageUrl: String,
-    val IsCommentPaid: Boolean,
-    val IsPaid: Boolean,
-    val Name: String,
     val ShowId: String,
+    val Code: String,
+    val Name: String,
+    val ImageUrl: String,
+    val Details: String,
+    val ContentType: String,
+    val fav: String,
     val Sort: Int,
-    val TrackList: MutableList<SongTrackModel>,
-    val fav: String
+    val IsPaid: Boolean,
+    val IsCommentPaid: Boolean,
+    val TrackList: MutableList<SongTrackModel>
 )

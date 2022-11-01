@@ -12,4 +12,12 @@ internal class PodcastRepository(private val apiService: ApiService) {
     ) = safeApiCall {
         apiService.fetchPodcastByID(podType, episodeId, contentType, isPaid)
     }
+
+    suspend fun fetchPodcastShow(
+        podType: String,
+        contentType: String,
+        isPaid: Boolean
+    ) = safeApiCall {
+        apiService.fetchPodcastShow(podType, contentType, isPaid)
+    }
 }

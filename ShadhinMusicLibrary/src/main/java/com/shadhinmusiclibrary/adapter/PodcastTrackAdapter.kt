@@ -104,9 +104,3 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         const val VIEW_TYPE = 2
     }
 }
-
-
-
-
-
-

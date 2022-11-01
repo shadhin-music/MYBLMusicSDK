@@ -20,4 +20,11 @@ internal class PodcastViewModel(private val podcastRepository: PodcastRepository
                 podcastRepository.fetchPodcastByID(podType, episodeId, contentType, isPaid)
             _podcastContent.postValue(response)
         }
+
+    fun fetchPodcastShowContent(podType: String, contentType: String, isPaid: Boolean) =
+        viewModelScope.launch {
+            val response =
+                podcastRepository.fetchPodcastShow(podType, contentType, isPaid)
+            _podcastContent.postValue(response)
+        }
 }
