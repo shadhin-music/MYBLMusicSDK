@@ -145,7 +145,7 @@ internal class AlbumsTrackAdapter(
                 tvSongLength.text = TimeParser.secToMin(dataSongDetail.duration)
 
                 progressIndicator.tag = dataSongDetail.ContentID
-                downloaded.tag = 200
+//                downloaded.tag = 200
                 progressIndicator.visibility = View.GONE
                 downloaded.visibility = View.GONE
                 val isDownloaded =
@@ -166,6 +166,7 @@ internal class AlbumsTrackAdapter(
         companion object {
 
             const val VIEW_TYPE = 2
+
         }
     }
 

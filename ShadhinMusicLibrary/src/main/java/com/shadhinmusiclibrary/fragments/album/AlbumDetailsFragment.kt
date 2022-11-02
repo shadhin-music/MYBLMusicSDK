@@ -12,6 +12,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
@@ -284,14 +285,14 @@ internal class AlbumDetailsFragment :
 
                 val progressIndicator: CircularProgressIndicator? =
                     view?.findViewWithTag(it.contentId)
-//                val downloaded: ImageView?= view?.findViewWithTag(200)
+             //  val downloaded: ImageView?= view?.findViewWithTag(200)
                 progressIndicator?.visibility = VISIBLE
                 progressIndicator?.progress = it.progress.toInt()
             val isDownloaded =
                 cacheRepository?.isTrackDownloaded(it.contentId) ?: false
                 if(!isDownloaded){
-                    progressIndicator?.visibility = GONE
-                   // downloaded?.visibility = VISIBLE
+                   progressIndicator?.visibility = GONE
+//                    downloaded?.visibility = VISIBLE
                 }
 
                 Log.e("getDownloadManagerx",

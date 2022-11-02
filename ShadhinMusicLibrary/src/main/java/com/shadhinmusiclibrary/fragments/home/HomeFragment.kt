@@ -335,4 +335,20 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 putExtra(AppConstantUtils.PatchItem, data)
             })
     }
+    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_CreatePlaylist
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
 }

@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
@@ -29,16 +28,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.palette.graphics.Palette
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.exoplayer2.offline.*
-import com.google.android.exoplayer2.scheduler.Requirements
-import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.shadhinmusiclibrary.BuildConfig
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -54,18 +49,11 @@ import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransfo
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.MusicPlayList
-import com.shadhinmusiclibrary.player.data.source.MyBLDownloadManager
-import com.shadhinmusiclibrary.player.data.source.ShadhinDataSourceFactory
 import com.shadhinmusiclibrary.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
 import java.io.Serializable
 import java.util.*
 import androidx.annotation.NavigationRes as NavigationRes1
@@ -149,6 +137,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         }
         if (uiRequest == AppConstantUtils.Requester_Name_Watchlater) {
             watchlaterFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_MyPlaylist) {
+           myPlaylistFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_CreatePlaylist) {
+            createPlaylistFragmentAccess()
         }
         //routeDataArtistType()
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
@@ -236,7 +230,19 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
         routeDataHomeFragment(patch, selectedPatchIndex)
     }
-    private fun playlistFragmentAccess() {
+    private fun myPlaylistFragmentAccess() {
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItem
+
+        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_my_playlist,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            })
+    }
+    private fun createPlaylistFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItem
 

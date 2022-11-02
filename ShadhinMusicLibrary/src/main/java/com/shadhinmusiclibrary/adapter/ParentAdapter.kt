@@ -258,11 +258,15 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         private fun bindDownload(homePatchItemModel: HomePatchItem) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             val watchlater:LinearLayout = itemView.findViewById(R.id.WatchLater)
+            val playlist:LinearLayout = itemView.findViewById(R.id.Playlists)
             download.setOnClickListener {
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
             }
             watchlater.setOnClickListener {
                 downloadClickCallBack.clickOnWatchlater(homePatchItemModel)
+            }
+            playlist.setOnClickListener {
+                downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
             }
         }
 

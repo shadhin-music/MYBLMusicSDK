@@ -110,7 +110,7 @@
         app:indicatorColor="@color/my_sdk_color_primary"
         android:layout_centerInParent="true"
         android:progress="0"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:max="100" />
     <ImageView
         android:id="@+id/iv_song_type_icon"

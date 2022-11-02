@@ -84,19 +84,21 @@
                     android:layout_margin="10dp"
                     android:src="@drawable/my_bl_sdk_ic_downloaded"
                     android:visibility="gone" />
+
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    app:indicatorSize="15dp"
-                    app:trackThickness="1dp"
-                    android:indeterminate="false"
-                    android:layout_width="15dp"
-                    android:layout_height="25dp"
-                    app:trackColor="@color/my_sdk_color_grey"
-                    app:indicatorColor="@color/my_sdk_color_primary"
-                    android:layout_margin="5dp"
+                    android:layout_width="8dp"
+                    android:layout_height="17dp"
                     android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:visibility="gone"
                     android:progress="0"
-                    android:max="100" />
+                    app:indicatorColor="@color/my_sdk_color_primary"
+                    app:indicatorSize="15dp"
+                    app:trackColor="@color/my_sdk_color_grey"
+                    app:trackThickness="1dp" />
                 <ImageView
                     android:id="@+id/iv_song_menu_icon"
                     android:layout_width="wrap_content"

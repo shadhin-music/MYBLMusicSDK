@@ -79,8 +79,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     companion object {
-        const val TOKEN: String =
-            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2NzE4OTExMiwiZXhwIjoxNjY3MjYxNTU3LCJpYXQiOjE2NjcxODkxMTIsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ._NpLdgNgsSDkdGUrCSdKsH0dvyzuMO2MpO8B6-GNDeIx4CElI32a5ICJcrsBZyuCEy2a7AY8hJt60KenStTJgw"
+        const val TOKEN: String = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2NzM2MjAyMywiZXhwIjoxNjY3NDM3Nzc5LCJpYXQiOjE2NjczNjIwMjMsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.omTBN3CQP09ORNccd3X0T82GP-qM8Khz66DN2oG09mFeY5MozOeJaXHgepsL_WipiaO3OzdLOyjuiqeRa9NW4g"
     }
 }
 
