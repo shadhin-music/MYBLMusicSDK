@@ -1,11 +1,13 @@
 package com.shadhinmusiclibrary.di
 
 import android.content.Context
-
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
-import com.shadhinmusiclibrary.di.single.*
+import com.shadhinmusiclibrary.di.single.BearerTokenHeaderInterceptor
+import com.shadhinmusiclibrary.di.single.RetrofitClient
+import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
+import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
@@ -21,10 +23,8 @@ import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
 /*
@@ -275,9 +275,9 @@ internal class Module(private val applicationContext: Context) {
 
     private fun getRetrofitInstance(): Retrofit {
 //        MehenazBranch
-//        val client = getBaseClient()
-//        return  RetrofitClient.getInstance(client)
-        return RetrofitClient.getInstance()
+        val client = getBaseClient()
+        return  RetrofitClient.getInstance(client)
+//        return RetrofitClient.getInstance()
     }
 
     private val playerApiService: PlayerApiService

@@ -282,7 +282,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         }
     }
 
-    override fun clickOnDownload(selectedHomePatchItem: HomePatchItem) {
+    override fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
@@ -299,7 +299,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             })
     }
 
-    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItem) {
+    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
@@ -316,7 +316,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             })
     }
 
-    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItem) {
+    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(

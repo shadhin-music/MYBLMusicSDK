@@ -39,7 +39,6 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.podcast.Trackodel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
@@ -394,7 +393,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
 
-        override fun onClickBottomItem(mSongDetails: SongDetail) {
+        override fun onClickBottomItem(mSongDetails: IMusicModel) {
             (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
                 navController,
                 context = requireContext(),

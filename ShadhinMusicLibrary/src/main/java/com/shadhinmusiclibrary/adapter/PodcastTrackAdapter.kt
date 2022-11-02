@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -111,14 +110,13 @@ internal class PodcastTrackAdapter(
 
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = tracks[position].EpisodeId
+            progressIndicator.tag = tracks[position].album_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(tracks[position].EpisodeId) ?: false
+                cacheRepository.isTrackDownloaded(tracks[position].album_Id!!) ?: false
 
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
             }

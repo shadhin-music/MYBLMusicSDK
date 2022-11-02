@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllDownloadedAdapter
-import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
@@ -74,10 +73,11 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                playItem(
-                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-                    clickItemPosition
-                )
+                //Todo Mehenaz ap please flowe as link artist/album
+//                playItem(
+//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
+//                    clickItemPosition
+//                )
             }
     }
 

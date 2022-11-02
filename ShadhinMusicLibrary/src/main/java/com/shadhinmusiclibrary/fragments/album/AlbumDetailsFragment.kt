@@ -34,7 +34,6 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -292,19 +291,12 @@ internal class AlbumDetailsFragment :
                 progressIndicator?.visibility = GONE
 //                    downloaded?.visibility = VISIBLE
             }
-
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
         }
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
                     //val data = intent.getIntExtra("currentProgress",0)
@@ -316,11 +308,9 @@ internal class AlbumDetailsFragment :
                 }
                 "DELETED" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
-                    Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
-                    Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }

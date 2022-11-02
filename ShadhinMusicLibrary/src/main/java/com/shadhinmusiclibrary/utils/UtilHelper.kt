@@ -3,14 +3,13 @@ package com.shadhinmusiclibrary.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
-import com.shadhinmusiclibrary.data.IMusicModel
 import android.net.Uri
-import android.util.Log
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
-import com.shadhinmusiclibrary.data.model.search.SearchModel
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants
@@ -47,11 +46,11 @@ internal object UtilHelper {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
             songItem.apply {
-                val newPlayUrl = if (PlayUrl.contains(
+                val newPlayUrl = if (playingUrl!!.contains(
                         "http",
                         true
                     )
-                ) PlayUrl else Constants.FILE_BASE_URL + PlayUrl
+                ) playingUrl!! else Constants.FILE_BASE_URL + playingUrl!!
                 musicList.add(
                     Music(
                         mediaId = content_Id,
@@ -79,31 +78,29 @@ internal object UtilHelper {
         return musicList
     }
 
-    fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetail> {
-        val songDetailList = mutableListOf<SongDetail>()
+    fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetailModel> {
+        val songDetailList = mutableListOf<SongDetailModel>()
         for (trackItem in trackList) {
             trackItem.apply {
                 songDetailList.add(
-                    SongDetail(
-                        ContentID = contentId,
-                        image = rootImg,
-                        title = rootTitle,
-                        ContentType = rootType,
-                        PlayUrl = "" + track,
-                        artist = artist,
-                        duration = timeStamp,
-                        copyright = "",
-                        labelname = "",
-                        releaseDate = "",
-                        fav = "",
-                        ArtistId = "",
-                        albumId = rootId,
-                        userPlayListId = "",
-                        /*rootType = contentType,*/
-                        rootContentID = rootId,
-                        rootContentType = rootType,
+                    SongDetailModel().apply {
+                        content_Id = contentId
+                        imageUrl = rootImg
+                        titleName = rootTitle
+                        content_Type = rootType
+                        playingUrl = "" + track
+                        artist = artist
+                        total_duration = timeStamp
+                        copyright = ""
+                        labelname = ""
+                        releaseDate = ""
+                        fav = ""
+                        album_Id = ""
+                        album_Id = rootId
+                        rootContentId = rootId
+                        rootContentType = rootType
                         rootImage = rootImg
-                    )
+                    }
                 )
             }
         }

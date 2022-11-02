@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.player.utils
+package com.shadhinmusiclibrary.library.player.utils
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -8,7 +8,6 @@ import android.util.Log
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 

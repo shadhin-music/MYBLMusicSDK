@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.library.player.data.rest
 
-import com.shadhinmusiclibrary.library.data.repository.AuthRepository
-import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.data.repository.AuthRepository
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo
 import com.shadhinmusiclibrary.utils.Status

@@ -18,11 +18,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.activities.video.BottomsheetDialog
-import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
-import com.shadhinmusiclibrary.utils.createTimeLabel
-import java.util.ArrayList
 
 
 internal typealias VideoItemClickFunc = (VideoModel, isMenuClick: Boolean) -> Unit

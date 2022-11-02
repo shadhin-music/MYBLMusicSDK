@@ -123,7 +123,7 @@ internal class ParentAdapter(
         }
         if (this.homeListData.size >= 3 && downloadNotAdded) {
             downloadNotAdded = false
-            download = HomePatchItem("002", "download", listOf(), "download", "download", 0, 0)
+            download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
         }
 
@@ -233,7 +233,7 @@ internal class ParentAdapter(
 //            }
         }
 
-        private fun bindDownload(homePatchItemModel: homePatchItemModel) {
+        private fun bindDownload(homePatchItemModel: HomePatchItemModel) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             val watchlater: LinearLayout = itemView.findViewById(R.id.WatchLater)
             val playlist: LinearLayout = itemView.findViewById(R.id.Playlists)

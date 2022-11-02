@@ -49,7 +49,7 @@ import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-import com.shadhinmusiclibrary.player.Constants
+import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.ShadhinMusicQueueNavigator
 import com.shadhinmusiclibrary.library.player.data.source.MediaSources
 import com.shadhinmusiclibrary.library.player.data.source.ShadhinVideoMediaSource
@@ -217,7 +217,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                     16.px
                 )
             }
-
         })
         viewModel.progressbarVisibility.observe(this, Observer {
             mainProgressBar.visibility = it
@@ -457,7 +456,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         const val LAST_PLAYED_POSITION = "last_position"
     }
 
-    override fun openDialog(item: Video) {
+    override fun openDialog(item: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
 
         val contentView =
@@ -621,39 +620,39 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             }
         }
     }
-}
 
-inner class MyBroadcastReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        Log.e("DELETED", "onReceive " + intent.action)
-        Log.e("PROGRESS", "onReceive " + intent)
-        when (intent.action) {
-            "ACTION" -> {
-                val downloadingItems =
-                    intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.e("DELETED", "onReceive " + intent.action)
+            Log.e("PROGRESS", "onReceive " + intent)
+            when (intent.action) {
+                "ACTION" -> {
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
 
-                downloadingItems?.let {
-                    progressIndicatorUpdate(it)
-                    Log.e(
-                        "getDownloadManagerx",
-                        "habijabi: ${it.toString()} "
-                    )
+                    downloadingItems?.let {
+                        progressIndicatorUpdate(it)
+                        Log.e(
+                            "getDownloadManagerx",
+                            "habijabi: ${it.toString()} "
+                        )
+                    }
                 }
-            }
-            "DELETED" -> {
-                adapter.notifyDataSetChanged()
-                Log.e("DELETED", "broadcast fired")
-            }
-            "PROGRESS" -> {
+                "DELETED" -> {
+                    adapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+                "PROGRESS" -> {
 
-                adapter.notifyDataSetChanged()
-                Log.e("PROGRESS", "broadcast fired")
+                    adapter.notifyDataSetChanged()
+                    Log.e("PROGRESS", "broadcast fired")
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-            else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
         }
     }
 }
 
-interface BottomsheetDialog {
-    fun openDialog(item: Video)
+internal interface BottomsheetDialog {
+    fun openDialog(item: VideoModel)
 }

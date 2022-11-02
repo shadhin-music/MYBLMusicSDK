@@ -12,7 +12,7 @@ import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
 internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack {

@@ -1,22 +1,12 @@
-package com.shadhinmusiclibrary.player.data.source
+package com.shadhinmusiclibrary.library.player.data.source
 
 import android.content.Context
 import com.google.android.exoplayer2.database.DatabaseProvider
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.google.android.exoplayer2.util.Util
 import com.shadhinmusiclibrary.di.ShadhinApp
-import com.shadhinmusiclibrary.player.data.model.Music
-import com.shadhinmusiclibrary.player.data.rest.MusicRepository
-import java.io.File
+import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
 
 internal class MyBLDownloadManager(private val context: Context, musicRepository: MusicRepository) {
     var dataSourceFactory: DataSource.Factory =

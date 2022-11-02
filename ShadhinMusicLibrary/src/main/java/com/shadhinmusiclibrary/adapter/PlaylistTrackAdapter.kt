@@ -119,10 +119,10 @@ internal class PlaylistTrackAdapter(
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = mSongDetail.ContentID
+            progressIndicator.tag = mSongDetail.content_Id!!
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.ContentID) ?: false
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
 
             if (isDownloaded) {
                 Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)

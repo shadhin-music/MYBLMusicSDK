@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.download.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.shadhinmusiclibrary.data.model.SongDetail
 import java.io.Serializable
 
 

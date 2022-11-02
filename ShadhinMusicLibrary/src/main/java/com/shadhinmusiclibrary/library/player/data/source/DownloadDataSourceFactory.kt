@@ -1,16 +1,11 @@
-package com.shadhinmusiclibrary.player.data.source
+package com.shadhinmusiclibrary.library.player.data.source
 
 import android.content.Context
-import android.util.Log
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.model.Music
-import com.shadhinmusiclibrary.player.data.rest.MusicRepository
-import com.shadhinmusiclibrary.player.singleton.DataSourceInfo.isDataSourceError
+import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.isDataSourceError
 import okhttp3.OkHttpClient
 
 

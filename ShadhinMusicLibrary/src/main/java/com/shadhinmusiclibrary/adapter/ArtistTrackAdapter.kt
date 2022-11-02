@@ -123,11 +123,11 @@ internal class ArtistTrackAdapter(
             val progressIndicatorArtist: CircularProgressIndicator =
                 itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicatorArtist.tag = artistContent.ContentID
+            progressIndicatorArtist.tag = artistContent.content_Id!!
             downloaded.tag = 200
             progressIndicatorArtist.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository?.isTrackDownloaded(artistContent.content_Id) ?: false
+            val isDownloaded = cacheRepository?.isTrackDownloaded(artistContent.content_Id!!) ?: false
 //            Log.e("Tag","Downloaded: cacheRepository is null"+ (cacheRepository == null))
 //            Log.e("Tag","Downloaded: "+ isDownloaded)
 //            Log.e("Tag","Downloaded: "+ dataSongDetail.ContentID)

@@ -1,9 +1,9 @@
-package com.shadhinmusiclibrary.player.data.source
+package com.shadhinmusiclibrary.library.player.data.source
 
 import android.util.Log
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.data.rest.MusicRepository
-import com.shadhinmusiclibrary.player.singleton.DataSourceInfo
+import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

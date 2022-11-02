@@ -1,5 +1,4 @@
 package com.shadhinmusiclibrary.utils
-import android.util.Log
 import android.view.View.*
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -7,8 +6,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 
 import com.shadhinmusiclibrary.adapter.AlbumsTrackAdapter
-import com.shadhinmusiclibrary.download.MyBLDownloadService
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
