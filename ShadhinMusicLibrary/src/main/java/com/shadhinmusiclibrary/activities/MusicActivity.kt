@@ -7,7 +7,7 @@ import com.shadhinmusiclibrary.R
 internal class MusicActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_music)
+        setContentView(R.layout.my_bl_sdk_activity_music)
 
         val imageBackBtn: AppCompatImageView = findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {

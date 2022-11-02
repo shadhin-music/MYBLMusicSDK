@@ -44,7 +44,7 @@
                     android:id="@+id/tv_song_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:maxLines="1"
                     android:text=""
                     android:textSize="14sp"
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text=""
+                    android:maxLines="1"
                     android:textSize="12sp" />
 
                 <TextView
@@ -78,17 +78,32 @@
                     android:id="@+id/iv_song_type_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/my_bl_sdk_ic_baseline_music_note_24"
-                    android:visibility="gone" />
+                    android:layout_margin="5dp"
+                    android:src="@drawable/my_bl_sdk_ic_downloaded"
+                    android:visibility="invisible" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progress"
+                    android:layout_width="15dp"
+                    android:layout_height="25dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/my_sdk_color_primary"
+                    app:indicatorSize="15dp"
+                    app:trackColor="@color/my_sdk_color_grey"
+                    app:trackThickness="1dp" />
 
                 <ImageView
                     android:id="@+id/iv_song_menu_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
-                    android:src="@drawable/my_bl_sdk_ic_more_vert"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>

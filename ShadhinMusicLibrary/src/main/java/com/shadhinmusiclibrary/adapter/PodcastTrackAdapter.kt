@@ -3,22 +3,30 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCallback) :
-    RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
+internal class PodcastTrackAdapter(
+    private val itemClickCB: PodcastOnItemClickCallback,
+    private val bsDialogItemCallback: PodcastBottomSheetDialogItemCallback,
+    val cacheRepository: CacheRepository
+) : RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {
     var tracks: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastTrackVH {
@@ -33,7 +41,10 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
         }
-
+        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
+        ivSongMenuIcon.setOnClickListener {
+            bsDialogItemCallback.onClickBottomItem(trackItem)
+        }
         if (trackItem.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
@@ -97,6 +108,20 @@ internal class PodcastTrackAdapter(private val itemClickCB: PodcastOnItemClickCa
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             tvSongName?.text = iMusicModel.titleName
+
+            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator.tag = tracks[position].EpisodeId
+            progressIndicator.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded =
+                cacheRepository.isTrackDownloaded(tracks[position].EpisodeId) ?: false
+
+            if (isDownloaded) {
+                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+            }
         }
     }
 

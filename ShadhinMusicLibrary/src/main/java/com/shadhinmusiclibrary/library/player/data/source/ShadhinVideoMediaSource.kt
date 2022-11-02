@@ -22,14 +22,19 @@ internal class ShadhinVideoMediaSource(
     private val videoList: List<VideoModel>,
     private val cache: SimpleCache,
     private val musicRepository: MusicRepository
-) :MediaSources{
+) : MediaSources {
     override fun createSources(): List<MediaSource> {
         return videoList.map { createSource(it) }
     }
 
-    private fun createSource(video: VideoModel): ProgressiveMediaSource {
+    private fun createSource(video: Video): ProgressiveMediaSource {
         val dataSource: DataSource.Factory =
-            ShadhinDataSourceFactory.build(context, toMusic(video), cache, musicRepository)
+            ShadhinDataSourceFactory.buildWithoutWriteCache(
+                context,
+                toMusic(video),
+                cache,
+                musicRepository
+            )
         val pla = toVideoMediaItem(video)
         return ProgressiveMediaSource.Factory(dataSource)
             .createMediaSource(pla)
@@ -68,7 +73,7 @@ internal class ShadhinVideoMediaSource(
                     .setTitle(video.title)
                     .setMediaUri(videoUrl.toUri())
                     .setExtras(Bundle().apply {
-                        putString(Music.CONTENT_TYPE,video.contentType)
+                        putString(Music.CONTENT_TYPE, video.contentType)
                     })
                     .setArtworkUri(exH { video.image?.toUri() })
                     .setArtist(video.artist)

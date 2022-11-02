@@ -9,20 +9,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistAdapter(
     private val itemClickCB: OnItemClickCallback,
-    private val bsDialogItemCallback: BottomSheetDialogItemCallback
-) :
-    RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
+    private val bsDialogItemCallback: BottomSheetDialogItemCallback,
+    val cacheRepository: CacheRepository
+) : RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
+
     private var rootDataContent: HomePatchDetailModel? = null
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
 
@@ -159,7 +162,18 @@ internal class PlaylistAdapter(
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
                 bsDialogItemCallback.onClickBottomItem(mSongDetail)
-                Log.e("TAGGY", "ID: " + mSongDetail)
+            }
+
+            val progressIndicator1: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator1.tag = mSongDetail.ContentID
+            progressIndicator1.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.ContentID) ?: false
+            if (isDownloaded) {
+                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator1.visibility = View.GONE
             }
         }
     }

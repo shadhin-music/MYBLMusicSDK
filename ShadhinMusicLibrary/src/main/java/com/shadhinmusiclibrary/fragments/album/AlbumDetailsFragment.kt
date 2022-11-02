@@ -1,33 +1,45 @@
 package com.shadhinmusiclibrary.fragments.album
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment :
@@ -35,7 +47,7 @@ internal class AlbumDetailsFragment :
     OnItemClickCallback,
     BottomSheetDialogItemCallback,
     HomeCallBack {
-
+    private var cacheRepository: CacheRepository? = null
     private lateinit var navController: NavController
     private lateinit var albumHeaderAdapter: AlbumHeaderAdapter
     private lateinit var albumsTrackAdapter: AlbumsTrackAdapter
@@ -64,8 +76,9 @@ internal class AlbumDetailsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cacheRepository = CacheRepository(requireContext())
         albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
-        albumsTrackAdapter = AlbumsTrackAdapter(this, this)
+        albumsTrackAdapter = AlbumsTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         observeData(
@@ -161,6 +174,16 @@ internal class AlbumDetailsFragment :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED")
+        intentFilter.addAction("PROGRESS")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
         songDetails: MutableList<IMusicModel>
@@ -254,5 +277,53 @@ internal class AlbumDetailsFragment :
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
         observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
+    }
+
+    private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
+        downloadingItems.forEach {
+            val progressIndicator: CircularProgressIndicator? =
+                view?.findViewWithTag(it.contentId)
+            //  val downloaded: ImageView?= view?.findViewWithTag(200)
+            progressIndicator?.visibility = VISIBLE
+            progressIndicator?.progress = it.progress.toInt()
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+            if (!isDownloaded) {
+                progressIndicator?.visibility = GONE
+//                    downloaded?.visibility = VISIBLE
+            }
+
+            Log.e(
+                "getDownloadManagerx",
+                "habijabi: ${it.toString()} ${progressIndicator == null}"
+            )
+        }
+    }
+
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        @SuppressLint("NotifyDataSetChanged")
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.e("DELETED", "onReceive " + intent.action)
+            Log.e("PROGRESS", "onReceive " + intent)
+            when (intent.action) {
+                "ACTION" -> {
+                    //val data = intent.getIntExtra("currentProgress",0)
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+                    downloadingItems?.let {
+                        progressIndicatorUpdate(it)
+                    }
+                }
+                "DELETED" -> {
+                    albumsTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+                "PROGRESS" -> {
+                    albumsTrackAdapter.notifyDataSetChanged()
+                    Log.e("PROGRESS", "broadcast fired")
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

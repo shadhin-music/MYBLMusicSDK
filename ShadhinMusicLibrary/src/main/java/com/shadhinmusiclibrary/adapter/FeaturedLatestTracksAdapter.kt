@@ -27,7 +27,7 @@ internal class FeaturedLatestTracksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 //        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
+            .inflate(R.layout.my_bl_sdk_release_item_list, parent, false)
         return ViewHolder(parentView!!)
     }
 
@@ -91,29 +91,15 @@ internal class FeaturedLatestTracksAdapter(
         var tvSongName: TextView? = null
         fun bindItems(mSongDetails: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = mSongDetails.imageUrl!!
-            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
-
-            Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url))
-                .into(imageView!!)
-            tvSongName = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            tvSongName = itemView.findViewById(R.id.tv_song_name)
+            Glide.with(context)
+                .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
+                .into(imageView!!)
             tvSongName?.text = mSongDetails.titleName
             textArtist.text = mSongDetails.artistName
             textDuration.text = TimeParser.secToMin(mSongDetails.total_duration)
-/*            itemView.setOnClickListener {
-
-            }*/
         }
     }
 }
-
-
-
-
-
-

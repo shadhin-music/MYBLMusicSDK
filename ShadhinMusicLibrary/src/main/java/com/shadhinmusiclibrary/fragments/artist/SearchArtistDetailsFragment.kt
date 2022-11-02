@@ -28,6 +28,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying

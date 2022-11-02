@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
@@ -19,13 +20,15 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ArtistTrackAdapter(
     private val itemClickCB: ArtistOnItemClickCallback,
-    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback,
+    val cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<ArtistTrackAdapter.ArtistTrackVH>() {
     var artistSongList: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
@@ -72,14 +75,6 @@ internal class ArtistTrackAdapter(
         return artistSongList.size
     }
 
-//    fun artistContent(artistContent: ArtistContent?) {
-//        artistContent?.data?.let {
-//            this.artistSongList.clear()
-//            this.artistSongList.addAll(it)
-//            this.notifyDataSetChanged()
-//        }
-//    }
-
     fun setArtistTrack(
         data: MutableList<ArtistContentDataModel>,
         rootPatch: HomePatchDetailModel,
@@ -116,9 +111,6 @@ internal class ArtistTrackAdapter(
         var tvSongName: TextView? = null
         fun bindItems(artistContent: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(artistContent.imageUrl!!))
                 .into(imageView!!)
@@ -128,16 +120,23 @@ internal class ArtistTrackAdapter(
             tvSongName?.text = artistContent.titleName
             textArtist.text = artistContent.artistName
             textDuration.text = TimeParser.secToMin(artistContent.total_duration)
-
-            itemView.setOnClickListener {
-
+            val progressIndicatorArtist: CircularProgressIndicator =
+                itemView.findViewById(R.id.progress)
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicatorArtist.tag = artistContent.ContentID
+            downloaded.tag = 200
+            progressIndicatorArtist.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded = cacheRepository?.isTrackDownloaded(artistContent.content_Id) ?: false
+//            Log.e("Tag","Downloaded: cacheRepository is null"+ (cacheRepository == null))
+//            Log.e("Tag","Downloaded: "+ isDownloaded)
+//            Log.e("Tag","Downloaded: "+ dataSongDetail.ContentID)
+//            Log.e("Tag","Downloaded: "+ cacheRepository?.getAllDownloads())
+            if (isDownloaded) {
+                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicatorArtist.visibility = View.GONE
             }
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
-//            getActorName(entityId!!)
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
         }
     }
 
@@ -145,9 +144,3 @@ internal class ArtistTrackAdapter(
         const val VIEW_TYPE = 2
     }
 }
-
-
-
-
-
-

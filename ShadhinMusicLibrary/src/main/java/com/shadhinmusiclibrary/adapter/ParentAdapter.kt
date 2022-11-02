@@ -14,13 +14,18 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.RBTDATAModel
 
 
-internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack) :
+internal class ParentAdapter(
+    var homeCallBack: HomeCallBack,
+    val searchCb: SearchClickCallBack,
+    val downloadClickCallBack: DownloadClickCallBack
+) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
     private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
@@ -36,7 +41,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             VIEW_POPULAR_PODCAST -> R.layout.my_bl_sdk_item_release_patch
             VIEW_TRENDING_MUSIC_VIDEO -> R.layout.my_bl_sdk_item_trending_music_videos
             // VIEW_AD -> R.layout.item_ad
-         //   VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
+            VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
             VIEW_POPULAR_AMAR_TUNES -> R.layout.my_bl_sdk_item_popular_amar_tunes
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
@@ -50,9 +55,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
-
         return DataAdapterViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
@@ -72,7 +75,8 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             "Podcast" -> VIEW_POPULAR_PODCAST
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
-          //  "download" -> VIEW_DOWNLOAD
+            "download" -> VIEW_DOWNLOAD
+
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -89,13 +93,13 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 //            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
 //            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
 //            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
-
-
             else -> {
                 -1
             }
         }
     }
+
+    var downloadNotAdded = true
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItemModel>) {
@@ -115,41 +119,18 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
                 // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
             }
             this.homeListData.add(search!!)
-
             //this.homeListData.add(download!!)
         }
-//        var exists :Boolean = false
-//        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 2) {
-//
-//            for (item in data.indices) {
-//               Log.e("TaG","Items: "+ data[item].ContentType)
-//                download = HomePatchItem("002",
-//                    "download",
-//                    data[item].Data,
-//                    "download",
-//                    "download",
-//                    0,
-//                    0)
-//
-//                if(!exists) {
-//                    Log.e("TaG","Items321: "+ exists)
-//                    this.homeListData.add(download!!)
-//
-//                }
-//            }
-//            if (data[item].Code.equals("002")){
-//                exists = true
-//                Log.e("TaG","Items123: "+ exists)
-//            }
-        //}
+        if (this.homeListData.size >= 3 && downloadNotAdded) {
+            downloadNotAdded = false
+            download = HomePatchItem("002", "download", listOf(), "download", "download", 0, 0)
+            this.homeListData.add(download!!)
+        }
 
         this.homeListData.addAll(data)
         val sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
-
-
     }
-
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
@@ -252,16 +233,19 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 //            }
         }
 
-        private fun bindDownload() {
+        private fun bindDownload(homePatchItemModel: homePatchItemModel) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
-//            download.setOnClickListener {
-//                val manager: FragmentManager =
-//                    (mContext as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .add(R.id.container, DownloadFragment.newInstance())
-//                    .addToBackStack("AllGenresDetailsFragment")
-//                    .commit()
-//            }
+            val watchlater: LinearLayout = itemView.findViewById(R.id.WatchLater)
+            val playlist: LinearLayout = itemView.findViewById(R.id.Playlists)
+            download.setOnClickListener {
+                downloadClickCallBack.clickOnDownload(homePatchItemModel)
+            }
+            watchlater.setOnClickListener {
+                downloadClickCallBack.clickOnWatchlater(homePatchItemModel)
+            }
+            playlist.setOnClickListener {
+                downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
+            }
         }
 
 
@@ -277,7 +261,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-           // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
+            // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
         }
 
         private fun bindMadeForYou() {
@@ -333,7 +317,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
                 "Podcast" -> bindPopularPodcast(homePatchItemModel)
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
-                // "download" -> bindDownload()
+                "download" -> bindDownload(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
@@ -356,8 +340,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
  ////                is DataModel.BlOffers -> bindBlOffers(dataModel)
              }*/
         }
-
-
     }
 
     private companion object {
@@ -374,18 +356,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         val VIEW_POPULAR_PODCAST = 10
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
-
-
         const val VIEW_TYPE = 10
-
     }
 }
-
-
-
-
-
-
-
-
-

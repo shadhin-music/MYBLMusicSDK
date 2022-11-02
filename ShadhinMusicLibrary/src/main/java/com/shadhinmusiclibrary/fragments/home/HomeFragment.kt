@@ -26,6 +26,7 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
+import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeDataModel
@@ -42,7 +43,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    HomeCallBack, SearchClickCallBack {
+    HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -61,8 +62,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     //var page = -1
     var isLoading = false
     var isLastPage = false
-
-    // var rbtData: RBTDATA? = null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
 
@@ -90,16 +89,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
-        // viewModelAmaraTunes.fetchRBTURL()
-
         observeData()
     }
 
     private fun observeData() {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-
         viewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
@@ -134,7 +129,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         if (dataAdapter == null) {
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this, this)
+            dataAdapter = ParentAdapter(this, this, this)
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -196,8 +191,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 .apply {
                     putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                     putExtra(AppConstantUtils.PatchItem, data)
-                putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
-            })
+                    putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
+                })
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
@@ -212,7 +207,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 .apply {
                     putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
                     putExtra(AppConstantUtils.PatchItem, data)
-            })
+                })
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
@@ -231,10 +226,10 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 .apply {
                     putExtra(
                         AppConstantUtils.UI_Request_Type,
-                    AppConstantUtils.Requester_Name_Search
-                )
-                putExtra(AppConstantUtils.PatchItem, data)
-            })
+                        AppConstantUtils.Requester_Name_Search
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                })
     }
 
     //Copy paste from SDKMainActivity
@@ -260,12 +255,10 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .error(R.drawable.my_bl_sdk_default_song)
             .into(ivSongThumbMini)
 
-
         tvSongNameMini.text = mSongDetails.titleName
         tvSingerNameMini.text = mSongDetails.artistName
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
-
 
         ibtnSkipPreviousMini.setOnClickListener {
             playerViewModel.skipToPrevious()
@@ -287,5 +280,56 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         } else {
             ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_arrow_black_24)
         }
+    }
+
+    override fun clickOnDownload(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Download
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
+
+    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Watchlater
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
+
+    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_CreatePlaylist
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
     }
 }

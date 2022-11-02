@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
@@ -18,20 +20,21 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class AlbumsTrackAdapter(
     private val itemClickCB: OnItemClickCallback,
-    private val bsDialogItemCallback: BottomSheetDialogItemCallback
+    private val bsDialogItemCallback: BottomSheetDialogItemCallback,
+    var cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<AlbumsTrackAdapter.ViewHolder>() {
     var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     private var contentId: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
         return ViewHolder(parentView!!)
@@ -102,10 +105,14 @@ internal class AlbumsTrackAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var tag: String? = null
         val context = itemView.getContext()
         var tvSongName: TextView? = null
         fun bindItems(dataSongDetail: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
+            val progressIndicator: CircularProgressIndicator =
+                itemView.findViewById(R.id.progress)
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(dataSongDetail.imageUrl!!))
                 .into(imageView!!)
@@ -115,6 +122,17 @@ internal class AlbumsTrackAdapter(
             tvSongName!!.text = dataSongDetail.titleName
             textArtist.text = dataSongDetail.artistName
             tvSongLength.text = TimeParser.secToMin(dataSongDetail.total_duration)
+            progressIndicator.tag = dataSongDetail.content_Id
+//                downloaded.tag = 200
+            progressIndicator.visibility = View.GONE
+            downloaded.visibility = View.GONE
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(dataSongDetail.ContentID) ?: false
+            if (isDownloaded) {
+                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+            }
         }
     }
 
@@ -122,9 +140,3 @@ internal class AlbumsTrackAdapter(
         const val VIEW_TYPE = 2
     }
 }
-
-
-
-
-
-

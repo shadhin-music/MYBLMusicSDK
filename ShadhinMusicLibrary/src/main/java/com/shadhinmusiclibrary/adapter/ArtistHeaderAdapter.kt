@@ -4,6 +4,7 @@ import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -121,6 +122,10 @@ internal class ArtistHeaderAdapter(
                     cardBiography.visibility = VISIBLE
                 }
                 textView?.setText(updatedbio)
+                if(homePatchDetail.Artist.equals("Scarecrow",true)||homePatchDetail.Artist.equals("Mizan",true)||homePatchDetail.Artist.equals("Feedback",true)||homePatchDetail.Artist.equals("Vibe",true)||homePatchDetail.Artist.equals("Kona",true)
+                    ||homePatchDetail.Artist.equals("Balam",true)||homePatchDetail.Artist.equals("Nancy",true)||homePatchDetail.Artist.equals("Liza",true)){
+                    cardBiography.visibility = GONE
+                }
             }
 
 //            val updatedbio = Html.fromHtml(bio).toString()

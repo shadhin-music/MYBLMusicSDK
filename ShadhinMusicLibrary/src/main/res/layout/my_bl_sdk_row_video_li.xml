@@ -71,8 +71,9 @@
 
             <TextView
                 android:id="@+id/videoDesc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:lines="1"
                 android:textColor="@color/my_sdk_down_title"
                 android:textSize="12sp"
@@ -82,14 +83,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="8dp" />
 
-            <TextView
-                android:id="@+id/video_duration"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
-                android:textColor="@color/my_sdk_down_title"
-                android:textSize="12sp"
-                tools:text="3:10" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/video_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:textColor="@color/my_sdk_down_title"
+                    android:textSize="12sp"
+                    tools:text="3:10" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progress"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="15dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/my_sdk_color_primary"
+                    app:indicatorSize="12dp"
+                    app:trackColor="@color/my_sdk_color_grey"
+                    app:trackThickness="1dp" />
+
+                <ImageView
+                    android:id="@+id/iv_song_type_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/my_bl_sdk_ic_downloaded"
+                    android:visibility="invisible" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageButton
@@ -100,9 +130,9 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?selectableItemBackground"
-            android:padding="16dp"
+            android:paddingEnd="5dp"
             android:src="@drawable/my_bl_sdk_ic_more_vert"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -17,7 +17,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         app:tabIconTint="@android:color/transparent"
         app:tabIndicatorColor="#200B04"
         app:tabIndicatorHeight="3dp"

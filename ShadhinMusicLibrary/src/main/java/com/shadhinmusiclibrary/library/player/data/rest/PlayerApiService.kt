@@ -15,7 +15,7 @@ internal interface PlayerApiService {
 
     ): ContentUrlResponse
 
-    @GET("streaming/getdwnpth")
+    @GET("clientstreaming/getdwnpth")
     suspend fun fetchDownloadContentUrl(
         @Header("Authorization") token: String,
         @Query("name") name:String?

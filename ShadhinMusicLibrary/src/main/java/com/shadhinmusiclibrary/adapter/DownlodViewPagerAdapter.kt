@@ -5,8 +5,10 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.shadhinmusiclibrary.fragments.DownloadDetailsFragment
-import com.shadhinmusiclibrary.fragments.home.HomeFragment
+import com.shadhinmusiclibrary.fragments.AllDownloadDetailsFragment
+import com.shadhinmusiclibrary.fragments.PodcastDownloadFragment
+import com.shadhinmusiclibrary.fragments.SongsDownloadFragment
+import com.shadhinmusiclibrary.fragments.VideosDownloadFragment
 
 
 @Suppress("DEPRECATION")
@@ -20,25 +22,21 @@ internal class DownlodViewPagerAdapter(
 //        return  SearchFragment()
         return when (position) {
             0 -> {
-               DownloadDetailsFragment()
+               AllDownloadDetailsFragment()
             }
             1 -> {
-                HomeFragment();
+               SongsDownloadFragment()
 
-                // DownloadDetailsFragment.newInstance()
             }
            2-> {
-               DownloadDetailsFragment()
-                //DownloadDetailsFragment.newInstance()
-//                st artActivity(Intent(this, LoginActivity::class.java))
-                //HomeFragment();
+               VideosDownloadFragment()
+
             }
-//            3 -> {
-//                HomeFragment();
-//            }
-//            4 -> {
-//                HomeFragment();
-//            }
+            3-> {
+                PodcastDownloadFragment()
+
+            }
+
             else -> getItem(position)
         }
     }

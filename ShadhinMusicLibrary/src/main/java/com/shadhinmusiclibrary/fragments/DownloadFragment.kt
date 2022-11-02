@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
-
 
 internal class DownloadFragment : Fragment() {
     lateinit var tabLayout: TabLayout
@@ -19,9 +20,6 @@ internal class DownloadFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
     }
 
     override fun onCreateView(
@@ -34,19 +32,19 @@ internal class DownloadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tabLayout = view.findViewById(R.id.tab)
-        viewPager = view.findViewById(R.id.viewpager)
-
-        val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-
+        viewPager = view.findViewById(R.id.viewPager)
+        tabLayout.tabGravity = TabLayout.GRAVITY_START
         val adapter = DownlodViewPagerAdapter(
-            requireContext(), manager,
+            requireContext(), childFragmentManager,
             tabLayout.tabCount
         )
+
         viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
+                viewPager.setCurrentItem(tab.getPosition())
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -55,5 +53,22 @@ internal class DownloadFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab) {
             }
         })
+
+        viewPager.offscreenPageLimit = 2
+        val selectedTabIndex = 0
+        viewPager.setCurrentItem(selectedTabIndex, false)
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            DownloadFragment().apply {
+                arguments = Bundle().apply {
+                }
+            }
     }
 }

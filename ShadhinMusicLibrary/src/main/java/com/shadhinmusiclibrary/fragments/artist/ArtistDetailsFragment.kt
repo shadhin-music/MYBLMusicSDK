@@ -1,6 +1,10 @@
 package com.shadhinmusiclibrary.fragments.artist
 
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,13 +13,16 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
@@ -27,10 +34,14 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.podcast.Trackodel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -47,7 +58,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
-
+    private var cacheRepository: CacheRepository? = null
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
@@ -67,6 +78,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        cacheRepository= CacheRepository(requireContext())
         Log.e("Check", "yes iam called")
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -93,7 +105,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this)
-        artistTrackAdapter = ArtistTrackAdapter(this, this)
+        artistTrackAdapter = ArtistTrackAdapter(this, this, cacheRepository)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
@@ -321,13 +333,74 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: IMusicModel) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED")
+        intentFilter.addAction("PROGRESS")
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
-}
+
+    private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
+        downloadingItems.forEach {
+            val progressIndicator: CircularProgressIndicator? =
+                view?.findViewWithTag(it.contentId)
+//                val downloaded: ImageView?= view?.findViewWithTag(200)
+            progressIndicator?.visibility = View.VISIBLE
+            progressIndicator?.progress = it.progress.toInt()
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if(!isDownloaded){
+//                progressIndicator?.visibility = View.GONE
+//                // downloaded?.visibility = VISIBLE
+//            }
+            Log.e(
+                "getDownloadManagerx",
+                "habijabi: ${it.toString()} ${progressIndicator == null}"
+            )
+        }
+    }
+
+    inner class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.e("DELETED", "onReceive " + intent.action)
+            Log.e("PROGRESS", "onReceive " + intent)
+            when (intent.action) {
+                "ACTION" -> {
+
+                    //val data = intent.getIntExtra("currentProgress",0)
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+                        downloadingItems?.let {
+                            progressIndicatorUpdate(it)
+//                        Log.e("getDownloadManagerx",
+//                            "habijabi: ${it.toString()} ")
+                        }
+                    }
+                    "DELETED" -> {
+                        artistTrackAdapter.notifyDataSetChanged()
+                        Log.e("DELETED", "broadcast fired")
+                    }
+                    "PROGRESS" -> {
+
+                        artistTrackAdapter.notifyDataSetChanged()
+                        Log.e("PROGRESS", "broadcast fired")
+                    }
+                    else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+                }
+
+            }
+        }
+
+        override fun onClickBottomItem(mSongDetails: SongDetail) {
+            (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
+                navController,
+                context = requireContext(),
+                mSongDetails,
+                argHomePatchItem,
+                argHomePatchDetail
+            )
+        }
+    }

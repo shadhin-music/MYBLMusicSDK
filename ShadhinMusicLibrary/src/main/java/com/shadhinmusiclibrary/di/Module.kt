@@ -11,7 +11,6 @@ import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
-
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
 import com.shadhinmusiclibrary.fragments.search.SearchViewModelFactory
 import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
@@ -25,6 +24,7 @@ import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
 /*
@@ -274,6 +274,9 @@ internal class Module(private val applicationContext: Context) {
         get() = PlayerCache.getInstance(applicationContext)
 
     private fun getRetrofitInstance(): Retrofit {
+//        MehenazBranch
+//        val client = getBaseClient()
+//        return  RetrofitClient.getInstance(client)
         return RetrofitClient.getInstance()
     }
 

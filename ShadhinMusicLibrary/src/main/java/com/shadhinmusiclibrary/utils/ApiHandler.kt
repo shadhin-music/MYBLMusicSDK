@@ -47,7 +47,7 @@ internal data class ApiResponse<out T>(
     }
 }
 
-internal suspend inline fun <T> safeApiCall(crossinline responseFunction: suspend () -> T): ApiResponse<T> {
+internal suspend  fun <T> safeApiCall( responseFunction: suspend () -> T): ApiResponse<T> {
     return withContext(Dispatchers.IO) {
         try {
             val response = responseFunction.invoke()

@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:visibility="gone"
             android:src="@drawable/my_bl_sdk_ic_search_download"
             android:tint="@color/my_sdk_color_black"
             app:layout_constraintBottom_toBottomOf="@id/parentRelative"

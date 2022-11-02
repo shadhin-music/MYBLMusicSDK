@@ -30,6 +30,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.TrackModdel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -142,7 +143,7 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
             }
         }
         songDetail.let {
-            it?.album_Id?.let { it1 ->
+            it?.artist_Id?.let { it1 ->
                 it1
                     .let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }

@@ -82,17 +82,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:src="@drawable/my_bl_sdk_ic_baseline_music_note_24"
+                    android:src="@drawable/my_bl_sdk_ic_downloaded"
                     android:visibility="gone" />
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progress"
+                    android:layout_width="8dp"
+                    android:layout_height="17dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="0"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/my_sdk_color_primary"
+                    app:indicatorSize="15dp"
+                    app:trackColor="@color/my_sdk_color_grey"
+                    app:trackThickness="1dp" />
 
                 <ImageView
                     android:id="@+id/iv_song_menu_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:src="@drawable/my_bl_sdk_ic_more_vert"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
