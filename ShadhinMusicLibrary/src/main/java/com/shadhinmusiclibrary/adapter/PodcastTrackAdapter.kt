@@ -101,20 +101,20 @@ internal class PodcastTrackAdapter(
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
             val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
             textArtistName.text = iMusicModel.total_duration
-            val url: String? = iMusicModel.imageUrl
+//            val url: String? = iMusicModel.imageUrl
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url!!))
+                .load(UtilHelper.getImageUrlSize300(iMusicModel.imageUrl!!))
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             tvSongName?.text = iMusicModel.titleName
 
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = tracks[position].album_Id
+            progressIndicator.tag = iMusicModel.album_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(tracks[position].album_Id!!) ?: false
+                cacheRepository.isTrackDownloaded(iMusicModel.album_Id!!) ?: false
 
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

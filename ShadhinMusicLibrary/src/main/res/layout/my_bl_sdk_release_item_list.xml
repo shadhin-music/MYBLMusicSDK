@@ -9,7 +9,7 @@
     android:paddingEnd="6dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image"
+        android:id="@+id/siv_song_icon"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:src="@color/my_sdk_color_grey"
@@ -20,7 +20,7 @@
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
     <TextView
-        android:id="@+id/txt_title"
+        android:id="@+id/tv_singer_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -30,10 +30,10 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image" />
+        app:layout_constraintTop_toBottomOf="@id/siv_song_icon" />
 
     <TextView
-        android:id="@+id/txt_name"
+        android:id="@+id/tv_song_length"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
@@ -43,6 +43,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_singer_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
