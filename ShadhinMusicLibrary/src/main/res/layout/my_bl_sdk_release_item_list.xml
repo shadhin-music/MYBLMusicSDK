@@ -45,4 +45,3 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_singer_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
