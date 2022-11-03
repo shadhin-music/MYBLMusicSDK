@@ -13,17 +13,9 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongOnCallBack {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+internal class AllDownloadDetailsFragment : CommonBaseFragment(), DownloadedSongOnCallBack {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,50 +27,33 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-      loadData()
-
+        loadData()
     }
-      fun loadData(){
-          val cacheRepository= CacheRepository(requireContext())
-          val dataAdapter = AllDownloadedAdapter(cacheRepository.getAllDownloads()!!,this)
-         // Log.e("TAG", "Track123: " + cacheRepository.getDownloadedContent())
-          val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-          recyclerView.layoutManager =
-              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
-          recyclerView.adapter = dataAdapter
-         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
 
-      }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            AllDownloadDetailsFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+    fun loadData() {
+        val cacheRepository = CacheRepository(requireContext())
+        val dataAdapter = AllDownloadedAdapter(cacheRepository.getAllDownloads()!!, this)
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = dataAdapter
     }
 
     override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
-                    Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                } else {
-                    playerViewModel.togglePlayPause()
-                }
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
+                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].contentId)
+                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
+                playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
-                //Todo Mehenaz ap please flowe as link artist/album
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            //Todo Mehenaz ap please flowe as link artist/album
 //                playItem(
 //                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
 //                    clickItemPosition
 //                )
-            }
+        }
     }
-
 }

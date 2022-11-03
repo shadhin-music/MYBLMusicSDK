@@ -120,6 +120,7 @@ internal class ArtistTrackAdapter(
             tvSongName?.text = artistContent.titleName
             textArtist.text = artistContent.artistName
             textDuration.text = TimeParser.secToMin(artistContent.total_duration)
+
             val progressIndicatorArtist: CircularProgressIndicator =
                 itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
@@ -127,7 +128,8 @@ internal class ArtistTrackAdapter(
             downloaded.tag = 200
             progressIndicatorArtist.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository?.isTrackDownloaded(artistContent.content_Id!!) ?: false
+            val isDownloaded =
+                cacheRepository?.isTrackDownloaded(artistContent.content_Id!!) ?: false
 //            Log.e("Tag","Downloaded: cacheRepository is null"+ (cacheRepository == null))
 //            Log.e("Tag","Downloaded: "+ isDownloaded)
 //            Log.e("Tag","Downloaded: "+ dataSongDetail.ContentID)
