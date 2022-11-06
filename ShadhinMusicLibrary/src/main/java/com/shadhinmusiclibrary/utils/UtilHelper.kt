@@ -64,8 +64,9 @@ internal object UtilHelper {
                         userPlayListId = "",
                         episodeId = "",
                         starring = "",
-                        seekable = false,
+                        seekable = songItem.isSeekAble,
                         details = "",
+                        fav = "" /*fav value set for this song are radio or normal song*/,
                         totalStream = 0L,
                         rootId = rootContentId,
                         rootImage = rootImage,
@@ -100,6 +101,7 @@ internal object UtilHelper {
                         rootContentId = rootId
                         rootContentType = rootType
                         rootImage = rootImg
+                        isSeekAble = false
                     }
                 )
             }
@@ -130,6 +132,7 @@ internal object UtilHelper {
                         rootContentId = rootId ?: ""
                         rootContentType = rootType ?: ""
                         rootImage = rootImage ?: ""
+                        isSeekAble = false
                     }
                 )
             }
@@ -159,6 +162,8 @@ internal object UtilHelper {
                 rootContentId = rootId ?: ""
                 rootContentType = rootType ?: ""
                 rootImage = rootImage ?: ""
+                isSeekAble = seekable
+                /*fav value set for this song are radio or normal song*/
             }
         }
     }
@@ -171,6 +176,7 @@ internal object UtilHelper {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
             rootImage = rootPatch.image
+            isSeekAble = false
         }
         return mSongDet
     }
@@ -201,6 +207,7 @@ internal object UtilHelper {
                     album_Id = seaDataItem.album_Id
                     rootContentId = seaDataItem.album_Id
                     rootContentType = seaDataItem.content_Type
+                    isSeekAble = false
                 }
             )
         }
@@ -218,6 +225,7 @@ internal object UtilHelper {
                 rootContentId = rootPatch.ContentID
                 rootContentType = rootPatch.ContentType
                 rootImage = rootPatch.image
+                isSeekAble = true
             }
             return mSongDet
         }
@@ -231,6 +239,7 @@ internal object UtilHelper {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
             rootImage = rootPatch.image
+            isSeekAble = false
         }
         return mSongTrack
     }
@@ -261,6 +270,7 @@ internal object UtilHelper {
                         album_Id = seDaMoItem.album_Id
                         rootContentId = seDaMoItem.album_Id
                         rootContentType = rootPatch.type
+                        isSeekAble = false
                     })
                 }
             }

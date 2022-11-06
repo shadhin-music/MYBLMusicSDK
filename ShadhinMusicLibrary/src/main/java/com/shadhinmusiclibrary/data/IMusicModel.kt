@@ -20,4 +20,5 @@ interface IMusicModel {
     var rootContentType: String?
     var rootImage: String?
     var isPlaying: Boolean
+    var isSeekAble: Boolean?
 }

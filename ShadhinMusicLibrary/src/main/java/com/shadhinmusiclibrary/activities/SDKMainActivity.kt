@@ -11,6 +11,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
@@ -32,26 +33,26 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.offline.*
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
-import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import java.io.Serializable
@@ -64,6 +65,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var navController: NavController
     private var isPlayOrPause = false
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
+    private var isCurrentPlayRadio = false
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -74,6 +76,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var ibtnSkipPreviousMini: ImageButton
     private lateinit var ibtnPlayPauseMini: ImageButton
     private lateinit var ibtnSkipNextMini: ImageButton
+
+//    //mini music radio player
+//    private lateinit var cvMiniRadioMusicPlayer: CardView
+//    private lateinit var sivRadioIcon: ShapeableImageView
+//    private lateinit var tvRadioSongName: TextView
+//    private lateinit var ivRadioFavorite: ImageView
+//    private lateinit var ivRadioPlay: ImageView
 
     //Main or Big Music Player
     private lateinit var rlContentMain: RelativeLayout
@@ -106,6 +115,48 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
     private lateinit var listData: MutableList<HomePatchDetailModel>
 
+//    private fun uiInitMiniMusicRadioPlayer() {
+//        cvMiniRadioMusicPlayer = findViewById(R.id.include_mini_radio_music_player)
+//        sivRadioIcon = findViewById(R.id.siv_radio_icon)
+//        tvRadioSongName = findViewById(R.id.tv_radio_song_name)
+//        ivRadioFavorite = findViewById(R.id.iv_radio_favorite)
+//        ivRadioPlay = findViewById(R.id.iv_radio_play)
+//    }
+
+    private fun uiInitMiniMusicPlayer() {
+        llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
+        ivSongThumbMini = findViewById(R.id.iv_song_thumb_mini)
+        tvSongNameMini = findViewById(R.id.tv_song_name_mini)
+        tvSingerNameMini = findViewById(R.id.tv_singer_name_mini)
+        tvTotalDurationMini = findViewById(R.id.tv_total_duration_mini)
+        ibtnSkipPreviousMini = findViewById(R.id.ibtn_skip_previous_mini)
+        ibtnPlayPauseMini = findViewById(R.id.ibtn_play_pause_mini)
+        ibtnSkipNextMini = findViewById(R.id.ibtn_skip_next_mini)
+    }
+
+    private fun uiInitMainMusicPlayer() {
+        clMainMusicPlayer = findViewById(R.id.include_main_music_player)
+        acivMinimizePlayerBtn = findViewById(R.id.aciv_minimize_player_btn)
+        tvTitle = findViewById(R.id.tv_title)
+        acivMenu = findViewById(R.id.aciv_menu)
+        dsvCurrentPlaySongsThumb = findViewById(R.id.dsv_current_play_songs_thumb)
+        tvSongName = findViewById(R.id.tv_song_name)
+        tvSingerName = findViewById(R.id.tv_singer_name)
+        ivFavoriteBtn = findViewById(R.id.iv_favorite_btn)
+        sbCurrentPlaySongStatus = findViewById(R.id.sb_current_play_song_status)
+        tvCurrentPlayDuration = findViewById(R.id.tv_current_play_duration)
+        tvTotalPlayDuration = findViewById(R.id.tv_total_play_duration)
+        ibtnShuffle = findViewById(R.id.ibtn_shuffle)
+        ibtnSkipPrevious = findViewById(R.id.ibtn_skip_previous)
+        ibtnPlayPause = findViewById(R.id.ibtn_play_pause)
+        ibtnSkipNext = findViewById(R.id.ibtn_skip_next)
+        ibtnRepeatSong = findViewById(R.id.ibtn_repeat_song)
+        ibtnVolume = findViewById(R.id.ibtn_volume)
+        ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
+        ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
+        ibtnDownload = findViewById(R.id.ibtn_download)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_bl_sdk_activity_sdk_main)
@@ -116,6 +167,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         rlContentMain = findViewById(R.id.rl_content_main)
         //DownloadProgressObserver.setCacheRepository(cacheRepository)
         createPlayerVM()
+//        uiInitMiniMusicRadioPlayer()
         uiInitMiniMusicPlayer()
         uiInitMainMusicPlayer()
         mainMusicPlayerAdapter = MusicPlayAdapter(this)
@@ -136,7 +188,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             downloadFragmentAccess()
         }
         if (uiRequest == AppConstantUtils.Requester_Name_Watchlater) {
-            watchlaterFragmentAccess()
+            watchLaterFragmentAccess()
         }
         if (uiRequest == AppConstantUtils.Requester_Name_MyPlaylist) {
             myPlaylistFragmentAccess()
@@ -147,7 +199,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         //routeDataArtistType()
         playerViewModel.currentMusicLiveData.observe(this) { itMus ->
             if (itMus != null) {
-                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+                if (itMus.seekable != null) {
+                    setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+                }
                 isPlayOrPause = itMus.isPlaying!!
             }
         }
@@ -155,6 +209,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         playerViewModel.playListLiveData.observe(this) { itMusicList ->
             playerViewModel.musicIndexLiveData.observe(this) {
                 try {
+//                    for (musicItem in itMusicList.list) {
+//                        val isSeekable = musicItem.seekable ?: false
+//                        if (isSeekable) {
+//                            isCurrentPlayRadio = true
+//                            break
+//                        } else {
+//                            isCurrentPlayRadio = false
+//                            break
+//                        }
+//                    }
+
                     setupMainMusicPlayerAdapter(
                         UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
                         it
@@ -164,8 +229,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             }
         }
 
-        miniPlayerHideShow(playerViewModel.isMediaDataAvailable())
+//        if (isCurrentPlayRadio) {
+//
+//        } else {
+        miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
         slCustomBShOnMaximized()
+//        }
 
         llMiniMusicPlayer.setOnClickListener {
             //Mini player show. when mini player click
@@ -184,7 +253,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-
         setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
             Bundle().apply {
                 putSerializable(
@@ -192,7 +260,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     patch as Serializable
                 )
             })
-
     }
 
     private fun downloadFragmentAccess() {
@@ -206,10 +273,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     patch as Serializable
                 )
             })
-
     }
 
-    private fun watchlaterFragmentAccess() {
+    private fun watchLaterFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
@@ -220,7 +286,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     patch as Serializable
                 )
             })
-
     }
 
     private fun homeFragmentAccess() {
@@ -268,7 +333,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun routeDataPatch(contentType: String) {
-
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle().apply {
@@ -459,32 +523,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
-        Log.i(
-            "navgraphx",
-            "setupNavGraphAndArg: ${
-                Thread.currentThread().stackTrace.map { it.methodName }.toString()
-            }"
-        )
     }
-
-    /* private fun setupNavGraphAndArg(
-         bsdNavController: NavController,
-         @NavigationRes1 graphResId: Int,
-         bundleData: Bundle,
-     ) {
-         val inflater = navHostFragment.navController.navInflater
-         val navGraph = inflater.inflate(graphResId)
-         bsdNavController.setGraph(navGraph, bundleData)
-     }*/
 
     private fun createPlayerVM() {
         playerViewModel = ViewModelProvider(
             this, injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
-
     }
 
-    private fun miniPlayerHideShow(playing: Boolean) {
+    private fun miniMusicPlayerHideShow(playing: Boolean) {
         // at fast show mini player
         // getDPfromPX paramerer pass pixel. how many height layout show.
         // this mini player height 72dp thats why i set 73dp view show
@@ -492,40 +539,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             slCustomBottomSheet.panelHeight = ImageSizeParser.getDPfromPX(73, this)
             slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         }
-    }
-
-    private fun uiInitMiniMusicPlayer() {
-        llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
-        ivSongThumbMini = findViewById(R.id.iv_song_thumb_mini)
-        tvSongNameMini = findViewById(R.id.tv_song_name_mini)
-        tvSingerNameMini = findViewById(R.id.tv_singer_name_mini)
-        tvTotalDurationMini = findViewById(R.id.tv_total_duration_mini)
-        ibtnSkipPreviousMini = findViewById(R.id.ibtn_skip_previous_mini)
-        ibtnPlayPauseMini = findViewById(R.id.ibtn_play_pause_mini)
-        ibtnSkipNextMini = findViewById(R.id.ibtn_skip_next_mini)
-    }
-
-    private fun uiInitMainMusicPlayer() {
-        clMainMusicPlayer = findViewById(R.id.include_main_music_player)
-        acivMinimizePlayerBtn = findViewById(R.id.aciv_minimize_player_btn)
-        tvTitle = findViewById(R.id.tv_title)
-        acivMenu = findViewById(R.id.aciv_menu)
-        dsvCurrentPlaySongsThumb = findViewById(R.id.dsv_current_play_songs_thumb)
-        tvSongName = findViewById(R.id.tv_song_name)
-        tvSingerName = findViewById(R.id.tv_singer_name)
-        ivFavoriteBtn = findViewById(R.id.iv_favorite_btn)
-        sbCurrentPlaySongStatus = findViewById(R.id.sb_current_play_song_status)
-        tvCurrentPlayDuration = findViewById(R.id.tv_current_play_duration)
-        tvTotalPlayDuration = findViewById(R.id.tv_total_play_duration)
-        ibtnShuffle = findViewById(R.id.ibtn_shuffle)
-        ibtnSkipPrevious = findViewById(R.id.ibtn_skip_previous)
-        ibtnPlayPause = findViewById(R.id.ibtn_play_pause)
-        ibtnSkipNext = findViewById(R.id.ibtn_skip_next)
-        ibtnRepeatSong = findViewById(R.id.ibtn_repeat_song)
-        ibtnVolume = findViewById(R.id.ibtn_volume)
-        ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
-        ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
-        ibtnDownload = findViewById(R.id.ibtn_download)
     }
 
     private fun slCustomBShOnMaximized() {
@@ -538,7 +551,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 clMainMusicPlayer.alpha = slideOffset
                 if (slideOffset == 1f) {
                     playerMode = PlayerMode.MAXIMIZED
-                    llMiniMusicPlayer.visibility = View.GONE
+                    llMiniMusicPlayer.visibility = GONE
                 } else {
                     playerMode = PlayerMode.MINIMIZED
                     llMiniMusicPlayer.visibility = View.VISIBLE
@@ -562,7 +575,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     RelativeLayout.LayoutParams.MATCH_PARENT
                 )
                 rlContentMain.layoutParams = params
-                Log.e("SDKMA", "rlContentMain: ")
+                Log.e("SDKMA", "slCustomBShOnMaximized rlContentMain: $isCurrentPlayRadio")
                 hideKeyboard(this@SDKMainActivity)
             }
         })
@@ -584,8 +597,25 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             clickItemPosition
         )
 
-        miniPlayerHideShow(true)
+//        for (item in mSongDetails) {
+//            val isSeekaBle = item.isSeekAble.let { it }!!
+//            if (isSeekaBle) {
+//                isCurrentPlayRadio = true
+//
+//                break
+//            } else {
+//                isCurrentPlayRadio = false
+//
+//                break
+//            }
+//        }
+
+//        if (isCurrentPlayRadio) {
+//
+//        } else {
+        miniMusicPlayerHideShow(true)
         setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
+//        }
     }
 
     private fun miniPlayerPlayPauseState(playing: Boolean) {
@@ -801,7 +831,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: IMusicModel) {
-        Log.e("Check", "Fired 0")
         Glide.with(this)
             .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -815,6 +844,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvSongNameMini.text = mSongDetails.titleName
         tvSingerNameMini.text = mSongDetails.artistName
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
+
+//        if (isRadioOrMusic) {
+//            cvMiniRadioMusicPlayer.visibility = View.VISIBLE
+//        } else {
+//        }
         llMiniMusicPlayer.visibility = View.VISIBLE
 
         playerViewModel.startObservePlayerProgress(this)
@@ -830,10 +864,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             playerViewModel.skipToPrevious()
         }
 
-
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
-            Log.e("Check", "Fired 1")
         }
 
         ibtnSkipNextMini.setOnClickListener {
@@ -907,22 +939,24 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
-        val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
+//        val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+//        val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context)
+                ?.load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
+                ?.into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
         if (downloaded?.track != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -1430,7 +1464,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
-        bsdNavController.navigate(R.id.to_album_details,
+        bsdNavController.navigate(
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     PatchItem,

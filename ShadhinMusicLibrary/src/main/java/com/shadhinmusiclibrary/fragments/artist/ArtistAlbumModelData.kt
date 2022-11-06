@@ -60,6 +60,7 @@ internal class ArtistAlbumModelData : IMusicModel {
     override var rootContentType: String? = null
     override var rootImage: String? = null
     override var isPlaying: Boolean = false
+    override var isSeekAble: Boolean? = false
 
     fun getImageUrl300Size(): String? {
         return imageUrl?.replace("<\$size\$>", "300")

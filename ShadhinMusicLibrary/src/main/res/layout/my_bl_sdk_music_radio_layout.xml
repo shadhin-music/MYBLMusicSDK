@@ -2,8 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cv_thousand_song_parent"
-    android:layout_width="328dp"
+    android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:visibility="gone"
+    app:cardBackgroundColor="@color/my_sdk_white"
     app:cardCornerRadius="10dp">
 
     <LinearLayout
@@ -28,7 +30,7 @@
                 app:srcCompat="@drawable/my_bl_sdk_ic_launcher_background" />
 
             <TextView
-                android:id="@+id/tv_radio_name"
+                android:id="@+id/tv_radio_song_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Khub Borsai"
