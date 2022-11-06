@@ -225,25 +225,13 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
                 progressIndicator?.visibility = View.GONE
                 // downloaded?.visibility = VISIBLE
             }
-
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")

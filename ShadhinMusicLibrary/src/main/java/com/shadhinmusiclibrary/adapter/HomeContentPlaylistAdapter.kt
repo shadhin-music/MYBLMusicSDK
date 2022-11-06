@@ -54,7 +54,6 @@ internal class HomeContentPlaylistAdapter(
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-           // Log.d("TAG", "ImageUrl: " + newURL)
             Glide.with(mContext)
                 .load(changeURL)
                 .into(imageView)

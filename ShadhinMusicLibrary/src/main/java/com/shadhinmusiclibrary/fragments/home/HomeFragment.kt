@@ -82,7 +82,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Homex", "onViewCreated Message: " + pageNum)
         uiInitMiniMusicPlayer(view)
         viewModel?.fetchHomeData(pageNum, false)
         viewModelAmaraTunes = ViewModelProvider(

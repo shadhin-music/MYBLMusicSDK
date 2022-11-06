@@ -40,7 +40,6 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack {
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
         val dataAdapter = WatchlaterAdapter(cacheRepository.getAllWatchlater()!!)
-        // Log.e("TAG", "Track123: " + cacheRepository.getDownloadedContent())
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

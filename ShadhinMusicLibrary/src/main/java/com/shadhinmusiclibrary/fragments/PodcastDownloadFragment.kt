@@ -51,9 +51,7 @@ internal class PodcastDownloadFragment : CommonBaseFragment(), DownloadedSongOnC
     override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].contentId)
-                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
-                playerViewModel.skipToQueueItem(clickItemPosition)
+               playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
             }

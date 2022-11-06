@@ -64,7 +64,7 @@ internal object UtilHelper {
                         userPlayListId = "",
                         episodeId = "",
                         starring = "",
-                        seekable = songItem.isSeekAble,
+                        seekable = false,
                         details = "",
                         fav = "" /*fav value set for this song are radio or normal song*/,
                         totalStream = 0L,

@@ -203,7 +203,6 @@ internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint
     }
 
     fun loadNewArtist(patchDetails: HomePatchDetailModel) {
-        Log.e("Check", "loadNewArtist")
     }
 
 

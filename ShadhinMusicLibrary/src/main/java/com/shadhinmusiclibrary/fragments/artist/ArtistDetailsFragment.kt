@@ -77,8 +77,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cacheRepository= CacheRepository(requireContext())
-        Log.e("Check", "yes iam called")
+        cacheRepository = CacheRepository(requireContext())
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -154,7 +153,6 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private fun observeData() {
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG", "DATA: " + it.Artist)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
@@ -355,51 +353,41 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 //                progressIndicator?.visibility = View.GONE
 //                // downloaded?.visibility = VISIBLE
 //            }
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
         }
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
-            when (intent.action) {
+           when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-                        downloadingItems?.let {
-                            progressIndicatorUpdate(it)
+                    downloadingItems?.let {
+                        progressIndicatorUpdate(it)
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
-                        }
                     }
-                    "DELETED" -> {
-                        artistTrackAdapter.notifyDataSetChanged()
-                        Log.e("DELETED", "broadcast fired")
-                    }
-                    "PROGRESS" -> {
-
-                        artistTrackAdapter.notifyDataSetChanged()
-                        Log.e("PROGRESS", "broadcast fired")
-                    }
-                    else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
                 }
-
+                "DELETED" -> {
+                    artistTrackAdapter.notifyDataSetChanged()
+                }
+                "PROGRESS" -> {
+                    artistTrackAdapter.notifyDataSetChanged()
+                }
+                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-        }
 
-        override fun onClickBottomItem(mSongDetails: IMusicModel) {
-            (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
-                navController,
-                context = requireContext(),
-                mSongDetails,
-                argHomePatchItem,
-                argHomePatchDetail
-            )
         }
     }
+
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
+    }
+}

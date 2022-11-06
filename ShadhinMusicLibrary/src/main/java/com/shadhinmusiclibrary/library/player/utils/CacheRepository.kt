@@ -72,9 +72,7 @@ class CacheRepository(val context: Context) {
 
     fun isTrackDownloaded(contentId: String): Boolean {
         var path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
-        Log.e("TAG", "Track: " + path)
         if (path == null) {
-            Log.e("TAG", "Track123: " + path)
             return false
         } else {
             return true

@@ -123,40 +123,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 //        ivRadioPlay = findViewById(R.id.iv_radio_play)
 //    }
 
-    private fun uiInitMiniMusicPlayer() {
-        llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
-        ivSongThumbMini = findViewById(R.id.iv_song_thumb_mini)
-        tvSongNameMini = findViewById(R.id.tv_song_name_mini)
-        tvSingerNameMini = findViewById(R.id.tv_singer_name_mini)
-        tvTotalDurationMini = findViewById(R.id.tv_total_duration_mini)
-        ibtnSkipPreviousMini = findViewById(R.id.ibtn_skip_previous_mini)
-        ibtnPlayPauseMini = findViewById(R.id.ibtn_play_pause_mini)
-        ibtnSkipNextMini = findViewById(R.id.ibtn_skip_next_mini)
-    }
-
-    private fun uiInitMainMusicPlayer() {
-        clMainMusicPlayer = findViewById(R.id.include_main_music_player)
-        acivMinimizePlayerBtn = findViewById(R.id.aciv_minimize_player_btn)
-        tvTitle = findViewById(R.id.tv_title)
-        acivMenu = findViewById(R.id.aciv_menu)
-        dsvCurrentPlaySongsThumb = findViewById(R.id.dsv_current_play_songs_thumb)
-        tvSongName = findViewById(R.id.tv_song_name)
-        tvSingerName = findViewById(R.id.tv_singer_name)
-        ivFavoriteBtn = findViewById(R.id.iv_favorite_btn)
-        sbCurrentPlaySongStatus = findViewById(R.id.sb_current_play_song_status)
-        tvCurrentPlayDuration = findViewById(R.id.tv_current_play_duration)
-        tvTotalPlayDuration = findViewById(R.id.tv_total_play_duration)
-        ibtnShuffle = findViewById(R.id.ibtn_shuffle)
-        ibtnSkipPrevious = findViewById(R.id.ibtn_skip_previous)
-        ibtnPlayPause = findViewById(R.id.ibtn_play_pause)
-        ibtnSkipNext = findViewById(R.id.ibtn_skip_next)
-        ibtnRepeatSong = findViewById(R.id.ibtn_repeat_song)
-        ibtnVolume = findViewById(R.id.ibtn_volume)
-        ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
-        ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
-        ibtnDownload = findViewById(R.id.ibtn_download)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_bl_sdk_activity_sdk_main)
@@ -243,6 +209,40 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         //DO NOT Call this function multiple times
         //  playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
+    }
+
+    private fun uiInitMiniMusicPlayer() {
+        llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
+        ivSongThumbMini = findViewById(R.id.iv_song_thumb_mini)
+        tvSongNameMini = findViewById(R.id.tv_song_name_mini)
+        tvSingerNameMini = findViewById(R.id.tv_singer_name_mini)
+        tvTotalDurationMini = findViewById(R.id.tv_total_duration_mini)
+        ibtnSkipPreviousMini = findViewById(R.id.ibtn_skip_previous_mini)
+        ibtnPlayPauseMini = findViewById(R.id.ibtn_play_pause_mini)
+        ibtnSkipNextMini = findViewById(R.id.ibtn_skip_next_mini)
+    }
+
+    private fun uiInitMainMusicPlayer() {
+        clMainMusicPlayer = findViewById(R.id.include_main_music_player)
+        acivMinimizePlayerBtn = findViewById(R.id.aciv_minimize_player_btn)
+        tvTitle = findViewById(R.id.tv_title)
+        acivMenu = findViewById(R.id.aciv_menu)
+        dsvCurrentPlaySongsThumb = findViewById(R.id.dsv_current_play_songs_thumb)
+        tvSongName = findViewById(R.id.tv_song_name)
+        tvSingerName = findViewById(R.id.tv_singer_name)
+        ivFavoriteBtn = findViewById(R.id.iv_favorite_btn)
+        sbCurrentPlaySongStatus = findViewById(R.id.sb_current_play_song_status)
+        tvCurrentPlayDuration = findViewById(R.id.tv_current_play_duration)
+        tvTotalPlayDuration = findViewById(R.id.tv_total_play_duration)
+        ibtnShuffle = findViewById(R.id.ibtn_shuffle)
+        ibtnSkipPrevious = findViewById(R.id.ibtn_skip_previous)
+        ibtnPlayPause = findViewById(R.id.ibtn_play_pause)
+        ibtnSkipNext = findViewById(R.id.ibtn_skip_next)
+        ibtnRepeatSong = findViewById(R.id.ibtn_repeat_song)
+        ibtnVolume = findViewById(R.id.ibtn_volume)
+        ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
+        ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
+        ibtnDownload = findViewById(R.id.ibtn_download)
     }
 
     val cacheRepository by lazy {
@@ -575,7 +575,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     RelativeLayout.LayoutParams.MATCH_PARENT
                 )
                 rlContentMain.layoutParams = params
-                Log.e("SDKMA", "slCustomBShOnMaximized rlContentMain: $isCurrentPlayRadio")
                 hideKeyboard(this@SDKMainActivity)
             }
         })
@@ -831,6 +830,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: IMusicModel) {
+        Log.e(
+            "SDKMA",
+            "setupMiniMusicPlayerAndFunctionality: " + UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!)
+        )
         Glide.with(this)
             .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -981,7 +984,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     mSongDetails.content_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id!!)
@@ -1109,7 +1111,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     track.album_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", track.album_Id!!)

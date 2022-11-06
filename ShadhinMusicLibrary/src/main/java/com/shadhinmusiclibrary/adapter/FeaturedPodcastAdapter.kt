@@ -28,7 +28,6 @@ internal class FeaturedPodcastAdapter(
         holder.bindItems()
         holder.itemView.setOnClickListener {
             data?.let { it1 -> clickCallback.onClickItem(it1,position) }
-            Log.e("TAG","String: "+ data)
 //            homeCallBack.onClickItemAndAllItem(position, homePatchitem)
             // homeCallBack.onClickItem(position, Track(data.get()) )
         }

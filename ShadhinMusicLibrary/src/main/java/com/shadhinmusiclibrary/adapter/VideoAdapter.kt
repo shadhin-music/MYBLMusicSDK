@@ -165,7 +165,6 @@ internal class VideoAdapter(
             val isDownloaded = cacheRepository.isTrackDownloaded(item.contentID.toString()) ?: false
 
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
             }

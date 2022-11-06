@@ -34,7 +34,6 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
     }
 
     override fun onBindViewHolder(holder: GenrePlaylistVH, position: Int) {
-        Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
@@ -70,7 +69,6 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
     fun setSongData(data: List<SongDetailModel>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
-        Log.e("PLA", ": $dataSongDetail")
     }
 
     @SuppressLint("NotifyDataSetChanged")

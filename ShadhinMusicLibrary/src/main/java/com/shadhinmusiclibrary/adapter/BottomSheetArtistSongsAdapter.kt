@@ -67,7 +67,6 @@ internal class BottomSheetArtistSongsAdapter:
             textTitle.text = artistContent.titleName
             textArtist.text = artistContent.artistName
             textDuration.text = artistContent.total_duration
-            //Log.e("TAG","DATA123: "+ artistContent?.image)
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()

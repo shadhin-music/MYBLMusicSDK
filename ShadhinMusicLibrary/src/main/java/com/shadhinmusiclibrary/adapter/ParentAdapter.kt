@@ -213,7 +213,6 @@ internal class ParentAdapter(
                 //  homeCallBack.onClickSeeAll(homePatchItem)
                 // Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
-            Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
                 ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
             }

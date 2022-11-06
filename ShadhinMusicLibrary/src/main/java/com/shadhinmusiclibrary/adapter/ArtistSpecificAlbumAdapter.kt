@@ -37,7 +37,6 @@ internal class ArtistSpecificAlbumAdapter() :
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
@@ -66,7 +65,6 @@ internal class ArtistSpecificAlbumAdapter() :
     fun setData(data: List<SongDetailModel>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
-        Log.e("PLA", ": $dataSongDetail")
     }
 
     @SuppressLint("NotifyDataSetChanged")

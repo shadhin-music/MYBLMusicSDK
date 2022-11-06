@@ -20,9 +20,7 @@ internal class DownloadInterceptor(private val musicRepository: MusicRepository)
             try {
                 newUrl = musicRepository.fetchDownloadedURL(url)
             } catch (e: Exception) {
-                Log.d("intercept", "Request is not successful - $tryCount")
-                Log.e("TAG", "ERROR: " + chain.request().url)
-            }
+              }
         }
         val newRequest =
             chain.request().newBuilder()

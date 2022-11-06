@@ -171,7 +171,6 @@ internal class PlaylistAdapter(
             downloaded.visibility = View.GONE
             val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator1.visibility = View.GONE
             }

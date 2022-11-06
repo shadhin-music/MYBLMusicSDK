@@ -59,7 +59,6 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
 
         kotlin.runCatching {
@@ -73,7 +72,6 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY", "MESSAGE: ")
             //requireActivity().finish()
             requireActivity().onBackPressed()
         }
@@ -116,8 +114,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOn
         viewModel.fetchFeaturedPodcastJC(false)
         viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                Log.e("TAGGGGGGGY", "MESSAGE: " + response?.data?.data?.get(1)?.Data)
-                podcastJCAdapter.setData(
+               podcastJCAdapter.setData(
                     response?.data?.data?.get(1)?.Data,
                     response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
                 )

@@ -130,12 +130,7 @@ internal class ArtistTrackAdapter(
             downloaded.visibility = View.GONE
             val isDownloaded =
                 cacheRepository?.isTrackDownloaded(artistContent.content_Id!!) ?: false
-//            Log.e("Tag","Downloaded: cacheRepository is null"+ (cacheRepository == null))
-//            Log.e("Tag","Downloaded: "+ isDownloaded)
-//            Log.e("Tag","Downloaded: "+ dataSongDetail.ContentID)
-//            Log.e("Tag","Downloaded: "+ cacheRepository?.getAllDownloads())
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicatorArtist.visibility = View.GONE
             }

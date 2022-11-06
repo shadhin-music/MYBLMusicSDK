@@ -43,7 +43,6 @@ internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,
 //        if(allDownloads[position].rootType.equals("S")){
             holder.itemView.setOnClickListener {
             lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
-             Log.e("TAG","ALL Downloads: "+ allDownloads)
         }
 
         //}

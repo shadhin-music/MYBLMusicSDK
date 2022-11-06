@@ -221,7 +221,6 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
     ) {
-        Log.e("TAG", "onClickItemAndAllItem: " + selectedHomePatchItem)
         //  setAdapter(patch)
 //        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -251,8 +250,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
-        val lSongDetails = podcastTrackAdapter.tracks
+       val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
             if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
