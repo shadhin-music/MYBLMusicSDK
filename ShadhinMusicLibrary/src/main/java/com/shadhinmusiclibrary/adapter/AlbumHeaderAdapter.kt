@@ -50,6 +50,7 @@ internal class AlbumHeaderAdapter(
             )
         }
         this.homePatchDetail = homePatchDetail
+
         notifyDataSetChanged()
     }
 

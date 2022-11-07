@@ -6,13 +6,16 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 
 import com.google.android.exoplayer2.MediaItem
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.connection.ShadhinMusicServiceConnection
 import com.shadhinmusiclibrary.library.player.data.model.*
 import com.shadhinmusiclibrary.utils.exH
+import com.shadhinmusiclibrary.utils.get
 import com.shadhinmusiclibrary.utils.randomString
+import com.shadhinmusiclibrary.utils.values
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,6 +86,8 @@ internal fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
     return MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
 }
 internal fun Bundle.toMusicMetaData(): Music {
+
+
     return Music(
         artistName = this.getString(Music.ARTIST_NAME),
         date = this.getString(Music.DATE),
@@ -94,7 +99,7 @@ internal fun Bundle.toMusicMetaData(): Music {
         fav = this.getString(Music.FAV),
         trackType = this.getString(Music.TRACK_TYPE),
         isPaid = this.getBoolean(Music.IS_PAID),
-
+        seekable = this.getString(Music.SEEKABLE).equals("true",true),
         rootId = this.getString(Music.ROOT_ID),
         rootType = this.getString(Music.ROOT_TYPE),
         rootTitle = this.getString(Music.ROOT_TITLE),
@@ -102,6 +107,13 @@ internal fun Bundle.toMusicMetaData(): Music {
     )
 }
 internal fun MediaMetadataCompat.toMusic(): Music? {
+
+   /*  this.bundle.keySet().forEach {
+       Log.i("toMusicMetaData", "toMusicMetaData: $it -> ${this.bundle.get(it)}")
+
+   }
+    Log.i("toMusicMetaData", "-----------------------------------------------")*/
+
     val meta = this.bundle.toMusicMetaData()
     return description?.let {
         Music(

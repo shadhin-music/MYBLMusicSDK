@@ -64,7 +64,7 @@ internal object UtilHelper {
                         userPlayListId = "",
                         episodeId = "",
                         starring = "",
-                        seekable = false,
+                        seekable = isSeekAble,
                         details = "",
                         fav = "" /*fav value set for this song are radio or normal song*/,
                         totalStream = 0L,
@@ -79,35 +79,35 @@ internal object UtilHelper {
         return musicList
     }
 
-    fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetailModel> {
-        val songDetailList = mutableListOf<SongDetailModel>()
-        for (trackItem in trackList) {
-            trackItem.apply {
-                songDetailList.add(
-                    SongDetailModel().apply {
-                        content_Id = contentId
-                        imageUrl = rootImg
-                        titleName = rootTitle
-                        content_Type = rootType
-                        playingUrl = "" + track
-                        artist = artist
-                        total_duration = timeStamp
-                        copyright = ""
-                        labelname = ""
-                        releaseDate = ""
-                        fav = ""
-                        album_Id = ""
-                        album_Id = rootId
-                        rootContentId = rootId
-                        rootContentType = rootType
-                        rootImage = rootImg
-                        isSeekAble = false
-                    }
-                )
-            }
-        }
-        return songDetailList
-    }
+    /* fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetailModel> {
+         val songDetailList = mutableListOf<SongDetailModel>()
+         for (trackItem in trackList) {
+             trackItem.apply {
+                 songDetailList.add(
+                     SongDetailModel().apply {
+                         content_Id = contentId
+                         imageUrl = rootImg
+                         titleName = rootTitle
+                         content_Type = rootType
+                         playingUrl = "" + track
+                         artist = artist
+                         total_duration = timeStamp
+                         copyright = ""
+                         labelname = ""
+                         releaseDate = ""
+                         fav = ""
+                         album_Id = ""
+                         album_Id = rootId
+                         rootContentId = rootId
+                         rootContentType = rootType
+                         rootImage = rootImg
+                         isSeekAble = false
+                     }
+                 )
+             }
+         }
+         return songDetailList
+     }*/
 
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
@@ -176,7 +176,7 @@ internal object UtilHelper {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
             rootImage = rootPatch.image
-            isSeekAble = false
+            isSeekAble = true
         }
         return mSongDet
     }
@@ -239,7 +239,7 @@ internal object UtilHelper {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
             rootImage = rootPatch.image
-            isSeekAble = false
+            isSeekAble = true
         }
         return mSongTrack
     }

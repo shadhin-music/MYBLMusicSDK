@@ -10,8 +10,7 @@ import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.widget.AppCompatImageView
@@ -65,7 +64,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var navController: NavController
     private var isPlayOrPause = false
     private lateinit var slCustomBottomSheet: SlidingUpPanelLayout
-    private var isCurrentPlayRadio = false
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -76,13 +74,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var ibtnSkipPreviousMini: ImageButton
     private lateinit var ibtnPlayPauseMini: ImageButton
     private lateinit var ibtnSkipNextMini: ImageButton
-
-//    //mini music radio player
-//    private lateinit var cvMiniRadioMusicPlayer: CardView
-//    private lateinit var sivRadioIcon: ShapeableImageView
-//    private lateinit var tvRadioSongName: TextView
-//    private lateinit var ivRadioFavorite: ImageView
-//    private lateinit var ivRadioPlay: ImageView
 
     //Main or Big Music Player
     private lateinit var rlContentMain: RelativeLayout
@@ -114,102 +105,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
 
     private lateinit var listData: MutableList<HomePatchDetailModel>
-
-//    private fun uiInitMiniMusicRadioPlayer() {
-//        cvMiniRadioMusicPlayer = findViewById(R.id.include_mini_radio_music_player)
-//        sivRadioIcon = findViewById(R.id.siv_radio_icon)
-//        tvRadioSongName = findViewById(R.id.tv_radio_song_name)
-//        ivRadioFavorite = findViewById(R.id.iv_radio_favorite)
-//        ivRadioPlay = findViewById(R.id.iv_radio_play)
-//    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.my_bl_sdk_activity_sdk_main)
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
-        navController = navHostFragment.navController
-        slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
-        rlContentMain = findViewById(R.id.rl_content_main)
-        //DownloadProgressObserver.setCacheRepository(cacheRepository)
-        createPlayerVM()
-//        uiInitMiniMusicRadioPlayer()
-        uiInitMiniMusicPlayer()
-        uiInitMainMusicPlayer()
-        mainMusicPlayerAdapter = MusicPlayAdapter(this)
-
-        //Will received request from Any page from MYBLL app
-        val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
-        if (uiRequest == AppConstantUtils.Requester_Name_Home) {
-            homeFragmentAccess()
-        }
-        //  homeFragmentAccess()
-        if (uiRequest == AppConstantUtils.Requester_Name_API) {
-            patchFragmentAccess()
-        }
-        if (uiRequest == AppConstantUtils.Requester_Name_Search) {
-            searchFragmentAccess()
-        }
-        if (uiRequest == AppConstantUtils.Requester_Name_Download) {
-            downloadFragmentAccess()
-        }
-        if (uiRequest == AppConstantUtils.Requester_Name_Watchlater) {
-            watchLaterFragmentAccess()
-        }
-        if (uiRequest == AppConstantUtils.Requester_Name_MyPlaylist) {
-            myPlaylistFragmentAccess()
-        }
-        if (uiRequest == AppConstantUtils.Requester_Name_CreatePlaylist) {
-            createPlaylistFragmentAccess()
-        }
-        //routeDataArtistType()
-        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
-            if (itMus != null) {
-                if (itMus.seekable != null) {
-                    setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
-                }
-                isPlayOrPause = itMus.isPlaying!!
-            }
-        }
-
-        playerViewModel.playListLiveData.observe(this) { itMusicList ->
-            playerViewModel.musicIndexLiveData.observe(this) {
-                try {
-//                    for (musicItem in itMusicList.list) {
-//                        val isSeekable = musicItem.seekable ?: false
-//                        if (isSeekable) {
-//                            isCurrentPlayRadio = true
-//                            break
-//                        } else {
-//                            isCurrentPlayRadio = false
-//                            break
-//                        }
-//                    }
-
-                    setupMainMusicPlayerAdapter(
-                        UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
-                        it
-                    )
-                } catch (exception: Exception) {
-                }
-            }
-        }
-
-//        if (isCurrentPlayRadio) {
-//
-//        } else {
-        miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
-        slCustomBShOnMaximized()
-//        }
-
-        llMiniMusicPlayer.setOnClickListener {
-            //Mini player show. when mini player click
-            toggleMiniPlayerView(false)
-        }
-        //DO NOT Call this function multiple times
-        //  playerViewModel.startObservePlayerProgress(this)
-        //  routeDataArtistType()
-    }
 
     private fun uiInitMiniMusicPlayer() {
         llMiniMusicPlayer = findViewById(R.id.include_mini_music_player)
@@ -243,6 +138,84 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
         ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
         ibtnDownload = findViewById(R.id.ibtn_download)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.my_bl_sdk_activity_sdk_main)
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
+        navController = navHostFragment.navController
+        slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
+        rlContentMain = findViewById(R.id.rl_content_main)
+        //DownloadProgressObserver.setCacheRepository(cacheRepository)
+        createPlayerVM()
+
+        uiInitMiniMusicPlayer()
+        uiInitMainMusicPlayer()
+        mainMusicPlayerAdapter = MusicPlayAdapter(this)
+
+        //Will received request from Any page from MYBLL app
+        val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
+        if (uiRequest == AppConstantUtils.Requester_Name_Home) {
+            homeFragmentAccess()
+        }
+        //  homeFragmentAccess()
+        if (uiRequest == AppConstantUtils.Requester_Name_API) {
+            patchFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_Search) {
+            searchFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_Download) {
+            downloadFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_Watchlater) {
+            watchLaterFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_MyPlaylist) {
+            myPlaylistFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_CreatePlaylist) {
+            createPlaylistFragmentAccess()
+        }
+        //routeDataArtistType()
+        playerViewModel.currentMusicLiveData.observe(this) { itMus ->
+            if (itMus != null) {
+                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+                isPlayOrPause = itMus.isPlaying!!
+            }
+        }
+
+        playerViewModel.playListLiveData.observe(this) { itMusicList ->
+            playerViewModel.musicIndexLiveData.observe(this) { itCurrentPlayIndex ->
+                try {
+                    if (itMusicList.list[itCurrentPlayIndex].seekable!!) {
+                        slCustomBottomSheet.isEnabled = true
+                        setupMainMusicPlayerAdapter(
+                            UtilHelper.getSongDetailToMusicList(itMusicList.list.toMutableList()),
+                            itCurrentPlayIndex
+                        )
+                        llMiniMusicPlayer.isEnabled = true
+                    } else {
+                        slCustomBottomSheet.isEnabled = false
+                        llMiniMusicPlayer.isEnabled = false
+                    }
+                } catch (exception: Exception) {
+                }
+            }
+        }
+
+        miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
+        slCustomBShOnMaximized()
+
+        llMiniMusicPlayer.setOnClickListener {
+            //Mini player show. when mini player click
+            toggleMiniPlayerView(false)
+        }
+        //DO NOT Call this function multiple times
+        //  playerViewModel.startObservePlayerProgress(this)
+        //  routeDataArtistType()
     }
 
     val cacheRepository by lazy {
@@ -556,13 +529,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     playerMode = PlayerMode.MINIMIZED
                     llMiniMusicPlayer.visibility = View.VISIBLE
                 }
-//                val params = RelativeLayout.LayoutParams(
-//                    RelativeLayout.LayoutParams.MATCH_PARENT,
-//                    RelativeLayout.LayoutParams.MATCH_PARENT
-//                )
-//                rlContentMain.layoutParams = params
-//                Log.e("SDKMA", "rlContentMain: ")
-//                hideKeyboard(this@SDKMainActivity)
             }
 
             override fun onPanelStateChanged(
@@ -581,6 +547,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e("SDKMA", "setMusic: " + mSongDetails[clickItemPosition].isSeekAble)
         /* if(BuildConfig.DEBUG){
        mSongDetails.forEach {
            it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
@@ -596,25 +563,10 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             clickItemPosition
         )
 
-//        for (item in mSongDetails) {
-//            val isSeekaBle = item.isSeekAble.let { it }!!
-//            if (isSeekaBle) {
-//                isCurrentPlayRadio = true
-//
-//                break
-//            } else {
-//                isCurrentPlayRadio = false
-//
-//                break
-//            }
-//        }
-
-//        if (isCurrentPlayRadio) {
-//
-//        } else {
         miniMusicPlayerHideShow(true)
-        setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
-//        }
+        if (mSongDetails[clickItemPosition].isSeekAble!!) {
+            setupMainMusicPlayerAdapter(mSongDetails, clickItemPosition)
+        }
     }
 
     private fun miniPlayerPlayPauseState(playing: Boolean) {
@@ -646,12 +598,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         hideKeyboard(this)
         if (isVisible) {
             playerMode = PlayerMode.MINIMIZED
-            llMiniMusicPlayer.visibility = View.VISIBLE
+            llMiniMusicPlayer.visibility = VISIBLE
             slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         } else {
             playerMode = PlayerMode.MAXIMIZED
             slCustomBottomSheet.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-            llMiniMusicPlayer.visibility = View.INVISIBLE
+            llMiniMusicPlayer.visibility = INVISIBLE
         }
     }
 
@@ -830,10 +782,20 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
     }
 
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: IMusicModel) {
-        Log.e(
-            "SDKMA",
-            "setupMiniMusicPlayerAndFunctionality: " + UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!)
-        )
+        if (mSongDetails.isSeekAble!!) {
+            ibtnSkipPreviousMini.visibility = VISIBLE
+            ibtnSkipPreviousMini.setOnClickListener {
+                playerViewModel.skipToPrevious()
+            }
+            ibtnSkipNextMini.visibility = VISIBLE
+            ibtnSkipNextMini.setOnClickListener {
+                playerViewModel.skipToNext()
+            }
+        } else {
+            ibtnSkipPreviousMini.visibility = INVISIBLE
+            ibtnSkipNextMini.visibility = INVISIBLE
+        }
+
         Glide.with(this)
             .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -848,11 +810,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         tvSingerNameMini.text = mSongDetails.artistName
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
 
-//        if (isRadioOrMusic) {
-//            cvMiniRadioMusicPlayer.visibility = View.VISIBLE
-//        } else {
-//        }
-        llMiniMusicPlayer.visibility = View.VISIBLE
+        llMiniMusicPlayer.visibility = VISIBLE
 
         playerViewModel.startObservePlayerProgress(this)
         playerViewModel.playerProgress.observe(this) {
@@ -863,16 +821,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
             miniPlayerPlayPauseState(it.isPlaying)
         }
 
-        ibtnSkipPreviousMini.setOnClickListener {
-            playerViewModel.skipToPrevious()
-        }
-
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
-        }
-
-        ibtnSkipNextMini.setOnClickListener {
-            playerViewModel.skipToNext()
         }
     }
 
