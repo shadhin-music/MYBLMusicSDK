@@ -112,13 +112,13 @@
         android:progress="0"
         android:visibility="gone"
         android:max="100" />
-    <ImageView
-        android:id="@+id/iv_song_type_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:visibility="invisible"
-        android:src="@drawable/my_bl_sdk_ic_downloaded" />
+<!--    <ImageView-->
+<!--        android:id="@+id/iv_song_type_icon"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:visibility="gone"-->
+<!--        android:src="@drawable/my_bl_sdk_ic_downloaded" />-->
 </LinearLayout>
 
         </LinearLayout>
@@ -133,7 +133,7 @@
             android:focusable="true"
             android:foreground="?selectableItemBackground"
             android:paddingEnd="5dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:src="@drawable/my_bl_sdk_ic_more_vert"
 
             app:layout_constraintBottom_toBottomOf="parent"

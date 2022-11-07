@@ -153,20 +153,20 @@ internal class VideoAdapter(
            threeDotButton.setOnClickListener {
                bottomsheetDialog.openDialog(item)
            }
-            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
-            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = item.contentID
-            progressIndicator.visibility = View.GONE
-            downloaded.visibility = View.GONE
-            downloaded.tag = 200
+//            val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
+//            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+//            progressIndicator.tag = item.contentID
+//            progressIndicator.visibility = View.GONE
+//            downloaded.visibility = View.GONE
+//            downloaded.tag = 200
             val isDownloaded = item.isDownloaded
 
-            if(isDownloaded){
-                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
-                downloaded.visibility = View.VISIBLE
-                progressIndicator.visibility = View.GONE
-                //progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
-            }
+//            if(isDownloaded){
+//                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+//                downloaded.visibility = View.VISIBLE
+//                progressIndicator.visibility = View.GONE
+//                //progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
+//            }
             //else{
 //                downloaded.visibility = View.GONE
 //                progressIndicator.visibility = View.GONE
