@@ -131,7 +131,7 @@ internal class AlbumsTrackAdapter(
             fun bindItems(dataSongDetail: SongDetail) {
                 //itemView.tag = dataSongDetail.rootContentID
                 val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-                val progressIndicator: CircularProgressIndicator =
+                val  progressIndicatorAlbum: CircularProgressIndicator =
                     itemView.findViewById(R.id.progress)
                 val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
                 Glide.with(context)
@@ -144,17 +144,16 @@ internal class AlbumsTrackAdapter(
                 textArtist.text = dataSongDetail.artist
                 tvSongLength.text = TimeParser.secToMin(dataSongDetail.duration)
 
-                progressIndicator.tag = dataSongDetail.ContentID
-//                downloaded.tag = 200
-                progressIndicator.visibility = View.GONE
+                progressIndicatorAlbum.tag = dataSongDetail.ContentID
+                downloaded.tag = 300
+                progressIndicatorAlbum.visibility = View.GONE
                 downloaded.visibility = View.GONE
-                val isDownloaded =
-                    cacheRepository?.isTrackDownloaded(dataSongDetail.ContentID) ?: false
-                if (isDownloaded) {
-                    Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
-                    downloaded.visibility = View.VISIBLE
-                    progressIndicator.visibility = View.GONE
+                val isDownloaded = cacheRepository?.isTrackDownloaded(dataSongDetail.ContentID) ?: false
 
+                if(isDownloaded.equals(true)){
+                    Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+                    downloaded.visibility = View.VISIBLE
+                    progressIndicatorAlbum.visibility = View.GONE
                 }
 
 

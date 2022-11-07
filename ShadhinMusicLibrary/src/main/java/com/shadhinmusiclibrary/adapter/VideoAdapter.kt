@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -22,6 +23,8 @@ import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.createTimeLabel
+import com.shadhinmusiclibrary.utils.dp
+import com.shadhinmusiclibrary.utils.px
 import java.util.ArrayList
 
 
@@ -98,7 +101,7 @@ internal class VideoAdapter(
 
     fun currentItem(playing: Boolean, mediaId: String?) {
        val newItem =  currentList.map {
-           val tItem = it.copy()
+           val tItem = it.copy(isDownloaded = cacheRepository.isVideoDownloaded(it.contentID))
            if(it.contentID == mediaId){
                tItem.isPlaying = true
                tItem.isPlaystate = playing
@@ -155,13 +158,21 @@ internal class VideoAdapter(
             progressIndicator.tag = item.contentID
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository.isTrackDownloaded(item.contentID.toString()) ?: false
+            downloaded.tag = 200
+            val isDownloaded = item.isDownloaded
 
             if(isDownloaded){
                 Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
+                //progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
             }
+            //else{
+//                downloaded.visibility = View.GONE
+//                progressIndicator.visibility = View.GONE
+//              //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
+//            }
+
         }
 
     }

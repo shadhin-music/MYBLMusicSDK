@@ -857,14 +857,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         if (playerMode == PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
 
-            if (!navController.navigateUp()) {
-                super.onBackPressed()
-            }
+//            if (!navController.navigateUp()) {
+//                super.onBackPressed()
+//            }
         } else {
             if (!navController.navigateUp()) {
                 super.onBackPressed()
             }
         }
+
     }
 
     override fun onDestroy() {
@@ -933,7 +934,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
 
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
-                val downloadRequest: DownloadRequest =
+                var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
                 DownloadService.sendAddDownload(
@@ -941,7 +942,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     MyBLDownloadService::class.java,
                     downloadRequest,
                     /* foreground= */ false)
-                  if (cacheRepository.isDownloadCompleted().equals(true)){
+                  if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)){
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                         mSongDetails.rootContentID,
@@ -950,14 +951,17 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         mSongDetails.ContentType,
                         mSongDetails.PlayUrl,
                         mSongDetails.ContentType,
-                        1,
+                        0,
                         0,
                         mSongDetails.artist,
                         mSongDetails.duration))
+                      Log.e("TAGGG",
+                          "INSERTED: " + url)
+                      Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
 //                    Log.e("TAGGG",
 //                        "INSERTED: " + cacheRepository.isTrackDownloaded())
-                    Log.e("TAGGG",
-                        "COMPLETED: " + cacheRepository.isDownloadCompleted())
+//                    Log.e("TAGGG",
+//                        "COMPLETED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -1001,7 +1005,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = track.Name
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = track.EpisodeId
+       // artistname?.text = track.
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
@@ -1055,13 +1059,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(track.EpisodeId, url.toUri())
                         .build()
+
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
                     downloadRequest,
                     /* foreground= */ false)
 
-                if (cacheRepository.isDownloadCompleted().equals(true)) {
+                if (cacheRepository.isDownloadCompleted(track.EpisodeId).equals(true)) {
                     cacheRepository.insertDownload(DownloadedContent(track.EpisodeId.toString(),
                         track.rootContentID,
                         track.ImageUrl,
@@ -1069,12 +1074,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         track.ContentType,
                         track.PlayUrl,
                         track.TrackType,
-                        1,
+                        0,
                         0,
                         track.Name,
                         track.Duration))
                     Log.e("TAGGG",
-                        "INSERTED: " + cacheRepository.isDownloadCompleted())
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(track.EpisodeId))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -1161,7 +1166,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     downloadRequest,
                     /* foreground= */ false)
 
-                if (cacheRepository.isDownloadCompleted().equals(true)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                         mSongDetails.rootContentID,
                         mSongDetails.image,
@@ -1169,12 +1174,12 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         mSongDetails.ContentType,
                         mSongDetails.PlayUrl,
                         mSongDetails.ContentType,
-                        1,
+                        0,
                         0,
                         mSongDetails.artist,
                         mSongDetails.duration))
                     Log.e("TAGGG",
-                        "INSERTED: " + cacheRepository.isDownloadCompleted())
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -1269,7 +1274,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     downloadRequest,
                     /* foreground= */ false)
 
-                if (cacheRepository.isDownloadCompleted().equals(true)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                         mSongDetails.rootContentID,
                         mSongDetails.image,
@@ -1277,12 +1282,13 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                         mSongDetails.ContentType,
                         mSongDetails.PlayUrl,
                         mSongDetails.ContentType,
-                        1,
+                        0,
                         0,
                         mSongDetails.artist,
                         mSongDetails.duration))
                     Log.e("TAGGG",
-                        "INSERTED: " + cacheRepository.isDownloadCompleted())
+                        "INSERTED: " + url)
+                    Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
                 }
             }
             bottomSheetDialog.dismiss()

@@ -114,11 +114,12 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 
 
         }
-        if (this.homeListData.size >= 3 && downloadNotAdded){
-            downloadNotAdded = false
-            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
-            this.homeListData.add(download!!)
-        }
+
+//        if (this.homeListData.size >= 3 && downloadNotAdded){
+//            downloadNotAdded = false
+//            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
+//            this.homeListData.add(download!!)
+//        }
 //        var exists :Boolean = false
 //        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
 //

@@ -71,7 +71,8 @@ data class Video(
     @SerializedName("Type")
     var type: String? = null,
     var isPlaying: Boolean = false,
-    var isPlaystate: Boolean = false
+    var isPlaystate: Boolean = false,
+    var isDownloaded:Boolean = false
 ): Parcelable{
 
     internal fun setData(data: HomePatchDetail){

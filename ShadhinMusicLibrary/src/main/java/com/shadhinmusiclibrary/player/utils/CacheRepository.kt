@@ -30,8 +30,8 @@ class CacheRepository(val context: Context) {
     fun getAllWatchlater() = watchLaterDb?.WatchlaterContentDao()?.getAllWatchLater()
 
     fun getWatchedVideoById(id: String): WatchLaterContent? {
-        var contents =watchLaterDb?.WatchlaterContentDao()?.getWatchLaterById(id)
-        if (contents?.size ?: 0 > 0) {
+        var contents = watchLaterDb?.WatchlaterContentDao()?.getWatchLaterById(id)
+        if ((contents?.size ?: 0) > 0) {
             return contents!![0]
         }
         return null
@@ -51,6 +51,8 @@ class CacheRepository(val context: Context) {
     fun getAllVideosDownloads() = downloadDb?.DownloadedContentDao()?.getAllVideosDownloads()
     fun getAllSongsDownloads() = downloadDb?.DownloadedContentDao()?.getAllSongsDownloads()
     fun getAllPodcastDownloads() = downloadDb?.DownloadedContentDao()?.getAllPodcastDownloads()
+
+    fun getWatchTrackByID(contentId: String)= watchLaterDb?.WatchlaterContentDao()?.getWatchlaterTrackById(contentId)
 //
     fun getDownloadById(id: String): DownloadedContent? {
         var contents = downloadDb?.DownloadedContentDao()?.getDownloadById(id)
@@ -96,13 +98,13 @@ class CacheRepository(val context: Context) {
 //    }
 
 fun isTrackDownloaded(contentId:String):Boolean {
-    var path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
+    val path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
     Log.e("TAG", "Track: " + path)
-    if (path == null) {
+    return if (path == null) {
         Log.e("TAG", "Track123: " + path)
-        return false
+        false
     } else {
-        return true
+        true
     }
 
 }
@@ -118,17 +120,24 @@ fun isTrackDownloaded(contentId:String):Boolean {
 //        return true
 //    }
 //}
+  fun isVideoDownloaded(content:String?): Boolean {
+    return databaseClient.getDownloadDatabase()?.DownloadedContentDao()?.downloadedVideoContent(content?:"")?:false
+}
+    fun downloadCompleted(content:String?) {
+        databaseClient.getDownloadDatabase()?.DownloadedContentDao()
+            ?.downloadCompleted(content ?: "")
+    }
 
-fun isDownloadCompleted():Boolean{
-    val progress = sh.getInt("progress", 0)
-    Log.e("TAG", "TrackDownload: " + progress)
-    if(progress.equals(3)){
-        Log.e("TAG", "TrackDownload: " + progress)
+fun isDownloadCompleted(contentId:String):Boolean{
+    val completed = databaseClient.getDownloadDatabase()?.DownloadedContentDao()?.downloadedContent(contentId)
+    if (completed?.equals(null) == true) {
+        Log.e("TAG", "TrackDownload: " + completed)
+        return false
+    } else {
+        Log.e("TAG", "TrackDownload: " + completed)
         return true
     }
-    else{
-        return false
-    }
+
 }
 
 

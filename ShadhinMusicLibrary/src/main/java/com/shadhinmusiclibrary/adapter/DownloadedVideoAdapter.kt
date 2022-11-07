@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
+import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -22,7 +23,7 @@ import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.createTimeLabel
 
-internal class DownloadedVideoAdapter(val allDownloads: List<DownloadedContent>, private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<DownloadedVideoAdapter.ViewHolder>() {
+internal class DownloadedVideoAdapter(val allDownloads: List<DownloadedContent>, private val lrOnCallBack: DownloadedSongOnCallBack,private val openMenu: DownloadBottomSheetDialogItemCallback) : RecyclerView.Adapter<DownloadedVideoAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_row_video_li, parent, false)
@@ -32,7 +33,7 @@ internal class DownloadedVideoAdapter(val allDownloads: List<DownloadedContent>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
-//
+        val menu = holder.itemView.findViewById<ImageView>(R.id.threeDotButton)
        if(allDownloads[position].rootType.equals("V")){
 //
              holder.itemView.setOnClickListener {
@@ -48,6 +49,9 @@ internal class DownloadedVideoAdapter(val allDownloads: List<DownloadedContent>,
                  intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                  holder.itemView.context.startActivity(intent)
              }
+           menu.setOnClickListener {
+               openMenu.onClickBottomItemVideo(allDownloads[position])
+           }
         }
 //        if(allDownloads[position].rootType.equals("S")){
 //            holder.itemView.setOnClickListener {

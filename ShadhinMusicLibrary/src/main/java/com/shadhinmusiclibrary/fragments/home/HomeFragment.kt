@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.home
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -46,6 +47,8 @@ import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
     FragmentEntryPoint, HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
+
+    private lateinit var concatAdapter: ConcatAdapter
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -145,7 +148,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             footerAdapter = HomeFooterAdapter()
 
             dataAdapter = ParentAdapter(this, this,this)
-            //dataAdapter = ParentAdapter(this,rbtData )
+
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -160,9 +163,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            //loadMoreItems()
-                            //Log.e("TAG", "pagenumber: " + pageNum++)
-                            //pageNum++
+
                             isLoading = true
                             viewModel!!.fetchHomeData(++pageNum, false)
 
@@ -173,29 +174,34 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     super.onScrolled(recyclerView, dx, dy)
                 }
             })
+            //recyclerView.adapter=dataAdapter
+            val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+            concatAdapter = ConcatAdapter(config, dataAdapter)
+            recyclerView.adapter =  concatAdapter
+            //recyclerView.adapter =  dataAdapter
 
-            recyclerView.adapter = dataAdapter
+//            concatAdapter.removeAdapter(dataAdapter)
         }
-       /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
-            Log.e("TAG", "URL: " + res)
-            if (res.status == Status.SUCCESS) {
-                this.rbtData = res.data?.data
-            }
-        }*/
 
         homeData.let {
             it?.data?.let { it1 ->
                 dataAdapter?.setData(it1)
+                //dataAdapter?.notifyItemChanged(pageNum)
                 dataAdapter?.notifyDataSetChanged()
+                Log.e("TAG","PAGE NUMBER: "+ pageNum)
             }
         }
         if (homeData?.total == pageNum) {
             isLastPage = true
+            //Log.e("TAG","PAGE NUMBER: "+ pageNum)
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+            concatAdapter.addAdapter(footerAdapter)
+            //recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
     }
 
@@ -346,7 +352,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .apply {
                 putExtra(
                     AppConstantUtils.UI_Request_Type,
-                    AppConstantUtils.Requester_Name_CreatePlaylist
+                    AppConstantUtils.Requester_Name_MyPlaylist
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })

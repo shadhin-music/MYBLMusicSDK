@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
+import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchDetail
@@ -18,7 +19,7 @@ import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 
-internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,private val lrOnCallBack: DownloadedSongOnCallBack) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
+internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,private val lrOnCallBack: DownloadedSongOnCallBack, private val openMenu: DownloadBottomSheetDialogItemCallback) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
@@ -28,6 +29,7 @@ internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
+        val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
 //
 //        if(allDownloads[position].rootType.equals("V")){
 //
@@ -50,6 +52,15 @@ internal class DownloadedSongsAdapter(val allDownloads: List<DownloadedContent>,
             lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
              Log.e("TAG","ALL Downloads: "+ allDownloads)
         }
+        menu.setOnClickListener {
+            openMenu.onClickBottomItemSongs(allDownloads[position])
+        }
+        if(allDownloads[position].rootType.equals("PDJG")){
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemPodcast(allDownloads[position])
+            }
+        }
+
 
         //}
 

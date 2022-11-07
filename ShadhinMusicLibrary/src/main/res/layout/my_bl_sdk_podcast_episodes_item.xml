@@ -91,6 +91,7 @@
                     android:indeterminate="false"
                     android:layout_width="15dp"
                     android:layout_height="25dp"
+                    android:visibility="gone"
                     app:trackColor="@color/my_sdk_color_grey"
                     app:indicatorColor="@color/my_sdk_color_primary"
                     android:layout_margin="5dp"
@@ -105,7 +106,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/my_bl_sdk_ic_more_vert"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

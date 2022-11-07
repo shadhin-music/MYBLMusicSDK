@@ -212,6 +212,8 @@ internal class Module(private val applicationContext: Context) {
     val factoryArtistBannerVM: ArtistBannerViewModelFactory
         get() = ArtistBannerViewModelFactory(repositoryArtistBannerContent)
 
+
+
     val factoryArtistSongVM: ArtistContentViewModelFactory
         get() = ArtistContentViewModelFactory(repositoryArtistSongContent)
     private val artistAlbumContentRepository: ArtistAlbumContentRepository get() = ArtistAlbumContentRepository(

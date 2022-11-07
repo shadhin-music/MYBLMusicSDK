@@ -40,6 +40,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
     private lateinit var cacheRepository: CacheRepository
     private var downloadServiceScope: CoroutineScope? = null
 
+       private lateinit var name:DownloadedContent
     companion object {
 
         var isRunning: Boolean = true
@@ -105,10 +106,25 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                     val localIntent = Intent("PROGRESS")
                         .putExtra("progress",100)
                     localBroadcastManager.sendBroadcast(localIntent)
-                    val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-                    val Progress = sharedPreferences.edit()
-                    Progress.putInt("progress",3)
-                    Progress.apply()
+                    
+                    //todo please remove from sharedpref
+//                    val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
+//                    val Progress = sharedPreferences.edit()
+//                    Progress.putInt("progress",3)
+//                    Progress.apply()
+
+                    cacheRepository.downloadCompleted(download.request.id)
+//                    cacheRepository.insertDownload(DownloadedContent(download.request.id,
+//                       "",
+//                       "",
+//                       "",
+//                       "",
+//                        download.request.uri.toString(),
+//                       "",
+//                        0,
+//                        0,
+//                        "",
+//                       ""))
                 }
 
                 //getDownloadingNotification("Song Downloading",100)
@@ -165,22 +181,32 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         notMetRequirements: Int,
     ): Notification {
         Log.e("getDownloadManagerx", "getForegroundNotification: ${downloads.map { it.percentDownloaded }}")
-
         val downloadingItems = downloads.map {
-//            if(it.percentDownloaded in 0f..100f) {
+            if(it.percentDownloaded in 0f..100f) {
                 DownloadingItem(contentId = it.request.id, progress = it.percentDownloaded)
-//            }else{
-//                DownloadingItem(contentId = it.request.id, progress = 0f)
-//            }
+            }else{
+                DownloadingItem(contentId = it.request.id, progress = 0f)
+            }
         }
-
+       //var downloadingMsg = "Downloading "+ downloads[0].request.customCacheKey
+//        if(downloads.size==1){
+//            downloadingMsg = downloadingMsg
+//        }
+//        if (downloads.size > 1){
+//            downloadingMsg = downloadingMsg + " & "+(downloads.size - 1) + " other items"
+//        }
         val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
         val localIntent = Intent("ACTION")
             .putParcelableArrayListExtra("downloading_items",downloadingItems as ArrayList<out Parcelable>)
         localBroadcastManager.sendBroadcast(localIntent)
 
-
-        return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light, null,"Song Downloading!!!",downloads, notMetRequirements)
+//        downloads.forEach {
+////            name = cacheRepository.getDownloadById(it.request.id)!!
+//            Log.e("TAG","NAME: "+ it.request)
+//        }
+        //Log.e("TAG","NAME: "+ cacheRepository.getDownloadById(downloads[0].request.id))
+       // return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,null,""+downloadingMsg,downloads, notMetRequirements)
+        return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,null,"",downloads, notMetRequirements)
     }
 
     fun getAllDownloadCompleteNotification():Notification{

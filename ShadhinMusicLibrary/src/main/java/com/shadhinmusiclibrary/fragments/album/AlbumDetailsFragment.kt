@@ -283,20 +283,27 @@ internal class AlbumDetailsFragment :
         downloadingItems.forEach {
 
 
-                val progressIndicator: CircularProgressIndicator? =
+                val progressIndicatorAlbum: CircularProgressIndicator? =
                     view?.findViewWithTag(it.contentId)
-             //  val downloaded: ImageView?= view?.findViewWithTag(200)
-                progressIndicator?.visibility = VISIBLE
-                progressIndicator?.progress = it.progress.toInt()
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
-                if(!isDownloaded){
-                   progressIndicator?.visibility = GONE
-//                    downloaded?.visibility = VISIBLE
-                }
-
-                Log.e("getDownloadManagerx",
-                    "habijabi: ${it.toString()} ${progressIndicator == null}")
+               val downloaded: ImageView?= view?.findViewWithTag(300)
+            progressIndicatorAlbum?.visibility = VISIBLE
+            progressIndicatorAlbum?.progress = it.progress.toInt()
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if(!isDownloaded){
+//                progressIndicator?.visibility = View.GONE
+//                downloaded?.visibility = View.GONE
+//            }
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//                if(isDownloaded.equals(true)){
+//                   progressIndicator?.visibility = GONE
+//                   downloaded?.visibility = VISIBLE
+//                }
+//            Log.e("getDownloadManagerx",
+//                "habijabi:"+ isDownloaded )
+//                Log.e("getDownloadManagerx",
+//                    "habijabi: ${it.toString()} ${progressIndicator == null}")
 
 
         }
@@ -305,7 +312,6 @@ internal class AlbumDetailsFragment :
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
-        @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent){
             Log.e("DELETED", "onReceive "+intent.action)
             Log.e("PROGRESS", "onReceive "+intent)
@@ -329,7 +335,7 @@ internal class AlbumDetailsFragment :
                 }
                 "PROGRESS" -> {
 
-                    albumsTrackAdapter.notifyDataSetChanged()
+                   albumsTrackAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()

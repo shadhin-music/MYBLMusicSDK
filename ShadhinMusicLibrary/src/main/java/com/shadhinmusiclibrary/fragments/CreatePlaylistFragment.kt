@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 
 
-internal class CreatePlaylistFragment : Fragment() {
+internal class CreatePlaylistFragment : CommonBaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

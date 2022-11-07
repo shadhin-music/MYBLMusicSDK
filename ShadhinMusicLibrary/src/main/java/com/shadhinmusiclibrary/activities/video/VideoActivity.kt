@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.activities.video
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,6 +17,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -47,6 +49,7 @@ import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.Video
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
+import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.player.Constants
@@ -62,10 +65,14 @@ import com.shadhinmusiclibrary.utils.px
 internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     AudioManager.OnAudioFocusChangeListener ,BottomsheetDialog{
 
+
+
     /**1144x480 OR 856x480*/
     private val videoWidth: Int = 856
     private val videoHeight: Int = 480
 
+    private var isDownloaded:Boolean = false
+    private var iswatched: Boolean = false
     private lateinit var mainLayout:FrameLayout
     private lateinit var adapter: VideoAdapter
     private lateinit var videoRecyclerView: RecyclerView
@@ -100,13 +107,17 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private var currentPosition = 0
     private var videoList: ArrayList<Video>? = ArrayList()
     private lateinit var viewModel: VideoViewModel
+    private val receiver = MyBroadcastReceiver()
+    private lateinit var videoViewModelFactory: VideoViewModelFactory
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_bl_sdk_activity_video)
         initAudioFocus()
-        setupUI()
         setupViewModel()
+        setupUI()
+
         setupAdapter()
         initData()
         initializePlayer()
@@ -114,6 +125,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         observe()
 
     }
+
     val cacheRepository by lazy {
         CacheRepository(this)
     }
@@ -135,7 +147,8 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
 
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[VideoViewModel::class.java]
+        videoViewModelFactory = VideoViewModelFactory(DatabaseClient(applicationContext))
+        viewModel = ViewModelProvider(this,videoViewModelFactory)[VideoViewModel::class.java]
 
     }
     private fun setupUI() {
@@ -189,23 +202,28 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         adapter.onItemClickListeners { item, isMenu ->
             if (!isMenu) {
                 togglePlayPause(item)
-                var iswatched = false
-                var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
-                if (watched?.track != null) {
+//
+                var watched =  cacheRepository.getWatchedVideoById(item.contentID.toString())
+                var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
+                Log.e("TAG","CONTENTIDITEM: "+downloaded)
+                if (watched != null) {
                     iswatched = true
                    // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
-                    watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+                    watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
                 } else {
                     iswatched = false
                     watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
                    // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
                 }
-
-//                if (iswatched) {
-//                    watchlatertext.text = "Remove From Watchlater"
-//                } else {
-//                    watchlatertext.text = "Watch Later"
-//                }
+                if (downloaded?.track != null) {
+                    isDownloaded = true
+                    downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                    downloadTextview.text = "Remove Download"
+                } else {
+                    isDownloaded = false
+                    downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                    downloadTextview.text = "Download"
+                }
             }
         }
 
@@ -217,7 +235,144 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             currentPosition = intent.getIntExtra(INTENT_KEY_POSITION, 0)
             videoList = intent.getParcelableArrayListExtra(INTENT_KEY_DATA_LIST)
             viewModel.videos(videoList)
+            Log.e("Check","item: "+ videoList?.get(currentPosition)?.toString())
         }
+        //iswatched = false
+
+        val currentVideoID:String? = videoList?.get(currentPosition)?.contentID
+       val watched = cacheRepository.getWatchedVideoById(currentVideoID.toString())
+         //val alltracks = cacheRepository.getAllWatchlater()
+        var downloaded = cacheRepository.getDownloadById(currentVideoID.toString())
+
+        if (downloaded?.track != null) {
+
+            downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+            downloadTextview.text = "Remove Download"
+            isDownloaded = true
+        } else {
+
+            downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+            downloadTextview.text = "Download"
+            isDownloaded = false
+        }
+        if (watched != null) {
+
+            Log.e("TAG","CONTENTID: "+ iswatched)
+            // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+          //  iswatched = true
+        } else {
+
+            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+           // iswatched = false
+            // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
+            Log.e("TAG","CONTENTID: "+ iswatched)
+        }
+
+        watchlaterLayout.setOnClickListener {
+            if(iswatched){
+
+                val currentVideoID =   viewModel.currentVideo.value?.contentID
+                val currentURL = viewModel.currentVideo.value?.playUrl
+                currentVideoID?.let { it1 -> cacheRepository.deleteWatchlaterById(it1) }
+                watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                //watchlatertext?.text = "Remove From Watchlater"
+
+                iswatched = false
+                Log.e("TAG","CLICKED123: "+ iswatched)
+            }else{
+                val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
+                val currentURL:String? = viewModel.currentVideo.value?.playUrl
+                val currentRootID= viewModel.currentVideo.value?.rootId
+                val currentImage = viewModel.currentVideo.value?.image
+                val currentTitle =  viewModel.currentVideo.value?.title
+                val currentRootType = viewModel.currentVideo.value?.contentType
+                val currentArtist =  viewModel.currentVideo.value?.artist
+                val duration =  viewModel.currentVideo.value?.duration
+                watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                iswatched = true
+
+                //watchlatertext.text = "Watch Later"
+                  val url = "${Constants.FILE_BASE_URL}${currentURL}"
+                Log.e("TAG","CLICKED: "+ url)
+                cacheRepository.insertWatchLater(WatchLaterContent(currentVideoID.toString(),
+                    currentRootID.toString(),
+                    currentImage.toString(),
+                    currentTitle.toString(),
+                    currentRootType.toString(),
+                    currentURL ,
+                    currentRootType.toString(),
+                    0,
+                    0,
+                    currentArtist.toString(),
+                    duration.toString()))
+                Log.e("TAGGG",
+                    "INSERTED: " + cacheRepository.getAllWatchlater())
+            }
+
+
+
+        }
+       // val currentVideoID =   viewModel.currentVideo.value?.contentID
+      // isDownloaded= false
+
+
+        downloadLayout.setOnClickListener {
+            if (isDownloaded) {
+                cacheRepository.deleteDownloadById(currentVideoID.toString())
+                DownloadService.sendRemoveDownload(applicationContext,
+                    MyBLDownloadService::class.java, currentVideoID.toString(), false)
+                Log.e("TAG", "DELETED: " + isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", currentVideoID.toString())
+                localBroadcastManager.sendBroadcast(localIntent)
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                isDownloaded=false
+            } else {
+                val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
+                val currentURL:String? = viewModel.currentVideo.value?.playUrl
+                val currentRootID= viewModel.currentVideo.value?.rootId
+                val currentImage = viewModel.currentVideo.value?.image
+                val currentTitle =  viewModel.currentVideo.value?.title
+                val currentRootType = viewModel.currentVideo.value?.contentType
+                val currentArtist =  viewModel.currentVideo.value?.artist
+                val duration =  viewModel.currentVideo.value?.duration
+                val url = "${Constants.FILE_BASE_URL}${currentURL}"
+                val downloadRequest: DownloadRequest? =
+                    currentURL?.let { it1 ->
+                        DownloadRequest.Builder(currentVideoID.toString(), it1?.toUri())
+                            .build()
+                    }
+                downloadRequest?.let { it1 ->
+                    DownloadService.sendAddDownload(
+                        applicationContext,
+                        MyBLDownloadService::class.java,
+                        it1,
+                        /* foreground= */ false)
+                }
+                Log.e("TAG","CLICKED123: "+ currentURL)
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+
+               // downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                isDownloaded=true
+                if (cacheRepository.isDownloadCompleted(currentVideoID.toString()).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(currentVideoID.toString(),
+                        currentRootID.toString(),
+                        currentImage.toString(),
+                        currentTitle.toString(),
+                        currentRootType.toString(),
+                        currentURL,
+                        currentRootType.toString(),
+                        0,
+                        0,
+                        currentArtist.toString(),
+                        duration.toString()))
+                }
+            }
+
+        }
+
     }
     private fun observe() {
 
@@ -248,52 +403,10 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         viewModel.currentVideo.observe(this, Observer { video ->
             videoTitleTextView.text = video.title
             videoDescTextView.text = video.artist
-            var iswatched = false
-            var watched = cacheRepository.getWatchedVideoById(video.contentID.toString())
-            if (watched?.track != null) {
-                iswatched = true
-                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
-            } else {
-                iswatched = false
-                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
-               // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
-            }
 
-//            if (iswatched) {
-//                watchlatertext?.text = "Remove From Watchlater"
-//            } else {
-//                watchlatertext?.text = "Watch Later"
-//            }
-//            watchlaterLayout.setOnClickListener {
-//               if(iswatched.equals(true)){
-//
-//                    cacheRepository.deleteWatchlaterById(video.contentID.toString())
-//                   watchIcon?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
-//                   watchlatertext?.text = "Remove From Watchlater"
-//                    Log.e("TAG","CLICKED: "+ video.contentID)
-//                }else{
-//                   watchIcon.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
-//                   watchlatertext.text = "Watch Later"
-//                    val url = "${Constants.FILE_BASE_URL}${video.playUrl}"
-//                    cacheRepository.insertWatchLater(WatchLaterContent(video.contentID.toString(),
-//                        video.rootId.toString(),
-//                        video.image.toString(),
-//                        video.title.toString(),
-//                        video.contentType.toString(),
-//                        url ,
-//                        video.contentType.toString(),
-//                        0,
-//                        0,
-//                        video.artist.toString(),
-//                        video.duration.toString()))
-//                    Log.e("TAGGG",
-//                        "INSERTED: " + cacheRepository.getAllWatchlater())
-//                }
-//
-//
-//
-//            }
         })
+
+
     }
 
 
@@ -491,8 +604,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     override fun onDestroy() {
         exoPlayer?.release()
         exoPlayer = null
-        LocalBroadcastManager.getInstance(applicationContext)
-            .unregisterReceiver(MyBroadcastReceiver())
+
         super.onDestroy()
     }
 
@@ -528,16 +640,18 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
             }
 
-            val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
+            val downloadImageBottom: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
             val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-            var isDownloaded = false
+
             var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
             if (downloaded?.track != null) {
                 isDownloaded = true
-                downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+                downloadImageBottom?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
+                downloadImage.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
             } else {
                 isDownloaded = false
-                downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+                downloadImageBottom?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
+                downloadImage.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_grey))
             }
 
             if (isDownloaded) {
@@ -548,7 +662,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             val constraintDownload: ConstraintLayout? =
                 bottomSheetDialog.findViewById(R.id.constraintDownload)
             constraintDownload?.setOnClickListener {
-                if (isDownloaded.equals(true)) {
+                if (isDownloaded) {
                     cacheRepository.deleteDownloadById(item.contentID.toString())
                     DownloadService.sendRemoveDownload(applicationContext,
                         MyBLDownloadService::class.java, item.contentID.toString(), false)
@@ -557,6 +671,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                     val localIntent = Intent("DELETED")
                         .putExtra("contentID", item.contentID.toString())
                     localBroadcastManager.sendBroadcast(localIntent)
+                    isDownloaded =false
 
                 } else {
                     val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
@@ -568,29 +683,35 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                         MyBLDownloadService::class.java,
                         downloadRequest,
                         /* foreground= */ false)
+                    if (cacheRepository.isDownloadCompleted(item.contentID.toString())
+                            .equals(true)
+                    ) {
+                        Log.e("TAG","URL123 : "+ item.playUrl)
+                        // if (cacheRepository.isDownloadCompleted().equals(true)) {
+                        cacheRepository.insertDownload(
+                            DownloadedContent(item.contentID.toString(),
+                                item.rootId.toString(),
+                                item.image.toString(),
+                                item.title.toString(),
+                                item.contentType.toString(),
+                                item.playUrl,
+                                item.contentType.toString(),
+                                0,
+                                0,
+                                item.artist.toString(),
+                                item.duration.toString()))
 
-                    if (cacheRepository.isDownloadCompleted().equals(true)) {
-                        cacheRepository.insertDownload(DownloadedContent(item.contentID.toString(),
-                           item.rootId.toString(),
-                            item.image.toString(),
-                            item.title.toString(),
-                            item.contentType.toString(),
-                            item.playUrl,
-                            item.contentType.toString(),
-                            1,
-                            0,
-                            item.artist.toString(),
-                            item.duration.toString()))
-                        Log.e("TAGGG",
-                            "INSERTED: " + cacheRepository.isDownloadCompleted())
+                        isDownloaded = true
+                        // }
                     }
                 }
                 bottomSheetDialog.dismiss()
             }
         val watchlaterImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgWatchlater)
         val textViewWatchlaterTitle: TextView? = bottomSheetDialog.findViewById(R.id.txtwatchLater)
-        var iswatched = false
+
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
+
         if (watched?.track != null) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
@@ -609,8 +730,9 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         }
         val constraintWatchlater: ConstraintLayout ?= bottomSheetDialog.findViewById(R.id.constraintAddtoWatch)
             constraintWatchlater?.setOnClickListener {
-                if (iswatched.equals(true)) {
+                if (iswatched) {
                     cacheRepository.deleteWatchlaterById(item.contentID.toString())
+                    iswatched = false
                 } else {
                     val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                     cacheRepository.insertWatchLater(WatchLaterContent(item.contentID.toString(),
@@ -618,12 +740,13 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                         item.image.toString(),
                         item.title.toString(),
                         item.contentType.toString(),
-                        url ,
+                        item.playUrl ,
                         item.contentType.toString(),
                         0,
                         0,
                         item.artist.toString(),
                         item.duration.toString()))
+                    iswatched = true
                     Log.e("TAGGG",
                         "INSERTED: " + cacheRepository.getAllWatchlater())
 
@@ -640,7 +763,13 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         intentFilter.addAction("DELETED")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(applicationContext)
-            .registerReceiver(MyBroadcastReceiver(), intentFilter)
+            .registerReceiver(receiver, intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(applicationContext)
+            .unregisterReceiver(receiver)
     }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
@@ -649,23 +778,15 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
 
             val progressIndicator: CircularProgressIndicator? =
                 videoRecyclerView.findViewWithTag(it.contentId)
-//                val downloaded: ImageView?= view?.findViewWithTag(200)
+                val downloaded: ImageView?= videoRecyclerView.findViewWithTag(200)
 
             progressIndicator?.progress = it.progress.toInt()
-          // if(it.progress==1f) {
-                progressIndicator?.visibility = View.VISIBLE
-           // }
-            if(it.progress==100f){
-                progressIndicator?.visibility = View.GONE
 
-//                // downloaded?.visibility = VISIBLE
-            }
-//            val isDownloaded =
-//                cacheRepository.isTrackDownloaded(it.contentId) ?: false
-//            if(isDownloaded){
-//                progressIndicator?.visibility = View.GONE
-//                // downloaded?.visibility = VISIBLE
-//            }
+//           if(it.progress.toInt() <= 99) {
+                progressIndicator?.visibility = View.VISIBLE
+                downloaded?.visibility= View.GONE
+
+
 
             Log.e("getDownloadManagerx",
                 "habijabi123: ${it.toString()} ${progressIndicator == null}")
@@ -677,6 +798,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
+        @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent){
             Log.e("DELETED", "onReceive "+intent.action)
             Log.e("PROGRESS", "onReceive "+intent)
@@ -695,12 +817,11 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                     }
                 }
                 "DELETED" -> {
-                    adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
-                    adapter.notifyDataSetChanged()
+                    viewModel.videos(videoList)
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()

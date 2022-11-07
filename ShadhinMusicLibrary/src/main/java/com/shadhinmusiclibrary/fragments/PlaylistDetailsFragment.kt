@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -206,6 +208,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
         downloadingItems.forEach {
@@ -213,15 +216,15 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
-//                val downloaded: ImageView?= view?.findViewWithTag(200)
+                val downloaded: ImageView?= view?.findViewWithTag(220)
             progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
-            if(!isDownloaded){
-                progressIndicator?.visibility = View.GONE
-                // downloaded?.visibility = VISIBLE
-            }
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if(!isDownloaded){
+//                progressIndicator?.visibility = View.GONE
+//                downloaded?.visibility = View.GONE
+//            }
 
             Log.e("getDownloadManagerx",
                 "habijabi: ${it.toString()} ${progressIndicator == null}")
@@ -233,6 +236,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
+        @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent){
             Log.e("DELETED", "onReceive "+intent.action)
             Log.e("PROGRESS", "onReceive "+intent)
