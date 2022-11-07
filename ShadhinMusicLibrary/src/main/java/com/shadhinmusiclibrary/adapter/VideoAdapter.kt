@@ -158,14 +158,14 @@ internal class VideoAdapter(
 //            progressIndicator.tag = item.contentID
 //            progressIndicator.visibility = View.GONE
 //            downloaded.visibility = View.GONE
-//            downloaded.tag = 200
-            val isDownloaded = item.isDownloaded
-
+////            downloaded.tag = 200
+//            val isDownloaded = cacheRepository.isVideoDownloaded(item.contentID)
+//
 //            if(isDownloaded){
 //                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
 //                downloaded.visibility = View.VISIBLE
 //                progressIndicator.visibility = View.GONE
-//                //progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
+//                progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
 //            }
             //else{
 //                downloaded.visibility = View.GONE
