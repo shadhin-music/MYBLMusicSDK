@@ -676,8 +676,10 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 } else {
                     val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                     val downloadRequest: DownloadRequest =
-                        DownloadRequest.Builder(item.contentID.toString(), url.toUri())
-                            .build()
+                       url.toUri().let { it1 ->
+                            DownloadRequest.Builder(item.contentID.toString(), it1)
+                                .build()
+                        }
                     DownloadService.sendAddDownload(
                         applicationContext,
                         MyBLDownloadService::class.java,
@@ -782,9 +784,9 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
 
             progressIndicator?.progress = it.progress.toInt()
 
-//           if(it.progress.toInt() <= 99) {
+////           if(it.progress.toInt() <= 99) {
                 progressIndicator?.visibility = View.VISIBLE
-                downloaded?.visibility= View.GONE
+//                downloaded?.visibility= View.GONE
 
 
 

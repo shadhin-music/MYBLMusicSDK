@@ -47,7 +47,7 @@
                     android:maxLines="1"
                     android:textColor="@color/my_sdk_black2"
                     android:singleLine="true"
-                    android:text="Ami Bhabi Tumi"
+                    android:text=""
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -58,14 +58,14 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="Habib Wahid"
+                    android:text=""
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_song_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.32"
+                    android:text=""
                     android:textSize="10sp" />
             </LinearLayout>
 

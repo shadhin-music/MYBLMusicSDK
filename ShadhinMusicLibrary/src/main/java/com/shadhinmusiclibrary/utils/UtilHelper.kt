@@ -298,32 +298,35 @@ internal object UtilHelper {
 
     fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetail> {
         val songDetailList = mutableListOf<SongDetail>()
+
         for (trackItem in trackList) {
             trackItem.apply {
-                songDetailList.add(
-                    SongDetail(
-                        ContentID = contentId,
-                        image = rootImg ,
-                        title = rootTitle,
-                        ContentType = rootType,
-                        PlayUrl = ""+track,
-                        artist = artist,
-                        duration = timeStamp,
-                        copyright = "",
-                        labelname = "",
-                        releaseDate = "",
-                        fav = "",
-                        ArtistId = "",
-                        albumId = rootId,
-                        userPlayListId = "",
-                        /*rootType = contentType,*/
+                    val newPlayUrl = if(track?.contains("https",true)==true) track  else Constants.FILE_BASE_URL + track
+                    songDetailList.add(
+                        SongDetail(
+                            ContentID = contentId,
+                            image = rootImg ,
+                            title = rootTitle,
+                            ContentType = rootType,
+                            PlayUrl = newPlayUrl.toString(),
+                            artist = artist,
+                            duration = timeStamp,
+                            copyright = "",
+                            labelname = "",
+                            releaseDate = "",
+                            fav = "",
+                            ArtistId = "",
+                            albumId = rootId,
+                            userPlayListId = "",
+                            /*rootType = contentType,*/
 
-                        rootContentID = rootId,
-                        rootContentType = rootType,
-                        rootImage = rootImg
+                            rootContentID = rootId,
+                            rootContentType = rootType,
+                            rootImage = rootImg
+                        )
                     )
-                )
-                Log.e("PlayUrl", ""+ track)
+
+
             }
         }
         return songDetailList

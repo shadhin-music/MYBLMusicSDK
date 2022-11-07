@@ -44,9 +44,9 @@ internal class DownloadedVideoAdapter(val allDownloads: List<DownloadedContent>,
                      video.setDataDownload(item)
                      videoArray.add(video)
                  }
-                 val videos :ArrayList<Video> = videoArray
+               //  val videos :ArrayList<Video> = videoArray
                  intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
-                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videoArray)
                  holder.itemView.context.startActivity(intent)
              }
            menu.setOnClickListener {

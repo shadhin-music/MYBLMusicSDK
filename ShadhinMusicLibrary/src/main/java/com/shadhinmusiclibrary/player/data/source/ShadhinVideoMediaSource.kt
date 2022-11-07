@@ -55,7 +55,14 @@ internal class ShadhinVideoMediaSource(
         )
     }
    private fun toVideoMediaItem(video: Video): MediaItem {
-        val videoUrl = "${Constants.FILE_BASE_URL}${video.playUrl}"
+        val videoUrl = if(video.playUrl?.contains(Constants.FILE_BASE_URL) == true){
+            "${video.playUrl}"
+        }else{
+            "${Constants.FILE_BASE_URL}${video.playUrl}"
+        }
+
+
+
 
         return MediaItem.Builder()
             .setMediaId(video.contentID?: randomString(5))

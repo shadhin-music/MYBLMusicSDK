@@ -100,8 +100,8 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 super.onDownloadChanged(downloadManager, download, finalException)
                 if(download.state == STATE_COMPLETED){
                     currentProgress= 100
-//                    Log.e("TAGGG",
-//                        "COMPLETED: " + download.state)
+                    Log.e("TAGGG",
+                        "COMPLETED: " + download.request.uri)
                     val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                     val localIntent = Intent("PROGRESS")
                         .putExtra("progress",100)
