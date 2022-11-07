@@ -343,7 +343,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle().apply {
                     putString(DataContentType.TITLE, "Music Video")
                 })
-
             }
         }
     }
