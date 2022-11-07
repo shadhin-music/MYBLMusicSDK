@@ -75,7 +75,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         footerAdapter = HomeFooterAdapter()
         //read data from online
         fetchOnlineData(argHomePatchDetail!!.ContentID)
-//        adapter.setRootData(argHomePatchDetail!!)
+//      adapter.setRootData(argHomePatchDetail!!)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -5,6 +5,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
 
+/**
+ * This model also used in Radio and album and other
+ */
 
 @Keep
 internal class SongDetailModel : IMusicModel {
@@ -57,6 +60,9 @@ internal class SongDetailModel : IMusicModel {
     override var artist_Id: String? = null
 
     override var bannerImage: String? = null
+
+    @SerializedName("AlbumId")
+    @Expose
     override var album_Id: String? = null
     override var album_Name: String? = null
     override var rootContentId: String? = null

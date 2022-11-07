@@ -4,7 +4,6 @@
     android:id="@+id/cv_thousand_song_parent"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:visibility="gone"
     app:cardBackgroundColor="@color/my_sdk_white"
     app:cardCornerRadius="10dp">
 
