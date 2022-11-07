@@ -207,7 +207,7 @@ internal object UtilHelper {
                     album_Id = seaDataItem.album_Id
                     rootContentId = seaDataItem.album_Id
                     rootContentType = seaDataItem.content_Type
-                    isSeekAble = false
+                    isSeekAble = true
                 }
             )
         }
@@ -270,7 +270,7 @@ internal object UtilHelper {
                         album_Id = seDaMoItem.album_Id
                         rootContentId = seDaMoItem.album_Id
                         rootContentType = rootPatch.type
-                        isSeekAble = false
+                        isSeekAble = true
                     })
                 }
             }
