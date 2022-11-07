@@ -11,7 +11,7 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
     entities = [
         WatchLaterContent::class
     ],
-    version = 1
+    version = 2
 )
 
 abstract class WatchlaterDatabase :RoomDatabase(){
