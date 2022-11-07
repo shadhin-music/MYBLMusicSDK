@@ -15,8 +15,8 @@ class DatabaseClient {
         this.mCtx = mCtx
 
         downloadDataBase = Room.databaseBuilder(mCtx, DownloadDatabase::class.java, "DownloadDb")
-            .allowMainThreadQueries().build()
-        watchlaterDatabase = Room.databaseBuilder(mCtx, WatchlaterDatabase::class.java,"WatchlaterDb").allowMainThreadQueries().build()
+            .allowMainThreadQueries().fallbackToDestructiveMigration().build()
+        watchlaterDatabase = Room.databaseBuilder(mCtx, WatchlaterDatabase::class.java,"WatchlaterDb").allowMainThreadQueries().fallbackToDestructiveMigration().build()
     }
         @Synchronized
         fun getInstance(mCtx: Context): DatabaseClient? {
