@@ -37,7 +37,7 @@ import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 import java.io.Serializable
 import java.util.*
 
-internal class SearchFragment : CommonBaseFragment(), SearchItemCallBack {
+internal class SearchFragment : BaseFragment(), SearchItemCallBack {
     private lateinit var navController: NavController
     private lateinit var searchViewModel: SearchViewModel
 

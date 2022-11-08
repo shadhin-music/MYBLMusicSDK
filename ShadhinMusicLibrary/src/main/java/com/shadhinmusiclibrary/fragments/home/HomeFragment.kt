@@ -69,14 +69,6 @@ internal class HomeFragment : BaseFragment(),
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
 
-//    override fun getViewModel(): Class<HomeViewModel> {
-//        return HomeViewModel::class.java
-//    }
-//
-//    override fun getViewModelFactory(): HomeViewModelFactory {
-//        return injector.factoryHomeVM
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -108,7 +100,7 @@ internal class HomeFragment : BaseFragment(),
     private fun observeData() {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-        homeViewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
+        homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 viewDataInRecyclerView(res.data)

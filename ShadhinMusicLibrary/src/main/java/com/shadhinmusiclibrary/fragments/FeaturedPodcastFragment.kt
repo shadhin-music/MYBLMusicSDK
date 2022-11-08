@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.DataContentType
@@ -30,7 +29,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class FeaturedPodcastFragment : CommonBaseFragment(), FeaturedPodcastOnItemClickCallback {
+internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemClickCallback {
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel

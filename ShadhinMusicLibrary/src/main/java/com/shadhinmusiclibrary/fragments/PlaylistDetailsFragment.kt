@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -37,23 +38,24 @@ import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
+internal class PlaylistDetailsFragment : BaseFragment(),
     OnItemClickCallback, BottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
+    private lateinit var albumViewModel: AlbumViewModel
 
     private lateinit var playlistHeaderAdapter: PlaylistHeaderAdapter
     private lateinit var playlistTrackAdapter: PlaylistTrackAdapter
 
     private lateinit var footerAdapter: HomeFooterAdapter
     private var cacheRepository: CacheRepository? = null
-    override fun getViewModel(): Class<AlbumViewModel> {
-        return AlbumViewModel::class.java
-    }
-
-    override fun getViewModelFactory(): AlbumViewModelFactory {
-        return injector.factoryAlbumVM
-    }
+//    override fun getViewModel(): Class<AlbumViewModel> {
+//        return AlbumViewModel::class.java
+//    }
+//
+//    override fun getViewModelFactory(): AlbumViewModelFactory {
+//        return injector.factoryAlbumVM
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +67,17 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         return viewRef
     }
 
+    private fun setupViewModel() {
+        albumViewModel = ViewModelProvider(
+            this,
+            injector.factoryAlbumVM
+        )[AlbumViewModel::class.java]
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
+
         cacheRepository = CacheRepository(requireContext())
         // playlistTrackAdapter = PlaylistTrackAdapter(this, cacheRepository!!)
         playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this)
@@ -104,8 +115,8 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 
     private fun fetchOnlineData(contentId: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel?.fetchPlaylistContent(contentId)
-        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
+        albumViewModel.fetchPlaylistContent(contentId)
+        albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
             if (res.data?.data != null && res.status == Status.SUCCESS) {
                 playlistTrackAdapter.setData(
                     res.data.data,

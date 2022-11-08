@@ -10,10 +10,10 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownloadedVideoAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
-internal class VideosDownloadFragment : CommonBaseFragment(), DownloadedSongOnCallBack {
+internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

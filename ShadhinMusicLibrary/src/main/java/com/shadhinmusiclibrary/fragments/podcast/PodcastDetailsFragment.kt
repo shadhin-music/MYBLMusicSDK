@@ -29,14 +29,13 @@ import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
 
-internal class PodcastDetailsFragment : CommonBaseFragment(), HomeCallBack,
+internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
     PodcastOnItemClickCallback, PodcastBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: PodcastViewModel

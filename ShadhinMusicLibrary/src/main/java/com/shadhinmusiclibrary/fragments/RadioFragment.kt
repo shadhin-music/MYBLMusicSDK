@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.RadioTrackAdapter
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class RadioFragment : CommonBaseFragment() {
+internal class RadioFragment : BaseFragment() {
 
     private lateinit var albumVM: AlbumViewModel
     private lateinit var radioTrackAdapter: RadioTrackAdapter

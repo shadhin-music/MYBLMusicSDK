@@ -16,10 +16,10 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
@@ -27,7 +27,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
+internal class FeaturedPopularArtistFragment : BaseFragment(), PatchCallBack {
 
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null

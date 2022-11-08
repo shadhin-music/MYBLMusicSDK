@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.TopTrendingBanglaMusicAdapter
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
 
-internal class TopTrendingBanglaMusicFragment : CommonBaseFragment() {
+internal class TopTrendingBanglaMusicFragment : BaseFragment() {
 
     private lateinit var adapter: TopTrendingBanglaMusicAdapter
     private lateinit var footerAdapter: HomeFooterAdapter

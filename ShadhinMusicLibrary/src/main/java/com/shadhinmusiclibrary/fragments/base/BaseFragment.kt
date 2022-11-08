@@ -4,27 +4,20 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
-
-internal class BaseFragment : Fragment(), FragmentEntryPoint {
-
-    // var viewModel2: V? = null
+internal open class BaseFragment : Fragment(), FragmentEntryPoint {
     var argHomePatchItem: HomePatchItemModel? = null
     var argHomePatchDetail: HomePatchDetailModel? = null
-    lateinit var updatedSongList: MutableList<SongDetailModel>
     lateinit var playerViewModel: PlayerViewModel
-//    var viewModelFactory: VMF? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +27,6 @@ internal class BaseFragment : Fragment(), FragmentEntryPoint {
                 it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }
         createPlayerVM()
-        // viewModel2 = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
-        //viewModel = ViewModelProvider(this, get).get(getViewModel())
     }
 
     private fun createPlayerVM() {
@@ -43,7 +34,6 @@ internal class BaseFragment : Fragment(), FragmentEntryPoint {
             requireActivity(),
             injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
-
     }
 
     fun playItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

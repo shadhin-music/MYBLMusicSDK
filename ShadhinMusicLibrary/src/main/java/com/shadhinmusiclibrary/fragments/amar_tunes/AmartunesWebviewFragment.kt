@@ -14,14 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.RBTDATAModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
 
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
-internal class AmartunesWebviewFragment : CommonBaseFragment() {
+internal class AmartunesWebviewFragment : BaseFragment() {
     var data: RBTDATAModel? = null
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
     private var contentType: String? = null

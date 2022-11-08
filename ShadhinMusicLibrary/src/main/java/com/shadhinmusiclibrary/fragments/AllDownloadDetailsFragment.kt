@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,11 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.AllDownloadedAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
-internal class AllDownloadDetailsFragment : CommonBaseFragment(), DownloadedSongOnCallBack {
+internal class AllDownloadDetailsFragment : BaseFragment(), DownloadedSongOnCallBack {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -9,19 +9,17 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedLatestTracksAdapter
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.fragments.artist.FeaturedTracklistViewModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.TITLE
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
+internal class LatestReleaseFragment : BaseFragment(), LatestReleaseOnCallBack {
     lateinit var viewModel: FeaturedTracklistViewModel
 
     private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter

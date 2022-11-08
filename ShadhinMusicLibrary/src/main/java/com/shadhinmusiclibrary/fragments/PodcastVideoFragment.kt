@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
 
-internal class PodcastVideoFragment : CommonBaseFragment() {
+internal class PodcastVideoFragment : BaseFragment() {
 
     private lateinit var parentAdapter: ConcatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {

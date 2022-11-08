@@ -10,9 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
-internal class TopTrendingPlaylistFragment : CommonBaseFragment() {
+internal class TopTrendingPlaylistFragment : BaseFragment() {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItemModel? = null
     var homePatchDetail: HomePatchDetailModel? = null

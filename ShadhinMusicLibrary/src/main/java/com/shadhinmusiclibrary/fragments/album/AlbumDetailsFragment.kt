@@ -11,7 +11,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
@@ -41,11 +40,13 @@ import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.Status
 
-internal class AlbumDetailsFragment :
-    BaseFragment<AlbumViewModel, AlbumViewModelFactory>(),
+internal class AlbumDetailsFragment : BaseFragment(),
     OnItemClickCallback,
     BottomSheetDialogItemCallback,
     HomeCallBack {
+
+    private lateinit var albumViewModel: AlbumViewModel
+
     private var cacheRepository: CacheRepository? = null
     private lateinit var navController: NavController
     private lateinit var albumHeaderAdapter: AlbumHeaderAdapter
@@ -55,13 +56,6 @@ internal class AlbumDetailsFragment :
     var artistAlbumModelData: ArtistAlbumModelData? = null
 
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
-    override fun getViewModel(): Class<AlbumViewModel> {
-        return AlbumViewModel::class.java
-    }
-
-    override fun getViewModelFactory(): AlbumViewModelFactory {
-        return injector.factoryAlbumVM
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -113,6 +107,11 @@ internal class AlbumDetailsFragment :
     }
 
     private fun setupViewModel() {
+        albumViewModel = ViewModelProvider(
+            this,
+            injector.factoryAlbumVM
+        )[AlbumViewModel::class.java]
+
         viewModelArtistAlbum = ViewModelProvider(
             this,
             injector.artistAlbumViewModelFactory
@@ -121,8 +120,8 @@ internal class AlbumDetailsFragment :
 
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel?.fetchAlbumContent(contentId)
-        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
+        albumViewModel.fetchAlbumContent(contentId)
+        albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 if (res.data?.data != null && argHomePatchDetail != null) {

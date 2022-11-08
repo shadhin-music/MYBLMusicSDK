@@ -17,9 +17,9 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
-internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
+internal class STypeDetailsFragment : BaseFragment(), BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
     private lateinit var listSongDetail: MutableList<SongDetailModel>
