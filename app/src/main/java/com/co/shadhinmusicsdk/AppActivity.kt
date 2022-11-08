@@ -70,7 +70,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
 
     }
     override fun onDestroy() {
-        ShadhinMusicSdkCore.destroySDK(applicationContext)
+       // ShadhinMusicSdkCore.destroySDK(applicationContext)
         super.onDestroy()
     }
 

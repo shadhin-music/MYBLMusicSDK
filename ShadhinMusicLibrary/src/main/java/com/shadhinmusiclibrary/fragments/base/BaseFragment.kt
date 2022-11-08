@@ -17,9 +17,7 @@ import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
-internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Factory> : Fragment(),
-    FragmentEntryPoint {
-    var viewModel: V? = null
+internal class BaseFragment : Fragment(), FragmentEntryPoint {
 
     // var viewModel2: V? = null
     var argHomePatchItem: HomePatchItemModel? = null
@@ -27,10 +25,6 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
     lateinit var updatedSongList: MutableList<SongDetailModel>
     lateinit var playerViewModel: PlayerViewModel
 //    var viewModelFactory: VMF? = null
-
-    protected abstract fun getViewModel(): Class<V>
-
-    protected abstract fun getViewModelFactory(): VMF
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +34,7 @@ internal abstract class BaseFragment<V : ViewModel, VMF : ViewModelProvider.Fact
                 it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }
         createPlayerVM()
-        viewModel = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
-       // viewModel2 = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
+        // viewModel2 = ViewModelProvider(this, getViewModelFactory())[getViewModel()]
         //viewModel = ViewModelProvider(this, get).get(getViewModel())
     }
 

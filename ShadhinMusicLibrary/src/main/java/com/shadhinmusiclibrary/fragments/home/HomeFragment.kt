@@ -28,14 +28,12 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
@@ -46,7 +44,7 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
-internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
+internal class HomeFragment : BaseFragment(),
     HomeCallBack, SearchClickCallBack, DownloadClickCallBack/*, RadioTrackCallBack*/ {
 
     //mini music player
@@ -61,6 +59,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
+    private lateinit var homeViewModel: HomeViewModel
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
 //    private lateinit var albumVM: AlbumViewModel
 
@@ -70,13 +69,13 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
 
-    override fun getViewModel(): Class<HomeViewModel> {
-        return HomeViewModel::class.java
-    }
-
-    override fun getViewModelFactory(): HomeViewModelFactory {
-        return injector.factoryHomeVM
-    }
+//    override fun getViewModel(): Class<HomeViewModel> {
+//        return HomeViewModel::class.java
+//    }
+//
+//    override fun getViewModelFactory(): HomeViewModelFactory {
+//        return injector.factoryHomeVM
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,11 +87,17 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         uiInitMiniMusicPlayer(view)
-        viewModel?.fetchHomeData(pageNum, false)
+        homeViewModel = ViewModelProvider(
+            this,
+            injector.factoryHomeVM
+        )[HomeViewModel::class.java]
+
         viewModelAmaraTunes = ViewModelProvider(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
+
+        homeViewModel?.fetchHomeData(pageNum, false)
 
         //Radio track play. for testing
 //        albumVM = ViewModelProvider(this, injector.factoryAlbumVM)[AlbumViewModel::class.java]
@@ -103,7 +108,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     private fun observeData() {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-        viewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
+        homeViewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
                 viewDataInRecyclerView(res.data)
@@ -153,7 +158,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                             isLoading = true
-                            viewModel!!.fetchHomeData(++pageNum, false)
+                            homeViewModel!!.fetchHomeData(++pageNum, false)
                         }
                     }
                     super.onScrolled(recyclerView, dx, dy)
