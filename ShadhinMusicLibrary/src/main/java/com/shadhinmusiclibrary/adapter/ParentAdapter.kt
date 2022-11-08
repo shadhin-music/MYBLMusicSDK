@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,15 +17,18 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.RBTDATAModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ParentAdapter(
     var homeCallBack: HomeCallBack,
     val searchCb: SearchClickCallBack,
     val downloadClickCallBack: DownloadClickCallBack
+    /*,val radioCallBack: RadioTrackCallBack*/
 ) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
@@ -65,7 +69,6 @@ internal class ParentAdapter(
     override fun getItemCount(): Int = homeListData.size
 
     override fun getItemViewType(position: Int): Int {
-
         return when (homeListData.get(position).Design) {
             "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
@@ -76,7 +79,6 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -232,6 +234,22 @@ internal class ParentAdapter(
 //            }
         }
 
+//        private fun bundRadio(homePatchItemModel: HomePatchItemModel) {
+//            val mSongDetMod = homePatchItemModel.Data[0]
+//            val sivRadioIcon: ShapeableImageView = itemView.findViewById(R.id.siv_radio_icon)
+//            val tvRadioSongName: TextView = itemView.findViewById(R.id.tv_radio_song_name)
+////            val ivRadioFavorite: ImageView = itemView.findViewById(R.id.iv_radio_favorite)
+//            var ivRadioPlay: ImageView = itemView.findViewById(R.id.iv_radio_play)
+//
+//            Glide.with(itemView.context)
+//                .load(UtilHelper.getImageUrlSize300(mSongDetMod.image))
+//                .into(sivRadioIcon)
+//            tvRadioSongName.text = mSongDetMod.AlbumName
+////            ivRadioPlay.setOnClickListener {
+//////                radioCallBack.onClickOpenRadio(mSongDetMod.ContentID)
+////            }
+//        }
+
         private fun bindDownload(homePatchItemModel: HomePatchItemModel) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             val watchlater: LinearLayout = itemView.findViewById(R.id.WatchLater)
@@ -246,7 +264,6 @@ internal class ParentAdapter(
                 downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
             }
         }
-
 
         private fun bindPopularBands(homePatchItemModel: HomePatchItemModel) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
@@ -280,7 +297,6 @@ internal class ParentAdapter(
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             // recyclerView.adapter = TopTrendingAdapter(data)
         }
-
 
         private fun bindBlOffers() {
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -317,6 +333,7 @@ internal class ParentAdapter(
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
+//                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
             }

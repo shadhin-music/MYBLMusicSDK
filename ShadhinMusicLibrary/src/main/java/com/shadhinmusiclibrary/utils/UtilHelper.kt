@@ -168,6 +168,38 @@ internal object UtilHelper {
         }
     }
 
+    fun getEmptyHomePatchDetail() = HomePatchDetailModel(
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        false,
+        "",
+        0,
+        "",
+        "",
+        "",
+        "",
+        "0",
+        "0",
+        true,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+    )
+
     fun getSongDetailAndRootData(
         mSongDet: SongDetailModel,
         rootPatch: HomePatchDetailModel
@@ -176,7 +208,6 @@ internal object UtilHelper {
             rootContentId = rootPatch.ContentID
             rootContentType = rootPatch.ContentType
             rootImage = rootPatch.image
-            isSeekAble = true
         }
         return mSongDet
     }

@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -81,7 +82,11 @@ internal class AlbumsTrackAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply {
+                        isSeekAble = false
+                    }, rootPatch
+                )
             )
         }
 
@@ -108,6 +113,8 @@ internal class AlbumsTrackAdapter(
         var tag: String? = null
         val context = itemView.getContext()
         var tvSongName: TextView? = null
+
+        @SuppressLint("SetTextI18n")
         fun bindItems(dataSongDetail: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             val progressIndicator: CircularProgressIndicator =
@@ -120,7 +127,7 @@ internal class AlbumsTrackAdapter(
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
             tvSongName!!.text = dataSongDetail.titleName
-            textArtist.text = dataSongDetail.artistName
+            textArtist.text = dataSongDetail.artistName + "" + dataSongDetail.isSeekAble.toString()
             tvSongLength.text = TimeParser.secToMin(dataSongDetail.total_duration)
             progressIndicator.tag = dataSongDetail.content_Id
 //                downloaded.tag = 200

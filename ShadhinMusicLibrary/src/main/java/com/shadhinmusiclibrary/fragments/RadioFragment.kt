@@ -1,22 +1,27 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.RadioTrackAdapter
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class RadioFragment : CommonBaseFragment() {
 
-    private lateinit var viewModel: AlbumViewModel
+    private lateinit var albumVM: AlbumViewModel
+    private lateinit var radioTrackAdapter: RadioTrackAdapter
+
+    private lateinit var parentRecycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,32 +32,46 @@ internal class RadioFragment : CommonBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        radioTrackAdapter = RadioTrackAdapter()
+        initialize()
 
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun fetchOnlineData(contentId: String) {
+    private fun initialize() {
+        setupViewModel()
+        fetchOnlineData("20148")
+    }
+
+    private fun setupViewModel() {
+        albumVM = ViewModelProvider(this, injector.factoryAlbumVM)[AlbumViewModel::class.java]
+    }
+
+    private fun fetchOnlineData(playlistId: String) {
+        parentRecycler = requireView().findViewById(R.id.recyclerView)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel?.fetchPlaylistContent(contentId)
-        viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
+        albumVM.fetchPlaylistContent(playlistId)
+        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
             if (res.data?.data != null && res.status == Status.SUCCESS) {
-//                playlistTrackAdapter.setData(
-//                    res.data.data,
-//                    argHomePatchDetail!!,
-//                    playerViewModel.currentMusic?.mediaId
-//                )
-//                playlistHeaderAdapter.setSongAndData(
-//                    res.data.data,
-//                    argHomePatchDetail!!
-//                )
-//                updateAndSetAdapter(res!!.data!!.data)
+                radioTrackAdapter.setRadioTrackData(
+                    res.data.data,
+                    UtilHelper.getEmptyHomePatchDetail(),
+                    ""
+                )
                 progressBar.visibility = View.GONE
             } else {
                 progressBar.visibility = View.GONE
-//                updateAndSetAdapter(mutableListOf())
             }
         }
+        parentRecycler.layoutManager = layoutManager
+        parentRecycler.adapter = radioTrackAdapter
     }
 }

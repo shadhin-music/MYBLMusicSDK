@@ -25,4 +25,5 @@ internal object DataContentType {
     const val CONTENT_TYPE_PD_RC202 = "RC202"
     const val CONTENT_TYPE_A_RC203 = "RC203"
     const val CONTENT_TYPE_V_RC204 = "RC204"
+    const val CONTENT_TYPE_RADIO = "RADIO"
 }

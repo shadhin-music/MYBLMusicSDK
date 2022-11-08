@@ -28,13 +28,17 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -43,7 +47,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
+    HomeCallBack, SearchClickCallBack, DownloadClickCallBack/*, RadioTrackCallBack*/ {
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -58,6 +62,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
+//    private lateinit var albumVM: AlbumViewModel
 
     //var page = -1
     var isLoading = false
@@ -88,6 +93,10 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
+
+        //Radio track play. for testing
+//        albumVM = ViewModelProvider(this, injector.factoryAlbumVM)[AlbumViewModel::class.java]
+
         observeData()
     }
 
@@ -97,7 +106,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         viewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-
                 viewDataInRecyclerView(res.data)
             } else {
                 progressBar.visibility = GONE
@@ -105,6 +113,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             isLoading = false
         }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
+            Log.e("HF", "currentMusicLiveData: $itMus")
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
@@ -116,13 +125,14 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
             miniPlayerPlayPauseState(it.isPlaying)
         }
+
+        Log.e("HF", "isMediaDataAvailable: " + playerViewModel.isMediaDataAvailable())
         if (playerViewModel.isMediaDataAvailable()) {
             llMiniMusicPlayer.visibility = View.VISIBLE
         } else {
-            llMiniMusicPlayer.visibility = View.GONE
+            llMiniMusicPlayer.visibility = GONE
         }
     }
-
 
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
         if (dataAdapter == null) {
@@ -192,6 +202,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     putExtra(AppConstantUtils.PatchItem, data)
                     putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
                 })
+//        val valueCon = selectedHomePatchItem.Data[itemPosition].ContentID
+//        Log.e("HF", "onClickItemAndAllItem: $valueCon")
+//        fetchOnlineData(valueCon)
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
@@ -213,6 +226,17 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     }
 
+    private fun fetchOnlineData(playlistId: String) {
+        Log.e("HF", "fetchOnlineData: $playlistId")
+//        albumVM.fetchPlaylistContent(playlistId)
+//        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
+//            if (res.data?.data != null && res.status == Status.SUCCESS) {
+//                setMusicPlayerInitData(res.data.data.toMutableList(), 0)
+//                res.data.data
+//            }
+//        }
+    }
+
     override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
@@ -231,6 +255,24 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 })
     }
 
+    fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e("SDKMA", "setMusic: " + mSongDetails[clickItemPosition].isSeekAble)
+        /* if(BuildConfig.DEBUG){
+       mSongDetails.forEach {
+           it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+       }
+   }*/
+        playerViewModel.unSubscribe()
+        playerViewModel.subscribe(
+            MusicPlayList(
+                UtilHelper.getMusicListToSongDetailList(mSongDetails),
+                0
+            ),
+            false,
+            clickItemPosition
+        )
+    }
+
     //Copy paste from SDKMainActivity
     private fun uiInitMiniMusicPlayer(view: View) {
         llMiniMusicPlayer = view.findViewById(R.id.include_mini_music_player)
@@ -245,6 +287,20 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     //Copy paste from SDKMainActivity
     private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetailModel) {
+        if (mSongDetails.isSeekAble!!) {
+            ibtnSkipPreviousMini.visibility = View.VISIBLE
+            ibtnSkipPreviousMini.setOnClickListener {
+                playerViewModel.skipToPrevious()
+            }
+            ibtnSkipNextMini.visibility = View.VISIBLE
+            ibtnSkipNextMini.setOnClickListener {
+                playerViewModel.skipToNext()
+            }
+        } else {
+            ibtnSkipPreviousMini.visibility = View.INVISIBLE
+            ibtnSkipNextMini.visibility = View.INVISIBLE
+        }
+
         Glide.with(this)
             .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -259,16 +315,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
 
-        ibtnSkipPreviousMini.setOnClickListener {
-            playerViewModel.skipToPrevious()
-        }
-
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
-        }
-
-        ibtnSkipNextMini.setOnClickListener {
-            playerViewModel.skipToNext()
         }
     }
 

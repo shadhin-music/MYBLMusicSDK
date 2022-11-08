@@ -46,7 +46,11 @@ internal class AlbumHeaderAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply {
+                        isSeekAble = false
+                    }, homePatchDetail
+                )
             )
         }
         this.homePatchDetail = homePatchDetail

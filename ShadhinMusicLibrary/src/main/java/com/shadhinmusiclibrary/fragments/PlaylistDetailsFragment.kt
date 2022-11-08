@@ -125,15 +125,18 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         }
     }
 
-    private fun updateAndSetAdapter(songList: MutableList<SongDetailModel>) {
-        updatedSongList = mutableListOf()
-        for (songItem in songList) {
-            updatedSongList.add(
-                UtilHelper.getSongDetailAndRootData(songItem, argHomePatchDetail!!)
-            )
-        }
-//        adapter.setSongData(updatedSongList)
-    }
+//    private fun updateAndSetAdapter(songList: MutableList<SongDetailModel>) {
+//        updatedSongList = mutableListOf()
+//        for (songItem in songList) {
+//            updatedSongList.add(
+//                UtilHelper.getSongDetailAndRootData(
+//                    songItem.apply { isSeekAble = true },
+//                    argHomePatchDetail!!
+//                )
+//            )
+//        }
+////        adapter.setSongData(updatedSongList)
+//    }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = playlistTrackAdapter.dataSongDetail

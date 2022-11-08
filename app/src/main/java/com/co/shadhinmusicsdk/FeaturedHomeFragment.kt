@@ -31,6 +31,7 @@ internal class FeaturedHomeFragment : Fragment() {
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
         val btnAmartunesAll: Button = requireView().findViewById(R.id.btnWebview2)
         val btnMusic: Button = requireView().findViewById(R.id.btnMusic)
+        val btnRadio: Button = requireView().findViewById(R.id.btnRadio)
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
@@ -49,6 +50,10 @@ internal class FeaturedHomeFragment : Fragment() {
         }
         btnMusicVideos.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC204")
+        }
+
+        btnRadio.setOnClickListener {
+            ShadhinMusicSdkCore.openPatch(requireContext(), "RADIO")
         }
 
         btnMusic.setOnClickListener {

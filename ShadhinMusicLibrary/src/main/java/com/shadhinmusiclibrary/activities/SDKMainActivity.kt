@@ -329,7 +329,6 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune,
                     Bundle().apply {
                         putString(DataContentType.CONTENT_TYPE, contentType)
-
                     })
             }
             DataContentType.AMR_TUNE -> {
@@ -340,9 +339,16 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint {
                     })
             }
             DataContentType.CONTENT_TYPE_V_RC204 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video, Bundle().apply {
-                    putString(DataContentType.TITLE, "Music Video")
-                })
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video,
+                    Bundle().apply {
+                        putString(DataContentType.TITLE, "Music Video")
+                    })
+            }
+            DataContentType.CONTENT_TYPE_RADIO -> {
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_radio,
+                    Bundle().apply {
+                        putString(DataContentType.TITLE, "Radio")
+                    })
             }
         }
     }

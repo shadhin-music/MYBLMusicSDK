@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,8 @@ import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -78,7 +77,7 @@ internal class PlaylistTrackAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, rootPatch)
+                UtilHelper.getSongDetailAndRootData( songItem.apply { isSeekAble = true }, rootPatch)
             )
         }
 

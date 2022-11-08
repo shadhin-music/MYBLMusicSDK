@@ -64,6 +64,11 @@ object ShadhinMusicSdkCore {
         )
     }
 
+    fun openRadio(context: Context, playlistId: String){
+        //Call API
+
+    }
+
     @JvmStatic
     fun destroySDK(context: Context) {
         scope?.cancel()

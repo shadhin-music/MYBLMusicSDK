@@ -45,7 +45,10 @@ internal class PlaylistHeaderAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply { isSeekAble = true },
+                    homePatchDetail
+                )
             )
         }
         this.homePatchDetail = homePatchDetail
