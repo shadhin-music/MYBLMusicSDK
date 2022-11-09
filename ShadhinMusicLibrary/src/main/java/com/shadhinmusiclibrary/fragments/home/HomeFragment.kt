@@ -89,7 +89,7 @@ internal class HomeFragment : BaseFragment(),
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
 
-        homeViewModel?.fetchHomeData(pageNum, false)
+        homeViewModel.fetchHomeData(pageNum, false)
 
         //Radio track play. for testing
 //        albumVM = ViewModelProvider(this, injector.factoryAlbumVM)[AlbumViewModel::class.java]
@@ -109,8 +109,13 @@ internal class HomeFragment : BaseFragment(),
             }
             isLoading = false
         }
+
+//        Log.e("HF", "observeData: " + playerViewModel.currentMusic)
+//        if (playerViewModel.currentMusic == null) {
+//            playerViewModel.reAssignCurrentMusic()
+//        }
+
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
-            Log.e("HF", "currentMusicLiveData: $itMus")
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
@@ -186,7 +191,7 @@ internal class HomeFragment : BaseFragment(),
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -205,7 +210,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -235,7 +240,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -327,7 +332,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -344,7 +349,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -361,7 +366,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,

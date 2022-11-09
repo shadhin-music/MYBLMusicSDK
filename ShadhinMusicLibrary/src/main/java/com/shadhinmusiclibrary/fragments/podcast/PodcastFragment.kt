@@ -70,7 +70,7 @@ internal class PodcastFragment : BaseFragment(), HomeCallBack {
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         val homePatchItem = selectedHomePatchItem
         navController.navigate(

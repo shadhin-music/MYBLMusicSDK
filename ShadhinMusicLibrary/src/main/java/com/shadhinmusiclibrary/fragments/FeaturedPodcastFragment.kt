@@ -135,7 +135,7 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
         episode: MutableList<FeaturedPodcastDetailsModel>,
         clickItemPosition: Int
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
         val mEpisod = episode[clickItemPosition]
         navController.navigate(

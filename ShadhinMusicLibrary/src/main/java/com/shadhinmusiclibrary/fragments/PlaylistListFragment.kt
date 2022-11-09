@@ -86,7 +86,7 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
             R.id.to_playlist_details,

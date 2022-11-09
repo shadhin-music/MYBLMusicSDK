@@ -269,14 +269,13 @@ internal class Module(private val applicationContext: Context) {
             searchRepository
         )
 
-
     val exoplayerCache: SimpleCache
         get() = PlayerCache.getInstance(applicationContext)
 
     private fun getRetrofitInstance(): Retrofit {
 //        MehenazBranch
         val client = getBaseClient()
-        return  RetrofitClient.getInstance(client)
+        return RetrofitClient.getInstance(client)
 //        return RetrofitClient.getInstance()
     }
 
@@ -291,7 +290,3 @@ internal class Module(private val applicationContext: Context) {
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
 }
-
-
-
-

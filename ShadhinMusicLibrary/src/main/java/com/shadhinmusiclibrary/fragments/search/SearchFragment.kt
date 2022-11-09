@@ -494,7 +494,7 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
 
     @SuppressLint("DefaultLocale")
     override fun onClickSearchItem(searchData: IMusicModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val patchItem = Bundle().apply {
             putSerializable(
                 AppConstantUtils.PatchItem,

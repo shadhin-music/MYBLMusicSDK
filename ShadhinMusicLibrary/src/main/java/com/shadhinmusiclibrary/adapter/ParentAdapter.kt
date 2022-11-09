@@ -216,7 +216,7 @@ internal class ParentAdapter(
                 // Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
             itemView.setOnClickListener {
-                ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
+//                ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
             }
         }
 

@@ -5,15 +5,16 @@ import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.data.model.PlayerProgress
 import java.util.*
 
-internal typealias CurrentMusicCallbackFunc = (music: Music?)->Unit
+internal typealias CurrentMusicCallbackFunc = (music: Music?) -> Unit
+
 internal interface MusicServiceActions {
     val currentMusic: Music?
-    val musicList:List<Music>?
+    val musicList: List<Music>?
     val musicIndex: Int
-    val isPlaying:Boolean
-    val isPaused:Boolean
-    val isPrepare:Boolean
-    val isBuffering:Boolean
+    val isPlaying: Boolean
+    val isPaused: Boolean
+    val isPrepare: Boolean
+    val isBuffering: Boolean
     fun subscribe(playlist: MusicPlayList, isPlayWhenReady: Boolean, position: Int)
 
     fun unSubscribe()
@@ -33,7 +34,7 @@ internal interface MusicServiceActions {
     fun playbackSpeed(speed: Float)
     fun repeatTrack()
     fun shuffleToggle()
-    fun shuffle(isShuffle:Boolean)
+    fun shuffle(isShuffle: Boolean)
     fun togglePlayPause()
     fun pause()
     fun play()
@@ -41,9 +42,10 @@ internal interface MusicServiceActions {
     fun skipToPrevious()
     fun skipToNext()
     fun seekTo(progress: Long)
-    fun sleepTimer(isStart:Boolean, timeMillis:Long)
-    fun sleepTime(callback:(startTime:Date?, duration:Long)->Unit)
+    fun sleepTimer(isStart: Boolean, timeMillis: Long)
+    fun sleepTime(callback: (startTime: Date?, duration: Long) -> Unit)
     fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit)
-    suspend fun playerProgress():PlayerProgress
+    suspend fun playerProgress(): PlayerProgress
     fun receiveErrorMessage()
+//    fun reAssignCurrentMusic()
 }

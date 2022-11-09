@@ -215,7 +215,7 @@ internal class SearchArtistDetailsFragment : BaseFragment(), HomeCallBack,
         itemPosition: Int,
         artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         navController.navigate(R.id.to_album_details,
             Bundle().apply {

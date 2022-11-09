@@ -20,8 +20,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-internal fun List<Music>.toServiceMediaItemList() = exH{this.map { song -> toServiceMediaItem(song) }}
-internal fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMediaItemList()?.toMutableList()}
+internal fun List<Music>.toServiceMediaItemList() =
+    exH { this.map { song -> toServiceMediaItem(song) } }
+
+internal fun List<Music>.toServiceMediaItemMutableList() =
+    exH { this.toServiceMediaItemList()?.toMutableList() }
 
 /*fun List<Music>.toMediaSourceList(context: Context): List<ProgressiveMediaSource> {
 
@@ -50,28 +53,30 @@ internal fun List<Music>.toServiceMediaItemMutableList() = exH{ this.toServiceMe
 
 internal fun MediaItem.toMusic(): Music {
     val others = this.mediaMetadata.extras?.toMusicMetaData()
-   return Music(
-       mediaId = this.mediaId.ifEmpty { randomString(8) },
-       title = this.mediaMetadata.title.toString(),
-       displayDescription = this.mediaMetadata.description.toString(),
-       mediaUrl = this.mediaMetadata.mediaUri.toString(),
-       displayIconUrl = this.mediaMetadata.artworkUri.toString(),
-       artistName = this.mediaMetadata.artist.toString(),
-       contentType = others?.contentType,
-       date = others?.date,
-       userPlayListId = others?.userPlayListId,
-       starring = others?.starring,
-       seekable = others?.seekable,
-       details = others?.details,
-       totalStream = others?.totalStream,
-       fav = others?.fav,
-       trackType = others?.trackType,
-       isPaid = others?.isPaid,
-   ).applyRootInfo(others)
+    return Music(
+        mediaId = this.mediaId.ifEmpty { randomString(8) },
+        title = this.mediaMetadata.title.toString(),
+        displayDescription = this.mediaMetadata.description.toString(),
+        mediaUrl = this.mediaMetadata.mediaUri.toString(),
+        displayIconUrl = this.mediaMetadata.artworkUri.toString(),
+        artistName = this.mediaMetadata.artist.toString(),
+        contentType = others?.contentType,
+        date = others?.date,
+        userPlayListId = others?.userPlayListId,
+        starring = others?.starring,
+        seekable = others?.seekable,
+        details = others?.details,
+        totalStream = others?.totalStream,
+        fav = others?.fav,
+        trackType = others?.trackType,
+        isPaid = others?.isPaid,
+    ).applyRootInfo(others)
 }
+
 fun MediaItem.toServiceMediaItem(): MediaBrowserCompat.MediaItem {
-  return this.toMusic().toServiceMediaItem()
+    return this.toMusic().toServiceMediaItem()
 }
+
 internal fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
     val description = MediaDescriptionCompat.Builder()
         .setMediaUri(Uri.parse(music.mediaUrl))
@@ -85,9 +90,8 @@ internal fun toServiceMediaItem(music: Music): MediaBrowserCompat.MediaItem {
 
     return MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
 }
+
 internal fun Bundle.toMusicMetaData(): Music {
-
-
     return Music(
         artistName = this.getString(Music.ARTIST_NAME),
         date = this.getString(Music.DATE),
@@ -99,20 +103,21 @@ internal fun Bundle.toMusicMetaData(): Music {
         fav = this.getString(Music.FAV),
         trackType = this.getString(Music.TRACK_TYPE),
         isPaid = this.getBoolean(Music.IS_PAID),
-        seekable = this.getString(Music.SEEKABLE).equals("true",true),
+        seekable = this.getString(Music.SEEKABLE).equals("true", true),
         rootId = this.getString(Music.ROOT_ID),
         rootType = this.getString(Music.ROOT_TYPE),
         rootTitle = this.getString(Music.ROOT_TITLE),
         rootImage = this.getString(Music.ROOT_IMAGE)
     )
 }
+
 internal fun MediaMetadataCompat.toMusic(): Music? {
 
-   /*  this.bundle.keySet().forEach {
-       Log.i("toMusicMetaData", "toMusicMetaData: $it -> ${this.bundle.get(it)}")
+    /*  this.bundle.keySet().forEach {
+        Log.i("toMusicMetaData", "toMusicMetaData: $it -> ${this.bundle.get(it)}")
 
-   }
-    Log.i("toMusicMetaData", "-----------------------------------------------")*/
+    }
+     Log.i("toMusicMetaData", "-----------------------------------------------")*/
 
     val meta = this.bundle.toMusicMetaData()
     return description?.let {
@@ -125,7 +130,7 @@ internal fun MediaMetadataCompat.toMusic(): Music? {
             mediaUrl = it.mediaUri.toString(),
             contentType = meta.contentType,
             date = meta.date,
-            userPlayListId =  meta.userPlayListId,
+            userPlayListId = meta.userPlayListId,
             episodeId = meta.episodeId,
             starring = meta.starring,
             seekable = meta.seekable,
@@ -137,8 +142,9 @@ internal fun MediaMetadataCompat.toMusic(): Music? {
         ).applyRootInfo(meta)
     }
 }
+
 internal fun MediaBrowserCompat.MediaItem.toMusic(): Music {
-    val meta =  description.extras?.toMusicMetaData()
+    val meta = description.extras?.toMusicMetaData()
     return Music(
         mediaId = description.mediaId,
         title = description.title.toString(),
@@ -304,7 +310,6 @@ fun PlaylistData.copy():PlaylistData{
     data.isPlaying      = this.isPlaying
     return  data
 }*/
-
 
 
 /*
@@ -668,22 +673,25 @@ private fun RecommendedSongsContents.RecommendedSong.toMusic(): Music {
 
 internal fun Bundle.toMusicPlayList(command: ShadhinMusicServiceConnection.Command): MusicPlayList? {
     val serializable = this.getSerializable(command.dataKey)
-    if(serializable is MusicPlayList){
+    if (serializable is MusicPlayList) {
         return serializable
     }
     return null
 
 }
+
 internal fun Bundle?.toPlayerProgress(key: String): PlayerProgress? {
     val serializable = this?.getSerializable(key)
-    if(serializable is PlayerProgress){
+    if (serializable is PlayerProgress) {
         return serializable
     }
     return null
 }
-internal fun List<MediaBrowserCompat.MediaItem>.toMusicList() = this.map { mediaItem -> mediaItem.toMusic() }
 
-inline val PlaybackStateCompat.isPrepare:Boolean
+internal fun List<MediaBrowserCompat.MediaItem>.toMusicList() =
+    this.map { mediaItem -> mediaItem.toMusic() }
+
+inline val PlaybackStateCompat.isPrepare: Boolean
     get() = state == PlaybackStateCompat.STATE_BUFFERING ||
             state == PlaybackStateCompat.STATE_PLAYING ||
             state == PlaybackStateCompat.STATE_STOPPED ||
@@ -702,22 +710,21 @@ inline val PlaybackStateCompat.isEndOfQueue
     get() = state == PlaybackStateCompat.ERROR_CODE_END_OF_QUEUE
 
 
-
-
 inline val PlaybackStateCompat.isBuffering
     get() = state == PlaybackStateCompat.STATE_BUFFERING
 
 
-
-internal fun getRandomString(length: Int) : String {
+internal fun getRandomString(length: Int): String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
     return (1..length)
         .map { allowedChars.random() }
         .joinToString("")
 }
+
 fun Long.toSecond(): Long {
     return this / 1000 % 60
 }
+
 fun Long.toDateTimeString(): String {
     val date = Date(this)
     val format = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS", Locale.getDefault())
@@ -747,33 +754,38 @@ fun Long.toDateTimeString(): String {
     return true
 }*/
 fun String?.isLocalUrl(): Boolean {
-  return this.isMp3LocalUrl() || this.isMp4LocalUrl()
+    return this.isMp3LocalUrl() || this.isMp4LocalUrl()
 }
+
 fun String?.isMp3LocalUrl(): Boolean {
     return this.isMp3Url() //&& this?.contains(BuildConfig.APPLICATION_ID,true) == true
 }
+
 fun String?.isMp4LocalUrl(): Boolean {
     return this.isMp4Url() //&& this?.contains(BuildConfig.APPLICATION_ID,true) == true
 }
+
 fun String?.isMp3Url(): Boolean {
     return this?.let { Regex(regexMp3Url).matches(it) } == true
 }
+
 fun String?.isMp4Url(): Boolean {
     return this?.let { Regex(regexMp4Url).matches(it) } == true
 }
+
 fun String?.makeValidUrl(): String {
-    return  when {
-        this.isNullOrEmpty() -> Constants.FILE_BASE_URL+"demo.mp3"
+    return when {
+        this.isNullOrEmpty() -> Constants.FILE_BASE_URL + "demo.mp3"
         this.isLocalUrl() -> this
-     //   this.isEncryptedUrl() -> this.decryptStr()?:this
+        //   this.isEncryptedUrl() -> this.decryptStr()?:this
         this.isMp3Url() && this.isMp4Url() -> "${Constants.FILE_BASE_URL}${this}"
         else -> this
     }
 }
 
 fun String.makeValidMp4Url(): String {
-    return  when {
-       // this.isEncryptedUrl() -> this.decryptStr()?:this
+    return when {
+        // this.isEncryptedUrl() -> this.decryptStr()?:this
         this.isMp4LocalUrl() -> this
         this.isMp4Url() -> "${Constants.FILE_BASE_URL}${this}"
         else -> this

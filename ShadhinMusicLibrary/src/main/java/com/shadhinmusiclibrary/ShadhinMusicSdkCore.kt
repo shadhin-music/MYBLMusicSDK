@@ -88,7 +88,6 @@ object ShadhinMusicSdkCore {
         return backPressCount
     }
 
-
     const val API_LatestRelease = 1
     const val API_FeaturedPodcast = 2
     const val API_PopularArtists = 3
