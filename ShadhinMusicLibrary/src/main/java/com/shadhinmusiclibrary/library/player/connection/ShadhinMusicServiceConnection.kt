@@ -22,7 +22,6 @@ import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.library.player.utils.*
-import com.shadhinmusiclibrary.library.player.utils.convater.MusicConverterFactory.Companion.toMusic
 import com.shadhinmusiclibrary.utils.toDate
 import java.util.*
 import kotlin.coroutines.resume
@@ -169,15 +168,16 @@ internal class ShadhinMusicServiceConnection(
         }
     }
 
-//    override fun reAssignCurrentMusic() {
-//        if (_currentPlayingSong.value == null) {
-//            sendCommand(Command.RE_ASSIGN_CALLBACK) {
-//                _currentPlayingSong.postValue(
-//                    it?.getString(Constants.CURRENT_MUSIC) as Music
-//                )
-//            }
-//        }
-//    }
+    override fun reAssignCurrentMusic() {
+        Log.e("SMSC", "reAssignCurrentMusic: " + _currentPlayingSong.value)
+        if (_currentPlayingSong.value == null) {
+            sendCommand(Command.RE_ASSIGN_CALLBACK) {
+                _currentPlayingSong.postValue(
+                    it?.getString(Constants.CURRENT_MUSIC) as Music
+                )
+            }
+        }
+    }
 
     override fun musicPosition(mediaId: String): Int {
         return musicList?.indexOfFirst { music -> music.mediaId == mediaId } ?: -1
@@ -385,8 +385,8 @@ internal class ShadhinMusicServiceConnection(
         SLEEP_TIMER("sleep_timer", false),
         UNSUBSCRIBE("unsubscribe_player", false),
         GET_SLEEP_TIME("sleep_time_get", true),
-        ERROR_CALLBACK("error_player", true);
-        /*RE_ASSIGN_CALLBACK("re_assign_callback", true)*/
+        ERROR_CALLBACK("error_player", true),
+        RE_ASSIGN_CALLBACK("re_assign_callback", true);
 
         val resultCode: Int
             get() = tag.hashCode().absoluteValue

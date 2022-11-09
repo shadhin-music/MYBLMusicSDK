@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
@@ -62,20 +63,21 @@ internal class ShadhinMusicPlaybackPreparer(
             Command.SLEEP_TIMER.tag -> setSleepTime(extras)
             Command.GET_SLEEP_TIME.tag -> getSleepTime(cb)
             Command.ERROR_CALLBACK.tag -> errorCallback(cb)
-            /*Command.RE_ASSIGN_CALLBACK.tag -> reAssignCurrentMusic(cb)*/
+            Command.RE_ASSIGN_CALLBACK.tag -> reAssignCurrentMusic(cb)
             Command.UNSUBSCRIBE.tag -> unsubscribe()
         }
         return true
     }
 
-//    private fun reAssignCurrentMusic(cb: ResultReceiver?) {
-//        cb?.send(
-//            Command.ERROR_CALLBACK.resultCode,
-//            Bundle().apply {
-//                putSerializable(Constants.CURRENT_MUSIC, exoPlayer?.currentMediaItem?.toMusic())
-//            }
-//        )
-//    }
+    private fun reAssignCurrentMusic(cb: ResultReceiver?) {
+        Log.e("SMPP", "reAssignCurrentMusic: " + exoPlayer)
+        cb?.send(
+            Command.ERROR_CALLBACK.resultCode,
+            Bundle().apply {
+                putSerializable(Constants.CURRENT_MUSIC, exoPlayer?.currentMediaItem?.toMusic())
+            }
+        )
+    }
 
     private fun unsubscribe() {
         this.unsubscribeFunc?.invoke()

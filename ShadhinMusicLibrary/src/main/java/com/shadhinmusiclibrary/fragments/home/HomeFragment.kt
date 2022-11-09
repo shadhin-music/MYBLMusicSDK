@@ -110,10 +110,10 @@ internal class HomeFragment : BaseFragment(),
             isLoading = false
         }
 
-//        Log.e("HF", "observeData: " + playerViewModel.currentMusic)
-//        if (playerViewModel.currentMusic == null) {
-//            playerViewModel.reAssignCurrentMusic()
-//        }
+        Log.e("HF", "observeData: " + playerViewModel.currentMusic)
+        if (playerViewModel.currentMusic == null) {
+            playerViewModel.reAssignCurrentMusic()
+        }
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
             if (itMus != null) {
@@ -128,7 +128,6 @@ internal class HomeFragment : BaseFragment(),
             miniPlayerPlayPauseState(it.isPlaying)
         }
 
-        Log.e("HF", "isMediaDataAvailable: " + playerViewModel.isMediaDataAvailable())
         if (playerViewModel.isMediaDataAvailable()) {
             llMiniMusicPlayer.visibility = View.VISIBLE
         } else {
@@ -165,7 +164,6 @@ internal class HomeFragment : BaseFragment(),
             recyclerView.adapter = dataAdapter
         }
         /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
-             Log.e("TAG", "URL: " + res)
              if (res.status == Status.SUCCESS) {
                  this.rbtData = res.data?.data
              }
@@ -205,7 +203,6 @@ internal class HomeFragment : BaseFragment(),
                     putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
                 })
 //        val valueCon = selectedHomePatchItem.Data[itemPosition].ContentID
-//        Log.e("HF", "onClickItemAndAllItem: $valueCon")
 //        fetchOnlineData(valueCon)
     }
 
@@ -229,7 +226,6 @@ internal class HomeFragment : BaseFragment(),
     }
 
     private fun fetchOnlineData(playlistId: String) {
-        Log.e("HF", "fetchOnlineData: $playlistId")
 //        albumVM.fetchPlaylistContent(playlistId)
 //        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
 //            if (res.data?.data != null && res.status == Status.SUCCESS) {
@@ -258,7 +254,6 @@ internal class HomeFragment : BaseFragment(),
     }
 
     fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e("SDKMA", "setMusic: " + mSongDetails[clickItemPosition].isSeekAble)
         /* if(BuildConfig.DEBUG){
        mSongDetails.forEach {
            it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
