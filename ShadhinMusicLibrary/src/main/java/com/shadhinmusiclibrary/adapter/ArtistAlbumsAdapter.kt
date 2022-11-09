@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 
 
 internal class ArtistAlbumsAdapter(

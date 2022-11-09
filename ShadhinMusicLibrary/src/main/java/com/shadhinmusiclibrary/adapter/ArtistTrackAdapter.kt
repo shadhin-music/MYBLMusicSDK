@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser

@@ -17,7 +17,6 @@ import com.shadhinmusiclibrary.data.model.RBTDATAModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE
 import com.shadhinmusiclibrary.utils.DataContentType.AMR_TUNE_ALL
-
 import com.shadhinmusiclibrary.utils.DataContentType.CONTENT_TYPE
 import com.shadhinmusiclibrary.utils.Status
 
@@ -69,20 +68,21 @@ internal class AmartunesWebviewFragment : BaseFragment() {
                     Toast.makeText(requireActivity(), "URL NULL", Toast.LENGTH_SHORT).show();
                 }
             } else {
-               if(res.errorCode == 401){
-                   AlertDialog.Builder(requireActivity())
-                       .setTitle("Error")
-                       .setMessage("Unauthorized")
-                       .setPositiveButton("Close",object :DialogInterface.OnClickListener{
-                           override fun onClick(dialog: DialogInterface?, which: Int) {
-                               requireActivity().onBackPressed()
-                           }
-                       })
-                       .show()
-                  // Toast.makeText(requireActivity(), "Unauthorized", Toast.LENGTH_SHORT).show();
-               }else{
-                   Toast.makeText(requireActivity(), "Something is wrong", Toast.LENGTH_SHORT).show();
-               }
+                if (res.errorCode == 401) {
+                    AlertDialog.Builder(requireActivity())
+                        .setTitle("Error")
+                        .setMessage("Unauthorized")
+                        .setPositiveButton("Close", object : DialogInterface.OnClickListener {
+                            override fun onClick(dialog: DialogInterface?, which: Int) {
+                                requireActivity().onBackPressed()
+                            }
+                        })
+                        .show()
+                    // Toast.makeText(requireActivity(), "Unauthorized", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireActivity(), "Something is wrong", Toast.LENGTH_SHORT)
+                        .show();
+                }
 
             }
         }

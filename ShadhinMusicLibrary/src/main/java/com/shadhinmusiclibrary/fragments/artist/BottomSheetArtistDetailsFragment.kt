@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.fragments.artist
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -26,16 +24,17 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 
-internal class BottomSheetArtistDetailsFragment : Fragment(), FragmentEntryPoint, HomeCallBack,
+internal class BottomSheetArtistDetailsFragment : BaseFragment(), HomeCallBack,
     ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItemModel? = null

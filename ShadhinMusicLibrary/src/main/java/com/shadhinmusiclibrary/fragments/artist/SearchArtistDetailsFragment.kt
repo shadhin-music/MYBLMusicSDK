@@ -23,6 +23,7 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel

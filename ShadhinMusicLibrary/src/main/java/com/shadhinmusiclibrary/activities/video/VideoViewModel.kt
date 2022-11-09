@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import java.util.ArrayList
 
-
-internal open class VideoViewModel :ViewModel() {
+internal open class VideoViewModel : ViewModel() {
 
     private val _progressbarVisibility: MutableLiveData<Int> = MutableLiveData<Int>(View.GONE)
     val progressbarVisibility: LiveData<Int> = _progressbarVisibility
@@ -38,8 +37,7 @@ internal open class VideoViewModel :ViewModel() {
             _currentVideo.value = currentVideo
         }
     }
-    private fun showLoader()  = _progressbarVisibility.postValue(View.VISIBLE)
-    private fun hideLoader()  = _progressbarVisibility.postValue(View.GONE)
 
-
+    private fun showLoader() = _progressbarVisibility.postValue(View.VISIBLE)
+    private fun hideLoader() = _progressbarVisibility.postValue(View.GONE)
 }

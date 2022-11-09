@@ -13,7 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 

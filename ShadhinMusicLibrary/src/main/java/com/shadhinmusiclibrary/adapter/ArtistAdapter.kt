@@ -4,16 +4,13 @@ package com.shadhinmusiclibrary.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import android.widget.TextView
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.CircleImageView
-
 
 internal class ArtistAdapter(
     var homePatchItem: HomePatchItemModel?,
@@ -39,7 +36,8 @@ internal class ArtistAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_artist_list, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_artist_list, parent, false)
         return ViewHolder(v)
     }
 

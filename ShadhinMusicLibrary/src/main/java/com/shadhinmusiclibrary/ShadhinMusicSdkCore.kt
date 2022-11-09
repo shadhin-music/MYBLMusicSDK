@@ -43,7 +43,6 @@ object ShadhinMusicSdkCore {
                 refSdkCall.tokenStatus(res.first, res.second ?: "")
             }
         }
-
     }
 
     @JvmStatic

@@ -6,9 +6,9 @@ import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.data.model.search.SearchModel
 import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

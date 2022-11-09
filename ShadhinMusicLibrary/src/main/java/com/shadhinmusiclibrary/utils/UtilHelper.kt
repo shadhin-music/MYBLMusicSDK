@@ -9,14 +9,14 @@ import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
-import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import java.io.File
 
 internal object UtilHelper {
+
     fun getScreenHeightWidth(context: Context, type: Int): Int {
         val display = (context as Activity).windowManager.defaultDisplay
         val size = Point()

@@ -13,8 +13,8 @@ import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 

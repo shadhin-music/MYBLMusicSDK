@@ -27,16 +27,13 @@ import com.shadhinmusiclibrary.adapter.PlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistTrackAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
-import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistDetailsFragment : BaseFragment(),
     OnItemClickCallback, BottomSheetDialogItemCallback {

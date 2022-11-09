@@ -1,26 +1,19 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
-internal class DownloadFragment : Fragment() {
+internal class DownloadFragment : BaseFragment() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,14 +54,5 @@ internal class DownloadFragment : Fragment() {
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            DownloadFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
     }
 }

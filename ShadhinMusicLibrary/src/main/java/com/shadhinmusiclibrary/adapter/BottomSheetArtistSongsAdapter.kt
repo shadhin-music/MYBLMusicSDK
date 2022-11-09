@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 
 
 internal class BottomSheetArtistSongsAdapter:

@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.library.player.utils.convater
 
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.library.player.Constants.FILE_BASE_URL
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.utils.CharParser

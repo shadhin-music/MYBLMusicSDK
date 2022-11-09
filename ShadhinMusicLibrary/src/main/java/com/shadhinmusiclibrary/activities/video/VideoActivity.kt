@@ -58,7 +58,6 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
 
-
 internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     AudioManager.OnAudioFocusChangeListener, BottomsheetDialog {
 
@@ -307,7 +306,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 exoPlayer?.playWhenReady = true
             }
         }
-
     }
 
     private fun addOnPlayerQueue(videoList: List<VideoModel>) {
@@ -458,7 +456,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
 
     override fun openDialog(item: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-
         val contentView =
             View.inflate(this, R.layout.my_bl_sdk_video_bottomsheet_three_dot_menu, null)
         bottomSheetDialog.setContentView(contentView)
@@ -508,7 +505,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", item.contentID.toString())
                 localBroadcastManager.sendBroadcast(localIntent)
-
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 val downloadRequest: DownloadRequest =
@@ -520,7 +516,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                     downloadRequest,
                     /* foreground= */ false
                 )
-
                 if (cacheRepository.isDownloadCompleted().equals(true)) {
                     cacheRepository.insertDownload(
                         DownloadedContent(
@@ -629,7 +624,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 "ACTION" -> {
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
                         Log.e(
@@ -643,7 +637,6 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
                     adapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }

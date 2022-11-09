@@ -18,7 +18,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 

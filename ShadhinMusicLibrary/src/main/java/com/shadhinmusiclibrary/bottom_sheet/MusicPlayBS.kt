@@ -24,7 +24,6 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 
-
 internal class MusicPlayBS : Fragment(),
     DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
     DiscreteScrollView.ScrollStateChangeListener<MusicPlayAdapter.MusicPlayVH> {

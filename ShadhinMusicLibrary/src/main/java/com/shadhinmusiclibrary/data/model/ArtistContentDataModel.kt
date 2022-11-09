@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.fragments.artist
+package com.shadhinmusiclibrary.data.model
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.Expose

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetailModel?) :

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.repository.ArtistSongContentRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch

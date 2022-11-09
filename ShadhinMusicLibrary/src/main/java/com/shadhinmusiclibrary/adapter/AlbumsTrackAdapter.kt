@@ -25,7 +25,6 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-
 internal class AlbumsTrackAdapter(
     private val itemClickCB: OnItemClickCallback,
     private val bsDialogItemCallback: BottomSheetDialogItemCallback,
