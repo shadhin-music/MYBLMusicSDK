@@ -20,7 +20,7 @@ internal data class ErrorMessage(val isDataSourceError:Boolean?, val message:Str
                 bundle?.getBoolean("isDataSourceError"),
                 bundle?.getString("errorMessage"),
                 bundle?.getInt("errorCode"),
-                bundle?.getSerializable("currentMusic") as Music
+                bundle?.getSerializable("currentMusic") as? Music
             )
         }
     }

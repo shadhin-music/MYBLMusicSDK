@@ -109,15 +109,15 @@ internal class HomeFragment : BaseFragment(),
             }
             isLoading = false
         }
-
-        Log.e("HF", "observeData: " + playerViewModel.currentMusic)
-        if (playerViewModel.currentMusic == null) {
-            playerViewModel.reAssignCurrentMusic()
-        }
+//        if (playerViewModel.currentMusic == null) {
+//            playerViewModel.reAssignCurrentMusic()
+//        }
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
+            } else {
+                playerViewModel.reAssignCurrentMusic()
             }
         }
         playerViewModel.playerProgress.observe(viewLifecycleOwner) {
@@ -125,6 +125,7 @@ internal class HomeFragment : BaseFragment(),
         }
 
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
+            Log.e("HF", "playbackStateLiveData: " + it.isPlaying)
             miniPlayerPlayPauseState(it.isPlaying)
         }
 

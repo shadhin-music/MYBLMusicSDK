@@ -14,7 +14,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.google.android.exoplayer2.MediaItem
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.ShadhinMusicPlayer
 import com.shadhinmusiclibrary.library.player.data.model.ErrorMessage
@@ -147,6 +146,7 @@ internal class ShadhinMusicServiceConnection(
     }
 
     override fun addToQueue(music: Music) = addPlayList(MusicPlayList(listOf(music)))
+
     override fun addPlayList(playlist: MusicPlayList) {
         addPlayList(playlist, null)
     }
@@ -169,13 +169,12 @@ internal class ShadhinMusicServiceConnection(
     }
 
     override fun reAssignCurrentMusic() {
-        Log.e("SMSC", "reAssignCurrentMusic: " + _currentPlayingSong.value)
         if (_currentPlayingSong.value == null) {
             sendCommand(Command.RE_ASSIGN_CALLBACK) {
-                _currentPlayingSong.postValue(
-                    it?.getString(Constants.CURRENT_MUSIC) as Music
-                )
+                _currentPlayingSong.value =
+                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as Music
             }
+            Log.e("SMSC", "reAssignCurrentMusic: " + _playbackState)
         }
     }
 
@@ -184,6 +183,7 @@ internal class ShadhinMusicServiceConnection(
     }
 
     override fun stop() = sendCommand(Command.STOP_SERVICE)
+
     override fun isMediaDataAvailable(): Boolean =
         !musicList.isNullOrEmpty() && (musicIndex in 0 until (musicList?.size ?: 0))
 
@@ -303,6 +303,7 @@ internal class ShadhinMusicServiceConnection(
         }
 
     override fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit) {
+        reAssignCurrentMusic()
         sendCommand(Command.MUSIC_PROGRESS_REQUEST) {
             val playerProgress = it?.toPlayerProgress(Command.MUSIC_PROGRESS_REQUEST.dataKey)
             playerProgress?.let { it1 -> playerProgressCallbackFunc(it1) }
@@ -328,6 +329,7 @@ internal class ShadhinMusicServiceConnection(
     }
 
     inner class ShadhinMusicSubscriptionCallback : MediaBrowserCompat.SubscriptionCallback()
+
     inner class MusicResultReceiver(
         private val requestCode: Int,
         private val resultCallbackFunc: BundleCallbackFunc?
@@ -343,7 +345,6 @@ internal class ShadhinMusicServiceConnection(
     inner class MediaBrowserConnectionCallback : MediaBrowserCompat.ConnectionCallback() {
         override fun onConnected() {
             super.onConnected()
-            Log.i("music_payer", "onConnected: ")
             mediaControllerCompat = MediaControllerCompat(context, mediaBrowser.sessionToken)
             transportControls = mediaControllerCompat?.transportControls
             mediaControllerCompat?.registerCallback(mediaControllerCallback)
@@ -351,6 +352,7 @@ internal class ShadhinMusicServiceConnection(
     }
 
     inner class MediaControllerCallback : MediaControllerCompat.Callback() {
+
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
             _playbackState.postValue(state)
@@ -385,7 +387,7 @@ internal class ShadhinMusicServiceConnection(
         SLEEP_TIMER("sleep_timer", false),
         UNSUBSCRIBE("unsubscribe_player", false),
         GET_SLEEP_TIME("sleep_time_get", true),
-        ERROR_CALLBACK("error_player", true),
+        ERROR_CALLBACK("music_position", true),
         RE_ASSIGN_CALLBACK("re_assign_callback", true);
 
         val resultCode: Int
@@ -400,4 +402,3 @@ internal class ShadhinMusicServiceConnection(
             get() = "${tag}b"
     }
 }
-

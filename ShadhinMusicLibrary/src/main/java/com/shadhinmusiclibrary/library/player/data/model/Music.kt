@@ -127,7 +127,7 @@ internal data class Music(
             putString(ROOT_IMAGE, rootImage)
             putString(SEEKABLE, seekable.toString())
             totalStream?.let { putLong(TOTAL_STREAM, it) }
-           // putBoolean(SEEKABLE, seekable ?: false)
+            // putBoolean(SEEKABLE, seekable ?: false)
             putString(
                 MediaMetadataCompat.METADATA_KEY_ARTIST,
                 artistName
@@ -220,8 +220,4 @@ internal data class Music(
         const val ROOT_TITLE = "music_rootTitle"
         const val ROOT_IMAGE = "music_rootImage"
     }
-
-
 }
-
-

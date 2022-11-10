@@ -31,29 +31,27 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-
 /**
  * Shadhin Music Service
  * <img src="https://developer.android.com/guide/topics/media-apps/images/audio-activity-and-service.png"/>
  */
 private const val TAG = "ShadhinMusicPlayer"
 
-internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPlayerContext,
+internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPlayerContext,
     ServiceEntryPoint {
 
 
+    private var mediaSession: MediaSessionCompat? = null
+    private var mediaSessionConnector: MediaSessionConnector? = null
+    private var shadhinMusicNotificationManager: ShadhinMusicNotificationManager? = null
+    private var shadhinMusicQueueNavigator: ShadhinMusicQueueNavigator? = null
+    private var musicPlayerNotificationListener: ShadhinMusicPlayerNotificationListener? = null
+    private var shadhinPlayerListener: ShadhinPlayerListener? = null
 
-    private  var mediaSession: MediaSessionCompat?=null
-    private  var mediaSessionConnector: MediaSessionConnector?=null
-    private  var shadhinMusicNotificationManager: ShadhinMusicNotificationManager?=null
-    private  var shadhinMusicQueueNavigator: ShadhinMusicQueueNavigator?=null
-    private  var musicPlayerNotificationListener: ShadhinMusicPlayerNotificationListener?=null
-    private  var shadhinPlayerListener: ShadhinPlayerListener?=null
-
-    override var exoPlayer: ExoPlayer?=null
-    override var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?=null
-    override var scope:CoroutineScope?=null
-    override var playerCache: SimpleCache?=null
+    override var exoPlayer: ExoPlayer? = null
+    override var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer? = null
+    override var scope: CoroutineScope? = null
+    override var playerCache: SimpleCache? = null
 
     var isForegroundService = false
 
@@ -61,8 +59,8 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
         super.onCreate()
         scope = CoroutineScope(Dispatchers.IO)
         scope?.launch(Dispatchers.Main) {
-            exH {initialization()}
-            exH {eventLogAndLiveHandle()}
+            exH { initialization() }
+            exH { eventLogAndLiveHandle() }
         }
 
     }
@@ -80,10 +78,11 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
         }
 
     }
+
     private suspend fun initialization() {
         exoPlayer = ShadhinExoPlayer.build(this)
         mediaSession = MediaSessionCompat(this, MEDIA_SESSION_TAG).apply {
-          //  setSessionActivity(pendingIntent())
+            //  setSessionActivity(pendingIntent())
             isActive = true
 
         }
@@ -97,7 +96,12 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
             musicPlayerNotificationListener
         )
         musicPlaybackPreparer =
-            ShadhinMusicPlaybackPreparer(this@ShadhinMusicPlayer, exoPlayer,injector.exoplayerCache,injector.musicRepository)
+            ShadhinMusicPlaybackPreparer(
+                this@ShadhinMusicPlayer,
+                exoPlayer,
+                injector.exoplayerCache,
+                injector.musicRepository
+            )
         shadhinMusicQueueNavigator = mediaSession?.let { ShadhinMusicQueueNavigator(it) }
         mediaSessionConnector?.setQueueNavigator(shadhinMusicQueueNavigator)
         mediaSessionConnector?.setPlayer(exoPlayer)
@@ -105,7 +109,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
 
 
     }
-    
+
 
     private suspend fun pendingIntent(): PendingIntent? {
         val intent = Intent(this, SDKMainActivity::class.java)
@@ -137,6 +141,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
 
         super.onTaskRemoved(rootIntent)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         //isFirstTime = true
@@ -152,17 +157,19 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
         }
 
     }
+
     override fun onGetRoot(
         clientPackageName: String,
         clientUid: Int,
         rootHints: Bundle?
     ): BrowserRoot {
 
-      //  startForeground()
+        //  startForeground()
         return if (clientPackageName == applicationContext.packageName)
-          return  BrowserRoot(ROOT_ID_PLAYLIST, null)
+            return BrowserRoot(ROOT_ID_PLAYLIST, null)
         else BrowserRoot(ROOT_ID_EMPTY, null)
     }
+
     override fun onLoadChildren(
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>,
@@ -182,6 +189,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
 
 
     }
+
     private fun sendData(
         musicPlayList: MusicPlayList,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>,
@@ -190,21 +198,21 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
     ) {
 
         shadhinMusicNotificationManager?.showNotification(exoPlayer)
-        if(musicPlayList.isValidPlayList()){
+        if (musicPlayList.isValidPlayList()) {
             //musicPlayList.loadAllImage(this)
             musicPlaybackPreparer?.defaultPosition = defaultPosition
             musicPlaybackPreparer?.initPlayList(musicPlayList)
             musicPlaybackPreparer?.onPrepare(isPlayWhenReady)
-            result.sendResult(musicPlayList.list.toServiceMediaItemMutableList()?: mutableListOf())
+            result.sendResult(musicPlayList.list.toServiceMediaItemMutableList() ?: mutableListOf())
 
-        }else{
+        } else {
             result.sendResult(mutableListOf())
         }
     }
 
     override fun onLoadChildren(
         parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>
-    ){
+    ) {
         result.sendResult(mutableListOf())
     }
 }
