@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.library.player.data.rest
 
+import android.util.Log
 import com.shadhinmusiclibrary.data.repository.AuthRepository
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo
@@ -19,7 +20,8 @@ internal class ShadhinMusicRepository(private val playerApiService: PlayerApiSer
                 name = if (!music.filePath().isNullOrEmpty()) music.filePath() else null
             )
         }
-
+        Log.e("Check 0", music.toString())
+        Log.e("Check 1", response.toString())
         val url = if (response.status == Status.SUCCESS && response.data?.data != null) {
             response.data.data
         } else {

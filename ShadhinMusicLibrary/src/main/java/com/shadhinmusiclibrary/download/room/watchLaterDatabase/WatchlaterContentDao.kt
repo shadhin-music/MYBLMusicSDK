@@ -19,8 +19,8 @@ interface WatchlaterContentDao {
     @Query("SELECT track FROM WatchLaterContent where contentId = :contentId")
     fun getWatchlaterTrackById(contentId:String):String
 
-    @Query("SELECT * FROM WatchLaterContent where contentId = :id")
-    fun getWatchLaterById(id:String):List<WatchLaterContent>
+    @Query("SELECT * FROM WatchLaterContent where contentId = :contentId")
+    fun getWatchLaterById(contentId:String):List<WatchLaterContent>
 
     @Query("DELETE FROM WatchLaterContent WHERE contentId = :contentId")
     fun deleteWatchlaterById(contentId:String):Unit

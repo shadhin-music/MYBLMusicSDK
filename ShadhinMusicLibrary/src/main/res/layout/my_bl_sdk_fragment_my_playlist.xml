@@ -55,6 +55,7 @@
             android:src="@drawable/my_bl_sdk_ic_add_24"
             android:tint="@color/my_sdk_color_black"
             android:visibility="visible"
+            android:id="@+id/imageAddPlaylist"
             app:layout_constraintBottom_toBottomOf="@id/parentRelative"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/parentRelative" />

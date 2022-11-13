@@ -19,6 +19,8 @@ import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.library.player.data.rest.PlayerApiService
 import com.shadhinmusiclibrary.library.player.data.rest.ShadhinMusicRepository
+import com.shadhinmusiclibrary.library.player.data.rest.user_history.UserHistoryRepository
+import com.shadhinmusiclibrary.library.player.data.rest.user_history.UserHistoryRepositoryImpl
 import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -138,6 +140,7 @@ internal class Module(private val applicationContext: Context) {
             .addInterceptor(
                 HeaderInterceptor()
             )
+            .addInterceptor(BearerTokenHeaderInterceptor())
             .build()
     }
 
@@ -214,6 +217,7 @@ internal class Module(private val applicationContext: Context) {
     val factoryArtistBannerVM: ArtistBannerViewModelFactory
         get() = ArtistBannerViewModelFactory(repositoryArtistBannerContent)
 
+
     val factoryArtistSongVM: ArtistContentViewModelFactory
         get() = ArtistContentViewModelFactory(repositoryArtistSongContent)
     private val artistAlbumContentRepository: ArtistAlbumContentRepository
@@ -249,7 +253,6 @@ internal class Module(private val applicationContext: Context) {
             popularArtistRepository
         )
 
-
     val featuredtrackListRepository: FeaturedTracklistRepository
         get() = FeaturedTracklistRepository(
             artistAlbumApiService
@@ -258,7 +261,6 @@ internal class Module(private val applicationContext: Context) {
         get() = FeaturedTracklistViewModelFactory(
             featuredtrackListRepository
         )
-
 
     val searchRepository: SearchRepository
         get() = SearchRepository(
@@ -286,6 +288,9 @@ internal class Module(private val applicationContext: Context) {
 
     val musicServiceController: MusicServiceController
         get() = SingleMusicServiceConnection.getInstance(applicationContext)//ShadhinMusicServiceConnection(applicationContext)
+
+    val userHistoryRepository: UserHistoryRepository
+        get() = UserHistoryRepositoryImpl(playerApiService)
 
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
