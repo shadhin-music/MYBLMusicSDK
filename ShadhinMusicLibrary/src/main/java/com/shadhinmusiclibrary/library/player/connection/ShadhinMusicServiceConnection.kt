@@ -174,7 +174,8 @@ internal class ShadhinMusicServiceConnection(
                 _currentPlayingSong.value =
                     it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as Music
             }
-            Log.e("SMSC", "reAssignCurrentMusic: " + _playbackState)
+//            _playbackState.postValue(PlaybackStateCompat.)
+//            Log.e("SMSC", "reAssignCurrentMusic: " + _playbackState)
         }
     }
 
