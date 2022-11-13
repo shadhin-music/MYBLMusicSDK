@@ -13,20 +13,24 @@ import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
+import com.shadhinmusiclibrary.player.data.rest.user_history.UserHistoryRepository
+import com.shadhinmusiclibrary.player.utils.PlayerLogSender
 import kotlinx.coroutines.*
+import java.time.Duration
 
 internal class ShadhinPlayerListener(
     private val serviceScope: CoroutineScope?,
     private val context: Context,
     private val musicPlaybackPreparer: ShadhinMusicPlaybackPreparer?,
     private val musicRepository: MusicRepository,
+    private val userHistoryRepository: UserHistoryRepository,
 
-) : Player.Listener, AnalyticsListener {
+    ) : Player.Listener, AnalyticsListener {
 
    // private var localStorage: LocalStorage = PreferenceStorage(context)
     private var liveErrorHandler:android.os.Handler? = null
     private var previousJob:Job?= null
-   // private val playerLogSender:PlayerLogSender = PlayerLogSender(serviceScope,userApiService,localStorage)
+    private val playerLogSender: PlayerLogSender = PlayerLogSender(serviceScope,userHistoryRepository)
 
 
 
@@ -35,10 +39,11 @@ internal class ShadhinPlayerListener(
     }
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         super<Player.Listener>.onMediaItemTransition(mediaItem, reason)
-        //playerLogSender.mediaItemTransition(mediaItem,reason)
+        playerLogSender.mediaItemTransition(mediaItem,reason)
       //  initPreviousSeekPosition(mediaItem,reason)
 
     }
+
 
 
 
@@ -51,7 +56,7 @@ internal class ShadhinPlayerListener(
         if(!isPlaying){
             refreshStreamingStatusAsync()
         }
-      /*  playerLogSender.playingChanged(isPlaying)*/
+        playerLogSender.playingChanged(isPlaying)
         saveSeekPosition(isPlaying)
     }
 
@@ -97,6 +102,12 @@ internal class ShadhinPlayerListener(
             }
 
         }*/
+
+    }
+    public suspend fun playerClose(){
+       withTimeout(1000*2){
+           playerLogSender.closePlayer()
+       }
     }
 
     private fun saveSeekPosition(playing: Boolean) {

@@ -18,6 +18,8 @@ import com.shadhinmusiclibrary.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.player.data.rest.PlayerApiService
 import com.shadhinmusiclibrary.player.data.rest.ShadhinMusicRepository
+import com.shadhinmusiclibrary.player.data.rest.user_history.UserHistoryRepository
+import com.shadhinmusiclibrary.player.data.rest.user_history.UserHistoryRepositoryImpl
 import com.shadhinmusiclibrary.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -25,7 +27,6 @@ import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
 /*
@@ -142,6 +143,7 @@ internal class Module(private val applicationContext: Context) {
             .addInterceptor(
                 HeaderInterceptor()
             )
+            .addInterceptor(BearerTokenHeaderInterceptor())
             .build()
     }
     private fun getBaseClientWITHtOKEN(): OkHttpClient {
@@ -265,6 +267,10 @@ internal class Module(private val applicationContext: Context) {
 
     val musicServiceController: MusicServiceController
         get() = SingleMusicServiceConnection.getInstance(applicationContext)//ShadhinMusicServiceConnection(applicationContext)
+
+    val userHistoryRepository: UserHistoryRepository
+        get() = UserHistoryRepositoryImpl(playerApiService)
+
 
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)

@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.player.data.rest
 
 import com.shadhinmusiclibrary.player.data.model.ContentUrlResponse
+import com.shadhinmusiclibrary.player.data.model.SongTrackingModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -22,5 +23,15 @@ internal interface PlayerApiService {
         @Header("Authorization") token: String,
         @Query("name") name:String?
     ): ContentUrlResponse
+
+    @POST("ClientPodcast/PodcastUserHistoryV3")
+    suspend fun trackPodcastPlaying(
+        @Body body: HashMap<String?, Any?>?
+    ): SongTrackingModel?
+
+    @POST("ClientActivity/UserHistory")
+    suspend fun trackSongPlaying(
+        @Body body: HashMap<String?, Any?>?
+    ): SongTrackingModel
 
 }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.MediaBrowserServiceCompat
-import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection.*
 import com.shadhinmusiclibrary.player.Constants.MEDIA_SESSION_TAG
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_KEY
 import com.shadhinmusiclibrary.player.Constants.PENDING_INTENT_REQUEST_CODE
@@ -25,7 +24,6 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.di.ServiceEntryPoint
 import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection
 import com.shadhinmusiclibrary.utils.exH
-import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection.*
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,8 +61,8 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
         super.onCreate()
         scope = CoroutineScope(Dispatchers.IO)
         scope?.launch(Dispatchers.Main) {
-            exH {initialization()}
-            exH {eventLogAndLiveHandle()}
+            kotlin.runCatching {initialization()}
+            kotlin.runCatching {eventLogAndLiveHandle()}
         }
 
     }
@@ -74,7 +72,8 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
             scope,
             this,
             musicPlaybackPreparer,
-            injector.musicRepository
+            injector.musicRepository,
+            injector.userHistoryRepository
         )
         shadhinPlayerListener?.let {
             exoPlayer?.addListener(it)
@@ -149,6 +148,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat() , ShadhinMusicPl
         exoPlayer = null
 
         scope?.launch {
+            shadhinPlayerListener?.playerClose()
             shadhinPlayerListener?.refreshStreamingStatus()
             scope?.cancel()
         }
