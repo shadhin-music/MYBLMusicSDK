@@ -62,19 +62,23 @@ internal class ShadhinMusicPlaybackPreparer(
             Command.SLEEP_TIMER.tag -> setSleepTime(extras)
             Command.GET_SLEEP_TIME.tag -> getSleepTime(cb)
             Command.ERROR_CALLBACK.tag -> errorCallback(cb)
-            Command.RE_ASSIGN_CALLBACK.tag -> reAssignCurrentMusic(cb)
+            Command.RE_ASSIGN_CALLBACK.tag -> reAssignAll(cb)
             Command.UNSUBSCRIBE.tag -> unsubscribe()
         }
         return true
     }
 
-    private fun reAssignCurrentMusic(cb: ResultReceiver?) {
+    private fun reAssignAll(cb: ResultReceiver?) {
         exH {
             cb?.send(Command.RE_ASSIGN_CALLBACK.resultCode,
                 Bundle().apply {
                     putSerializable(
                         Command.RE_ASSIGN_CALLBACK.dataKey,
                         exoPlayer?.currentMediaItem?.toMusic()
+                    )
+                    putSerializable(
+                        Command.RE_ASSIGN_CALLBACK.dataKey2,
+                        MusicPlayList(playList.toList(), defaultPosition)
                     )
                 }
             )

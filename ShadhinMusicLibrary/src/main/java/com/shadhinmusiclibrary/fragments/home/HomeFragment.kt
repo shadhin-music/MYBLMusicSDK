@@ -98,8 +98,9 @@ internal class HomeFragment : BaseFragment(),
     }
 
     private fun observeData() {
-        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
@@ -109,24 +110,19 @@ internal class HomeFragment : BaseFragment(),
             }
             isLoading = false
         }
-//        if (playerViewModel.currentMusic == null) {
-//            playerViewModel.reAssignCurrentMusic()
-//        }
-
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
             if (itMus != null) {
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
-            } else {
-                playerViewModel.reAssignCurrentMusic()
             }
-        }
-        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
-            tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
-            Log.e("HF", "playbackStateLiveData: " + it.isPlaying)
-            miniPlayerPlayPauseState(it.isPlaying)
+            if (it != null)
+                miniPlayerPlayPauseState(it.isPlaying)
+        }
+
+        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
         if (playerViewModel.isMediaDataAvailable()) {
@@ -155,7 +151,7 @@ internal class HomeFragment : BaseFragment(),
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
                             isLoading = true
-                            homeViewModel!!.fetchHomeData(++pageNum, false)
+                            homeViewModel.fetchHomeData(++pageNum, false)
                         }
                     }
                     super.onScrolled(recyclerView, dx, dy)
@@ -376,5 +372,13 @@ internal class HomeFragment : BaseFragment(),
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
+        }
     }
 }

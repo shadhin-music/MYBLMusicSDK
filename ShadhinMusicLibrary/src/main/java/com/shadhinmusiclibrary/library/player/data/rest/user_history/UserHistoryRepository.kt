@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.player.data.rest.user_history
+package com.shadhinmusiclibrary.library.player.data.rest.user_history
 
 internal interface UserHistoryRepository {
     suspend fun postHistory(

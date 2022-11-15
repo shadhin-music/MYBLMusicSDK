@@ -1,4 +1,4 @@
-package com.shadhinmusiclibrary.player.data.model;
+package com.shadhinmusiclibrary.library.player.data.model;
 
 import androidx.annotation.Keep;
 

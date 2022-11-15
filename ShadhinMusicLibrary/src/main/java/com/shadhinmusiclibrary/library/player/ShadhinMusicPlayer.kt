@@ -11,10 +11,12 @@ import com.shadhinmusiclibrary.library.player.Constants.PENDING_INTENT_KEY
 import com.shadhinmusiclibrary.library.player.Constants.PENDING_INTENT_REQUEST_CODE
 import com.shadhinmusiclibrary.library.player.Constants.ROOT_ID_EMPTY
 import com.shadhinmusiclibrary.library.player.Constants.ROOT_ID_PLAYLIST
+
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.listener.ShadhinMusicPlayerNotificationListener
 import com.shadhinmusiclibrary.library.player.listener.ShadhinPlayerListener
 import com.shadhinmusiclibrary.library.player.utils.toServiceMediaItemMutableList
+
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
@@ -59,7 +61,6 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
             kotlin.runCatching { initialization() }
             kotlin.runCatching { eventLogAndLiveHandle() }
         }
-
     }
 
     private suspend fun eventLogAndLiveHandle() {
@@ -161,11 +162,14 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         else BrowserRoot(ROOT_ID_EMPTY, null)
     }
 
+
     override fun onLoadChildren(
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>,
         options: Bundle
     ) {
+
+
         val musicPlayList = MusicPlayList.fromBundle(
             options,
             ShadhinMusicServiceConnection.Command.SUBSCRIBE
@@ -173,7 +177,10 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         val isPlayWhenReady = options.getBoolean(Constants.PLAY_WHEN_READY_KEY)
         val isUpdatePlaylist = options.getBoolean(Constants.PLAYLIST_UPDATE)
         val defaultPosition = options.getInt(Constants.DEFAULT_POSITION_KEY)
+
         exH { sendData(musicPlayList, result, isPlayWhenReady, defaultPosition) }
+
+
     }
 
     private fun sendData(
@@ -182,6 +189,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         isPlayWhenReady: Boolean = false,
         defaultPosition: Int
     ) {
+
         shadhinMusicNotificationManager?.showNotification(exoPlayer)
         if (musicPlayList.isValidPlayList()) {
             //musicPlayList.loadAllImage(this)

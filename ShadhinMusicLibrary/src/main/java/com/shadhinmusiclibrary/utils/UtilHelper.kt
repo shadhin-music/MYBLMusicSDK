@@ -132,7 +132,7 @@ internal object UtilHelper {
                         rootContentId = rootId ?: ""
                         rootContentType = rootType ?: ""
                         rootImage = rootImage ?: ""
-                        isSeekAble = false
+                        isSeekAble = musicItem.seekable
                     }
                 )
             }
@@ -142,29 +142,26 @@ internal object UtilHelper {
     }
 
     fun getSongDetailToMusic(mMusic: Music): SongDetailModel {
-        mMusic.apply {
 //            val songDetail = SongDetail()
-            return SongDetailModel().apply {
-                content_Id = mediaId ?: ""
-                imageUrl = displayIconUrl ?: ""
-                titleName = title ?: ""
-                content_Type = contentType ?: ""
-                playingUrl = mediaUrl ?: ""
-                artistName = artistName ?: ""
-                total_duration = date ?: ""
-                copyright = ""
-                labelname = ""
-                releaseDate = ""
-                fav = ""
-                artist_Id = ""
-                album_Id = ""
-                userPlayListId = userPlayListId ?: ""
-                rootContentId = rootId ?: ""
-                rootContentType = rootType ?: ""
-                rootImage = rootImage ?: ""
-                isSeekAble = seekable
-                /*fav value set for this song are radio or normal song*/
-            }
+        return SongDetailModel().apply {
+            content_Id = mMusic.mediaId ?: ""
+            imageUrl = mMusic.displayIconUrl ?: ""
+            titleName = mMusic.title ?: ""
+            content_Type = mMusic.contentType ?: ""
+            playingUrl = mMusic.mediaUrl ?: ""
+            artistName = mMusic.artistName
+            total_duration = mMusic.date ?: ""
+            copyright = ""
+            labelname = ""
+            releaseDate = ""
+            fav = ""
+            artist_Id = ""
+            album_Id = ""
+            rootContentId = mMusic.rootId ?: ""
+            rootContentType = mMusic.rootType ?: ""
+            rootImage = mMusic.rootImage ?: ""
+            isSeekAble = mMusic.seekable
+            /*fav value set for this song are radio or normal song*/
         }
     }
 

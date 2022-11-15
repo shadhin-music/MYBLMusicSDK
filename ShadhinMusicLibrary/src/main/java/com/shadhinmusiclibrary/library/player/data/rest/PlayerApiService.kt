@@ -2,8 +2,6 @@ package com.shadhinmusiclibrary.library.player.data.rest
 
 import com.shadhinmusiclibrary.library.player.data.model.ContentUrlResponse
 import com.shadhinmusiclibrary.library.player.data.model.SongTrackingModel
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.*
 
 internal interface PlayerApiService {

@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.callBackService
 
 
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 
 

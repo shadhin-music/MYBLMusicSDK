@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -100,8 +101,10 @@ internal class AlbumDetailsFragment : BaseFragment(),
             requireActivity().onBackPressed()
         }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
-            if (music?.mediaId != null) {
-                albumsTrackAdapter.setPlayingSong(music.mediaId!!)
+            if (music != null) {
+                if (music.mediaId != null) {
+                    albumsTrackAdapter.setPlayingSong(music.mediaId!!)
+                }
             }
         }
     }
@@ -199,7 +202,8 @@ internal class AlbumDetailsFragment : BaseFragment(),
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            albumHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            if (itPla != null)
+                                albumHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
                         }
                     } else {
                         albumHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }

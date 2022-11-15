@@ -47,5 +47,5 @@ internal interface MusicServiceActions {
     fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit)
     suspend fun playerProgress(): PlayerProgress
     fun receiveErrorMessage()
-    fun reAssignCurrentMusic()
+    fun reAssignAll()
 }

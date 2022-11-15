@@ -2,21 +2,20 @@ package com.shadhinmusiclibrary.library.player.listener
 
 import android.content.Context
 import android.os.Looper
-import com.shadhinmusiclibrary.library.player.ShadhinMusicPlaybackPreparer
-import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.dataSourceErrorCode
-import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.dataSourceErrorMessage
-import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.isDataSourceError
-import com.shadhinmusiclibrary.library.player.utils.isLocalUrl
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.analytics.AnalyticsListener
+import com.shadhinmusiclibrary.library.player.ShadhinMusicPlaybackPreparer
 import com.shadhinmusiclibrary.library.player.data.rest.MusicRepository
 import com.shadhinmusiclibrary.library.player.data.rest.user_history.UserHistoryRepository
+import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.dataSourceErrorCode
+import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.dataSourceErrorMessage
+import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo.isDataSourceError
 import com.shadhinmusiclibrary.library.player.utils.PlayerLogSender
+import com.shadhinmusiclibrary.library.player.utils.isLocalUrl
 import kotlinx.coroutines.*
-import java.time.Duration
 
 internal class ShadhinPlayerListener(
     private val serviceScope: CoroutineScope?,

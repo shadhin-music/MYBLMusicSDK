@@ -315,7 +315,13 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            artistHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            if (itPla != null)
+                                artistHeaderVH.ivPlayBtn?.let {
+                                    playPauseState(
+                                        itPla.isPlaying,
+                                        it
+                                    )
+                                }
                         }
                     } else {
                         artistHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }

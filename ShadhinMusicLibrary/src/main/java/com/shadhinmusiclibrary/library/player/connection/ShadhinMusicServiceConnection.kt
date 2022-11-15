@@ -10,7 +10,6 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -56,13 +55,11 @@ internal class ShadhinMusicServiceConnection(
     override val repeatModeLiveData: LiveData<Int> = _repeatModeLiveData
     override val shuffleLiveData: LiveData<Int> = _shuffleLiveData
 
-
     override val musicIndexLiveData: LiveData<Int> =
         Transformations.map(currentMusicLiveData) { cMusic ->
             val musicList = _musicListLiveData.value?.list
             if (!musicList.isNullOrEmpty()) musicList.indexOfFirst { music -> music.mediaId == cMusic?.mediaId } else 0
         }
-
 
     private val mediaBrowser = MediaBrowserCompat(
         context,
@@ -168,14 +165,15 @@ internal class ShadhinMusicServiceConnection(
         }
     }
 
-    override fun reAssignCurrentMusic() {
-        if (_currentPlayingSong.value == null) {
+    override fun reAssignAll() {
+        if (mediaControllerCompat?.playbackState?.isPlaying == true && _currentPlayingSong.value == null) {
             sendCommand(Command.RE_ASSIGN_CALLBACK) {
                 _currentPlayingSong.value =
-                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as Music
+                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as? Music?
+                _musicListLiveData.value =
+                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey2) as? MusicPlayList
             }
-//            _playbackState.postValue(PlaybackStateCompat.)
-//            Log.e("SMSC", "reAssignCurrentMusic: " + _playbackState)
+            _playbackState.postValue(mediaControllerCompat?.playbackState)
         }
     }
 
@@ -297,14 +295,14 @@ internal class ShadhinMusicServiceConnection(
     }
 
     override suspend fun playerProgress(): PlayerProgress =
-        suspendCoroutine<PlayerProgress> { coro ->
+        suspendCoroutine { coro ->
             playerProgress {
                 coro.resume(it)
             }
         }
 
     override fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit) {
-        reAssignCurrentMusic()
+        reAssignAll()
         sendCommand(Command.MUSIC_PROGRESS_REQUEST) {
             val playerProgress = it?.toPlayerProgress(Command.MUSIC_PROGRESS_REQUEST.dataKey)
             playerProgress?.let { it1 -> playerProgressCallbackFunc(it1) }
@@ -353,7 +351,6 @@ internal class ShadhinMusicServiceConnection(
     }
 
     inner class MediaControllerCallback : MediaControllerCompat.Callback() {
-
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             super.onPlaybackStateChanged(state)
             _playbackState.postValue(state)

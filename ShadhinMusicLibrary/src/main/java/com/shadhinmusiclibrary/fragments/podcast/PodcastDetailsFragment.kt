@@ -249,7 +249,7 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-       val lSongDetails = podcastTrackAdapter.tracks
+        val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
             if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
@@ -294,7 +294,8 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            playPauseState(itPla!!.isPlaying, podcastHeaderVH.ivPlayBtn!!)
+                            if (itPla != null)
+                                playPauseState(itPla.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
                     }
                 } else {

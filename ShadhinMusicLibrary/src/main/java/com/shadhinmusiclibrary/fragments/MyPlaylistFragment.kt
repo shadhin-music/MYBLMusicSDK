@@ -10,13 +10,13 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-internal class MyPlaylistFragment : CommonBaseFragment() {
+internal class MyPlaylistFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ internal class MyPlaylistFragment : CommonBaseFragment() {
             argHomePatchItem?.let { it1 -> clickOnAddPlaylist(it1) }
         }
     }
- fun clickOnAddPlaylist(selectedHomePatchItem: HomePatchItem) {
+ fun clickOnAddPlaylist(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
