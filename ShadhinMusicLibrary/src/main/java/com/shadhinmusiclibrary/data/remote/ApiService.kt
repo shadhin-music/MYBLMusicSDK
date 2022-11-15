@@ -9,6 +9,7 @@ import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
 import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
@@ -51,6 +52,11 @@ internal interface ApiService {
     suspend fun fetchGetPlaylistContentById(
         @Query("id") id: String,
     ): APIResponse<MutableList<SongDetailModel>>
+
+    @GET("Playlist/GetPlaylistContentById")
+    fun fetchGetRadioListByContentById(
+        @Query("id") id: String,
+    ): Call<APIResponse<MutableList<SongDetailModel>>>
 
     @GET("Podcast/PodcastbyepisodeIdV3")
     suspend fun fetchPodcastByID(

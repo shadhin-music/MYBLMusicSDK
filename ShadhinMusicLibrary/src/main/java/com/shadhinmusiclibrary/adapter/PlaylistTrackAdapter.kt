@@ -77,7 +77,11 @@ internal class PlaylistTrackAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData( songItem.apply { isSeekAble = true }, rootPatch)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply {
+                        isSeekAble = true
+                    }, rootPatch
+                )
             )
         }
 

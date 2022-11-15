@@ -8,15 +8,16 @@
     tools:context=".RootAppActivity"
     tools:ignore="MissingDefaultResource">
 
+    <EditText
+        android:id="@+id/et_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:hint="8801XXXXXX000" />
+
     <Button
         android:id="@+id/btn_home_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home Frag" />
-
-    <Button
-        android:id="@+id/btn_radio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Radio Open" />
 </LinearLayout>

@@ -48,7 +48,7 @@ internal class AlbumHeaderAdapter(
             dataSongDetail.add(
                 UtilHelper.getSongDetailAndRootData(
                     songItem.apply {
-                        isSeekAble = false
+                        isSeekAble = true
                     }, homePatchDetail
                 )
             )

@@ -135,7 +135,7 @@ internal class Module(private val applicationContext: Context) {
             .build()
     }
 
-    private fun getBaseClient(): OkHttpClient {
+    fun getBaseClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HeaderInterceptor()

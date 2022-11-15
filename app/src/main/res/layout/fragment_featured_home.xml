@@ -105,16 +105,28 @@
             app:layout_constraintTop_toBottomOf="@+id/btnWebview2"
             tools:ignore="MissingConstraints,TextContrastCheck,TextContrastCheck" />
 
-        <Button
-            android:id="@+id/btnRadio"
-            android:layout_width="wrap_content"
+        <include
+            android:id="@+id/include_radio_layout"
+            layout="@layout/my_bl_sdk_music_radio_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="15dp"
-            android:text="Open Radio"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMusic"
-            tools:ignore="MissingConstraints,TextContrastCheck,TextContrastCheck" />
+            app:layout_constraintTop_toBottomOf="@+id/btnMusic" />
+
+        <TextView
+            android:id="@+id/btn_radio_see_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="See All Radio"
+            android:textColor="@color/my_sdk_black1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/include_radio_layout"
+            app:layout_constraintEnd_toEndOf="@+id/include_radio_layout"
+            app:layout_constraintTop_toBottomOf="@+id/include_radio_layout"
+            app:layout_constraintTop_toTopOf="@+id/btnMusic" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

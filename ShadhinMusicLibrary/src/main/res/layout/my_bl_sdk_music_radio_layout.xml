@@ -29,7 +29,7 @@
                 android:layout_height="70dp"
                 android:padding="5dp"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
-                app:srcCompat="@drawable/my_bl_sdk_ic_launcher_background" />
+                app:srcCompat="@drawable/ic_rectangle_2401" />
 
             <TextView
                 android:id="@+id/tv_radio_song_name"
@@ -38,6 +38,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="Khub Borsai"
+                android:textSize="19dp"
                 android:textStyle="bold" />
         </LinearLayout>
 

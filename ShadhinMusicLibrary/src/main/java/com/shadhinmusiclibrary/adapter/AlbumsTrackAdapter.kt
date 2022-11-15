@@ -83,7 +83,7 @@ internal class AlbumsTrackAdapter(
             dataSongDetail.add(
                 UtilHelper.getSongDetailAndRootData(
                     songItem.apply {
-                        isSeekAble = false
+                        isSeekAble = true
                     }, rootPatch
                 )
             )

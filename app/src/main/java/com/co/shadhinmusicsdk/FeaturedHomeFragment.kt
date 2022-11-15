@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 
@@ -31,7 +33,8 @@ internal class FeaturedHomeFragment : Fragment() {
         val btnAmartunes: Button = requireView().findViewById(R.id.btnWebview)
         val btnAmartunesAll: Button = requireView().findViewById(R.id.btnWebview2)
         val btnMusic: Button = requireView().findViewById(R.id.btnMusic)
-        val btnRadio: Button = requireView().findViewById(R.id.btnRadio)
+        val cvRadioButton: CardView = requireView().findViewById(R.id.include_radio_layout)
+        val btnRadioSeeAll: TextView = requireView().findViewById(R.id.btn_radio_see_all)
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
@@ -52,7 +55,11 @@ internal class FeaturedHomeFragment : Fragment() {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC204")
         }
 
-        btnRadio.setOnClickListener {
+        cvRadioButton.setOnClickListener {
+            ShadhinMusicSdkCore.openRadio(requireContext(), "20148")
+        }
+
+        btnRadioSeeAll.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RADIO")
         }
 
