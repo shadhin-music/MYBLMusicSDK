@@ -215,5 +215,4 @@ public enum DSVOrientation {
             return pendingScroll;
         }
     }
-
 }

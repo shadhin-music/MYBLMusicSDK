@@ -41,7 +41,7 @@ internal fun createMusicNotificationChannel(context: Context) {
 }
 
 internal fun isServiceRunning(context: Context, serviceName: String): Boolean {
-    var serviceRunning = false
+    val serviceRunning = false
     val am: ActivityManager = context.getSystemService(ACTIVITY_SERVICE) as ActivityManager
     val l: List<ActivityManager.RunningServiceInfo> = am.getRunningServices(50)
     val i: Iterator<ActivityManager.RunningServiceInfo> = l.iterator()
@@ -249,7 +249,3 @@ internal fun preLoadBitmap(playlist: MusicPlayList, context: Context) {
 internal fun getPreloadBitmap(mediaId: String): Bitmap? {
     return bitmapHasMap[mediaId.toString()]
 }
-
-
-
-

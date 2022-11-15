@@ -7,7 +7,10 @@ import com.shadhinmusiclibrary.library.player.singleton.DataSourceInfo
 import okhttp3.Interceptor
 import okhttp3.Response
 
-internal class PlayerInterceptor(private val musicRepository: MusicRepository, private val music: Music) : Interceptor {
+internal class PlayerInterceptor(
+    private val musicRepository: MusicRepository,
+    private val music: Music
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         DataSourceInfo.isDataSourceError = false
         val newUrl = musicRepository.fetchURL(music)
@@ -18,6 +21,5 @@ internal class PlayerInterceptor(private val musicRepository: MusicRepository, p
                 .method("GET", null)
                 .build()
         return chain.proceed(newRequest)
-
     }
 }

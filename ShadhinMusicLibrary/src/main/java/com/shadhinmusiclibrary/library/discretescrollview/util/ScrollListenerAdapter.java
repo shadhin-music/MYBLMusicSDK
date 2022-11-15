@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.library.discretescrollview.util;
 
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;

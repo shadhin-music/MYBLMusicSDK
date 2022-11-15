@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 
 
-internal class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
+internal class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat) :
     TimelineQueueNavigator(sessionCompat) {
     override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
 
@@ -18,11 +18,9 @@ internal class ShadhinMusicQueueNavigator(sessionCompat: MediaSessionCompat):
                 .getMediaItemAt(windowIndex)
                 .toServiceMediaItem()
         return playerItem.description
-
     }
 
-    companion object{
-        var musicIndex:Int = 0
+    companion object {
+        var musicIndex: Int = 0
     }
-
 }

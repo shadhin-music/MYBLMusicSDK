@@ -15,12 +15,14 @@ import okhttp3.OkHttpClient
 
 
 private const val TAG = "DataSourceFactory"
-internal open class ShadhinDataSourceFactory  constructor(
+
+internal open class ShadhinDataSourceFactory constructor(
     private val context: Context,
     private val music: Music,
     private val musicRepository: MusicRepository
-) :DataSource.Factory {
+) : DataSource.Factory {
     private lateinit var factory: DataSource.Factory
+
     init {
         initialization()
     }
@@ -29,17 +31,19 @@ internal open class ShadhinDataSourceFactory  constructor(
         isDataSourceError = false
         val client = OkHttpClient()
             .newBuilder()
-            .addInterceptor(PlayerInterceptor(musicRepository,music))
+            .addInterceptor(PlayerInterceptor(musicRepository, music))
             .build()
 
 
-        val networkFactory =  OkHttpDataSource.Factory(client)
-        factory =  DefaultDataSource.Factory(context,networkFactory)
+        val networkFactory = OkHttpDataSource.Factory(client)
+        factory = DefaultDataSource.Factory(context, networkFactory)
     }
+
     override fun createDataSource(): DataSource {
-        return  factory.createDataSource()
+        return factory.createDataSource()
     }
-    companion object{
+
+    companion object {
         @JvmStatic
         fun build(
             context: Context,
@@ -51,10 +55,10 @@ internal open class ShadhinDataSourceFactory  constructor(
             return CacheDataSource.Factory()
                 .setCache(cache)
                 .setUpstreamDataSourceFactory(
-                    ShadhinDataSourceFactory(context,music,musicRepository)
+                    ShadhinDataSourceFactory(context, music, musicRepository)
                 )
                 // TODO must be remove setCacheWriteDataSinkFactory(null) this line when download done . but this time for testing
-               // .setCacheWriteDataSinkFactory(null)
+                // .setCacheWriteDataSinkFactory(null)
                 .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
 
         }
@@ -66,19 +70,14 @@ internal open class ShadhinDataSourceFactory  constructor(
             cache: SimpleCache,
             musicRepository: MusicRepository
         ): DataSource.Factory {
-
             return CacheDataSource.Factory()
                 .setCache(cache)
                 .setUpstreamDataSourceFactory(
-                    ShadhinDataSourceFactory(context,music,musicRepository)
+                    ShadhinDataSourceFactory(context, music, musicRepository)
                 )
                 // TODO must be remove setCacheWriteDataSinkFactory(null) this line when download done . but this time for testing
                 .setCacheWriteDataSinkFactory(null)
                 .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-
         }
-
-
     }
 }
-

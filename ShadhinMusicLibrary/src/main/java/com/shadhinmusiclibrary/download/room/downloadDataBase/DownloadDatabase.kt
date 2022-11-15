@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.download.room.downloadDataBase
 
 import androidx.room.Database
-import androidx.room.Delete
 import androidx.room.RoomDatabase
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 

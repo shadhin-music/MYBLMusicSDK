@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.transform.DiscreteScro
 /**
  * Created by yarolegovich on 17.02.2017.
  */
- class DiscreteScrollLayoutManager extends RecyclerView.LayoutManager {
+class DiscreteScrollLayoutManager extends RecyclerView.LayoutManager {
 
     static final int NO_POSITION = -1;
 
@@ -235,7 +235,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.transform.DiscreteScro
                 recyclerViewProxy.attachView(v);
                 detachedCache.remove(position);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

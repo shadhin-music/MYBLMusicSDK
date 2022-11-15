@@ -22,7 +22,6 @@ internal class ShadhinExoPlayer private constructor(private val exoPlayer: ExoPl
         isUserLimitOver = false
     }
 
-
     companion object{
         @JvmStatic
         public var isUserLimitOver:Boolean = false

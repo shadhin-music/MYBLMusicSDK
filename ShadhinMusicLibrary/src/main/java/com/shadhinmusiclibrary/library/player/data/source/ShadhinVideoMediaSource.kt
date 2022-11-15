@@ -78,7 +78,6 @@ internal class ShadhinVideoMediaSource(
                     .setArtworkUri(exH { video.image?.toUri() })
                     .setArtist(video.artist)
                     .build()
-            )
-            .build()
+            ).build()
     }
 }

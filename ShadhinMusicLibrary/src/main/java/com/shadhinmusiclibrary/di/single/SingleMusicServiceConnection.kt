@@ -4,7 +4,6 @@ import android.content.Context
 import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.library.player.connection.ShadhinMusicServiceConnection
 
-
 internal class SingleMusicServiceConnection private constructor() {
     companion object {
         @Volatile

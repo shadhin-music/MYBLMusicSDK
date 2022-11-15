@@ -19,20 +19,22 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.shadhinmusiclibrary.R
 
-internal class  ShadhinMusicNotificationManager(
+internal class ShadhinMusicNotificationManager(
     private val context: Context,
     private val token: MediaSessionCompat.Token?,
-    private val notificationListener:PlayerNotificationManager.NotificationListener?
+    private val notificationListener: PlayerNotificationManager.NotificationListener?
 ) {
 
     private lateinit var notificationManager: PlayerNotificationManager
     private var shadhinCustomActionReceiver: ShadhinCustomActionReceiver =
         ShadhinCustomActionReceiver(context)
-    private var placeholderArtwork:Bitmap? = defaultArtwork()// this placeholder only for fix samsung one UI blink issue
+    private var placeholderArtwork: Bitmap? =
+        defaultArtwork()// this placeholder only for fix samsung one UI blink issue
     private var mediaControllerCompat: MediaControllerCompat? = null
+
     init {
         mediaControllerCompat = token?.let { MediaControllerCompat(context, it) }
-        notificationManager =  PlayerNotificationManager.Builder(
+        notificationManager = PlayerNotificationManager.Builder(
             context,
             MUSIC_NOTIFICATION_ID,
             MUSIC_NOTIFICATION_CHANNEL_ID
@@ -42,21 +44,23 @@ internal class  ShadhinMusicNotificationManager(
 
         }
             .build().apply {
-            setSmallIcon(R.drawable.my_bl_sdk_ic_shadhin_icon_gray_vector)
-            token?.let { setMediaSessionToken(it) }
-        }
+                setSmallIcon(R.drawable.my_bl_sdk_ic_shadhin_icon_gray_vector)
+                token?.let { setMediaSessionToken(it) }
+            }
     }
+
     fun showNotification(player: Player?) = notificationManager.setPlayer(player)
-    fun hideNotification(){
+    fun hideNotification() {
         notificationManager.setPlayer(null)
     }
-    inner  class  MusicMediaDescriptionAdapter : PlayerNotificationManager.MediaDescriptionAdapter {
+
+    inner class MusicMediaDescriptionAdapter : PlayerNotificationManager.MediaDescriptionAdapter {
         override fun getCurrentContentTitle(player: Player): CharSequence {
             return mediaControllerCompat?.metadata?.description?.title.nullFix()
         }
 
         override fun createCurrentContentIntent(player: Player): PendingIntent? {
-            return  mediaControllerCompat?.sessionActivity
+            return mediaControllerCompat?.sessionActivity
         }
 
         override fun getCurrentContentText(player: Player): CharSequence {
@@ -67,16 +71,16 @@ internal class  ShadhinMusicNotificationManager(
             player: Player,
             callback: PlayerNotificationManager.BitmapCallback
         ): Bitmap? {
-            val uri:Uri? = mediaControllerCompat?.metadata?.description?.iconUri
-            val mediaId =  mediaControllerCompat?.metadata?.description?.mediaId
+            val uri: Uri? = mediaControllerCompat?.metadata?.description?.iconUri
+            val mediaId = mediaControllerCompat?.metadata?.description?.mediaId
 
-           /* bitmapFromUri(context,uri){ bitmap->
-                if(bitmap !=null){
-                    callback.onBitmap(bitmap)
-                }
-            }*/
+            /* bitmapFromUri(context,uri){ bitmap->
+                 if(bitmap !=null){
+                     callback.onBitmap(bitmap)
+                 }
+             }*/
 
-            if(uri !=null) {
+            if (uri != null) {
 
                 Glide.with(context).asBitmap()
                     .load(uri)
@@ -110,9 +114,6 @@ internal class  ShadhinMusicNotificationManager(
     }
 
     private fun defaultArtwork(): Bitmap? {
-      return  BitmapFactory.decodeResource(context.resources, R.drawable.my_bl_sdk_default_song)
+        return BitmapFactory.decodeResource(context.resources, R.drawable.my_bl_sdk_default_song)
     }
-
-
-
 }

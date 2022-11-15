@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.di.single
 
-
 import com.shadhinmusiclibrary.library.player.data.rest.PlayerApiService
 import retrofit2.Retrofit
 

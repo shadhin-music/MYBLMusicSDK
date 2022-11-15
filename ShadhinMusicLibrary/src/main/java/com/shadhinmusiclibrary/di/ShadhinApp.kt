@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.di
 import android.content.Context
 import com.shadhinmusiclibrary.library.player.utils.createMusicNotificationChannel
 
-
 internal object ShadhinApp {
     private var _module: Module? = null
 

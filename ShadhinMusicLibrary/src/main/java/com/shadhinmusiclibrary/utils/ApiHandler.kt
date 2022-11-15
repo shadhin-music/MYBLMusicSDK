@@ -13,6 +13,7 @@ internal enum class Status {
     SUCCESS,
     ERROR, LOADING
 }
+
 @Keep
 internal data class ApiResponse<out T>(
     val status: Status,
@@ -47,7 +48,7 @@ internal data class ApiResponse<out T>(
     }
 }
 
-internal suspend  fun <T> safeApiCall( responseFunction: suspend () -> T): ApiResponse<T> {
+internal suspend fun <T> safeApiCall(responseFunction: suspend () -> T): ApiResponse<T> {
     return withContext(Dispatchers.IO) {
         try {
             val response = responseFunction.invoke()
@@ -100,8 +101,6 @@ internal sealed class Resource<T>(
 ) {
     internal class Success<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
     internal class Loading<T>(data: T) : Resource<T>(Status.SUCCESS, data, null)
-    internal class Error<T>(throwable: Throwable, data: T) : Resource<T>(Status.ERROR, data, throwable)
+    internal class Error<T>(throwable: Throwable, data: T) :
+        Resource<T>(Status.ERROR, data, throwable)
 }
-
-
-

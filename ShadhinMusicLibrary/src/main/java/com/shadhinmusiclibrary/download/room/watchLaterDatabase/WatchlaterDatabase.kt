@@ -1,11 +1,8 @@
 package com.shadhinmusiclibrary.download.room.watchLaterDatabase
 
 import androidx.room.Database
-
 import androidx.room.RoomDatabase
-
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-
 
 @Database(
     entities = [
@@ -14,7 +11,6 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
     version = 2
 )
 
-abstract class WatchlaterDatabase :RoomDatabase(){
-    abstract fun WatchlaterContentDao():WatchlaterContentDao
-
+abstract class WatchlaterDatabase : RoomDatabase() {
+    abstract fun WatchlaterContentDao(): WatchlaterContentDao
 }

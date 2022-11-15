@@ -726,8 +726,3 @@ fun calculateVideoHeight(displayWidth:Int,videoWidth:Int,videoHeight:Int): Int {
 fun calculateVideoWidth(displayHeight:Int, videoHeight:Int, videoWidth:Int): Int {
     return rangeMap(videoWidth.toFloat(),0F,videoHeight.toFloat(),0F,displayHeight.toFloat()).toInt()
 }*/
-
-
-
-
-
