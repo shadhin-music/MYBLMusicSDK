@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -29,10 +30,10 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
@@ -46,6 +47,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     private lateinit var playlistHeaderAdapter: PlaylistHeaderAdapter
     private lateinit var playlistTrackAdapter: PlaylistTrackAdapter
 
+    private lateinit var favViewModel: FavViewModel
     //    private lateinit var adapter: PlaylistAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private var cacheRepository: CacheRepository? = null
@@ -71,8 +73,9 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cacheRepository= CacheRepository(requireContext())
+        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
        // playlistTrackAdapter = PlaylistTrackAdapter(this, cacheRepository!!)
-        playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this)
+        playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this,cacheRepository,favViewModel)
         playlistTrackAdapter = PlaylistTrackAdapter(this, this,cacheRepository!!)
 //        adapter = PlaylistAdapter(this, this)
         footerAdapter = HomeFooterAdapter()

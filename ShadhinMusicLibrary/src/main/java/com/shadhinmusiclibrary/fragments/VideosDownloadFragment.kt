@@ -24,6 +24,7 @@ import com.shadhinmusiclibrary.adapter.DownloadedVideoAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -98,6 +99,10 @@ internal class VideosDownloadFragment : CommonBaseFragment(),DownloadedSongOnCal
 //                    clickItemPosition
 //                )
 //            }
+    }
+
+    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+        TODO("Not yet implemented")
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
@@ -189,7 +194,7 @@ internal class VideosDownloadFragment : CommonBaseFragment(),DownloadedSongOnCal
                         item.contentType.toString(),
                         0,
                         0,
-                        item.artist.toString(),
+                        item.artist.toString(),item.artistId.toString(),
                         item.duration.toString()))
                 isDownloaded =true
                  }

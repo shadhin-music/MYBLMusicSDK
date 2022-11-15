@@ -5,10 +5,11 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-import com.shadhinmusiclibrary.utils.DownloadOrDeleteObserver
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
@@ -21,11 +22,47 @@ class CacheRepository(val context: Context) {
     val watchLaterDb = databaseClient.getWatchlaterDatabase()
 
     val downloadDb = databaseClient.getDownloadDatabase()
+
+    val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
+
+    fun insertFavoriteContent(favData:List<FavData>){
+        favoriteContentDB?.FavoriteContentDao()?.insertAll(favData)
+
+      //  Log.i("dfsfsdff", "insertFavoriteContent: ${a}")
+    }
+    fun insertFavSingleContent(favData: FavData) {
+        favoriteContentDB?.FavoriteContentDao()?.insert(favData)
+    }
+    fun getAllFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAllFavorites()
+    fun getSongsFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAllSongsFav()
+    fun getArtistFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getArtistFav()
+    fun getAlbumsFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAlbumsFav()
+    fun getPlaylistFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getPlaylistFav()
+    fun getVideoFavContent()= favoriteContentDB?.FavoriteContentDao()?.getAllVideosFav()
+    fun getPodcastFavContent()= favoriteContentDB?.FavoriteContentDao()?.getAllPodcastFav()
     fun insertDownload(downloadedContent: DownloadedContent) {
         downloadDb?.DownloadedContentDao()?.insert(downloadedContent)
     }
+
     fun insertWatchLater(watchLaterContent: WatchLaterContent){
         watchLaterDb?.WatchlaterContentDao()?.insert(watchLaterContent)
+    }
+    fun getFavoriteById(id: String): FavData? {
+        var contents = favoriteContentDB?.FavoriteContentDao()?.getFavoriteById(id)
+        if (contents?.size ?: 0 > 0) {
+            return contents!![0]
+        }
+        return null
+    }
+
+    fun deleteFavoriteById(id: String) {
+        val path = favoriteContentDB?.FavoriteContentDao()?.getFavoriteById(id)
+        favoriteContentDB?.FavoriteContentDao()?.deleteFavoriteById(id)
+        try {
+            UtilHelper.deleteFileIfExists(Uri.parse(path.toString()))
+        } catch (e: NullPointerException) {
+
+        }
     }
     fun getAllWatchlater() = watchLaterDb?.WatchlaterContentDao()?.getAllWatchLater()
 

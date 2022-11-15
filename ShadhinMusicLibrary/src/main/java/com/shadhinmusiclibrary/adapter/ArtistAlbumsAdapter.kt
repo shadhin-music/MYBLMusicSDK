@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItem
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import java.lang.Exception
 
 
 internal class ArtistAlbumsAdapter(
@@ -60,9 +61,12 @@ internal class ArtistAlbumsAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter =
-                ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
+            try {
 
+
+                recyclerView.adapter =
+                    ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
+            }catch (e:Exception){}
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            itemView.setOnClickListener {

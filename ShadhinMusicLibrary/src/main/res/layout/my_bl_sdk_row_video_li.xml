@@ -133,7 +133,7 @@
             android:focusable="true"
             android:foreground="?selectableItemBackground"
             android:paddingEnd="5dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:src="@drawable/my_bl_sdk_ic_more_vert"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

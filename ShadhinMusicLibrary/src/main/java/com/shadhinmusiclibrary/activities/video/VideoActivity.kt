@@ -47,11 +47,13 @@ import com.shadhinmusiclibrary.player.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.ShadhinMusicQueueNavigator
 import com.shadhinmusiclibrary.player.data.source.MediaSources
@@ -109,7 +111,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private lateinit var viewModel: VideoViewModel
     private val receiver = MyBroadcastReceiver()
     private lateinit var videoViewModelFactory: VideoViewModelFactory
-
+    private lateinit var favViewModel: FavViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +151,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
     private fun setupViewModel() {
         videoViewModelFactory = VideoViewModelFactory(DatabaseClient(applicationContext))
         viewModel = ViewModelProvider(this,videoViewModelFactory)[VideoViewModel::class.java]
-
+        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
     }
     private fun setupUI() {
 
@@ -366,7 +368,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                         currentRootType.toString(),
                         0,
                         0,
-                        currentArtist.toString(),
+                        currentArtist.toString(),"",
                         duration.toString()))
                 }
             }
@@ -700,7 +702,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                                 item.contentType.toString(),
                                 0,
                                 0,
-                                item.artist.toString(),
+                                item.artist.toString(),item.artistId.toString(),
                                 item.duration.toString()))
 
                         isDownloaded = true
@@ -755,6 +757,49 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 }
                 bottomSheetDialog.dismiss()
             }
+        val constraintFav: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintFav)
+        val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
+        val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
+        var isFav = false
+        val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
+        if (isAddedToFav?.contentID != null) {
+
+            favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+            isFav = true
+            textFav?.text = "Remove From favorite"
+        } else {
+
+            favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+            isFav = false
+            textFav?.text = "Favorite"
+        }
+
+
+        constraintFav?.setOnClickListener {
+            if(isFav.equals(true)){
+                favViewModel.deleteFavContent(item.contentID.toString(),"V")
+                cacheRepository.deleteFavoriteById(item.contentID.toString())
+                Toast.makeText(applicationContext,"Removed from favorite",Toast.LENGTH_LONG).show()
+                favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+                isFav=false
+                Log.e("TAG","NAME: "+ isFav)
+            } else {
+
+                favViewModel.addFavContent(item.contentID.toString(),"V")
+
+                favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+                Log.e("TAG","NAME123: "+ isFav)
+                cacheRepository.insertFavSingleContent(FavData(item.contentID.toString(),item.albumId,item.image,"",item.artist,item.artistId,
+                    "","",2,"V","","","1","",item.image,"",
+                    false,  "",0,"","","",item.playUrl,item.rootId,
+                    "",false,"",item.title,"",""
+
+                ))
+                isFav = true
+                Toast.makeText(applicationContext,"Added to favorite",Toast.LENGTH_LONG).show()
+            }
+            bottomSheetDialog.dismiss()
+        }
 
         }
 
