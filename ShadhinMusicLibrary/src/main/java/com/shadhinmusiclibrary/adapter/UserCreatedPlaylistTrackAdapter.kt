@@ -112,9 +112,9 @@ internal class UserCreatedPlaylistTrackAdapter(private val itemClickCB: OnItemCl
         var tvSongName: TextView? = null
         fun bindTrackItem(mSongDetail: SongDetail) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
-            Glide.with(mContext)
-                .load(mSongDetail.getImageUrl300Size())
-                .into(sivSongIcon)
+               Glide.with(mContext)
+                 .load(mSongDetail.getImageUrl300Size())
+                  .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
             tvSongName!!.text = mSongDetail.title
 

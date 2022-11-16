@@ -176,9 +176,9 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
     "",
         "",
         "",
-    "",mSongDetails.artistID,"","","","","",false),
+    "",mSongDetails.artistID,mSongDetails.contentId,"","","","",false),
             argHomePatchItem,
-            HomePatchDetail( "","","",mSongDetails.artist,mSongDetails.artistID,"","",
+            HomePatchDetail( mSongDetails.contentId,"","",mSongDetails.artist,mSongDetails.artistID,"","",
                 mSongDetails.contentId,mSongDetails.rootType,"","","",false,"",
                 0,"","","",mSongDetails.track.toString(),"","",
                 false,"","","","",mSongDetails.rootImg,"",mSongDetails.rootTitle)
@@ -492,7 +492,7 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG","NAME123: "+ isFav)
-                cacheRepository.insertFavSingleContent(FavData(mSongDetails.ContentID,mSongDetails.albumId,mSongDetails.image,"",mSongDetails.artist,"",
+                cacheRepository.insertFavSingleContent(FavData(mSongDetails.ContentID,mSongDetails.albumId,mSongDetails.image,"",mSongDetails.artist,mSongDetails.ArtistId,
                     "","",2,mSongDetails.ContentType,"","","1","",mSongDetails.image,"",
                     false,  "",0,"","","",mSongDetails.PlayUrl,mSongDetails.rootContentID,
                     mSongDetails.rootContentType,false,"",mSongDetails.title,"",""

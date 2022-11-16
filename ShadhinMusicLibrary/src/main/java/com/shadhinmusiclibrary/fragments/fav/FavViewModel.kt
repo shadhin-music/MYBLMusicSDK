@@ -33,8 +33,8 @@ internal class FavViewModel (private val favContentRepository: FavContentReposit
 
     private val _getFavContentPlaylist: MutableLiveData<FavDataModel> = MutableLiveData()
     val getFavContentPlaylist: LiveData<FavDataModel> =  _getFavContentPlaylist
-    private val _getFavContentArtist: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentArtist: LiveData<FavDataModel> =_getFavContentArtist
+    private val _getFavContentArtist: MutableLiveData<FavDataModel?> = MutableLiveData()
+    val getFavContentArtist: LiveData<FavDataModel?> =_getFavContentArtist
     private val _getFavContentPodcast: MutableLiveData<FavDataModel> = MutableLiveData()
     val getFavContentPodcast: LiveData<FavDataModel> =_getFavContentPodcast
 

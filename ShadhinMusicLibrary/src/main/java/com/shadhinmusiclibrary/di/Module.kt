@@ -294,6 +294,9 @@ internal class Module(private val applicationContext: Context) {
     val musicServiceController: MusicServiceController
         get() = SingleMusicServiceConnection.getInstance(applicationContext)//ShadhinMusicServiceConnection(applicationContext)
 
+    val downloadTitleMap:MutableMap<String,String>
+        get() = SingleDownloadMap.getInstance()
+
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
 

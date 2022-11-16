@@ -129,6 +129,8 @@ internal class AlbumDetailsFragment :
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel?.fetchAlbumContent(contentId)
+        Log.e("TAG","DATA : "+contentId)
+        Log.e("TAG","DATA : "+artistId)
         viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE

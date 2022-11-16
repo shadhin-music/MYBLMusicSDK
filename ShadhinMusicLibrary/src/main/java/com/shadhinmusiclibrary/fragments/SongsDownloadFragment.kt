@@ -145,9 +145,9 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
                 "",
                 "",
                 "",
-                "",mSongDetails.artistID,"","","","","",false),
+                "",mSongDetails.artistID,mSongDetails.contentId,"","","","",false),
             argHomePatchItem,
-            HomePatchDetail("","","",mSongDetails.artist,mSongDetails.artistID,"","",
+            HomePatchDetail(mSongDetails.contentId,"","",mSongDetails.artist,mSongDetails.artistID,"","",
             mSongDetails.contentId,mSongDetails.rootType,"","","",false,"",
             0,"","","",mSongDetails.track.toString(),"","",
             false,"","","","",mSongDetails.rootImg,"",mSongDetails.rootTitle)
@@ -351,7 +351,7 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("","A", mutableListOf(),"Artist","",0,0)
+                    HomePatchItem("","", mutableListOf(),"","",0,0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,

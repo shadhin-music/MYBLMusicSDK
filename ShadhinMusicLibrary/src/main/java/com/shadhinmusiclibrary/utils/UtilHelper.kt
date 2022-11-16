@@ -512,7 +512,7 @@ internal object UtilHelper {
                 userPlayListId = userPlayListId,
                 /*rootType = rootPatch.ContentType,*/
 
-                rootContentID = "",
+                rootContentID = contentID.toString(),
                 rootContentType = "",
                 rootImage = ""
             )

@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.scheduler.Requirements
 import com.google.android.exoplayer2.scheduler.Scheduler
-import com.google.android.exoplayer2.ui.DownloadNotificationHelper
+
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.DownloadingItem
@@ -52,9 +52,8 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
 
     override fun onCreate() {
         super.onCreate()
-       // context = this
         isRunning = true
-        notificationHelper= DownloadNotificationHelper(this, "my app")
+        notificationHelper= DownloadNotificationHelper(this, "my app", injector.downloadTitleMap)
         cacheRepository = CacheRepository(applicationContext)
 
     }
@@ -71,24 +70,16 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
                 Toast.makeText(applicationContext, "Deleted", Toast.LENGTH_SHORT).show()
-//                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-//                val localIntent = Intent("DOWNLOADREMOVE")
-//                    .putExtra("Deleted",0)
-//                localBroadcastManager.sendBroadcast(localIntent)
             }
 
             override fun onDownloadsPausedChanged(downloadManager: DownloadManager, downloadsPaused: Boolean) {
                 if (downloadsPaused){
                     Toast.makeText(applicationContext, "paused", Toast.LENGTH_SHORT).show()
-
                   } else{
-
                     Toast.makeText(applicationContext, "Download Started", Toast.LENGTH_SHORT).show()
 
-
-                   // startForeground(NOTIFICATION_ID,getDownloadingNotification("Song Downloading",100))
                 }
-                Log.i("getDownloadManager", "showBottomSheetDialog: ${downloadsPaused}}")
+
 
             }
 
@@ -100,31 +91,12 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 super.onDownloadChanged(downloadManager, download, finalException)
                 if(download.state == STATE_COMPLETED){
                     currentProgress= 100
-                    Log.e("TAGGG",
-                        "COMPLETED: " + download.request.uri)
                     val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                     val localIntent = Intent("PROGRESS")
                         .putExtra("progress",100)
                     localBroadcastManager.sendBroadcast(localIntent)
-                    
-                    //todo please remove from sharedpref
-//                    val sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE)
-//                    val Progress = sharedPreferences.edit()
-//                    Progress.putInt("progress",3)
-//                    Progress.apply()
-
                     cacheRepository.downloadCompleted(download.request.id)
-//                    cacheRepository.insertDownload(DownloadedContent(download.request.id,
-//                       "",
-//                       "",
-//                       "",
-//                       "",
-//                        download.request.uri.toString(),
-//                       "",
-//                        0,
-//                        0,
-//                        "",
-//                       ""))
+
                 }
 
                 //getDownloadingNotification("Song Downloading",100)
@@ -132,8 +104,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 Log.e("getDownloadManagerx", "getForegroundNotification:" + currentItemID)
                 cacheRepository.setDownloadedContentPath(download.request.id,
                     download.request.uri.toString())
-                 //saveDownloadedContent(DownloadedContent(currentItemID,"","","","",download.request.uri.toString(),
-                // "",0,0,"",""))
+
 
             }
 
@@ -188,25 +159,20 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 DownloadingItem(contentId = it.request.id, progress = 0f)
             }
         }
-       //var downloadingMsg = "Downloading "+ downloads[0].request.customCacheKey
-//        if(downloads.size==1){
-//            downloadingMsg = downloadingMsg
-//        }
-//        if (downloads.size > 1){
-//            downloadingMsg = downloadingMsg + " & "+(downloads.size - 1) + " other items"
-//        }
         val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
         val localIntent = Intent("ACTION")
             .putParcelableArrayListExtra("downloading_items",downloadingItems as ArrayList<out Parcelable>)
         localBroadcastManager.sendBroadcast(localIntent)
 
-//        downloads.forEach {
-////            name = cacheRepository.getDownloadById(it.request.id)!!
-//            Log.e("TAG","NAME: "+ it.request)
-//        }
-        //Log.e("TAG","NAME: "+ cacheRepository.getDownloadById(downloads[0].request.id))
-       // return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,null,""+downloadingMsg,downloads, notMetRequirements)
-        return notificationHelper.buildProgressNotification(applicationContext, R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,null,"",downloads, notMetRequirements)
+        return notificationHelper.buildProgressNotification(
+            applicationContext,
+            R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,
+            null,
+            "",
+            downloads,
+            notMetRequirements,
+        )
+
     }
 
     fun getAllDownloadCompleteNotification():Notification{
@@ -249,7 +215,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
     }
 
     fun getDownloadingNotification(title:String,progress:Int):Notification{
-        return NotificationCompat.Builder(applicationContext, DOWNLOAD_CHANNEL_ID)
+        return NotificationCompat.Builder(applicationContext, "my app")
             .setContentTitle("Downloading $title")
             .setContentText("$progress%")
             .setShowWhen(true)

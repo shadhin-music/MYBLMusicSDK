@@ -39,7 +39,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.exoplayer2.offline.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
@@ -52,8 +51,6 @@ import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
-import com.shadhinmusiclibrary.fragments.create_playlist.UserPlaylistData
-import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
@@ -1012,6 +1009,8 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
+
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1429,6 +1428,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1587,6 +1587,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1733,11 +1734,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
 //                        TeaserUrl = "",
 //                        title = "",
 //                        Type = "") as Serializable
-                    HomePatchDetail(AlbumId ="",
+                    HomePatchDetail(AlbumId =mSongDetails.albumId.toString(),
                         ArtistId = mSongDetails.ArtistId?:"",
                         ContentID = mSongDetails.ContentID,
                         ContentType = "",
-                        PlayUrl = "",
+                        PlayUrl = mSongDetails.PlayUrl,
                         AlbumName = "",
                         AlbumImage = "",
                         fav ="",
@@ -1788,9 +1789,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                         HomePatchDetail(
                             AlbumId = mSongDetails.albumId?:mSongDetails.ContentID,
                             ArtistId = mSongDetails.ArtistId?:"",
-                            ContentID = mSongDetails.ContentID,
+                            ContentID = mSongDetails.albumId!!,
                             ContentType = "",
-                            PlayUrl = "",
+                            PlayUrl = mSongDetails.PlayUrl,
                             AlbumName = "",
                             AlbumImage = "",
                             fav = "",
@@ -1826,10 +1827,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
 fun addSongsToPlaylist(mSongDetails: SongDetail, id: String?) {
 
     id?.let { viewModel.songsAddedToPlaylist(it,mSongDetails.ContentID) }
-    viewModel.songsAddedToPlaylist.observe(this){res->
+              viewModel.songsAddedToPlaylist.observe(this){res->
 
-
-            Toast.makeText(applicationContext,res.status.toString(),Toast.LENGTH_LONG).show()
+             Toast.makeText(applicationContext,res.status.toString(),Toast.LENGTH_LONG).show()
 
 
     }

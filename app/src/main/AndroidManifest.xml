@@ -6,9 +6,9 @@
     <application
         android:allowBackup="true"
         android:name=".DemoApp"
-        android:icon="@mipmap/ic_launcher_icon"
+        android:icon="@drawable/shadhin_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/shadhin_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShadhinMusicSDK"
         android:usesCleartextTraffic="true"

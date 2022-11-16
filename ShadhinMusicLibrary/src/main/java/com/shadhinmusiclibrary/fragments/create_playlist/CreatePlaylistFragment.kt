@@ -22,6 +22,7 @@ import com.shadhinmusiclibrary.R.drawable.my_bl_sdk_rounded_button_red
 import com.shadhinmusiclibrary.callBackService.CreatePlaylistBottomsheetCallback
 import com.shadhinmusiclibrary.data.model.PlaylistBody
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.utils.textColor
 import org.json.JSONObject
 
 
@@ -91,6 +92,7 @@ internal class CreatePlaylistFragment : CommonBaseFragment(),CreatePlaylistBotto
                 val name:String = etCreatePlaylist.getText().toString()
                 Log.e("TAG","NAME: "+ name)
                 savePlaylist?.setBackgroundResource(my_bl_sdk_rounded_button_red)
+                savePlaylist?.textColor(R.color.my_sdk_color_white)
                 savePlaylist?.isEnabled= true
                 savePlaylist?.setOnClickListener {
 
