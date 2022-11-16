@@ -32,6 +32,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -426,7 +427,7 @@ internal class HomeFragment : BaseFragment(),
                 })
         }
 
-        override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItem) {
+        override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItemModel) {
             ShadhinMusicSdkCore.pressCountIncrement()
             val data = Bundle()
             data.putSerializable(

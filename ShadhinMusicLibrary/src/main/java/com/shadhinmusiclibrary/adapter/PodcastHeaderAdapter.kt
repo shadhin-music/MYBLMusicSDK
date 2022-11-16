@@ -26,7 +26,7 @@ internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback,
     private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,
-    private val homePatchDetail: HomePatchDetail?
+    private val homePatchDetail: HomePatchDetailModel?
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
 
     var episode: List<EpisodeModel>? = null

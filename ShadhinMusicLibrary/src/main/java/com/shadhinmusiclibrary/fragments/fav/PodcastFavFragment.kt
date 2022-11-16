@@ -25,23 +25,16 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack ,
+internal class PodcastFavFragment : BaseFragment(),DownloadedSongOnCallBack ,
    favItemClickCallback {
     private lateinit var navController: NavController
     private lateinit var dataAdapter: FavoriteSongsAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

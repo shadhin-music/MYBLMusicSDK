@@ -20,12 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.R.drawable.my_bl_sdk_rounded_button_red
 import com.shadhinmusiclibrary.callBackService.CreatePlaylistBottomsheetCallback
-import com.shadhinmusiclibrary.data.model.PlaylistBody
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import org.json.JSONObject
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
 
-internal class CreatePlaylistFragment : CommonBaseFragment(),CreatePlaylistBottomsheetCallback {
+internal class CreatePlaylistFragment : BaseFragment(),
+    CreatePlaylistBottomsheetCallback {
 
     private lateinit var viewModel: CreateplaylistViewModel
     override fun onCreateView(
@@ -47,25 +46,30 @@ internal class CreatePlaylistFragment : CommonBaseFragment(),CreatePlaylistBotto
              }*/
             requireActivity().onBackPressed()
         }
-        viewModel.createPlaylist.observe(viewLifecycleOwner){res->
+        viewModel.createPlaylist.observe(viewLifecycleOwner) { res ->
 
-           Toast.makeText(requireContext(),res.status.toString(),Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
         }
         val btnCreatePlaylist: AppCompatButton = requireView().findViewById(R.id.btnCreatePlaylist)
-           btnCreatePlaylist.setOnClickListener {
-               createPlaylist()
-           }
+        btnCreatePlaylist.setOnClickListener {
+            createPlaylist()
+        }
     }
 
     override fun createPlaylist() {
-         openCreatePlaylist()
+        openCreatePlaylist()
     }
+
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.factoryCreatePlaylistVM)[CreateplaylistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.factoryCreatePlaylistVM
+            )[CreateplaylistViewModel::class.java]
     }
+
     @SuppressLint("ResourceAsColor")
-    fun openCreatePlaylist(){
+    fun openCreatePlaylist() {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
 
         val contentView =
@@ -76,44 +80,42 @@ internal class CreatePlaylistFragment : CommonBaseFragment(),CreatePlaylistBotto
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
-        val etCreatePlaylist:EditText? = bottomSheetDialog.findViewById(R.id.etCreatePlaylist)
-         var savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
+        val etCreatePlaylist: EditText? = bottomSheetDialog.findViewById(R.id.etCreatePlaylist)
+        var savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
         etCreatePlaylist?.setOnFocusChangeListener { view, focused ->
             val keyboard: InputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (focused) keyboard.showSoftInput(etCreatePlaylist,
-                0) else keyboard.hideSoftInputFromWindow(
+            if (focused) keyboard.showSoftInput(
+                etCreatePlaylist,
+                0
+            ) else keyboard.hideSoftInputFromWindow(
                 etCreatePlaylist.getWindowToken(),
-                0)
+                0
+            )
         }
-        etCreatePlaylist?.addTextChangedListener(object: TextWatcher {
+        etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val name:String = etCreatePlaylist.getText().toString()
-                Log.e("TAG","NAME: "+ name)
+                val name: String = etCreatePlaylist.getText().toString()
+                Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(my_bl_sdk_rounded_button_red)
-                savePlaylist?.isEnabled= true
+                savePlaylist?.isEnabled = true
                 savePlaylist?.setOnClickListener {
-
                     viewModel.createPlaylist(name)
-
-                   // requireActivity().onBackPressed()
+                    // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
-
                 }
-                if(etCreatePlaylist.text.isNullOrEmpty()){
+                if (etCreatePlaylist.text.isNullOrEmpty()) {
                     savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_gray)
-                    savePlaylist?.isEnabled= false
+                    savePlaylist?.isEnabled = false
                 }
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
             }
         })
         etCreatePlaylist?.requestFocus()
-
     }
-
 }

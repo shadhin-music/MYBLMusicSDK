@@ -1,7 +1,8 @@
 package com.shadhinmusiclibrary.activities
 
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 
-interface ItemClickListener {
-    fun onClick(position: Int, mSongDetails: SongDetail, id: String?)
+
+internal interface ItemClickListener {
+    fun onClick(position: Int, mSongDetails: SongDetailModel, id: String?)
 }

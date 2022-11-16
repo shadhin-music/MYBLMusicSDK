@@ -19,11 +19,12 @@ import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCall
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.VideoModel
+
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.createTimeLabel
 

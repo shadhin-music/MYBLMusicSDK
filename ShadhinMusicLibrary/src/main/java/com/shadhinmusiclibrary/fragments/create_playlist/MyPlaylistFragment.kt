@@ -2,10 +2,8 @@ package com.shadhinmusiclibrary.fragments.create_playlist
 
 import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
-import android.text.Layout
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,15 +28,15 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.MyPlaylistAdapter
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
 import java.io.Serializable
 
 
-internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
+internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var myPlaylistAdapter: MyPlaylistAdapter
@@ -53,7 +51,7 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
-         setupViewModel()
+        setupViewModel()
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
 
@@ -61,7 +59,7 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
 //        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         // recyclerView.adapter = concatAdapter
         val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
-        textTitle.text= "My Playlist"
+        textTitle.text = "My Playlist"
         imageBackBtn.setOnClickListener {
             /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
                  requireActivity().finish()
@@ -71,28 +69,29 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         viewModel.getuserPlaylist()
         viewModel.getUserPlaylist.observe(viewLifecycleOwner) { res ->
-            if(res.data?.size?.equals(0) == true){
+            if (res.data?.size?.equals(0) == true) {
                 val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
                 layout?.visibility = VISIBLE
-               recyclerView.visibility = GONE
-                val btnCreatePlaylist: AppCompatButton = requireView().findViewById(R.id.btnCreatePlaylist)
+                recyclerView.visibility = GONE
+                val btnCreatePlaylist: AppCompatButton =
+                    requireView().findViewById(R.id.btnCreatePlaylist)
                 btnCreatePlaylist.setOnClickListener {
                     openCreatePlaylist()
                 }
-            } else{
+            } else {
                 val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
-                layout?.visibility= GONE
+                layout?.visibility = GONE
                 recyclerView.visibility = VISIBLE
                 footerAdapter = HomeFooterAdapter()
-                myPlaylistAdapter = MyPlaylistAdapter(res.data,this)
+                myPlaylistAdapter = MyPlaylistAdapter(res.data, this)
 
-                Log.e("TAG","Message :"+ res.data)
+                Log.e("TAG", "Message :" + res.data)
                 //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
                 val config = ConcatAdapter.Config.Builder()
                     .setIsolateViewTypes(false)
                     .build()
-                val concatAdapter=  ConcatAdapter(config,myPlaylistAdapter,footerAdapter)
+                val concatAdapter = ConcatAdapter(config, myPlaylistAdapter, footerAdapter)
                 val layoutManager = GridLayoutManager(context, horizontalSpanCount)
                 val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
                     object : GridLayoutManager.SpanSizeLookup() {
@@ -106,17 +105,22 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
             }
 
         }
-        val addPlaylist:AppCompatImageView = requireView().findViewById(R.id.imageAddPlaylist)
+        val addPlaylist: AppCompatImageView = requireView().findViewById(R.id.imageAddPlaylist)
 
         addPlaylist.setOnClickListener {
             argHomePatchItem?.let { it1 -> clickOnAddPlaylist(it1) }
         }
     }
+
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.factoryCreatePlaylistVM)[CreateplaylistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.factoryCreatePlaylistVM
+            )[CreateplaylistViewModel::class.java]
     }
- fun clickOnAddPlaylist(selectedHomePatchItem: HomePatchItem) {
+
+    fun clickOnAddPlaylist(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
@@ -134,10 +138,18 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
     }
 
     override fun GotoPlaylistDetails(userPlaylistData: String?, name: String?, gradientResId: Int) {
-        argHomePatchItem?.let { clickOnPlaylistItem(it,userPlaylistData.toString(),name.toString(), gradientResId) }
+        argHomePatchItem?.let {
+            clickOnPlaylistItem(
+                it,
+                userPlaylistData.toString(),
+                name.toString(),
+                gradientResId
+            )
+        }
     }
+
     fun clickOnPlaylistItem(
-        selectedHomePatchItem: HomePatchItem,
+        selectedHomePatchItem: HomePatchItemModel,
         id: String,
         name: String,
         gradientResId: Int
@@ -148,9 +160,9 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        data.putSerializable(PlaylistId,id)
-        data.putSerializable(PlaylistName,name)
-        Log.e("TAG","ID: "+ id)
+        data.putSerializable(PlaylistId, id)
+        data.putSerializable(PlaylistName, name)
+        Log.e("TAG", "ID: " + id)
         startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
             .apply {
                 putExtra(
@@ -158,12 +170,13 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
                     AppConstantUtils.Requester_Name_CreatedPlaylistDetails
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
-                putExtra(PlaylistId,data)
-                putExtra(PlaylistName,data)
+                putExtra(PlaylistId, data)
+                putExtra(PlaylistName, data)
                 putExtra(AppConstantUtils.PlaylistGradientId, gradientResId)
             })
     }
-    fun openCreatePlaylist(){
+
+    fun openCreatePlaylist() {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
 
         val contentView =
@@ -179,17 +192,20 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
         etCreatePlaylist?.setOnFocusChangeListener { view, focused ->
             val keyboard: InputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (focused) keyboard.showSoftInput(etCreatePlaylist,
-                0) else keyboard.hideSoftInputFromWindow(
+            if (focused) keyboard.showSoftInput(
+                etCreatePlaylist,
+                0
+            ) else keyboard.hideSoftInputFromWindow(
                 etCreatePlaylist.getWindowToken(),
-                0)
+                0
+            )
         }
-        etCreatePlaylist?.addTextChangedListener(object: TextWatcher {
+        etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val name:String = etCreatePlaylist.getText().toString()
-                Log.e("TAG","NAME: "+ name)
+                val name: String = etCreatePlaylist.getText().toString()
+                Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
-                savePlaylist?.isEnabled= true
+                savePlaylist?.isEnabled = true
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)
@@ -198,13 +214,13 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
                     bottomSheetDialog.dismiss()
 
                 }
-                if(etCreatePlaylist.text.isNullOrEmpty()){
+                if (etCreatePlaylist.text.isNullOrEmpty()) {
                     savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_gray)
-                    savePlaylist?.isEnabled= false
+                    savePlaylist?.isEnabled = false
                 }
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 

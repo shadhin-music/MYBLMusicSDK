@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.fav.onFavAlbumClick
 import com.shadhinmusiclibrary.fragments.fav.onFavArtistClick
 import com.shadhinmusiclibrary.fragments.fav.onFavPlaylistClick
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 
 internal class FavoritePlaylistAdapter(

@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.podcast.TrackModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -69,7 +70,7 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
-            Track(
+            SongTrackModel(
                 "",
                 mSongDetails.rootType,
                 mSongDetails.artist,

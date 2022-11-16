@@ -8,7 +8,8 @@ import java.io.Serializable
 @Keep
 @Entity
 data class DownloadedContent(
-    @PrimaryKey var contentId: String,
+    @PrimaryKey
+    var contentId: String,
     var rootId: String,
     var rootImg: String,
     var rootTitle: String,

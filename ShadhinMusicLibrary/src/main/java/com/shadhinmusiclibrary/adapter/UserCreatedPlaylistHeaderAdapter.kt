@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 import kotlin.random.Random
 
 internal class UserCreatedPlaylistHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
+    var homePatchDetail: HomePatchDetailModel?,
     var playlistName: String?,
     private val itemClickCB: OnItemClickCallback, private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,

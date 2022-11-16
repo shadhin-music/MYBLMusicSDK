@@ -15,10 +15,10 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 

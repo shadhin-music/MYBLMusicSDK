@@ -29,7 +29,6 @@ import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository

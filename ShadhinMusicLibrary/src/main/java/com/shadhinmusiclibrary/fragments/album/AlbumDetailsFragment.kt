@@ -5,11 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -28,9 +26,8 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
-import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -38,8 +35,8 @@ import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment : BaseFragment(),
@@ -312,7 +309,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
-        @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {

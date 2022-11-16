@@ -34,7 +34,6 @@ import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status

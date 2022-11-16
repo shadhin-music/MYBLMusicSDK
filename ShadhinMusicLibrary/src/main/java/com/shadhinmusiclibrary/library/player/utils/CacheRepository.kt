@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -16,6 +17,23 @@ class CacheRepository(val context: Context) {
     val databaseClient = DatabaseClient(context)
     val watchLaterDb = databaseClient.getWatchlaterDatabase()
     val downloadDb = databaseClient.getDownloadDatabase()
+    val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
+    fun insertFavoriteContent(favData: List<FavData>) {
+        favoriteContentDB?.FavoriteContentDao()?.insertAll(favData)
+        //  Log.i("dfsfsdff", "insertFavoriteContent: ${a}")
+    }
+
+    fun insertFavSingleContent(favData: FavData) {
+        favoriteContentDB?.FavoriteContentDao()?.insert(favData)
+    }
+
+    fun getAllFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAllFavorites()
+    fun getSongsFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAllSongsFav()
+    fun getArtistFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getArtistFav()
+    fun getAlbumsFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getAlbumsFav()
+    fun getPlaylistFavoriteContent() = favoriteContentDB?.FavoriteContentDao()?.getPlaylistFav()
+    fun getVideoFavContent() = favoriteContentDB?.FavoriteContentDao()?.getAllVideosFav()
+    fun getPodcastFavContent() = favoriteContentDB?.FavoriteContentDao()?.getAllPodcastFav()
     fun insertDownload(downloadedContent: DownloadedContent) {
         downloadDb?.DownloadedContentDao()?.insert(downloadedContent)
     }
@@ -24,21 +42,52 @@ class CacheRepository(val context: Context) {
         watchLaterDb?.WatchlaterContentDao()?.insert(watchLaterContent)
     }
 
-    fun getAllWatchlater() = watchLaterDb?.WatchlaterContentDao()?.getAllWatchLater()
-
-    fun getWatchedVideoById(id: String): WatchLaterContent? {
-        var contents = watchLaterDb?.WatchlaterContentDao()?.getWatchLaterById(id)
+    fun getFavoriteById(id: String): FavData? {
+        var contents = favoriteContentDB?.FavoriteContentDao()?.getFavoriteById(id)
         if (contents?.size ?: 0 > 0) {
             return contents!![0]
         }
         return null
     }
 
+    fun deleteFavoriteById(id: String) {
+        val path = favoriteContentDB?.FavoriteContentDao()?.getFavoriteById(id)
+        favoriteContentDB?.FavoriteContentDao()?.deleteFavoriteById(id)
+        try {
+            UtilHelper.deleteFileIfExists(Uri.parse(path.toString()))
+        } catch (e: NullPointerException) {
+
+        }
+    }
+
+    fun getAllWatchlater() = watchLaterDb?.WatchlaterContentDao()?.getAllWatchLater()
+
+    fun getWatchedVideoById(id: String): WatchLaterContent? {
+        var contents = watchLaterDb?.WatchlaterContentDao()?.getWatchLaterById(id)
+        if ((contents?.size ?: 0) > 0) {
+            return contents!![0]
+        }
+        return null
+    }
+
+    //    fun deleteAllDownloads() {
+//        val list=downloadDb?.DownloadedContentDao()?.getAllDownloads()
+//        downloadDb?.DownloadedContentDao()?.deleteAllDownloads()
+//        list?.forEach {
+//            it.path?.let { uriStr->
+//                FileUtil.deleteFileIfExists(Uri.parse(uriStr))
+//                DownloadOrDeleteMp3Observer.notifySubscriber()
+//            }
+//        }
+//    }
     fun getAllPendingDownloads() = downloadDb?.DownloadedContentDao()?.getAllPendingDownloads()
     fun getAllDownloads() = downloadDb?.DownloadedContentDao()?.getAllDownloads()
     fun getAllVideosDownloads() = downloadDb?.DownloadedContentDao()?.getAllVideosDownloads()
     fun getAllSongsDownloads() = downloadDb?.DownloadedContentDao()?.getAllSongsDownloads()
     fun getAllPodcastDownloads() = downloadDb?.DownloadedContentDao()?.getAllPodcastDownloads()
+
+    fun getWatchTrackByID(contentId: String) =
+        watchLaterDb?.WatchlaterContentDao()?.getWatchlaterTrackById(contentId)
 
     //
     fun getDownloadById(id: String): DownloadedContent? {
@@ -49,15 +98,19 @@ class CacheRepository(val context: Context) {
         return null
     }
 
+    //
+//    fun getPendingDownloadCount() = downloadDb?.DownloadedContentDao()?.getPendingDownloadCount()
     fun setDownloadedContentPath(id: String, path: String) =
         downloadDb?.DownloadedContentDao()?.setPath(id, path)
 
+    //fun setDownloadedContentPath(id:String,path:String)=downloadDb?.DownloadedContentDao()?.setPath(id,path)
     fun deleteDownloadById(id: String) {
         val path = downloadDb?.DownloadedContentDao()?.getTrackById(id)
         downloadDb?.DownloadedContentDao()?.deleteDownloadById(id)
         try {
             UtilHelper.deleteFileIfExists(Uri.parse(path))
         } catch (e: NullPointerException) {
+
         }
     }
 
@@ -67,28 +120,66 @@ class CacheRepository(val context: Context) {
         try {
             UtilHelper.deleteFileIfExists(Uri.parse(path))
         } catch (e: NullPointerException) {
+
         }
+        // DownloadOrDeleteObserver.notifySubscriber()
+
     }
+//
+//    fun deleteDownloadByAlbumId(albumId: String) {
+//        val list=downloadDb?.DownloadedContentDao()?.getDownloadsByAlbumId(albumId)
+//        downloadDb?.DownloadedContentDao()?.deleteDownloadByAlbumIdId(albumId)
+//        list?.forEach {
+//            it.path?.let {  uriStr->
+//                FileUtil.deleteFileIfExists(Uri.parse(uriStr))
+//                DownloadOrDeleteMp3Observer.notifySubscriber()
+//            }
+//        }
+//    }
 
     fun isTrackDownloaded(contentId: String): Boolean {
-        var path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
-        if (path == null) {
-            return false
+        val path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
+        Log.e("TAG", "Track: " + path)
+        return if (path == null) {
+            Log.e("TAG", "Track123: " + path)
+            false
         } else {
-            return true
+            true
         }
+
     }
 
     fun getDownloadedContent() = downloadDb?.DownloadedContentDao()?.getAllDownloadedTrackById()
 
-    fun isDownloadCompleted(): Boolean {
-        val progress = sh.getInt("progress", 0)
-        Log.e("TAG", "TrackDownload: " + progress)
-        if (progress.equals(3)) {
-            Log.e("TAG", "TrackDownload: " + progress)
-            return true
-        } else {
+    //fun getDownlodById(contentId:String):Boolean{
+//    var path = downloadDb?.DownloadedContentDao()?.getDownloadedTrackById(contentId)
+//    Log.e("TAG", "TrackDownloadTrue: " + path)
+//    if (path == null) {
+//        Log.e("TAG", "TrackDownload: " + path)
+//        return false
+//    } else {
+//        return true
+//    }
+//}
+    fun isVideoDownloaded(content: String?): Boolean {
+        return databaseClient.getDownloadDatabase()?.DownloadedContentDao()
+            ?.downloadedVideoContent(content ?: "") ?: false
+    }
+
+    fun downloadCompleted(content: String?) {
+        databaseClient.getDownloadDatabase()?.DownloadedContentDao()
+            ?.downloadCompleted(content ?: "")
+    }
+
+    fun isDownloadCompleted(contentId: String): Boolean {
+        val completed = databaseClient.getDownloadDatabase()?.DownloadedContentDao()
+            ?.downloadedContent(contentId)
+        if (completed?.equals(null) == true) {
+            Log.e("TAG", "TrackDownload: " + completed)
             return false
+        } else {
+            Log.e("TAG", "TrackDownload: " + completed)
+            return true
         }
     }
 }

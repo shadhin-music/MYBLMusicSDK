@@ -38,16 +38,16 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 
 internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItemClickCallback,
     CreatedPlaylistSongBottomSheetDialogItemCallback {

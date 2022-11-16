@@ -2,11 +2,9 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,14 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.RBTDATAModel
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ParentAdapter(

@@ -5,10 +5,6 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.shadhinmusiclibrary.fragments.AllDownloadDetailsFragment
-import com.shadhinmusiclibrary.fragments.PodcastDownloadFragment
-import com.shadhinmusiclibrary.fragments.SongsDownloadFragment
-import com.shadhinmusiclibrary.fragments.VideosDownloadFragment
 import com.shadhinmusiclibrary.fragments.fav.*
 import com.shadhinmusiclibrary.fragments.fav.ArtistFavFragment
 import com.shadhinmusiclibrary.fragments.fav.PodcastFavFragment

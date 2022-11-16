@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.fav.onFavArtistClick
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 
 internal class FavoriteArtistAdapter(
