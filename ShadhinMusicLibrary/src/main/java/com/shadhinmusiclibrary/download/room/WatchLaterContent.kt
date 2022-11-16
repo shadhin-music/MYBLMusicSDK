@@ -1,11 +1,13 @@
 package com.shadhinmusiclibrary.download.room
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.shadhinmusiclibrary.data.model.SongDetail
 import java.io.Serializable
 
 
+@Keep
 @Entity
 data class WatchLaterContent(
     @PrimaryKey var contentId:String,

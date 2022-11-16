@@ -9,6 +9,8 @@ import com.shadhinmusiclibrary.di.single.*
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
+import com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistViewModelFactory
+import com.shadhinmusiclibrary.fragments.fav.FavViewModelFactory
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
 
@@ -138,6 +140,13 @@ internal class Module(private val applicationContext: Context) {
             .client(getBaseClientWITHtOKEN())
             .build()
     }
+    private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(getBaseClientWithTokenAndClient())
+            .build()
+    }
     private fun getBaseClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
@@ -153,6 +162,13 @@ internal class Module(private val applicationContext: Context) {
             )
             .build()
     }
+    private fun getBaseClientWithTokenAndClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                BearerTokenWithClientHeaderInterceptor()
+            )
+            .build()
+    }
     private fun getApiShadhinMusicServiceV5(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
     }
@@ -162,7 +178,9 @@ internal class Module(private val applicationContext: Context) {
         return getRetrofitAPIShadhinMusicInstanceV5WithBearerToken().create(ApiService::class.java)
     }
 
-
+    private fun getApiShadhinMusicServiceV5withTokenAndClient(): ApiService {
+        return getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient().create(ApiService::class.java)
+    }
     private fun getFMClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.LAST_FM_API_URL)
@@ -190,6 +208,12 @@ internal class Module(private val applicationContext: Context) {
     private val repositoryHomeContentRBT: AmartunesContentRepository =
         AmartunesContentRepository(getApiShadhinMusicServiceV5withToken())
 
+
+    private val repositoryCreatePlaylist: CreatePlaylistRepository =
+        CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+
+    private val repositoryFavContentRepository: FavContentRepository =
+        FavContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
         ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistSongContent: ArtistSongContentRepository =
@@ -214,7 +238,11 @@ internal class Module(private val applicationContext: Context) {
     val factoryArtistBannerVM: ArtistBannerViewModelFactory
         get() = ArtistBannerViewModelFactory(repositoryArtistBannerContent)
 
+    val factoryCreatePlaylistVM: CreatePlaylistViewModelFactory
+        get() = CreatePlaylistViewModelFactory(repositoryCreatePlaylist)
 
+    val factoryFavContentVM: FavViewModelFactory
+        get() = FavViewModelFactory(repositoryFavContentRepository)
 
     val factoryArtistSongVM: ArtistContentViewModelFactory
         get() = ArtistContentViewModelFactory(repositoryArtistSongContent)

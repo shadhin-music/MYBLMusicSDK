@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments.home
 
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -32,12 +31,14 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomeData
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.RBTDATA
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
@@ -49,7 +50,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
     FragmentEntryPoint, HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
 
     private lateinit var concatAdapter: ConcatAdapter
-
+    private lateinit var favViewModel: FavViewModel
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
@@ -70,7 +71,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
    // var rbtData: RBTDATA? = null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
-
+    private lateinit var cacheRepository: CacheRepository
     override fun getViewModel(): Class<HomeViewModel> {
         return HomeViewModel::class.java
     }
@@ -93,14 +94,49 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         super.onViewCreated(view, savedInstanceState)
         Log.e("Homex", "onViewCreated Message: " + pageNum)
         uiInitMiniMusicPlayer(view)
+        cacheRepository= CacheRepository(requireContext())
         viewModel?.fetchHomeData(pageNum, false)
         viewModelAmaraTunes = ViewModelProvider(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
        // viewModelAmaraTunes.fetchRBTURL()
+        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
+
+        favViewModel.getFavContentArtist("A")
+        favViewModel.getFavContentPodcast("PD")
+        favViewModel.getFavContentAlbum("R")
+        favViewModel.getFavContentVideo("V")
+        favViewModel.getFavContentSong("S")
+        favViewModel.getFavContentPlaylist("P")
+        favViewModel.getFavContentAlbum.observe(viewLifecycleOwner){res->
+            Log.e("DATA","DATA: "+ res)
+            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+
+        }
+        favViewModel.getFavContentPodcast.observe(viewLifecycleOwner){res->
+            Log.e("DATA","DATA: "+ res)
+           cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+
+        }
+        favViewModel.getFavContentArtist.observe(viewLifecycleOwner){res->
+            Log.e("DATA","DATAARTIST: "+ res.data)
+            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
 
 
+        }
+        favViewModel.getFavContentVideo.observe(viewLifecycleOwner){res->
+            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+        }
+
+        favViewModel.getFavContentSong.observe(viewLifecycleOwner){res->
+            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+        }
+        favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner){res->
+            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+
+        }
+        Log.e("DATA","DATAARTISTInserted: "+ cacheRepository.getAllFavoriteContent())
         observeData()
     }
 
@@ -353,6 +389,23 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 putExtra(
                     AppConstantUtils.UI_Request_Type,
                     AppConstantUtils.Requester_Name_MyPlaylist
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
+
+    override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItem) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_MyFavorite
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })

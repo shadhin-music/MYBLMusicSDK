@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import java.io.Serializable
 
 @Keep
-internal data class SongDetail(
+data class SongDetail(
     val ContentID: String,
     val image: String,
     val title: String,

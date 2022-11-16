@@ -25,12 +25,12 @@ import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallb
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
 import com.shadhinmusiclibrary.data.model.podcast.Data
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 import com.shadhinmusiclibrary.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
@@ -57,6 +57,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
     private var cacheRepository: CacheRepository? = null
+    private lateinit var favViewModel: FavViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -88,8 +89,8 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     }
 
     private fun initialize() {
-        setupAdapters()
         setupViewModel()
+        setupAdapters()
         observeData()
     }
 
@@ -98,7 +99,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastHeaderAdapter = PodcastHeaderAdapter(this)
+        podcastHeaderAdapter = PodcastHeaderAdapter(this,cacheRepository,favViewModel, argHomePatchDetail)
         podcastTrackAdapter = PodcastTrackAdapter(this,this, cacheRepository!! )
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
@@ -118,6 +119,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     private fun setupViewModel() {
         viewModel =
             ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
+        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
     }
 
     private fun observeData() {

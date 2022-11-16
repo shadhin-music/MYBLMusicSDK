@@ -69,6 +69,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
 
 
     }
+
     override fun onDestroy() {
         ShadhinMusicSdkCore.destroySDK(applicationContext)
         super.onDestroy()
@@ -79,7 +80,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     companion object {
-        const val TOKEN: String ="eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTYwNjg1OTM1IiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2Nzc5MTQxMSwiZXhwIjoxNjY3ODcxODAzLCJpYXQiOjE2Njc3OTE0MTEsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.NE2_5aDBtZTd7zFk1fXoHjd_vGlocELL_wo4qLmFXzwaUQXd9Nnb5LvuEcrgjEDbpioLpi_ELkx9JJQNVz1oAw"
+        const val TOKEN: String ="eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTAwMDAwMDAwIiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2ODQ4OTIwMSwiZXhwIjoxNjY4NTUxMTEyLCJpYXQiOjE2Njg0ODkyMDEsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.i08Wx3gDxc8UK3YSJ9t9LaV8Nu5HrHHHm3778ZFREKQFlIqgfREvfrNGZ5LmWRIpMH--IpurqOZTW3YCySN6sA"
     }
 }
 

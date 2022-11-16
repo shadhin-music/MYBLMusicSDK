@@ -15,6 +15,7 @@ import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
@@ -88,6 +89,11 @@ internal class PodcastDownloadFragment : CommonBaseFragment(),DownloadedSongOnCa
                 )
             }
     }
+
+    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,

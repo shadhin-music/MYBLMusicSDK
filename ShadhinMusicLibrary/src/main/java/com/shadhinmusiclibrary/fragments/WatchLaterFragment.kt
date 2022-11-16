@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +25,12 @@ import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
 import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.utils.CacheRepository
 
@@ -35,6 +39,7 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack,
     WatchlaterBottomSheetDialogItemCallback {
     private var isDownloaded:Boolean = false
     private var iswatched: Boolean = false
+    private lateinit var favViewModel: FavViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,6 +57,7 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
+        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
 
@@ -167,7 +173,7 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack,
                         item.contentType.toString(),
                         0,
                         0,
-                        item.artist.toString(),
+                        item.artist.toString(),item.artistId.toString(),
                         item.duration.toString()))
                 isDownloaded =true
                  }
@@ -218,6 +224,49 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack,
                 Log.e("TAGGG",
                     "INSERTED: " + cacheRepository.getAllWatchlater())
 
+            }
+            bottomSheetDialog.dismiss()
+        }
+        val constraintFav: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintFav)
+        val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
+        val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
+        var isFav = false
+        val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
+        if (isAddedToFav?.contentID != null) {
+
+            favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+            isFav = true
+            textFav?.text = "Remove From favorite"
+        } else {
+
+            favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+            isFav = false
+            textFav?.text = "Favorite"
+        }
+
+
+        constraintFav?.setOnClickListener {
+            if(isFav.equals(true)){
+                favViewModel.deleteFavContent(item.contentID.toString(),"V")
+                cacheRepository.deleteFavoriteById(item.contentID.toString())
+                Toast.makeText(requireContext(),"Removed from favorite", Toast.LENGTH_LONG).show()
+                favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+                isFav=false
+                Log.e("TAG","NAME: "+ isFav)
+            } else {
+
+                favViewModel.addFavContent(item.contentID.toString(),"V")
+
+                favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+                Log.e("TAG","NAME123: "+ isFav)
+                cacheRepository.insertFavSingleContent(FavData(item.contentID.toString(),item.albumId,item.image,"",item.artist,item.artistId,
+                    "","",2,"V","","","1","",item.image,"",
+                    false,  "",0,"","","",item.playUrl,item.rootId,
+                    "",false,"",item.title,"",""
+
+                ))
+                isFav = true
+                Toast.makeText(requireContext(),"Added to favorite", Toast.LENGTH_LONG).show()
             }
             bottomSheetDialog.dismiss()
         }

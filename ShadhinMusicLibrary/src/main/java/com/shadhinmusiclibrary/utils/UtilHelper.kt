@@ -6,12 +6,14 @@ import android.graphics.Point
 import android.net.Uri
 import android.util.Log
 import com.shadhinmusiclibrary.data.model.*
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.Episode
 import com.shadhinmusiclibrary.data.model.podcast.Track
 import com.shadhinmusiclibrary.data.model.search.SearchData
 import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.player.Constants
 import com.shadhinmusiclibrary.player.data.model.Music
 import java.io.File
@@ -295,7 +297,41 @@ internal object UtilHelper {
         }
         return songDetailList
     }
+    fun getSongDetailToFavoriteSongDetailList(trackList: MutableList<FavData>): MutableList<SongDetail> {
+        val songDetailList = mutableListOf<SongDetail>()
 
+        for (trackItem in trackList) {
+            trackItem.apply {
+                val newPlayUrl = if(playUrl?.contains("https",true)==true) playUrl  else Constants.FILE_BASE_URL + playUrl
+                songDetailList.add(
+                    SongDetail(
+                        ContentID = contentID,
+                        image = image.toString(),
+                        title = title.toString(),
+                        ContentType = contentType.toString(),
+                        PlayUrl = newPlayUrl.toString(),
+                        artist = artist.toString(),
+                        duration = duration.toString(),
+                        copyright = "",
+                        labelname = "",
+                        releaseDate = "",
+                        fav = "",
+                        ArtistId = "",
+                        albumId = rootId,
+                        userPlayListId = "",
+                        /*rootType = contentType,*/
+
+                        rootContentID = rootId.toString(),
+                        rootContentType = rootType.toString(),
+                        rootImage = ""
+                    )
+                )
+
+
+            }
+        }
+        return songDetailList
+    }
     fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetail> {
         val songDetailList = mutableListOf<SongDetail>()
 
@@ -451,6 +487,34 @@ internal object UtilHelper {
                 rootContentID = rootPatch.ContentID,
                 rootContentType = rootPatch.ContentType,
                 rootImage = rootPatch.image
+            )
+        }
+    }
+    fun getSongDetailAndRootDataForUSERPLAYLIST(
+        mSongDet: UserSongsPlaylistDataModel,
+
+    ): SongDetail {
+        mSongDet.apply {
+            return SongDetail(
+                ContentID = contentID.toString(),
+                image = image.toString(),
+                title = title.toString(),
+                ContentType = contentType.toString(),
+                PlayUrl = playUrl.toString(),
+                artist = artist.toString(),
+                duration = duration.toString(),
+                copyright = copyright.toString(),
+                labelname = labelname.toString(),
+                releaseDate = releaseDate.toString(),
+                fav = "",
+                ArtistId = artistId.toString(),
+                albumId = albumId.toString(),
+                userPlayListId = userPlayListId,
+                /*rootType = rootPatch.ContentType,*/
+
+                rootContentID = "",
+                rootContentType = "",
+                rootImage = ""
             )
         }
     }

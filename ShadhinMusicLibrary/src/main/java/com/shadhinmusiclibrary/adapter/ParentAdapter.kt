@@ -115,11 +115,11 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 
         }
 
-//        if (this.homeListData.size >= 3 && downloadNotAdded){
-//            downloadNotAdded = false
-//            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
-//            this.homeListData.add(download!!)
-//        }
+        if (this.homeListData.size >= 3 && downloadNotAdded){
+            downloadNotAdded = false
+            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
+            this.homeListData.add(download!!)
+        }
 //        var exists :Boolean = false
 //        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
 //
@@ -260,6 +260,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             val watchlater:LinearLayout = itemView.findViewById(R.id.WatchLater)
             val playlist:LinearLayout = itemView.findViewById(R.id.Playlists)
+            val favorite:LinearLayout = itemView.findViewById(R.id.Fav)
             download.setOnClickListener {
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
             }
@@ -268,6 +269,9 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             }
             playlist.setOnClickListener {
                 downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
+            }
+            favorite.setOnClickListener {
+                downloadClickCallBack.clickOnMyFavorite(homePatchItemModel)
             }
         }
 

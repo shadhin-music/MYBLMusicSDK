@@ -18,7 +18,6 @@ internal data class FeaturedSongDetail(
     val releaseDate: String,
     val fav: Any,
     val artistId: String,
-
     val rootContentID: String,
     val rootImage: String,
     val rootContentType: String,

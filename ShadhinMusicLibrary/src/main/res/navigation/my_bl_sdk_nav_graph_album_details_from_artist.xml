@@ -21,5 +21,8 @@
        android:label="fragment_artist_details"
        tools:layout="@layout/my_bl_sdk_fragment_artist_details">
 
+       <action
+           android:id="@+id/action_artist_details_fragment_to_album_details_fragment"
+           app:destination="@id/album_details_fragment" />
    </fragment>
 </navigation>
