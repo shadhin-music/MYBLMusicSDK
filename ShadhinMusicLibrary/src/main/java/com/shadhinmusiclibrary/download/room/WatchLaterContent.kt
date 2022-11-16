@@ -1,9 +1,11 @@
 package com.shadhinmusiclibrary.download.room
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
+@Keep
 @Entity
 data class WatchLaterContent(
     @PrimaryKey var contentId: String,
@@ -18,6 +20,7 @@ data class WatchLaterContent(
     var artist: String,
     var timeStamp: String
 ) : Serializable {
+
     fun getImageUrl300Size(): String {
         return this.rootImg.replace("<\$size\$>", "300")
     }

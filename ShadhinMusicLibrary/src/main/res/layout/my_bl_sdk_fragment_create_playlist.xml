@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/PlaylistId"
     android:background="#F5F7FC">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,6 +101,7 @@
             android:layout_marginBottom="16dp"
             android:textAlignment="center"
             android:gravity="center"
+            android:id="@+id/btnCreatePlaylist"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingTop="8dp"

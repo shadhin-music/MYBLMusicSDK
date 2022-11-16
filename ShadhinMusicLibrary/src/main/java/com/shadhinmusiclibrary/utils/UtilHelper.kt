@@ -6,11 +6,13 @@ import android.graphics.Point
 import android.net.Uri
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import java.io.File
@@ -78,36 +80,6 @@ internal object UtilHelper {
         }
         return musicList
     }
-
-    /* fun getSongDetailToDownloadedSongDetailList(trackList: MutableList<DownloadedContent>): MutableList<SongDetailModel> {
-         val songDetailList = mutableListOf<SongDetailModel>()
-         for (trackItem in trackList) {
-             trackItem.apply {
-                 songDetailList.add(
-                     SongDetailModel().apply {
-                         content_Id = contentId
-                         imageUrl = rootImg
-                         titleName = rootTitle
-                         content_Type = rootType
-                         playingUrl = "" + track
-                         artist = artist
-                         total_duration = timeStamp
-                         copyright = ""
-                         labelname = ""
-                         releaseDate = ""
-                         fav = ""
-                         album_Id = ""
-                         album_Id = rootId
-                         rootContentId = rootId
-                         rootContentType = rootType
-                         rootImage = rootImg
-                         isSeekAble = false
-                     }
-                 )
-             }
-         }
-         return songDetailList
-     }*/
 
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
@@ -240,6 +212,34 @@ internal object UtilHelper {
             )
         }
         return iMusicData
+    }
+
+    fun getSongDetailAndRootDataForUSERPLAYLIST(
+        mSongDet: UserSongsPlaylistDataModel
+    ): SongDetail {
+        mSongDet.apply {
+            return SongDetail(
+                ContentID = contentID.toString(),
+                image = image.toString(),
+                title = title.toString(),
+                ContentType = contentType.toString(),
+                PlayUrl = playUrl.toString(),
+                artist = artist.toString(),
+                duration = duration.toString(),
+                copyright = copyright.toString(),
+                labelname = labelname.toString(),
+                releaseDate = releaseDate.toString(),
+                fav = "",
+                ArtistId = artistId.toString(),
+                albumId = albumId.toString(),
+                userPlayListId = userPlayListId,
+                /*rootType = rootPatch.ContentType,*/
+
+                rootContentID = "",
+                rootContentType = "",
+                rootImage = ""
+            )
+        }
     }
 
     fun getArtistContentDataToRootData(

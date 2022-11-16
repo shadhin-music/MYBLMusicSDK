@@ -42,4 +42,13 @@
             android:id="@+id/to_playlist_details"
             app:destination="@id/playlist_details1" />
     </fragment>
+
+    <fragment
+        android:id="@+id/playlistFavFragment"
+        android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
+        android:label="PlaylistFavFragment">
+        <action
+            android:id="@+id/action_playlistFavFragment_to_playlist_details1"
+            app:destination="@id/playlist_details1" />
+    </fragment>
 </navigation>

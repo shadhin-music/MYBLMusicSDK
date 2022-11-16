@@ -29,8 +29,12 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
+import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
@@ -44,15 +48,11 @@ internal class PlaylistDetailsFragment : BaseFragment(),
     private lateinit var playlistHeaderAdapter: PlaylistHeaderAdapter
     private lateinit var playlistTrackAdapter: PlaylistTrackAdapter
 
+    private lateinit var favViewModel: FavViewModel
+
+    //    private lateinit var adapter: PlaylistAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private var cacheRepository: CacheRepository? = null
-//    override fun getViewModel(): Class<AlbumViewModel> {
-//        return AlbumViewModel::class.java
-//    }
-//
-//    override fun getViewModelFactory(): AlbumViewModelFactory {
-//        return injector.factoryAlbumVM
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +69,12 @@ internal class PlaylistDetailsFragment : BaseFragment(),
             this,
             injector.factoryAlbumVM
         )[AlbumViewModel::class.java]
+
+        favViewModel =
+            ViewModelProvider(
+                this,
+                injector.factoryFavContentVM
+            )[FavViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +83,8 @@ internal class PlaylistDetailsFragment : BaseFragment(),
 
         cacheRepository = CacheRepository(requireContext())
         // playlistTrackAdapter = PlaylistTrackAdapter(this, cacheRepository!!)
-        playlistHeaderAdapter = PlaylistHeaderAdapter(argHomePatchDetail, this)
+        playlistHeaderAdapter =
+            PlaylistHeaderAdapter(argHomePatchDetail, this, cacheRepository, favViewModel)
         playlistTrackAdapter = PlaylistTrackAdapter(this, this, cacheRepository!!)
 //        adapter = PlaylistAdapter(this, this)
         footerAdapter = HomeFooterAdapter()
@@ -221,21 +228,18 @@ internal class PlaylistDetailsFragment : BaseFragment(),
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
 //                val downloaded: ImageView?= view?.findViewWithTag(200)
             progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
-            if (!isDownloaded) {
-                progressIndicator?.visibility = View.GONE
-                // downloaded?.visibility = VISIBLE
-            }
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if (!isDownloaded) {
+//                progressIndicator?.visibility = View.GONE
+//                // downloaded?.visibility = VISIBLE
+//            }
         }
     }
 
@@ -246,11 +250,8 @@ internal class PlaylistDetailsFragment : BaseFragment(),
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
@@ -266,10 +267,10 @@ internal class PlaylistDetailsFragment : BaseFragment(),
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 }
+
 
 interface DownloadOrDeleteActionSubscriber {
     fun notifyOnChange()

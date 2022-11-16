@@ -29,7 +29,9 @@ import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
@@ -56,6 +58,7 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
     private var cacheRepository: CacheRepository? = null
+    private lateinit var favViewModel: FavViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -108,7 +111,8 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastHeaderAdapter = PodcastHeaderAdapter(this)
+        podcastHeaderAdapter =
+            PodcastHeaderAdapter(this, cacheRepository, favViewModel, argHomePatchDetail)
         podcastTrackAdapter = PodcastTrackAdapter(this, this, cacheRepository!!)
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
@@ -126,8 +130,15 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
     }
 
     private fun setupViewModel() {
-        viewModel =
-            ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            injector.podcastViewModelFactory
+        )[PodcastViewModel::class.java]
+
+        favViewModel = ViewModelProvider(
+            this,
+            injector.factoryFavContentVM
+        )[FavViewModel::class.java]
     }
 
     private fun observePodcastShowData() {

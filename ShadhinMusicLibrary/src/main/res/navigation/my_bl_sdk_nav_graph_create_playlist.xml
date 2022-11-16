@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createPlaylist"
-        android:name="com.shadhinmusiclibrary.fragments.CreatePlaylistFragment"
+        android:name="com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistFragment"
         android:label="fragment_create_playlist"
         tools:layout="@layout/my_bl_sdk_fragment_create_playlist"/>
 

@@ -16,8 +16,12 @@ internal data class FeaturedLatestTrackListDataModel(
     val labelname: String,
     val releaseDate: String,
     val fav: Any,
-    val artistId: String
-) {
+    val artistId: String,
+    val rootContentID: String,
+    val rootImage: String,
+    val rootContentType: String,
+    var isPlaying: Boolean = false
+) : Serializable {
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
     }

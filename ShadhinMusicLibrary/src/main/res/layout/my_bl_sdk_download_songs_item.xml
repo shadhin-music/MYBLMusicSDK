@@ -22,7 +22,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/my_bl_sdk_ic_launcher_background" />
+           />
 
         <LinearLayout
             android:layout_width="match_parent"

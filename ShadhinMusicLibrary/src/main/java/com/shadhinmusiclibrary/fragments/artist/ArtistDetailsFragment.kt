@@ -32,8 +32,10 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
@@ -42,12 +44,13 @@ import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
+internal class ArtistDetailsFragment : BaseFragment(),
+    HomeCallBack,
+    ArtistOnItemClickCallback,
+    BottomSheetDialogItemCallback {
 
-internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
-    ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContentModel? = null
-
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
@@ -60,6 +63,7 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
     private lateinit var artistTrackAdapter: ArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
+    private lateinit var favViewModel: FavViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +101,7 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this)
+        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this, cacheRepository)
         artistTrackAdapter = ArtistTrackAdapter(this, this, cacheRepository)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
@@ -130,19 +134,30 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
 
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.factoryArtistVM
+            )[ArtistViewModel::class.java]
+
         viewModelArtistBanner = ViewModelProvider(
             this,
             injector.factoryArtistBannerVM
         )[ArtistBannerViewModel::class.java]
+
         viewModelArtistSong = ViewModelProvider(
             this,
             injector.factoryArtistSongVM
         )[ArtistContentViewModel::class.java]
+
         viewModelArtistAlbum = ViewModelProvider(
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
+
+        favViewModel = ViewModelProvider(
+            this,
+            injector.factoryFavContentVM
+        )[FavViewModel::class.java]
     }
 
     private fun observeData() {
@@ -152,7 +167,7 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                artistHeaderAdapter.artistBio(response.data)
+                artistHeaderAdapter.artistBio(response.data, favViewModel)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
@@ -161,7 +176,7 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
         argHomePatchDetail.let {
             it?.ArtistId?.let { it1 ->
                 it1
-                    ?.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
+                    .let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
@@ -236,7 +251,6 @@ internal class ArtistDetailsFragment : BaseFragment(), HomeCallBack,
         itemPosition: Int,
         artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
-//        ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         navController.navigate(R.id.to_album_details,
             Bundle().apply {

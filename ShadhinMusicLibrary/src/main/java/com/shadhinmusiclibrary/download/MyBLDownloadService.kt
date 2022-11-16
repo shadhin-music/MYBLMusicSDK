@@ -232,7 +232,7 @@ class MyBLDownloadService : DownloadService(
         super.onDestroy()
     }
 
-    fun saveDownloadedContent(downloadedContent: DownloadedContent) {
+    internal fun saveDownloadedContent(downloadedContent: DownloadedContent) {
         downloadServiceScope?.launch {
             if (isRunning) {
                 cacheRepository.setDownloadedContentPath(

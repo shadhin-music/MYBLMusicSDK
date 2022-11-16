@@ -4,6 +4,7 @@ package com.shadhinmusiclibrary.data.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import kotlinx.parcelize.Parcelize
@@ -170,6 +171,39 @@ internal data class VideoModel(
         seekable = false
         teaserUrl = ""
         title = data.rootTitle
+        trackType = ""
+        type = data.type
+    }
+
+    internal fun setDataFavorite(data: FavData) {
+        albumId = ""
+        albumImage = ""
+        albumName = ""
+        artist = data.artist
+        artistId = ""
+        artistImage = ""
+        banner = ""
+        clientValue = 2
+        contentID = data.contentID
+        contentType = data.type
+        createDate = ""
+        duration = data.duration
+        fav = ""
+        follower = ""
+        image = data.image
+        imageWeb = data.imageWeb
+        isPaid = false
+        newBanner = ""
+        playCount = 0
+        playListId = ""
+        playListImage = ""
+        playListName = ""
+        playUrl = data.playUrl
+        rootId = data.rootId
+        rootType = data.rootType
+        seekable = false
+        teaserUrl = ""
+        title = data.title
         trackType = ""
         type = data.type
     }

@@ -254,6 +254,7 @@ internal class ParentAdapter(
             val download: LinearLayout = itemView.findViewById(R.id.Download)
             val watchlater: LinearLayout = itemView.findViewById(R.id.WatchLater)
             val playlist: LinearLayout = itemView.findViewById(R.id.Playlists)
+            val favorite: LinearLayout = itemView.findViewById(R.id.Fav)
             download.setOnClickListener {
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
             }
@@ -262,6 +263,9 @@ internal class ParentAdapter(
             }
             playlist.setOnClickListener {
                 downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
+            }
+            favorite.setOnClickListener {
+                downloadClickCallBack.clickOnMyFavorite(homePatchItemModel)
             }
         }
 

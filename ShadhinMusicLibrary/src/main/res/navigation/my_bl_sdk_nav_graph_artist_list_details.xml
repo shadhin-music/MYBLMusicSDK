@@ -33,4 +33,13 @@
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteAlbum"
+        android:name="com.shadhinmusiclibrary.fragments.fav.AlbumsFavFragment"
+        android:label="fragment_fav album"
+        tools:layout="@layout/my_bl_sdk_fragment_download_details" >
+        <action
+            android:id="@+id/fav_album_to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
 </navigation>

@@ -9,6 +9,16 @@
         android:id="@+id/download"
         android:name="com.shadhinmusiclibrary.fragments.DownloadFragment"
         android:label="fragment_download"
-        tools:layout="@layout/my_bl_sdk_fragment_download"/>
+        tools:layout="@layout/my_bl_sdk_fragment_download">
+
+        <action
+            android:id="@+id/action_download_to_to_artistDetailsFragment"
+            app:destination="@id/to_artistDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/to_artistDetailsFragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="ArtistDetailsFragment" />
 
 </navigation>

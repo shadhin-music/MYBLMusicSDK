@@ -2,20 +2,16 @@ package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
-
+import java.lang.Exception
 
 internal class ArtistAlbumsAdapter(
     var homePatchItem: HomePatchItemModel?,
@@ -60,9 +56,11 @@ internal class ArtistAlbumsAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter =
-                ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
-
+            try {
+                recyclerView.adapter =
+                    ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
+            } catch (e: Exception) {
+            }
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            itemView.setOnClickListener {
@@ -85,9 +83,3 @@ internal class ArtistAlbumsAdapter(
         const val VIEW_TYPE = 3
     }
 }
-
-
-
-
-
-

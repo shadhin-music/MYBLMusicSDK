@@ -58,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:visibility="visible">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
                         android:layout_width="36dp"
@@ -80,7 +81,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:visibility="visible">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
                         android:layout_width="36dp"

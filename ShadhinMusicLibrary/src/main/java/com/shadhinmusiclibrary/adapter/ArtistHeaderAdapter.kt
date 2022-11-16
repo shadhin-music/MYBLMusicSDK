@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,15 +17,19 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
-    private val itemClickCB: ArtistOnItemClickCallback
+    private val itemClickCB: ArtistOnItemClickCallback,
+    private val cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
 
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
@@ -32,6 +37,7 @@ internal class ArtistHeaderAdapter(
     var banner: ArtistBannerModel? = null
     private var parentView: View? = null
 
+    private var favViewModel: FavViewModel? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_artist_details_header, parent, false)
@@ -69,8 +75,9 @@ internal class ArtistHeaderAdapter(
         notifyDataSetChanged()
     }
 
-    fun artistBio(bio: LastFmResult?) {
+    fun artistBio(bio: LastFmResult?, favViewModel: FavViewModel) {
         this.bio = bio
+        this.favViewModel = favViewModel
         notifyDataSetChanged()
 //        val moreText:TextView?= parentView?.findViewById(R.id.tvReadMore)
 //        if (moreText != null) {
@@ -94,11 +101,12 @@ internal class ArtistHeaderAdapter(
     inner class ArtistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
+        var ivFavorite: ImageView? = null
 
         fun bindItems(homePatchDetail: HomePatchDetailModel?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
-
+            ivFavorite = itemView.findViewById(R.id.favorite)
             val url: String = homePatchDetail!!.getImageUrl300Size()
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.text = homePatchDetail.Artist
@@ -112,9 +120,7 @@ internal class ArtistHeaderAdapter(
                 Log.e("TAG", "ARTIST: " + elitaBio)
                 textView?.setText(elitaBio)
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
-
                 cardBiography.visibility = VISIBLE
-//
             } else {
                 val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
                 val updatedbio = Html.fromHtml(bio).toString()
@@ -122,12 +128,30 @@ internal class ArtistHeaderAdapter(
                     cardBiography.visibility = VISIBLE
                 }
                 textView?.setText(updatedbio)
-                if(homePatchDetail.Artist.equals("Scarecrow",true)||homePatchDetail.Artist.equals("Mizan",true)||homePatchDetail.Artist.equals("Feedback",true)||homePatchDetail.Artist.equals("Vibe",true)||homePatchDetail.Artist.equals("Kona",true)
-                    ||homePatchDetail.Artist.equals("Balam",true)||homePatchDetail.Artist.equals("Nancy",true)||homePatchDetail.Artist.equals("Liza",true)){
+                if (homePatchDetail.Artist.equals(
+                        "Scarecrow",
+                        true
+                    ) || homePatchDetail.Artist.equals(
+                        "Mizan",
+                        true
+                    ) || homePatchDetail.Artist.equals(
+                        "Feedback",
+                        true
+                    ) || homePatchDetail.Artist.equals(
+                        "Vibe",
+                        true
+                    ) || homePatchDetail.Artist.equals("Kona", true)
+                    || homePatchDetail.Artist.equals(
+                        "Balam",
+                        true
+                    ) || homePatchDetail.Artist.equals(
+                        "Nancy",
+                        true
+                    ) || homePatchDetail.Artist.equals("Liza", true)
+                ) {
                     cardBiography.visibility = GONE
                 }
             }
-
 //            val updatedbio = Html.fromHtml(bio).toString()
 //            val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
 //            if (updatedbio.length > 25) {
@@ -148,7 +172,7 @@ internal class ArtistHeaderAdapter(
                 }
             }
             //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
-            val moreText: TextView? = itemView?.findViewById(R.id.tvReadMore)
+            val moreText: TextView? = itemView.findViewById(R.id.tvReadMore)
 
             moreText?.setOnClickListener {
                 if (textView!!.isExpanded) {
@@ -162,6 +186,73 @@ internal class ArtistHeaderAdapter(
             Glide.with(context)
                 .load(url)
                 .into(imageView)
+            var isFav = false
+            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
+            if (isAddedToFav?.contentID != null) {
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                isFav = true
+            } else {
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                isFav = false
+            }
+
+            ivFavorite?.setOnClickListener {
+                if (isFav.equals(true)) {
+                    favViewModel?.deleteFavContent(
+                        homePatchDetail?.ContentID,
+                        homePatchDetail.ContentType
+                    )
+                    cacheRepository?.deleteFavoriteById(homePatchDetail.ContentID)
+                    Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
+                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                    isFav = false
+                    Log.e("TAG", "NAME: " + isFav)
+                } else {
+                    favViewModel?.addFavContent(
+                        homePatchDetail.ContentID,
+                        homePatchDetail.ContentType
+                    )
+                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                    Log.e("TAG", "NAME123: " + isFav)
+                    cacheRepository?.insertFavSingleContent(
+                        FavData(
+                            homePatchDetail.ContentID,
+                            homePatchDetail.AlbumId,
+                            homePatchDetail.image,
+                            "",
+                            homePatchDetail.Artist,
+                            homePatchDetail.ArtistId,
+                            "",
+                            "",
+                            2,
+                            homePatchDetail.ContentType,
+                            "",
+                            "",
+                            "1",
+                            "",
+                            homePatchDetail.image,
+                            "",
+                            false,
+                            "",
+                            0,
+                            "",
+                            "",
+                            "",
+                            homePatchDetail.PlayUrl,
+                            homePatchDetail.RootId,
+                            homePatchDetail.RootType,
+                            false,
+                            "",
+                            homePatchDetail.title,
+                            "",
+                            ""
+                        )
+                    )
+                    isFav = true
+                    Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
+                }
+                // favClickCallback.favItemClick(songDetail)
+            }
         }
     }
 

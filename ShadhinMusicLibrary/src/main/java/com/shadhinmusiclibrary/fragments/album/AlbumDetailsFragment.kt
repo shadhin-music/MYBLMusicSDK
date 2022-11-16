@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.fragments.album
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -29,6 +28,7 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -37,6 +37,7 @@ import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumsViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.Status
@@ -55,6 +56,8 @@ internal class AlbumDetailsFragment : BaseFragment(),
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     var artistAlbumModelData: ArtistAlbumModelData? = null
+
+    private lateinit var favViewModel: FavViewModel
 
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
 
@@ -75,13 +78,13 @@ internal class AlbumDetailsFragment : BaseFragment(),
         albumsTrackAdapter = AlbumsTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
+        //TODO  argHomePatchDetail!!.ContentID,
         observeData(
-            argHomePatchDetail!!.AlbumId,
+            argHomePatchDetail!!.ContentID,
             argHomePatchDetail!!.ArtistId,
             argHomePatchDetail!!.ContentType
         )
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
-
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -119,6 +122,12 @@ internal class AlbumDetailsFragment : BaseFragment(),
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
+
+        favViewModel =
+            ViewModelProvider(
+                this,
+                injector.factoryFavContentVM
+            )[FavViewModel::class.java]
     }
 
     private fun observeData(contentId: String, artistId: String, contentType: String) {
@@ -133,7 +142,12 @@ internal class AlbumDetailsFragment : BaseFragment(),
                         argHomePatchDetail!!,
                         playerViewModel.currentMusic?.mediaId
                     )
-                    albumHeaderAdapter.setSongAndData(res.data.data, argHomePatchDetail!!)
+                    albumHeaderAdapter.setSongAndData(
+                        res.data.data,
+                        argHomePatchDetail!!,
+                        cacheRepository!!,
+                        favViewModel
+                    )
                 }
             } else {
                 progressBar.visibility = VISIBLE

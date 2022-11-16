@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.podcast.TrackModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -16,18 +19,12 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBack {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
-
+    private lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
+        navController = findNavController()
         return inflater.inflate(R.layout.my_bl_sdk_fragment_download_details, container, false)
     }
 
@@ -50,7 +47,7 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
     override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-               playerViewModel.skipToQueueItem(clickItemPosition)
+                playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
             }
@@ -61,5 +58,66 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
 //                    clickItemPosition
 //                )
         }
+    }
+
+    //Todo net to review this codes
+    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
+        (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
+            navController,
+            context = requireContext(),
+            Track(
+                "",
+                mSongDetails.rootType,
+                mSongDetails.artist,
+                mSongDetails.timeStamp,
+                mSongDetails.contentId,
+                0,
+                mSongDetails.rootImg,
+                false,
+                mSongDetails.rootTitle,
+                mSongDetails.track.toString(),
+                false,
+                "",
+                0,
+                "",
+                "",
+                "",
+                0,
+                mSongDetails.rootId,
+                mSongDetails.rootImg,
+                "",
+                false
+            ),
+            argHomePatchItem,
+            argHomePatchDetail
+        )
+    }
+
+    override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
+//        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+//            navController,
+//            context = requireContext(),
+//            SongDetail(mSongDetails.contentId,
+//                mSongDetails.rootImg,
+//                mSongDetails.rootTitle,
+//                mSongDetails.rootType,
+//                mSongDetails.track.toString(),
+//                mSongDetails.artist,
+//                mSongDetails.timeStamp,
+//                "",
+//                "",
+//                "",
+//                "","","","","","","",false),
+//            argHomePatchItem,
+//            argHomePatchDetail
+//        )
+    }
+
+    override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
+
     }
 }

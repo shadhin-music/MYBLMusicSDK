@@ -118,8 +118,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/my_bl_sdk_ic_downloaded"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
             </LinearLayout>
+
         </LinearLayout>
 
         <ImageButton
@@ -131,8 +132,8 @@
             android:focusable="true"
             android:foreground="?selectableItemBackground"
             android:paddingEnd="5dp"
-            android:src="@drawable/my_bl_sdk_ic_more_vert"
             android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

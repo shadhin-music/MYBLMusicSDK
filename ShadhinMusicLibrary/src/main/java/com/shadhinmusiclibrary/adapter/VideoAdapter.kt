@@ -120,8 +120,6 @@ internal class VideoAdapter(
         private var threeDotButton: ImageButton = itemView.findViewById(R.id.threeDotButton)
 
         fun bind(item: VideoModel) {
-
-
             titleTextView.text = item.title
 //            durationTextView.text = createTimeLabel(item.duration?.toLong() ?: 0L)
             durationTextView.text = TimeParser.secToMin(item.duration)
@@ -162,7 +160,20 @@ internal class VideoAdapter(
             progressIndicator.tag = item.contentID
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository.isTrackDownloaded(item.contentID.toString()) ?: false
+//            downloaded.tag = 200
+            val isDownloaded = cacheRepository.isVideoDownloaded(item.contentID)
+
+            if (isDownloaded) {
+                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
+                downloaded.visibility = View.VISIBLE
+                progressIndicator.visibility = View.GONE
+                progressIndicator.layoutParams = LinearLayout.LayoutParams(0, 0)
+            }
+            //else{
+//                downloaded.visibility = View.GONE
+//                progressIndicator.visibility = View.GONE
+//              //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
+//            }
 
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

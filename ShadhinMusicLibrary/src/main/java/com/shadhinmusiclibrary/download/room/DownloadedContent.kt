@@ -1,9 +1,11 @@
 package com.shadhinmusiclibrary.download.room
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
+@Keep
 @Entity
 data class DownloadedContent(
     @PrimaryKey var contentId: String,
@@ -16,6 +18,7 @@ data class DownloadedContent(
     var isDownloaded: Int,
     var isFavorite: Int,
     var artist: String,
+    var artistID: String,
     var timeStamp: String
 ) : Serializable {
     fun getImageUrl300Size(): String {

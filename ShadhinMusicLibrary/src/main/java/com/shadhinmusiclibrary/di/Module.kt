@@ -11,6 +11,8 @@ import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
+import com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistViewModelFactory
+import com.shadhinmusiclibrary.fragments.fav.FavViewModelFactory
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
@@ -135,12 +137,19 @@ internal class Module(private val applicationContext: Context) {
             .build()
     }
 
+    private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(getBaseClientWithTokenAndClient())
+            .build()
+    }
+
     fun getBaseClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HeaderInterceptor()
-            )
-            .addInterceptor(BearerTokenHeaderInterceptor())
+            ).addInterceptor(BearerTokenHeaderInterceptor())
             .build()
     }
 
@@ -148,8 +157,14 @@ internal class Module(private val applicationContext: Context) {
         return OkHttpClient.Builder()
             .addInterceptor(
                 BearerTokenHeaderInterceptor()
-            )
-            .build()
+            ).build()
+    }
+
+    private fun getBaseClientWithTokenAndClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(
+                BearerTokenWithClientHeaderInterceptor()
+            ).build()
     }
 
     private fun getApiShadhinMusicServiceV5(): ApiService {
@@ -162,6 +177,9 @@ internal class Module(private val applicationContext: Context) {
         return getRetrofitAPIShadhinMusicInstanceV5WithBearerToken().create(ApiService::class.java)
     }
 
+    private fun getApiShadhinMusicServiceV5withTokenAndClient(): ApiService {
+        return getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient().create(ApiService::class.java)
+    }
 
     private fun getFMClient(): Retrofit {
         return Retrofit.Builder()
@@ -175,8 +193,7 @@ internal class Module(private val applicationContext: Context) {
         return OkHttpClient.Builder()
             .addInterceptor(
                 LastFmApiKeyInterceptor()
-            )
-            .build()
+            ).build()
     }
 
     private fun getFMService(): ApiService {
@@ -193,6 +210,11 @@ internal class Module(private val applicationContext: Context) {
     private val repositoryHomeContentRBT: AmartunesContentRepository =
         AmartunesContentRepository(getApiShadhinMusicServiceV5withToken())
 
+    private val repositoryCreatePlaylist: CreatePlaylistRepository =
+        CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+
+    private val repositoryFavContentRepository: FavContentRepository =
+        FavContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
         ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
     private val repositoryArtistSongContent: ArtistSongContentRepository =
@@ -217,9 +239,15 @@ internal class Module(private val applicationContext: Context) {
     val factoryArtistBannerVM: ArtistBannerViewModelFactory
         get() = ArtistBannerViewModelFactory(repositoryArtistBannerContent)
 
+    val factoryCreatePlaylistVM: CreatePlaylistViewModelFactory
+        get() = CreatePlaylistViewModelFactory(repositoryCreatePlaylist)
+
+    val factoryFavContentVM: FavViewModelFactory
+        get() = FavViewModelFactory(repositoryFavContentRepository)
 
     val factoryArtistSongVM: ArtistContentViewModelFactory
         get() = ArtistContentViewModelFactory(repositoryArtistSongContent)
+
     private val artistAlbumContentRepository: ArtistAlbumContentRepository
         get() = ArtistAlbumContentRepository(
             artistAlbumApiService
