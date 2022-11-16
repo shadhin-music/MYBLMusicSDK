@@ -2,7 +2,10 @@ package com.shadhinmusiclibrary.download
 
 import android.app.Notification
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Parcelable
@@ -39,6 +42,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
     private var currentItem:DownloadedContent?=null
     private lateinit var cacheRepository: CacheRepository
     private var downloadServiceScope: CoroutineScope? = null
+    private val downloadCancelBroadcastListeners = DownloadCancelBroadcastListeners()
 
        private lateinit var name:DownloadedContent
     companion object {
@@ -53,8 +57,10 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
     override fun onCreate() {
         super.onCreate()
         isRunning = true
-        notificationHelper= DownloadNotificationHelper(this, "my app", injector.downloadTitleMap)
+        notificationHelper= DownloadNotificationHelper(this.applicationContext, "my app", injector.downloadTitleMap)
         cacheRepository = CacheRepository(applicationContext)
+
+        registerReceiver(downloadCancelBroadcastListeners, IntentFilter(DownloadNotificationHelper.CANCEL_ACTION))
 
     }
    override fun getDownloadManager(): DownloadManager {
@@ -66,6 +72,8 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         //Set the maximum number of parallel downloads
         manager.maxParallelDownloads = 5
 
+
+       manager.removeAllDownloads()
 
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
@@ -228,6 +236,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
             .build()
     }
     fun getPendingIntent(): PendingIntent {
+
         var notificationIntent = Intent(this, SDKMainActivity::class.java)
         val arguments = Bundle()
         arguments.putBoolean(SHOULD_OPEN_DOWNLOADS_ACTIVITY, true)
@@ -236,6 +245,14 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         var pendingIntent = PendingIntent.getActivity(this, uniqueReqCode, notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         return pendingIntent
+    }
+     class DownloadCancelBroadcastListeners: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.i("DATAARTISTd", "onReceive: ${intent?.action}")
+            sendRemoveAllDownloads(context?.applicationContext!!,
+                MyBLDownloadService::class.java,
+                false)
+        }
     }
 
 

@@ -3,6 +3,9 @@ package com.shadhinmusiclibrary.download;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -18,9 +21,11 @@ import java.util.Map;
 public final class DownloadNotificationHelper {
 
     private static final @StringRes int NULL_STRING_ID = 0;
+    public static final String CANCEL_ACTION = "com.gm.shadhin.p.intent.cancel";
 
     private final NotificationCompat.Builder notificationBuilder;
 
+    private final Context context;
     private final Map<String,String> downloadTitleMap;
     /**
      * @param context A context.
@@ -29,7 +34,15 @@ public final class DownloadNotificationHelper {
     public DownloadNotificationHelper(Context context, String channelId, Map<String,String> downloadTitleMap) {
         this.notificationBuilder =
                 new NotificationCompat.Builder(context.getApplicationContext(), channelId);
+
         this.downloadTitleMap = downloadTitleMap;
+        this.context =  context;
+        this.notificationBuilder
+                .addAction(
+                        com.shadhinmusiclibrary.R.drawable.my_bl_sdk_ic_close,
+                        "Cancel",
+                        cancelPendingIntent()
+                );
     }
 
 
@@ -217,8 +230,36 @@ public final class DownloadNotificationHelper {
         notificationBuilder.setStyle(
                 message == null ? null : new NotificationCompat.BigTextStyle().bigText(message));
         notificationBuilder.setProgress(maxProgress, currentProgress, indeterminateProgress);
+
         notificationBuilder.setOngoing(ongoing);
         notificationBuilder.setShowWhen(showWhen);
         return notificationBuilder.build();
+    }
+    private PendingIntent cancelPendingIntent(){
+        Intent intent = new Intent(CANCEL_ACTION);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        }else {
+            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+        return pendingIntent;
+    }
+    private NotificationCompat.Action cancelAction(){
+        Intent intent = new Intent(CANCEL_ACTION);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        }else {
+            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+       return new NotificationCompat.Action.Builder(
+                com.shadhinmusiclibrary.R.drawable.my_bl_sdk_ic_close,
+                "Cancel",
+                pendingIntent)
+                .build();
+
+
+
     }
 }
