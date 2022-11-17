@@ -135,22 +135,21 @@ internal class PlaylistFavFragment : BaseFragment(),
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-
-//        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
-//                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID)
-//                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                playerViewModel.skipToQueueItem(clickItemPosition)
-//            } else {
-//                playerViewModel.togglePlayPause()
-//            }
-//        } else {
-//            playItem(
-//                UtilHelper.getSongDetailToFavoriteSongDetailList(mSongDetails),
-//                clickItemPosition
-//            )
-//            Log.e("TAG","SONG :"+ mSongDetails.toString() )
-//        }
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].content_Id)
+                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            //Todo song play no
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
@@ -161,30 +160,29 @@ internal class PlaylistFavFragment : BaseFragment(),
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetailModel(
-                mSongDetails.contentID,
-                mSongDetails.image.toString(),
-                mSongDetails.title.toString(),
-                mSongDetails.contentType.toString(),
-                mSongDetails.playUrl.toString(),
-                mSongDetails.artist.toString(),
-                mSongDetails.duration.toString(),
-                "",
-                "",
-                "",
-                "", mSongDetails.artistId, mSongDetails.albumId, "", "", "", "", false
-            ),
+            SongDetailModel()
+                .apply {
+                    content_Id = mSongDetails.content_Id
+                    imageUrl = mSongDetails.imageUrl.toString()
+                    titleName = mSongDetails.titleName.toString()
+                    content_Type = mSongDetails.content_Type.toString()
+                    playingUrl = mSongDetails.playingUrl.toString()
+                    artistName = mSongDetails.artistName.toString()
+                    total_duration = mSongDetails.total_duration.toString()
+                    artist_Id = mSongDetails.artist_Id
+                    album_Id = mSongDetails.album_Id
+                },
             argHomePatchItem,
             HomePatchDetailModel(
                 "",
                 "",
                 "",
-                mSongDetails.artist.toString(),
+                mSongDetails.artistName.toString(),
                 "",
                 "",
                 "",
-                mSongDetails.contentID.toString(),
-                mSongDetails.contentType.toString(),
+                mSongDetails.content_Id.toString(),
+                mSongDetails.content_Type.toString(),
                 "",
                 "",
                 "",
@@ -194,7 +192,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                 "",
                 "",
                 "",
-                mSongDetails.playUrl.toString(),
+                mSongDetails.playingUrl.toString(),
                 "",
                 "",
                 false,
@@ -202,9 +200,9 @@ internal class PlaylistFavFragment : BaseFragment(),
                 "",
                 "",
                 "",
-                mSongDetails.image.toString(),
+                mSongDetails.imageUrl.toString(),
                 "",
-                mSongDetails.title.toString()
+                mSongDetails.titleName.toString()
             )
         )
     }
