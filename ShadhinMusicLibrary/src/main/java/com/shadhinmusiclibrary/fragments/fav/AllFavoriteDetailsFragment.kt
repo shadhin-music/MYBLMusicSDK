@@ -33,6 +33,7 @@ import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -97,7 +98,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
 
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -105,16 +106,15 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
                 playerViewModel.togglePlayPause()
             }
         } else {
-            //Todo song play
-//            playItem(
-//                UtilHelper.getSongDetailToFavoriteSongDetailList(mSongDetails),
-//                clickItemPosition
-//            )
-            Log.e("TAG", "SONG :" + mSongDetails.toString())
+            //Todo song play and need test
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
         }
     }
 
-    override fun onClickBottomItemPodcast(track: FavData) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
 //        (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
 //            navController,
 //            context = requireContext(),
@@ -145,7 +145,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
 //        )
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -195,7 +195,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
         openDialog(
             VideoModel(
                 mSongDetails.album_Id,
@@ -769,11 +769,11 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
 
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetailModel, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetailModel, id: String?) {
+    fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id!!) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()

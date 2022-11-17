@@ -61,8 +61,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
 
-internal class VideoActivity :
-    AppCompatActivity(),
+internal class VideoActivity : AppCompatActivity(),
     ActivityEntryPoint,
     AudioManager.OnAudioFocusChangeListener,
     BottomsheetDialog {
@@ -325,7 +324,7 @@ internal class VideoActivity :
                         /* foreground= */ false
                     )
                 }
-                Log.e("TAG", "CLICKED123: " + currentURL)
+
                 downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
 
                 // downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
@@ -443,7 +442,6 @@ internal class VideoActivity :
     }
 
     private fun togglePlayPause(item: VideoModel) {
-
         if (item.contentID == exoPlayer?.currentMediaItem?.mediaId) {
             if (exoPlayer?.isPlaying == true) {
                 exoPlayer?.pause()
@@ -615,14 +613,13 @@ internal class VideoActivity :
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
-        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = item.artist
+        val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        tvArtistName?.text = item.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = item.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = item.title
         if (image != null) {
-            Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
+            Glide.with(this).load(UtilHelper.getImageUrlSize300(item.image!!)).into(image)
         }
 
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
@@ -674,7 +671,6 @@ internal class VideoActivity :
                 if (cacheRepository.isDownloadCompleted(item.contentID.toString())
                         .equals(true)
                 ) {
-                    Log.e("TAG", "URL123 : " + item.playUrl)
                     // if (cacheRepository.isDownloadCompleted().equals(true)) {
                     cacheRepository.insertDownload(
                         DownloadedContent(
@@ -691,9 +687,7 @@ internal class VideoActivity :
                             item.duration.toString()
                         )
                     )
-
                     isDownloaded = true
-                    // }
                 }
             }
             bottomSheetDialog.dismiss()
@@ -744,11 +738,6 @@ internal class VideoActivity :
                     )
                 )
                 iswatched = true
-                Log.e(
-                    "TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater()
-                )
-
             }
             bottomSheetDialog.dismiss()
         }
@@ -757,7 +746,7 @@ internal class VideoActivity :
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
         val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
-        if (isAddedToFav?.contentID != null) {
+        if (isAddedToFav?.content_Id != null) {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -785,38 +774,21 @@ internal class VideoActivity :
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData(
-                        item.contentID.toString(),
-                        item.albumId,
-                        item.image,
-                        "",
-                        item.artist,
-                        item.artistId,
-                        "",
-                        "",
-                        2,
-                        "V",
-                        "",
-                        "",
-                        "1",
-                        "",
-                        item.image,
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        item.playUrl,
-                        item.rootId,
-                        "",
-                        false,
-                        "",
-                        item.title,
-                        "",
-                        ""
-                    )
+                    FavData()
+                        .apply {
+                            content_Id = item.contentID.toString()
+                            album_Id = item.albumId
+                            albumImage = item.image
+                            artistName = item.artist
+                            artist_Id = item.artistId
+                            clientValue = 2
+                            content_Type = "V"
+                            fav = "1"
+                            imageUrl = item.image
+                            playingUrl = item.playUrl
+                            rootContentId = item.rootId
+                            titleName = item.title
+                        }
                 )
                 isFav = true
                 Toast.makeText(applicationContext, "Added to favorite", Toast.LENGTH_LONG).show()
@@ -834,7 +806,6 @@ internal class VideoActivity :
         LocalBroadcastManager.getInstance(applicationContext)
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
-
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
@@ -858,10 +829,6 @@ internal class VideoActivity :
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
-                        Log.e(
-                            "getDownloadManagerx",
-                            "habijabi: ${it.toString()} "
-                        )
                     }
                 }
                 "DELETED" -> {

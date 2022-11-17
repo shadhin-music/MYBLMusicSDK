@@ -1,14 +1,14 @@
-package com.shadhinmusiclibrary.fragments.fav.favDataBase
+package com.shadhinmusiclibrary.download.room.favDataBase
 
-import android.util.Log
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.fav.FavDataModel
-import com.shadhinmusiclibrary.download.room.DownloadedContent
 
 
 @Dao
-interface FavoriteContentDao {
+internal interface FavoriteContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertAll(favData: List<FavData>)
@@ -17,25 +17,25 @@ interface FavoriteContentDao {
     @Query("SELECT * FROM FavData WHERE fav=1")
     fun getAllFavorites(): List<FavData>
 
-    @Query("SELECT * FROM  FavData where contentId = :id AND Fav=1 ")
+    @Query("SELECT * FROM  FavData where content_Id = :id AND Fav=1 ")
     fun getFavoriteById(id:String):List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='V'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='V'  ORDER By total_duration DESC ")
     fun getAllVideosFav():List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='S'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='S'  ORDER By total_duration DESC ")
     fun getAllSongsFav():List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='A'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='A'  ORDER By total_duration DESC ")
     fun getArtistFav():List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='R'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='R'  ORDER By total_duration DESC ")
     fun getAlbumsFav():List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='P'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='P'  ORDER By total_duration DESC ")
     fun getPlaylistFav():List<FavData>
 
-    @Query("SELECT * FROM FavData WHERE contentType='PDJG'  ORDER By duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='PDJG'  ORDER By total_duration DESC ")
     fun getAllPodcastFav():List<FavData>
 //
 //    @Query("SELECT * FROM DownloadedContent where contentId = :id")
@@ -44,8 +44,9 @@ interface FavoriteContentDao {
 //    @Query("SELECT * FROM DownloadedContent where rootId = :albumId")
 //    fun getDownloadsByAlbumId(albumId:String):List<DownloadedContent>
 //
-       @Query("DELETE FROM FavData WHERE contentId = :id ")
+       @Query("DELETE FROM FavData WHERE content_Id = :id ")
        fun deleteFavoriteById(id:String):Unit
+
       @Insert(onConflict = OnConflictStrategy.REPLACE)
        fun insert(favData: FavData)
 //    @Query("DELETE FROM DownloadedContent WHERE contentId = :albumId")
@@ -81,5 +82,4 @@ interface FavoriteContentDao {
 
 //    @Query("DELETE FROM DownloadedContent")
 //    fun deleteAllDownloads():Unit
-
 }

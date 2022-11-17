@@ -38,7 +38,11 @@ import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteArtistAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
@@ -74,8 +78,8 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadData()
+
         viewModel =
             ViewModelProvider(
                 this,
@@ -86,7 +90,6 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             this,
             injector.factoryFavContentVM
         )[FavViewModel::class.java]
-
     }
 
     fun loadData() {
@@ -106,12 +109,9 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-
     }
 
     override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-
 //            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
 //                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
 //                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
@@ -128,57 +128,53 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-
-//        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
-//                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID)
-//                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                playerViewModel.skipToQueueItem(clickItemPosition)
-//            } else {
-//                playerViewModel.togglePlayPause()
-//            }
-//        } else {
-//            playItem(
-//                UtilHelper.getSongDetailToFavoriteSongDetailList(mSongDetails),
-//                clickItemPosition
-//            )
-//            Log.e("TAG","SONG :"+ mSongDetails.toString() )
-//        }
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].content_Id)
+                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
+
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetail(
-                mSongDetails.contentID,
-                mSongDetails.image.toString(),
-                mSongDetails.title.toString(),
-                mSongDetails.contentType.toString(),
-                mSongDetails.playUrl.toString(),
-                mSongDetails.artist.toString(),
-                mSongDetails.duration.toString(),
-                "",
-                "",
-                "",
-                "", mSongDetails.artistId, mSongDetails.albumId, "", "", "", "", false
-            ),
+            SongDetailModel().apply {
+                content_Id = mSongDetails.content_Id
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+                content_Type = mSongDetails.content_Type.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                artistName = mSongDetails.artistName.toString()
+                total_duration = mSongDetails.total_duration.toString()
+                artist_Id = mSongDetails.artist_Id
+                album_Id = mSongDetails.album_Id
+            },
             argHomePatchItem,
-            HomePatchDetail(
-                mSongDetails.albumId.toString(),
+            HomePatchDetailModel(
+                mSongDetails.album_Id.toString(),
                 "",
-                mSongDetails.albumName.toString(),
-                mSongDetails.artist.toString(),
-                mSongDetails.artistId.toString(),
+                mSongDetails.album_Name.toString(),
+                mSongDetails.artistName.toString(),
+                mSongDetails.artist_Id.toString(),
                 "",
                 "",
-                mSongDetails.contentID.toString(),
-                mSongDetails.contentType.toString(),
+                mSongDetails.content_Id.toString(),
+                mSongDetails.content_Type.toString(),
                 "",
                 "",
                 "",
@@ -188,7 +184,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                 "",
                 "",
                 "",
-                mSongDetails.playUrl.toString(),
+                mSongDetails.playingUrl.toString(),
                 "",
                 "",
                 false,
@@ -196,15 +192,15 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                 "",
                 "",
                 "",
-                mSongDetails.image.toString(),
+                mSongDetails.imageUrl.toString(),
                 "",
-                mSongDetails.title.toString()
+                mSongDetails.titleName.toString()
             )
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
+
     }
 
     override fun onStart() {
@@ -218,10 +214,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
             val downloaded: ImageView? = view?.findViewWithTag(220)
@@ -233,16 +226,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 //                progressIndicator?.visibility = View.GONE
 //                downloaded?.visibility = View.GONE
 //            }
-
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
@@ -281,29 +265,29 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
     }
 
 
-    override fun onFavArtistClick(itemPosition: Int, favData: List<FavData>) {
+    override fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>) {
         // val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
         // Log.e("i am being called", "test test test "+navController.graph.displayName)
-
+        val mFavData = favData[itemPosition]
         navController.navigate(
             R.id.favoriteArtist,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "A", mutableListOf(), "Artist", "", 0, 0)
+                    HomePatchItemModel("", "A", mutableListOf(), "Artist", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        favData.get(itemPosition).albumId.toString(),
+                    HomePatchDetailModel(
+                        mFavData.album_Id.toString(),
                         "",
                         "",
-                        favData.get(itemPosition).artist.toString(),
-                        favData.get(itemPosition).artistId.toString(),
+                        mFavData.artistName.toString(),
+                        mFavData.artist_Id.toString(),
                         "",
                         "",
-                        favData.get(itemPosition).contentID,
-                        favData.get(itemPosition).contentType.toString(),
+                        mFavData.content_Id ?: "",
+                        mFavData.content_Type.toString(),
                         "",
                         "",
                         "",
@@ -313,7 +297,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                         "",
                         "",
                         "",
-                        favData.get(itemPosition).playUrl.toString(),
+                        mFavData.playingUrl.toString(),
                         "",
                         "",
                         false,
@@ -321,21 +305,20 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                         "",
                         "",
                         "",
-                        favData.get(itemPosition).image.toString(),
+                        mFavData.imageUrl.toString(),
                         "",
-                        favData.get(itemPosition).title.toString()
+                        mFavData.titleName.toString()
                     )
                 )
             })
     }
 
-
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
-        argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        mSongDetails: SongDetailModel,
+        argHomePatchItem: HomePatchItemModel?,
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
 
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -355,15 +338,15 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
         val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
-        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = mSongDetails.artist
+        val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        tvArtistName?.text = mSongDetails.artistName
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.ContentID)
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
         if (downloaded?.track != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -382,23 +365,23 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
         constraintDownload?.visibility = GONE
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
-                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                cacheRepository.deleteDownloadById(mSongDetails.content_Id ?: "")
                 DownloadService.sendRemoveDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
-                    mSongDetails.ContentID,
+                    mSongDetails.content_Id ?: "",
                     false
                 )
                 Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
-                    .putExtra("contentID", mSongDetails.ContentID)
+                    .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
             } else {
-                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 var downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                    DownloadRequest.Builder(mSongDetails.content_Id ?: "", url.toUri())
                         .build()
                 DownloadService.sendAddDownload(
                     requireContext(),
@@ -406,34 +389,27 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                     downloadRequest,
                     /* foreground= */ false
                 )
-                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id ?: "")
+                        .equals(true)
+                ) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
                         DownloadedContent(
-                            mSongDetails.ContentID.toString(),
-                            mSongDetails.rootContentID,
-                            mSongDetails.image,
-                            mSongDetails.title,
-                            mSongDetails.ContentType,
-                            mSongDetails.PlayUrl,
-                            mSongDetails.ContentType,
+                            mSongDetails.content_Id.toString(),
+                            mSongDetails.rootContentId ?: "",
+                            mSongDetails.imageUrl ?: "",
+                            mSongDetails.titleName ?: "",
+                            mSongDetails.content_Type ?: "",
+                            mSongDetails.playingUrl ?: "",
+                            mSongDetails.content_Type ?: "",
                             0,
                             0,
-                            mSongDetails.artist,
-                            mSongDetails.ArtistId.toString(),
-                            mSongDetails.duration
+                            mSongDetails.artistName ?: "",
+                            mSongDetails.artist_Id.toString(),
+                            mSongDetails.total_duration ?: ""
                         )
                     )
                     isDownloaded = true
-                    Log.e(
-                        "TAGGG",
-                        "INSERTED: " + url
-                    )
-                    Log.e("TAG", "INSERTED: " + cacheRepository.getAllDownloads())
-//                    Log.e("TAGGG",
-//                        "INSERTED: " + cacheRepository.isTrackDownloaded())
-//                    Log.e("TAGGG",
-//                        "COMPLETED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -448,11 +424,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                 mSongDetails,
                 argHomePatchItem,
                 argHomePatchDetail
-
             )
-
-            Log.e("TAG", "CLICKArtist: " + argHomePatchItem)
-            Log.e("TAG", "CLICKArtist: " + mSongDetails.ArtistId)
             bottomSheetDialog.dismiss()
         }
         val constraintPlaylist: ConstraintLayout? =
@@ -460,7 +432,6 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
         constraintPlaylist?.visibility = GONE
         constraintPlaylist?.setOnClickListener {
             gotoPlayList(context, mSongDetails)
-
             bottomSheetDialog.dismiss()
         }
 
@@ -472,7 +443,6 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 //        favViewModel.getFavContentSong.observe(this){res->
 //            res.data?.forEach{
 //                if(it.contentID.equals(mSongDetails.ContentID)) {
-//
 //                    isFav = true
 //                    favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
 //                }
@@ -480,71 +450,51 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 //                    isFav = false
 //                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
 //                }
-//
 //            }
 //        }
-        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.ContentID)
-        if (isAddedToFav?.contentID != null) {
-
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id ?: "")
+        if (isAddedToFav?.content_Id != null) {
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
             textFav?.text = "Remove From favorite"
         } else {
-
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
             isFav = false
             textFav?.text = "Favorite"
         }
 
-
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
-                favViewModel.deleteFavContent(mSongDetails.ContentID, mSongDetails.ContentType)
-                cacheRepository.deleteFavoriteById(mSongDetails.ContentID)
+                favViewModel.deleteFavContent(
+                    mSongDetails.content_Id ?: "",
+                    mSongDetails.content_Type ?: ""
+                )
+                cacheRepository.deleteFavoriteById(mSongDetails.content_Id ?: "")
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
             } else {
-
-                favViewModel.addFavContent(mSongDetails.ContentID, mSongDetails.ContentType)
-
+                favViewModel.addFavContent(
+                    mSongDetails.content_Id ?: "",
+                    mSongDetails.content_Type ?: ""
+                )
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-                Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData(
-                        mSongDetails.ContentID,
-                        mSongDetails.albumId,
-                        mSongDetails.image,
-                        "",
-                        mSongDetails.artist,
-                        mSongDetails.ArtistId,
-                        "",
-                        "",
-                        2,
-                        mSongDetails.ContentType,
-                        "",
-                        "",
-                        "1",
-                        "",
-                        mSongDetails.image,
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.PlayUrl,
-                        mSongDetails.rootContentID,
-                        mSongDetails.rootContentType,
-                        false,
-                        "",
-                        mSongDetails.title,
-                        "",
-                        ""
-
-                    )
+                    FavData().apply {
+                        content_Id = mSongDetails.content_Id
+                        album_Id = mSongDetails.album_Id
+                        albumImage = mSongDetails.imageUrl
+                        artistName = mSongDetails.artistName
+                        artist_Id = mSongDetails.artist_Id
+                        clientValue = 2
+                        content_Type = mSongDetails.content_Type
+                        fav = "1"
+                        imageUrl = mSongDetails.imageUrl
+                        playingUrl = mSongDetails.playingUrl
+                        rootContentId = mSongDetails.rootContentId
+                        rootContentType = mSongDetails.rootContentType
+                        titleName = mSongDetails.titleName
+                    }
                 )
                 isFav = true
                 Toast.makeText(requireContext(), "Added to favorite", Toast.LENGTH_LONG).show()
@@ -556,11 +506,10 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
-        argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
-
-        ) {
+        mSongDetails: SongDetailModel,
+        argHomePatchItem: HomePatchItemModel?,
+        argHomePatchDetail: HomePatchDetailModel?
+    ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
 //        bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
 //            Bundle().apply {
@@ -582,20 +531,20 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "A", mutableListOf(), "Artist", "", 0, 0)
+                    HomePatchItemModel("", "A", mutableListOf(), "Artist", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        mSongDetails.albumId.toString(),
+                    HomePatchDetailModel(
+                        mSongDetails.album_Id.toString(),
                         "",
                         "",
-                        mSongDetails.artist,
-                        mSongDetails.ArtistId.toString(),
+                        mSongDetails.artistName ?: "",
+                        mSongDetails.artist_Id.toString(),
                         "",
                         "",
-                        mSongDetails.ContentID,
-                        mSongDetails.ContentType,
+                        mSongDetails.content_Id ?: "",
+                        mSongDetails.content_Type ?: "",
                         "",
                         "",
                         "",
@@ -605,7 +554,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                         "",
                         "",
                         "",
-                        mSongDetails.PlayUrl.toString(),
+                        mSongDetails.playingUrl.toString(),
                         "",
                         "",
                         false,
@@ -613,15 +562,15 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                         "",
                         "",
                         "",
-                        mSongDetails.image.toString(),
+                        mSongDetails.imageUrl.toString(),
                         "",
-                        mSongDetails.title.toString()
+                        mSongDetails.titleName.toString()
                     ) as Serializable
                 )
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetail) {
+    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)
@@ -639,7 +588,6 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             recyclerView?.adapter = res.data?.let {
                 CreatePlaylistListAdapter(it, this, mSongDetails)
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
@@ -648,14 +596,12 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             bottomSheetDialogPlaylist.dismiss()
         }
         viewModel.createPlaylist.observe(this) { res ->
-
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
 
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
-
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_new_playlist, null)
         bottomSheetDialog.setContentView(contentView)
@@ -665,7 +611,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
             bottomSheetDialog.dismiss()
         }
         val etCreatePlaylist: EditText? = bottomSheetDialog.findViewById(R.id.etCreatePlaylist)
-        var savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
+        val savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
         etCreatePlaylist?.setOnFocusChangeListener { view, focused ->
             val keyboard: InputMethodManager =
                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -706,24 +652,18 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetail, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetail, id: String?) {
-
-        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.ContentID) }
+    fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
+        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
-
-
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
-
-
         }
     }
-
 }
 
-interface onFavArtistClick {
-    fun onFavArtistClick(itemPosition: Int, favData: List<FavData>)
+internal interface onFavArtistClick {
+    fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>)
 }

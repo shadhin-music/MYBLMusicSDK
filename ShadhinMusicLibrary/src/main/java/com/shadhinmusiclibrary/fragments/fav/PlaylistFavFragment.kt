@@ -42,6 +42,7 @@ import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
 import com.shadhinmusiclibrary.adapter.FavoritePlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -56,7 +57,6 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
-
 
 internal class PlaylistFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -134,7 +134,7 @@ internal class PlaylistFavFragment : BaseFragment(),
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
 
 //        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
 //            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
@@ -153,15 +153,15 @@ internal class PlaylistFavFragment : BaseFragment(),
 //        }
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
+
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetail(
+            SongDetailModel(
                 mSongDetails.contentID,
                 mSongDetails.image.toString(),
                 mSongDetails.title.toString(),
@@ -175,7 +175,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                 "", mSongDetails.artistId, mSongDetails.albumId, "", "", "", "", false
             ),
             argHomePatchItem,
-            HomePatchDetail(
+            HomePatchDetailModel(
                 "",
                 "",
                 "",
@@ -209,8 +209,7 @@ internal class PlaylistFavFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
     }
 
     override fun onStart() {
@@ -224,10 +223,7 @@ internal class PlaylistFavFragment : BaseFragment(),
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
             val downloaded: ImageView? = view?.findViewWithTag(220)
@@ -239,16 +235,7 @@ internal class PlaylistFavFragment : BaseFragment(),
 //                progressIndicator?.visibility = View.GONE
 //                downloaded?.visibility = View.GONE
 //            }
-
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
@@ -293,11 +280,11 @@ internal class PlaylistFavFragment : BaseFragment(),
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "P", mutableListOf(), "Playlist", "", 0, 0)
+                    HomePatchItemModel("", "P", mutableListOf(), "Playlist", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
+                    HomePatchDetailModel(
                         favData.get(itemPosition).albumId.toString(),
                         "",
                         "",
@@ -335,9 +322,9 @@ internal class PlaylistFavFragment : BaseFragment(),
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
-        argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        mSongDetails: SongDetailModel,
+        argHomePatchItem: HomePatchItemModel?,
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
 
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -452,9 +439,6 @@ internal class PlaylistFavFragment : BaseFragment(),
                 argHomePatchDetail
 
             )
-
-            Log.e("TAG", "CLICKArtist: " + argHomePatchItem)
-            Log.e("TAG", "CLICKArtist: " + mSongDetails.ArtistId)
             bottomSheetDialog.dismiss()
         }
 
@@ -509,13 +493,14 @@ internal class PlaylistFavFragment : BaseFragment(),
                 isFav = false
                 Log.e("TAG", "NAME: " + isFav)
             } else {
-
-                favViewModel.addFavContent(mSongDetails.ContentID, mSongDetails.ContentType)
-
+                favViewModel.addFavContent(
+                    mSongDetails.content_Id ?: "",
+                    mSongDetails.content_Type ?: ""
+                )
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData(
+                    FavData().also {
                         mSongDetails.ContentID,
                         mSongDetails.albumId,
                         mSongDetails.image,
@@ -546,8 +531,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                         mSongDetails.title,
                         "",
                         ""
-
-                    )
+                    }
                 )
                 isFav = true
                 Toast.makeText(requireContext(), "Added to favorite", Toast.LENGTH_LONG).show()
@@ -559,9 +543,9 @@ internal class PlaylistFavFragment : BaseFragment(),
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetail,
-        argHomePatchItem: HomePatchItem?,
-        argHomePatchDetail: HomePatchDetail?,
+        mSongDetails: SongDetailModel,
+        argHomePatchItem: HomePatchItemModel?,
+        argHomePatchDetail: HomePatchDetailModel?,
 
         ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
@@ -585,11 +569,11 @@ internal class PlaylistFavFragment : BaseFragment(),
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "A", mutableListOf(), "Artist", "", 0, 0)
+                    HomePatchItemModel("", "A", mutableListOf(), "Artist", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
+                    HomePatchDetailModel(
                         mSongDetails.albumId.toString(),
                         "",
                         "",
@@ -624,7 +608,7 @@ internal class PlaylistFavFragment : BaseFragment(),
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetail) {
+    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)
@@ -642,7 +626,6 @@ internal class PlaylistFavFragment : BaseFragment(),
             recyclerView?.adapter = res.data?.let {
                 CreatePlaylistListAdapter(it, this, mSongDetails)
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
@@ -691,7 +674,6 @@ internal class PlaylistFavFragment : BaseFragment(),
                     viewModel.createPlaylist(name)
                     // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
-
                 }
                 if (etCreatePlaylist.text.isNullOrEmpty()) {
                     savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_gray)
@@ -706,26 +688,20 @@ internal class PlaylistFavFragment : BaseFragment(),
             }
         })
         etCreatePlaylist?.requestFocus()
-
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetail, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetail, id: String?) {
-
-        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.ContentID) }
+    fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
+        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
-
-
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
-
-
         }
     }
 }
 
-interface onFavPlaylistClick {
+internal interface onFavPlaylistClick {
     fun onFavPlaylistClick(itemPosition: Int, favData: List<FavData>)
 }

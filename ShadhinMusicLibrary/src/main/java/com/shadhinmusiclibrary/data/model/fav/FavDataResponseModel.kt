@@ -1,11 +1,10 @@
 package com.shadhinmusiclibrary.data.model.fav
 
-
 import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
 
 @Keep
-internal data class FavDataModel(
+internal data class FavDataResponseModel(
     @SerializedName("data")
     var `data`: List<FavData>?,
     @SerializedName("fav")

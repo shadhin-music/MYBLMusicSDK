@@ -9,10 +9,10 @@ import com.shadhinmusiclibrary.download.room.DownloadedContent
     entities = [
         DownloadedContent::class
     ],
-    version = 8
+    version = 8,
+    exportSchema = false
 )
 
-abstract class DownloadDatabase :RoomDatabase(){
-    abstract fun DownloadedContentDao():DownloadedContentDao
-
+internal abstract class DownloadDatabase : RoomDatabase() {
+    abstract fun DownloadedContentDao(): DownloadedContentDao
 }

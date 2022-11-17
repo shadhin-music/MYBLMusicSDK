@@ -42,6 +42,7 @@ import com.shadhinmusiclibrary.adapter.FavoriteArtistAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -129,30 +130,25 @@ internal class AlbumsFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-
-//        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
-//                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID)
-//                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                playerViewModel.skipToQueueItem(clickItemPosition)
-//            } else {
-//                playerViewModel.togglePlayPause()
-//            }
-//        } else {
-//            playItem(
-//                UtilHelper.getSongDetailToFavoriteSongDetailList(mSongDetails),
-//                clickItemPosition
-//            )
-//            Log.e("TAG","SONG :"+ mSongDetails.toString() )
-//        }
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -203,8 +199,8 @@ internal class AlbumsFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
+
     }
 
     override fun onStart() {
@@ -686,19 +682,14 @@ internal class AlbumsFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetailModel, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetailModel, id: String?) {
-
+    fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id!!) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
-
-
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
-
-
         }
     }
 }

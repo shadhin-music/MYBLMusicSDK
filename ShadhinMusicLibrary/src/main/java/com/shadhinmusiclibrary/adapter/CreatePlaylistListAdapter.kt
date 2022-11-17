@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserPlaylistData
 import kotlin.random.Random
@@ -15,7 +16,7 @@ import kotlin.random.Random
 internal class CreatePlaylistListAdapter(
     val data: List<UserPlaylistData>,
     val itemClick: ItemClickListener,
-    val mSongDetails: SongDetailModel
+    val mSongDetails: IMusicModel
 ) : RecyclerView.Adapter<CreatePlaylistListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

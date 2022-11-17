@@ -41,18 +41,14 @@ class MyBLDownloadService : DownloadService(
 ), ServiceEntryPoint {
 
     private lateinit var notificationHelper: DownloadNotificationHelper
-
     private var currentItem: DownloadedContent? = null
     private lateinit var cacheRepository: CacheRepository
     private var downloadServiceScope: CoroutineScope? = null
 
     companion object {
-
         var isRunning: Boolean = true
         var currentId: String? = null
         var currentProgress: Int? = null
-
-
     }
 
     override fun onCreate() {
@@ -61,7 +57,6 @@ class MyBLDownloadService : DownloadService(
         isRunning = true
         notificationHelper = DownloadNotificationHelper(this, "my app")
         cacheRepository = CacheRepository(applicationContext)
-
     }
 
     override fun getDownloadManager(): DownloadManager {

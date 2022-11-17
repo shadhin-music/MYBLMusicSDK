@@ -16,8 +16,10 @@ import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomSheetDialogItemCallback):
-    RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
+internal class GenrePlaylistAdapter(
+    private val bsDialogItemCallback: BottomSheetDialogItemCallback
+) : RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
+
     private var rootDataContent: HomePatchDetailModel? = null
     private var dataSongDetail: List<SongDetailModel> = mutableListOf()
 
@@ -39,11 +41,9 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
         }
 
-
         holder.itemView.setOnClickListener {
             if (holder.itemViewType == VIEW_TRACK_ITEM) {
                 val mSongDetItem = dataSongDetail[position]
-
             }
         }
     }
@@ -83,7 +83,6 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
         private lateinit var ivThumbCurrentPlayItem: ImageView
         private lateinit var tvCurrentAlbumName: TextView
         private lateinit var tvArtistName: TextView
-
         //        private lateinit var ivFavorite: ImageView
         private lateinit var ivPlayBtn: ImageView
 
@@ -122,11 +121,10 @@ internal class GenrePlaylistAdapter(private val bsDialogItemCallback: BottomShee
             tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
 
-                ivSongMenuIcon.setOnClickListener {
-                    bsDialogItemCallback.onClickBottomItem(mSongDetail)
-                }
+            ivSongMenuIcon.setOnClickListener {
+                bsDialogItemCallback.onClickBottomItem(mSongDetail)
+            }
 //                showBottomSheetDialog(viewItem.context)
-
         }
     }
 

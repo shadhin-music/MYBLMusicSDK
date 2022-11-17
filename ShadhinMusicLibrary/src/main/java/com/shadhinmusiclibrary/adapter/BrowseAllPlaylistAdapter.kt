@@ -25,8 +25,6 @@ internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItemModel) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-
-
     }
 
     override fun getItemCount(): Int {
@@ -53,22 +51,16 @@ internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItemModel) :
                 .load(url)
                 .into(imageView)
 
-//
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
-
 }
 
 

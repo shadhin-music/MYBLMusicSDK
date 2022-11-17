@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.shadhinmusiclibrary.data.model.FeaturedSongDetailModel
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
-
 
 internal class FeaturedLatestTracksAdapter(
     private val lrOnCallBack: LatestReleaseOnCallBack

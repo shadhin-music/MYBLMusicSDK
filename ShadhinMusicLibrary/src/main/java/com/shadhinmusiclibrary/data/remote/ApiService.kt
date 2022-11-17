@@ -2,8 +2,7 @@ package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.auth.LoginResponse
-import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.fav.FavDataModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataResponseModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.data.model.search.SearchModel
@@ -14,9 +13,7 @@ import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistResponseModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserPlayListModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistModel
-import org.json.JSONObject
 import retrofit2.http.*
-import java.util.HashMap
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -131,11 +128,11 @@ internal interface ApiService {
     suspend fun deletePlaylist(@Query("id") id: String): CreatePlaylistResponseModel
 
     @GET("Favourite/GetFavourite")
-    suspend fun fetchAllFavoriteByType(@Query("type") type: String): FavDataModel
+    suspend fun fetchAllFavoriteByType(@Query("type") type: String): FavDataResponseModel
 
     @POST("Favourite")
-    suspend fun addToFavorite(@Body body: AddtoFavBody): FavDataModel
+    suspend fun addToFavorite(@Body body: AddtoFavBody): FavDataResponseModel
 
     @HTTP(method = "DELETE", path = "Favourite", hasBody = true)
-    suspend fun deleteFavorite(@Body body: AddtoFavBody): FavDataModel
+    suspend fun deleteFavorite(@Body body: AddtoFavBody): FavDataResponseModel
 }

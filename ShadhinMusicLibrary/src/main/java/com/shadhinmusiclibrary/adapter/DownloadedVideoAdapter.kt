@@ -27,12 +27,9 @@ internal class DownloadedVideoAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-//
         if (allDownloads[position].rootType.equals("V")) {
-//
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
@@ -52,9 +49,7 @@ internal class DownloadedVideoAdapter(
 //            lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
 //             Log.e("TAG","ALL Downloads: "+ allDownloads)
         // }
-
         //}
-
     }
 
     override fun getItemCount(): Int {
@@ -71,8 +66,6 @@ internal class DownloadedVideoAdapter(
         private var videoImage: ImageView = itemView.findViewById(R.id.videoImage)
         private var threeDotButton: ImageButton = itemView.findViewById(R.id.threeDotButton)
         fun bindItems() {
-
-
             titleTextView.text = allDownloads[absoluteAdapterPosition].rootTitle
             durationTextView.text =
                 TimeParser.secToMin(allDownloads[absoluteAdapterPosition].timeStamp)
@@ -82,13 +75,10 @@ internal class DownloadedVideoAdapter(
 //                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
 //            }
             subTitleTextView.text = allDownloads[absoluteAdapterPosition].artist
-
             Glide.with(itemView.context)
                 .load(allDownloads[absoluteAdapterPosition].getImageUrl300Size())
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
-
-//
 //            if (item.isPlaystate) {
 //                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
 //            } else {
@@ -100,8 +90,6 @@ internal class DownloadedVideoAdapter(
 //            threeDotButton.setOnClickListener {
 //                bottomsheetDialog.openDialog(item)
 //            }
-
         }
-
     }
 }

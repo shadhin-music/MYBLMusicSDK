@@ -75,6 +75,7 @@ internal class PlaylistHeaderAdapter(
         var ivFavorite: ImageView? = null
         var ivPlayBtn: ImageView? = null
         var menu: ImageView? = null
+
         fun bindItems(homePatchDetail: HomePatchDetailModel?) {
 
             ivThumbCurrentPlayItem =
@@ -100,7 +101,7 @@ internal class PlaylistHeaderAdapter(
 
             var isFav = false
             val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
-            if (isAddedToFav?.contentID != null) {
+            if (isAddedToFav?.content_Id != null) {
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
             } else {
@@ -120,48 +121,30 @@ internal class PlaylistHeaderAdapter(
                     Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
-                    Log.e("TAG", "NAME: " + isFav)
                 } else {
                     favViewModel.addFavContent(
                         homePatchDetail?.ContentID.toString(),
                         homePatchDetail?.ContentType.toString()
                     )
-
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
-                        FavData(
-                            homePatchDetail?.ContentID.toString(),
-                            homePatchDetail?.AlbumId,
-                            homePatchDetail?.image,
-                            "",
-                            homePatchDetail?.Artist,
-                            homePatchDetail?.ArtistId,
-                            "",
-                            "",
-                            2,
-                            homePatchDetail?.ContentType.toString(),
-                            "",
-                            "",
-                            "1",
-                            "",
-                            homePatchDetail?.image,
-                            "",
-                            false,
-                            "",
-                            0,
-                            "",
-                            "",
-                            "",
-                            homePatchDetail?.PlayUrl,
-                            homePatchDetail?.RootId,
-                            homePatchDetail?.RootType,
-                            false,
-                            "",
-                            homePatchDetail?.title,
-                            "",
-                            ""
-                        )
+                        FavData()
+                            .apply {
+                                content_Id = homePatchDetail?.ContentID.toString()
+                                album_Id = homePatchDetail?.AlbumId
+                                albumImage = homePatchDetail?.image
+                                artistName = homePatchDetail?.Artist
+                                artist_Id = homePatchDetail?.ArtistId
+                                clientValue = 2
+                                content_Type = homePatchDetail?.ContentType.toString()
+                                fav = "1"
+                                imageUrl = homePatchDetail?.image
+                                playingUrl = homePatchDetail?.PlayUrl
+                                rootContentId = homePatchDetail?.RootId
+                                rootContentType = homePatchDetail?.RootType
+                                titleName = homePatchDetail?.title
+                            }
                     )
                     isFav = true
                     Toast.makeText(mContext, "Added to favorite", Toast.LENGTH_LONG).show()

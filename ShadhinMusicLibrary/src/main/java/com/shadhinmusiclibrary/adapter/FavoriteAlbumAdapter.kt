@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.fav.onFavAlbumClick
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoriteAlbumAdapter(
     val allDownloads: List<FavData>,
@@ -30,13 +30,10 @@ internal class FavoriteAlbumAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
-//
 //        if(allDownloads[position].rootType.equals("V")){
-//
 //             holder.itemView.setOnClickListener {
 //                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
 //                 val videoArray = ArrayList<Video>()
@@ -56,20 +53,15 @@ internal class FavoriteAlbumAdapter(
         holder.itemView.setOnClickListener {
             albumClick.onFavAlbumClick(position, allDownloads)
             //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
-            Log.e("TAG", "ALL Downloads: " + allDownloads)
         }
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (allDownloads[position].contentType.equals("PDJG")) {
+        if (allDownloads[position].content_Type.equals("PDJG")) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
         }
-
-
-        //}
-
     }
 
     override fun getItemCount(): Int {
@@ -80,35 +72,32 @@ internal class FavoriteAlbumAdapter(
         var tag: String? = null
         val context = itemView.getContext()
         fun bindItems() {
-
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(allDownloads[absoluteAdapterPosition].getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allDownloads[absoluteAdapterPosition].title
+            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
 
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = allDownloads[absoluteAdapterPosition].artist
+            tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
 
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].duration)
+            tvSongLength.text =
+                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = allDownloads[absoluteAdapterPosition].contentID
+            progressIndicator.tag = allDownloads[absoluteAdapterPosition].content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             downloaded.tag = 220
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].contentID)
+                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].content_Id!!)
                     ?: false
-
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
             }
         }
-
     }
 }

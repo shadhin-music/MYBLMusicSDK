@@ -19,11 +19,8 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems(data)
-
-
     }
 
     override fun getItemCount(): Int {
@@ -55,14 +52,10 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
 //            val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView = itemView.findViewById(R.id.image) as ImageView
 //           val url: String? = data?.get(absoluteAdapterPosition)?.getImageUrl300Size()
-//
-//
 //            textViewArtist.text = data?.get(absoluteAdapterPosition)?.TrackName
 //            Glide.with(context)
 //                .load(url)
 //                .into(imageView)
-//
-//
 //            textViewName.text= data?.get(absoluteAdapterPosition)?.EpisodeName
            // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
@@ -76,13 +69,9 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }

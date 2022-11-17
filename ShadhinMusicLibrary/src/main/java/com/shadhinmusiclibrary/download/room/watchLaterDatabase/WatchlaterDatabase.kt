@@ -8,9 +8,10 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
     entities = [
         WatchLaterContent::class
     ],
-    version = 2
+    version = 2,
+    exportSchema = false
 )
 
-abstract class WatchlaterDatabase : RoomDatabase() {
+internal abstract class WatchlaterDatabase : RoomDatabase() {
     abstract fun WatchlaterContentDao(): WatchlaterContentDao
 }

@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-
 
 internal class GenresAdapter(
     val homePatchItem: HomePatchItemModel,
     private val homeCallBack: HomeCallBack
-) :
-    RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -26,7 +24,8 @@ internal class GenresAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems()
+        val homeItemMod = homePatchItem.Data[position]
+        holder.bindItems(homeItemMod)
         holder.itemView.setOnClickListener {
             homeCallBack.onClickItemAndAllItem(position, homePatchItem)
         }
@@ -38,36 +37,21 @@ internal class GenresAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
-        fun bindItems() {
-            val url: String = homePatchItem.Data[absoluteAdapterPosition].image
+        fun bindItems(homePathitem: HomePatchDetailModel) {
+            val url: String = homePathitem.image
             val imageView = itemView.findViewById(R.id.image) as ImageView
             Glide.with(context)
-                .load(url.replace(".jpg","_mybl.jpg"))
+                .load(url.replace(".jpg", "_mybl.jpg"))
                 .into(imageView)
-
             itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , GenrePlaylistFragment.newInstance())
-//                    .addToBackStack("GenrePlaylistFragment")
-//                    .commit()
             }
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
-
-
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
         }
     }
 }
-
-
-
-
-
-

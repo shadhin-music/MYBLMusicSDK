@@ -25,7 +25,6 @@ internal class FavoriteViewPagerAdapter(
 
             0 -> {
                SongsFavoriteFragment()
-
             }
            1-> {
               VideosFavFragment()

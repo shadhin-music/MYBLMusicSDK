@@ -88,7 +88,6 @@ internal class HomeFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         uiInitMiniMusicPlayer(view)
         cacheRepository = CacheRepository(requireContext())
-        viewModel?.fetchHomeData(pageNum, false)
         homeViewModel = ViewModelProvider(
             this,
             injector.factoryHomeVM
@@ -103,6 +102,8 @@ internal class HomeFragment : BaseFragment(),
             this,
             injector.factoryFavContentVM
         )[FavViewModel::class.java]
+
+        homeViewModel.fetchHomeData(pageNum, false)
 
         favViewModel.getFavContentArtist("A")
         favViewModel.getFavContentPodcast("PD")
@@ -140,142 +141,143 @@ internal class HomeFragment : BaseFragment(),
 
             observeData()
         }
+    }
 
-        private fun observeData() {
-            playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+    private fun observeData() {
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
 
-            val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-            homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
-                if (res.status == Status.SUCCESS) {
-                    progressBar.visibility = GONE
-                    viewDataInRecyclerView(res.data)
-                } else {
-                    progressBar.visibility = GONE
-                }
-                isLoading = false
-            }
-            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
-                if (itMus != null) {
-                    setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
-                }
-            }
-
-            playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
-                if (it != null)
-                    miniPlayerPlayPauseState(it.isPlaying)
-            }
-
-            playerViewModel.playerProgress.observe(viewLifecycleOwner) {
-                tvTotalDurationMini.text = it.currentPositionTimeLabel()
-            }
-
-            if (playerViewModel.isMediaDataAvailable()) {
-                llMiniMusicPlayer.visibility = View.VISIBLE
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
+            if (res.status == Status.SUCCESS) {
+                progressBar.visibility = GONE
+                viewDataInRecyclerView(res.data)
             } else {
-                llMiniMusicPlayer.visibility = GONE
+                progressBar.visibility = GONE
+            }
+            isLoading = false
+        }
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMus ->
+            if (itMus != null) {
+                setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
         }
 
-        private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
-            if (dataAdapter == null) {
-                footerAdapter = HomeFooterAdapter()
+        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
+            if (it != null)
+                miniPlayerPlayPauseState(it.isPlaying)
+        }
 
-                dataAdapter = ParentAdapter(this, this, this)
+        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
+        }
 
-                val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                recyclerView.layoutManager = layoutManager
-                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        val visibleItemCount = layoutManager.childCount
-                        val totalItemCount = layoutManager.itemCount
-                        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        if (playerViewModel.isMediaDataAvailable()) {
+            llMiniMusicPlayer.visibility = View.VISIBLE
+        } else {
+            llMiniMusicPlayer.visibility = GONE
+        }
+    }
 
-                        if (!isLoading && !isLastPage) {
-                            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                                isLoading = true
-                                homeViewModel.fetchHomeData(++pageNum, false)
-                            }
+    private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
+        if (dataAdapter == null) {
+            footerAdapter = HomeFooterAdapter()
+
+            dataAdapter = ParentAdapter(this, this, this)
+
+            val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
+            val layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            recyclerView.layoutManager = layoutManager
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage) {
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            isLoading = true
+                            homeViewModel.fetchHomeData(++pageNum, false)
                         }
-                        super.onScrolled(recyclerView, dx, dy)
                     }
-                })
-
-                recyclerView.adapter = dataAdapter
-            }
-            /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
-                 if (res.status == Status.SUCCESS) {
-                     this.rbtData = res.data?.data
-                 }
-             }*/
-
-            homeData.let {
-                it?.data?.let { it1 ->
-                    dataAdapter?.setData(it1)
-                    dataAdapter?.notifyDataSetChanged()
+                    super.onScrolled(recyclerView, dx, dy)
                 }
-            }
-            if (homeData?.total == pageNum) {
-                isLastPage = true
-                val config = ConcatAdapter.Config.Builder()
-                    .setIsolateViewTypes(false)
-                    .build()
-                val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-                recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+            })
+
+            recyclerView.adapter = dataAdapter
+        }
+        /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
+             if (res.status == Status.SUCCESS) {
+                 this.rbtData = res.data?.data
+             }
+         }*/
+
+        homeData.let {
+            it?.data?.let { it1 ->
+                dataAdapter?.setData(it1)
+                dataAdapter?.notifyDataSetChanged()
             }
         }
+        if (homeData?.total == pageNum) {
+            isLastPage = true
+            val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+            val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
+            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+        }
+    }
 
-        override fun onClickItemAndAllItem(
-            itemPosition: Int,
-            selectedHomePatchItem: HomePatchItemModel
-        ) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(
-                Intent(requireActivity(), SDKMainActivity::class.java)
-                    .apply {
-                        putExtra(
-                            AppConstantUtils.UI_Request_Type,
-                            AppConstantUtils.Requester_Name_Home
-                        )
-                        putExtra(AppConstantUtils.PatchItem, data)
-                        putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
-                    })
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Home
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                    putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
+                })
 //        val valueCon = selectedHomePatchItem.Data[itemPosition].ContentID
 //        fetchOnlineData(valueCon)
-        }
+    }
 
-        override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(
-                Intent(requireActivity(), SDKMainActivity::class.java)
-                    .apply {
-                        putExtra(
-                            AppConstantUtils.UI_Request_Type,
-                            AppConstantUtils.Requester_Name_Home
-                        )
-                        putExtra(AppConstantUtils.PatchItem, data)
-                    })
-        }
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Home
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                })
+    }
 
-        override fun onClickItemPodcastEpisode(
-            itemPosition: Int,
-            selectedEpisode: List<EpisodeModel>
-        ) {
+    override fun onClickItemPodcastEpisode(
+        itemPosition: Int,
+        selectedEpisode: List<EpisodeModel>
+    ) {
 
-        }
+    }
 
-        private fun fetchOnlineData(playlistId: String) {
+    private fun fetchOnlineData(playlistId: String) {
 //        albumVM.fetchPlaylistContent(playlistId)
 //        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
 //            if (res.data?.data != null && res.status == Status.SUCCESS) {
@@ -283,166 +285,165 @@ internal class HomeFragment : BaseFragment(),
 //                res.data.data
 //            }
 //        }
-        }
+    }
 
-        override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
+    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(
-                Intent(requireActivity(), SDKMainActivity::class.java)
-                    .apply {
-                        putExtra(
-                            AppConstantUtils.UI_Request_Type,
-                            AppConstantUtils.Requester_Name_Search
-                        )
-                        putExtra(AppConstantUtils.PatchItem, data)
-                    })
-        }
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Search
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                })
+    }
 
-        fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-            /* if(BuildConfig.DEBUG){
-           mSongDetails.forEach {
-               it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
-           }
-       }*/
-            playerViewModel.unSubscribe()
-            playerViewModel.subscribe(
-                MusicPlayList(
-                    UtilHelper.getMusicListToSongDetailList(mSongDetails),
-                    0
-                ),
-                false,
-                clickItemPosition
-            )
-        }
+    fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        /* if(BuildConfig.DEBUG){
+       mSongDetails.forEach {
+           it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+       }
+   }*/
+        playerViewModel.unSubscribe()
+        playerViewModel.subscribe(
+            MusicPlayList(
+                UtilHelper.getMusicListToSongDetailList(mSongDetails),
+                0
+            ),
+            false,
+            clickItemPosition
+        )
+    }
 
-        //Copy paste from SDKMainActivity
-        private fun uiInitMiniMusicPlayer(view: View) {
-            llMiniMusicPlayer = view.findViewById(R.id.include_mini_music_player)
-            ivSongThumbMini = view.findViewById(R.id.iv_song_thumb_mini)
-            tvSongNameMini = view.findViewById(R.id.tv_song_name_mini)
-            tvSingerNameMini = view.findViewById(R.id.tv_singer_name_mini)
-            tvTotalDurationMini = view.findViewById(R.id.tv_total_duration_mini)
-            ibtnSkipPreviousMini = view.findViewById(R.id.ibtn_skip_previous_mini)
-            ibtnPlayPauseMini = view.findViewById(R.id.ibtn_play_pause_mini)
-            ibtnSkipNextMini = view.findViewById(R.id.ibtn_skip_next_mini)
-        }
+    //Copy paste from SDKMainActivity
+    private fun uiInitMiniMusicPlayer(view: View) {
+        llMiniMusicPlayer = view.findViewById(R.id.include_mini_music_player)
+        ivSongThumbMini = view.findViewById(R.id.iv_song_thumb_mini)
+        tvSongNameMini = view.findViewById(R.id.tv_song_name_mini)
+        tvSingerNameMini = view.findViewById(R.id.tv_singer_name_mini)
+        tvTotalDurationMini = view.findViewById(R.id.tv_total_duration_mini)
+        ibtnSkipPreviousMini = view.findViewById(R.id.ibtn_skip_previous_mini)
+        ibtnPlayPauseMini = view.findViewById(R.id.ibtn_play_pause_mini)
+        ibtnSkipNextMini = view.findViewById(R.id.ibtn_skip_next_mini)
+    }
 
-        //Copy paste from SDKMainActivity
-        private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetailModel) {
-            if (mSongDetails.isSeekAble!!) {
-                ibtnSkipPreviousMini.visibility = View.VISIBLE
-                ibtnSkipPreviousMini.setOnClickListener {
-                    playerViewModel.skipToPrevious()
-                }
-                ibtnSkipNextMini.visibility = View.VISIBLE
-                ibtnSkipNextMini.setOnClickListener {
-                    playerViewModel.skipToNext()
-                }
-            } else {
-                ibtnSkipPreviousMini.visibility = View.INVISIBLE
-                ibtnSkipNextMini.visibility = View.INVISIBLE
+    //Copy paste from SDKMainActivity
+    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetailModel) {
+        if (mSongDetails.isSeekAble!!) {
+            ibtnSkipPreviousMini.visibility = View.VISIBLE
+            ibtnSkipPreviousMini.setOnClickListener {
+                playerViewModel.skipToPrevious()
             }
-
-            Glide.with(this)
-                .load(mSongDetails.getImageUrl300Size())
-                .transition(DrawableTransitionOptions().crossFade(500))
-                .fitCenter()
-                .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
-                .placeholder(R.drawable.my_bl_sdk_default_song)
-                .error(R.drawable.my_bl_sdk_default_song)
-                .into(ivSongThumbMini)
-
-            tvSongNameMini.text = mSongDetails.titleName
-            tvSingerNameMini.text = mSongDetails.artistName
-            tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
-            llMiniMusicPlayer.visibility = View.VISIBLE
-
-            ibtnPlayPauseMini.setOnClickListener {
-                playerViewModel.togglePlayPause()
+            ibtnSkipNextMini.visibility = View.VISIBLE
+            ibtnSkipNextMini.setOnClickListener {
+                playerViewModel.skipToNext()
             }
+        } else {
+            ibtnSkipPreviousMini.visibility = View.INVISIBLE
+            ibtnSkipNextMini.visibility = View.INVISIBLE
         }
 
-        //Copy paste from SDKMainActivity
-        private fun miniPlayerPlayPauseState(playing: Boolean) {
-            if (playing) {
-                ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_pause_24)
-            } else {
-                ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_arrow_black_24)
-            }
-        }
+        Glide.with(this)
+            .load(mSongDetails.getImageUrl300Size())
+            .transition(DrawableTransitionOptions().crossFade(500))
+            .fitCenter()
+            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
+            .placeholder(R.drawable.my_bl_sdk_default_song)
+            .error(R.drawable.my_bl_sdk_default_song)
+            .into(ivSongThumbMini)
 
-        override fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel) {
+        tvSongNameMini.text = mSongDetails.titleName
+        tvSingerNameMini.text = mSongDetails.artistName
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
+        llMiniMusicPlayer.visibility = View.VISIBLE
+
+        ibtnPlayPauseMini.setOnClickListener {
+            playerViewModel.togglePlayPause()
+        }
+    }
+
+    //Copy paste from SDKMainActivity
+    private fun miniPlayerPlayPauseState(playing: Boolean) {
+        if (playing) {
+            ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_pause_24)
+        } else {
+            ibtnPlayPauseMini.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_arrow_black_24)
+        }
+    }
+
+    override fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-                .apply {
-                    putExtra(
-                        AppConstantUtils.UI_Request_Type,
-                        AppConstantUtils.Requester_Name_Download
-                    )
-                    putExtra(AppConstantUtils.PatchItem, data)
-                })
-        }
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Download
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
 
-        override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
+    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-                .apply {
-                    putExtra(
-                        AppConstantUtils.UI_Request_Type,
-                        AppConstantUtils.Requester_Name_Watchlater
-                    )
-                    putExtra(AppConstantUtils.PatchItem, data)
-                })
-        }
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Watchlater
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
 
-        override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel) {
+    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-                .apply {
-                    putExtra(
-                        AppConstantUtils.UI_Request_Type,
-                        AppConstantUtils.Requester_Name_CreatePlaylist
-                    )
-                    putExtra(AppConstantUtils.PatchItem, data)
-                })
-        }
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_CreatePlaylist
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
+    }
 
-        override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItemModel) {
-            ShadhinMusicSdkCore.pressCountIncrement()
-            val data = Bundle()
-            data.putSerializable(
-                AppConstantUtils.PatchItem,
-                selectedHomePatchItem as Serializable
-            )
-            startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-                .apply {
-                    putExtra(
-                        AppConstantUtils.UI_Request_Type,
-                        AppConstantUtils.Requester_Name_MyFavorite
-                    )
-                    putExtra(AppConstantUtils.PatchItem, data)
-                })
-        }
+    override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItemModel) {
+        ShadhinMusicSdkCore.pressCountIncrement()
+        val data = Bundle()
+        data.putSerializable(
+            AppConstantUtils.PatchItem,
+            selectedHomePatchItem as Serializable
+        )
+        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_MyFavorite
+                )
+                putExtra(AppConstantUtils.PatchItem, data)
+            })
     }
 
     override fun onResume() {

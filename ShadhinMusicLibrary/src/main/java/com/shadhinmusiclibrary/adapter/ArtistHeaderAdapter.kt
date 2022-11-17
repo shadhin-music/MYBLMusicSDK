@@ -31,7 +31,6 @@ internal class ArtistHeaderAdapter(
     private val itemClickCB: ArtistOnItemClickCallback,
     private val cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
-
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
     var banner: ArtistBannerModel? = null
@@ -187,8 +186,8 @@ internal class ArtistHeaderAdapter(
                 .load(url)
                 .into(imageView)
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
-            if (isAddedToFav?.contentID != null) {
+            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.ContentID)
+            if (isAddedToFav?.content_Id != null) {
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
             } else {
@@ -199,7 +198,7 @@ internal class ArtistHeaderAdapter(
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
                     favViewModel?.deleteFavContent(
-                        homePatchDetail?.ContentID,
+                        homePatchDetail.ContentID,
                         homePatchDetail.ContentType
                     )
                     cacheRepository?.deleteFavoriteById(homePatchDetail.ContentID)
@@ -215,43 +214,25 @@ internal class ArtistHeaderAdapter(
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
-                        FavData(
-                            homePatchDetail.ContentID,
-                            homePatchDetail.AlbumId,
-                            homePatchDetail.image,
-                            "",
-                            homePatchDetail.Artist,
-                            homePatchDetail.ArtistId,
-                            "",
-                            "",
-                            2,
-                            homePatchDetail.ContentType,
-                            "",
-                            "",
-                            "1",
-                            "",
-                            homePatchDetail.image,
-                            "",
-                            false,
-                            "",
-                            0,
-                            "",
-                            "",
-                            "",
-                            homePatchDetail.PlayUrl,
-                            homePatchDetail.RootId,
-                            homePatchDetail.RootType,
-                            false,
-                            "",
-                            homePatchDetail.title,
-                            "",
-                            ""
-                        )
+                        FavData().apply {
+                            content_Id = homePatchDetail.ContentID
+                            album_Id = homePatchDetail.AlbumId
+                            albumImage = homePatchDetail.image
+                            artistName = homePatchDetail.Artist
+                            artist_Id = homePatchDetail.ArtistId
+                            clientValue = 2
+                            content_Type = homePatchDetail.ContentType
+                            fav = "1"
+                            imageUrl = homePatchDetail.image
+                            playingUrl = homePatchDetail.PlayUrl
+                            rootContentId = homePatchDetail.RootId
+                            rootContentId = homePatchDetail.RootType
+                            titleName = homePatchDetail.title
+                        }
                     )
                     isFav = true
                     Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
                 }
-                // favClickCallback.favItemClick(songDetail)
             }
         }
     }

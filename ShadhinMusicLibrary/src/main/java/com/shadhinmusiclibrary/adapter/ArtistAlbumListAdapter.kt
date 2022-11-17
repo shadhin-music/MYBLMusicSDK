@@ -1,12 +1,9 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -15,7 +12,6 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import com.shadhinmusiclibrary.utils.UtilHelper
-
 
 internal class ArtistAlbumListAdapter(
     val homePatchItem: HomePatchItemModel,

@@ -5,38 +5,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.shadhinmusiclibrary.data.model.fav.FavDataModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataResponseModel
 
-import com.shadhinmusiclibrary.data.repository.CreatePlaylistRepository
 import com.shadhinmusiclibrary.data.repository.FavContentRepository
-import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 
 internal class FavViewModel (private val favContentRepository: FavContentRepository): ViewModel() {
 
-    private val _getFavContentAlbum: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentAlbum: LiveData<FavDataModel> = _getFavContentAlbum
+    private val _getFavContentAlbum: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentAlbum: LiveData<FavDataResponseModel> = _getFavContentAlbum
 
-    private val _addFavContent: MutableLiveData<FavDataModel> = MutableLiveData()
-    val addFavContent: LiveData<FavDataModel> = _addFavContent
+    private val _addFavContent: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val addFavContent: LiveData<FavDataResponseModel> = _addFavContent
 
-    private val _deleteFavContent: MutableLiveData<FavDataModel> = MutableLiveData()
-    val deleteFavContent: LiveData<FavDataModel> = _deleteFavContent
+    private val _deleteFavContent: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val deleteFavContent: LiveData<FavDataResponseModel> = _deleteFavContent
 
-    private val _getFavContentVideo: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentVideo: LiveData<FavDataModel> =  _getFavContentVideo
+    private val _getFavContentVideo: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentVideo: LiveData<FavDataResponseModel> =  _getFavContentVideo
 
-    private val _getFavContentSong: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentSong: LiveData<FavDataModel> =  _getFavContentSong
+    private val _getFavContentSong: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentSong: LiveData<FavDataResponseModel> =  _getFavContentSong
 
-    private val _getFavContentPlaylist: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentPlaylist: LiveData<FavDataModel> =  _getFavContentPlaylist
-    private val _getFavContentArtist: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentArtist: LiveData<FavDataModel> =_getFavContentArtist
-    private val _getFavContentPodcast: MutableLiveData<FavDataModel> = MutableLiveData()
-    val getFavContentPodcast: LiveData<FavDataModel> =_getFavContentPodcast
+    private val _getFavContentPlaylist: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentPlaylist: LiveData<FavDataResponseModel> =  _getFavContentPlaylist
+    private val _getFavContentArtist: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentArtist: LiveData<FavDataResponseModel> =_getFavContentArtist
+    private val _getFavContentPodcast: MutableLiveData<FavDataResponseModel> = MutableLiveData()
+    val getFavContentPodcast: LiveData<FavDataResponseModel> =_getFavContentPodcast
 
     fun getFavContentSong(type: String) = viewModelScope.launch {
         val response = favContentRepository.fetchAllFavoriteByType("S")

@@ -1,17 +1,18 @@
 package com.shadhinmusiclibrary.data.model.fav
 
 
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
-import java.io.Serializable
 
 @Keep
 @Entity
 internal class FavData : IMusicModel {
     @PrimaryKey(autoGenerate = false)
+    var favTableId: String = ""
+
     @SerializedName("ContentID")
     override var content_Id: String? = null
 

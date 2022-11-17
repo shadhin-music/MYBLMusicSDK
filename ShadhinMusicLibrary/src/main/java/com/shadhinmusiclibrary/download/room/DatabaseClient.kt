@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.shadhinmusiclibrary.download.room.downloadDataBase.DownloadDatabase
 import com.shadhinmusiclibrary.download.room.watchLaterDatabase.WatchlaterDatabase
-import com.shadhinmusiclibrary.fragments.fav.favDataBase.FavoriteDatabase
+import com.shadhinmusiclibrary.download.room.favDataBase.FavoriteDatabase
 
 class DatabaseClient {
     private var mCtx: Context? = null

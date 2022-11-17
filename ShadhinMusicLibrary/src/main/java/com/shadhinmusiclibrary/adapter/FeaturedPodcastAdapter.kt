@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,56 +22,41 @@ internal class FeaturedPodcastAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
-            data?.let { it1 -> clickCallback.onClickItem(it1,position) }
+            data.let { it1 -> clickCallback.onClickItem(it1, position) }
 //            homeCallBack.onClickItemAndAllItem(position, homePatchitem)
             // homeCallBack.onClickItem(position, Track(data.get()) )
         }
-
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return data.size ?: 0
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
         fun bindItems() {
             val textViewName = itemView.findViewById(R.id.txt_title) as TextView
             val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
             val imageView = itemView.findViewById(R.id.image) as ImageView
-           val url: String? = data?.get(absoluteAdapterPosition)?.getImageUrl300Size()
-
-
-            textViewArtist.text = data?.get(absoluteAdapterPosition)?.TrackName
+            val url: String? = data.get(absoluteAdapterPosition).getImageUrl300Size()
+            textViewArtist.text = data.get(absoluteAdapterPosition).TrackName
             Glide.with(context)
                 .load(url)
                 .into(imageView)
 
-
-            textViewName.text= data?.get(absoluteAdapterPosition)?.EpisodeName
-           // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
+            textViewName.text = data.get(absoluteAdapterPosition).EpisodeName
+            // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container ,PodcastDetailsFragment.newInstance())
-//                    .commit()
-//            }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }
