@@ -45,9 +45,7 @@ import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
@@ -1019,17 +1017,17 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-        var isDownloaded = false
+        var isDownloadComplete = false
         val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
-        if (downloaded?.track != null) {
-            isDownloaded = true
+        if (downloaded?.playingUrl != null) {
+            isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
-            isDownloaded = false
+            isDownloadComplete = false
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
         }
 
-        if (isDownloaded) {
+        if (isDownloadComplete) {
             textViewDownloadTitle?.text = "Remove From Download"
         } else {
             textViewDownloadTitle?.text = "Download Offline"
@@ -1037,7 +1035,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloadComplete.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
@@ -1050,7 +1048,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id!!)
                 localBroadcastManager.sendBroadcast(localIntent)
-                isDownloaded = false
+                isDownloadComplete = false
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =
@@ -1065,22 +1063,20 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!).equals(true)) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id!!.toString(),
-                            mSongDetails.rootContentId!!,
-                            mSongDetails.imageUrl!!,
-                            mSongDetails.titleName!!,
-                            mSongDetails.content_Type!!,
-                            mSongDetails.playingUrl,
-                            mSongDetails.content_Type!!,
-                            0,
-                            0,
-                            mSongDetails.artistName!!,
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration!!
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            mSongDetails.artistName
+                            mSongDetails.artist_Id.toString()
+                            mSongDetails.total_duration
+                        }
                     )
-                    isDownloaded = true
+                    isDownloadComplete = true
                 }
             }
             bottomSheetDialog.dismiss()
@@ -1250,11 +1246,9 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
         })
         etCreatePlaylist?.requestFocus()
-
     }
 
     fun showBottomSheetDialogForPodcast(
@@ -1299,17 +1293,17 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         constraintAlbum?.visibility = GONE
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-        var isDownloaded = false
+        var isDownloadComplete = false
         var downloaded = cacheRepository.getDownloadById(iSongTrack.album_Id!!)
-        if (downloaded?.track != null) {
-            isDownloaded = true
+        if (downloaded?.playingUrl != null) {
+            isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
-            isDownloaded = false
+            isDownloadComplete = false
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
         }
 
-        if (isDownloaded) {
+        if (isDownloadComplete) {
             textViewDownloadTitle?.text = "Remove From Download"
         } else {
             textViewDownloadTitle?.text = "Download Offline"
@@ -1317,7 +1311,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloadComplete) {
                 cacheRepository.deleteDownloadById(iSongTrack.album_Id!!)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
@@ -1346,20 +1340,18 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 //Todo iSongTrack.EpisodeId
                 if (cacheRepository.isDownloadCompleted(iSongTrack.content_Id!!).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            iSongTrack.album_Id!!.toString(),
-                            iSongTrack.rootContentId!!,
-                            iSongTrack.imageUrl!!,
-                            iSongTrack.titleName!!,
-                            iSongTrack.content_Type!!,
-                            iSongTrack.playingUrl,
-                            type = "1",
-                            isDownloaded = 0,
-                            isFavorite = 0,
-                            iSongTrack.titleName!!,
-                            artistID = iSongTrack.artist_Id ?: "",
-                            iSongTrack.total_duration!!
-                        )
+                        DownloadedContent().apply {
+                            album_Id = iSongTrack.album_Id
+                            rootContentId = iSongTrack.rootContentId
+                            imageUrl = iSongTrack.imageUrl
+                            titleName = iSongTrack.titleName
+                            content_Type = iSongTrack.content_Type
+                            playingUrl = iSongTrack.playingUrl
+                            content_Type = "1"
+                            titleName = iSongTrack.titleName
+                            artist_Id = iSongTrack.artist_Id
+                            total_duration = iSongTrack.total_duration
+                        }
                     )
                 }
             }
@@ -1433,7 +1425,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
     fun showBottomSheetDialogForPlaylist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
@@ -1470,17 +1462,17 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-        var isDownloaded = false
+        var isDownloadComplete = false
         var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
-        if (downloaded?.track != null) {
-            isDownloaded = true
+        if (downloaded?.playingUrl != null) {
+            isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
-            isDownloaded = false
+            isDownloadComplete = false
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
         }
 
-        if (isDownloaded) {
+        if (isDownloadComplete) {
             textViewDownloadTitle?.text = "Remove From Download"
         } else {
             textViewDownloadTitle?.text = "Download Offline"
@@ -1488,7 +1480,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloadComplete.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
@@ -1496,7 +1488,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     mSongDetails.content_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
+                Log.e("TAG", "DELETED: " + isDownloadComplete)
                 val localBroadcastManager =
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
@@ -1515,22 +1507,20 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     /* foreground= */ false
                 )
 
-                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!).equals(true)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id.toString(),
-                            mSongDetails.rootContentId!!,
-                            mSongDetails.imageUrl!!,
-                            mSongDetails.titleName!!,
-                            mSongDetails.content_Type!!,
-                            mSongDetails.playingUrl!!,
-                            mSongDetails.content_Type!!,
-                            0,
-                            0,
-                            mSongDetails.artistName!!,
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration!!
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id.toString()
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                 }
             }
@@ -1553,7 +1543,6 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
             isFav = true
             textFav?.text = "Remove From favorite"
         } else {
-
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
             isFav = false
             textFav?.text = "Favorite"
@@ -1602,7 +1591,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
     fun showBottomSheetDialogGoTOALBUM(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
@@ -1643,17 +1632,17 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-        var isDownloaded = false
+        var isDownloadComplete = false
         val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
-        if (downloaded?.track != null) {
-            isDownloaded = true
+        if (downloaded?.playingUrl != null) {
+            isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
-            isDownloaded = false
+            isDownloadComplete = false
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
         }
 
-        if (isDownloaded) {
+        if (isDownloadComplete) {
             textViewDownloadTitle?.text = "Remove From Download"
         } else {
             textViewDownloadTitle?.text = "Download Offline"
@@ -1661,7 +1650,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloadComplete.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
@@ -1669,7 +1658,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     mSongDetails.content_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
+                Log.e("TAG", "DELETED: " + isDownloadComplete)
                 val localBroadcastManager =
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
@@ -1688,22 +1677,20 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     /* foreground= */ false
                 )
 
-                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!) == true) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id.toString(),
-                            mSongDetails.rootContentId!!,
-                            mSongDetails.imageUrl!!,
-                            mSongDetails.titleName!!,
-                            mSongDetails.content_Type!!,
-                            mSongDetails.playingUrl!!,
-                            mSongDetails.content_Type!!,
-                            0,
-                            0,
-                            mSongDetails.artistName!!,
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration!!
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id.toString()
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                 }
             }
@@ -1861,11 +1848,11 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
             })
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetailModel, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetailModel, id: String?) {
+    private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id!!) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_LONG).show()

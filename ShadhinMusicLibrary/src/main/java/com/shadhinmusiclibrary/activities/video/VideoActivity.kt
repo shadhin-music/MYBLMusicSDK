@@ -223,7 +223,7 @@ internal class VideoActivity : AppCompatActivity(),
         //val alltracks = cacheRepository.getAllWatchlater()
         var downloaded = cacheRepository.getDownloadById(currentVideoID.toString())
 
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
             downloadTextview.text = "Remove Download"
             isDownloaded = true
@@ -331,19 +331,17 @@ internal class VideoActivity : AppCompatActivity(),
                 isDownloaded = true
                 if (cacheRepository.isDownloadCompleted(currentVideoID.toString()).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            currentVideoID.toString(),
-                            currentRootID.toString(),
-                            currentImage.toString(),
-                            currentTitle.toString(),
-                            currentRootType.toString(),
-                            currentURL,
-                            currentRootType.toString(),
-                            0,
-                            0,
-                            currentArtist.toString(), "",
-                            duration.toString()
-                        )
+                        DownloadedContent().apply {
+                            content_Id = currentVideoID.toString()
+                            rootContentId = currentRootID.toString()
+                            imageUrl = currentImage.toString()
+                            titleName = currentTitle.toString()
+                            rootContentType = currentRootType.toString()
+                            playingUrl = currentURL
+                            content_Type = currentRootType.toString()
+                            artistName = currentArtist.toString()
+                            total_duration = duration.toString()
+                        }
                     )
                 }
             }
@@ -626,7 +624,7 @@ internal class VideoActivity : AppCompatActivity(),
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -673,19 +671,18 @@ internal class VideoActivity : AppCompatActivity(),
                 ) {
                     // if (cacheRepository.isDownloadCompleted().equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            item.contentID.toString(),
-                            item.rootId.toString(),
-                            item.image.toString(),
-                            item.title.toString(),
-                            item.contentType.toString(),
-                            item.playUrl,
-                            item.contentType.toString(),
-                            0,
-                            0,
-                            item.artist.toString(), item.artistId.toString(),
-                            item.duration.toString()
-                        )
+                        DownloadedContent().apply {
+                            content_Id = item.contentID.toString()
+                            rootContentId = item.rootId.toString()
+                            imageUrl = item.image.toString()
+                            titleName = item.title.toString()
+                            content_Type = item.contentType.toString()
+                            playingUrl = item.playUrl
+                            content_Type = item.contentType.toString()
+                            artistName = item.artist.toString()
+                            artist_Id = item.artistId.toString()
+                            total_duration = item.duration.toString()
+                        }
                     )
                     isDownloaded = true
                 }

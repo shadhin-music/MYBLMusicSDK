@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
@@ -26,6 +31,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class WatchLaterFragment : BaseFragment(),
@@ -72,7 +78,7 @@ internal class WatchLaterFragment : BaseFragment(),
 
     override fun onClickBottomItemVideo(mSongDetails: WatchLaterContent) {
         openDialog(
-            Video(
+            VideoModel(
                 "",
                 "",
                 mSongDetails.rootTitle,
@@ -107,7 +113,7 @@ internal class WatchLaterFragment : BaseFragment(),
         )
     }
 
-    fun openDialog(item: Video) {
+    fun openDialog(item: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -125,17 +131,16 @@ internal class WatchLaterFragment : BaseFragment(),
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = item.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = item.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = item.title
         if (image != null) {
-            Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
+            Glide.with(this).load(UtilHelper.getImageUrlSize300(item.image!!)).into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
 
         var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -156,7 +161,6 @@ internal class WatchLaterFragment : BaseFragment(),
                     requireContext(),
                     MyBLDownloadService::class.java, item.contentID.toString(), false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", item.contentID.toString())
@@ -165,29 +169,27 @@ internal class WatchLaterFragment : BaseFragment(),
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 val downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(item.contentID.toString(), url.toUri())
-                        .build()
+                    DownloadRequest.Builder(item.contentID.toString(), url.toUri()).build()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
                     downloadRequest,
                     /* foreground= */ false
                 )
-                if (cacheRepository.isDownloadCompleted(item.contentID.toString()).equals(true)) {
+                if (cacheRepository.isDownloadCompleted(item.contentID.toString())) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            item.contentID.toString(),
-                            item.rootId.toString(),
-                            item.image.toString(),
-                            item.title.toString(),
-                            item.contentType.toString(),
-                            item.playUrl,
-                            item.contentType.toString(),
-                            0,
-                            0,
-                            item.artist.toString(), item.artistId.toString(),
-                            item.duration.toString()
-                        )
+                        DownloadedContent().apply {
+                            content_Id = item.contentID.toString()
+                            rootContentId = item.rootId.toString()
+                            imageUrl = item.image.toString()
+                            titleName = item.title.toString()
+                            content_Type = item.contentType.toString()
+                            playingUrl = item.playUrl
+                            content_Type = item.contentType.toString()
+                            artistName = item.artist.toString()
+                            artist_Id = item.artistId.toString()
+                            total_duration = item.duration.toString()
+                        }
                     )
                     isDownloaded = true
                 }
@@ -196,9 +198,7 @@ internal class WatchLaterFragment : BaseFragment(),
         }
         val watchlaterImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgWatchlater)
         val textViewWatchlaterTitle: TextView? = bottomSheetDialog.findViewById(R.id.txtwatchLater)
-
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
-
         if (watched?.track != null) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
@@ -246,7 +246,7 @@ internal class WatchLaterFragment : BaseFragment(),
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
         val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
-        if (isAddedToFav?.contentID != null) {
+        if (isAddedToFav?.content_Id != null) {
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
             textFav?.text = "Remove From favorite"
@@ -263,44 +263,24 @@ internal class WatchLaterFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
             } else {
                 favViewModel.addFavContent(item.contentID.toString(), "V")
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-                Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData(
-                        item.contentID.toString(),
-                        item.albumId,
-                        item.image,
-                        "",
-                        item.artist,
-                        item.artistId,
-                        "",
-                        "",
-                        2,
-                        "V",
-                        "",
-                        "",
-                        "1",
-                        "",
-                        item.image,
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        item.playUrl,
-                        item.rootId,
-                        "",
-                        false,
-                        "",
-                        item.title,
-                        "",
-                        ""
-                    )
+                    FavData().apply {
+                        content_Id = item.contentID.toString()
+                        album_Id = item.albumId
+                        albumImage = item.image
+                        artistName = item.artist
+                        artist_Id = item.artistId
+                        clientValue = 2
+                        content_Type = "V"
+                        fav = "1"
+                        imageUrl = item.image
+                        playingUrl = item.playUrl
+                        rootContentId = item.rootId
+                        titleName = item.title
+                    }
                 )
                 isFav = true
                 Toast.makeText(requireContext(), "Added to favorite", Toast.LENGTH_LONG).show()

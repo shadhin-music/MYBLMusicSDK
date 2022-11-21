@@ -4,6 +4,7 @@ package com.shadhinmusiclibrary.data.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -146,18 +147,18 @@ internal data class VideoModel(
         albumId = ""
         albumImage = ""
         albumName = ""
-        artist = data.artist
+        artist = data.artistName
         artistId = ""
         artistImage = ""
         banner = ""
         clientValue = 2
-        contentID = data.contentId
-        contentType = data.type
+        contentID = data.content_Id
+        contentType = data.content_Type
         createDate = ""
-        duration = data.timeStamp
+        duration = data.total_duration
         fav = ""
         follower = ""
-        image = data.rootImg
+        image = data.imageUrl
         imageWeb = ""
         isPaid = false
         newBanner = ""
@@ -165,14 +166,14 @@ internal data class VideoModel(
         playListId = ""
         playListImage = ""
         playListName = ""
-        playUrl = data.track
-        rootId = data.rootId
-        rootType = data.rootType
+        playUrl = data.playingUrl
+        rootId = data.rootContentId
+        rootType = data.rootContentType
         seekable = false
         teaserUrl = ""
-        title = data.rootTitle
+        title = data.titleName
         trackType = ""
-        type = data.type
+        type = data.content_Type
     }
 
     internal fun setDataFavorite(data: FavData) {
@@ -206,6 +207,39 @@ internal data class VideoModel(
         title = data.titleName
         trackType = ""
         type = data.type
+    }
+
+    internal fun setDataFavoriteIM(data: IMusicModel) {
+        albumId = ""
+        albumImage = ""
+        albumName = ""
+        artist = data.artistName
+        artistId = ""
+        artistImage = ""
+        banner = ""
+        clientValue = 2
+        contentID = data.content_Id
+        contentType = data.content_Type
+        createDate = ""
+        duration = data.total_duration
+        fav = ""
+        follower = ""
+        image = data.imageUrl
+        imageWeb = data.imageUrl
+        isPaid = false
+        newBanner = ""
+        playCount = 0
+        playListId = ""
+        playListImage = ""
+        playListName = ""
+        playUrl = data.playingUrl
+        rootId = data.rootContentId
+        rootType = data.rootContentType
+        seekable = false
+        teaserUrl = ""
+        title = data.titleName
+        trackType = ""
+        type = data.content_Type
     }
 
     internal fun setDataWatchlater(data: WatchLaterContent) {

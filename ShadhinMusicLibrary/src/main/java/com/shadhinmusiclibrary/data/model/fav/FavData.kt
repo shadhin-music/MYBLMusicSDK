@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
 
 @Keep
-@Entity
-internal class FavData : IMusicModel {
-    @PrimaryKey(autoGenerate = false)
-    var favTableId: String = ""
+@Entity(tableName = "FavData")
+class FavData : IMusicModel {
+    @PrimaryKey(autoGenerate = true)
+    var favTableId: Int = 0
 
     @SerializedName("ContentID")
     override var content_Id: String? = null

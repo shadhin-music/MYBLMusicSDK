@@ -380,8 +380,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
-//                        Log.e("getDownloadManagerx",
-//                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
@@ -392,7 +390,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 

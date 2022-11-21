@@ -1,22 +1,41 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownloadedVideoAdapter
+import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack {
+internal class VideosDownloadFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
+    DownloadBottomSheetDialogItemCallback {
+
+    private var isDownloaded: Boolean = false
+    private var iswatched: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,36 +76,36 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-        TODO("Not yet implemented")
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
         openDialog(
-            Video(
+            VideoModel(
                 "",
                 "",
-                mSongDetails.rootTitle,
-                mSongDetails.artist,
+                mSongDetails.titleName,
+                mSongDetails.artistName,
                 "",
                 "",
                 "",
                 2,
-                mSongDetails.contentId,
-                mSongDetails.rootType,
+                mSongDetails.content_Id,
+                mSongDetails.rootContentType,
                 "",
-                mSongDetails.timeStamp,
+                mSongDetails.total_duration,
                 "",
                 "",
-                mSongDetails.rootImg,
+                mSongDetails.imageUrl,
                 "",
                 false,
                 "",
@@ -94,19 +113,19 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
                 "",
                 "",
                 "",
-                mSongDetails.track,
+                mSongDetails.playingUrl,
                 "",
                 "",
                 false,
                 "",
-                mSongDetails.rootTitle,
+                mSongDetails.titleName,
                 "",
                 ""
             )
         )
     }
 
-    fun openDialog(item: Video) {
+    private fun openDialog(item: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -124,18 +143,18 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = item.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = item.image
+//        val url = item.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = item.title
         if (image != null) {
-            Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
+            Glide.with(this).load(UtilHelper.getImageUrlSize300(item.image!!)).into(image)
         }
 
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
 
         var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -157,7 +176,6 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
                     requireContext(),
                     MyBLDownloadService::class.java, item.contentID.toString(), false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", item.contentID.toString())
@@ -178,19 +196,18 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
 
                 if (cacheRepository.isDownloadCompleted(item.contentID.toString()).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            item.contentID.toString(),
-                            item.rootId.toString(),
-                            item.image.toString(),
-                            item.title.toString(),
-                            item.contentType.toString(),
-                            item.playUrl,
-                            item.contentType.toString(),
-                            0,
-                            0,
-                            item.artist.toString(), item.artistId.toString(),
-                            item.duration.toString()
-                        )
+                        DownloadedContent().apply {
+                            content_Id = item.contentID.toString()
+                            rootContentId = item.rootId.toString()
+                            imageUrl = item.image.toString()
+                            titleName = item.title.toString()
+                            rootContentType = item.contentType.toString()
+                            playingUrl = item.playUrl
+                            content_Type = item.contentType.toString()
+                            artistName = item.artist.toString()
+                            artist_Id = item.artistId.toString()
+                            total_duration = item.duration.toString()
+                        }
                     )
                     isDownloaded = true
                 }
@@ -242,11 +259,6 @@ internal class VideosDownloadFragment : BaseFragment(), DownloadedSongOnCallBack
                     )
                 )
                 iswatched = true
-                Log.e(
-                    "TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater()
-                )
-
             }
             bottomSheetDialog.dismiss()
         }

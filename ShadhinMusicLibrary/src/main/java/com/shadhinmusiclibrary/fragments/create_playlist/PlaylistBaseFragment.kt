@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -42,7 +43,7 @@ internal open class PlaylistBaseFragment : Fragment(), FragmentEntryPoint {
         )[PlayerViewModel::class.java]
     }
 
-    fun playItem(mSongDetails: MutableList<SongDetailModel>, clickItemPosition: Int) {
+    fun playItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 

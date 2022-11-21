@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Keep
-@Entity
+@Entity(tableName = "WatchLaterContent")
 data class WatchLaterContent(
     @PrimaryKey var contentId: String,
     var rootId: String,

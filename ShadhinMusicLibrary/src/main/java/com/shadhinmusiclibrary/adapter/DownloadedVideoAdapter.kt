@@ -15,6 +15,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class DownloadedVideoAdapter(
     val allDownloads: List<DownloadedContent>,
@@ -29,7 +30,7 @@ internal class DownloadedVideoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-        if (allDownloads[position].rootType.equals("V")) {
+        if (allDownloads[position].rootContentType.equals("V")) {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
@@ -66,17 +67,17 @@ internal class DownloadedVideoAdapter(
         private var videoImage: ImageView = itemView.findViewById(R.id.videoImage)
         private var threeDotButton: ImageButton = itemView.findViewById(R.id.threeDotButton)
         fun bindItems() {
-            titleTextView.text = allDownloads[absoluteAdapterPosition].rootTitle
+            titleTextView.text = allDownloads[absoluteAdapterPosition].titleName
             durationTextView.text =
-                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].timeStamp)
+                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
 //            if (item.isPlaying) {
 //                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
 //            } else {
 //                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
 //            }
-            subTitleTextView.text = allDownloads[absoluteAdapterPosition].artist
+            subTitleTextView.text = allDownloads[absoluteAdapterPosition].artistName
             Glide.with(itemView.context)
-                .load(allDownloads[absoluteAdapterPosition].getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
 //            if (item.isPlaystate) {

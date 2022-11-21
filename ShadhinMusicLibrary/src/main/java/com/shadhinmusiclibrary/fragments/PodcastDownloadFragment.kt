@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
+import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
@@ -18,7 +22,8 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
-internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBack {
+internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBack,
+    DownloadBottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
     override fun onCreateView(
@@ -46,8 +51,8 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
     }
 
     override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-            if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
@@ -62,60 +67,46 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
     }
 
     //Todo net to review this codes
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-        TODO("Not yet implemented")
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
-            SongTrackModel(
-                "",
-                mSongDetails.rootType,
-                mSongDetails.artist,
-                mSongDetails.timeStamp,
-                mSongDetails.contentId,
-                0,
-                mSongDetails.rootImg,
-                false,
-                mSongDetails.rootTitle,
-                mSongDetails.track.toString(),
-                false,
-                "",
-                0,
-                "",
-                "",
-                "",
-                0,
-                mSongDetails.rootId,
-                mSongDetails.rootImg,
-                "",
-                false
-            ),
+            SongTrackModel().apply {
+                rootContentType = mSongDetails.rootContentType
+                artistName = mSongDetails.artistName
+                total_duration = mSongDetails.total_duration
+                content_Id = mSongDetails.content_Id
+                imageUrl = mSongDetails.imageUrl
+                titleName = mSongDetails.titleName
+                playingUrl = mSongDetails.playingUrl
+                rootContentId = mSongDetails.rootContentId
+                rootImage = mSongDetails.imageUrl
+            },
             argHomePatchItem,
             argHomePatchDetail
         )
     }
 
     override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
-//        (activity as? SDKMainActivity)?.showBottomSheetDialog(
-//            navController,
-//            context = requireContext(),
-//            SongDetail(mSongDetails.contentId,
-//                mSongDetails.rootImg,
-//                mSongDetails.rootTitle,
-//                mSongDetails.rootType,
-//                mSongDetails.track.toString(),
-//                mSongDetails.artist,
-//                mSongDetails.timeStamp,
-//                "",
-//                "",
-//                "",
-//                "","","","","","","",false),
-//            argHomePatchItem,
-//            argHomePatchDetail
-//        )
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            SongDetailModel().apply {
+                content_Id = mSongDetails.content_Id
+                imageUrl = mSongDetails.imageUrl
+                titleName = mSongDetails.titleName
+                rootContentType = mSongDetails.rootContentType
+                playingUrl = mSongDetails.playingUrl
+                artistName = mSongDetails.artistName
+                total_duration = mSongDetails.total_duration
+            },
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 
     override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {

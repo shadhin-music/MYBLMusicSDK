@@ -347,7 +347,7 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -394,20 +394,18 @@ internal class ArtistFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
                 ) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id.toString(),
-                            mSongDetails.rootContentId ?: "",
-                            mSongDetails.imageUrl ?: "",
-                            mSongDetails.titleName ?: "",
-                            mSongDetails.content_Type ?: "",
-                            mSongDetails.playingUrl ?: "",
-                            mSongDetails.content_Type ?: "",
-                            0,
-                            0,
-                            mSongDetails.artistName ?: "",
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration ?: ""
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                     isDownloaded = true
                 }

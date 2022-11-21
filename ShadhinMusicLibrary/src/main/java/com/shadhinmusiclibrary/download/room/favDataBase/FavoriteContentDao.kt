@@ -11,44 +11,45 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
 internal interface FavoriteContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     fun insertAll(favData: List<FavData>)
+    fun insertAll(favData: List<FavData>)
 
 
     @Query("SELECT * FROM FavData WHERE fav=1")
     fun getAllFavorites(): List<FavData>
 
     @Query("SELECT * FROM  FavData where content_Id = :id AND Fav=1 ")
-    fun getFavoriteById(id:String):List<FavData>
+    fun getFavoriteById(id: String): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='V'  ORDER By total_duration DESC ")
-    fun getAllVideosFav():List<FavData>
+    fun getAllVideosFav(): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='S'  ORDER By total_duration DESC ")
-    fun getAllSongsFav():List<FavData>
+    fun getAllSongsFav(): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='A'  ORDER By total_duration DESC ")
-    fun getArtistFav():List<FavData>
+    fun getArtistFav(): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='R'  ORDER By total_duration DESC ")
-    fun getAlbumsFav():List<FavData>
+    fun getAlbumsFav(): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='P'  ORDER By total_duration DESC ")
-    fun getPlaylistFav():List<FavData>
+    fun getPlaylistFav(): List<FavData>
 
     @Query("SELECT * FROM FavData WHERE content_Type='PDJG'  ORDER By total_duration DESC ")
-    fun getAllPodcastFav():List<FavData>
-//
+    fun getAllPodcastFav(): List<FavData>
+
+    //
 //    @Query("SELECT * FROM DownloadedContent where contentId = :id")
 //    fun getDownloadById(id:String):List<DownloadedContent>
 //
 //    @Query("SELECT * FROM DownloadedContent where rootId = :albumId")
 //    fun getDownloadsByAlbumId(albumId:String):List<DownloadedContent>
 //
-       @Query("DELETE FROM FavData WHERE content_Id = :id ")
-       fun deleteFavoriteById(id:String):Unit
+    @Query("DELETE FROM FavData WHERE content_Id = :id ")
+    fun deleteFavoriteById(id: String)
 
-      @Insert(onConflict = OnConflictStrategy.REPLACE)
-       fun insert(favData: FavData)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(favData: FavData)
 //    @Query("DELETE FROM DownloadedContent WHERE contentId = :albumId")
 //    fun deleteDownloadByAlbumIdId(albumId:String):Unit
 //

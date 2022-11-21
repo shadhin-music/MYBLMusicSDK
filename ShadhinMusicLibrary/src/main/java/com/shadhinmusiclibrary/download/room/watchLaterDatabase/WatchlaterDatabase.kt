@@ -12,6 +12,6 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
     exportSchema = false
 )
 
-internal abstract class WatchlaterDatabase : RoomDatabase() {
+abstract class WatchlaterDatabase : RoomDatabase() {
     abstract fun WatchlaterContentDao(): WatchlaterContentDao
 }

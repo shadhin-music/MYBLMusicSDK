@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-object DownloadProgressObserver {
+internal object DownloadProgressObserver {
     private var cacheRepository: CacheRepository? = null
     private var downloadObserverScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -43,7 +43,6 @@ object DownloadProgressObserver {
                 }
                 holder.tag = id
                 albumsTrackHolderMap[id] = holder
-                // Log.e("TAGDOWNLOADED","TAGDOWNLOADED321: " + holder.tag )
             }
         }
     }
@@ -55,8 +54,6 @@ object DownloadProgressObserver {
                     is AlbumsTrackAdapter.ViewHolder -> {
                         val id = holder.tag ?: ""
                         val isDownloaded = cacheRepository?.isTrackDownloaded(id) ?: false
-//                        Log.e("TAGDOWNLOADED","TAGDOWNLOADED: " + isDownloaded)
-//                        Log.e("TAGDOWNLOADED","TAGDOWNLOADED: " + holder.tag )
                         if (isDownloaded) {
                             val imageView: ImageView =
                                 holder.itemView.findViewById(R.id.iv_song_type_icon)
@@ -72,8 +69,6 @@ object DownloadProgressObserver {
                             progress.visibility = VISIBLE
                             imageView.visibility = GONE
                             //val percent= currentProgress
-////                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDtag: " + holder.tag )
-//                            Log.e("TAGDOWNLOADED","TAGDOWNLOADEDpercent: " + percent )
 //                            progress.setProgressCompat(
 //                                percent,
 //                                true

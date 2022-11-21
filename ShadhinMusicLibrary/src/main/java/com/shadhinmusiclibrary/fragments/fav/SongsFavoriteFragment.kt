@@ -37,6 +37,7 @@ import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -87,7 +88,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         dataAdapter =
             cacheRepository.getSongsFavoriteContent()?.let {
                 FavoriteSongsAdapter(
-                    it,
+                    it.toMutableList(),
                     this,
                     this,
                     cacheRepository
@@ -131,7 +132,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].content_Id)
@@ -145,15 +146,13 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
                 mSongDetails.toMutableList(),
                 clickItemPosition
             )
-            Log.e("TAG", "SONG :" + mSongDetails.toString())
         }
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -203,7 +202,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
     }
 
     override fun onStart() {
@@ -217,10 +216,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
             val downloaded: ImageView? = view?.findViewWithTag(220)
@@ -238,18 +234,13 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
-//                        Log.e("getDownloadManagerx",
-//                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
@@ -257,13 +248,11 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
                     dataAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
@@ -274,7 +263,6 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -301,7 +289,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -325,7 +313,6 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
                     mSongDetails.content_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id!!)
@@ -345,20 +332,18 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
                 if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!).equals(true)) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id.toString(),
-                            mSongDetails.rootContentId ?: "",
-                            mSongDetails.imageUrl ?: "",
-                            mSongDetails.titleName ?: "",
-                            mSongDetails.content_Type ?: "",
-                            mSongDetails.playingUrl,
-                            mSongDetails.content_Type ?: "",
-                            0,
-                            0,
-                            mSongDetails.artistName ?: "",
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration ?: ""
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                     isDownloaded = true
                 }
@@ -610,11 +595,11 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
 
     }
 
-    override fun onClick(position: Int, mSongDetails: SongDetailModel, id: String?) {
+    override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: SongDetailModel, id: String?) {
+    private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id!!) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()

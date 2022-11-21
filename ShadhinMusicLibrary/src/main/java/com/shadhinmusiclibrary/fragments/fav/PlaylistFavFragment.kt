@@ -33,12 +33,9 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
-import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
 import com.shadhinmusiclibrary.adapter.FavoritePlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
@@ -273,6 +270,7 @@ internal class PlaylistFavFragment : BaseFragment(),
 
 
     override fun onFavPlaylistClick(itemPosition: Int, favData: List<FavData>) {
+        val mfavData = favData[itemPosition]
         navController.navigate(
             R.id.favoritePlaylist,
             Bundle().apply {
@@ -283,15 +281,15 @@ internal class PlaylistFavFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel(
-                        favData.get(itemPosition).albumId.toString(),
+                        mfavData.album_Id.toString(),
                         "",
                         "",
-                        favData.get(itemPosition).artist.toString(),
-                        favData.get(itemPosition).artistId.toString(),
+                        mfavData.artistName.toString(),
+                        mfavData.artist_Id.toString(),
                         "",
                         "",
-                        favData.get(itemPosition).contentID,
-                        favData.get(itemPosition).contentType.toString(),
+                        mfavData.content_Id ?: "",
+                        mfavData.content_Type.toString(),
                         "",
                         "",
                         "",
@@ -301,7 +299,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                         "",
                         "",
                         "",
-                        favData.get(itemPosition).playUrl.toString(),
+                        mfavData.playingUrl.toString(),
                         "",
                         "",
                         false,
@@ -309,9 +307,9 @@ internal class PlaylistFavFragment : BaseFragment(),
                         "",
                         "",
                         "",
-                        favData.get(itemPosition).image.toString(),
+                        mfavData.imageUrl.toString(),
                         "",
-                        favData.get(itemPosition).title.toString()
+                        mfavData.titleName.toString()
                     )
                 )
             })
@@ -339,19 +337,20 @@ internal class PlaylistFavFragment : BaseFragment(),
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
-        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = mSongDetails.artist
+        val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        tvArtistName?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context)?.load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
+                ?.into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.ContentID)
-        if (downloaded?.track != null) {
+        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -369,23 +368,23 @@ internal class PlaylistFavFragment : BaseFragment(),
         constraintDownload?.visibility = GONE
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
-                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                cacheRepository.deleteDownloadById(mSongDetails.content_Id ?: "")
                 DownloadService.sendRemoveDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
-                    mSongDetails.ContentID,
+                    mSongDetails.content_Id ?: "",
                     false
                 )
                 Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
-                    .putExtra("contentID", mSongDetails.ContentID)
+                    .putExtra("contentID", mSongDetails.content_Id ?: "")
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
             } else {
-                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl ?: ""}"
                 var downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                    DownloadRequest.Builder(mSongDetails.content_Id ?: "", url.toUri())
                         .build()
                 DownloadService.sendAddDownload(
                     requireContext(),
@@ -393,23 +392,23 @@ internal class PlaylistFavFragment : BaseFragment(),
                     downloadRequest,
                     /* foreground= */ false
                 )
-                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id ?: "")
+                        .equals(true)
+                ) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.ContentID.toString(),
-                            mSongDetails.rootContentID,
-                            mSongDetails.image,
-                            mSongDetails.title,
-                            mSongDetails.ContentType,
-                            mSongDetails.PlayUrl,
-                            mSongDetails.ContentType,
-                            0,
-                            0,
-                            mSongDetails.artist,
-                            mSongDetails.ArtistId.toString(),
-                            mSongDetails.duration
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                     isDownloaded = true
                     Log.e(
@@ -468,8 +467,8 @@ internal class PlaylistFavFragment : BaseFragment(),
 //
 //            }
 //        }
-        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.ContentID)
-        if (isAddedToFav?.contentID != null) {
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id ?: "")
+        if (isAddedToFav?.content_Id != null) {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -484,51 +483,35 @@ internal class PlaylistFavFragment : BaseFragment(),
 
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
-                favViewModel.deleteFavContent(mSongDetails.ContentID, mSongDetails.ContentType)
-                cacheRepository.deleteFavoriteById(mSongDetails.ContentID)
+                favViewModel.deleteFavContent(
+                    mSongDetails.content_Id ?: "",
+                    mSongDetails.content_Type ?: ""
+                )
+                cacheRepository.deleteFavoriteById(mSongDetails.content_Id ?: "")
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
             } else {
                 favViewModel.addFavContent(
                     mSongDetails.content_Id ?: "",
                     mSongDetails.content_Type ?: ""
                 )
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-                Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData().also {
-                        mSongDetails.ContentID,
-                        mSongDetails.albumId,
-                        mSongDetails.image,
-                        "",
-                        mSongDetails.artist,
-                        mSongDetails.ArtistId,
-                        "",
-                        "",
-                        2,
-                        mSongDetails.ContentType,
-                        "",
-                        "",
-                        "1",
-                        "",
-                        mSongDetails.image,
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.PlayUrl,
-                        mSongDetails.rootContentID,
-                        mSongDetails.rootContentType,
-                        false,
-                        "",
-                        mSongDetails.title,
-                        "",
-                        ""
+                    FavData().apply {
+                        content_Id = mSongDetails.content_Id
+                        album_Id = mSongDetails.album_Id
+                        imageUrl = mSongDetails.imageUrl
+                        artistName = mSongDetails.artistName
+                        artist_Id = mSongDetails.artist_Id
+                        clientValue = 2
+                        content_Type = mSongDetails.content_Type
+                        fav = "1"
+                        imageUrl = mSongDetails.imageUrl
+                        playingUrl = mSongDetails.playingUrl
+                        rootContentId = mSongDetails.rootContentId
+                        rootContentType = mSongDetails.rootContentType
+                        titleName = mSongDetails.titleName
                     }
                 )
                 isFav = true
@@ -572,15 +555,15 @@ internal class PlaylistFavFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel(
-                        mSongDetails.albumId.toString(),
+                        mSongDetails.album_Id.toString(),
                         "",
                         "",
-                        mSongDetails.artist,
-                        mSongDetails.ArtistId.toString(),
+                        mSongDetails.artistName ?: "",
+                        mSongDetails.artist_Id.toString(),
                         "",
                         "",
-                        mSongDetails.ContentID,
-                        mSongDetails.ContentType,
+                        mSongDetails.content_Id ?: "",
+                        mSongDetails.content_Type ?: "",
                         "",
                         "",
                         "",
@@ -590,7 +573,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                         "",
                         "",
                         "",
-                        mSongDetails.PlayUrl.toString(),
+                        mSongDetails.playingUrl.toString(),
                         "",
                         "",
                         false,
@@ -598,9 +581,9 @@ internal class PlaylistFavFragment : BaseFragment(),
                         "",
                         "",
                         "",
-                        mSongDetails.image.toString(),
+                        mSongDetails.imageUrl.toString(),
                         "",
-                        mSongDetails.title.toString()
+                        mSongDetails.titleName.toString()
                     ) as Serializable
                 )
             })
@@ -632,7 +615,6 @@ internal class PlaylistFavFragment : BaseFragment(),
             bottomSheetDialogPlaylist.dismiss()
         }
         viewModel.createPlaylist.observe(this) { res ->
-
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
@@ -692,7 +674,7 @@ internal class PlaylistFavFragment : BaseFragment(),
         addSongsToPlaylist(mSongDetails, id)
     }
 
-    fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
+    private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()

@@ -231,8 +231,8 @@ class MyBLDownloadService : DownloadService(
         downloadServiceScope?.launch {
             if (isRunning) {
                 cacheRepository.setDownloadedContentPath(
-                    downloadedContent.contentId,
-                    downloadedContent.track!!
+                    downloadedContent.content_Id!!,
+                    downloadedContent.playingUrl!!
                 )
                 delay(Constants.DELAY_DURATION)
                 // downloadUpdateListener?.loadData()
@@ -242,8 +242,8 @@ class MyBLDownloadService : DownloadService(
                     Log.i(
                         "getDownloadManager",
                         "onDownloadChanged:" + cacheRepository.setDownloadedContentPath(
-                            downloadedContent.contentId,
-                            downloadedContent.track!!
+                            downloadedContent.content_Id!!,
+                            downloadedContent.playingUrl!!
                         )
                     )
                     // DownloadOrDeleteMp3Observer.notifySubscriber()
@@ -283,6 +283,4 @@ class MyBLDownloadService : DownloadService(
         )
         return pendingIntent
     }
-
-
 }

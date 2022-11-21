@@ -12,13 +12,14 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AllFavoriteAdapter(
-    val allDownloads: List<FavData>,
+    val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: favItemClickCallback
 ) : RecyclerView.Adapter<AllFavoriteAdapter.ViewHolder>() {
@@ -43,7 +44,7 @@ internal class AllFavoriteAdapter(
                 for (item in allDownloads) {
                     val video = VideoModel()
                     if (item.rootContentType.equals("V")) {
-                        video.setDataFavorite(item)
+                        video.setDataFavoriteIM(item)
                         videoArray.add(video)
                     }
                 }
@@ -59,7 +60,7 @@ internal class AllFavoriteAdapter(
         }
         if (allDownloads[position].rootContentType.equals("S")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+                lrOnCallBack.onClickFavItem(allDownloads, position)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemSongs(allDownloads[position])
@@ -67,7 +68,7 @@ internal class AllFavoriteAdapter(
         }
         if (allDownloads[position].rootContentType.equals("PDJG")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+                lrOnCallBack.onClickFavItem(allDownloads, position)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])

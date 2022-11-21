@@ -14,6 +14,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AllDownloadedAdapter(
     val allDownloads: List<DownloadedContent>,
@@ -30,7 +31,7 @@ internal class AllDownloadedAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
 //
-        if (allDownloads[position].rootType.equals("V")) {
+        if (allDownloads[position].rootContentType.equals("V")) {
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
@@ -46,7 +47,7 @@ internal class AllDownloadedAdapter(
                 holder.itemView.context.startActivity(intent)
             }
         }
-        if (allDownloads[position].rootType.equals("S")) {
+        if (allDownloads[position].rootContentType.equals("S")) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
             }
@@ -64,16 +65,16 @@ internal class AllDownloadedAdapter(
 
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(allDownloads[absoluteAdapterPosition].getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allDownloads[absoluteAdapterPosition].rootTitle
+            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
 
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = allDownloads[absoluteAdapterPosition].artist
+            tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
 
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].timeStamp)
+            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
         }
     }
 }

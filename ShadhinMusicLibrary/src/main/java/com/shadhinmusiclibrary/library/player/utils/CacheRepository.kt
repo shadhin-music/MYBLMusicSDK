@@ -12,12 +12,12 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-class CacheRepository(val context: Context) {
+internal class CacheRepository(val context: Context) {
     var sh: SharedPreferences = context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
-    val databaseClient = DatabaseClient(context)
-    val watchLaterDb = databaseClient.getWatchlaterDatabase()
-    val downloadDb = databaseClient.getDownloadDatabase()
-    val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
+    private val databaseClient = DatabaseClient(context)
+    private val watchLaterDb = databaseClient.getWatchlaterDatabase()
+    private val downloadDb = databaseClient.getDownloadDatabase()
+    private val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
     fun insertFavoriteContent(favData: List<FavData>) {
         favoriteContentDB?.FavoriteContentDao()?.insertAll(favData)
         //  Log.i("dfsfsdff", "insertFavoriteContent: ${a}")

@@ -11,8 +11,8 @@ import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
-import com.shadhinmusiclibrary.data.model.search.TopTrendingdata
-import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
+import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import java.io.File
@@ -216,29 +216,29 @@ internal object UtilHelper {
 
     fun getSongDetailAndRootDataForUSERPLAYLIST(
         mSongDet: UserSongsPlaylistDataModel
-    ): SongDetail {
+    ): SongDetailModel {
         mSongDet.apply {
-            return SongDetail(
-                ContentID = contentID.toString(),
-                image = image.toString(),
-                title = title.toString(),
-                ContentType = contentType.toString(),
-                PlayUrl = playUrl.toString(),
-                artist = artist.toString(),
-                duration = duration.toString(),
-                copyright = copyright.toString(),
-                labelname = labelname.toString(),
-                releaseDate = releaseDate.toString(),
-                fav = "",
-                ArtistId = artistId.toString(),
-                albumId = albumId.toString(),
-                userPlayListId = userPlayListId,
+            return SongDetailModel().apply {
+                content_Id = contentID.toString()
+                imageUrl = image.toString()
+                titleName = title.toString()
+                content_Type = contentType.toString()
+                playingUrl = playUrl.toString()
+                artist = artist.toString()
+                duration = duration.toString()
+                copyright = copyright.toString()
+                labelname = labelname.toString()
+                releaseDate = releaseDate.toString()
+                fav = ""
+                artist_Id = artistId.toString()
+                albumId = albumId.toString()
+                userPlayListId = userPlayListId
                 /*rootType = rootPatch.ContentType,*/
 
-                rootContentID = "",
-                rootContentType = "",
+                rootContentId = ""
+                rootContentType = ""
                 rootImage = ""
-            )
+            }
         }
     }
 
@@ -600,7 +600,7 @@ internal object UtilHelper {
     fun getCurrentRunningSongToNewSongList(
         mediaId: String?,
         aaa: List<IMusicModel>
-    ): List<IMusicModel> {
+    ): MutableList<IMusicModel> {
         val newList: MutableList<IMusicModel> = ArrayList()
         aaa.forEach {
             if (it.content_Id == mediaId) {

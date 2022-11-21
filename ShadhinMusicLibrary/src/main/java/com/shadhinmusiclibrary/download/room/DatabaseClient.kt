@@ -36,7 +36,7 @@ class DatabaseClient {
         return mInstance
     }
 
-    fun getDownloadDatabase() = downloadDataBase
-    fun getWatchlaterDatabase() = watchlaterDatabase
-    fun getFavoriteContentDatabase() = favoriteContentDatabase
+    internal fun getDownloadDatabase() = downloadDataBase
+    internal fun getWatchlaterDatabase() = watchlaterDatabase
+    internal fun getFavoriteContentDatabase() = favoriteContentDatabase
 }

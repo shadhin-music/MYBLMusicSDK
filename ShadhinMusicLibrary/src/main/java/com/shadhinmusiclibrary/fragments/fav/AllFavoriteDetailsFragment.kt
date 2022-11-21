@@ -84,7 +84,11 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
         favViewModel =
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter = AllFavoriteAdapter(cacheRepository.getAllFavoriteContent()!!, this, this)
+        val dataAdapter = AllFavoriteAdapter(
+            cacheRepository.getAllFavoriteContent()!!.toMutableList(),
+            this,
+            this
+        )
         Log.e("TAG", "Track123: " + cacheRepository.getAllFavoriteContent())
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -261,7 +265,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
 
         var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -304,19 +308,18 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
                 Log.e("TAG", "DELETED: " + item.playUrl)
                 if (cacheRepository.isDownloadCompleted(item.contentID.toString()).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            item.contentID.toString(),
-                            item.rootId.toString(),
-                            item.image.toString(),
-                            item.title.toString(),
-                            item.contentType.toString(),
-                            item.playUrl,
-                            item.contentType.toString(),
-                            0,
-                            0,
-                            item.artist.toString(), item.artistId.toString(),
-                            item.duration.toString()
-                        )
+                        DownloadedContent().apply {
+                            content_Id = item.contentID.toString()
+                            rootContentId = item.rootId.toString()
+                            imageUrl = item.image.toString()
+                            titleName = item.title.toString()
+                            content_Type = item.contentType.toString()
+                            playingUrl = item.playUrl
+                            content_Type = item.contentType.toString()
+                            artistName = item.artist.toString()
+                            artist_Id = item.artistId.toString()
+                            total_duration = item.duration.toString()
+                        }
                     )
                     isDownloaded = true
                 }
@@ -464,7 +467,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
-        if (downloaded?.track != null) {
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -508,20 +511,18 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
                 if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!).equals(true)) {
 //                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(
-                        DownloadedContent(
-                            mSongDetails.content_Id.toString(),
-                            mSongDetails.rootContentId!!,
-                            mSongDetails.imageUrl!!,
-                            mSongDetails.titleName!!,
-                            mSongDetails.content_Type!!,
-                            mSongDetails.playingUrl!!,
-                            mSongDetails.content_Type!!,
-                            0,
-                            0,
-                            mSongDetails.artistName!!,
-                            mSongDetails.artist_Id.toString(),
-                            mSongDetails.total_duration!!
-                        )
+                        DownloadedContent().apply {
+                            content_Id = mSongDetails.content_Id.toString()
+                            rootContentId = mSongDetails.rootContentId
+                            imageUrl = mSongDetails.imageUrl
+                            titleName = mSongDetails.titleName
+                            content_Type = mSongDetails.content_Type
+                            playingUrl = mSongDetails.playingUrl
+                            rootContentType = mSongDetails.content_Type
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id.toString()
+                            total_duration = mSongDetails.total_duration
+                        }
                     )
                     isDownloaded = true
                 }
