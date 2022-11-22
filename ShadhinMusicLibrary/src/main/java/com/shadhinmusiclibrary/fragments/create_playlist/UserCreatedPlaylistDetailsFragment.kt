@@ -278,7 +278,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
         val downloadImage:ImageView ?= bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded=cacheRepository?.getDownloadById(mSongDetails.ContentID)
+        var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
         if(downloaded?.track != null){
             isDownloaded=true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -298,7 +298,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
         constraintDownload?.visibility= GONE
         constraintDownload?.setOnClickListener {
             if(isDownloaded.equals(true)){
-                cacheRepository?.deleteDownloadById(mSongDetails.ContentID)
+                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
                 Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(context,
                     MyBLDownloadService::class.java,mSongDetails.ContentID, false)
@@ -319,8 +319,8 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
                     downloadRequest,
                     /* foreground= */ false)
 
-                if (cacheRepository?.isDownloadCompleted(mSongDetails.ContentID)?.equals(true) == true) {
-                    cacheRepository?.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true) == true) {
+                    cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                         mSongDetails.rootContentID,
                         mSongDetails.image,
                         mSongDetails.title,
@@ -332,7 +332,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
                         mSongDetails.artist,mSongDetails.ArtistId.toString(),
                         mSongDetails.duration))
                     Log.e("TAGGG",
-                        "INSERTED: " + cacheRepository?.isDownloadCompleted(mSongDetails.ContentID))
+                        "INSERTED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -421,7 +421,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
             constraintDownload?.visibility= GONE
             constraintDownload?.setOnClickListener {
                 if(isDownloaded.equals(true)){
-                    cacheRepository?.deleteDownloadById(mSongDetails.ContentID)
+                    cacheRepository.deleteDownloadById(mSongDetails.ContentID)
                     Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                     DownloadService.sendRemoveDownload(context,
                         MyBLDownloadService::class.java,mSongDetails.ContentID, false)
@@ -442,8 +442,8 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
                         downloadRequest,
                         /* foreground= */ false)
 
-                    if (cacheRepository?.isDownloadCompleted(mSongDetails.ContentID)?.equals(true) == true) {
-                        cacheRepository?.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                    if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true) == true) {
+                        cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                             mSongDetails.rootContentID,
                             mSongDetails.image,
                             mSongDetails.title,
@@ -466,6 +466,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
             constraintPlaylist?.setOnClickListener {
                 deleteSongFromPlayList(context,mSongDetails,playlistId)
                 Toast.makeText(context,"Removed Successfully",Toast.LENGTH_LONG).show()
+
 //          viewModel.deleteUserSongFromPlaylist.observe(viewLifecycleOwner){
 //              res->
 //              Log.e("TAG", "CLICKArtist: " + res.message)
@@ -477,7 +478,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
             val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
             val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(mSongDetails.ContentID)
+            val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.ContentID)
             if (isAddedToFav?.contentID != null) {
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
@@ -494,7 +495,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
             constraintFav?.setOnClickListener {
                 if(isFav.equals(true)){
                     favViewModel.deleteFavContent(mSongDetails.ContentID,mSongDetails.ContentType)
-                    cacheRepository?.deleteFavoriteById(mSongDetails.ContentID)
+                    cacheRepository.deleteFavoriteById(mSongDetails.ContentID)
                     Toast.makeText(requireContext(),"Removed from favorite",Toast.LENGTH_LONG).show()
                     favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                     isFav=false

@@ -74,6 +74,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             selectedEpisodeID = it.AlbumId.toInt()
+            Log.e("TAG","RESULT: "+ Type)
         }
         cacheRepository= CacheRepository(requireContext())
         initialize()

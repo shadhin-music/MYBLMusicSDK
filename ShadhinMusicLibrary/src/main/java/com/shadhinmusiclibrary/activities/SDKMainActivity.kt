@@ -251,8 +251,9 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         var selectedPatchIndex: Int? = null
         if (intent.hasExtra(AppConstantUtils.SelectedPatchIndex)) {
             selectedPatchIndex = intent.extras!!.getInt(AppConstantUtils.SelectedPatchIndex)
-        }
 
+        }
+        Log.e("TAG","DATA: "+ selectedPatchIndex+ ""+ patch)
         routeDataHomeFragment(patch, selectedPatchIndex)
     }
     private fun myPlaylistFragmentAccess() {
@@ -371,7 +372,59 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            when (homePatchDetail.ContentType.toUpperCase()) {
+            val podcast: String = homePatchDetail.ContentType
+            val podcastType = podcast.take(2)
+            val contentType = podcast.takeLast(2)
+            //  Log.e("TAG","CHECKING: "+ podcast)
+            if (homePatchDetail.ContentType.toUpperCase().contains("PD")) {
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            HomePatchItem(homePatchItem.Code,
+                                homePatchItem.ContentType,
+                                homePatchItem.Data,
+                                homePatchItem.Design,
+                                homePatchItem.Name,
+                                homePatchItem.Sort,
+                                homePatchItem.Total) as Serializable
+                        )
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+//                            HomePatchDetail(homePatchDetail.AlbumId,
+//                                homePatchDetail.AlbumImage,
+//                                homePatchDetail.AlbumName,
+//                                homePatchDetail.Artist,
+//                                homePatchDetail.ArtistId,
+//                                homePatchDetail.ArtistImage,
+//                                homePatchDetail.Banner,
+//                                homePatchDetail.ContentID,
+//                                homePatchDetail.ContentType,
+//                                homePatchDetail.CreateDate,
+//                                homePatchDetail.Duration,
+//                                homePatchDetail.Follower,
+//                                homePatchDetail.IsPaid,
+//                                homePatchDetail.NewBanner,
+//                                homePatchDetail.PlayCount,
+//                                homePatchDetail.PlayListId,
+//                                homePatchDetail.PlayListId,
+//                                homePatchDetail.PlayListImage,
+//                                homePatchDetail.PlayUrl,
+//                                homePatchDetail.RootId,
+//                                homePatchDetail.RootType,
+//                                homePatchDetail.Seekable,
+//                                homePatchDetail.TeaserUrl,
+//                                homePatchDetail.TrackType,
+//                                homePatchDetail.Type,
+//                                homePatchDetail.fav,
+//                                homePatchDetail.image,
+//                                homePatchDetail.imageWeb,
+//                                homePatchDetail.title) as Serializable
+                        homePatchDetail as Serializable
+                        )
+                    })
+            }
+              when(homePatchDetail.ContentType.toUpperCase()){
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_artist_details,
@@ -428,22 +481,29 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                             )
                         })
                 }
-                DataContentType.CONTENT_TYPE_PD -> {
+
+                homePatchDetail.ContentType.contains("PD").toString() ->{
+                    Log.e("TAG", "CHECKING: " +  homePatchDetail.ContentType)
                     //open podcast
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
-                        Bundle().apply {
-                            putSerializable(
-                                PatchItem,
-                                homePatchItem as Serializable
-                            )
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                homePatchDetail as Serializable
-                            )
-                        })
+                    Log.e("TAG", "CHECKING: " + PatchItem)
+
+
                 }
+
             }
-        } else {
+
+
+          } else {
+            if (homePatchItem.ContentType.toUpperCase().contains("PD")) {
+                //open podcast
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            homePatchItem as Serializable
+                        )
+                    })
+            }
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
@@ -486,16 +546,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                             )
                         })
                 }
-                DataContentType.CONTENT_TYPE_PD -> {
-                    //open podcast
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
-                        Bundle().apply {
-                            putSerializable(
-                                PatchItem,
-                                homePatchItem as Serializable
-                            )
-                        })
-                }
+
                 DataContentType.CONTENT_TYPE_V -> {
                     //open video
                     setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_video_list_and_details,
@@ -853,24 +904,32 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         acivMinimizePlayerBtn.setOnClickListener {
             toggleMiniPlayerView(true)
         }
+        var isDownloaded = false
+        var downloadedSong=cacheRepository.getDownloadById(mSongDetails[clickItemPosition].ContentID)
+        if(downloadedSong?.isDownloaded ==1){
+            isDownloaded=true
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+        }else{
+            isDownloaded=false
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+        }
     }
 
     private fun songDownload(mSongDetails: SongDetail) {
         var isDownloaded = false
         var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
-//        if(downloaded?.isDownloaded ==1){
-//            isDownloaded=true
-//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
-//        }else{
-//            isDownloaded=false
-//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
-//        }
-
-            if(downloaded?.isDownloaded ==1){
+        if(downloaded?.isDownloaded ==1){
+            isDownloaded=true
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+        }else{
+            isDownloaded=false
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+        }
+            if(isDownloaded.equals(true)){
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
-                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
+                Log.e("DELETEDX", "openDialog:"+ downloaded?.isDownloaded)
                 DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
-                Log.e("TAG","DELETED: "+ isDownloaded)
+              //  Log.e("TAG","DELETED: "+ isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.ContentID)
@@ -887,7 +946,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                     MyBLDownloadService::class.java,
                     downloadRequest,
                     /* foreground= */ false)
-
+                Log.e("DELETEDX", "openDialog123:"+ downloaded?.isDownloaded)
                 if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
                     cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
                         mSongDetails.rootContentID,
@@ -904,6 +963,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                     Log.e("TAGGG",
                         "INSERTED: " + url)
                     Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
+                    isDownloaded=true
                     ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
                 }
 
