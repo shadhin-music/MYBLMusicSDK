@@ -65,7 +65,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     override fun getItemViewType(position: Int): Int {
 
         return when (homeListData.get(position).Design) {
-            "search" -> VIEW_SEARCH
+//            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
@@ -103,17 +103,17 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItem>) {
         val size = this.homeListData.size
-        if (this.homeListData.isEmpty()) {
-            for (item in data.indices) {
-                search =
-                    HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
-            }
-            this.homeListData.add(search!!)
-            //this.homeListData.add(download!!)
-
-
-        }
+//        if (this.homeListData.isEmpty()) {
+//            for (item in data.indices) {
+//                search =
+//                    HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+//              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+//            }
+//            this.homeListData.add(search!!)
+//            //this.homeListData.add(download!!)
+//
+//
+//        }
 
         if (this.homeListData.size >= 3 && downloadNotAdded){
             downloadNotAdded = false

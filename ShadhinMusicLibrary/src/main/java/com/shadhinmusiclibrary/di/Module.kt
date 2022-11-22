@@ -300,8 +300,7 @@ internal class Module(private val applicationContext: Context) {
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
 
-
-
+    
 }
 
 

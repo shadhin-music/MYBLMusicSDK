@@ -108,6 +108,10 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
                     )
 
                 }
+                if(response.data?.data?.get(1)?.Data !=null) {
+                    podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
+                        response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
+                }
             }
           //  else {
 //                progressBar.visibility = View.GONE
@@ -115,18 +119,17 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
 //                showDialog()
           //  }
         }
-        viewModel.fetchFeaturedPodcastJC(false)
-            viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
-                if (response.status == Status.SUCCESS) {
-                    Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.get(1)?.Data)
-                    podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
-                        response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
-                } else {
-//                progressBar.visibility = View.GONE
-//                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
-//                showDialog()
-                }
-            }
+//        viewModel.fetchFeaturedPodcastJC(false)
+//            viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
+//                if (response.status == Status.SUCCESS) {
+//                    Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.get(1)?.Data)
+//
+//                } else {
+////                progressBar.visibility = View.GONE
+////                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
+////                showDialog()
+//                }
+//            }
 
     }
 
