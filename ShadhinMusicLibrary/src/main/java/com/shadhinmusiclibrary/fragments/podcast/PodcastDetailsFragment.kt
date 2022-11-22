@@ -36,8 +36,10 @@ import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
 
-internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
-    PodcastOnItemClickCallback, PodcastBottomSheetDialogItemCallback {
+internal class PodcastDetailsFragment : BaseFragment(),
+    HomeCallBack,
+    PodcastOnItemClickCallback,
+    PodcastBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: PodcastViewModel
     private lateinit var navController: NavController
@@ -329,10 +331,16 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("REMOVE")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
@@ -348,17 +356,11 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
 //                progressIndicator?.visibility = View.GONE
 //                // downloaded?.visibility = VISIBLE
 //            }
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
         }
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
                     //val data = intent.getIntExtra("currentProgress",0)
@@ -370,7 +372,7 @@ internal class PodcastDetailsFragment : BaseFragment(), HomeCallBack,
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
-                "DELETED" -> {
+                "REMOVE" -> {
                     podcastTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }

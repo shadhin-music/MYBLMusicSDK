@@ -210,6 +210,12 @@ internal class ArtistFavFragment : BaseFragment(),
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
             val progressIndicator: CircularProgressIndicator? =
@@ -229,11 +235,8 @@ internal class ArtistFavFragment : BaseFragment(),
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
@@ -595,6 +598,7 @@ internal class ArtistFavFragment : BaseFragment(),
         }
     }
 
+
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
@@ -621,15 +625,12 @@ internal class ArtistFavFragment : BaseFragment(),
         etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val name: String = etCreatePlaylist.getText().toString()
-                Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled = true
                 savePlaylist?.setOnClickListener {
-
                     viewModel.createPlaylist(name)
                     // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
-
                 }
                 if (etCreatePlaylist.text.isNullOrEmpty()) {
                     savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_gray)

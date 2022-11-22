@@ -241,6 +241,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id ?: "", url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -438,8 +439,7 @@ internal class SongsDownloadFragment : BaseFragment(),
     }
 
     fun openCreatePlaylist(context: Context) {
-        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
-
+        val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)\
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_new_playlist, null)
         bottomSheetDialog.setContentView(contentView)

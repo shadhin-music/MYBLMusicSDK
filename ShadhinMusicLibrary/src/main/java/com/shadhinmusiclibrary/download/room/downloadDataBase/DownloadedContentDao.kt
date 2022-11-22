@@ -3,7 +3,6 @@ package com.shadhinmusiclibrary.download.room.downloadDataBase
 import androidx.room.*
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 
-
 @Dao
 internal interface DownloadedContentDao {
 
@@ -25,7 +24,7 @@ internal interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE rootContentType='PDJG' AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
     fun getAllPodcastDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent where content_Id = :id")
+    @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded = 1 ")
     fun getDownloadById(id: String): List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where rootContentId = :albumId")
@@ -58,8 +57,8 @@ internal interface DownloadedContentDao {
     @Query("SELECT isDownloaded_dc FROM DownloadedContent WHERE content_Type = 'V' AND content_Id = :contentId AND isDownloaded_dc =1 LIMIT 1")
     fun downloadedVideoContent(contentId: String): Boolean?
 
-    @Query("UPDATE DownloadedContent SET isDownloaded_dc = 1 WHERE content_Id = :contentId")
-    fun downloadCompleted(contentId: String)
+    @Query("UPDATE DownloadedContent SET isDownloaded_dc = :isDownloaded WHERE content_Id = :contentId")
+    fun downloadState(contentId: String, isDownloaded: Int)
 
 //    @Query("SELECT track FROM DownloadedContent where contentId = :contentId & isDownloaded = 1")
 //    fun getDownloadedTrackById(contentId:String):String

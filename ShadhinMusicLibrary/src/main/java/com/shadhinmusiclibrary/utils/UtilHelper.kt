@@ -109,7 +109,6 @@ internal object UtilHelper {
                 )
             }
         }
-
         return songDetailList
     }
 
@@ -233,9 +232,7 @@ internal object UtilHelper {
                 artist_Id = artistId.toString()
                 albumId = albumId.toString()
                 userPlayListId = userPlayListId
-                /*rootType = rootPatch.ContentType,*/
-
-                rootContentId = ""
+                rootContentId = contentID.toString()
                 rootContentType = ""
                 rootImage = ""
             }
@@ -249,7 +246,6 @@ internal object UtilHelper {
         mSongDet.apply {
             mSongDet.apply {
                 artist_Id = album_Id
-
                 rootContentId = rootPatch.ContentID
                 rootContentType = rootPatch.ContentType
                 rootImage = rootPatch.image
@@ -559,7 +555,6 @@ internal object UtilHelper {
             )
         }
     }
-
 
     fun getVideoToIMusic(data: IMusicModel): VideoModel {
         data.apply {

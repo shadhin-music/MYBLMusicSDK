@@ -22,7 +22,6 @@ import com.shadhinmusiclibrary.activities.video.BottomsheetDialog
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 
-
 internal typealias VideoItemClickFunc = (VideoModel, isMenuClick: Boolean) -> Unit
 
 internal class VideoAdapter(
@@ -163,20 +162,14 @@ internal class VideoAdapter(
             downloaded.visibility = View.GONE
 //            downloaded.tag = 200
             val isDownloaded = cacheRepository.isVideoDownloaded(item.contentID)
-
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
                 progressIndicator.layoutParams = LinearLayout.LayoutParams(0, 0)
-            }
-            //else{
-//                downloaded.visibility = View.GONE
-//                progressIndicator.visibility = View.GONE
-//              //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
-//            }
-            if (isDownloaded) {
-                downloaded.visibility = View.VISIBLE
+            } else {
+                downloaded.visibility = View.GONE
                 progressIndicator.visibility = View.GONE
+                //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
             }
         }
     }
@@ -188,7 +181,6 @@ internal class VideoAdapter(
         private var videoImage: ImageView = itemView.findViewById(R.id.videoImage)
 
         fun bind(item: VideoModel) {
-
             titleTextView.text = item.title
             if (item.isPlaying) {
                 titleTextView.setTextColor(

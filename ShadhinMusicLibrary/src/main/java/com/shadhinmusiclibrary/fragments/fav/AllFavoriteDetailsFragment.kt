@@ -297,6 +297,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(item.contentID.toString(), url.toUri())
                         .build()
+                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -369,11 +370,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                     )
                 )
                 iswatched = true
-                Log.e(
-                    "TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater()
-                )
-
             }
             bottomSheetDialog.dismiss()
         }
@@ -404,9 +400,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 isFav = false
                 Log.e("TAG", "NAME: " + isFav)
             } else {
-
                 favViewModel.addFavContent(item.contentID.toString(), "V")
-
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
@@ -500,6 +494,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -703,7 +698,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             recyclerView?.adapter = res.data?.let {
                 CreatePlaylistListAdapter(it, this, mSongDetails)
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)

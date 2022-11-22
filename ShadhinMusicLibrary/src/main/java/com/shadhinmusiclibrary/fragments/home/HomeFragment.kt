@@ -178,6 +178,57 @@ internal class HomeFragment : BaseFragment(),
         } else {
             llMiniMusicPlayer.visibility = GONE
         }
+
+        try {
+            favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
+                Log.e("DATA", "DATAARTIST: " + res?.status)
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+                Log.e("DATA", "DATA: " + res)
+
+
+            }
+            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
+                Log.e("DATA", "DATA: " + res)
+                if (res?.status == "success") {
+                    Log.e("DATA", "DATAARTIST: " + res?.status)
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+
+            }
+            favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
+
+                if (res?.status == "success") {
+                    Log.e("DATA", "DATAARTIST: " + res?.status)
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+
+
+            }
+            favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    Log.e("DATA", "DATAARTIST: " + res?.status)
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+            }
+
+            favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    Log.e("DATA", "DATAARTIST: " + res.status)
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+            }
+            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    Log.e("DATA", "DATAARTIST: " + res?.status)
+                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                }
+
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "Message: " + e)
+        }
     }
 
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {

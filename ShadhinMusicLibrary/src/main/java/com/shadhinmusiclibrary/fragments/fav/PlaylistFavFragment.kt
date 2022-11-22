@@ -107,8 +107,6 @@ internal class PlaylistFavFragment : BaseFragment(),
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
-        // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -210,6 +208,12 @@ internal class PlaylistFavFragment : BaseFragment(),
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
             val progressIndicator: CircularProgressIndicator? =
@@ -229,21 +233,13 @@ internal class PlaylistFavFragment : BaseFragment(),
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
-            Log.e("DELETED", "onReceive " + intent.action)
-            Log.e("PROGRESS", "onReceive " + intent)
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
                     val downloadingItems =
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
-//                        Log.e("getDownloadManagerx",
-//                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
@@ -257,10 +253,8 @@ internal class PlaylistFavFragment : BaseFragment(),
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
-
 
     override fun onFavPlaylistClick(itemPosition: Int, favData: List<FavData>) {
         val mfavData = favData[itemPosition]
@@ -307,6 +301,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                 )
             })
     }
+
 
     fun showBottomSheetDialog(
         bsdNavController: NavController,
@@ -404,15 +399,6 @@ internal class PlaylistFavFragment : BaseFragment(),
                         }
                     )
                     isDownloaded = true
-                    Log.e(
-                        "TAGGG",
-                        "INSERTED: " + url
-                    )
-                    Log.e("TAG", "INSERTED: " + cacheRepository.getAllDownloads())
-//                    Log.e("TAGGG",
-//                        "INSERTED: " + cacheRepository.isTrackDownloaded())
-//                    Log.e("TAGGG",
-//                        "COMPLETED: " + cacheRepository.isDownloadCompleted(mSongDetails.ContentID))
                 }
             }
             bottomSheetDialog.dismiss()
@@ -427,7 +413,6 @@ internal class PlaylistFavFragment : BaseFragment(),
                 mSongDetails,
                 argHomePatchItem,
                 argHomePatchDetail
-
             )
             bottomSheetDialog.dismiss()
         }

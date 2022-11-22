@@ -190,10 +190,16 @@ internal class AlbumDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("REMOVESONG")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
 
     override fun getCurrentVH(
@@ -292,6 +298,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
         observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
     }
 
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
             val progressIndicator: CircularProgressIndicator? =
@@ -319,7 +326,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
                         progressIndicatorUpdate(it)
                     }
                 }
-                "DELETED" -> {
+                "RMOVESONG" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
                 }
                 "PROGRESS" -> {
@@ -329,4 +336,3 @@ internal class AlbumDetailsFragment : BaseFragment(),
             }
         }
     }
-}

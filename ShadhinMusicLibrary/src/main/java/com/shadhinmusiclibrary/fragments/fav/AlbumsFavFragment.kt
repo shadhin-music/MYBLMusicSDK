@@ -205,11 +205,14 @@ internal class AlbumsFavFragment : BaseFragment(),
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
             val downloaded: ImageView? = view?.findViewWithTag(220)
@@ -221,16 +224,7 @@ internal class AlbumsFavFragment : BaseFragment(),
 //                progressIndicator?.visibility = View.GONE
 //                downloaded?.visibility = View.GONE
 //            }
-
-            Log.e(
-                "getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}"
-            )
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
@@ -264,7 +258,6 @@ internal class AlbumsFavFragment : BaseFragment(),
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
@@ -313,6 +306,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 )
             })
     }
+
 
     fun showBottomSheetDialog(
         bsdNavController: NavController,
@@ -384,6 +378,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -422,9 +417,6 @@ internal class AlbumsFavFragment : BaseFragment(),
                 argHomePatchDetail
 
             )
-
-            Log.e("TAG", "CLICKArtist: " + argHomePatchItem)
-            Log.e("TAG", "CLICKArtist: " + mSongDetails.artist_Id)
             bottomSheetDialog.dismiss()
         }
         val constraintPlaylist: ConstraintLayout? =
@@ -514,9 +506,8 @@ internal class AlbumsFavFragment : BaseFragment(),
         context: Context,
         mSongDetails: SongDetailModel,
         argHomePatchItem: HomePatchItemModel?,
-        argHomePatchDetail: HomePatchDetailModel?,
-
-        ) {
+        argHomePatchDetail: HomePatchDetailModel?
+    ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
 //        bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
 //            Bundle().apply {

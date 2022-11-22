@@ -355,6 +355,12 @@ internal class ArtistDetailsFragment : BaseFragment(),
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
             val progressIndicator: CircularProgressIndicator? =

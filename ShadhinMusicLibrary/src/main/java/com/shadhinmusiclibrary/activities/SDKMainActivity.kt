@@ -38,6 +38,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.offline.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
@@ -65,10 +67,11 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
 import java.io.Serializable
 import java.util.*
-import androidx.annotation.NavigationRes as NavigationRes1
+import androidx.annotation.NavigationRes
 
+internal class SDKMainActivity : BaseActivity(),
+    ItemClickListener {
 
-internal class SDKMainActivity : BaseActivity(), ItemClickListener {
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var isPlayOrPause = false
@@ -238,6 +241,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         //  routeDataArtistType()
     }
 
+
     val cacheRepository by lazy {
         CacheRepository(this)
     }
@@ -254,6 +258,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 )
             })
     }
+
 
     private fun downloadFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
@@ -317,7 +322,6 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 )
             })
     }
-
 
     private fun createPlaylistFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
@@ -809,7 +813,19 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 }
             }
         }
-
+        // var isDownloaded = false
+        var downloaded = cacheRepository.getDownloadById(mSongDetails[clickItemPosition].ContentID)
+        if (downloaded?.isDownloaded == 1) {
+            // isDownloaded=true
+            ibtnDownload.setColorFilter(
+                applicationContext.getResources().getColor(R.color.my_sdk_color_primary)
+            )
+        } else {
+            // isDownloaded=false
+            ibtnDownload.setColorFilter(
+                applicationContext.getResources().getColor(R.color.my_sdk_color_white)
+            )
+        }
         ibtnShuffle.setOnClickListener {
             playerViewModel.shuffleToggle()
         }
@@ -831,19 +847,84 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         }
 
         ibtnVolume.setOnClickListener {
+
         }
 
         ibtnLibraryAdd.setOnClickListener {
+            gotoPlayList(this, mSongDetails[clickItemPosition])
         }
 
         ibtnQueueMusic.setOnClickListener {
         }
 
         ibtnDownload.setOnClickListener {
+            songDownload(mSongDetails[clickItemPosition])
         }
 
         acivMinimizePlayerBtn.setOnClickListener {
             toggleMiniPlayerView(true)
+        }
+    }
+
+    private fun songDownload(mSongDetails: SongDetail) {
+        var isDownloaded = false
+        var downloaded = cacheRepository.getDownloadById(mSongDetails.ContentID)
+//        if(downloaded?.isDownloaded ==1){
+//            isDownloaded=true
+//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+//        }else{
+//            isDownloaded=false
+//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+//        }
+        if (downloaded?.isDownloaded == 1) {
+            cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+            DownloadService.sendRemoveDownload(
+                applicationContext,
+                MyBLDownloadService::class.java,
+                mSongDetails.ContentID,
+                false
+            )
+            val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+            val localIntent = Intent("DELETED")
+                .putExtra("contentID", mSongDetails.ContentID)
+            localBroadcastManager.sendBroadcast(localIntent)
+            ibtnDownload.setColorFilter(
+                applicationContext.getResources().getColor(R.color.my_sdk_color_white)
+            )
+        } else {
+            val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+            val downloadRequest: DownloadRequest =
+                DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                    .build()
+            injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
+            DownloadService.sendAddDownload(
+                applicationContext,
+                MyBLDownloadService::class.java,
+                downloadRequest,
+                /* foreground= */ false
+            )
+
+            if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                cacheRepository.insertDownload(
+                    DownloadedContent(
+                        mSongDetails.ContentID.toString(),
+                        mSongDetails.rootContentID,
+                        mSongDetails.image,
+                        mSongDetails.title,
+                        mSongDetails.ContentType,
+                        mSongDetails.PlayUrl,
+                        mSongDetails.ContentType,
+                        0,
+                        0,
+                        mSongDetails.artist,
+                        mSongDetails.ArtistId.toString(),
+                        mSongDetails.duration
+                    )
+                )
+                ibtnDownload.setColorFilter(
+                    applicationContext.getResources().getColor(R.color.my_sdk_color_primary)
+                )
+            }
         }
     }
 
@@ -1054,6 +1135,8 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
+
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1200,6 +1283,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         }
     }
 
+
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -1230,6 +1314,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled = true
+                savePlaylist?.textColor(R.color.my_sdk_color_white)
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)
@@ -1250,6 +1335,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         })
         etCreatePlaylist?.requestFocus()
     }
+
 
     fun showBottomSheetDialogForPodcast(
         bsdNavController: NavController,
@@ -1312,6 +1398,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
             if (isDownloadComplete) {
+//                cacheRepository.deleteDownloadById(track.EpisodeId)
                 cacheRepository.deleteDownloadById(iSongTrack.album_Id!!)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
@@ -1323,6 +1410,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", iSongTrack.album_Id!!)
+//                    .putExtra("contentID", track.EpisodeId)
                 localBroadcastManager.sendBroadcast(localIntent)
 
             } else {
@@ -1330,6 +1418,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(iSongTrack.album_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[track.EpisodeId] = track.Name
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1422,6 +1511,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
         constraintPlaylist?.visibility = GONE
     }
 
+
     fun showBottomSheetDialogForPlaylist(
         bsdNavController: NavController,
         context: Context,
@@ -1488,18 +1578,17 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                     mSongDetails.content_Id!!,
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloadComplete)
                 val localBroadcastManager =
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id!!)
                 localBroadcastManager.sendBroadcast(localIntent)
-
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl!!}"
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1670,6 +1759,7 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1719,7 +1809,8 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
             textFav?.text = "Favorite"
         }
 
-        constraintFav?.setOnClickListener {
+        constraintFav?.setOnClickListener
+        {
             if (isFav.equals(true)) {
                 favViewModel.deleteFavContent(
                     mSongDetails.content_Id!!,
@@ -1793,11 +1884,11 @@ internal class SDKMainActivity : BaseActivity(), ItemClickListener {
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel(
-                        AlbumId = "",
+                        AlbumId = mSongDetails.album_Id ?: "",
                         ArtistId = mSongDetails.artist_Id ?: "",
                         ContentID = mSongDetails.content_Id ?: "",
                         ContentType = "",
-                        PlayUrl = "",
+                        PlayUrl = mSongDetails.playingUrl,
                         AlbumName = "",
                         AlbumImage = "",
                         fav = "",

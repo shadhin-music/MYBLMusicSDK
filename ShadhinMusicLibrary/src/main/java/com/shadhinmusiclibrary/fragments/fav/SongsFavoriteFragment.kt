@@ -57,6 +57,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     favItemClickCallback,
     ItemClickListener {
+
     private lateinit var favViewModel: FavViewModel
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
@@ -100,8 +101,6 @@ internal class SongsFavoriteFragment : BaseFragment(),
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
-        // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -198,6 +197,12 @@ internal class SongsFavoriteFragment : BaseFragment(),
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
@@ -310,6 +315,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -399,11 +405,8 @@ internal class SongsFavoriteFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
             } else {
-
                 favViewModel.addFavContent(mSongDetails.content_Id!!, mSongDetails.content_Type!!)
-
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
@@ -515,7 +518,6 @@ internal class SongsFavoriteFragment : BaseFragment(),
             recyclerView?.adapter = res.data?.let {
                 CreatePlaylistListAdapter(it, this, mSongDetails)
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
@@ -556,15 +558,12 @@ internal class SongsFavoriteFragment : BaseFragment(),
         etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val name: String = etCreatePlaylist.text.toString()
-                Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled = true
                 savePlaylist?.setOnClickListener {
-
                     viewModel.createPlaylist(name)
                     // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
-
                 }
                 if (etCreatePlaylist.text.isNullOrEmpty()) {
                     savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_gray)

@@ -123,7 +123,6 @@ internal class CacheRepository(val context: Context) {
 
         }
         // DownloadOrDeleteObserver.notifySubscriber()
-
     }
 //
 //    fun deleteDownloadByAlbumId(albumId: String) {
@@ -166,9 +165,9 @@ internal class CacheRepository(val context: Context) {
             ?.downloadedVideoContent(content ?: "") ?: false
     }
 
-    fun downloadCompleted(content: String?) {
+    fun downloadCompleted(content: String?, isDownloaded: Boolean) {
         databaseClient.getDownloadDatabase()?.DownloadedContentDao()
-            ?.downloadCompleted(content ?: "")
+            ?.downloadState(content ?: "", if (isDownloaded) 1 else 0)
     }
 
     fun isDownloadCompleted(contentId: String): Boolean {

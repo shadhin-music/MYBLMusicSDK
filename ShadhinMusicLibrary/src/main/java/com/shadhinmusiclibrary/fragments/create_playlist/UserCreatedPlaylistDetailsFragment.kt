@@ -434,7 +434,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(), OnIt
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
-
+                localBroadcastManager.sendBroadcast(localIntent)
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =
@@ -555,6 +555,12 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(), OnIt
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {

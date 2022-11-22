@@ -67,7 +67,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
+        navController = findNavController()
         return inflater.inflate(R.layout.my_bl_sdk_fragment_download_details, container, false)
     }
 
@@ -269,6 +269,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(item.contentID.toString(), url.toUri())
                         .build()
+                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -341,15 +342,9 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     )
                 )
                 iswatched = true
-                Log.e(
-                    "TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater()
-                )
-
             }
             bottomSheetDialog.dismiss()
         }
-
     }
 
     fun showBottomSheetDialog(
@@ -536,6 +531,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         }
     }
 
+
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
@@ -617,6 +613,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
+
 
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)

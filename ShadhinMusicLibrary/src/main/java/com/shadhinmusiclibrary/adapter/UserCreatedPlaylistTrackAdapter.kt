@@ -43,8 +43,6 @@ internal class UserCreatedPlaylistTrackAdapter(
             itemClickCB.onClickItem(dataSongDetail.toMutableList(), position)
         }
 
-
-
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.mContext, R.color.my_sdk_color_primary)
@@ -114,13 +112,11 @@ internal class UserCreatedPlaylistTrackAdapter(
             val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
 
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
             }
             ivSongMenuIcon.setOnClickListener {
                 bsDialogItemCallback.onClickBottomItem(mSongDetail)
-//                Log.e("TAGGY", "ID: " + mSongDetail)
             }
         }
     }
