@@ -160,9 +160,9 @@ fun isTrackDownloaded(contentId:String):Boolean {
   fun isVideoDownloaded(content:String?): Boolean {
     return databaseClient.getDownloadDatabase()?.DownloadedContentDao()?.downloadedVideoContent(content?:"")?:false
 }
-    fun downloadCompleted(content:String?) {
+    fun downloadState(content:String?,isDownloaded:Boolean) {
         databaseClient.getDownloadDatabase()?.DownloadedContentDao()
-            ?.downloadCompleted(content ?: "")
+            ?.downloadState(content ?: "", if(isDownloaded) 1 else 0)
     }
 
 fun isDownloadCompleted(contentId:String):Boolean{

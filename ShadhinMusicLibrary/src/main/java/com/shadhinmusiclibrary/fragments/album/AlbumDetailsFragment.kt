@@ -129,6 +129,8 @@ internal class AlbumDetailsFragment :
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel?.fetchAlbumContent(contentId)
+        Log.e("TAG","DATA : "+contentId)
+        Log.e("TAG","DATA : "+artistId)
         viewModel?.albumContent?.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
@@ -184,10 +186,15 @@ internal class AlbumDetailsFragment :
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("REMOVESONG")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
@@ -332,7 +339,7 @@ internal class AlbumDetailsFragment :
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
-                "DELETED" -> {
+                "RMOVESONG" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }

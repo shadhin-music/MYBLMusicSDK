@@ -176,9 +176,9 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
     "",
         "",
         "",
-    "",mSongDetails.artistID,"","","","","",false),
+    "",mSongDetails.artistID,mSongDetails.contentId,"","","","",false),
             argHomePatchItem,
-            HomePatchDetail( "","","",mSongDetails.artist,mSongDetails.artistID,"","",
+            HomePatchDetail( mSongDetails.contentId,"","",mSongDetails.artist,mSongDetails.artistID,"","",
                 mSongDetails.contentId,mSongDetails.rootType,"","","",false,"",
                 0,"","","",mSongDetails.track.toString(),"","",
                 false,"","","","",mSongDetails.rootImg,"",mSongDetails.rootTitle)
@@ -237,6 +237,7 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(item.contentID.toString())
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java, item.contentID.toString(), false)
 
@@ -251,6 +252,7 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(item.contentID.toString(), url.toUri())
                         .build()
+                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -375,6 +377,7 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java,
                     mSongDetails.ContentID,
@@ -492,7 +495,7 @@ internal class AllDownloadDetailsFragment : CommonBaseFragment(),DownloadedSongO
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 Log.e("TAG","NAME123: "+ isFav)
-                cacheRepository.insertFavSingleContent(FavData(mSongDetails.ContentID,mSongDetails.albumId,mSongDetails.image,"",mSongDetails.artist,"",
+                cacheRepository.insertFavSingleContent(FavData(mSongDetails.ContentID,mSongDetails.albumId,mSongDetails.image,"",mSongDetails.artist,mSongDetails.ArtistId,
                     "","",2,mSongDetails.ContentType,"","","1","",mSongDetails.image,"",
                     false,  "",0,"","","",mSongDetails.PlayUrl,mSongDetails.rootContentID,
                     mSongDetails.rootContentType,false,"",mSongDetails.title,"",""

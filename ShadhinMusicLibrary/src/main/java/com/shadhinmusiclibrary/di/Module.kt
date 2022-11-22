@@ -299,14 +299,9 @@ internal class Module(private val applicationContext: Context) {
     val userHistoryRepository: UserHistoryRepository
         get() = UserHistoryRepositoryImpl(playerApiService)
 
+    val downloadTitleMap:MutableMap<String,String>
+        get() = SingleDownloadMap.getInstance()
 
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController)
-
-
-
 }
-
-
-
-

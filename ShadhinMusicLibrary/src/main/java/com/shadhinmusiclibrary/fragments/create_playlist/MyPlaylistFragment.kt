@@ -35,6 +35,7 @@ import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
+import com.shadhinmusiclibrary.utils.textColor
 import java.io.Serializable
 
 
@@ -103,6 +104,8 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
                 recyclerView.layoutManager = layoutManager
                 layoutManager.setSpanSizeLookup(onSpanSizeLookup)
                 recyclerView.adapter = concatAdapter
+                recyclerView.adapter = concatAdapter
+                    concatAdapter.notifyDataSetChanged()
             }
 
         }
@@ -190,6 +193,7 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
                 Log.e("TAG","NAME: "+ name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled= true
+                savePlaylist?.textColor(R.color.my_sdk_color_white)
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)

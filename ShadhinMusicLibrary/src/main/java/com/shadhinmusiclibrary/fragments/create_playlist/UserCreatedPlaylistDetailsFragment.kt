@@ -299,6 +299,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
         constraintDownload?.setOnClickListener {
             if(isDownloaded.equals(true)){
                 cacheRepository?.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(context,
                     MyBLDownloadService::class.java,mSongDetails.ContentID, false)
                 Log.e("TAG","DELETED: "+ isDownloaded)
@@ -421,6 +422,7 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
             constraintDownload?.setOnClickListener {
                 if(isDownloaded.equals(true)){
                     cacheRepository?.deleteDownloadById(mSongDetails.ContentID)
+                    Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                     DownloadService.sendRemoveDownload(context,
                         MyBLDownloadService::class.java,mSongDetails.ContentID, false)
                     Log.e("TAG","DELETED: "+ isDownloaded)
@@ -538,7 +540,11 @@ internal class UserCreatedPlaylistDetailsFragment :PlaylistBaseFragment(),OnItem
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
-
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
         downloadingItems.forEach {

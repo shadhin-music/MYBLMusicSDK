@@ -42,4 +42,15 @@
             android:id="@+id/fav_album_to_artist_details"
             app:destination="@id/artist_details_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/downloadAlbum"
+        android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
+        android:label="fragment_download_album"
+        tools:layout="@layout/my_bl_sdk_fragment_download_details" >
+      
+        <action
+            android:id="@+id/action_downloadAlbum_to_artist_details_fragment"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
 </navigation>

@@ -166,12 +166,11 @@ internal class VideoAdapter(
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
                 progressIndicator.layoutParams = LinearLayout.LayoutParams(0,0)
+            } else{
+                downloaded.visibility = View.GONE
+                progressIndicator.visibility = View.GONE
+              //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
             }
-            //else{
-//                downloaded.visibility = View.GONE
-//                progressIndicator.visibility = View.GONE
-//              //  progressIndicator.layoutParams = LinearLayout.LayoutParams(10.dp,10.dp)
-//            }
 
         }
 

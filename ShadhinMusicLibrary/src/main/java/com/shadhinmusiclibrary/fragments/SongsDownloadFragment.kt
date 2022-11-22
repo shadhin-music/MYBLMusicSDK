@@ -145,9 +145,9 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
                 "",
                 "",
                 "",
-                "",mSongDetails.artistID,"","","","","",false),
+                "",mSongDetails.artistID,mSongDetails.contentId,"","","","",false),
             argHomePatchItem,
-            HomePatchDetail("","","",mSongDetails.artist,mSongDetails.artistID,"","",
+            HomePatchDetail(mSongDetails.contentId,"","",mSongDetails.artist,mSongDetails.artistID,"","",
             mSongDetails.contentId,mSongDetails.rootType,"","","",false,"",
             0,"","","",mSongDetails.track.toString(),"","",
             false,"","","","",mSongDetails.rootImg,"",mSongDetails.rootTitle)
@@ -209,6 +209,7 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java,
                     mSongDetails.ContentID,
@@ -224,6 +225,7 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -351,7 +353,7 @@ internal class SongsDownloadFragment : CommonBaseFragment(),DownloadedSongOnCall
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("","A", mutableListOf(),"Artist","",0,0)
+                    HomePatchItem("","", mutableListOf(),"","",0,0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,

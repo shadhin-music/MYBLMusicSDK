@@ -177,6 +177,7 @@ internal class VideosDownloadFragment : CommonBaseFragment(),DownloadedSongOnCal
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(item.contentID.toString(), url.toUri())
                         .build()
+                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,

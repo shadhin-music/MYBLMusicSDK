@@ -195,6 +195,11 @@ internal class AlbumsFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
         downloadingItems.forEach {
@@ -339,6 +344,7 @@ internal class AlbumsFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java,
                     mSongDetails.ContentID,
@@ -354,6 +360,7 @@ internal class AlbumsFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,

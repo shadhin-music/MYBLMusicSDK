@@ -162,6 +162,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.Artist)
             Log.e("TAG", "DATA: " + it.Artist)
+            Log.e("TAG", "DATA: " + it.ArtistId)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
@@ -381,6 +382,11 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 

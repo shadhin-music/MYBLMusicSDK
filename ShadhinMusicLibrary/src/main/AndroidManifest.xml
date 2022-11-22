@@ -48,6 +48,13 @@
             android:name=".utils.MySuggestionProvider"
             android:authorities="com.shadhinmusiclibrary.utils.MySuggestionProvider"
             android:enabled="true" />
+
+        <receiver android:name=".download.DownloadCancelBroadcastListeners"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.gm.shadhin.p.intent.cancel" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
