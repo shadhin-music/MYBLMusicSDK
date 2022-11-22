@@ -181,53 +181,37 @@ internal class HomeFragment : BaseFragment(),
 
         try {
             favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
-                Log.e("DATA", "DATAARTIST: " + res?.status)
                 if (res?.status == "success") {
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                Log.e("DATA", "DATA: " + res)
-
-
             }
             favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
-                Log.e("DATA", "DATA: " + res)
                 if (res?.status == "success") {
-                    Log.e("DATA", "DATAARTIST: " + res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-
             }
             favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
-
                 if (res?.status == "success") {
-                    Log.e("DATA", "DATAARTIST: " + res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-
-
             }
             favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
-                    Log.e("DATA", "DATAARTIST: " + res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
             }
 
             favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
-                    Log.e("DATA", "DATAARTIST: " + res.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
             }
             favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
-                    Log.e("DATA", "DATAARTIST: " + res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-
             }
         } catch (e: Exception) {
-            Log.e("TAG", "Message: " + e)
         }
     }
 

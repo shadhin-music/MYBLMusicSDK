@@ -7,18 +7,14 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
-import java.io.Serializable
 
 @Keep
 @Entity(tableName = "DownloadedContent")
 class DownloadedContent : IMusicModel {
-
-    @PrimaryKey(autoGenerate = true)
-    var downloadTableId: Int = 0
-
+    @PrimaryKey
     @SerializedName("contentId")
     @Expose
-    override var content_Id: String? = ""
+    override var content_Id: String = ""
 
     @SerializedName("type")
     @Expose
@@ -57,10 +53,10 @@ class DownloadedContent : IMusicModel {
     override var rootContentType: String? = null
 
     @ColumnInfo(name = "isDownloaded_dc")
-    private var isDownloaded: Int? = null
+    private var isDownloaded: Int? = 0
 
     @ColumnInfo(name = "isFavorite_dc")
-    private var isFavorite: Int? = null
+    private var isFavorite: Int? = 0
 
     override var bannerImage: String? = null
     override var album_Id: String? = null
@@ -69,19 +65,19 @@ class DownloadedContent : IMusicModel {
     override var isPlaying: Boolean = false
     override var isSeekAble: Boolean? = null
 
-    public fun setIsDownloaded(isDownloaded: Int) {
-        this.isDownloaded = isDownloaded;
+    fun setIsDownloaded(isDownloaded: Int) {
+        this.isDownloaded = isDownloaded
     }
 
-    public fun getIsDownloaded(): Int? {
+    fun getIsDownloaded(): Int? {
         return this.isDownloaded
     }
 
-    public fun setIsFavorite(isDownloaded: Int) {
-        this.isFavorite = isDownloaded;
+    fun setIsFavorite(isDownloaded: Int) {
+        this.isFavorite = isDownloaded
     }
 
-    public fun getIsFavorite(): Int? {
+    fun getIsFavorite(): Int? {
         return this.isFavorite
     }
 }

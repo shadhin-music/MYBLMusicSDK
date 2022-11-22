@@ -4,10 +4,7 @@ import android.content.Context
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
-import com.shadhinmusiclibrary.di.single.BearerTokenHeaderInterceptor
-import com.shadhinmusiclibrary.di.single.RetrofitClient
-import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
-import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
+import com.shadhinmusiclibrary.di.single.*
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
@@ -149,8 +146,7 @@ internal class Module(private val applicationContext: Context) {
         return OkHttpClient.Builder()
             .addInterceptor(
                 HeaderInterceptor()
-            ).addInterceptor(BearerTokenHeaderInterceptor())
-            .build()
+            ).build()
     }
 
     private fun getBaseClientWITHtOKEN(): OkHttpClient {

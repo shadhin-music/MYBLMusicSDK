@@ -378,7 +378,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
-                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
+                injector.downloadTitleMap[mSongDetails.content_Id ?: ""] = mSongDetails.titleName ?: ""
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,

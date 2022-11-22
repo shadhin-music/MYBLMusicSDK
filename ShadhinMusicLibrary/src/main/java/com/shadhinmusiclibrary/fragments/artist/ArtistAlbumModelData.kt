@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 internal class ArtistAlbumModelData : IMusicModel {
 
     @SerializedName("ContentID")
-    override var content_Id: String? = null
+    override var content_Id: String = ""
 
     @SerializedName("image")
     override var imageUrl: String? = null

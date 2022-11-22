@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 interface IMusicModel {
-    var content_Id: String?
+    var content_Id: String
     var content_Type: String?
     var titleName: String?
     var bannerImage: String?

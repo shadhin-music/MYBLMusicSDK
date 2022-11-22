@@ -11,7 +11,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 internal class TopTrendingDataModel : IMusicModel {
     @SerializedName("ContentID")
     @Expose
-    override var content_Id: String? = null
+    override var content_Id: String = ""
 
     @SerializedName("image")
     @Expose

@@ -31,6 +31,7 @@ import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -211,7 +212,8 @@ internal class VideosFavFragment : BaseFragment(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetail.contentID.toString(), url.toUri())
                         .build()
-                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
+                injector.downloadTitleMap[mSongDetail.contentID.toString()] =
+                    mSongDetail.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -288,8 +290,8 @@ internal class VideosFavFragment : BaseFragment(),
         val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
-        val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
-        if (isAddedToFav?.contentID != null) {
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetail.contentID.toString())
+        if (isAddedToFav?.content_Id != null) {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -304,52 +306,31 @@ internal class VideosFavFragment : BaseFragment(),
 
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
-                favViewModel.deleteFavContent(item.contentID.toString(), "V")
-                cacheRepository.deleteFavoriteById(item.contentID.toString())
+                favViewModel.deleteFavContent(mSongDetail.contentID.toString(), "V")
+                cacheRepository.deleteFavoriteById(mSongDetail.contentID.toString())
                 Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
             } else {
 
-                favViewModel.addFavContent(item.contentID.toString(), "V")
+                favViewModel.addFavContent(mSongDetail.contentID.toString(), "V")
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-                Log.e("TAG", "NAME123: " + isFav)
                 cacheRepository.insertFavSingleContent(
-                    FavData(
-                        item.contentID.toString(),
-                        item.albumId,
-                        item.image,
-                        "",
-                        item.artist,
-                        item.artistId,
-                        "",
-                        "",
-                        2,
-                        "V",
-                        "",
-                        "",
-                        "1",
-                        "",
-                        item.image,
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        item.playUrl,
-                        item.rootId,
-                        "",
-                        false,
-                        "",
-                        item.title,
-                        "",
-                        ""
-
-                    )
+                    FavData().apply {
+                        content_Id = mSongDetail.contentID.toString()
+                        album_Id = mSongDetail.albumId
+                        albumImage = mSongDetail.image
+                        artistName = mSongDetail.artist
+                        artist_Id = mSongDetail.artistId
+                        clientValue = 2
+                        content_Type = "V"
+                        fav = "1"
+                        imageUrl = mSongDetail.image
+                        playingUrl = mSongDetail.playUrl
+                        rootContentId = mSongDetail.rootId
+                        titleName = mSongDetail.title
+                    }
                 )
                 isFav = true
                 Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()

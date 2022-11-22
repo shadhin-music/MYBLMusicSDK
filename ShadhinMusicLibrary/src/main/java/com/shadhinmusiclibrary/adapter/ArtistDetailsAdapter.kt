@@ -115,15 +115,12 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
 //                is GenreDataModel.Artist3 -> bindArtist3()
 //                is GenreDataModel.Artist4 -> bindArtist4()
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
-
-
             }
         }
     }
 
 
     companion object {
-
         val VIEW_ARTIST_HEADER = 0
         val VIEW_DOWNLOAD = 1
         val VIEW_ALBUM = 2

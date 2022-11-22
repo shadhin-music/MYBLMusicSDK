@@ -24,7 +24,7 @@ internal interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE rootContentType='PDJG' AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
     fun getAllPodcastDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded = 1 ")
+    @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded_dc = 1 ")
     fun getDownloadById(id: String): List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where rootContentId = :albumId")

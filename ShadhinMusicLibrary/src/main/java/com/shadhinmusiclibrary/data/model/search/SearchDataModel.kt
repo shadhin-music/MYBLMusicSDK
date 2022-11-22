@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 @Keep
 internal class SearchDataModel : IMusicModel {
     @SerializedName("ContentID")
-    override var content_Id: String? = null
+    override var content_Id: String = ""
 
     @SerializedName("image")
     override var imageUrl: String? = null

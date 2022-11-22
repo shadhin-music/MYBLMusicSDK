@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 @Keep
 internal class SongTrackModel : IMusicModel {
     @SerializedName("Id")
-    override var content_Id: String? = null
+    override var content_Id: String = ""
 
     @SerializedName("ShowId")
     @Expose

@@ -165,7 +165,7 @@ internal class CacheRepository(val context: Context) {
             ?.downloadedVideoContent(content ?: "") ?: false
     }
 
-    fun downloadCompleted(content: String?, isDownloaded: Boolean) {
+    fun downloadState(content: String?, isDownloaded: Boolean) {
         databaseClient.getDownloadDatabase()?.DownloadedContentDao()
             ?.downloadState(content ?: "", if (isDownloaded) 1 else 0)
     }

@@ -20,6 +20,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -50,7 +51,6 @@ import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
-
 
 internal class AllDownloadDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,

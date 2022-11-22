@@ -10,29 +10,33 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.core.R;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.scheduler.Requirements;
-import com.shadhinmusiclibrary.player.utils.CacheRepository;
-
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository;
 import java.util.List;
 import java.util.Map;
 
-/** Helper for creating download notifications. */
+/**
+ * Helper for creating download notifications.
+ */
 public final class DownloadNotificationHelper {
 
-    private static final @StringRes int NULL_STRING_ID = 0;
+    private static final @StringRes
+    int NULL_STRING_ID = 0;
     public static final String CANCEL_ACTION = "com.gm.shadhin.p.intent.cancel";
 
     private final NotificationCompat.Builder notificationBuilder;
 
     private final Context context;
-    private final Map<String,String> downloadTitleMap;
+    private final Map<String, String> downloadTitleMap;
     private final CacheRepository cacheRepository;
+
     /**
-     * @param context A context.
-     * @param channelId The id of the notification channel to use.
+     * @param context         A context.
+     * @param channelId       The id of the notification channel to use.
      * @param cacheRepository
      */
     public DownloadNotificationHelper(Context context, String channelId, Map<String, String> downloadTitleMap, CacheRepository cacheRepository) {
@@ -41,7 +45,7 @@ public final class DownloadNotificationHelper {
                 new NotificationCompat.Builder(context.getApplicationContext(), channelId);
 
         this.downloadTitleMap = downloadTitleMap;
-        this.context =  context;
+        this.context = context;
         this.notificationBuilder
                 .addAction(
                         com.shadhinmusiclibrary.R.drawable.my_bl_sdk_ic_close,
@@ -50,20 +54,17 @@ public final class DownloadNotificationHelper {
                 );
 
 
-
     }
-
-
 
 
     /**
      * Returns a progress notification for the given downloads.
      *
-     * @param context A context.
-     * @param smallIcon A small icon for the notification.
-     * @param contentIntent An optional content intent to send when the notification is clicked.
-     * @param message An optional message to display on the notification.
-     * @param downloads The downloads.
+     * @param context            A context.
+     * @param smallIcon          A small icon for the notification.
+     * @param contentIntent      An optional content intent to send when the notification is clicked.
+     * @param message            An optional message to display on the notification.
+     * @param downloads          The downloads.
      * @param notMetRequirements Any requirements for downloads that are not currently met.
      * @return The notification.
      */
@@ -119,7 +120,8 @@ public final class DownloadNotificationHelper {
                 int size = downloads.size();
                 String other = size > 1 ? " +" + (size - 1) + " songs" : "";
                 titleString = downloadTitleMap.get(downloads.get(0).request.id) + other + " downloading";
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
 
 
         } else if (haveQueuedTasks && notMetRequirements != 0) {
@@ -169,10 +171,10 @@ public final class DownloadNotificationHelper {
     /**
      * Returns a notification for a completed download.
      *
-     * @param context A context.
-     * @param smallIcon A small icon for the notifications.
+     * @param context       A context.
+     * @param smallIcon     A small icon for the notifications.
      * @param contentIntent An optional content intent to send when the notification is clicked.
-     * @param message An optional message to display on the notification.
+     * @param message       An optional message to display on the notification.
      * @return The notification.
      */
     public Notification buildDownloadCompletedNotification(
@@ -187,10 +189,10 @@ public final class DownloadNotificationHelper {
     /**
      * Returns a notification for a failed download.
      *
-     * @param context A context.
-     * @param smallIcon A small icon for the notifications.
+     * @param context       A context.
+     * @param smallIcon     A small icon for the notifications.
      * @param contentIntent An optional content intent to send when the notification is clicked.
-     * @param message An optional message to display on the notification.
+     * @param message       An optional message to display on the notification.
      * @return The notification.
      */
     public Notification buildDownloadFailedNotification(
@@ -243,30 +245,31 @@ public final class DownloadNotificationHelper {
         notificationBuilder.setShowWhen(showWhen);
         return notificationBuilder.build();
     }
-    private PendingIntent cancelPendingIntent(){
+
+    private PendingIntent cancelPendingIntent() {
         Intent intent = new Intent(CANCEL_ACTION);
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        }else {
-            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context, 656, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(context, 656, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         }
         return pendingIntent;
     }
-    private NotificationCompat.Action cancelAction(){
+
+    private NotificationCompat.Action cancelAction() {
         Intent intent = new Intent(CANCEL_ACTION);
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
-        }else {
-            pendingIntent = PendingIntent.getBroadcast(context,656,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getBroadcast(context, 656, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(context, 656, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         }
-       return new NotificationCompat.Action.Builder(
+        return new NotificationCompat.Action.Builder(
                 com.shadhinmusiclibrary.R.drawable.my_bl_sdk_ic_close,
                 "Cancel",
                 pendingIntent)
                 .build();
-
 
 
     }

@@ -306,12 +306,12 @@ internal class AlbumDetailsFragment : BaseFragment(),
             //  val downloaded: ImageView?= view?.findViewWithTag(200)
             progressIndicator?.visibility = VISIBLE
             progressIndicator?.progress = it.progress.toInt()
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
-            if (!isDownloaded) {
-                progressIndicator?.visibility = GONE
-//                    downloaded?.visibility = VISIBLE
-            }
+//            val isDownloaded =
+//                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
+//            if (!isDownloaded) {
+//                progressIndicator?.visibility = GONE
+////                    downloaded?.visibility = VISIBLE
+//            }
         }
     }
 
@@ -336,3 +336,4 @@ internal class AlbumDetailsFragment : BaseFragment(),
             }
         }
     }
+}

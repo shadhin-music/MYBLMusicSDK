@@ -35,7 +35,11 @@ import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistTrackAdapter
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
@@ -43,6 +47,7 @@ import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
     OnItemClickCallback,
@@ -467,11 +472,9 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
         val playlisttext: TextView? = bottomSheetDialog.findViewById(R.id.tvPlaylist)
         playlisttext?.text = "Delete from Playlist"
-        constraintPlaylist?.setOnClickListener
-        {
+        constraintPlaylist?.setOnClickListener {
             deleteSongFromPlayList(context, mSongDetails, playlistId)
             Toast.makeText(context, "Removed Successfully", Toast.LENGTH_LONG).show()
-
         }
 
         val constraintFav: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintFav)
@@ -490,8 +493,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
             textFav?.text = "Favorite"
         }
 
-        constraintFav?.setOnClickListener
-        {
+        constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
                 favViewModel.deleteFavContent(
                     mSongDetails.content_Id ?: "",

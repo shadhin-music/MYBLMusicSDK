@@ -129,13 +129,12 @@ internal class AlbumsTrackAdapter(
             textArtist.text = dataSongDetail.artistName + "" + dataSongDetail.isSeekAble.toString()
             tvSongLength.text = TimeParser.secToMin(dataSongDetail.total_duration)
             progressIndicator.tag = dataSongDetail.content_Id
-//                downloaded.tag = 200
+            downloaded.tag = 200
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded =
-                cacheRepository?.isTrackDownloaded(dataSongDetail.content_Id!!) ?: false
+                cacheRepository?.isTrackDownloaded(dataSongDetail.content_Id) ?: false
             if (isDownloaded) {
-                Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
             }

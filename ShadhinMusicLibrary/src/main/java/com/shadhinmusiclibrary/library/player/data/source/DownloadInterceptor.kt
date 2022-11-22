@@ -15,13 +15,15 @@ internal class DownloadInterceptor(private val musicRepository: MusicRepository)
         val url = request.url.toString().replace(Constants.FILE_BASE_URL, "")
         var newUrl = musicRepository.fetchDownloadedURL(url)
         DataSourceInfo.isDataSourceError = false
+
         while (newUrl.isNullOrBlank() && tryCount < 3) {
             tryCount++
             try {
                 newUrl = musicRepository.fetchDownloadedURL(url)
             } catch (e: Exception) {
-              }
+            }
         }
+        Log.e("Check", "newUrl: "+newUrl+"  url: "+url)
         val newRequest =
             chain.request().newBuilder()
                 .url(newUrl)
