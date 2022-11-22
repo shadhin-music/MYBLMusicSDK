@@ -143,6 +143,39 @@ internal data class VideoModel(
         type = data.Type
     }
 
+    internal fun setDataDownloadIM(data: IMusicModel) {
+        albumId = ""
+        albumImage = ""
+        albumName = ""
+        artist = data.artistName
+        artistId = ""
+        artistImage = ""
+        banner = ""
+        clientValue = 2
+        contentID = data.content_Id
+        contentType = data.content_Type
+        createDate = ""
+        duration = data.total_duration
+        fav = ""
+        follower = ""
+        image = data.imageUrl
+        imageWeb = ""
+        isPaid = false
+        newBanner = ""
+        playCount = 0
+        playListId = ""
+        playListImage = ""
+        playListName = ""
+        playUrl = data.playingUrl
+        rootId = data.rootContentId
+        rootType = data.rootContentType
+        seekable = false
+        teaserUrl = ""
+        title = data.titleName
+        trackType = ""
+        type = data.content_Type
+    }
+
     internal fun setDataDownload(data: DownloadedContent) {
         albumId = ""
         albumImage = ""

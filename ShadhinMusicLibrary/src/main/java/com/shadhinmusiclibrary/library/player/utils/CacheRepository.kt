@@ -18,7 +18,7 @@ internal class CacheRepository(val context: Context) {
     private val watchLaterDb = databaseClient.getWatchlaterDatabase()
     private val downloadDb = databaseClient.getDownloadDatabase()
     private val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
-    fun insertFavoriteContent(favData: List<FavData>) {
+    fun insertFavoriteContent(favData: MutableList<FavData>?) {
         favoriteContentDB?.FavoriteContentDao()?.insertAll(favData)
         //  Log.i("dfsfsdff", "insertFavoriteContent: ${a}")
     }

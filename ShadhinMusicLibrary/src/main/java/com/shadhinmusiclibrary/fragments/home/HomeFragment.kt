@@ -112,33 +112,35 @@ internal class HomeFragment : BaseFragment(),
         favViewModel.getFavContentSong("S")
         favViewModel.getFavContentPlaylist("P")
         favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
-            Log.e("DATA", "DATA: " + res)
-            cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            if (res.data != null)
+                cacheRepository.insertFavoriteContent(res.data)
 
             homeViewModel.fetchHomeData(pageNum, false)
 
-            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
-                Log.e("DATA", "DATA: " + res)
-                cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { resFavPod ->
+                if (resFavPod != null)
+                    cacheRepository.insertFavoriteContent(resFavPod.data)
             }
 
-            favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
-                Log.e("DATA", "DATAARTIST: " + res.data)
-                cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { resFevArt ->
+                if (resFevArt != null)
+                    cacheRepository.insertFavoriteContent(resFevArt.data)
             }
 
-            favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
-                cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { resFavVid ->
+                if (resFavVid != null)
+                    cacheRepository.insertFavoriteContent(resFavVid.data)
             }
 
-            favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
-                cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            favViewModel.getFavContentSong.observe(viewLifecycleOwner) { resFavSon ->
+                if (resFavSon != null)
+                    cacheRepository.insertFavoriteContent(resFavSon.data)
             }
 
-            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
-                cacheRepository.insertFavoriteContent(res.data as List<FavData>)
+            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { resFavPla ->
+                if (resFavPla != null)
+                    cacheRepository.insertFavoriteContent(resFavPla.data)
             }
-
             observeData()
         }
     }

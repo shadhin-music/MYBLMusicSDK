@@ -29,7 +29,6 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
@@ -42,14 +41,13 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
-
 
 internal class SongsDownloadFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -87,14 +85,16 @@ internal class SongsDownloadFragment : BaseFragment(),
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
         val dataAdapter =
-            cacheRepository.getAllSongsDownloads()?.let { DownloadedSongsAdapter(it, this) }
+            cacheRepository.getAllSongsDownloads()
+                ?.let { DownloadedSongsAdapter(it.toMutableList(), this) }
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -103,19 +103,19 @@ internal class SongsDownloadFragment : BaseFragment(),
             }
         } else {
             //Todo Mehenaz ap please flowe as link artist/album
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
         }
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
@@ -178,7 +178,6 @@ internal class SongsDownloadFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -199,12 +198,14 @@ internal class SongsDownloadFragment : BaseFragment(),
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context)
+                .load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
+                .into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
         if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -221,7 +222,7 @@ internal class SongsDownloadFragment : BaseFragment(),
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloaded == true) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id ?: "")
                 DownloadService.sendRemoveDownload(
                     requireContext(),
@@ -229,7 +230,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                     mSongDetails.content_Id ?: "",
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloaded)
+
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id ?: "")
@@ -361,7 +362,6 @@ internal class SongsDownloadFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-        Log.e("TAG", "ArtistId" + mSongDetails.artist_Id)
         bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
             Bundle().apply {
                 putSerializable(
@@ -449,15 +449,15 @@ internal class SongsDownloadFragment : BaseFragment(),
             bottomSheetDialog.dismiss()
         }
         val etCreatePlaylist: EditText? = bottomSheetDialog.findViewById(R.id.etCreatePlaylist)
-        var savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
-        etCreatePlaylist?.setOnFocusChangeListener { view, focused ->
+        val savePlaylist: AppCompatButton? = bottomSheetDialog.findViewById(R.id.btnSavePlaylist)
+        etCreatePlaylist?.setOnFocusChangeListener { _, focused ->
             val keyboard: InputMethodManager =
                 context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (focused) keyboard.showSoftInput(
                 etCreatePlaylist,
                 0
             ) else keyboard.hideSoftInputFromWindow(
-                etCreatePlaylist.getWindowToken(),
+                etCreatePlaylist.windowToken,
                 0
             )
         }

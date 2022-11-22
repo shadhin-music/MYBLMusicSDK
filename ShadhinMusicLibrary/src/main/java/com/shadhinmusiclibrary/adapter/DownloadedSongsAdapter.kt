@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class DownloadedSongsAdapter(
-    val allDownloads: List<DownloadedContent>,
+    val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack
 ) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
 
@@ -46,7 +47,7 @@ internal class DownloadedSongsAdapter(
 //        }
 //        if(allDownloads[position].rootType.equals("S")){
         holder.itemView.setOnClickListener {
-            lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
+            lrOnCallBack.onClickItem(allDownloads, position)
         }
 
         //}

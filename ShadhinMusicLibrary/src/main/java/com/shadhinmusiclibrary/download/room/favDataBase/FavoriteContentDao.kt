@@ -11,7 +11,7 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
 internal interface FavoriteContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(favData: List<FavData>)
+    fun insertAll(favData: MutableList<FavData>?)
 
 
     @Query("SELECT * FROM FavData WHERE fav=1")

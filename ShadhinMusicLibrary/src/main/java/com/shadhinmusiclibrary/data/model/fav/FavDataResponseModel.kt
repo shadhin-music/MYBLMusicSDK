@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 @Keep
 internal data class FavDataResponseModel(
     @SerializedName("data")
-    var `data`: List<FavData>?,
+    var `data`: MutableList<FavData>?,
     @SerializedName("fav")
     var fav: Any?,
     @SerializedName("follow")

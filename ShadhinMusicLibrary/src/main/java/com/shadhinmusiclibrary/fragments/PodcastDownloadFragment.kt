@@ -15,14 +15,14 @@ import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCall
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
-internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBack,
+internal class PodcastDownloadFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
     DownloadBottomSheetDialogItemCallback {
 
     private lateinit var navController: NavController
@@ -42,7 +42,8 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
         val dataAdapter =
-            cacheRepository.getAllPodcastDownloads()?.let { DownloadedSongsAdapter(it, this) }
+            cacheRepository.getAllPodcastDownloads()
+                ?.let { DownloadedSongsAdapter(it.toMutableList(), this) }
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -50,7 +51,7 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
         recyclerView.adapter = dataAdapter
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -58,11 +59,10 @@ internal class PodcastDownloadFragment : BaseFragment(), DownloadedSongOnCallBac
                 playerViewModel.togglePlayPause()
             }
         } else {
-            //Todo Mehenaz ap please flowe as link artist/album
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
         }
     }
 

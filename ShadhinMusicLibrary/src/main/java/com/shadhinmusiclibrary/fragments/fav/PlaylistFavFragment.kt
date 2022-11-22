@@ -34,7 +34,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoritePlaylistAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
@@ -112,30 +111,24 @@ internal class PlaylistFavFragment : BaseFragment(),
 
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-
-//            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-//                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
-//                    Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                    playerViewModel.skipToQueueItem(clickItemPosition)
-//                } else {
-//                    playerViewModel.togglePlayPause()
-//                }
-//            } else {
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
-//            }
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].content_Id)
-                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()

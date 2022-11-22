@@ -11,13 +11,14 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AllDownloadedAdapter(
-    val allDownloads: List<DownloadedContent>,
+    val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack
 ) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
 
@@ -30,15 +31,13 @@ internal class AllDownloadedAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-//
         if (allDownloads[position].rootContentType.equals("V")) {
-
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
                 for (item in allDownloads) {
                     val video = VideoModel()
-                    video.setDataDownload(item)
+                    video.setDataDownloadIM(item)
                     videoArray.add(video)
                 }
                 val videos: ArrayList<VideoModel> = videoArray
@@ -49,7 +48,7 @@ internal class AllDownloadedAdapter(
         }
         if (allDownloads[position].rootContentType.equals("S")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
+                lrOnCallBack.onClickItem(allDownloads, position)
             }
         }
     }

@@ -29,9 +29,7 @@ import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
-import com.shadhinmusiclibrary.fragments.album.AlbumViewModelFactory
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -271,6 +269,6 @@ internal class PlaylistDetailsFragment : BaseFragment(),
 }
 
 
-interface DownloadOrDeleteActionSubscriber {
+internal interface DownloadOrDeleteActionSubscriber {
     fun notifyOnChange()
 }

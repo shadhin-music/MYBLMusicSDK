@@ -33,7 +33,8 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastFavFragment : BaseFragment(), DownloadedSongOnCallBack,
+internal class PodcastFavFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
     favItemClickCallback {
     private lateinit var navController: NavController
     private lateinit var dataAdapter: FavoriteSongsAdapter
@@ -62,7 +63,7 @@ internal class PodcastFavFragment : BaseFragment(), DownloadedSongOnCallBack,
         recyclerView.adapter = dataAdapter
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

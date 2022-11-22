@@ -53,7 +53,8 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
-internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
+internal class SongsFavoriteFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
     favItemClickCallback,
     ItemClickListener {
     private lateinit var favViewModel: FavViewModel
@@ -103,40 +104,24 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
 
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            SongsFavoriteFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
             }
-    }
-
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-//            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-//                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
-//                    Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                    playerViewModel.skipToQueueItem(clickItemPosition)
-//                } else {
-//                    playerViewModel.togglePlayPause()
-//                }
-//            } else {
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
-//            }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-                Log.e("TAG", "SONG :" + mSongDetails[clickItemPosition].content_Id)
-                Log.e("TAG", "SONG :" + playerViewModel.currentMusic?.mediaId)
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
@@ -277,18 +262,20 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+//        val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.title
         val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         tvArtistName?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context)
+                .load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
+                .into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
         if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -305,7 +292,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
-            if (isDownloaded.equals(true)) {
+            if (isDownloaded) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
                 DownloadService.sendRemoveDownload(
                     requireContext(),
@@ -320,7 +307,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
                 isDownloaded = false
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
-                var downloadRequest: DownloadRequest =
+                val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
                 DownloadService.sendAddDownload(
@@ -568,7 +555,7 @@ internal class SongsFavoriteFragment : BaseFragment(), DownloadedSongOnCallBack,
         }
         etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val name: String = etCreatePlaylist.getText().toString()
+                val name: String = etCreatePlaylist.text.toString()
                 Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled = true

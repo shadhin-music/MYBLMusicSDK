@@ -47,12 +47,12 @@ import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
-import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
-
-internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCallBack,
-    favItemClickCallback, ItemClickListener {
+internal class AllFavoriteDetailsFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
+    favItemClickCallback,
+    ItemClickListener {
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
@@ -77,7 +77,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
                 this,
                 injector.factoryCreatePlaylistVM
             )[CreateplaylistViewModel::class.java]
-
     }
 
     fun loadData() {
@@ -95,10 +94,9 @@ internal class AllFavoriteDetailsFragment : BaseFragment(), DownloadedSongOnCall
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
 
     }
 

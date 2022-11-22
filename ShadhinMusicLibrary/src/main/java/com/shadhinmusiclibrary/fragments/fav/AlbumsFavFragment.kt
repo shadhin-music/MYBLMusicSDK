@@ -33,13 +33,9 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
-import com.shadhinmusiclibrary.adapter.FavoriteArtistAdapter
-import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -55,11 +51,11 @@ import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
-import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
-
-internal class AlbumsFavFragment : BaseFragment(), DownloadedSongOnCallBack, favItemClickCallback,
+internal class AlbumsFavFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
+    favItemClickCallback,
     onFavAlbumClick,
     ItemClickListener {
     private lateinit var navController: NavController
@@ -111,23 +107,19 @@ internal class AlbumsFavFragment : BaseFragment(), DownloadedSongOnCallBack, fav
 
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-
-//            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-//                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
-//                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
-//                    Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
-//                    playerViewModel.skipToQueueItem(clickItemPosition)
-//                } else {
-//                    playerViewModel.togglePlayPause()
-//                }
-//            } else {
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
-//            }
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
     override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

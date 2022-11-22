@@ -89,14 +89,15 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter = AllDownloadedAdapter(cacheRepository.getAllDownloads()!!, this)
+        val dataAdapter =
+            AllDownloadedAdapter(cacheRepository.getAllDownloads()!!.toMutableList(), this)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -104,11 +105,10 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 playerViewModel.togglePlayPause()
             }
         } else {
-            //Todo Mehenaz ap please flowe as link artist/album
-//                playItem(
-//                    UtilHelper.getSongDetailToDownloadedSongDetailList(mSongDetails),
-//                    clickItemPosition
-//                )
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
         }
     }
 
@@ -206,7 +206,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         )
     }
 
-    fun openDialog(item: VideoModel) {
+    private fun openDialog(item: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
