@@ -111,7 +111,7 @@ internal class PodcastHeaderAdapter(
                 .into(imageView)
 
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
+            val isAddedToFav = homePatchDetail?.ContentID?.let { cacheRepository?.getFavoriteById(it) }
             if (isAddedToFav?.contentID != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)

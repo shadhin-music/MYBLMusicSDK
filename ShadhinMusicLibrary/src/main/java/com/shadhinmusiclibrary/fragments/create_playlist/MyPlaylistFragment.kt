@@ -136,6 +136,10 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getuserPlaylist()
+    }
     override fun GotoPlaylistDetails(userPlaylistData: String?, name: String?, gradientResId: Int) {
         argHomePatchItem?.let { clickOnPlaylistItem(it,userPlaylistData.toString(),name.toString(), gradientResId) }
     }
@@ -197,7 +201,7 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)
-
+                    //requireActivity().onBackPressed()
                     // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
 
@@ -215,7 +219,12 @@ internal class MyPlaylistFragment : CommonBaseFragment() ,OnItemClickCallBack {
             }
         })
         etCreatePlaylist?.requestFocus()
-
+      viewModel.createPlaylist.observe(viewLifecycleOwner) { res ->
+         Log.e("TAG","RESULT: "+ res.status)
+          if(res.status=="successful"){
+              viewModel.getuserPlaylist()
+          }
+      }
     }
 }
 
