@@ -37,7 +37,9 @@ import com.shadhinmusiclibrary.utils.textColor
 import java.io.Serializable
 
 
-internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
+internal class MyPlaylistFragment : BaseFragment(),
+    OnItemClickCallBack {
+
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var myPlaylistAdapter: MyPlaylistAdapter
@@ -86,9 +88,6 @@ internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
                 footerAdapter = HomeFooterAdapter()
                 myPlaylistAdapter = MyPlaylistAdapter(res.data, this)
 
-                Log.e("TAG", "Message :" + res.data)
-                //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-//        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
                 val config = ConcatAdapter.Config.Builder()
                     .setIsolateViewTypes(false)
                     .build()
@@ -138,6 +137,11 @@ internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getuserPlaylist()
     }
 
     override fun GotoPlaylistDetails(userPlaylistData: String?, name: String?, gradientResId: Int) {
@@ -205,14 +209,13 @@ internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
         etCreatePlaylist?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val name: String = etCreatePlaylist.getText().toString()
-                Log.e("TAG", "NAME: " + name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled = true
                 savePlaylist?.textColor(R.color.my_sdk_color_white)
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)
-
+                    //requireActivity().onBackPressed()
                     // requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
 
@@ -230,5 +233,11 @@ internal class MyPlaylistFragment : BaseFragment(), OnItemClickCallBack {
             }
         })
         etCreatePlaylist?.requestFocus()
+        viewModel.createPlaylist.observe(viewLifecycleOwner) { res ->
+            Log.e("TAG", "RESULT: " + res.status)
+            if (res.status == "successful") {
+                viewModel.getuserPlaylist()
+            }
+        }
     }
 }
