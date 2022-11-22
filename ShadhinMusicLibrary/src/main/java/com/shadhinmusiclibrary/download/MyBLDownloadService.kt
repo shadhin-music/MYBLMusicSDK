@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.offline.Download
 import com.google.android.exoplayer2.offline.Download.STATE_COMPLETED
+import com.google.android.exoplayer2.offline.Download.STATE_REMOVING
 import com.google.android.exoplayer2.offline.DownloadManager
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.exoplayer2.scheduler.Requirements
@@ -57,12 +58,13 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
     override fun onCreate() {
         super.onCreate()
         isRunning = true
-        notificationHelper= DownloadNotificationHelper(this.applicationContext, "my app", injector.downloadTitleMap)
         cacheRepository = CacheRepository(applicationContext)
+        notificationHelper= DownloadNotificationHelper(this.applicationContext, "my app", injector.downloadTitleMap ,cacheRepository)
 
         registerReceiver(downloadCancelBroadcastListeners, IntentFilter(DownloadNotificationHelper.CANCEL_ACTION))
 
     }
+
    override fun getDownloadManager(): DownloadManager {
 
         val myBlDownloadmanager = MyBLDownloadManager(applicationContext, injector.musicRepository)
@@ -73,7 +75,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         manager.maxParallelDownloads = 5
 
 
-       manager.removeAllDownloads()
+      // manager.removeAllDownloads()
 
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
@@ -97,22 +99,28 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
                 finalException: java.lang.Exception?,
             ) {
                 super.onDownloadChanged(downloadManager, download, finalException)
-                if(download.state == STATE_COMPLETED){
-                    currentProgress= 100
-                    val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                if(download.state == STATE_COMPLETED) {
+                    currentProgress = 100
+                    val localBroadcastManager =
+                        LocalBroadcastManager.getInstance(applicationContext)
                     val localIntent = Intent("PROGRESS")
-                        .putExtra("progress",100)
+                        .putExtra("progress", 100)
                     localBroadcastManager.sendBroadcast(localIntent)
-                    cacheRepository.downloadCompleted(download.request.id)
-
+                    cacheRepository.downloadState(download.request.id, isDownloaded = true)
                 }
-
-                //getDownloadingNotification("Song Downloading",100)
-               val currentItemID =download.request.id
-                Log.e("getDownloadManagerx", "getForegroundNotification:" + currentItemID)
-                cacheRepository.setDownloadedContentPath(download.request.id,
-                    download.request.uri.toString())
-
+//                else if(download.state == STATE_REMOVING){
+//
+//                  if (download.request.id.isEmpty()){
+//                        return
+//                    }
+//
+//                    cacheRepository.downloadState(download.request.id, isDownloaded = false)
+               //     Log.e("DELETED", "STATE_REMOVING FIRED <--> "+download.request.id +" ${download.percentDownloaded}")
+//                    val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+//                    val localIntent = Intent("DELETEDXXX")
+//                        .putExtra("contentID", download.request.id)
+//                    localBroadcastManager.sendBroadcast(localIntent)
+               // }
 
             }
 
@@ -174,7 +182,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
 
         return notificationHelper.buildProgressNotification(
             applicationContext,
-            R.drawable.my_bl_sdk_shadhin_logo_with_text_for_light,
+            R.mipmap.my_bl_sdk_shadhin_logo,
             null,
             "",
             downloads,
@@ -200,7 +208,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
         downloadServiceScope?.coroutineContext?.cancelChildren()
         downloadServiceScope?.cancel()
         downloadServiceScope = null
-
+        unregisterReceiver(downloadCancelBroadcastListeners)
         super.onDestroy()
     }
 
@@ -246,6 +254,7 @@ class MyBLDownloadService :  DownloadService(1, DEFAULT_FOREGROUND_NOTIFICATION_
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         return pendingIntent
     }
+
      class DownloadCancelBroadcastListeners: BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.i("DATAARTISTd", "onReceive: ${intent?.action}")

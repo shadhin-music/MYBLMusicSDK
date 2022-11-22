@@ -37,6 +37,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.offline.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
@@ -513,6 +514,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
         navController.setGraph(navGraph, bundleData)
+
         Log.i("navgraphx", "setupNavGraphAndArg: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
     }
 
@@ -804,7 +806,15 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 }
             }
         }
-
+       // var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(mSongDetails[clickItemPosition].ContentID)
+        if(downloaded?.isDownloaded ==1){
+           // isDownloaded=true
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+        }else{
+           // isDownloaded=false
+            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+        }
         ibtnShuffle.setOnClickListener {
             playerViewModel.shuffleToggle()
         }
@@ -826,20 +836,78 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         }
 
         ibtnVolume.setOnClickListener {
+
         }
 
         ibtnLibraryAdd.setOnClickListener {
+            gotoPlayList(this,mSongDetails[clickItemPosition])
         }
 
         ibtnQueueMusic.setOnClickListener {
         }
 
         ibtnDownload.setOnClickListener {
+            songDownload(mSongDetails[clickItemPosition])
         }
 
         acivMinimizePlayerBtn.setOnClickListener {
             toggleMiniPlayerView(true)
         }
+    }
+
+    private fun songDownload(mSongDetails: SongDetail) {
+        var isDownloaded = false
+        var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
+//        if(downloaded?.isDownloaded ==1){
+//            isDownloaded=true
+//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+//        }else{
+//            isDownloaded=false
+//            ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+//        }
+
+            if(downloaded?.isDownloaded ==1){
+                cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
+                DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
+                Log.e("TAG","DELETED: "+ isDownloaded)
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                val localIntent = Intent("DELETED")
+                    .putExtra("contentID", mSongDetails.ContentID)
+                localBroadcastManager.sendBroadcast(localIntent)
+                ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_white))
+            } else {
+                val url = "${Constants.FILE_BASE_URL}${mSongDetails.PlayUrl}"
+                val downloadRequest: DownloadRequest =
+                    DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
+                        .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
+                DownloadService.sendAddDownload(
+                    applicationContext,
+                    MyBLDownloadService::class.java,
+                    downloadRequest,
+                    /* foreground= */ false)
+
+                if (cacheRepository.isDownloadCompleted(mSongDetails.ContentID).equals(true)) {
+                    cacheRepository.insertDownload(DownloadedContent(mSongDetails.ContentID.toString(),
+                        mSongDetails.rootContentID,
+                        mSongDetails.image,
+                        mSongDetails.title,
+                        mSongDetails.ContentType,
+                        mSongDetails.PlayUrl,
+                        mSongDetails.ContentType,
+                        0,
+                        0,
+                        mSongDetails.artist,
+                        mSongDetails.ArtistId.toString(),
+                        mSongDetails.duration))
+                    Log.e("TAGGG",
+                        "INSERTED: " + url)
+                    Log.e("TAG","INSERTED: "+ cacheRepository.getAllDownloads())
+                    ibtnDownload.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+                }
+
+            }
     }
 
     private fun hideKeyboard(activity: Activity) {
@@ -976,7 +1044,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded = cacheRepository.getDownloadById(mSongDetails.ContentID)
-        if (downloaded?.track != null) {
+        if (downloaded?.isDownloaded ==1) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -994,13 +1062,14 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(applicationContext,
                     MyBLDownloadService::class.java,
                     mSongDetails.ContentID,
                     false)
                 Log.e("TAG", "DELETED: " + isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-                val localIntent = Intent("DELETED")
+                val localIntent = Intent("REMOVESONG")
                     .putExtra("contentID", mSongDetails.ContentID)
                 localBroadcastManager.sendBroadcast(localIntent)
               isDownloaded=false
@@ -1184,6 +1253,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 Log.e("TAG","NAME: "+ name)
                 savePlaylist?.setBackgroundResource(R.drawable.my_bl_sdk_rounded_button_red)
                 savePlaylist?.isEnabled= true
+                savePlaylist?.textColor(R.color.my_sdk_color_white)
                 savePlaylist?.setOnClickListener {
 
                     viewModel.createPlaylist(name)
@@ -1252,7 +1322,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded=cacheRepository.getDownloadById(track.EpisodeId)
-        if(downloaded?.track != null){
+        if(downloaded?.isDownloaded ==1){
             isDownloaded=true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         }else{
@@ -1270,10 +1340,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         constraintDownload?.setOnClickListener {
             if(isDownloaded.equals(true)){
                 cacheRepository.deleteDownloadById(track.EpisodeId)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,track.EpisodeId, false)
                 Log.e("TAG","DELETED: "+ isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-                val localIntent = Intent("DELETED")
+                val localIntent = Intent("REMOVE")
                     .putExtra("contentID", track.EpisodeId)
                 localBroadcastManager.sendBroadcast(localIntent)
 
@@ -1282,7 +1353,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(track.EpisodeId, url.toUri())
                         .build()
-
+                injector.downloadTitleMap[track.EpisodeId] = track.Name
                 DownloadService.sendAddDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
@@ -1378,7 +1449,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artist
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context).load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
@@ -1398,7 +1469,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         val textViewDownloadTitle:TextView?= bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
         var downloaded=cacheRepository.getDownloadById(mSongDetails.ContentID)
-        if(downloaded?.track != null){
+        if(downloaded?.isDownloaded ==1){
             isDownloaded=true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         }else{
@@ -1416,10 +1487,11 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         constraintDownload?.setOnClickListener {
             if(isDownloaded.equals(true)){
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
                 Log.e("TAG","DELETED: "+ isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-                val localIntent = Intent("DELETED")
+                val localIntent = Intent("DELETE")
                     .putExtra("contentID", mSongDetails.ContentID)
                 localBroadcastManager.sendBroadcast(localIntent)
 
@@ -1575,6 +1647,7 @@ internal class SDKMainActivity : BaseActivity(), ActivityEntryPoint ,ItemClickLi
         constraintDownload?.setOnClickListener {
             if(isDownloaded.equals(true)){
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(applicationContext,MyBLDownloadService::class.java,mSongDetails.ContentID, false)
                 Log.e("TAG","DELETED: "+ isDownloaded)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)

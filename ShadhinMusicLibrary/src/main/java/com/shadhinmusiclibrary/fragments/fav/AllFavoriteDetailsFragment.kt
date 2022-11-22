@@ -238,6 +238,7 @@ internal class AllFavoriteDetailsFragment : CommonBaseFragment(),DownloadedSongO
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(item.contentID.toString())
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java, item.contentID.toString(), false)
 
@@ -252,6 +253,7 @@ internal class AllFavoriteDetailsFragment : CommonBaseFragment(),DownloadedSongO
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(item.contentID.toString(), url.toUri())
                         .build()
+                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -419,6 +421,7 @@ internal class AllFavoriteDetailsFragment : CommonBaseFragment(),DownloadedSongO
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.ContentID)
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java,
                     mSongDetails.ContentID,
@@ -434,6 +437,7 @@ internal class AllFavoriteDetailsFragment : CommonBaseFragment(),DownloadedSongO
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.ContentID, url.toUri())
                         .build()
+                injector.downloadTitleMap[mSongDetails.ContentID] = mSongDetails.title
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,

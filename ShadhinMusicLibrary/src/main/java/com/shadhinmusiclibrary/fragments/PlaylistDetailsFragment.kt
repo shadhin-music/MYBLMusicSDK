@@ -206,12 +206,16 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("DELETE")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
-
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
         downloadingItems.forEach {
@@ -257,7 +261,7 @@ internal class PlaylistDetailsFragment : BaseFragment<AlbumViewModel, AlbumViewM
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
-                "DELETED" -> {
+                "DELETE" -> {
                     playlistTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }

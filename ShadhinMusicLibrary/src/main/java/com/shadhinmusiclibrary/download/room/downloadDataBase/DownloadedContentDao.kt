@@ -25,7 +25,7 @@ interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE rootType='PDJG' AND isDownloaded = 1 ORDER By timeStamp DESC ")
     fun getAllPodcastDownloads():List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent where contentId = :id")
+    @Query("SELECT * FROM DownloadedContent where contentId = :id AND isDownloaded = 1 ")
     fun getDownloadById(id:String):List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where rootId = :albumId")
@@ -58,8 +58,8 @@ interface DownloadedContentDao {
     @Query("SELECT isDownloaded FROM downloadedcontent WHERE type = 'V' AND contentId = :contentId AND isDownloaded =1 LIMIT 1")
      fun downloadedVideoContent(contentId: String):Boolean?
 
-     @Query("UPDATE downloadedcontent SET isDownloaded = 1 WHERE contentId = :contentId")
-     fun downloadCompleted(contentId: String)
+     @Query("UPDATE downloadedcontent SET isDownloaded = :isDownloaded WHERE contentId = :contentId")
+     fun downloadState(contentId: String,isDownloaded:Int )
 
 //
 //    @Query("SELECT track FROM DownloadedContent where contentId = :contentId & isDownloaded = 1")

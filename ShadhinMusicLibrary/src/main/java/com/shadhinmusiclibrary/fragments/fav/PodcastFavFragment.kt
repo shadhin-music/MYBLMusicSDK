@@ -168,6 +168,11 @@ internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBac
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
+    }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 

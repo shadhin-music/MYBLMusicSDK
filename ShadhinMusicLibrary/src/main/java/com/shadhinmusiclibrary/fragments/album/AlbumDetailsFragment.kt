@@ -186,10 +186,15 @@ internal class AlbumDetailsFragment :
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("REMOVESONG")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
@@ -334,7 +339,7 @@ internal class AlbumDetailsFragment :
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
-                "DELETED" -> {
+                "RMOVESONG" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }

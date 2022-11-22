@@ -14,6 +14,8 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.core.R;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.scheduler.Requirements;
+import com.shadhinmusiclibrary.player.utils.CacheRepository;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +29,14 @@ public final class DownloadNotificationHelper {
 
     private final Context context;
     private final Map<String,String> downloadTitleMap;
+    private final CacheRepository cacheRepository;
     /**
      * @param context A context.
      * @param channelId The id of the notification channel to use.
+     * @param cacheRepository
      */
-    public DownloadNotificationHelper(Context context, String channelId, Map<String,String> downloadTitleMap) {
+    public DownloadNotificationHelper(Context context, String channelId, Map<String, String> downloadTitleMap, CacheRepository cacheRepository) {
+        this.cacheRepository = cacheRepository;
         this.notificationBuilder =
                 new NotificationCompat.Builder(context.getApplicationContext(), channelId);
 
@@ -43,6 +48,9 @@ public final class DownloadNotificationHelper {
                         "Cancel",
                         cancelPendingIntent()
                 );
+
+
+
     }
 
 

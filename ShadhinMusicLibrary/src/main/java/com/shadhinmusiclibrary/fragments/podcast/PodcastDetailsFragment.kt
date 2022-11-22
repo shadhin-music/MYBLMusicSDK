@@ -264,10 +264,15 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("DELETED")
+        intentFilter.addAction("REMOVE")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
+    }
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(MyBroadcastReceiver())
     }
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
 
@@ -313,7 +318,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
-                "DELETED" -> {
+                "REMOVE" -> {
                    podcastTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }

@@ -220,11 +220,24 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 if (downloaded?.track != null) {
                     isDownloaded = true
                     downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
-                    downloadTextview.text = "Remove Download"
+                   // downloadTextview.text = "Remove Download"
                 } else {
                     isDownloaded = false
                     downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
-                    downloadTextview.text = "Download"
+                   // downloadTextview.text = "Download"
+                }
+                val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
+                var isFav = false
+                if (isAddedToFav?.fav== "1") {
+
+                    favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                    isFav = true
+//            textFav?.text = "Remove From favorite"
+                } else {
+
+                    favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                    isFav = false
+                    // textFav?.text = "Favorite"
                 }
             }
         }
@@ -238,142 +251,49 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
             videoList = intent.getParcelableArrayListExtra(INTENT_KEY_DATA_LIST)
             viewModel.videos(videoList)
             Log.e("Check","item: "+ videoList?.get(currentPosition)?.toString())
+            var downloaded = cacheRepository.getDownloadById(videoList?.get(currentPosition)?.contentID.toString())
+            val watched = cacheRepository.getWatchedVideoById(videoList?.get(currentPosition)?.contentID.toString())
+            if (downloaded?.track != null) {
+
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                // downloadTextview.text = "Remove Download"
+                isDownloaded = true
+            } else {
+
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                // downloadTextview.text = "Download"
+                isDownloaded = false
+            }
+            if (watched != null) {
+
+
+                // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+                //  iswatched = true
+            } else {
+
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+                // iswatched = false
+                // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
+                Log.e("TAG","CONTENTID: "+ iswatched)
+            }
+            var isFav = false
+            val isAddedToFav = cacheRepository.getFavoriteById(videoList?.get(currentPosition)?.contentID.toString())
+            if (isAddedToFav?.fav== "1") {
+
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                isFav = true
+//            textFav?.text = "Remove From favorite"
+            } else {
+
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                isFav = false
+                // textFav?.text = "Favorite"
+            }
         }
         //iswatched = false
 
-        val currentVideoID:String? = videoList?.get(currentPosition)?.contentID
-       val watched = cacheRepository.getWatchedVideoById(currentVideoID.toString())
-         //val alltracks = cacheRepository.getAllWatchlater()
-        var downloaded = cacheRepository.getDownloadById(currentVideoID.toString())
 
-        if (downloaded?.track != null) {
-
-            downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
-            downloadTextview.text = "Remove Download"
-            isDownloaded = true
-        } else {
-
-            downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
-            downloadTextview.text = "Download"
-            isDownloaded = false
-        }
-        if (watched != null) {
-
-            Log.e("TAG","CONTENTID: "+ iswatched)
-            // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
-            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
-          //  iswatched = true
-        } else {
-
-            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
-           // iswatched = false
-            // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
-            Log.e("TAG","CONTENTID: "+ iswatched)
-        }
-
-        watchlaterLayout.setOnClickListener {
-            if(iswatched){
-
-                val currentVideoID =   viewModel.currentVideo.value?.contentID
-                val currentURL = viewModel.currentVideo.value?.playUrl
-                currentVideoID?.let { it1 -> cacheRepository.deleteWatchlaterById(it1) }
-                watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
-                //watchlatertext?.text = "Remove From Watchlater"
-
-                iswatched = false
-                Log.e("TAG","CLICKED123: "+ iswatched)
-            }else{
-                val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
-                val currentURL:String? = viewModel.currentVideo.value?.playUrl
-                val currentRootID= viewModel.currentVideo.value?.rootId
-                val currentImage = viewModel.currentVideo.value?.image
-                val currentTitle =  viewModel.currentVideo.value?.title
-                val currentRootType = viewModel.currentVideo.value?.contentType
-                val currentArtist =  viewModel.currentVideo.value?.artist
-                val duration =  viewModel.currentVideo.value?.duration
-                watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
-                iswatched = true
-
-                //watchlatertext.text = "Watch Later"
-                  val url = "${Constants.FILE_BASE_URL}${currentURL}"
-                Log.e("TAG","CLICKED: "+ url)
-                cacheRepository.insertWatchLater(WatchLaterContent(currentVideoID.toString(),
-                    currentRootID.toString(),
-                    currentImage.toString(),
-                    currentTitle.toString(),
-                    currentRootType.toString(),
-                    currentURL ,
-                    currentRootType.toString(),
-                    0,
-                    0,
-                    currentArtist.toString(),
-                    duration.toString()))
-                Log.e("TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater())
-            }
-
-
-
-        }
-       // val currentVideoID =   viewModel.currentVideo.value?.contentID
-      // isDownloaded= false
-
-
-        downloadLayout.setOnClickListener {
-            if (isDownloaded) {
-                cacheRepository.deleteDownloadById(currentVideoID.toString())
-                DownloadService.sendRemoveDownload(applicationContext,
-                    MyBLDownloadService::class.java, currentVideoID.toString(), false)
-                Log.e("TAG", "DELETED: " + isDownloaded)
-                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-                val localIntent = Intent("DELETED")
-                    .putExtra("contentID", currentVideoID.toString())
-                localBroadcastManager.sendBroadcast(localIntent)
-                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
-                isDownloaded=false
-            } else {
-                val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
-                val currentURL:String? = viewModel.currentVideo.value?.playUrl
-                val currentRootID= viewModel.currentVideo.value?.rootId
-                val currentImage = viewModel.currentVideo.value?.image
-                val currentTitle =  viewModel.currentVideo.value?.title
-                val currentRootType = viewModel.currentVideo.value?.contentType
-                val currentArtist =  viewModel.currentVideo.value?.artist
-                val duration =  viewModel.currentVideo.value?.duration
-                val url = "${Constants.FILE_BASE_URL}${currentURL}"
-                val downloadRequest: DownloadRequest? =
-                    currentURL?.let { it1 ->
-                        DownloadRequest.Builder(currentVideoID.toString(), it1?.toUri())
-                            .build()
-                    }
-                downloadRequest?.let { it1 ->
-                    DownloadService.sendAddDownload(
-                        applicationContext,
-                        MyBLDownloadService::class.java,
-                        it1,
-                        /* foreground= */ false)
-                }
-                Log.e("TAG","CLICKED123: "+ currentURL)
-                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
-
-               // downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
-                isDownloaded=true
-                if (cacheRepository.isDownloadCompleted(currentVideoID.toString()).equals(true)) {
-                    cacheRepository.insertDownload(DownloadedContent(currentVideoID.toString(),
-                        currentRootID.toString(),
-                        currentImage.toString(),
-                        currentTitle.toString(),
-                        currentRootType.toString(),
-                        currentURL,
-                        currentRootType.toString(),
-                        0,
-                        0,
-                        currentArtist.toString(),"",
-                        duration.toString()))
-                }
-            }
-
-        }
 
     }
     private fun observe() {
@@ -405,6 +325,219 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         viewModel.currentVideo.observe(this, Observer { video ->
             videoTitleTextView.text = video.title
             videoDescTextView.text = video.artist
+            val currentVideoID:String? = video.contentID
+            val watched = cacheRepository.getWatchedVideoById(currentVideoID.toString())
+            //val alltracks = cacheRepository.getAllWatchlater()
+            var downloaded = cacheRepository.getDownloadById(currentVideoID.toString())
+
+            if (downloaded?.track != null) {
+
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                // downloadTextview.text = "Remove Download"
+                isDownloaded = true
+            } else {
+
+                downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                // downloadTextview.text = "Download"
+                isDownloaded = false
+            }
+            Log.e("TAG","CONTENTID: "+ currentVideoID)
+            Log.e("TAG","CONTENTIDvideolist: "+ videoList?.get(currentPosition)?.contentID)
+            if (watched != null) {
+
+
+                // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
+                //  iswatched = true
+            } else {
+
+                watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc))
+                // iswatched = false
+                // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later)
+                Log.e("TAG","CONTENTID: "+ iswatched)
+            }
+
+            watchlaterLayout.setOnClickListener {
+                if(iswatched){
+
+                    //  val currentVideoID =   viewModel.currentVideo.value?.contentID
+                    val currentURL = viewModel.currentVideo.value?.playUrl
+                    currentVideoID?.let { it1 -> cacheRepository.deleteWatchlaterById(it1) }
+                    watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                    //watchlatertext?.text = "Remove From Watchlater"
+
+                    iswatched = false
+                    Log.e("TAG","CLICKED123: "+ iswatched)
+                }else{
+                    //val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
+                    val currentURL:String? = viewModel.currentVideo.value?.playUrl
+                    val currentRootID= viewModel.currentVideo.value?.rootId
+                    val currentImage = viewModel.currentVideo.value?.image
+                    val currentTitle =  viewModel.currentVideo.value?.title
+                    val currentRootType = viewModel.currentVideo.value?.contentType
+                    val currentArtist =  viewModel.currentVideo.value?.artist
+                    val duration =  viewModel.currentVideo.value?.duration
+                    watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                    iswatched = true
+
+                    //watchlatertext.text = "Watch Later"
+                    val url = "${Constants.FILE_BASE_URL}${currentURL}"
+                    Log.e("TAG","CLICKED: "+ url)
+                    cacheRepository.insertWatchLater(WatchLaterContent(currentVideoID.toString(),
+                        currentRootID.toString(),
+                        currentImage.toString(),
+                        currentTitle.toString(),
+                        currentRootType.toString(),
+                        currentURL ,
+                        currentRootType.toString(),
+                        0,
+                        0,
+                        currentArtist.toString(),
+                        duration.toString()))
+                    Log.e("TAGGG",
+                        "INSERTED: " + cacheRepository.getAllWatchlater())
+                }
+
+
+
+            }
+            // val currentVideoID =   viewModel.currentVideo.value?.contentID
+            // isDownloaded= false
+
+
+            downloadLayout.setOnClickListener {
+                if (isDownloaded.equals(true)) {
+                    cacheRepository.deleteDownloadById(currentVideoID.toString())
+                    DownloadService.sendRemoveDownload(applicationContext,
+                        MyBLDownloadService::class.java, currentVideoID.toString(), false)
+                    Log.e("TAG", "DELETED: " + isDownloaded)
+                    val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                    val localIntent = Intent("DELETED")
+                        .putExtra("contentID", currentVideoID.toString())
+                    localBroadcastManager.sendBroadcast(localIntent)
+                    downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_down_item_desc))
+                    isDownloaded=false
+                } else {
+                    //val currentVideoID:String? =   viewModel.currentVideo.value?.contentID
+                    val currentURL:String? = viewModel.currentVideo.value?.playUrl
+                    val currentRootID= viewModel.currentVideo.value?.rootId
+                    val currentImage = viewModel.currentVideo.value?.image
+                    val currentTitle =  viewModel.currentVideo.value?.title
+                    val currentRootType = viewModel.currentVideo.value?.contentType
+                    val currentArtist =  viewModel.currentVideo.value?.artist
+                    val duration =  viewModel.currentVideo.value?.duration
+                    val url = "${Constants.FILE_BASE_URL}${currentURL}"
+                    val downloadRequest: DownloadRequest? =
+                        url.let { it1 ->
+                            DownloadRequest.Builder(currentVideoID.toString(), it1.toUri())
+                                .build()
+                        }
+                    injector.downloadTitleMap[currentVideoID.toString()] = currentTitle.toString()
+                    downloadRequest?.let { it1 ->
+                        DownloadService.sendAddDownload(
+                            applicationContext,
+                            MyBLDownloadService::class.java,
+                            it1,
+                            /* foreground= */ false)
+                    }
+                    Log.e("TAG","CLICKED123: "+ currentURL)
+
+
+                    // downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+
+                    if (cacheRepository.isDownloadCompleted(currentVideoID.toString()).equals(true)) {
+                        cacheRepository.insertDownload(DownloadedContent(currentVideoID.toString(),
+                            currentRootID.toString(),
+                            currentImage.toString(),
+                            currentTitle.toString(),
+                            currentRootType.toString(),
+                            currentURL,
+                            currentRootType.toString(),
+                            0,
+                            0,
+                            currentArtist.toString(),"",
+                            duration.toString()))
+                        isDownloaded=true
+                        downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+                    }
+                }
+
+            }
+            var isFav = false
+            val isAddedToFav = cacheRepository.getFavoriteById(currentVideoID.toString())
+            if (isAddedToFav?.fav== "1") {
+
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                isFav = true
+//            textFav?.text = "Remove From favorite"
+            } else {
+
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                isFav = false
+                // textFav?.text = "Favorite"
+            }
+            favLayout.setOnClickListener {
+                if (isFav.equals(true)) {
+                    //  val currentVideoID = viewModel.currentVideo.value?.contentID
+                    favViewModel.deleteFavContent(currentVideoID.toString(), "V")
+                    cacheRepository.deleteFavoriteById(currentVideoID.toString())
+                    Toast.makeText(applicationContext, "Removed from favorite", Toast.LENGTH_LONG)
+                        .show()
+                    favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                    isFav = false
+                    Log.e("TAG", "NAME: " + isFav)
+                } else {
+                    val currentURL = viewModel.currentVideo.value?.playUrl
+                    val url = "${Constants.FILE_BASE_URL}${currentURL}"
+
+                    //val currentVideoID: String? = viewModel.currentVideo.value?.contentID
+                    // val currentURL:String? = viewModel.currentVideo.value?.playUrl
+                    val currentRootID = viewModel.currentVideo.value?.rootId
+                    val currentImage = viewModel.currentVideo.value?.image
+                    val currentTitle = viewModel.currentVideo.value?.title
+                    val currentRootType = viewModel.currentVideo.value?.contentType
+                    val currentArtist = viewModel.currentVideo.value?.artist
+                    val duration = viewModel.currentVideo.value?.duration
+                    favViewModel.addFavContent(currentVideoID.toString(), "V")
+
+                    favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                    Log.e("TAG", "NAME123: " + isFav)
+                    cacheRepository.insertFavSingleContent(FavData(currentVideoID.toString(),
+                        currentRootID,
+                        currentImage,
+                        "",
+                        currentArtist,
+                        "",
+                        "",
+                        "",
+                        2,
+                        "V",
+                        "",
+                        "",
+                        "1",
+                        "",
+                        currentImage,
+                        "",
+                        false,
+                        "",
+                        0,
+                        "",
+                        "",
+                        "",
+                        currentURL,
+                        currentRootID,
+                        "",
+                        false,
+                        "",
+                        currentTitle,
+                        "",
+                        ""
+
+                    ))
+                    isFav = true
+                    Toast.makeText(applicationContext, "Added to favorite", Toast.LENGTH_LONG).show()
+                }
+            }
 
         })
 
@@ -682,6 +815,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                             DownloadRequest.Builder(item.contentID.toString(), it1)
                                 .build()
                         }
+                    injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
                     DownloadService.sendAddDownload(
                         applicationContext,
                         MyBLDownloadService::class.java,
@@ -762,14 +896,16 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
         val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
-        if (isAddedToFav?.contentID != null) {
+        if (isAddedToFav?.fav =="1") {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+            favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
             isFav = true
             textFav?.text = "Remove From favorite"
         } else {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+            favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
             isFav = false
             textFav?.text = "Favorite"
         }
@@ -781,6 +917,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 cacheRepository.deleteFavoriteById(item.contentID.toString())
                 Toast.makeText(applicationContext,"Removed from favorite",Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav=false
                 Log.e("TAG","NAME: "+ isFav)
             } else {
@@ -788,6 +925,7 @@ internal class VideoActivity : AppCompatActivity(), ActivityEntryPoint,
                 favViewModel.addFavContent(item.contentID.toString(),"V")
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+                favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 Log.e("TAG","NAME123: "+ isFav)
                 cacheRepository.insertFavSingleContent(FavData(item.contentID.toString(),item.albumId,item.image,"",item.artist,item.artistId,
                     "","",2,"V","","","1","",item.image,"",

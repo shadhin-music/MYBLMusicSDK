@@ -142,6 +142,7 @@ internal class WatchLaterFragment : CommonBaseFragment(), WatchlaterOnCallBack,
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(item.contentID.toString())
+                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
                 DownloadService.sendRemoveDownload(requireContext(),
                     MyBLDownloadService::class.java, item.contentID.toString(), false)
                 Log.e("TAG", "DELETED: " + isDownloaded)
