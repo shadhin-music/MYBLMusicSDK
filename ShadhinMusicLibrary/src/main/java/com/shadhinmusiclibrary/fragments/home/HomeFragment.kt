@@ -460,7 +460,7 @@ internal class HomeFragment : BaseFragment(),
             .apply {
                 putExtra(
                     AppConstantUtils.UI_Request_Type,
-                    AppConstantUtils.Requester_Name_CreatePlaylist
+                    AppConstantUtils.Requester_Name_MyPlaylist
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })

@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteViewPagerAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 
 
 internal class FavoriteFragment : Fragment() {

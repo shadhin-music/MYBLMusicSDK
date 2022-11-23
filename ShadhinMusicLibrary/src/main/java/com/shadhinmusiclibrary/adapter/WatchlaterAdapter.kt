@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
+import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
+import com.shadhinmusiclibrary.fragments.WatchlaterBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.utils.TimeParser
+import org.w3c.dom.Text
 
 
-internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>
+internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>,val onItemClickCallback: WatchlaterBottomSheetDialogItemCallback
 ) : RecyclerView.Adapter<WatchlaterAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -65,6 +68,10 @@ internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>
 
             val tvSongLength: TextView =itemView.findViewById(R.id.tv_song_length)
             tvSongLength.text = TimeParser.secToMin(allWatchlater[absoluteAdapterPosition].timeStamp)
+            val menu: ImageView= itemView.findViewById(R.id.iv_song_menu_icon)
+               menu.setOnClickListener {
+                   onItemClickCallback.onClickBottomItemVideo(allWatchlater[absoluteAdapterPosition])
+               }
 
         }
 

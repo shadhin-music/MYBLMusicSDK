@@ -72,6 +72,7 @@ internal class MyPlaylistFragment : BaseFragment(),
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         viewModel.getuserPlaylist()
         viewModel.getUserPlaylist.observe(viewLifecycleOwner) { res ->
+            Log.e("TAG","DATA: "+res.data)
             if (res.data?.size?.equals(0) == true) {
                 val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
                 layout?.visibility = VISIBLE
@@ -101,7 +102,6 @@ internal class MyPlaylistFragment : BaseFragment(),
                     }
                 recyclerView.layoutManager = layoutManager
                 layoutManager.setSpanSizeLookup(onSpanSizeLookup)
-                recyclerView.adapter = concatAdapter
                 recyclerView.adapter = concatAdapter
                 concatAdapter.notifyDataSetChanged()
             }
@@ -216,7 +216,7 @@ internal class MyPlaylistFragment : BaseFragment(),
 
                     viewModel.createPlaylist(name)
                     //requireActivity().onBackPressed()
-                    // requireActivity().onBackPressed()
+                    requireActivity().onBackPressed()
                     bottomSheetDialog.dismiss()
 
                 }

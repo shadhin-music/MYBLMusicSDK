@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,6 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FavVideoAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -47,6 +49,8 @@ internal class VideosFavFragment : BaseFragment(),
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
+    private lateinit var parentAdapter: ConcatAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +72,10 @@ internal class VideosFavFragment : BaseFragment(),
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
+        val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
+        footerAdapter = HomeFooterAdapter()
+        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        recyclerView.adapter = parentAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
         favViewModel =
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]

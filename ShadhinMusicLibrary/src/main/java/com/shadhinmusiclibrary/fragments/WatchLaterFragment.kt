@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
 import com.shadhinmusiclibrary.data.model.VideoModel
@@ -41,7 +43,8 @@ internal class WatchLaterFragment : BaseFragment(),
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
-
+    private lateinit var parentAdapter: ConcatAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -65,12 +68,17 @@ internal class WatchLaterFragment : BaseFragment(),
     }
 
     fun loadData() {
+
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter = WatchlaterAdapter(cacheRepository.getAllWatchlater()!!)
+        footerAdapter = HomeFooterAdapter()
+        val dataAdapter = WatchlaterAdapter(cacheRepository.getAllWatchlater()!!,this)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
+        val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
+        parentAdapter= ConcatAdapter(config,dataAdapter,footerAdapter)
+        recyclerView.adapter = parentAdapter
+
     }
 
     override fun onClickItem(mSongDetails: MutableList<WatchLaterContent>, clickItemPosition: Int) {

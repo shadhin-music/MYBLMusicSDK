@@ -356,6 +356,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
         constraintPlaylist?.setOnClickListener {
             deletePlayList2(context, playlistId.toString())
             Toast.makeText(context, "Removed Successfully", Toast.LENGTH_LONG).show()
+            requireActivity().onBackPressed()
 //          viewModel.deleteUserSongFromPlaylist.observe(viewLifecycleOwner){
 //              res->
 //              Log.e("TAG", "CLICKArtist: " + res.message)
@@ -474,7 +475,11 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
         playlisttext?.text = "Delete from Playlist"
         constraintPlaylist?.setOnClickListener {
             deleteSongFromPlayList(context, mSongDetails, playlistId)
+
             Toast.makeText(context, "Removed Successfully", Toast.LENGTH_LONG).show()
+            playlistTrackAdapter.notifyDataSetChanged()
+            playlistId?.let { it1 -> viewModel.getuserSongsInPlaylist(it1) }
+            bottomSheetDialog.dismiss()
         }
 
         val constraintFav: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintFav)

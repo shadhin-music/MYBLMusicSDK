@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Create New Playlist"
+        android:gravity="center"
         android:textColor="@color/my_sdk_color_black"
         android:textSize="18sp"
         android:textStyle="bold"
