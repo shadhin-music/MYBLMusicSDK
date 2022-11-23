@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,46 +12,42 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-internal class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
+internal class ReleaseListFragment : BaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
-   private  lateinit var releaseAdapter:ReleaseAdapter
-   private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var releaseAdapter: ReleaseAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val view = inflater.inflate(R.layout.my_bl_sdk_fragment_release_list, container, false)
+        val view = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("I am being called", ""+"artistId")
         val verticalSpanCount = 1
         val horizontalSpanCount = 3
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         releaseAdapter = ReleaseAdapter(argHomePatchItem!!, this)
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,releaseAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, releaseAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -69,16 +64,15 @@ internal class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
-        Log.e("i am being called", "test test test "+navController.graph.displayName)
         navController.navigate(
             R.id.to_album_details,
             Bundle().apply {
@@ -93,13 +87,9 @@ internal class ReleaseListFragment : CommonBaseFragment(), HomeCallBack {
             })
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
-
-
 }

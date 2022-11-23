@@ -131,8 +131,8 @@
                 android:layout_weight=".50"
                 android:clickable="true"
                 android:padding="6dp"
-                android:visibility="invisible"
-                android:src="@drawable/my_bl_sdk_ic_baseline_favorite_border_24" />
+                android:src="@drawable/my_bl_sdk_ic_baseline_favorite_border_24"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <SeekBar

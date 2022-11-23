@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FC"
-    >
+    android:background="#F5F7FC">
+
     <RelativeLayout
+        android:id="@+id/toolbarRelative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/toolbarRelative">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -31,6 +29,7 @@
                 android:id="@+id/imageBack"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="10dp"
                 android:padding="12dp"
                 android:src="@drawable/my_bl_sdk_ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="@id/parentRelative"
@@ -45,61 +44,52 @@
                 android:textColor="@color/my_sdk_white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/my_bl_sdk_ic_search_download"
             android:tint="@color/my_sdk_color_black"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"
             android:visibility="invisible"
-            />
+            app:layout_constraintEnd_toEndOf="parent" />
     </RelativeLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/parentRelative">-->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab"
+        style="@style/AppTabLayout"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="#862323"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarRelative">
 
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="#862323"
-            android:id="@+id/tab"
-            style="@style/AppTabLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarRelative"
-             >
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="All"
-                android:clickable="true"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Songs"
-                android:clickable="true"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Video"
-                android:clickable="true"
-                />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Podcast"
-                android:clickable="true"
-                />
-        </com.google.android.material.tabs.TabLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="All" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Songs" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Video" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Podcast" />
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
@@ -109,6 +99,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab" />
-<!--    </RelativeLayout>-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

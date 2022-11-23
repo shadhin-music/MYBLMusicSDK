@@ -12,20 +12,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
-import com.shadhinmusiclibrary.data.model.search.SearchArtistdata
-import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 internal class SearchArtistHeaderAdapter(
-    var homePatchDetail: SearchArtistdata?,
+    var homePatchDetail: SearchArtistDataModel?,
     private val itemClickCB: ArtistOnItemClickCallback
 ) : RecyclerView.Adapter<SearchArtistHeaderAdapter.ArtistHeaderVH>() {
 
-    private var dataSongDetail: MutableList<ArtistContentData> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
-    var banner: ArtistBanner? = null
+    var banner: ArtistBannerModel? = null
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistHeaderVH {
@@ -49,7 +49,7 @@ internal class SearchArtistHeaderAdapter(
         return 1
     }
 
-    fun setData(homePatchDetail: SearchArtistdata) {
+    fun setData(homePatchDetail: SearchArtistDataModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -70,7 +70,7 @@ internal class SearchArtistHeaderAdapter(
 //        }
     }
 
-    fun artistBanner(banner: ArtistBanner?) {
+    fun artistBanner(banner: ArtistBannerModel?) {
         this.banner = banner
     }
 
@@ -78,7 +78,7 @@ internal class SearchArtistHeaderAdapter(
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
 
-        fun bindItems(homePatchDetail: SearchArtistdata) {
+        fun bindItems(homePatchDetail: SearchArtistDataModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -23,22 +24,22 @@ import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Data
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.DataModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint, HomeCallBack,
-    PodcastOnItemClickCallback , PodcastBottomSheetDialogItemCallback {
+internal class PodcastDetailsFragment : BaseFragment(),
+    HomeCallBack,
+    PodcastOnItemClickCallback,
+    PodcastBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: PodcastViewModel
     private lateinit var navController: NavController
@@ -48,12 +49,13 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     private lateinit var podcastMoreEpisodesAdapter: PodcastMoreEpisodesAdapter
     private lateinit var concatAdapter: ConcatAdapter
 
-    var data: Data? = null
-    var episode: List<Episode>? = null
+    var data: DataModel? = null
+    var episode: List<EpisodeModel>? = null
 
     var podcastType: String = ""
     var contentType: String = ""
-    var selectedEpisodeID: Int = 0
+    private var selectedEpisodeID: Int = 0
+    var contentId: Int = 0
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
     private var cacheRepository: CacheRepository? = null
@@ -62,7 +64,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }
@@ -73,11 +75,18 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
             val Type: String = it.ContentType
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
+            contentId = it.ContentID.toInt()
             selectedEpisodeID = it.AlbumId.toInt()
             Log.e("TAG","RESULT: "+ Type)
         }
-        cacheRepository= CacheRepository(requireContext())
-        initialize()
+        cacheRepository = CacheRepository(requireContext())
+        setupViewModel()
+        if (selectedEpisodeID == contentId) {
+            getPodcastShowDetailsInitialize()
+        } else {
+            getPodcastDetailsInitialize()
+        }
+
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
@@ -89,10 +98,14 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         }
     }
 
-    private fun initialize() {
-        setupViewModel()
+    private fun getPodcastShowDetailsInitialize() {
         setupAdapters()
-        observeData()
+        observePodcastShowData()
+    }
+
+    private fun getPodcastDetailsInitialize() {
+        setupAdapters()
+        observePodcastDetailsData()
     }
 
     private fun setupAdapters() {
@@ -100,8 +113,9 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastHeaderAdapter = PodcastHeaderAdapter(this,cacheRepository,favViewModel, argHomePatchDetail)
-        podcastTrackAdapter = PodcastTrackAdapter(this,this, cacheRepository!! )
+        podcastHeaderAdapter =
+            PodcastHeaderAdapter(this, cacheRepository, favViewModel, argHomePatchDetail)
+        podcastTrackAdapter = PodcastTrackAdapter(this, this, cacheRepository!!)
         podcastMoreEpisodesAdapter = PodcastMoreEpisodesAdapter(data, this)
         footerAdapter = HomeFooterAdapter()
 //        artistsYouMightLikeAdapter =
@@ -118,13 +132,20 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     }
 
     private fun setupViewModel() {
-        viewModel =
-            ViewModelProvider(this, injector.podcastViewModelFactory)[PodcastViewModel::class.java]
-        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            injector.podcastViewModelFactory
+        )[PodcastViewModel::class.java]
+
+        favViewModel = ViewModelProvider(
+            this,
+            injector.factoryFavContentVM
+        )[FavViewModel::class.java]
     }
 
-    private fun observeData() {
-        viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
+    private fun observePodcastShowData() {
+        viewModel.fetchPodcastShowContent(podcastType, contentType, false)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 response?.data?.data?.EpisodeList?.let { itEpisod ->
@@ -141,7 +162,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                 response.data?.data?.EpisodeList?.get(0)
                     ?.let {
                         podcastTrackAdapter.setData(
-                            it.TrackList.toMutableList(),
+                            it.TrackList,
                             argHomePatchDetail!!,
                             playerViewModel.currentMusic?.mediaId
                         )
@@ -152,7 +173,46 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                     }
                 }
                 parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
             } else {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun observePodcastDetailsData() {
+        viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+                response?.data?.data?.EpisodeList?.let { itEpisod ->
+//                    podcastHeaderAdapter.setHeader(
+//                        itEpisod,
+//                        itEpisod[0].TrackList
+//                    )
+                    podcastHeaderAdapter.setTrackData(
+                        itEpisod,
+                        itEpisod[0].TrackList,
+                        argHomePatchDetail!!
+                    )
+                }
+                response.data?.data?.EpisodeList?.get(0)
+                    ?.let {
+                        podcastTrackAdapter.setData(
+                            it.TrackList,
+                            argHomePatchDetail!!,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                    }
+                response.data?.data?.let {
+                    it.EpisodeList.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1)
+                    }
+                }
+                parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
             }
         }
     }
@@ -169,8 +229,10 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
     }
 
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        Log.e("TAG", "onClickItemAndAllItem: " + selectedHomePatchItem)
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         //  setAdapter(patch)
 //        argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -180,14 +242,14 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //        parentRecycler.scrollToPosition(0)
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
         argHomePatchDetail?.ContentID = episode.Id.toString()
-        observeData()
+        observePodcastDetailsData()
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -199,35 +261,38 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         parentRecycler.scrollToPosition(0)
     }
 
-    override fun onRootClickItem(mSongDetails: MutableList<Track>, clickItemPosition: Int) {
-        Log.e("PCDF", "onRootClickItem: " + mSongDetails.size + " " + clickItemPosition)
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
-            if ((lSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
+            if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
             } else {
-                playItem(UtilHelper.getSongDetailToTrackList(lSongDetails), clickItemPosition)
+                playItem(lSongDetails, clickItemPosition)
             }
         }
     }
 
-    override fun onClickItem(mTracks: MutableList<Track>, clickItemPosition: Int) {
+    override fun onClickItem(mTracks: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mTracks[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {
+            if ((mTracks[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
+                if ((mTracks[clickItemPosition].content_Id.toString() != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+                playItem(mTracks, clickItemPosition)
             }
         } else {
-            playItem(UtilHelper.getSongDetailToTrackList(mTracks), clickItemPosition)
+            playItem(mTracks, clickItemPosition)
         }
     }
 
-    override fun getCurrentVH(currentVH: RecyclerView.ViewHolder, mTracks: MutableList<Track>) {
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        mTracks: MutableList<IMusicModel>
+    ) {
 //        val mSongDet = podcastTrackAdapter.tracks
         val podcastHeaderVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
         if (mTracks.size > 0 && isAdded) {
@@ -236,12 +301,14 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
                 if (itMusic != null) {
                     if ((mTracks.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.rootContentID == itMusic.rootId &&
-                                    it.Id.toString() == itMusic.mediaId
+                                    it.rootContentId == itMusic.rootId &&
+                                    it.content_Id.toString() == itMusic.mediaId
+                            /*     it.Id.toString() == itMusic.mediaId*/
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            playPauseState(itPla!!.isPlaying, podcastHeaderVH.ivPlayBtn!!)
+                            if (itPla != null)
+                                playPauseState(itPla.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
                     }
                 } else {
@@ -251,7 +318,7 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         }
     }
 
-    override fun onClickBottomItem(track: Track) {
+    override fun onClickBottomItem(track: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
@@ -270,16 +337,15 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+
     override fun onStop() {
         super.onStop()
         LocalBroadcastManager.getInstance(requireContext())
             .unregisterReceiver(MyBroadcastReceiver())
     }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
 //                val downloaded: ImageView?= view?.findViewWithTag(200)
@@ -291,46 +357,32 @@ internal class PodcastDetailsFragment : CommonBaseFragment(), FragmentEntryPoint
 //                progressIndicator?.visibility = View.GONE
 //                // downloaded?.visibility = VISIBLE
 //            }
-
-            Log.e("getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}")
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent){
-            Log.e("DELETED", "onReceive "+intent.action)
-            Log.e("PROGRESS", "onReceive "+intent)
+        override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
-                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "REMOVE" -> {
-                   podcastTrackAdapter.notifyDataSetChanged()
+                    podcastTrackAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
                     podcastTrackAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 }

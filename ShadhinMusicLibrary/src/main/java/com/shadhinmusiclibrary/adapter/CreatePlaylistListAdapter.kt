@@ -2,21 +2,21 @@ package com.shadhinmusiclibrary.adapter
 
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserPlaylistData
 import kotlin.random.Random
 
 internal class CreatePlaylistListAdapter(
     val data: List<UserPlaylistData>,
     val itemClick: ItemClickListener,
-    val mSongDetails: SongDetail
+    val mSongDetails: IMusicModel
 ) : RecyclerView.Adapter<CreatePlaylistListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

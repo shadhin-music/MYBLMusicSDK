@@ -23,25 +23,21 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack ,
-   favItemClickCallback {
+internal class PodcastFavFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
+    favItemClickCallback {
     private lateinit var navController: NavController
     private lateinit var dataAdapter: FavoriteSongsAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,90 +49,58 @@ internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBac
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-      loadData()
-
-
-    }
-      fun loadData(){
-          val cacheRepository= CacheRepository(requireContext())
-           dataAdapter =
-               cacheRepository.getPodcastFavContent()?.let { FavoriteSongsAdapter(it,this,this, cacheRepository) }!!
-
-          val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-          recyclerView.layoutManager =
-              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
-          recyclerView.adapter = dataAdapter
-         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-
-      }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            PodcastFavFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        loadData()
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
-
+    fun loadData() {
+        val cacheRepository = CacheRepository(requireContext())
+        dataAdapter =
+            cacheRepository.getPodcastFavContent()
+                ?.let { FavoriteSongsAdapter(it.toMutableList(), this, this, cacheRepository) }!!
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = dataAdapter
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
-            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
-                Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentID)
-                Log.e("TAG","SONG :"+ playerViewModel.currentMusic?.mediaId )
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+    }
+
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToFavoriteSongDetailList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: FavData) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
-            Track("",
-                mSongDetails.contentType.toString(),
-                mSongDetails.artist.toString(),
-                mSongDetails.duration.toString(),
-                mSongDetails.contentID,
-                0,
-                mSongDetails.image.toString(),
-                false,
-                mSongDetails.title.toString(),
-                mSongDetails.playUrl.toString(),
-                false,
-                "",
-                0,
-                "",
-                "",
-                "",
-                0,
-
-                mSongDetails.rootId.toString(),
-                "",
-                "",
-                false),
+            SongTrackModel().apply {
+                content_Type = mSongDetails.content_Type.toString()
+                artistName = mSongDetails.artistName.toString()
+                total_duration = mSongDetails.total_duration.toString()
+                content_Id = mSongDetails.content_Id
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                rootContentId = mSongDetails.rootContentId.toString()
+            },
             argHomePatchItem,
             argHomePatchDetail
         )
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
-
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
 //        (activity as? SDKMainActivity)?.showBottomSheetDialog(
 //            navController,
 //            context = requireContext(),
@@ -156,9 +120,10 @@ internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBac
 //        )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
 
     }
+
     override fun onStart() {
         super.onStart()
         val intentFilter = IntentFilter()
@@ -181,7 +146,7 @@ internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBac
 
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
-            val downloaded: ImageView?= view?.findViewWithTag(220)
+            val downloaded: ImageView? = view?.findViewWithTag(220)
             progressIndicator?.visibility = View.VISIBLE
             progressIndicator?.progress = it.progress.toInt()
 //            val isDownloaded =
@@ -190,47 +155,29 @@ internal class PodcastFavFragment : CommonBaseFragment(),DownloadedSongOnCallBac
 //                progressIndicator?.visibility = View.GONE
 //                downloaded?.visibility = View.GONE
 //            }
-
-            Log.e("getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}")
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
-        override fun onReceive(context: Context, intent: Intent){
-            Log.e("DELETED", "onReceive "+intent.action)
-            Log.e("PROGRESS", "onReceive "+intent)
+        override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
-                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
-//                        Log.e("getDownloadManagerx",
-//                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
                     dataAdapter.notifyDataSetChanged()
-                    Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
                     dataAdapter.notifyDataSetChanged()
-                    Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
 }

@@ -9,14 +9,12 @@ import android.view.View
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.R
 
-
 internal class PlayerOnScaleGestureListener(
     private val playerView: PlayerView,
-    val context:Context,
-    ): ScaleGestureDetector.SimpleOnScaleGestureListener() {
+    val context: Context,
+) : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
-
-    private var contentView:View = playerView.findViewById(R.id.exo_content_frame)
+    private var contentView: View = playerView.findViewById(R.id.exo_content_frame)
     private var contentHeight = 0
     private var screenHeight = 0
     private var contentWidth = 0
@@ -38,13 +36,11 @@ internal class PlayerOnScaleGestureListener(
         screenWidth = playerView.measuredWidth
         contentWidth = contentView.measuredWidth
 
-        if(screenWidth == contentWidth){
+        if (screenWidth == contentWidth) {
             maxScale = screenHeight.toFloat() / contentHeight.toFloat()
-        }else if(screenHeight == contentHeight){
+        } else if (screenHeight == contentHeight) {
             maxScale = screenWidth.toFloat() / contentWidth.toFloat()
         }
-
-
 
         scaleFactor *= detector.scaleFactor
         val scaleRange = (minScale - extraScale)..(maxScale + extraScale)
@@ -59,30 +55,32 @@ internal class PlayerOnScaleGestureListener(
 
     override fun onScaleBegin(
         detector: ScaleGestureDetector
-    ) : Boolean{
+    ): Boolean {
         return true
     }
+
     override fun onScaleEnd(detector: ScaleGestureDetector) {
 
-        if(scaleFactor>midRange){
+        if (scaleFactor > midRange) {
             resizeFixedHeightOrWidth()
-        }else{
+        } else {
             resizeFit()
         }
     }
 
     private fun resizeFixedHeightOrWidth() {
-        resizeAnimation(scaleFactor,maxScale)
+        resizeAnimation(scaleFactor, maxScale)
     }
 
     private fun resizeFit() {
-        resizeAnimation(scaleFactor,minScale)
+        resizeAnimation(scaleFactor, minScale)
     }
-    private fun resizeAnimation(fromScale:Float,toScale:Float){
+
+    private fun resizeAnimation(fromScale: Float, toScale: Float) {
         ValueAnimator.ofFloat(fromScale, toScale).apply {
             addUpdateListener {
                 val value = it.animatedValue as Float
-                contentView.scaleX  = value
+                contentView.scaleX = value
                 contentView.scaleY = value
             }
             addListener(object : AnimatorListenerAdapter() {

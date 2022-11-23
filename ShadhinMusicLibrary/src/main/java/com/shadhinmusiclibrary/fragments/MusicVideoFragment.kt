@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicVideoAdapter
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
 
-internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
-
+internal class MusicVideoFragment : BaseFragment() {
     lateinit var viewModel: PopularArtistViewModel
 
     private fun setupViewModel() {
@@ -68,7 +66,6 @@ internal class MusicVideoFragment : Fragment(), FragmentEntryPoint {
                     }
                     recyclerView.adapter = MusicVideoAdapter(it)
                 }
-
             } else {
             }
         }

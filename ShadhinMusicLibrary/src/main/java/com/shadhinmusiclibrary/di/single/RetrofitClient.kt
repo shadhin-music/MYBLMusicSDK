@@ -14,16 +14,16 @@ internal class RetrofitClient private constructor() {
                 INSTANCE ?: newInstance(client).also { INSTANCE = it }
             }
 
-        private fun newInstance(client: OkHttpClient):Retrofit{
+        private fun newInstance(client: OkHttpClient): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
-        fun destroy(){
+
+        fun destroy() {
             INSTANCE = null
         }
-
     }
 }

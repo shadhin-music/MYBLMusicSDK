@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -23,37 +22,35 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
-import com.shadhinmusiclibrary.adapter.ArtistsYouMightLikeAdapter
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.ArtistHeaderAdapter
-import com.shadhinmusiclibrary.adapter.ArtistTrackAdapter
-import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
+internal class ArtistDetailsFragment : BaseFragment(),
+    HomeCallBack,
+    ArtistOnItemClickCallback,
+    BottomSheetDialogItemCallback {
 
-internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
-    ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
-    var artistContent: ArtistContent? = null
-
+    var artistContent: ArtistContentModel? = null
     private lateinit var viewModel: ArtistViewModel
     private lateinit var viewModelArtistBanner: ArtistBannerViewModel
     private lateinit var viewModelArtistSong: ArtistContentViewModel
@@ -67,27 +64,22 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
     private lateinit var parentRecycler: RecyclerView
     private lateinit var favViewModel: FavViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_artist_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
         navController = findNavController()
         return viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cacheRepository= CacheRepository(requireContext())
-        Log.e("Check", "yes iam called")
+        cacheRepository = CacheRepository(requireContext())
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -109,8 +101,8 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this,cacheRepository)
-        artistTrackAdapter = ArtistTrackAdapter(this, this,cacheRepository)
+        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this, cacheRepository)
+        artistTrackAdapter = ArtistTrackAdapter(this, this, cacheRepository)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
             ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
@@ -142,32 +134,40 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     private fun setupViewModel() {
         viewModel =
-            ViewModelProvider(this, injector.factoryArtistVM)[ArtistViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.factoryArtistVM
+            )[ArtistViewModel::class.java]
+
         viewModelArtistBanner = ViewModelProvider(
             this,
             injector.factoryArtistBannerVM
         )[ArtistBannerViewModel::class.java]
+
         viewModelArtistSong = ViewModelProvider(
             this,
             injector.factoryArtistSongVM
         )[ArtistContentViewModel::class.java]
+
         viewModelArtistAlbum = ViewModelProvider(
             this,
             injector.artistAlbumViewModelFactory
         )[ArtistAlbumsViewModel::class.java]
-        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
+
+        favViewModel = ViewModelProvider(
+            this,
+            injector.factoryFavContentVM
+        )[FavViewModel::class.java]
     }
 
     private fun observeData() {
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.Artist)
-            Log.e("TAG", "DATA: " + it.Artist)
-            Log.e("TAG", "DATA: " + it.ArtistId)
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-                artistHeaderAdapter.artistBio(response.data,favViewModel)
+                artistHeaderAdapter.artistBio(response.data, favViewModel)
                 progressBar.visibility = GONE
             } else {
                 progressBar.visibility = GONE
@@ -227,11 +227,13 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             ) { _, _ ->
                 requireActivity().finish()
             }
-
             .show()
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
         if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
@@ -249,100 +251,62 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         itemPosition: Int,
         artistAlbumModelData: List<ArtistAlbumModelData>,
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         navController.navigate(R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
-                    HomePatchItem("", "", listOf(), "", "", 0, 0)
+                    HomePatchItemModel("", "", listOf(), "", "", 0, 0)
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = mArtAlbumMod.AlbumId,
-                        ArtistId = mArtAlbumMod.ArtistId,
-                        ContentID = mArtAlbumMod.ContentID,
-                        ContentType = mArtAlbumMod.ContentType,
-                        PlayUrl = mArtAlbumMod.PlayUrl,
-                        AlbumName = mArtAlbumMod.title,
-                        AlbumImage = "",
-                        fav = mArtAlbumMod.fav,
-                        Banner = "",
-                        Duration = mArtAlbumMod.duration,
-                        TrackType = "",
-                        image = mArtAlbumMod.image,
-                        ArtistImage = "",
-                        Artist = mArtAlbumMod.artistname,
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = "",
-                        Type = ""
-
-                    ) as Serializable
+                    UtilHelper.getHomePatchDetailToAlbumModel(mArtAlbumMod) as Serializable
                 )
             })
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
 
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        observeData()
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //        parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
     }
 
-    override fun onRootClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
 //        val lSongDetails = artistTrackAdapter.artistSongList
         if (mSongDetails.size > clickItemPosition) {
-            if (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId) {
+            if (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId) {
                 playerViewModel.togglePlayPause()
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    mSongDetails,
                     clickItemPosition
                 )
             }
         }
     }
 
-    override fun onClickItem(
-        mSongDetails: MutableList<ArtistContentData>,
-        clickItemPosition: Int
-    ) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)) {
-                if ((mSongDetails[clickItemPosition].ContentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
                 playItem(
-                    UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                    mSongDetails,
                     clickItemPosition
                 )
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToArtistContentDataList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }
@@ -350,7 +314,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<ArtistContentData>
+        songDetails: MutableList<IMusicModel>
     ) {
 //        val mSongDet = artistTrackAdapter.artistSongList
         val artistHeaderVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
@@ -360,12 +324,18 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
                 if (itMusic != null) {
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
-                                    it.rootContentID == itMusic.rootId &&
-                                    it.ContentID == itMusic.mediaId
+                                    it.rootContentId == itMusic.rootId &&
+                                    it.content_Id == itMusic.mediaId
                         } != -1)
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-                            artistHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                            if (itPla != null)
+                                artistHeaderVH.ivPlayBtn?.let {
+                                    playPauseState(
+                                        itPla.isPlaying,
+                                        it
+                                    )
+                                }
                         }
                     } else {
                         artistHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
@@ -374,6 +344,7 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
             }
         }
     }
+
     override fun onStart() {
         super.onStart()
         val intentFilter = IntentFilter()
@@ -383,16 +354,15 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+
     override fun onStop() {
         super.onStop()
         LocalBroadcastManager.getInstance(requireContext())
             .unregisterReceiver(MyBroadcastReceiver())
     }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
 //                val downloaded: ImageView?= view?.findViewWithTag(200)
@@ -404,49 +374,32 @@ internal class ArtistDetailsFragment : CommonBaseFragment(), HomeCallBack,
 //                progressIndicator?.visibility = View.GONE
 //                // downloaded?.visibility = VISIBLE
 //            }
-
-            Log.e("getDownloadManagerx",
-                "habijabi: ${it.toString()} ${progressIndicator == null}")
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent){
-            Log.e("DELETED", "onReceive "+intent.action)
-            Log.e("PROGRESS", "onReceive "+intent)
+        override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {
-
                     //val data = intent.getIntExtra("currentProgress",0)
-                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
-//                        Log.e("getDownloadManagerx",
-//                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
                     artistTrackAdapter.notifyDataSetChanged()
-                    Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-
                     artistTrackAdapter.notifyDataSetChanged()
-                    Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
             context = requireContext(),

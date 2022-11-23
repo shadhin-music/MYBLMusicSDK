@@ -13,9 +13,10 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -23,10 +24,10 @@ internal class PlaylistAdapter(
     private val itemClickCB: OnItemClickCallback,
     private val bsDialogItemCallback: BottomSheetDialogItemCallback,
     val cacheRepository: CacheRepository
-) :
-    RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
-    private var rootDataContent: HomePatchDetail? = null
-    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+) : RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
+
+    private var rootDataContent: HomePatchDetailModel? = null
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistVH {
         val layout = when (viewType) {
@@ -77,7 +78,7 @@ internal class PlaylistAdapter(
                         if (holder.itemViewType == PlaylistAdapter.VIEW_TRACK_ITEM) {
                             val mSongDetItem = dataSongDetail[position - 1]
                             itemClickCB.onClickItem(dataSongDetail, (position - 1))
-                           //holder.tvSongName?.setTextColor(Color.BLUE)
+                            //holder.tvSongName?.setTextColor(Color.BLUE)
                         }
                     }
                 }
@@ -103,13 +104,13 @@ internal class PlaylistAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setSongData(data: MutableList<SongDetail>) {
-        this.dataSongDetail = data
+    fun setSongData(data: MutableList<SongDetailModel>) {
+//        this.dataSongDetail = data
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRootData(data: HomePatchDetail?) {
+    fun setRootData(data: HomePatchDetailModel?) {
         this.rootDataContent = data
         notifyDataSetChanged()
     }
@@ -125,7 +126,7 @@ internal class PlaylistAdapter(
         var ivPlayBtn: ImageView? = null
 
         //        private lateinit var ivShareBtnFab: ImageView
-        fun bindRoot(root: HomePatchDetail) {
+        fun bindRoot(root: HomePatchDetailModel) {
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
@@ -145,35 +146,31 @@ internal class PlaylistAdapter(
         }
 
         var tvSongName: TextView? = null
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: IMusicModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(mSongDetail.imageUrl!!))
                 .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName!!.text = mSongDetail.title
+            tvSongName!!.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
-              bsDialogItemCallback.onClickBottomItem(mSongDetail)
-                Log.e("TAGGY","ID: "+ mSongDetail)
+                bsDialogItemCallback.onClickBottomItem(mSongDetail)
             }
+
             val progressIndicator1: CircularProgressIndicator = itemView.findViewById(R.id.progress)
-            val downloaded:ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator1.tag = mSongDetail.ContentID
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
+            progressIndicator1.tag = mSongDetail.content_Id
             progressIndicator1.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.ContentID) ?: false
-//            if (progressIndicator1.progress.equals(97)){
-//                downloaded?.visibility= View.VISIBLE
-//            }
-            if(isDownloaded){
-                Log.e("TAG","ISDOWNLOADED: "+ isDownloaded)
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
+            if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE
                 progressIndicator1.visibility = View.GONE
             }

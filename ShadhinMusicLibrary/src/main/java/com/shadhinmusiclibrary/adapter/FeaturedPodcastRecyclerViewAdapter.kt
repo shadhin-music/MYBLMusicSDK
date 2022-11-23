@@ -8,22 +8,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 
 internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPodcastOnItemClickCallback) : RecyclerView.Adapter<FeaturedPodcastRecyclerViewAdapter.ViewHolder>() {
-    var data: MutableList<FeaturedPodcastDetails> = mutableListOf()
-    var showName:String ?=null
+    var data: MutableList<FeaturedPodcastDetailsModel> = mutableListOf()
+    var showName: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems(data)
-
-
     }
 
     override fun getItemCount(): Int {
@@ -31,35 +28,34 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
     }
 
     @JvmName("setData1")
-    fun setData(data: List<FeaturedPodcastDetails>?, showName: String?) {
-        this.data= data as MutableList<FeaturedPodcastDetails>
-          this.showName = showName
+    fun setData(data: List<FeaturedPodcastDetailsModel>?, showName: String?) {
+        this.data = data as MutableList<FeaturedPodcastDetailsModel>
+        this.showName = showName
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
-        fun bindItems(data: MutableList<FeaturedPodcastDetails>) {
+        fun bindItems(data: MutableList<FeaturedPodcastDetailsModel>) {
             val textViewName = itemView.findViewById(R.id.tvTitle) as TextView
-           textViewName.text = showName
+            textViewName.text = showName
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
-                recyclerView.layoutManager = GridLayoutManager( context,
-                    2,
-                    RecyclerView.HORIZONTAL,
-                    false)
-              recyclerView.adapter = FeaturedPodcastAdapter(this@FeaturedPodcastRecyclerViewAdapter.data,cilckCallBack)
+            recyclerView.layoutManager = GridLayoutManager(
+                context,
+                2,
+                RecyclerView.HORIZONTAL,
+                false
+            )
+            recyclerView.adapter =
+                FeaturedPodcastAdapter(this@FeaturedPodcastRecyclerViewAdapter.data, cilckCallBack)
 //            val textViewName = itemView.findViewById(R.id.txt_title) as TextView
 //            val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView = itemView.findViewById(R.id.image) as ImageView
 //           val url: String? = data?.get(absoluteAdapterPosition)?.getImageUrl300Size()
-//
-//
 //            textViewArtist.text = data?.get(absoluteAdapterPosition)?.TrackName
 //            Glide.with(context)
 //                .load(url)
 //                .into(imageView)
-//
-//
 //            textViewName.text= data?.get(absoluteAdapterPosition)?.EpisodeName
            // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
@@ -73,13 +69,9 @@ internal class FeaturedPodcastRecyclerViewAdapter(var cilckCallBack: FeaturedPod
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }

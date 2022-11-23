@@ -9,7 +9,7 @@
         android:id="@+id/playlist_list"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistListFragment"
         android:label="fragment_playlist_list"
-        tools:layout="@layout/my_bl_sdk_fragment_playlist_list">
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
 
         <action
             android:id="@+id/to_playlist_details"
@@ -21,11 +21,12 @@
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
         android:label="Playlist Details"
-        tools:layout="@layout/my_bl_sdk_fragment_playlist_details" >
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
         <action
             android:id="@+id/action_playlist_details_to_album_details_fragment"
             app:destination="@id/album_details_fragment" />
@@ -41,7 +42,7 @@
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_fragment_album_details" >
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
         <action
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
@@ -49,11 +50,12 @@
             android:id="@+id/to_playlist_details"
             app:destination="@id/playlist_details" />
     </fragment>
+
     <fragment
         android:id="@+id/artist_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="Artist Details"
-        tools:layout="@layout/my_bl_sdk_fragment_artist_details">
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
         <action
             android:id="@+id/to_album_details"

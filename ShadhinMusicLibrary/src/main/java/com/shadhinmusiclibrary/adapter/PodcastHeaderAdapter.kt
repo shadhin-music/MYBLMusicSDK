@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.data.model.podcast.Track
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
+import com.shadhinmusiclibrary.data.model.search.Track
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -27,10 +27,11 @@ internal class PodcastHeaderAdapter(
     private val pcOnCallback: PodcastOnItemClickCallback,
     private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,
-    private val  homePatchDetail: HomePatchDetail?
+    private val homePatchDetail: HomePatchDetailModel?
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
-    var episode: List<Episode>? = null
-    private var listTrack: MutableList<Track> = mutableListOf()
+
+    var episode: List<EpisodeModel>? = null
+    private var listSongTrack: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
@@ -40,9 +41,9 @@ internal class PodcastHeaderAdapter(
 
     override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
         holder.bindItems(position)
-        pcOnCallback.getCurrentVH(holder, listTrack)
+        pcOnCallback.getCurrentVH(holder, listSongTrack)
         holder.ivPlayBtn?.setOnClickListener {
-            pcOnCallback.onRootClickItem(listTrack, position)
+            pcOnCallback.onRootClickItem(listSongTrack, position)
         }
     }
 
@@ -53,25 +54,25 @@ internal class PodcastHeaderAdapter(
     }
 
     fun setTrackData(
-        episode: List<Episode>,
-        data: MutableList<Track>,
-        rootPatch: HomePatchDetail
+        episode: List<EpisodeModel>,
+        data: MutableList<SongTrackModel>,
+        rootPatch: HomePatchDetailModel
     ) {
-        this.listTrack = mutableListOf()
+        this.listSongTrack = mutableListOf()
         for (songItem in data) {
-            listTrack.add(
+            listSongTrack.add(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
         this.episode = episode
-        this.listTrack = listTrack
+        this.listSongTrack = listSongTrack
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setHeader(episode: List<Episode>, trackList: MutableList<Track>) {
+    fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<IMusicModel>) {
         this.episode = episode
-        listTrack = trackList
+        listSongTrack = trackList
         notifyDataSetChanged()
     }
 
@@ -79,6 +80,7 @@ internal class PodcastHeaderAdapter(
         val context = itemView.context
         var ivPlayBtn: ImageView? = null
         var ivFavorite: ImageView? = null
+
         fun bindItems(position: Int) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             val textArtist: TextView? = itemView.findViewById(R.id.name)
@@ -111,8 +113,8 @@ internal class PodcastHeaderAdapter(
                 .into(imageView)
 
             var isFav = false
-            val isAddedToFav = homePatchDetail?.ContentID?.let { cacheRepository?.getFavoriteById(it) }
-            if (isAddedToFav?.contentID != null) {
+            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
+            if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
@@ -124,30 +126,46 @@ internal class PodcastHeaderAdapter(
             }
 
             ivFavorite?.setOnClickListener {
-                if(isFav.equals(true)){
-                    homePatchDetail?.ContentID?.let { it1 -> favViewModel.deleteFavContent(it1,homePatchDetail?.ContentType) }
+                if (isFav.equals(true)) {
+                    homePatchDetail?.ContentID?.let { it1 ->
+                        favViewModel.deleteFavContent(
+                            it1,
+                            homePatchDetail?.ContentType
+                        )
+                    }
                     cacheRepository?.deleteFavoriteById(homePatchDetail?.ContentID.toString())
-                    Toast.makeText(context,"Removed from favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                    isFav=false
-                    Log.e("TAG","NAME: "+ isFav)
+                    isFav = false
                 } else {
 
-                    favViewModel.addFavContent(homePatchDetail?.ContentID.toString(),homePatchDetail?.ContentType.toString())
+                    favViewModel.addFavContent(
+                        homePatchDetail?.ContentID.toString(),
+                        homePatchDetail?.ContentType.toString()
+                    )
 
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                    Log.e("TAG","NAME123: "+ isFav)
-                    cacheRepository?.insertFavSingleContent(FavData(homePatchDetail?.ContentID.toString(),homePatchDetail?.AlbumId,homePatchDetail?.image,"",homePatchDetail?.Artist,homePatchDetail?.ArtistId,
-                        "","",2,homePatchDetail?.ContentType.toString(),"","","1","",homePatchDetail?.image,"",
-                        false,  "",0,"","","",homePatchDetail?.PlayUrl,homePatchDetail?.RootId,
-                        homePatchDetail?.RootType,false,"",homePatchDetail?.title,"",""
-
-                    ))
+                    cacheRepository?.insertFavSingleContent(
+                        FavData().apply {
+                            content_Id = homePatchDetail?.ContentID.toString()
+                            album_Id = homePatchDetail?.AlbumId
+                            albumImage = homePatchDetail?.image
+                            artistName = homePatchDetail?.Artist
+                            artist_Id = homePatchDetail?.ArtistId
+                            clientValue = 2
+                            content_Type = homePatchDetail?.ContentType.toString()
+                            fav = "1"
+                            imageUrl = homePatchDetail?.image
+                            playingUrl = homePatchDetail?.PlayUrl
+                            rootContentId = homePatchDetail?.RootId
+                            rootContentType = homePatchDetail?.RootType
+                            titleName = homePatchDetail?.title
+                        }
+                    )
                     isFav = true
-                    Toast.makeText(context,"Added to favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
                 }
                 // favClickCallback.favItemClick(songDetail)
-
             }
         }
     }

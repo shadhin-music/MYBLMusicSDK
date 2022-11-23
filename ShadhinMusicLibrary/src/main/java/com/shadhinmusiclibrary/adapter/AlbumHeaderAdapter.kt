@@ -12,22 +12,24 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AlbumHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
-    private val itemClickCB: OnItemClickCallback
-) :
-    RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
-    var cacheRepository:CacheRepository?=null
-    private var favViewModel:FavViewModel?=null
-    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    var homePatchDetail: HomePatchDetailModel?,
+    private val itemClickCB: OnItemClickCallback,
+) : RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
+
+    var cacheRepository: CacheRepository? = null
+    private var favViewModel: FavViewModel? = null
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_playlist_header, parent, false)
@@ -35,15 +37,14 @@ internal class AlbumHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-
         if (cacheRepository != null) {
             favViewModel?.let { holder.bindItems(homePatchDetail, cacheRepository!!, it) }
         }
+
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
             itemClickCB.onRootClickItem(dataSongDetail, position)
         }
-
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -53,24 +54,29 @@ internal class AlbumHeaderAdapter(
     }
 
     fun setSongAndData(
-        data: MutableList<SongDetail>,
-        homePatchDetail: HomePatchDetail,
+        data: MutableList<SongDetailModel>,
+        homePatchDetail: HomePatchDetailModel,
         cacheRepository: CacheRepository,
         favViewModel: FavViewModel
     ) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply {
+                        isSeekAble = true
+                    }, homePatchDetail
+                )
             )
         }
         this.homePatchDetail = homePatchDetail
-        this.cacheRepository =cacheRepository
+        this.cacheRepository = cacheRepository
         this.favViewModel = favViewModel
+
         notifyDataSetChanged()
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
+    fun setData(homePatchDetail: HomePatchDetailModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -81,10 +87,14 @@ internal class AlbumHeaderAdapter(
         private lateinit var tvCurrentAlbumName: TextView
         private lateinit var tvArtistName: TextView
 
-       var ivFavorite: ImageView ?= null
+        var ivFavorite: ImageView? = null
         var ivPlayBtn: ImageView? = null
         var menu: ImageView? = null
-        fun bindItems(homePatchDetail: HomePatchDetail?,cacheRepository: CacheRepository,favViewModel: FavViewModel) {
+        fun bindItems(
+            homePatchDetail: HomePatchDetailModel?,
+            cacheRepository: CacheRepository,
+            favViewModel: FavViewModel
+        ) {
 
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
@@ -109,39 +119,52 @@ internal class AlbumHeaderAdapter(
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
             var isFav = false
             val isAddedToFav = cacheRepository.getFavoriteById(homePatchDetail?.ContentID!!)
-            if (isAddedToFav?.contentID != null) {
+            if (isAddedToFav?.content_Id != null) {
 
-           ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
 
             } else {
 
-           ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav = false
             }
 
-      ivFavorite?.setOnClickListener {
-                if(isFav.equals(true)){
-                    favViewModel.deleteFavContent(homePatchDetail?.ContentID,homePatchDetail.ContentType)
+            ivFavorite?.setOnClickListener {
+                if (isFav.equals(true)) {
+                    favViewModel.deleteFavContent(
+                        homePatchDetail?.ContentID,
+                        homePatchDetail.ContentType
+                    )
                     cacheRepository.deleteFavoriteById(homePatchDetail.ContentID)
-                    Toast.makeText(mContext,"Removed from favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                    isFav=false
-                    Log.e("TAG","NAME: "+ isFav)
+                    isFav = false
                 } else {
-
-                    favViewModel.addFavContent(homePatchDetail.ContentID,homePatchDetail.ContentType)
-
+                    favViewModel.addFavContent(
+                        homePatchDetail.ContentID,
+                        homePatchDetail.ContentType
+                    )
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                     Log.e("TAG","NAME123: "+ isFav)
-                    cacheRepository.insertFavSingleContent(FavData(homePatchDetail.ContentID,homePatchDetail.AlbumId,homePatchDetail.image,"",homePatchDetail.Artist,homePatchDetail.ArtistId,
-                        "","",2,homePatchDetail.ContentType,"","","1","",homePatchDetail.image,"",
-                        false,  "",0,"","","",homePatchDetail.PlayUrl,homePatchDetail.RootId,
-                        homePatchDetail.RootType,false,"",homePatchDetail.title,"",""
-
-                    ))
+                    cacheRepository.insertFavSingleContent(
+                        FavData().apply {
+                            content_Id = homePatchDetail.ContentID
+                            album_Id = homePatchDetail.AlbumId
+                            albumImage = homePatchDetail.image
+                            artistName = homePatchDetail.Artist
+                            artist_Id = homePatchDetail.ArtistId
+                            clientValue = 2
+                            content_Type = homePatchDetail.ContentType
+                            fav = "1"
+                            imageUrl = homePatchDetail.image
+                            playingUrl = homePatchDetail.PlayUrl
+                            rootContentId = homePatchDetail.RootId
+                            rootContentType = homePatchDetail.RootType
+                            titleName = homePatchDetail.title
+                        }
+                    )
                     isFav = true
-                    Toast.makeText(mContext,"Added to favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, "Added to favorite", Toast.LENGTH_LONG).show()
                 }
                 // favClickCallback.favItemClick(songDetail)
             }

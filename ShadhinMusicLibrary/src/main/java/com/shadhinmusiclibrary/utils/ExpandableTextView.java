@@ -12,18 +12,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.shadhinmusiclibrary.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView {
+public class ExpandableTextView extends AppCompatTextView {
     private final List<OnExpandListener> onExpandListeners;
     private TimeInterpolator expandInterpolator;
     private TimeInterpolator collapseInterpolator;
@@ -361,6 +360,5 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
             // empty implementation
         }
     }
-
     //endregion
 }

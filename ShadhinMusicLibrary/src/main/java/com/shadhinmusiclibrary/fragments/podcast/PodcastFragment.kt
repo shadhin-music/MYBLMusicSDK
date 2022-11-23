@@ -16,13 +16,13 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
-internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
+internal class PodcastFragment : BaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
     private lateinit var releaseAdapter: ReleaseAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
@@ -31,9 +31,8 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -43,7 +42,6 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         val verticalSpanCount = 1
         val horizontalSpanCount = 3
 
-        //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         releaseAdapter = ReleaseAdapter(argHomePatchItem!!, this)
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
@@ -64,27 +62,19 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
-//        val button:Button = requireView().findViewById(R.id.btn)
-//        button.setOnClickListener {
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager.beginTransaction()
-//                .replace(R.id.parentRelative, AmartunesWebviewFragment.newInstance())
-//                .addToBackStack("Fragment")
-//                .commit()
-//        }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         val homePatchItem = selectedHomePatchItem
-        navController.navigate(R.id.to_podcast_details,
+        navController.navigate(
+            R.id.to_podcast_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -97,12 +87,9 @@ internal class PodcastFragment : CommonBaseFragment(), HomeCallBack {
             })
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        TODO("Not yet implemented")
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
-
 }

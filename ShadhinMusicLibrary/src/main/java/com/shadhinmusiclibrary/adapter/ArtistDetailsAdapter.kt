@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 
 
-internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
+internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
     RecyclerView.Adapter<ArtistDetailsAdapter.DataAdapterViewHolder>() {
-    private val adapterData = mutableListOf<HomePatchDetail>()
+    private val adapterData = mutableListOf<HomePatchDetailModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -55,7 +55,7 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         }
     }
 
-    fun setData(data: HomePatchDetail?) {
+    fun setData(data: HomePatchDetailModel?) {
         adapterData.apply {
             clear()
             if (data != null) {
@@ -66,7 +66,7 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
 
     class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        private fun bindArtist(dataModel: HomePatchDetail) {
+        private fun bindArtist(dataModel: HomePatchDetailModel) {
 
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             var url: String = dataModel.image
@@ -107,7 +107,7 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
         }
 
 
-        fun bind(dataModel: HomePatchDetail) {
+        fun bind(dataModel: HomePatchDetailModel) {
             when (dataModel.ArtistId) {
                 dataModel.ArtistId -> bindArtist(dataModel)
 //                is GenreDataModel.Artist -> bindArtist()
@@ -115,15 +115,12 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItem?) :
 //                is GenreDataModel.Artist3 -> bindArtist3()
 //                is GenreDataModel.Artist4 -> bindArtist4()
 //                is DataModel.BlOffers -> bindBlOffers(dataModel)
-
-
             }
         }
     }
 
 
     companion object {
-
         val VIEW_ARTIST_HEADER = 0
         val VIEW_DOWNLOAD = 1
         val VIEW_ALBUM = 2

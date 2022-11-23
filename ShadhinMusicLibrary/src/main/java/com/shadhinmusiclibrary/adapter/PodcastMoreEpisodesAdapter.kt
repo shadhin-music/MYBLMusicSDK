@@ -11,15 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.podcast.Data
-import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.podcast.DataModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 
 
-internal class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: HomeCallBack) : RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
-    var episode: MutableList<Episode> = ArrayList()
-    private var filteredItem:MutableList<Episode>? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastMoreEpisodesViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
+internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack: HomeCallBack) :
+    RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
+    var episode: MutableList<EpisodeModel> = ArrayList()
+    private var filteredItem: MutableList<EpisodeModel>? = null
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): PodcastMoreEpisodesViewHolder {
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_item_you_might_like, parent, false)
         return PodcastMoreEpisodesViewHolder(v)
     }
 
@@ -29,19 +34,20 @@ internal class PodcastMoreEpisodesAdapter(val data: Data?, val homeCallBack: Hom
 
 
     }
+
     override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
         return 1
     }
 
-    fun setData(episodeList: MutableList<Episode>) {
-            this.episode = episodeList
+    fun setData(episodeList: MutableList<EpisodeModel>) {
+        this.episode = episodeList
     }
 
     inner class PodcastMoreEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
         fun bindItems() {
-            if(episode.isNotEmpty()){
+            if (episode.isNotEmpty()) {
 
                 episode.removeAt(0)
                 episode.addAll(episode)

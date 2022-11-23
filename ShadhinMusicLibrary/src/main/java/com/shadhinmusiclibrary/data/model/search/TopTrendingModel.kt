@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class TopTrendingModel(
-    val data: List<TopTrendingdata>,
+    val data: MutableList<TopTrendingDataModel>,
     val fav: Any,
     val follow: Any,
     val image: Any,

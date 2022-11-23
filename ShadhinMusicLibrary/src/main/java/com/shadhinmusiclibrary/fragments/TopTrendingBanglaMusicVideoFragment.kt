@@ -8,22 +8,16 @@ import android.view.ViewGroup
 import com.shadhinmusiclibrary.R
 
 
-
 internal class TopTrendingBanglaMusicVideoFragment : Fragment() {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_top_trending_bangla_music_video, container, false)
+        return inflater.inflate(
+            R.layout.my_bl_sdk_fragment_top_trending_bangla_music_video,
+            container,
+            false
+        )
     }
 }

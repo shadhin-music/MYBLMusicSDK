@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
 internal class HomeContentPlaylistAdapter(
-    val homePatchItem: HomePatchItem,
+    val homePatchItem: HomePatchItemModel,
     private val homeCallBack: HomeCallBack
-) :
-    RecyclerView.Adapter<HomeContentPlaylistAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HomeContentPlaylistAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_browse_all_genre, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_browse_all_genre, parent, false)
         return ViewHolder(v)
     }
 
@@ -49,12 +49,11 @@ internal class HomeContentPlaylistAdapter(
             val imageView: ImageView = itemView.findViewById(R.id.image)
             // val textView:TextView = itemView.findViewById(R.id.txt_title)
             val url: String = homePatchItem.Data[absoluteAdapterPosition].image
-               val changeURL= url.replace(".jpg","_mybl.jpg")
+            val changeURL = url.replace(".jpg", "_mybl.jpg")
 //                val newURL= changeURL+"_mybl.jpg"
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
-           // Log.d("TAG", "ImageUrl: " + newURL)
             Glide.with(mContext)
                 .load(changeURL)
                 .into(imageView)
@@ -69,9 +68,3 @@ internal class HomeContentPlaylistAdapter(
         }
     }
 }
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 internal interface DownloadClickCallBack {
-    fun clickOnDownload(selectedHomePatchItem: HomePatchItem)
-    fun clickOnWatchlater(selectedHomePatchItem: HomePatchItem)
-    fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItem)
-    fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItem)
+    fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel)
+    fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel)
+    fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel)
+    fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItemModel)
 }

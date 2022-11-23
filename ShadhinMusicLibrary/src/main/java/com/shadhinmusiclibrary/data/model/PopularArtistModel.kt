@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 @Keep
 internal data class PopularArtistModel(
     val Total: Int,
-    val `data`: List<Data>,
+    val `data`: List<PodcastDetailsModel>,
     val message: String,
     val status: String
 )

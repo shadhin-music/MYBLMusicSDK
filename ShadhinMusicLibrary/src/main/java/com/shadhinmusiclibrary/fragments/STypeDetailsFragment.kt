@@ -15,22 +15,21 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.podcast.Track
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
-internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogItemCallback {
+internal class STypeDetailsFragment : BaseFragment(), BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter
-    private lateinit var listSongDetail: MutableList<SongDetail>
-    private  lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var listSongDetail: MutableList<SongDetailModel>
+    private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_s_type_details, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -40,32 +39,14 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         listSongDetail = mutableListOf()
         argHomePatchDetail!!.apply {
             listSongDetail.add(
-                SongDetail(
-                    ContentID,
-                    image,
-                    title,
-                    ContentType,
-                    PlayUrl,
-                    Artist,
-                    Duration,
-                    copyright = "",
-                    labelname = "",
-                    releaseDate = "",
-                    fav,
-                    ArtistId,
-                    albumId = "",
-                    userPlayListId = "",
-                    rootContentID = "",
-                    rootImage = "",
-                    rootContentType = ""
-                )
+                SongDetailModel()
             )
         }
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
         adapter = GenrePlaylistAdapter(this)
-        val concatAdapter=  ConcatAdapter(config,adapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, adapter, footerAdapter)
 
         adapter.setRootData(argHomePatchDetail!!)
         //adapter.setData(listSongDetail)
@@ -75,15 +56,11 @@ internal class STypeDetailsFragment : CommonBaseFragment(), BottomSheetDialogIte
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            } else {
-                navController.popBackStack()
-            }*/
             requireActivity().onBackPressed()
         }
     }
-    override fun onClickBottomItem(mSongDetails: SongDetail) {
+
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,
             context = requireContext(),

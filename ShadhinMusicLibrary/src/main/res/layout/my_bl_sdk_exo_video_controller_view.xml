@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:background="@color/my_sdk_black1"
-    >
-
-
+    tools:background="@color/my_sdk_black1">
 
     <ImageButton
         android:id="@+id/exo_ffwd"
@@ -33,20 +30,18 @@
         app:layout_constraintTop_toTopOf="@+id/buttonLinearLayout" />
 
     <ImageButton
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:paddingStart="16dp"
         android:id="@+id/toggleOrientationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:background="?selectableItemBackgroundBorderless"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/my_bl_sdk_ic_video_fullscreen" />
-
 
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@id/exo_progress"
@@ -71,27 +66,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-
-
         <ImageButton
             android:id="@+id/exo_play"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/my_bl_sdk_ic_play_filled" />
+            android:visibility="gone"
+            app:srcCompat="@drawable/my_bl_sdk_ic_play_filled"
+            tools:visibility="visible" />
 
         <ImageButton
             android:id="@+id/exo_pause"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="?selectableItemBackgroundBorderless"
-            app:srcCompat="@drawable/my_bl_sdk_ic_pause_filled"
             android:visibility="gone"
+            app:srcCompat="@drawable/my_bl_sdk_ic_pause_filled"
             tools:visibility="gone" />
-
     </LinearLayout>
 
     <TextView
@@ -100,7 +91,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="00:00"
-
         android:textColor="@color/my_sdk_v2_background_light"
         app:layout_constraintBottom_toTopOf="@+id/exo_progress"
         app:layout_constraintStart_toStartOf="parent" />
@@ -120,8 +110,8 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:indeterminateTint="@color/my_sdk_white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,9 +124,9 @@
         android:background="?selectableItemBackgroundBorderless"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
-        android:visibility="invisible"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/my_bl_sdk_ic_back_sdf" />
@@ -155,8 +145,4 @@
         app:layout_constraintVertical_bias="0.42000002"
         app:srcCompat="@drawable/my_bl_sdk_ic_btn_live"
         tools:visibility="visible" />
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

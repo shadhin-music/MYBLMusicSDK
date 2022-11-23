@@ -5,7 +5,6 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.transform.DiscreteScro
 /**
  * Created by yarolegovich on 17.02.2017.
  */
- class DiscreteScrollLayoutManager extends RecyclerView.LayoutManager {
+class DiscreteScrollLayoutManager extends RecyclerView.LayoutManager {
 
     static final int NO_POSITION = -1;
 
@@ -236,7 +235,7 @@ import com.shadhinmusiclibrary.library.discretescrollview.transform.DiscreteScro
                 recyclerViewProxy.attachView(v);
                 detachedCache.remove(position);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

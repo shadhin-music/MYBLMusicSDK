@@ -1,11 +1,9 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.data.IMusicModel
 
-interface favItemClickCallback {
-  fun onClickBottomItemPodcast(mSongDetails: FavData)
-  fun onClickBottomItemSongs(mSongDetails: FavData)
-  fun onClickBottomItemVideo(mSongDetails: FavData)
+internal interface favItemClickCallback {
+    fun onClickBottomItemPodcast(mSongDetails: IMusicModel)
+    fun onClickBottomItemSongs(mSongDetails: IMusicModel)
+    fun onClickBottomItemVideo(mSongDetails: IMusicModel)
 }

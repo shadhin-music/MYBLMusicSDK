@@ -45,11 +45,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Podcast"
-                android:textSize="16sp"
                 android:textColor="@color/my_sdk_white"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="DuplicateIds" />
-
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -90,7 +89,7 @@
                     android:id="@+id/playerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="TODO"></ImageView>
+                    android:contentDescription="TODO" />
 
                 <ProgressBar
                     android:id="@+id/bufferProgress"

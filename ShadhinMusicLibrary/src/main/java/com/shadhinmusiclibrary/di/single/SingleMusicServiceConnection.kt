@@ -1,9 +1,8 @@
 package com.shadhinmusiclibrary.di.single
 
 import android.content.Context
-import com.shadhinmusiclibrary.player.connection.MusicServiceController
-import com.shadhinmusiclibrary.player.connection.ShadhinMusicServiceConnection
-
+import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
+import com.shadhinmusiclibrary.library.player.connection.ShadhinMusicServiceConnection
 
 internal class SingleMusicServiceConnection private constructor() {
     companion object {
@@ -14,13 +13,12 @@ internal class SingleMusicServiceConnection private constructor() {
                 INSTANCE ?: newInstance(context).also { INSTANCE = it }
             }
 
-        private fun newInstance(context: Context):MusicServiceController{
+        private fun newInstance(context: Context): MusicServiceController {
             return ShadhinMusicServiceConnection(context)
         }
-        fun destroy(){
+
+        fun destroy() {
             INSTANCE = null
         }
-
-
     }
 }

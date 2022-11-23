@@ -1,11 +1,9 @@
 package com.shadhinmusiclibrary.callBackService
 
 
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
+import com.shadhinmusiclibrary.data.IMusicModel
 
 
 internal interface CreatedPlaylistSongBottomSheetDialogItemCallback {
-    fun onClickBottomItem(mSongDetails: SongDetail)
-
+    fun onClickBottomItem(mSongDetails: IMusicModel)
 }

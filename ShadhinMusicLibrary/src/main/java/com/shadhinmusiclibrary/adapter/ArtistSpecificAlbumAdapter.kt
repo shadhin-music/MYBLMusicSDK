@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
-internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
+internal class ArtistSpecificAlbumAdapter() :
+    RecyclerView.Adapter<ArtistSpecificAlbumAdapter.DataAdapterViewHolder>() {
     private var rootDataContent: ArtistAlbumModelData? = null
-    private var dataSongDetail: List<SongDetail> = mutableListOf()
+    private var dataSongDetail: List<SongDetailModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
@@ -35,7 +37,6 @@ internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecifi
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        Log.e("PLA", "onBindViewHolder: $dataSongDetail")
         when (holder.itemViewType) {
             0 -> holder.bindRoot(rootDataContent!!)
             1 -> holder.bindTrackItem(dataSongDetail[position - 1])
@@ -61,10 +62,9 @@ internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecifi
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<SongDetail>) {
+    fun setData(data: List<SongDetailModel>) {
         this.dataSongDetail = data
         notifyDataSetChanged()
-        Log.e("PLA", ": $dataSongDetail")
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -88,34 +88,34 @@ internal class ArtistSpecificAlbumAdapter() : RecyclerView.Adapter<ArtistSpecifi
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(root.image.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(root.imageUrl!!))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = root.title
+            tvCurrentAlbumName.text = root.titleName
 
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = root.artistname
+            tvArtistName.text = root.artistName
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)
 //            ivShareBtnFab = viewItem.findViewById(R.id.iv_share_btn_fab)
         }
 
-        fun bindTrackItem(mSongDetail: SongDetail) {
+        fun bindTrackItem(mSongDetail: SongDetailModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
                 .load(mSongDetail.getImageUrl300Size())
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName.text = mSongDetail.title
+            tvSongName.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = mSongDetail.artist
+            tvSingerName.text = mSongDetail.artistName
 
             val tvSongLength: TextView = viewItem.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(mSongDetail.duration)
+            tvSongLength.text = TimeParser.secToMin(mSongDetail.total_duration)
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             ivSongMenuIcon.setOnClickListener {
 //                showBottomSheetDialog(viewItem.context)

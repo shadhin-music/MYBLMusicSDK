@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 internal class GenrePlaylistFragment : Fragment() {
 
-    var homePatchItem: HomePatchItem? = null
-    var homePatchDetail: HomePatchDetail? = null
+    var homePatchItem: HomePatchItemModel? = null
+    var homePatchDetail: HomePatchDetailModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -24,7 +24,7 @@ internal class GenrePlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_album_details, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,6 +41,5 @@ internal class GenrePlaylistFragment : Fragment() {
 //            manager.popBackStack("GenrePlaylistFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //            // Toast.makeText(requireActivity(),"click",Toast.LENGTH_LONG).show()
 //        }
-
     }
 }

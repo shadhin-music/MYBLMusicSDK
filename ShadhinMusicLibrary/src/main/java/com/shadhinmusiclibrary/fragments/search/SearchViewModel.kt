@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments.search
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +13,6 @@ import kotlinx.coroutines.launch
 
 
 internal class SearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
-
     private val _searchArtistContent: MutableLiveData<ApiResponse<SearchModel>> = MutableLiveData()
     val searchArtistContent: LiveData<ApiResponse<SearchModel>> = _searchArtistContent
 
@@ -79,7 +77,6 @@ internal class SearchViewModel(private val searchRepository: SearchRepository) :
     }
 
     fun getSearchPodcastTrack(keyword: String) = viewModelScope.launch {
-        Log.e("", "getSearchPodcastTrack: " + keyword)
         val response = searchRepository.getSearch(keyword)
         _searchPodcastTrackContent.postValue(response)
     }

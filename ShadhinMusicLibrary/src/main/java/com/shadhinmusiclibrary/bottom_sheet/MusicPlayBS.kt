@@ -20,10 +20,9 @@ import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Palette.Swatch
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
-
 
 internal class MusicPlayBS : Fragment(),
     DiscreteScrollView.OnItemChangedListener<MusicPlayAdapter.MusicPlayVH>,
@@ -50,7 +49,7 @@ internal class MusicPlayBS : Fragment(),
     private lateinit var ibtnQueueMusic: ImageButton
     private lateinit var ibtnDownload: ImageButton
 
-    private lateinit var listData: MutableList<HomePatchDetail>
+    private lateinit var listData: MutableList<HomePatchDetailModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

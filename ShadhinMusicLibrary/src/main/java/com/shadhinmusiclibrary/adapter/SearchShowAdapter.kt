@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.data.model.search.SearchData
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.search.CommonSearchData
+import com.shadhinmusiclibrary.data.model.search.SearchDataModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class SearchShowAdapter(
-    val searchshowdata: List<SearchData>,
     private val seaItemCallback: SearchItemCallBack
-) :
-    RecyclerView.Adapter<SearchShowAdapter.ViewHolder>() {
-
+) : RecyclerView.Adapter<SearchShowAdapter.ViewHolder>() {
+    private var searchshowdata: List<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -29,10 +30,9 @@ internal class SearchShowAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(searchshowdata[position])
-        val searchData: SearchData = searchshowdata[position]
+        val searchData = searchshowdata[position]
+        holder.bindItems(searchData)
         holder.itemView.setOnClickListener {
             seaItemCallback.onClickSearchItem(searchData)
         }
@@ -40,42 +40,27 @@ internal class SearchShowAdapter(
 
     override fun getItemCount(): Int {
         return searchshowdata.size
-
     }
 
-    fun trackContent(dataSongDetail: SongDetail?) {
-//        trackContent?.let {
-//            this.artistContentList.clear()
-//            this.artistContentList.addAll(it)
-//            this.notifyDataSetChanged()
-//        }
+    fun setSearchPodcastShow(
+        rootModel: CommonSearchData
+    ) {
+        this.searchshowdata = UtilHelper.getSearchDataToRootData(rootModel)
     }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(searchshowdata: SearchData) {
+        fun bindItems(searchshowdata: IMusicModel) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            val url: String = searchshowdata.image
             val textTitle: TextView = itemView.findViewById(R.id.title)
-            //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
-            //textView.setText(data.Data[absoluteAdapterPosition].title)
-            Log.d("TAG", "ImageUrl: " + url)
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(searchshowdata.imageUrl!!))
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.similarArtist)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = searchshowdata.title
-            textArtist.text = searchshowdata.Artist
+            textTitle.text = searchshowdata.titleName
+            textArtist.text = searchshowdata.artistName
             // textDuration.text = TimeParser.secToMin(dataSongDetail.duration)
-            //Log.e("TAG","DATA123: "+ artistContent?.image)
-            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , AlbumFragment.newInstance())
-//                    .commit()
-            }
         }
     }
 }

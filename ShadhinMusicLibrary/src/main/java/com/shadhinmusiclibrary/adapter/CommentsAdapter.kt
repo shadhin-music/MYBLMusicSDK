@@ -13,11 +13,8 @@ internal class CommentsAdapter() : RecyclerView.Adapter<CommentsAdapter.ViewHold
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
          holder.bindItems()
-
-
     }
 
     override fun getItemCount(): Int {
@@ -27,7 +24,6 @@ internal class CommentsAdapter() : RecyclerView.Adapter<CommentsAdapter.ViewHold
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val  context = itemView.getContext()
         fun bindItems() {
-
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView
 //            itemView.setOnClickListener {
@@ -39,13 +35,9 @@ internal class CommentsAdapter() : RecyclerView.Adapter<CommentsAdapter.ViewHold
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
 }

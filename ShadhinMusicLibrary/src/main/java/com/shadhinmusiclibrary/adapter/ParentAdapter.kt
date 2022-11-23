@@ -13,21 +13,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.RBTDATA
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.RBTDATAModel
 
 
-internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: SearchClickCallBack, val downloadClickCallBack: DownloadClickCallBack) :
+internal class ParentAdapter(
+    var homeCallBack: HomeCallBack,
+    val searchCb: SearchClickCallBack,
+    val downloadClickCallBack: DownloadClickCallBack
+    /*,val radioCallBack: RadioTrackCallBack*/
+) :
     RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
-    private var homeListData: MutableList<HomePatchItem> = mutableListOf()
-    var search: HomePatchItem? = null
-    var download: HomePatchItem? = null
-    private var rbtData: MutableList<RBTDATA> = mutableListOf()
+    private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
+    var search: HomePatchItemModel? = null
+    var download: HomePatchItemModel? = null
+    private var rbtData: MutableList<RBTDATAModel> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
             VIEW_SEARCH -> R.layout.my_bl_sdk_item_search
@@ -63,7 +67,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     override fun getItemCount(): Int = homeListData.size
 
     override fun getItemViewType(position: Int): Int {
-
         return when (homeListData.get(position).Design) {
 //            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
@@ -74,7 +77,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -100,8 +102,9 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     }
 
     var downloadNotAdded = true
+
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<HomePatchItem>) {
+    fun setData(data: List<HomePatchItemModel>) {
         val size = this.homeListData.size
 //        if (this.homeListData.isEmpty()) {
 //            for (item in data.indices) {
@@ -117,7 +120,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 
         if (this.homeListData.size >= 3 && downloadNotAdded){
             downloadNotAdded = false
-            download = HomePatchItem("002","download", listOf(),"download","download",0,0)
+            download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
         }
 //        var exists :Boolean = false
@@ -158,7 +161,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
 
-        private fun bindSearch(homePatchItemModel: HomePatchItem) {
+        private fun bindSearch(homePatchItemModel: HomePatchItemModel) {
             val search: TextView = itemView.findViewById(R.id.sv_search_input)
             search.setOnClickListener {
                 //call back SearchFragment
@@ -168,7 +171,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             }
         }
 
-        private fun bindArtist(homePatchItem: HomePatchItem, homeCallBack: HomeCallBack) {
+        private fun bindArtist(homePatchItem: HomePatchItemModel, homeCallBack: HomeCallBack) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
@@ -183,7 +186,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             recyclerView.adapter = ArtistAdapter(homePatchItem, homeCallBack)
         }
 
-        fun bindRelease(homePatchItem: HomePatchItem) {
+        fun bindRelease(homePatchItem: HomePatchItemModel) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
@@ -197,7 +200,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             recyclerView.adapter = HomeReleaseAdapter(homePatchItem, homeCallBack)
         }
 
-        private fun bindPlaylist(homePatchItem: HomePatchItem) {
+        private fun bindPlaylist(homePatchItem: HomePatchItemModel) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItem.Name
@@ -210,7 +213,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem, homeCallBack)
         }
 
-        private fun bindPopularPodcast(homePatchItem: HomePatchItem) {
+        private fun bindPopularPodcast(homePatchItem: HomePatchItemModel) {
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItem.Name
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -225,7 +228,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         }
 
         private fun bindPopularAmarTunes(
-            homePatchItem: HomePatchItem,
+            homePatchItem: HomePatchItemModel,
         ) {
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItem.Name
@@ -256,11 +259,27 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
 //            }
         }
 
-        private fun bindDownload(homePatchItemModel: HomePatchItem) {
+//        private fun bundRadio(homePatchItemModel: HomePatchItemModel) {
+//            val mSongDetMod = homePatchItemModel.Data[0]
+//            val sivRadioIcon: ShapeableImageView = itemView.findViewById(R.id.siv_radio_icon)
+//            val tvRadioSongName: TextView = itemView.findViewById(R.id.tv_radio_song_name)
+////            val ivRadioFavorite: ImageView = itemView.findViewById(R.id.iv_radio_favorite)
+//            var ivRadioPlay: ImageView = itemView.findViewById(R.id.iv_radio_play)
+//
+//            Glide.with(itemView.context)
+//                .load(UtilHelper.getImageUrlSize300(mSongDetMod.image))
+//                .into(sivRadioIcon)
+//            tvRadioSongName.text = mSongDetMod.AlbumName
+////            ivRadioPlay.setOnClickListener {
+//////                radioCallBack.onClickOpenRadio(mSongDetMod.ContentID)
+////            }
+//        }
+
+        private fun bindDownload(homePatchItemModel: HomePatchItemModel) {
             val download: LinearLayout = itemView.findViewById(R.id.Download)
-            val watchlater:LinearLayout = itemView.findViewById(R.id.WatchLater)
-            val playlist:LinearLayout = itemView.findViewById(R.id.Playlists)
-            val favorite:LinearLayout = itemView.findViewById(R.id.Fav)
+            val watchlater: LinearLayout = itemView.findViewById(R.id.WatchLater)
+            val playlist: LinearLayout = itemView.findViewById(R.id.Playlists)
+            val favorite: LinearLayout = itemView.findViewById(R.id.Fav)
             download.setOnClickListener {
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
             }
@@ -275,8 +294,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             }
         }
 
-
-        private fun bindPopularBands(homePatchItemModel: HomePatchItem) {
+        private fun bindPopularBands(homePatchItemModel: HomePatchItemModel) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItemModel.Name
@@ -309,7 +327,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             // recyclerView.adapter = TopTrendingAdapter(data)
         }
 
-
         private fun bindBlOffers() {
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
@@ -317,7 +334,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             recyclerView.adapter = MyBLOffersAdapter()
         }
 
-        private fun bindTrendingMusic(homePatchItemModel: HomePatchItem) {
+        private fun bindTrendingMusic(homePatchItemModel: HomePatchItemModel) {
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItemModel.Name
 
@@ -334,7 +351,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
             )
         }
 
-        fun bind(homePatchItemModel: HomePatchItem?) {
+        fun bind(homePatchItemModel: HomePatchItemModel?) {
             when (homePatchItemModel?.Design) {
                 "search" -> bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
@@ -345,6 +362,7 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
+//                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
             }
@@ -367,8 +385,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
  ////                is DataModel.BlOffers -> bindBlOffers(dataModel)
              }*/
         }
-
-
     }
 
     private companion object {
@@ -385,18 +401,6 @@ internal class ParentAdapter(var homeCallBack: HomeCallBack, val searchCb: Searc
         val VIEW_POPULAR_PODCAST = 10
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
-
-
         const val VIEW_TYPE = 10
-
     }
 }
-
-
-
-
-
-
-
-
-

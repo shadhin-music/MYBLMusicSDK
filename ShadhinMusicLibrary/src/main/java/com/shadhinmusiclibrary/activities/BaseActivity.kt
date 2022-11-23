@@ -5,8 +5,9 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.di.ActivityEntryPoint
 
-internal abstract class BaseActivity : AppCompatActivity() {
+internal abstract class BaseActivity : AppCompatActivity(), ActivityEntryPoint {
 
     var playerMode: PlayerMode? = null
 

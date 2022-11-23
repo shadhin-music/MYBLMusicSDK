@@ -9,23 +9,22 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
-internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
+internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItemModel) :
     RecyclerView.Adapter<BrowseAllPlaylistAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_playlist_item, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_playlist_item, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-
-
     }
 
     override fun getItemCount(): Int {
@@ -52,22 +51,16 @@ internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItem) :
                 .load(url)
                 .into(imageView)
 
-//
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId
             //getActorName(entityId!!)
-
 //            //textViewName.setText(banner.name)
 //            textViewName.text = LOADING_TXT
 //            textViewName.tag = banner.entityId
-
-
         }
-
     }
-
 }
 
 

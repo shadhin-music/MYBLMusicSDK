@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.fragments.home
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -29,28 +28,32 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
-import com.shadhinmusiclibrary.data.model.HomeData
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomeDataModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
-import com.shadhinmusiclibrary.player.utils.isPlaying
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
-internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(),
-    FragmentEntryPoint, HomeCallBack, SearchClickCallBack, DownloadClickCallBack {
+internal class HomeFragment : BaseFragment(),
+    HomeCallBack,
+    SearchClickCallBack,
+    DownloadClickCallBack {
 
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
+
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
@@ -63,26 +66,17 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     private var dataAdapter: ParentAdapter? = null
     private var pageNum = 1
+    private lateinit var homeViewModel: HomeViewModel
     private lateinit var viewModelAmaraTunes: AmarTunesViewModel
+//    private lateinit var albumVM: AlbumViewModel
 
     //var page = -1
     var isLoading = false
     var isLastPage = false
-   // var rbtData: RBTDATA? = null
     private lateinit var rvAllHome: RecyclerView
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var cacheRepository: CacheRepository
-    override fun getViewModel(): Class<HomeViewModel> {
-        return HomeViewModel::class.java
-    }
 
-    override fun getViewModelFactory(): HomeViewModelFactory {
-        return injector.factoryHomeVM
-    }
-
-    //    override fun getViewModelFactory(): HomeViewModelFactory {
-//        return injector.factoryAmarTuneVM
-//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -92,16 +86,24 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("Homex", "onViewCreated Message: " + pageNum)
         uiInitMiniMusicPlayer(view)
-        cacheRepository= CacheRepository(requireContext())
-        viewModel?.fetchHomeData(pageNum, false)
+        cacheRepository = CacheRepository(requireContext())
+        homeViewModel = ViewModelProvider(
+            this,
+            injector.factoryHomeVM
+        )[HomeViewModel::class.java]
+
         viewModelAmaraTunes = ViewModelProvider(
             this,
             injector.factoryAmarTuneVM
         )[AmarTunesViewModel::class.java]
-       // viewModelAmaraTunes.fetchRBTURL()
-        favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
+
+        favViewModel = ViewModelProvider(
+            this,
+            injector.factoryFavContentVM
+        )[FavViewModel::class.java]
+
+        homeViewModel.fetchHomeData(pageNum, false)
 
         favViewModel.getFavContentArtist("A")
         favViewModel.getFavContentPodcast("PD")
@@ -109,20 +111,47 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         favViewModel.getFavContentVideo("V")
         favViewModel.getFavContentSong("S")
         favViewModel.getFavContentPlaylist("P")
+        favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
+            if (res.data != null)
+                cacheRepository.insertFavoriteContent(res.data)
 
-       // Log.e("DATA","DATAARTISTInserted: "+ cacheRepository.getAllFavoriteContent())
-        observeData()
+            homeViewModel.fetchHomeData(pageNum, false)
+
+            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { resFavPod ->
+                if (resFavPod != null)
+                    cacheRepository.insertFavoriteContent(resFavPod.data)
+            }
+
+            favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { resFevArt ->
+                if (resFevArt != null)
+                    cacheRepository.insertFavoriteContent(resFevArt.data)
+            }
+
+            favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { resFavVid ->
+                if (resFavVid != null)
+                    cacheRepository.insertFavoriteContent(resFavVid.data)
+            }
+
+            favViewModel.getFavContentSong.observe(viewLifecycleOwner) { resFavSon ->
+                if (resFavSon != null)
+                    cacheRepository.insertFavoriteContent(resFavSon.data)
+            }
+
+            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { resFavPla ->
+                if (resFavPla != null)
+                    cacheRepository.insertFavoriteContent(resFavPla.data)
+            }
+            observeData()
+        }
     }
 
     private fun observeData() {
-        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
 
-        viewModel?.homeContent?.observe(viewLifecycleOwner) { res ->
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-
                 viewDataInRecyclerView(res.data)
             } else {
                 progressBar.visibility = GONE
@@ -134,82 +163,63 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
         }
+
+        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
+            if (it != null)
+                miniPlayerPlayPauseState(it.isPlaying)
+        }
+
         playerViewModel.playerProgress.observe(viewLifecycleOwner) {
-        //    Log.i("Homexy", "observeData: ${it.toString()} ${Thread.currentThread().name}")
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
 
-        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
-            miniPlayerPlayPauseState(it.isPlaying)
-        }
-        if(playerViewModel.isMediaDataAvailable()){
+        if (playerViewModel.isMediaDataAvailable()) {
             llMiniMusicPlayer.visibility = View.VISIBLE
-        }else{
-            llMiniMusicPlayer.visibility = View.GONE
-        }
-        try{
-            favViewModel.getFavContentAlbum.observe(viewLifecycleOwner){res->
-                Log.e("DATA","DATAARTIST: "+ res?.status)
-                if(res?.status=="success"){
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-                Log.e("DATA","DATA: "+ res)
-
-
-            }
-            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner){res->
-                Log.e("DATA","DATA: "+ res)
-                if(res?.status=="success"){
-                    Log.e("DATA","DATAARTIST: "+ res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-
-            }
-            favViewModel.getFavContentArtist.observe(viewLifecycleOwner){res->
-
-                if(res?.status=="success"){
-                    Log.e("DATA","DATAARTIST: "+ res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-
-
-            }
-            favViewModel.getFavContentVideo.observe(viewLifecycleOwner){res->
-                if(res?.status=="success"){
-                    Log.e("DATA","DATAARTIST: "+ res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-            }
-
-            favViewModel.getFavContentSong.observe(viewLifecycleOwner){res->
-                if(res?.status=="success"){
-                    Log.e("DATA","DATAARTIST: "+ res.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-            }
-            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner){res->
-                if(res?.status=="success"){
-                    Log.e("DATA","DATAARTIST: "+ res?.status)
-                    cacheRepository.insertFavoriteContent(res?.data as List<FavData>)
-                }
-
-            }
-        }
-        catch (e:Exception){
-            Log.e("TAG","Message: " + e)
+        } else {
+            llMiniMusicPlayer.visibility = GONE
         }
 
+        try {
+            favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+            favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+            favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+            favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+
+            favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+            favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
+                if (res?.status == "success") {
+                    cacheRepository.insertFavoriteContent(res.data?.toMutableList())
+                }
+            }
+        } catch (e: Exception) {
+        }
     }
 
-
-    private fun viewDataInRecyclerView(homeData: HomeData?) {
+    private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
         if (dataAdapter == null) {
-            // Log.e("TAG", "URLRBT: "+ this.rbtData)
-
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this, this,this)
-
+            dataAdapter = ParentAdapter(this, this, this)
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -221,99 +231,132 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-
                     if (!isLoading && !isLastPage) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-
                             isLoading = true
-                            viewModel!!.fetchHomeData(++pageNum, false)
-
-                            //observeData()
+                            homeViewModel.fetchHomeData(++pageNum, false)
                         }
-
                     }
                     super.onScrolled(recyclerView, dx, dy)
                 }
             })
-            //recyclerView.adapter=dataAdapter
-            val config = ConcatAdapter.Config.Builder()
-                .setIsolateViewTypes(false)
-                .build()
-            concatAdapter = ConcatAdapter(config, dataAdapter)
-            recyclerView.adapter =  concatAdapter
-            //recyclerView.adapter =  dataAdapter
 
-//            concatAdapter.removeAdapter(dataAdapter)
+            recyclerView.adapter = dataAdapter
         }
+        /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
+             if (res.status == Status.SUCCESS) {
+                 this.rbtData = res.data?.data
+             }
+         }*/
 
         homeData.let {
             it?.data?.let { it1 ->
                 dataAdapter?.setData(it1)
-                //dataAdapter?.notifyItemChanged(pageNum)
                 dataAdapter?.notifyDataSetChanged()
-                Log.e("TAG","PAGE NUMBER: "+ pageNum)
             }
         }
         if (homeData?.total == pageNum) {
             isLastPage = true
-            //Log.e("TAG","PAGE NUMBER: "+ pageNum)
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-            concatAdapter.addAdapter(footerAdapter)
-            //recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
-                putExtra(AppConstantUtils.PatchItem, data)
-                putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
-            })
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Home
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                    putExtra(AppConstantUtils.SelectedPatchIndex, itemPosition)
+                })
+//        val valueCon = selectedHomePatchItem.Data[itemPosition].ContentID
+//        fetchOnlineData(valueCon)
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Home)
-                putExtra(AppConstantUtils.PatchItem, data)
-            })
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Home
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                })
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(
+        itemPosition: Int,
+        selectedEpisode: List<EpisodeModel>
+    ) {
 
     }
 
-    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    private fun fetchOnlineData(playlistId: String) {
+//        albumVM.fetchPlaylistContent(playlistId)
+//        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
+//            if (res.data?.data != null && res.status == Status.SUCCESS) {
+//                setMusicPlayerInitData(res.data.data.toMutableList(), 0)
+//                res.data.data
+//            }
+//        }
+    }
+
+    override fun clickOnSearchBar(selectedHomePatchItem: HomePatchItemModel) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
             selectedHomePatchItem as Serializable
         )
-        startActivity(Intent(requireActivity(), SDKMainActivity::class.java)
-            .apply {
-                putExtra(
-                    AppConstantUtils.UI_Request_Type,
-                    AppConstantUtils.Requester_Name_Search
-                )
-                putExtra(AppConstantUtils.PatchItem, data)
-            })
+        startActivity(
+            Intent(requireActivity(), SDKMainActivity::class.java)
+                .apply {
+                    putExtra(
+                        AppConstantUtils.UI_Request_Type,
+                        AppConstantUtils.Requester_Name_Search
+                    )
+                    putExtra(AppConstantUtils.PatchItem, data)
+                })
+    }
+
+    fun setMusicPlayerInitData(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        /* if(BuildConfig.DEBUG){
+       mSongDetails.forEach {
+           it.PlayUrl = "https://cdn.pixabay.com/download/audio/2022/01/14/audio_88400099c4.mp3?filename=madirfan-demo-20-11-2021-14154.mp3"
+       }
+   }*/
+        playerViewModel.unSubscribe()
+        playerViewModel.subscribe(
+            MusicPlayList(
+                UtilHelper.getMusicListToSongDetailList(mSongDetails),
+                0
+            ),
+            false,
+            clickItemPosition
+        )
     }
 
     //Copy paste from SDKMainActivity
@@ -327,9 +370,23 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         ibtnPlayPauseMini = view.findViewById(R.id.ibtn_play_pause_mini)
         ibtnSkipNextMini = view.findViewById(R.id.ibtn_skip_next_mini)
     }
+
     //Copy paste from SDKMainActivity
-    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetail) {
-        Log.e("Check", "Fired 0")
+    private fun setupMiniMusicPlayerAndFunctionality(mSongDetails: SongDetailModel) {
+        if (mSongDetails.isSeekAble!!) {
+            ibtnSkipPreviousMini.visibility = View.VISIBLE
+            ibtnSkipPreviousMini.setOnClickListener {
+                playerViewModel.skipToPrevious()
+            }
+            ibtnSkipNextMini.visibility = View.VISIBLE
+            ibtnSkipNextMini.setOnClickListener {
+                playerViewModel.skipToNext()
+            }
+        } else {
+            ibtnSkipPreviousMini.visibility = View.INVISIBLE
+            ibtnSkipNextMini.visibility = View.INVISIBLE
+        }
+
         Glide.with(this)
             .load(mSongDetails.getImageUrl300Size())
             .transition(DrawableTransitionOptions().crossFade(500))
@@ -339,27 +396,16 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .error(R.drawable.my_bl_sdk_default_song)
             .into(ivSongThumbMini)
 
-
-        tvSongNameMini.text = mSongDetails.title
-        tvSingerNameMini.text = mSongDetails.artist
-        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.duration)
+        tvSongNameMini.text = mSongDetails.titleName
+        tvSingerNameMini.text = mSongDetails.artistName
+        tvTotalDurationMini.text = TimeParser.secToMin(mSongDetails.total_duration)
         llMiniMusicPlayer.visibility = View.VISIBLE
-
-
-
-        ibtnSkipPreviousMini.setOnClickListener {
-            playerViewModel.skipToPrevious()
-        }
-
 
         ibtnPlayPauseMini.setOnClickListener {
             playerViewModel.togglePlayPause()
         }
-
-        ibtnSkipNextMini.setOnClickListener {
-            playerViewModel.skipToNext()
-        }
     }
+
     //Copy paste from SDKMainActivity
     private fun miniPlayerPlayPauseState(playing: Boolean) {
         if (playing) {
@@ -369,8 +415,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
         }
     }
 
-    override fun clickOnDownload(selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun clickOnDownload(selectedHomePatchItem: HomePatchItemModel) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -386,8 +432,8 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             })
     }
 
-    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -402,8 +448,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 putExtra(AppConstantUtils.PatchItem, data)
             })
     }
-    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+
+    override fun clickOnMyPlaylist(selectedHomePatchItem: HomePatchItemModel) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -413,13 +460,13 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
             .apply {
                 putExtra(
                     AppConstantUtils.UI_Request_Type,
-                    AppConstantUtils.Requester_Name_MyPlaylist
+                    AppConstantUtils.Requester_Name_CreatePlaylist
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })
     }
 
-    override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItem) {
+    override fun clickOnMyFavorite(selectedHomePatchItem: HomePatchItemModel) {
         ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
@@ -434,5 +481,13 @@ internal class HomeFragment : BaseFragment<HomeViewModel, HomeViewModelFactory>(
                 )
                 putExtra(AppConstantUtils.PatchItem, data)
             })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
+        playerViewModel.playerProgress.observe(viewLifecycleOwner) {
+            tvTotalDurationMini.text = it.currentPositionTimeLabel()
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,67 +10,47 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
+import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class AllDownloadedAdapter(val allDownloads: List<DownloadedContent>, private val lrOnCallBack: DownloadedSongOnCallBack, private val openMenu: DownloadBottomSheetDialogItemCallback) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
+internal class AllDownloadedAdapter(
+    val allDownloads: MutableList<IMusicModel>,
+    private val lrOnCallBack: DownloadedSongOnCallBack
+) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
         return ViewHolder(v)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems()
-        val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
-        if(allDownloads[position].rootType.equals("V")){
-
-
-             holder.itemView.setOnClickListener {
-                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
-                 val videoArray = ArrayList<Video>()
-
-                 for (item in allDownloads) {
-                     val video = Video()
-                     if(item.rootType.equals("V")) {
-                         video.setDataDownload(item)
-                         videoArray.add(video)
-                     }
-                     Log.e("TAG","SONG :"+ item.track )
-                 }
-                 val index = videoArray.indexOfFirst { it.contentID ==  allDownloads[position].contentId}
-                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, index)
-                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videoArray)
-                 holder.itemView.context.startActivity(intent)
-             }
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemVideo(allDownloads[position])
-                Log.e("TAG","ALL DownloadsVideo: "+ allDownloads[position].rootType)
-            }
-        }
-        if(allDownloads[position].rootType.equals("S")){
+        holder.bindItems()
+        if (allDownloads[position].rootContentType.equals("V")) {
             holder.itemView.setOnClickListener {
-            lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
-             Log.e("TAG","ALL Downloads: "+ allDownloads)
-        }
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemSongs(allDownloads[position])
-            }
-        }
-            if(allDownloads[position].rootType.equals("PDJG")){
-                holder.itemView.setOnClickListener {
-                    lrOnCallBack.onClickItem(allDownloads as MutableList<DownloadedContent>, position)
-                    Log.e("TAG","ALL Downloads: "+ allDownloads)
+                val intent = Intent(holder.itemView.context, VideoActivity::class.java)
+                val videoArray = ArrayList<VideoModel>()
+                for (item in allDownloads) {
+                    val video = VideoModel()
+                    video.setDataDownloadIM(item)
+                    videoArray.add(video)
                 }
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allDownloads[position])
+                val videos: ArrayList<VideoModel> = videoArray
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
+                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
+                holder.itemView.context.startActivity(intent)
             }
         }
-
+        if (allDownloads[position].rootContentType.equals("S")) {
+            holder.itemView.setOnClickListener {
+                lrOnCallBack.onClickItem(allDownloads, position)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -79,25 +58,22 @@ internal class AllDownloadedAdapter(val allDownloads: List<DownloadedContent>, p
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tag:String?=null
-        val  context = itemView.getContext()
+        var tag: String? = null
+        val context = itemView.getContext()
         fun bindItems() {
 
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(allDownloads[absoluteAdapterPosition].getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allDownloads[absoluteAdapterPosition].rootTitle
+            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
 
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = allDownloads[absoluteAdapterPosition].artist
+            tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
 
-            val tvSongLength: TextView =itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].timeStamp)
-
-
+            val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
+            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
         }
-
     }
 }

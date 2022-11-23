@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 internal data class SearchModel(
-    val data: SearchModelData,
+    val status: String,
     val message: String,
-    val status: String
+    val data: SearchModelData
 )

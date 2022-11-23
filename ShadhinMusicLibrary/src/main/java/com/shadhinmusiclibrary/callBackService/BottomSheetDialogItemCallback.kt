@@ -1,10 +1,7 @@
 package com.shadhinmusiclibrary.callBackService
 
-
-import com.shadhinmusiclibrary.data.model.SongDetail
-
+import com.shadhinmusiclibrary.data.IMusicModel
 
 internal interface BottomSheetDialogItemCallback {
-    fun onClickBottomItem(mSongDetails: SongDetail)
-
+    fun onClickBottomItem(mSongDetails: IMusicModel)
 }

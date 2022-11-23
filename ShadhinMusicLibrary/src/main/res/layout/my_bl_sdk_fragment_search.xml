@@ -122,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvTrendingSearchItem"
@@ -220,7 +221,8 @@
                 android:orientation="vertical"
                 android:paddingStart="16dp"
                 android:paddingTop="2dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvWeeklyTrending"
@@ -229,16 +231,14 @@
                     android:text="Weekly Trending"
                     android:textColor="@color/my_sdk_color_black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvWeeklyTrending"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:paddingTop="16dp"
-                    android:visibility="visible" />
+                    android:paddingTop="16dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -473,4 +473,11 @@
         android:gravity="center"
         android:text=""
         android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:theme="@style/ProgressBarTheme" />
 </RelativeLayout>

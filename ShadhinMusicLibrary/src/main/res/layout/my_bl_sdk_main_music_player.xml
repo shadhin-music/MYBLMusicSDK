@@ -69,8 +69,7 @@
             <com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
                 android:id="@+id/songs_thumb_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/layout_for_ad" />
+                android:layout_height="match_parent" />
 
             <FrameLayout
                 android:id="@+id/playerAdsView"
@@ -179,7 +178,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:visibility="visible" />
+                android:visibility="visible"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/song_name2"
@@ -191,6 +191,7 @@
                 android:maxLines="1"
                 android:textColor="?attr/title_text_color"
                 android:textSize="20sp"
+                tools:ignore="MissingConstraints"
                 tools:text="Track Name" />
 
             <TextView
@@ -205,6 +206,7 @@
                 android:maxLines="1"
                 android:textColor="?attr/dim_text_color"
                 android:textSize="12sp"
+                tools:ignore="MissingConstraints"
                 tools:text="Artist Name" />
 
             <LinearLayout
@@ -212,7 +214,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="MissingConstraints">
 
                 <ImageButton
                     android:id="@+id/favorite_btn2"
@@ -239,7 +242,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:visibility="gone"
-                tools:visibility="visible"></RelativeLayout>
+                tools:ignore="MissingConstraints"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

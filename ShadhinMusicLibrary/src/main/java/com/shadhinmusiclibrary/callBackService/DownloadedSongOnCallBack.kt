@@ -1,11 +1,8 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.FeaturedLatestTrackListData
-import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
-import com.shadhinmusiclibrary.data.model.fav.FavData
-import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.data.IMusicModel
 
 internal interface DownloadedSongOnCallBack {
-    fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int)
-    fun onClickFavItem(mSongDetails: MutableList<FavData>,clickItemPosition: Int)
+    fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
+    fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
 }

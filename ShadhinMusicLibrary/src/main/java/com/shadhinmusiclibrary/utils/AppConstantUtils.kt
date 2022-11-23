@@ -1,7 +1,5 @@
 package com.shadhinmusiclibrary.utils
 
-import com.shadhinmusiclibrary.data.model.search.Artist
-
 
 internal object AppConstantUtils {
 
@@ -18,7 +16,7 @@ internal object AppConstantUtils {
     const val Album = "album"
     const val PatchDetail = "patch_detail"
     const val PatchDataItem = "patch_data_item"
-    const val SongDetail = "song_detail"
+    const val SongDetail = "songDetail"
     const val commonData = "data"
     const val SelectedIndex = "selected_index"
     const val SelectedPatchIndex = "selected_patch_index"

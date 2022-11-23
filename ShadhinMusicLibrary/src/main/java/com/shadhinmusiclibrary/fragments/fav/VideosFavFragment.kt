@@ -28,70 +28,68 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FavVideoAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.Video
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
-import com.shadhinmusiclibrary.player.Constants
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.Constants
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
-internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack ,
+internal class VideosFavFragment : BaseFragment(),
+    DownloadedSongOnCallBack,
     favItemClickCallback {
-    private lateinit var dataAdapter:FavVideoAdapter
-    private var isDownloaded:Boolean = false
+    private lateinit var dataAdapter: FavVideoAdapter
+    private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         return inflater.inflate(R.layout.my_bl_sdk_fragment_download_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-      loadData()
-
-
+        loadData()
     }
-      fun loadData(){
-          val cacheRepository= CacheRepository(requireContext())
-           dataAdapter = cacheRepository.getVideoFavContent()?.let {  FavVideoAdapter(it,this,this,cacheRepository) }!!
 
-          val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-          recyclerView.layoutManager =
-              LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false )
-          recyclerView.adapter = dataAdapter
-         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
-          favViewModel = ViewModelProvider(this,injector.factoryFavContentVM)[FavViewModel::class.java]
-      }
+    fun loadData() {
+        val cacheRepository = CacheRepository(requireContext())
+        dataAdapter = cacheRepository.getVideoFavContent()
+            ?.let { FavVideoAdapter(it, this, this, cacheRepository) }!!
 
-    companion object {
+        val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = dataAdapter
+        // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
+        favViewModel =
+            ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
+    }
 
-        @JvmStatic
-        fun newInstance() =
-            VideosFavFragment().apply {
-                arguments = Bundle().apply {
-
-                }
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
             }
+        } else {
+            playItem(
+                mSongDetails,
+                clickItemPosition
+            )
+        }
     }
 
-    override fun onClickItem(mSongDetails: MutableList<DownloadedContent>, clickItemPosition: Int) {
-
+    override fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
 //            if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootId == playerViewModel.currentMusic?.rootId)) {
 //                if ((mSongDetails[clickItemPosition].contentId != playerViewModel.currentMusic?.mediaId)) {
 //                    Log.e("TAG","SONG :"+ mSongDetails[clickItemPosition].contentId )
@@ -108,30 +106,60 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
 //            }
     }
 
-    override fun onClickFavItem(mSongDetails: MutableList<FavData>, clickItemPosition: Int) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
+
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails:FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
+
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: FavData) {
-        TODO("Not yet implemented")
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
+        openDialog(
+            VideoModel(
+                "",
+                "",
+                mSongDetails.titleName,
+                mSongDetails.artistName,
+                mSongDetails.artist_Id,
+                "",
+                "",
+                2,
+                mSongDetails.content_Id,
+                mSongDetails.rootContentType,
+                "",
+                mSongDetails.total_duration,
+                "",
+                "",
+                mSongDetails.imageUrl,
+                "",
+                false,
+                "",
+                0,
+                "",
+                "",
+                "",
+                mSongDetails.playingUrl,
+                "",
+                "",
+                false,
+                "",
+                mSongDetails.titleName,
+                "",
+                ""
+            )
+        )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: FavData) {
-     openDialog(Video("",
-            "",mSongDetails.title,mSongDetails.artist,mSongDetails.artistId,"","",2,
-            mSongDetails.contentID,mSongDetails.rootType,"",mSongDetails.duration,"","",
-            mSongDetails.image,"",false,"",0,"","",""
-            ,mSongDetails.playUrl,"","",false,"",mSongDetails.title,"",""))
-    }
-    fun openDialog(item: Video) {
+    private fun openDialog(mSongDetail: VideoModel) {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
-        val cacheRepository= CacheRepository(requireContext())
+        val cacheRepository = CacheRepository(requireContext())
         val contentView =
-            View.inflate(requireContext(), R.layout.my_bl_sdk_video_bottomsheet_three_dot_menu, null)
+            View.inflate(
+                requireContext(),
+                R.layout.my_bl_sdk_video_bottomsheet_three_dot_menu,
+                null
+            )
         bottomSheetDialog.setContentView(contentView)
         bottomSheetDialog.show()
         val closeButton: ImageView? = bottomSheetDialog.findViewById(R.id.closeButton)
@@ -139,20 +167,19 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
             bottomSheetDialog.dismiss()
         }
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = item.artist
+        artistname?.text = mSongDetail.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = item.image
+        val url = mSongDetail.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = item.title
+        title?.text = mSongDetail.title
         if (image != null) {
             Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
         }
 
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
-
-        var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-        if (downloaded?.track != null) {
+        var downloaded = cacheRepository.getDownloadById(mSongDetail.contentID.toString())
+        if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
         } else {
@@ -169,59 +196,58 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
-                cacheRepository.deleteDownloadById(item.contentID.toString())
-
-                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
-                Log.e("DELETEDX", "openDialog: ${Thread.currentThread().stackTrace.map { it.methodName }.toString()}")
-                DownloadService.sendRemoveDownload(requireContext(),
-                    MyBLDownloadService::class.java, item.contentID.toString(), false)
-                Log.e("TAG", "DELETED: " + isDownloaded)
+                cacheRepository.deleteDownloadById(mSongDetail.contentID.toString())
+                DownloadService.sendRemoveDownload(
+                    requireContext(),
+                    MyBLDownloadService::class.java, mSongDetail.contentID.toString(), false
+                )
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
-                    .putExtra("contentID", item.contentID.toString())
+                    .putExtra("contentID", mSongDetail.contentID.toString())
                 localBroadcastManager.sendBroadcast(localIntent)
-                isDownloaded =false
+                isDownloaded = false
 
             } else {
-                val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
+                val url = "${Constants.FILE_BASE_URL}${mSongDetail.playUrl}"
                 val downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(item.contentID.toString(), url.toUri())
+                    DownloadRequest.Builder(mSongDetail.contentID.toString(), url.toUri())
                         .build()
-                injector.downloadTitleMap[item.contentID.toString()] = item.title.toString()
+                injector.downloadTitleMap[mSongDetail.contentID.toString()] =
+                    mSongDetail.title.toString()
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
                     downloadRequest,
-                    /* foreground= */ false)
+                    /* foreground= */ false
+                )
 
-                 if (cacheRepository.isDownloadCompleted(item.contentID.toString()).equals(true)) {
-                cacheRepository.insertDownload(
-                    DownloadedContent(item.contentID.toString(),
-                        item.rootId.toString(),
-                        item.image.toString(),
-                        item.title.toString(),
-                        item.contentType.toString(),
-                        item.playUrl,
-                        item.contentType.toString(),
-                        0,
-                        0,
-                        item.artist.toString(),item.artistId.toString(),
-                        item.duration.toString()))
-                isDownloaded =true
-                 }
+                if (cacheRepository.isDownloadCompleted(mSongDetail.contentID.toString())) {
+                    cacheRepository.insertDownload(
+                        DownloadedContent().apply {
+                            content_Id = mSongDetail.contentID.toString()
+                            rootContentId = mSongDetail.rootId.toString()
+                            imageUrl = mSongDetail.image.toString()
+                            titleName = mSongDetail.title.toString()
+                            content_Type = mSongDetail.contentType.toString()
+                            playingUrl = mSongDetail.playUrl
+                            rootContentType = mSongDetail.contentType.toString()
+                            artistName = mSongDetail.artist.toString()
+                            artist_Id = mSongDetail.artistId.toString()
+                            total_duration = mSongDetail.duration.toString()
+                        }
+                    )
+                    isDownloaded = true
+                }
             }
             bottomSheetDialog.dismiss()
         }
         val watchlaterImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgWatchlater)
         val textViewWatchlaterTitle: TextView? = bottomSheetDialog.findViewById(R.id.txtwatchLater)
-
-        var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
-
+        val watched = cacheRepository.getWatchedVideoById(mSongDetail.contentID.toString())
         if (watched?.track != null) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
 //            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
-
         } else {
             iswatched = false
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
@@ -233,28 +259,30 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
         } else {
             textViewWatchlaterTitle?.text = "Watch Later"
         }
-        val constraintWatchlater: ConstraintLayout?= bottomSheetDialog.findViewById(R.id.constraintAddtoWatch)
+        val constraintWatchlater: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAddtoWatch)
         constraintWatchlater?.setOnClickListener {
             if (iswatched) {
-                cacheRepository.deleteWatchlaterById(item.contentID.toString())
+                cacheRepository.deleteWatchlaterById(mSongDetail.contentID.toString())
                 iswatched = false
             } else {
-                val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
-                cacheRepository.insertWatchLater(WatchLaterContent(item.contentID.toString(),
-                    item.rootId.toString(),
-                    item.image.toString(),
-                    item.title.toString(),
-                    item.contentType.toString(),
-                    url ,
-                    item.contentType.toString(),
-                    0,
-                    0,
-                    item.artist.toString(),
-                    item.duration.toString()))
+                val url = "${Constants.FILE_BASE_URL}${mSongDetail.playUrl}"
+                cacheRepository.insertWatchLater(
+                    WatchLaterContent(
+                        mSongDetail.contentID.toString(),
+                        mSongDetail.rootId.toString(),
+                        mSongDetail.image.toString(),
+                        mSongDetail.title.toString(),
+                        mSongDetail.contentType.toString(),
+                        url,
+                        mSongDetail.contentType.toString(),
+                        0,
+                        0,
+                        mSongDetail.artist.toString(),
+                        mSongDetail.duration.toString()
+                    )
+                )
                 iswatched = true
-                Log.e("TAGGG",
-                    "INSERTED: " + cacheRepository.getAllWatchlater())
-
             }
             bottomSheetDialog.dismiss()
         }
@@ -262,8 +290,8 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
         val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
-        val isAddedToFav = cacheRepository.getFavoriteById(item.contentID.toString())
-        if (isAddedToFav?.contentID != null) {
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetail.contentID.toString())
+        if (isAddedToFav?.content_Id != null) {
 
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -277,32 +305,40 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
 
 
         constraintFav?.setOnClickListener {
-            if(isFav.equals(true)){
-                favViewModel.deleteFavContent(item.contentID.toString(),"V")
-                cacheRepository.deleteFavoriteById(item.contentID.toString())
-                Toast.makeText(context,"Removed from favorite",Toast.LENGTH_LONG).show()
+            if (isFav.equals(true)) {
+                favViewModel.deleteFavContent(mSongDetail.contentID.toString(), "V")
+                cacheRepository.deleteFavoriteById(mSongDetail.contentID.toString())
+                Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
-                isFav=false
-                Log.e("TAG","NAME: "+ isFav)
+                isFav = false
             } else {
 
-                favViewModel.addFavContent(item.contentID.toString(),"V")
+                favViewModel.addFavContent(mSongDetail.contentID.toString(), "V")
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-                Log.e("TAG","NAME123: "+ isFav)
-                cacheRepository.insertFavSingleContent(FavData(item.contentID.toString(),item.albumId,item.image,"",item.artist,item.artistId,
-                    "","",2,"V","","","1","",item.image,"",
-                    false,  "",0,"","","",item.playUrl,item.rootId,
-                    "",false,"",item.title,"",""
-
-                ))
+                cacheRepository.insertFavSingleContent(
+                    FavData().apply {
+                        content_Id = mSongDetail.contentID.toString()
+                        album_Id = mSongDetail.albumId
+                        albumImage = mSongDetail.image
+                        artistName = mSongDetail.artist
+                        artist_Id = mSongDetail.artistId
+                        clientValue = 2
+                        content_Type = "V"
+                        fav = "1"
+                        imageUrl = mSongDetail.image
+                        playingUrl = mSongDetail.playUrl
+                        rootContentId = mSongDetail.rootId
+                        titleName = mSongDetail.title
+                    }
+                )
                 isFav = true
-                Toast.makeText(context,"Added to favorite",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
             }
             bottomSheetDialog.dismiss()
         }
-
     }
+
     override fun onStart() {
         super.onStart()
         val intentFilter = IntentFilter()
@@ -318,54 +354,32 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
         LocalBroadcastManager.getInstance(requireContext())
             .unregisterReceiver(MyBroadcastReceiver())
     }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
-            val downloaded: ImageView?= view?.findViewWithTag(200)
-
+            val downloaded: ImageView? = view?.findViewWithTag(200)
             progressIndicator?.progress = it.progress.toInt()
-
 ////           if(it.progress.toInt() <= 99) {
             progressIndicator?.visibility = View.VISIBLE
 //                downloaded?.visibility= View.GONE
-
-
-
-            Log.e("getDownloadManagerx",
-                "habijabi123: ${it.toString()} ${progressIndicator == null}")
-
-
         }
-
-
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
         @SuppressLint("NotifyDataSetChanged")
-        override fun onReceive(context: Context, intent: Intent){
-            Log.e("DELETED", "onReceive "+intent.action)
-            Log.e("PROGRESS", "onReceive "+intent)
+        override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {
-
-                    //val data = intent.getIntExtra("currentProgress",0)
-                    val downloadingItems = intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
-
+                    val downloadingItems =
+                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
-
-
-                        Log.e("getDownloadManagerx",
-                            "habijabi: ${it.toString()} ")
                     }
                 }
                 "DELETED" -> {
-                   dataAdapter.notifyDataSetChanged()
-                    Log.e("DELETED", "broadcast fired")
+                    dataAdapter.notifyDataSetChanged()
                 }
                 "PROGRESS" -> {
                     //viewModel.videos(videoList)
@@ -373,8 +387,6 @@ internal class VideosFavFragment : CommonBaseFragment(),DownloadedSongOnCallBack
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
-
 }

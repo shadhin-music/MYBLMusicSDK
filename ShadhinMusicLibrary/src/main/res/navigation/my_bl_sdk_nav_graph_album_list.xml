@@ -9,7 +9,7 @@
         android:id="@+id/release_list_fragment"
         android:name="com.shadhinmusiclibrary.fragments.ReleaseListFragment"
         android:label="fragment_relese_list"
-        tools:layout="@layout/my_bl_sdk_fragment_release_list">
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
 
         <action
             android:id="@+id/to_album_details"
@@ -19,7 +19,7 @@
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Album Details"
-        tools:layout="@layout/my_bl_sdk_fragment_album_details" >
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
         <action
             android:id="@+id/to_artist_details"
@@ -30,7 +30,7 @@
         android:id="@+id/artist_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="Artist Details"
-        tools:layout="@layout/my_bl_sdk_fragment_artist_details">
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
         <action
             android:id="@+id/to_album_details"

@@ -6,8 +6,8 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginBottom="12dp"
-    android:elevation="6dp"
     android:clickable="true"
+    android:elevation="6dp"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="10dp">
@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:orientation="horizontal"
             android:weightSum="3">
 
             <LinearLayout
@@ -45,9 +44,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/my_sdk_black2"
                     android:singleLine="true"
-                    android:text=""
+                    android:text="Ami Bhabi Tumi"
+                    android:textColor="@color/my_sdk_black2"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -58,14 +57,14 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text=""
+                    android:text="Habib Wahid"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_song_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="2.32"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -84,27 +83,28 @@
                     android:layout_margin="10dp"
                     android:src="@drawable/my_bl_sdk_ic_downloaded"
                     android:visibility="gone" />
+
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    app:indicatorSize="15dp"
-                    app:trackThickness="1dp"
-                    android:indeterminate="false"
                     android:layout_width="15dp"
                     android:layout_height="25dp"
-                    android:visibility="gone"
-                    app:trackColor="@color/my_sdk_color_grey"
-                    app:indicatorColor="@color/my_sdk_color_primary"
-                    android:layout_margin="5dp"
                     android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:indeterminate="false"
+                    android:max="100"
                     android:progress="0"
-                    android:max="100" />
+                    app:indicatorColor="@color/my_sdk_color_primary"
+                    app:indicatorSize="15dp"
+                    app:trackColor="@color/my_sdk_color_grey"
+                    app:trackThickness="1dp" />
+
                 <ImageView
                     android:id="@+id/iv_song_menu_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     android:src="@drawable/my_bl_sdk_ic_more_vert"
                     android:visibility="visible" />
             </LinearLayout>

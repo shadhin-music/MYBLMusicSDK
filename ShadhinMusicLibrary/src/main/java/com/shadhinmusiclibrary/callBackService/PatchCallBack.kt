@@ -1,8 +1,8 @@
 package com.shadhinmusiclibrary.callBackService
 
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 
 internal interface PatchCallBack {
-    fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>)
+    fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<PodcastDetailsModel>)
 //    fun onClickSeeAll(selectedHomePatchItem: HomePatchItem)
 }

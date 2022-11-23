@@ -1,79 +1,107 @@
 package com.shadhinmusiclibrary.data.model.fav
 
 
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import com.google.gson.annotations.SerializedName
+import com.shadhinmusiclibrary.data.IMusicModel
 
 @Keep
-@Entity
-data class FavData(
-
+@Entity(tableName = "FavData")
+class FavData : IMusicModel {
+    @PrimaryKey
     @SerializedName("ContentID")
-    @PrimaryKey(autoGenerate = false)
-    var contentID: String,
+    override var content_Id: String = ""
+
     @SerializedName("AlbumId")
-    var albumId: String?,
+    override var album_Id: String? = null
+
     @SerializedName("AlbumImage")
-    var albumImage: String?,
+    var albumImage: String? = null
+
     @SerializedName("AlbumName")
-    var albumName: String?,
+    override var album_Name: String? = null
+
     @SerializedName("Artist")
-    var artist: String?,
+    override var artistName: String? = null
+
     @SerializedName("ArtistId")
-    var artistId: String?,
+    override var artist_Id: String? = null
+
     @SerializedName("ArtistImage")
-    var artistImage: String?,
+    var artistImage: String? = null
+
     @SerializedName("Banner")
-    var banner: String?,
+    override var bannerImage: String? = null
+
     @SerializedName("ClientValue")
-    var clientValue: Int?,
+    var clientValue: Int? = null
+
     @SerializedName("ContentType")
-    var contentType: String?,
+    override var content_Type: String? = null
+
     @SerializedName("CreateDate")
-    var createDate: String?,
+    var createDate: String? = null
+
     @SerializedName("Duration")
-    var duration: String?,
+    override var total_duration: String? = null
+
     @SerializedName("fav")
-    var fav: String?,
+    var fav: String? = null
+
     @SerializedName("Follower")
-    var follower: String?,
+    var follower: String? = null
+
     @SerializedName("image")
-    var image: String?,
+    override var imageUrl: String? = null
+
     @SerializedName("imageWeb")
-    var imageWeb: String?,
+    var imageWeb: String? = null
+
     @SerializedName("IsPaid")
-    var isPaid: Boolean?,
+    var isPaid: Boolean? = null
+
     @SerializedName("NewBanner")
-    var newBanner: String?,
+    var newBanner: String? = null
+
     @SerializedName("PlayCount")
-    var playCount: Int?,
+    var playCount: Int? = null
+
     @SerializedName("PlayListId")
-    var playListId: String?,
+    var playListId: String? = null
+
     @SerializedName("PlayListImage")
-    var playListImage: String?,
+    var playListImage: String? = null
+
     @SerializedName("PlayListName")
-    var playListName:String?,
+    var playListName: String? = null
+
     @SerializedName("PlayUrl")
-    var playUrl: String?,
+    override var playingUrl: String? = null
+
     @SerializedName("RootId")
-    var rootId: String?,
+    override var rootContentId: String? = null
+
     @SerializedName("RootType")
-    var rootType: String?,
+    override var rootContentType: String? = null
+
     @SerializedName("Seekable")
-    var seekable: Boolean?,
+    var seekable: Boolean? = null
+
     @SerializedName("TeaserUrl")
-    var teaserUrl: String?,
+    var teaserUrl: String? = null
+
     @SerializedName("title")
-    var title: String?,
+    override var titleName: String? = null
+
     @SerializedName("TrackType")
-    var trackType: String?,
+    var trackType: String? = null
+
     @SerializedName("Type")
-    var type: String?
-): Serializable {
-    fun getImageUrl300Size(): String {
-        return this.image?.replace("<\$size\$>", "300").toString()
-    }
+    var type: String? = null
+
+    override var rootImage: String? = null
+    override var isPlaying: Boolean = false
+    override var isSeekAble: Boolean? = false
 }

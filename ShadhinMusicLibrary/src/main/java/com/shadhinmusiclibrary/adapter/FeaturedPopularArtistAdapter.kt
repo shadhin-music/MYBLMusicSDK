@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.Data
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.utils.CircleImageView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FeaturedPopularArtistAdapter(
-    val homePatchItem1: List<Data>,
+    val homePatchItem1: List<PodcastDetailsModel>,
     private val homeCallBack: PatchCallBack
 ) : RecyclerView.Adapter<FeaturedPopularArtistAdapter.ViewHolder>() {
 
@@ -25,7 +26,8 @@ internal class FeaturedPopularArtistAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(homePatchItem1.size)
+        val mPodcastDetMod = homePatchItem1[position]
+        holder.bindItems(mPodcastDetMod)
         holder.itemView.setOnClickListener {
 //            val homePatchItem = homePatchItem1[position]
             homeCallBack.onClickItemAndAllItem(position, homePatchItem1)
@@ -38,21 +40,14 @@ internal class FeaturedPopularArtistAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
-        fun bindItems(size: Int) {
+        fun bindItems(mPodcastMod: PodcastDetailsModel) {
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-            val url: String = homePatchItem1[absoluteAdapterPosition].Image
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(mPodcastMod.Image))
                 .into(imageView)
-
-            textViewName.text = homePatchItem1[absoluteAdapterPosition].ArtistName
+            textViewName.text = mPodcastMod.ArtistName
             itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , ArtistDetailsFragment.newInstance(data))
-//                    .addToBackStack("Artist Fragment")
-//                    .commit()
             }
 //            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 //            entityId = banner.entityId

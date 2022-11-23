@@ -1,27 +1,25 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedLatestTracksAdapter
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
-import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.fragments.artist.FeaturedTracklistViewModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.TITLE
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCallBack {
+internal class LatestReleaseFragment : BaseFragment(), LatestReleaseOnCallBack {
     lateinit var viewModel: FeaturedTracklistViewModel
 
     private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter
@@ -30,7 +28,7 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_popular_artists, container, false)
+        return inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,10 +66,12 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
     }
 
     fun observeData() {
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedTrackList()
         viewModel.featuredTracklistContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
+
                 recyclerView.layoutManager =
                    GridLayoutManager(requireContext(), 3)
                 response?.data?.data?.let {
@@ -82,29 +82,27 @@ internal class LatestReleaseFragment : CommonBaseFragment(), LatestReleaseOnCall
                 }
                 recyclerView.adapter = featuredLatestTracksAdapter
 //                    response?.data?.data?.let { FeaturedLatestTracksAdapter(it, this) }
+                progressBar.visibility = View.GONE
             } else {
-//                progressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
             }
         }
     }
 
-    override fun onClickItem(
-        mSongDetails: MutableList<FeaturedSongDetail>,
-        clickItemPosition: Int
-    ) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null &&
-            (mSongDetails[clickItemPosition].rootContentID == playerViewModel.currentMusic?.rootId)
+            (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
         ) {
-            if ((mSongDetails[clickItemPosition].contentID != playerViewModel.currentMusic?.mediaId)) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
             } else {
                 playerViewModel.togglePlayPause()
             }
         } else {
             playItem(
-                UtilHelper.getSongDetailToFeaturedSongDetailList(mSongDetails),
+                mSongDetails,
                 clickItemPosition
             )
         }

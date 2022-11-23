@@ -62,6 +62,13 @@
                 layout="@layout/my_bl_sdk_mini_music_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+ <!--           <include
+                android:id="@+id/include_mini_radio_music_player"
+                layout="@layout/my_bl_sdk_music_radio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />-->
+
         </RelativeLayout>
     </com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout>
     <!--    <include layout="@layout/music_player_motion_layout" />-->

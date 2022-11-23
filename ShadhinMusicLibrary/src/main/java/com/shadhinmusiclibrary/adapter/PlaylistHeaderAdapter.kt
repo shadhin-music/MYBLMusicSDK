@@ -11,21 +11,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
-import com.shadhinmusiclibrary.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistHeaderAdapter(
-    var homePatchDetail: HomePatchDetail?,
+    var homePatchDetail: HomePatchDetailModel?,
     private val itemClickCB: OnItemClickCallback,
     private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel
 ) : RecyclerView.Adapter<PlaylistHeaderAdapter.PlaylistHeaderVH>() {
 
-    private var dataSongDetail: MutableList<SongDetail> = mutableListOf()
+    private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
@@ -47,18 +48,21 @@ internal class PlaylistHeaderAdapter(
         return 1
     }
 
-    fun setSongAndData(data: MutableList<SongDetail>, homePatchDetail: HomePatchDetail) {
+    fun setSongAndData(data: MutableList<SongDetailModel>, homePatchDetail: HomePatchDetailModel) {
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(songItem, homePatchDetail)
+                UtilHelper.getSongDetailAndRootData(
+                    songItem.apply { isSeekAble = true },
+                    homePatchDetail
+                )
             )
         }
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
 
-    fun setData(homePatchDetail: HomePatchDetail) {
+    fun setData(homePatchDetail: HomePatchDetailModel) {
         this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
@@ -71,7 +75,8 @@ internal class PlaylistHeaderAdapter(
         var ivFavorite: ImageView? = null
         var ivPlayBtn: ImageView? = null
         var menu: ImageView? = null
-        fun bindItems(homePatchDetail: HomePatchDetail?) {
+
+        fun bindItems(homePatchDetail: HomePatchDetailModel?) {
 
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
@@ -90,49 +95,61 @@ internal class PlaylistHeaderAdapter(
             tvArtistName =
                 itemView.findViewById(R.id.tv_artist_name)
             tvArtistName.text = homePatchDetail?.Artist
-
             ivFavorite = itemView.findViewById(R.id.iv_favorite)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
+
             var isFav = false
             val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
-            if (isAddedToFav?.contentID != null) {
-
+            if (isAddedToFav?.content_Id != null) {
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
-
             } else {
-
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav = false
             }
 
             ivFavorite?.setOnClickListener {
-                if(isFav.equals(true)){
-                    homePatchDetail?.ContentID?.let { it1 -> favViewModel.deleteFavContent(it1,homePatchDetail?.ContentType) }
+                if (isFav.equals(true)) {
+                    homePatchDetail?.ContentID?.let { it1 ->
+                        favViewModel.deleteFavContent(
+                            it1,
+                            homePatchDetail?.ContentType
+                        )
+                    }
                     cacheRepository?.deleteFavoriteById(homePatchDetail?.ContentID.toString())
-                    Toast.makeText(mContext,"Removed from favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                    isFav=false
-                    Log.e("TAG","NAME: "+ isFav)
+                    isFav = false
                 } else {
-
-                    favViewModel.addFavContent(homePatchDetail?.ContentID.toString(),homePatchDetail?.ContentType.toString())
-
+                    favViewModel.addFavContent(
+                        homePatchDetail?.ContentID.toString(),
+                        homePatchDetail?.ContentType.toString()
+                    )
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                    Log.e("TAG","NAME123: "+ isFav)
-                    cacheRepository?.insertFavSingleContent(FavData(homePatchDetail?.ContentID.toString(),homePatchDetail?.AlbumId,homePatchDetail?.image,"",homePatchDetail?.Artist,homePatchDetail?.ArtistId,
-                        "","",2,homePatchDetail?.ContentType.toString(),"","","1","",homePatchDetail?.image,"",
-                        false,  "",0,"","","",homePatchDetail?.PlayUrl,homePatchDetail?.RootId,
-                        homePatchDetail?.RootType,false,"",homePatchDetail?.title,"",""
-
-                    ))
+                    Log.e("TAG", "NAME123: " + isFav)
+                    cacheRepository?.insertFavSingleContent(
+                        FavData()
+                            .apply {
+                                content_Id = homePatchDetail?.ContentID.toString()
+                                album_Id = homePatchDetail?.AlbumId
+                                albumImage = homePatchDetail?.image
+                                artistName = homePatchDetail?.Artist
+                                artist_Id = homePatchDetail?.ArtistId
+                                clientValue = 2
+                                content_Type = homePatchDetail?.ContentType.toString()
+                                fav = "1"
+                                imageUrl = homePatchDetail?.image
+                                playingUrl = homePatchDetail?.PlayUrl
+                                rootContentId = homePatchDetail?.RootId
+                                rootContentType = homePatchDetail?.RootType
+                                titleName = homePatchDetail?.title
+                            }
+                    )
                     isFav = true
-                    Toast.makeText(mContext,"Added to favorite", Toast.LENGTH_LONG).show()
+                    Toast.makeText(mContext, "Added to favorite", Toast.LENGTH_LONG).show()
                 }
-                // favClickCallback.favItemClick(songDetail)
-
-        }
+            }
         }
     }
 

@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 
 
 internal class BottomSheetArtistSongsAdapter:
     RecyclerView.Adapter<BottomSheetArtistSongsAdapter.ViewHolder>() {
- //   private var artistContent: ArtistContent? = null
-    private var artistContentList:MutableList<ArtistContentData> = ArrayList()
-    private var parentView:View?=null
+    //   private var artistContent: ArtistContent? = null
+    private var artistContentList: MutableList<ArtistContentDataModel> = ArrayList()
+    private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
@@ -38,7 +38,7 @@ internal class BottomSheetArtistSongsAdapter:
 
     }
 
-    fun artistContent(artistContent: ArtistContent?) {
+    fun artistContent(artistContent: ArtistContentModel?) {
 
         artistContent?.data?.let {
 
@@ -52,22 +52,21 @@ internal class BottomSheetArtistSongsAdapter:
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistContent: ArtistContentData) {
+        fun bindItems(artistContent: ArtistContentDataModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
-            val url: String = artistContent.image
+            val url: String = artistContent.imageUrl!!
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
                 .load(url.replace("<\$size\$>", "300"))
                 .into(imageView!!)
-            val textTitle:TextView = itemView.findViewById(R.id.tv_song_name)
-            val textArtist:TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration:TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text= artistContent.title
-            textArtist.text = artistContent.artistname
-            textDuration.text = artistContent.duration
-            //Log.e("TAG","DATA123: "+ artistContent?.image)
+            val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
+            val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
+            textTitle.text = artistContent.titleName
+            textArtist.text = artistContent.artistName
+            textDuration.text = artistContent.total_duration
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()

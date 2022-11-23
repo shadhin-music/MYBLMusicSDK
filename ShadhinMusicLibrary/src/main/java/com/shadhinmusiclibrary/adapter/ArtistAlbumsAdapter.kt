@@ -2,24 +2,19 @@ package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import java.lang.Exception
 
-
 internal class ArtistAlbumsAdapter(
-    var homePatchItem: HomePatchItem?,
+    var homePatchItem: HomePatchItemModel?,
     val homeCallBack: HomeCallBack
 ) : RecyclerView.Adapter<ArtistAlbumsAdapter.ViewHolder>() {
     var artistAlbumModel: ArtistAlbumModel? = null
@@ -52,7 +47,7 @@ internal class ArtistAlbumsAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(homePatchItem: HomePatchItem?, artistAlbumModel: ArtistAlbumModel?) {
+        fun bindItems(homePatchItem: HomePatchItemModel?, artistAlbumModel: ArtistAlbumModel?) {
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = "Albums"
 //            if(homePatchItem?.Data?.isEmpty() == true){
@@ -62,11 +57,10 @@ internal class ArtistAlbumsAdapter(
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             try {
-
-
                 recyclerView.adapter =
                     ArtistAlbumListAdapter(homePatchItem!!, artistAlbumModel, homeCallBack)
-            }catch (e:Exception){}
+            } catch (e: Exception) {
+            }
 //            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 //            itemView.setOnClickListener {
@@ -89,9 +83,3 @@ internal class ArtistAlbumsAdapter(
         const val VIEW_TYPE = 3
     }
 }
-
-
-
-
-
-

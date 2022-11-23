@@ -11,10 +11,10 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.SongDetail
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
-import com.shadhinmusiclibrary.fragments.artist.ArtistContentData
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
@@ -24,7 +24,7 @@ internal class SearchArtistTrackAdapter(
 ) : RecyclerView.Adapter<SearchArtistTrackAdapter.ArtistTrackVH>() {
     //   private var artistContent: ArtistContent? = null
 //    private var songDetail: MutableList<SongDetail> = ArrayList()
-    var artistSongList: MutableList<ArtistContentData> = mutableListOf()
+    var artistSongList: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistTrackVH {
@@ -44,25 +44,7 @@ internal class SearchArtistTrackAdapter(
         ivSongMenuIcon.setOnClickListener {
             val artistContent = artistSongList[position]
             bottomSheetDialogItemCallback.onClickBottomItem(
-                SongDetail(
-                    artistContent.ContentID,
-                    artistContent.image,
-                    artistContent.title,
-                    "",
-                    "",
-                    artistContent.artistname,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    artistContent.ArtistId,
-                    artistContent.AlbumId,
-                    "",
-                    "",
-                    "",
-                    ""
-                )
+                artistContent
             )
         }
     }
@@ -73,7 +55,7 @@ internal class SearchArtistTrackAdapter(
         return artistSongList.size
     }
 
-    fun artistContent(artistContent: ArtistContent?) {
+    fun artistContent(artistContent: ArtistContentModel?) {
         artistContent?.data?.let {
             this.artistSongList.clear()
             this.artistSongList.addAll(it)
@@ -81,7 +63,7 @@ internal class SearchArtistTrackAdapter(
         }
     }
 
-    fun setArtistTrack(data: List<ArtistContentData>, rootPatch: HomePatchDetail) {
+    fun setArtistTrack(data: List<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
         this.artistSongList = mutableListOf()
         this.artistSongList.clear()
         for (songItem in data) {
@@ -94,20 +76,20 @@ internal class SearchArtistTrackAdapter(
 
     inner class ArtistTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(artistContent: ArtistContentData) {
+        fun bindItems(artistContent: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
-                .load(artistContent.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(artistContent.imageUrl!!))
                 .into(imageView!!)
             val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
-            textTitle.text = artistContent.title
-            textArtist.text = artistContent.artistname
-            textDuration.text = TimeParser.secToMin(artistContent.duration)
+            textTitle.text = artistContent.titleName
+            textArtist.text = artistContent.artistName
+            textDuration.text = TimeParser.secToMin(artistContent.total_duration)
 
             itemView.setOnClickListener {
 

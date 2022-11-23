@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -15,10 +16,10 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.Data
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
@@ -26,10 +27,10 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBack {
+internal class FeaturedPopularArtistFragment : BaseFragment(), PatchCallBack {
 
     private lateinit var navController: NavController
-    private var homePatchitem: HomePatchItem? = null
+    private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: PopularArtistViewModel
 
     private fun setupViewModel() {
@@ -44,7 +45,8 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_featured_popular_artist, container1, false)
+        val viewRef =
+            inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container1, false)
         navController = findNavController()
 
         return viewRef
@@ -58,22 +60,6 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager?.popBackStack("Fragment", 0);
-            // ShadhinMusicSdkCore.getHomeFragment()
-//            val manager: FragmentManager =
-//                (requireContext() as AppCompatActivity).supportFragmentManager
-//            manager.beginTransaction()
-//                .replace(R.id.container1, HomeFragment())
-//                .addToBackStack(null)
-//                .commit()
-            //if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-               // requireActivity().finish()
-           /* } else {
-                navController.popBackStack()
-            }*/
-
             requireActivity().onBackPressed()
         }
         kotlin.runCatching {
@@ -83,6 +69,7 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
     }
 
     fun observeData() {
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchPouplarArtist()
         viewModel.popularArtistContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
@@ -94,16 +81,17 @@ internal class FeaturedPopularArtistFragment : CommonBaseFragment(), PatchCallBa
                             FeaturedPopularArtistAdapter(it1, this)
                         }
                     }
+                progressBar.visibility = View.GONE
             } else {
-//                progressBar.visibility = View.GONE
+                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
             }
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<Data>) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickItemAndAllItem(itemPosition: Int, selectedData: List<PodcastDetailsModel>) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val sSelectedData = selectedData[itemPosition]
         navController.navigate(
             R.id.to_artist_details,

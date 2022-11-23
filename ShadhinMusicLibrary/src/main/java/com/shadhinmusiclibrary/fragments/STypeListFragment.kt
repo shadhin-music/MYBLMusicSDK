@@ -16,13 +16,13 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ReleaseAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
-internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
+internal class STypeListFragment : BaseFragment(), HomeCallBack {
     private lateinit var navController: NavController
     private lateinit var releaseAdapter: ReleaseAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
@@ -30,9 +30,8 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_s_type_list, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -58,24 +57,22 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
                 }
             }
         recyclerView.layoutManager = layoutManager
-        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+        layoutManager.spanSizeLookup = onSpanSizeLookup
         recyclerView.adapter = concatAdapter
 
-//        recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-//        recyclerView.adapter = ReleaseAdapter(argHomePatchItem!!, this)
         val title: TextView = view.findViewById(R.id.tvTitle)
         title.text = argHomePatchItem!!.Name
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            /*if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
             R.id.to_single_details,
@@ -91,10 +88,10 @@ internal class STypeListFragment : CommonBaseFragment(), HomeCallBack {
             })
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
 
     }
 }

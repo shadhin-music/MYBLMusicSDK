@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,21 +16,22 @@ import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.podcast.Episode
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import java.io.Serializable
 
 
-internal class PlaylistListFragment : Fragment(), HomeCallBack {
-    var homePatchItem: HomePatchItem? = null
+internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
+    var homePatchItem: HomePatchItemModel? = null
     private lateinit var navController: NavController
-     private lateinit var footerAdapter: HomeFooterAdapter
-     private lateinit var genresAdapter: GenresAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var genresAdapter: GenresAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem?
+            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
         }
     }
 
@@ -39,7 +39,7 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_playlist_list, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
 
         return viewRef
@@ -53,16 +53,15 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
         footerAdapter = HomeFooterAdapter()
-        genresAdapter = GenresAdapter(homePatchItem!!,this)
+        genresAdapter = GenresAdapter(homePatchItem!!, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
         footerAdapter = HomeFooterAdapter()
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(false)
             .build()
-        val concatAdapter=  ConcatAdapter(config,genresAdapter,footerAdapter)
+        val concatAdapter = ConcatAdapter(config, genresAdapter, footerAdapter)
         val layoutManager = GridLayoutManager(context, horizontalSpanCount)
         val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
             object : GridLayoutManager.SpanSizeLookup() {
@@ -71,23 +70,23 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
                 }
             }
         recyclerView.layoutManager = layoutManager
-        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+        layoutManager.spanSizeLookup = onSpanSizeLookup
         recyclerView.adapter = concatAdapter
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
 //        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-       // recyclerView.adapter = concatAdapter
-         val textTitle:TextView= requireView().findViewById(R.id.tvTitle)
-        textTitle.text= homePatchItem!!.Name
+        // recyclerView.adapter = concatAdapter
+        val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
+        textTitle.text = homePatchItem!!.Name
         imageBackBtn.setOnClickListener {
-           /* if (ShadhinMusicSdkCore.pressCountDecrement() == 0) {
-                requireActivity().finish()
-            }*/
             requireActivity().onBackPressed()
         }
     }
 
-    override fun onClickItemAndAllItem(itemPosition: Int, selectedHomePatchItem: HomePatchItem) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    override fun onClickItemAndAllItem(
+        itemPosition: Int,
+        selectedHomePatchItem: HomePatchItemModel
+    ) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
             R.id.to_playlist_details,
@@ -103,11 +102,10 @@ internal class PlaylistListFragment : Fragment(), HomeCallBack {
             })
     }
 
-    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItem) {
-
+    override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }
 
-    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<Episode>) {
-        TODO("Not yet implemented")
+    override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
+
     }
 }

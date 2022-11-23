@@ -1,30 +1,21 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
-
-import com.shadhinmusiclibrary.data.model.FeaturedSongDetail
-import com.shadhinmusiclibrary.data.model.Video
-import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
-import com.shadhinmusiclibrary.fragments.WatchLaterFragment
-import com.shadhinmusiclibrary.fragments.WatchlaterBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.utils.TimeParser
 
 
-internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>, private val openMenu: WatchlaterBottomSheetDialogItemCallback
+internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>
 ) : RecyclerView.Adapter<WatchlaterAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,24 +26,19 @@ internal class WatchlaterAdapter( val allWatchlater: List<WatchLaterContent>, pr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-        val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
-                val videoArray = ArrayList<Video>()
+                val videoArray = ArrayList<VideoModel>()
                 for (item in allWatchlater) {
-                    val video = Video()
+                    val video = VideoModel()
                     video.setDataWatchlater(item)
                     videoArray.add(video)
                 }
-                val videos :ArrayList<Video> = videoArray
+                val videos :ArrayList<VideoModel> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 holder.itemView.context.startActivity(intent)
             }
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemVideo(allWatchlater[position])
-            Log.e("TAG","ALL DownloadsVideo: "+ allWatchlater[position].rootType)
-        }
         }
 
 

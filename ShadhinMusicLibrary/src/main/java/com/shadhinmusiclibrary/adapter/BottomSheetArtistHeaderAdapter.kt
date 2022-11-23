@@ -11,17 +11,17 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
-import com.shadhinmusiclibrary.fragments.artist.ArtistBanner
-import com.shadhinmusiclibrary.fragments.artist.ArtistContent
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
-internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
+internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetailModel?) :
     RecyclerView.Adapter<BottomSheetArtistHeaderAdapter.HeaderViewHolder>() {
-    var data:ArtistContent?= null
+    var data: ArtistContentModel? = null
     var bio: LastFmResult? = null
-    var banner: ArtistBanner? = null
+    var banner: ArtistBannerModel? = null
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         parentView = LayoutInflater.from(parent.context)
@@ -41,7 +41,7 @@ internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
         return 1
     }
 
-    fun setData(songDetail: SongDetail) {
+    fun setData(songDetail: SongDetailModel) {
         this.songDetail = songDetail
         notifyDataSetChanged()
     }
@@ -64,34 +64,34 @@ internal class BottomSheetArtistHeaderAdapter(var songDetail: SongDetail?) :
 //        }
     }
 
-    fun artistBanner(banner: ArtistBanner?) {
+    fun artistBanner(banner: ArtistBannerModel?) {
         this.banner = banner
     }
 
-    fun setHeaderImage(data: ArtistContent?) {
-         this.data = data
+    fun setHeaderImage(data: ArtistContentModel?) {
+        this.data = data
         notifyDataSetChanged()
     }
 
     inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
-        fun bindItems(songDetail: SongDetail?) {
+        fun bindItems(songDetail: SongDetailModel?) {
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
 
             var url: String = data?.getImageUrl300Size().toString()
             val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.setText(songDetail?.artist)
+            textArtist.setText(songDetail?.artistName)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
             val bio: String = bio?.artist?.bio?.summary.toString()
             val updatedbio = Html.fromHtml(bio).toString()
-             val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
-            if(updatedbio.length>25){
+            val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
+            if (updatedbio.length > 25) {
                 cardBiography.visibility= VISIBLE
             }
             // textView?.text = bio?.artist?.bio?.summary
             textView?.setText(updatedbio)
             val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text = songDetail?.artist + "'s"
+            tvName.text = songDetail?.artistName + "'s"
             val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             if (banner?.image?.isEmpty() == false) {
                 val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)

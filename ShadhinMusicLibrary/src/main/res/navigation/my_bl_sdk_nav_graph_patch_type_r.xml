@@ -8,5 +8,5 @@
     <fragment
         android:id="@+id/latestReleaseFragment"
         android:name="com.shadhinmusiclibrary.fragments.LatestReleaseFragment"
-        tools:layout="@layout/my_bl_sdk_fragment_popular_artists" />
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
 </navigation>

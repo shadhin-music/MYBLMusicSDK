@@ -11,15 +11,19 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchItem
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 
 
-internal class ReleaseAdapter(val homePatchItem: HomePatchItem, private val homeCallBack: HomeCallBack) :
+internal class ReleaseAdapter(
+    val homePatchItem: HomePatchItemModel,
+    private val homeCallBack: HomeCallBack
+) :
     RecyclerView.Adapter<ReleaseAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
-            LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_release_item_list, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.my_bl_sdk_release_item_list, parent, false)
         return ViewHolder(v)
     }
 

@@ -13,7 +13,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 
 public class Pivot {
-
     public static final int AXIS_X = 0;
     public static final int AXIS_Y = 1;
 
@@ -112,7 +111,6 @@ public class Pivot {
 
     @IntDef({AXIS_X, AXIS_Y})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Axis{
+    public @interface Axis {
     }
 }
-

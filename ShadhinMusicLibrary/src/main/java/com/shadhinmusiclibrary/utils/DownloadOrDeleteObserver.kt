@@ -2,18 +2,19 @@ package com.shadhinmusiclibrary.utils
 
 import com.shadhinmusiclibrary.fragments.DownloadOrDeleteActionSubscriber
 
+internal object DownloadOrDeleteObserver {
 
-object DownloadOrDeleteObserver {
+    private var subscriber: DownloadOrDeleteActionSubscriber? = null
 
-    private var subscriber: DownloadOrDeleteActionSubscriber?=null
-
-    fun addSubscriber(subscriber: DownloadOrDeleteActionSubscriber){
-        this.subscriber=subscriber
+    fun addSubscriber(subscriber: DownloadOrDeleteActionSubscriber) {
+        this.subscriber = subscriber
     }
-    fun removeSubscriber(){
-        this.subscriber=null
+
+    fun removeSubscriber() {
+        this.subscriber = null
     }
-    fun notifySubscriber(){
+
+    fun notifySubscriber() {
         this.subscriber?.notifyOnChange()
     }
 }

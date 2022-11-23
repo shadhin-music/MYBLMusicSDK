@@ -1,30 +1,22 @@
 package com.shadhinmusiclibrary.fragments.artist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
-import com.shadhinmusiclibrary.utils.ApiResponse
-
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.repository.ArtistSongContentRepository
-import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.ApiResponse
 import kotlinx.coroutines.launch
 
-internal class ArtistContentViewModel (private val artistContentRepository: ArtistSongContentRepository): ViewModel() {
+internal class ArtistContentViewModel(private val artistContentRepository: ArtistSongContentRepository) :
+    ViewModel() {
 
-    private val _artistSongContent: MutableLiveData<ApiResponse<ArtistContent>> = MutableLiveData()
-    val artistSongContent: LiveData<ApiResponse<ArtistContent>> = _artistSongContent
-
-
-    fun fetchArtistSongData(artist:String) = viewModelScope.launch {
+    private val _artistSongContent: MutableLiveData<ApiResponse<ArtistContentModel>> =
+        MutableLiveData()
+    val artistSongContent: LiveData<ApiResponse<ArtistContentModel>> = _artistSongContent
+    fun fetchArtistSongData(artist: String) = viewModelScope.launch {
         val response = artistContentRepository.fetchArtistSongData(artist)
-
-            _artistSongContent.postValue(response)
-
-
+        _artistSongContent.postValue(response)
     }
-//
-
 }

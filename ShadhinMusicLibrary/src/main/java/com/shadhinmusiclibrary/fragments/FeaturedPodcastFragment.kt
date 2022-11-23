@@ -1,10 +1,10 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -18,26 +18,25 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetails
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.fragments.base.CommonBaseFragment
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.DataContentType
 import com.shadhinmusiclibrary.utils.Status
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnItemClickCallback{
-
+internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemClickCallback {
     private lateinit var navController: NavController
-    private var homePatchitem: HomePatchItem? = null
+    private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel
-    private lateinit var  data: List<FeaturedPodcastDetails>
-    private lateinit var  dataJc: List<FeaturedPodcastDetails>
+    private lateinit var data: List<FeaturedPodcastDetailsModel>
+    private lateinit var dataJc: List<FeaturedPodcastDetailsModel>
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
-    private lateinit var  podcastJCAdapter: FeaturePodcastJCRECAdapter
+    private lateinit var podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
     private fun setupViewModel() {
         viewModel =
@@ -51,7 +50,7 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         inflater: LayoutInflater, container1: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_podcast, container1, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_pb_layout, container1, false)
         navController = findNavController()
 
         return viewRef
@@ -59,7 +58,6 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TaG", "Message: " + homePatchitem)
         val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
 
         kotlin.runCatching {
@@ -73,41 +71,57 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
-            Log.d("TAGGGGGGGY", "MESSAGE: ")
             //requireActivity().finish()
             requireActivity().onBackPressed()
         }
     }
-     fun setAdapter(){
-         val layoutManager =
-             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-          podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter(this)
-          podcastJCAdapter =  FeaturePodcastJCRECAdapter(this)
-         val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
-         parentAdapter = ConcatAdapter(
+    fun setAdapter() {
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
+        podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter(this)
+        podcastJCAdapter = FeaturePodcastJCRECAdapter(this)
+        val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
+
+        parentAdapter = ConcatAdapter(
             config,
-            podcastJBAdapter,podcastJCAdapter
+            podcastJBAdapter, podcastJCAdapter
 
 
         )
-        parentRecycler.setLayoutManager(layoutManager)
-        parentRecycler.setAdapter(parentAdapter)
-     }
+        parentRecycler.layoutManager = layoutManager
+        parentRecycler.adapter = parentAdapter
+    }
+
     fun observeData() {
-
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedPodcast(false)
-
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
-            if (response !=null && response.status == Status.SUCCESS) {
-                if(response.data?.data?.get(0)?.Data !=null) {
+            if (response != null && response.status == Status.SUCCESS) {
+                if (response.data?.data?.get(0)?.Data != null) {
                     podcastJBAdapter.setData(
-                        response.data.data.get(0).Data,
-                        response.data.data.get(0).Data.get(0).ShowName
+                        response.data.data[0].Data,
+                        response.data.data[0].Data[0].ShowName
                     )
-
                 }
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        }
+        viewModel.fetchFeaturedPodcastJC(false)
+        viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+               podcastJCAdapter.setData(
+                    response?.data?.data?.get(1)?.Data,
+                    response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
+                )
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        }
                 if(response.data?.data?.get(1)?.Data !=null) {
                     podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
                         response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
@@ -134,19 +148,20 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
     }
 
     override fun onRootClickItem(
-        episode: MutableList<FeaturedPodcastDetails>,
+        episode: MutableList<FeaturedPodcastDetailsModel>,
         clickItemPosition: Int,
     ) {
-        TODO("Not yet implemented")
     }
 
-    override fun onClickItem(episode: MutableList<FeaturedPodcastDetails>, clickItemPosition: Int) {
-        ShadhinMusicSdkCore.pressCountIncrement()
-
-
+    override fun onClickItem(
+        episode: MutableList<FeaturedPodcastDetailsModel>,
+        clickItemPosition: Int
+    ) {
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
-      //  Log.e("Check", ""+navController.graph.displayName)
-        navController.navigate(R.id.to_podcast_details,
+        val mEpisod = episode[clickItemPosition]
+        navController.navigate(
+            R.id.to_podcast_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -154,73 +169,14 @@ internal class FeaturedPodcastFragment : CommonBaseFragment(),FeaturedPodcastOnI
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetail(
-                        AlbumId = episode.get(clickItemPosition).EpisodeId,
-                        AlbumImage = "",
-                        AlbumName = episode.get(clickItemPosition).EpisodeName,
-                        Artist = "",
-                        ArtistId = "",
-                        ArtistImage = "",
-                        Banner = "",
-                        ContentID = episode.get(clickItemPosition).EpisodeId,
-                        ContentType =  episode.get(clickItemPosition).ContentType,
-                        CreateDate = "",
-                        Duration = "",
-                        Follower = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        PlayUrl =episode.get(clickItemPosition).PlayUrl,
-                        RootId = "",
-                        RootType = "",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        TrackType = "",
-                        Type = "",
-                        fav = "",
-                        image = episode.get(clickItemPosition).ImageUrl,
-                        imageWeb = episode.get(clickItemPosition).ImageUrl,
-                        title = episode.get(clickItemPosition).TrackName
-
-                    ) as Serializable)
-
-                    /*HomePatchDetail(
-                        episode.get(clickItemPosition).EpisodeId,
-                   "",
-               episode.get(clickItemPosition).EpisodeName,
-                       "",
-                "",
-               "",
-               "",
-                "", episode.get(clickItemPosition).EpisodeId,
-                "",
-               "",
-                "",
-                false,
-               "",
-                0,
-                "",
-               "",
-                "", episode.get(clickItemPosition).PlayUrl,
-                                ""
-
-                ,"",
-                        false,
-               "","","","",episode.get(clickItemPosition).ImageUrl,"",
-                        episode.get(clickItemPosition).TrackName) as Serializable
-                )*/
+                    UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(mEpisod) as Serializable
+                )
             })
     }
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        episode: MutableList<FeaturedPodcastDetails>,
+        episode: MutableList<FeaturedPodcastDetailsModel>,
     ) {
-        TODO("Not yet implemented")
     }
-
-
 }

@@ -7,18 +7,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.data.model.HomePatchDetail
-import com.shadhinmusiclibrary.data.model.HomePatchItem
-import com.shadhinmusiclibrary.data.model.SongDetail
+import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
-import com.shadhinmusiclibrary.player.ui.PlayerViewModel
+import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 internal open class PlaylistBaseFragment : Fragment(), FragmentEntryPoint {
     var playlistId:String? = null
     var playlistName:String? = null
-    var argHomePatchItem: HomePatchItem? = null
-    var argHomePatchDetail: HomePatchDetail? = null
+    var argHomePatchItem: HomePatchItemModel? = null
+    var argHomePatchDetail: HomePatchDetailModel? = null
     var gradientDrawable: Int? = null
     lateinit var playerViewModel: PlayerViewModel
 
@@ -28,8 +29,8 @@ internal open class PlaylistBaseFragment : Fragment(), FragmentEntryPoint {
             playlistId=  it.getSerializable(AppConstantUtils.PlaylistId) as String
             playlistName = it.getSerializable(AppConstantUtils.PlaylistName) as String
             argHomePatchDetail =
-                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetail?
-            argHomePatchItem= it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItem
+                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
+            argHomePatchItem= it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel
             gradientDrawable = it.getSerializable(AppConstantUtils.PlaylistGradientId) as Int
         }
         createPlayerVM()
@@ -42,7 +43,7 @@ internal open class PlaylistBaseFragment : Fragment(), FragmentEntryPoint {
         )[PlayerViewModel::class.java]
     }
 
-    fun playItem(mSongDetails: MutableList<SongDetail>, clickItemPosition: Int) {
+    fun playItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 
