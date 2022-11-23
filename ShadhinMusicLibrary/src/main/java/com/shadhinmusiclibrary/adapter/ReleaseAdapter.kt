@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ReleaseAdapter(
@@ -28,39 +30,35 @@ internal class ReleaseAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems()
+        val homePatchDet = homePatchItem.Data[position]
+        holder.bindItems(homePatchDet)
         holder.itemView.setOnClickListener {
             homeCallBack.onClickItemAndAllItem(position, homePatchItem)
         }
     }
 
-    override fun getItemViewType(position: Int)= VIEW_TYPE
+    override fun getItemViewType(position: Int) = VIEW_TYPE
     override fun getItemCount(): Int {
         return homePatchItem.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
-        fun bindItems() {
-            val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
-            val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = homePatchItem.Data[absoluteAdapterPosition].getImageUrl300Size()
-            textView.text = homePatchItem.Data[absoluteAdapterPosition].title
-            val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
-            textViewArtist.text = homePatchItem.Data[absoluteAdapterPosition].Artist
-            Glide.with(mContext)
-                .load(url)
-                .into(imageView)
+        fun bindItems(homePatDetMod: HomePatchDetailModel) {
+            val imageView: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
+            val textView: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textViewArtist: TextView = itemView.findViewById(R.id.tv_song_length)
 
+            val url: String = homePatDetMod.imageUrl!!
+            textView.text = homePatDetMod.titleName
+            textViewArtist.text = homePatDetMod.artistName
+            Glide.with(mContext)
+                .load(UtilHelper.getImageUrlSize300(url))
+                .into(imageView)
         }
     }
-    companion object{
-        const val VIEW_TYPE =1
+
+    companion object {
+        const val VIEW_TYPE = 1
     }
 }
-
-
-
-
-
-

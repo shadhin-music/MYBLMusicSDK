@@ -98,7 +98,7 @@ internal class UserCreatedPlaylistHeaderAdapter(
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
             var isFav = false
             val isAddedToFav =
-                cacheRepository?.getFavoriteById(homePatchDetail?.ContentID.toString())
+                cacheRepository?.getFavoriteById(homePatchDetail?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
@@ -112,40 +112,40 @@ internal class UserCreatedPlaylistHeaderAdapter(
 
             ivFavorite.setOnClickListener {
                 if (isFav.equals(true)) {
-                    homePatchDetail?.ContentID?.let { it1 ->
+                    homePatchDetail?.content_Id?.let { it1 ->
                         favViewModel.deleteFavContent(
                             it1,
-                            homePatchDetail?.ContentType
+                            homePatchDetail?.content_Type ?: ""
                         )
                     }
-                    cacheRepository?.deleteFavoriteById(homePatchDetail?.ContentID.toString())
+                    cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())
                     Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                     Log.e("TAG", "NAME: " + isFav)
                 } else {
                     favViewModel.addFavContent(
-                        homePatchDetail?.ContentID.toString(),
-                        homePatchDetail?.ContentType.toString()
+                        homePatchDetail?.content_Id.toString(),
+                        homePatchDetail?.content_Type.toString()
                     )
 
                     ivFavorite.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
                         FavData().apply {
-                            content_Id = homePatchDetail?.ContentID.toString()
-                            album_Id = homePatchDetail?.AlbumId
-                            imageUrl = homePatchDetail?.image
-                            artistName = homePatchDetail?.Artist
-                            artist_Id = homePatchDetail?.ArtistId
+                            content_Id = homePatchDetail?.content_Id.toString()
+                            album_Id = homePatchDetail?.album_Id
+                            imageUrl = homePatchDetail?.imageUrl
+                            artistName = homePatchDetail?.artistName
+                            artist_Id = homePatchDetail?.artist_Id
                             clientValue = 2
-                            content_Type = homePatchDetail?.ContentType.toString()
+                            content_Type = homePatchDetail?.content_Type.toString()
                             fav = "1"
-                            imageUrl = homePatchDetail?.image
-                            playingUrl = homePatchDetail?.PlayUrl
-                            rootContentId = homePatchDetail?.RootId
-                            rootContentType = homePatchDetail?.RootType
-                            titleName = homePatchDetail?.title
+                            imageUrl = homePatchDetail?.imageUrl
+                            playingUrl = homePatchDetail?.playingUrl
+                            rootContentId = homePatchDetail?.rootContentId
+                            rootContentType = homePatchDetail?.rootContentType
+                            titleName = homePatchDetail?.titleName
                         }
                     )
                     isFav = true

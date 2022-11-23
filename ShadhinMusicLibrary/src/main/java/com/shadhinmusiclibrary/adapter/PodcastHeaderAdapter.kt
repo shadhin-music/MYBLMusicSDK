@@ -113,7 +113,7 @@ internal class PodcastHeaderAdapter(
                 .into(imageView)
 
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
+            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.content_Id ?: "")
             if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
@@ -127,39 +127,39 @@ internal class PodcastHeaderAdapter(
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
-                    homePatchDetail?.ContentID?.let { it1 ->
+                    homePatchDetail?.content_Id?.let { it1 ->
                         favViewModel.deleteFavContent(
                             it1,
-                            homePatchDetail?.ContentType
+                            homePatchDetail?.content_Type ?: ""
                         )
                     }
-                    cacheRepository?.deleteFavoriteById(homePatchDetail?.ContentID.toString())
+                    cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
 
                     favViewModel.addFavContent(
-                        homePatchDetail?.ContentID.toString(),
-                        homePatchDetail?.ContentType.toString()
+                        homePatchDetail?.content_Id.toString(),
+                        homePatchDetail?.content_Type.toString()
                     )
 
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavData().apply {
-                            content_Id = homePatchDetail?.ContentID.toString()
-                            album_Id = homePatchDetail?.AlbumId
-                            albumImage = homePatchDetail?.image
-                            artistName = homePatchDetail?.Artist
-                            artist_Id = homePatchDetail?.ArtistId
+                            content_Id = homePatchDetail?.content_Id.toString()
+                            album_Id = homePatchDetail?.album_Id
+                            albumImage = homePatchDetail?.imageUrl
+                            artistName = homePatchDetail?.artistName
+                            artist_Id = homePatchDetail?.artist_Id
                             clientValue = 2
-                            content_Type = homePatchDetail?.ContentType.toString()
+                            content_Type = homePatchDetail?.content_Type.toString()
                             fav = "1"
-                            imageUrl = homePatchDetail?.image
-                            playingUrl = homePatchDetail?.PlayUrl
-                            rootContentId = homePatchDetail?.RootId
-                            rootContentType = homePatchDetail?.RootType
-                            titleName = homePatchDetail?.title
+                            imageUrl = homePatchDetail?.imageUrl
+                            playingUrl = homePatchDetail?.playingUrl
+                            rootContentId = homePatchDetail?.rootContentId
+                            rootContentType = homePatchDetail?.rootContentType
+                            titleName = homePatchDetail?.titleName
                         }
                     )
                     isFav = true

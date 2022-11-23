@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
@@ -69,12 +70,12 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
         private fun bindArtist(dataModel: HomePatchDetailModel) {
 
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            var url: String = dataModel.image
+//            var url: String =
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(dataModel.imageUrl!!))
                 .into(imageView)
 
 //            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -108,8 +109,8 @@ internal class ArtistDetailsAdapter(val homePatchItem: HomePatchItemModel?) :
 
 
         fun bind(dataModel: HomePatchDetailModel) {
-            when (dataModel.ArtistId) {
-                dataModel.ArtistId -> bindArtist(dataModel)
+            when (dataModel.artist_Id) {
+                dataModel.artist_Id -> bindArtist(dataModel)
 //                is GenreDataModel.Artist -> bindArtist()
 //                is GenreDataModel.Artist2 -> bindArtist2()
 //                is GenreDataModel.Artist3 -> bindArtist3()

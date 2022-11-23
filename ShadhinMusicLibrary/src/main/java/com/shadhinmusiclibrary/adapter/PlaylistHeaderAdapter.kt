@@ -81,26 +81,26 @@ internal class PlaylistHeaderAdapter(
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(homePatchDetail?.getImageUrl300Size())
+                .load(homePatchDetail?.imageUrl!!)
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 itemView.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = homePatchDetail?.title
-            if (homePatchDetail?.title.isNullOrEmpty()) {
-                tvCurrentAlbumName.text = homePatchDetail?.AlbumName
+            tvCurrentAlbumName.text = homePatchDetail?.titleName
+            if (homePatchDetail?.titleName.isNullOrEmpty()) {
+                tvCurrentAlbumName.text = homePatchDetail?.album_Name
             }
 //            if(root.Artist.isNullOrEmpty()){
 //                tvArtistName.text = rootDataContent?.AlbumName
 //            }
             tvArtistName =
                 itemView.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = homePatchDetail?.Artist
+            tvArtistName.text = homePatchDetail?.artistName
             ivFavorite = itemView.findViewById(R.id.iv_favorite)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
 
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.ContentID!!)
+            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail?.content_Id ?: "")
             if (isAddedToFav?.content_Id != null) {
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
@@ -111,39 +111,39 @@ internal class PlaylistHeaderAdapter(
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
-                    homePatchDetail?.ContentID?.let { it1 ->
+                    homePatchDetail?.content_Id?.let { it1 ->
                         favViewModel.deleteFavContent(
                             it1,
-                            homePatchDetail?.ContentType
+                            homePatchDetail?.content_Type ?: ""
                         )
                     }
-                    cacheRepository?.deleteFavoriteById(homePatchDetail?.ContentID.toString())
+                    cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())
                     Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
                     favViewModel.addFavContent(
-                        homePatchDetail?.ContentID.toString(),
-                        homePatchDetail?.ContentType.toString()
+                        homePatchDetail?.content_Id.toString(),
+                        homePatchDetail?.content_Type.toString()
                     )
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
                         FavData()
                             .apply {
-                                content_Id = homePatchDetail?.ContentID.toString()
-                                album_Id = homePatchDetail?.AlbumId
-                                albumImage = homePatchDetail?.image
-                                artistName = homePatchDetail?.Artist
-                                artist_Id = homePatchDetail?.ArtistId
+                                content_Id = homePatchDetail?.content_Id.toString()
+                                album_Id = homePatchDetail?.album_Id
+                                albumImage = homePatchDetail?.imageUrl
+                                artistName = homePatchDetail?.artistName
+                                artist_Id = homePatchDetail?.artist_Id
                                 clientValue = 2
-                                content_Type = homePatchDetail?.ContentType.toString()
+                                content_Type = homePatchDetail?.content_Type.toString()
                                 fav = "1"
-                                imageUrl = homePatchDetail?.image
-                                playingUrl = homePatchDetail?.PlayUrl
-                                rootContentId = homePatchDetail?.RootId
-                                rootContentType = homePatchDetail?.RootType
-                                titleName = homePatchDetail?.title
+                                imageUrl = homePatchDetail?.imageUrl
+                                playingUrl = homePatchDetail?.playingUrl
+                                rootContentId = homePatchDetail?.rootContentId
+                                rootContentType = homePatchDetail?.rootContentType
+                                titleName = homePatchDetail?.titleName
                             }
                     )
                     isFav = true

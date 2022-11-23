@@ -72,12 +72,11 @@ internal class PodcastDetailsFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         argHomePatchDetail?.let {
-            val Type: String = it.ContentType
+            val Type: String = it.content_Type ?: ""
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
-            contentId = it.ContentID.toInt()
-            selectedEpisodeID = it.AlbumId.toInt()
-            Log.e("TAG","RESULT: "+ Type)
+            contentId = it.content_Id.toInt()
+            selectedEpisodeID = it.album_Id?.toInt() ?: 0
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
@@ -248,7 +247,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
-        argHomePatchDetail?.ContentID = episode.Id.toString()
+        argHomePatchDetail?.content_Id = episode.Id.toString()
         observePodcastDetailsData()
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData

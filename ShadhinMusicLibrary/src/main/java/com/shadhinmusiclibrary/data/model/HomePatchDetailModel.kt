@@ -4,9 +4,11 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
+import java.io.Serializable
+
 
 @Keep
-internal class HomePatchDetailModel : IMusicModel {
+internal class HomePatchDetailModel : IMusicModel, Serializable {
     @SerializedName("ContentID")
     @Expose
     override var content_Id: String = ""
@@ -37,7 +39,7 @@ internal class HomePatchDetailModel : IMusicModel {
 
     @SerializedName("fav")
     @Expose
-    private var fav: String? = null
+    var fav: String? = null
 
     @SerializedName("Banner")
     @Expose
@@ -45,19 +47,19 @@ internal class HomePatchDetailModel : IMusicModel {
 
     @SerializedName("NewBanner")
     @Expose
-    private var newBanner: String? = null
+    var newBanner: String? = null
 
     @SerializedName("PlayCount")
     @Expose
-    private var playCount: Int? = null
+    var playCount: Int? = null
 
     @SerializedName("Type")
     @Expose
-    private var type: String? = null
+    var type: String? = null
 
     @SerializedName("IsPaid")
     @Expose
-    private var isPaid: Boolean? = null
+    var isPaid: Boolean? = null
 
     @SerializedName("Seekable")
     @Expose
@@ -65,7 +67,7 @@ internal class HomePatchDetailModel : IMusicModel {
 
     @SerializedName("TrackType")
     @Expose
-    private var trackType: String? = null
+    var trackType: String? = null
 
     @SerializedName("ArtistId")
     @Expose
@@ -77,7 +79,7 @@ internal class HomePatchDetailModel : IMusicModel {
 
     @SerializedName("ArtistImage")
     @Expose
-    private var artistImage: Any? = null
+    var artistImage: Any? = null
 
     @SerializedName("AlbumId")
     @Expose

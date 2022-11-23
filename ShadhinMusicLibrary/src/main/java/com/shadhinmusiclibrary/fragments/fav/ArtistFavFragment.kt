@@ -51,6 +51,7 @@ import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 internal class ArtistFavFragment : BaseFragment(),
@@ -162,37 +163,17 @@ internal class ArtistFavFragment : BaseFragment(),
                 album_Id = mSongDetails.album_Id
             },
             argHomePatchItem,
-            HomePatchDetailModel(
-                mSongDetails.album_Id.toString(),
-                "",
-                mSongDetails.album_Name.toString(),
-                mSongDetails.artistName.toString(),
-                mSongDetails.artist_Id.toString(),
-                "",
-                "",
-                mSongDetails.content_Id.toString(),
-                mSongDetails.content_Type.toString(),
-                "",
-                "",
-                "",
-                false,
-                "",
-                0,
-                "",
-                "",
-                "",
-                mSongDetails.playingUrl.toString(),
-                "",
-                "",
-                false,
-                "",
-                "",
-                "",
-                "",
-                mSongDetails.imageUrl.toString(),
-                "",
-                mSongDetails.titleName.toString()
-            )
+            HomePatchDetailModel().apply {
+                album_Id = mSongDetails.album_Id.toString()
+                album_Name = mSongDetails.album_Name.toString()
+                artistName = mSongDetails.artistName.toString()
+                artist_Id = mSongDetails.artist_Id.toString()
+                content_Id = mSongDetails.content_Id.toString()
+                content_Type = mSongDetails.content_Type.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+            }
         )
     }
 
@@ -278,37 +259,16 @@ internal class ArtistFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mFavData.album_Id.toString(),
-                        "",
-                        "",
-                        mFavData.artistName.toString(),
-                        mFavData.artist_Id.toString(),
-                        "",
-                        "",
-                        mFavData.content_Id ?: "",
-                        mFavData.content_Type.toString(),
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mFavData.playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mFavData.imageUrl.toString(),
-                        "",
-                        mFavData.titleName.toString()
-                    )
+                    HomePatchDetailModel().apply {
+                        album_Id = mFavData.album_Id.toString()
+                        artistName = mFavData.artistName.toString()
+                        artist_Id = mFavData.artist_Id.toString()
+                        content_Id = mFavData.content_Id
+                        content_Type = mFavData.content_Type.toString()
+                        playingUrl = mFavData.playingUrl.toString()
+                        imageUrl = mFavData.imageUrl.toString()
+                        titleName = mFavData.titleName.toString()
+                    } as Serializable
                 )
             })
     }
@@ -335,13 +295,13 @@ internal class ArtistFavFragment : BaseFragment(),
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+        val url = argHomePatchDetail?.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = argHomePatchDetail?.title
+        title?.text = argHomePatchDetail?.titleName
         val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         tvArtistName?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context).load(UtilHelper.getImageUrlSize300(url ?: "")).into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
@@ -533,37 +493,16 @@ internal class ArtistFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mSongDetails.album_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.artistName ?: "",
-                        mSongDetails.artist_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.content_Id ?: "",
-                        mSongDetails.content_Type ?: "",
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mSongDetails.imageUrl.toString(),
-                        "",
-                        mSongDetails.titleName.toString()
-                    ) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        content_Id = mSongDetails.content_Id
+                        content_Type = mSongDetails.content_Type ?: ""
+                        playingUrl = mSongDetails.playingUrl.toString()
+                        imageUrl = mSongDetails.imageUrl.toString()
+                        titleName = mSongDetails.titleName.toString()
+                    } as Serializable
                 )
             })
     }

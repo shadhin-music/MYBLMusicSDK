@@ -429,11 +429,11 @@ internal class SDKMainActivity : BaseActivity(),
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            val podcast: String = homePatchDetail.content_Type
+            val podcast: String = homePatchDetail.content_Type ?: ""
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
             //  Log.e("TAG","CHECKING: "+ podcast)
-            if (homePatchDetail.content_Type.toUpperCase().contains("PD")) {
+            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
                     Bundle().apply {
                         putSerializable(
@@ -483,7 +483,7 @@ internal class SDKMainActivity : BaseActivity(),
                         )
                     })
             }
-            when (homePatchDetail.ContentType.toUpperCase()) {
+            when (homePatchDetail.content_Type?.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(
@@ -541,9 +541,8 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         })
                 }
-
-                homePatchDetail.ContentType.contains("PD").toString() -> {
-                    Log.e("TAG", "CHECKING: " + homePatchDetail.ContentType)
+                homePatchDetail.content_Type?.contains("PD").toString() -> {
+                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                     //open podcast
                     Log.e("TAG", "CHECKING: " + PatchItem)
                 }
@@ -1158,19 +1157,19 @@ internal class SDKMainActivity : BaseActivity(),
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
 //        val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = argHomePatchDetail?.title
+        title?.text = argHomePatchDetail?.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
             Glide.with(context)
-                ?.load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
-                ?.into(image)
+                .load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.imageUrl!!))
+                .into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? =
             bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloadComplete = false
-        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
         if (downloaded?.playingUrl != null) {
             isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -2027,37 +2026,18 @@ internal class SDKMainActivity : BaseActivity(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        AlbumId = mSongDetails.album_Id ?: "",
-                        ArtistId = mSongDetails.artist_Id ?: "",
-                        ContentID = mSongDetails.content_Id ?: "",
-                        ContentType = "",
-                        PlayUrl = mSongDetails.playingUrl ?: "",
-                        AlbumName = "",
-                        AlbumImage = "",
-                        fav = "",
-                        Banner = "",
-                        Duration = "",
-                        TrackType = "",
-                        image = mSongDetails.imageUrl ?: "",
-                        ArtistImage = "",
-                        Artist = mSongDetails.artistName ?: "",
-                        CreateDate = "",
-                        Follower = "",
-                        imageWeb = "",
-                        IsPaid = false,
-                        NewBanner = "",
-                        PlayCount = 0,
-                        PlayListId = "",
-                        PlayListImage = "",
-                        PlayListName = "",
-                        RootId = "",
-                        RootType = "P",
-                        Seekable = false,
-                        TeaserUrl = "",
-                        title = "",
-                        Type = ""
-                    ) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id
+                        artist_Id = mSongDetails.artist_Id
+                        content_Id = mSongDetails.content_Id
+                        content_Type = mSongDetails.content_Type
+                        playingUrl = mSongDetails.playingUrl
+                        imageUrl = mSongDetails.imageUrl
+                        artistName = mSongDetails.artistName
+                        rootContentType = "P"
+                        isSeekAble = false
+                        titleName = ""
+                    } as Serializable
                 )
             })
     }

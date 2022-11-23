@@ -43,7 +43,7 @@ internal class BrowseAllPlaylistAdapter(val homePatchItem: HomePatchItemModel) :
             }
             val imageView: ImageView = itemView.findViewById(R.id.image)
             // val textView:TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = homePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
+            val url: String = homePatchItem.Data[absoluteAdapterPosition].imageUrl ?: ""
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)

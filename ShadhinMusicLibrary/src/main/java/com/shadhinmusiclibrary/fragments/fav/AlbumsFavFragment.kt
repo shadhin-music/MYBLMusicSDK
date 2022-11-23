@@ -157,37 +157,14 @@ internal class AlbumsFavFragment : BaseFragment(),
                     album_Id = mSongDetails.album_Id
                 },
             argHomePatchItem,
-            HomePatchDetailModel(
-                "",
-                "",
-                "",
-                mSongDetails.artistName.toString(),
-                "",
-                "",
-                "",
-                mSongDetails.content_Id.toString(),
-                mSongDetails.content_Type.toString(),
-                "",
-                "",
-                "",
-                false,
-                "",
-                0,
-                "",
-                "",
-                "",
-                mSongDetails.playingUrl.toString(),
-                "",
-                "",
-                false,
-                "",
-                "",
-                "",
-                "",
-                mSongDetails.imageUrl.toString(),
-                "",
-                mSongDetails.titleName.toString()
-            )
+            HomePatchDetailModel().apply {
+                artistName = mSongDetails.artistName.toString()
+                content_Id = mSongDetails.content_Id
+                content_Type = mSongDetails.content_Type.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+            }
         )
     }
 
@@ -263,6 +240,7 @@ internal class AlbumsFavFragment : BaseFragment(),
 
 
     override fun onFavAlbumClick(itemPosition: Int, favData: List<FavData>) {
+        val favDat = favData[itemPosition]
         navController.navigate(
             R.id.favoriteAlbum,
             Bundle().apply {
@@ -272,37 +250,16 @@ internal class AlbumsFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        favData.get(itemPosition).album_Id.toString(),
-                        "",
-                        "",
-                        favData.get(itemPosition).artistName.toString(),
-                        favData.get(itemPosition).artist_Id.toString(),
-                        "",
-                        "",
-                        favData.get(itemPosition).content_Id ?: "",
-                        favData.get(itemPosition).content_Type.toString(),
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        favData.get(itemPosition).playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        favData.get(itemPosition).imageUrl.toString(),
-                        "",
-                        favData.get(itemPosition).titleName.toString()
-                    )
+                    HomePatchDetailModel().apply {
+                        album_Id = favDat.album_Id.toString()
+                        artistName = favDat.artistName.toString()
+                        artist_Id = favDat.artist_Id.toString()
+                        content_Id = favDat.content_Id
+                        content_Type = favDat.content_Type.toString()
+                        playingUrl = favDat.playingUrl.toString()
+                        imageUrl = favDat.imageUrl.toString()
+                        titleName = favDat.titleName.toString()
+                    } as Serializable
                 )
             })
     }
@@ -330,9 +287,9 @@ internal class AlbumsFavFragment : BaseFragment(),
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+        val url = argHomePatchDetail?.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = argHomePatchDetail?.title
+        title?.text = argHomePatchDetail?.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
@@ -378,7 +335,8 @@ internal class AlbumsFavFragment : BaseFragment(),
                 var downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
                         .build()
-                injector.downloadTitleMap[mSongDetails.content_Id ?: ""] = mSongDetails.titleName ?: ""
+                injector.downloadTitleMap[mSongDetails.content_Id ?: ""] =
+                    mSongDetails.titleName ?: ""
                 DownloadService.sendAddDownload(
                     requireContext(),
                     MyBLDownloadService::class.java,
@@ -533,37 +491,16 @@ internal class AlbumsFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mSongDetails.album_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.artistName!!,
-                        mSongDetails.artist_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.content_Id!!,
-                        mSongDetails.content_Type!!,
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mSongDetails.imageUrl.toString(),
-                        "",
-                        mSongDetails.titleName.toString()
-                    ) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id.toString()
+                        artistName = mSongDetails.artistName
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        content_Id = mSongDetails.content_Id
+                        content_Type = mSongDetails.content_Type
+                        playingUrl = mSongDetails.playingUrl.toString()
+                        imageUrl = mSongDetails.imageUrl.toString()
+                        titleName = mSongDetails.titleName.toString()
+                    } as Serializable
                 )
             })
     }

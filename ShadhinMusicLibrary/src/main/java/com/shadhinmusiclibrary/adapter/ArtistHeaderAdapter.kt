@@ -103,54 +103,55 @@ internal class ArtistHeaderAdapter(
         var ivFavorite: ImageView? = null
 
         fun bindItems(homePatchDetail: HomePatchDetailModel?) {
-            val imageView: ImageView = itemView.findViewById(R.id.thumb)
-            ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
-            ivFavorite = itemView.findViewById(R.id.favorite)
-            val url: String = homePatchDetail!!.getImageUrl300Size()
-            val textArtist: TextView = itemView.findViewById(R.id.name)
-            textArtist.text = homePatchDetail.Artist
-            val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-            val bio: String = bio?.artist?.bio?.summary.toString()
-            if (homePatchDetail.Artist.equals("Elita", true)) {
+            if (homePatchDetail != null) {
+                val imageView: ImageView = itemView.findViewById(R.id.thumb)
+                ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
+                ivFavorite = itemView.findViewById(R.id.favorite)
+//            val url: String = homePatchDetail!!.getImageUrl300Size()
+                val textArtist: TextView = itemView.findViewById(R.id.name)
+                textArtist.text = homePatchDetail.artistName
+                val textView: ExpandableTextView? = itemView.findViewById(R.id.tvDescription)
+                val bio: String = bio?.artist?.bio?.summary.toString()
+                if (homePatchDetail.artistName.equals("Elita", true)) {
 
-                val elitaBio =
-                    "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
-                // val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
-                Log.e("TAG", "ARTIST: " + elitaBio)
-                textView?.setText(elitaBio)
-                val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
-                cardBiography.visibility = VISIBLE
-            } else {
-                val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
-                val updatedbio = Html.fromHtml(bio).toString()
-                if (updatedbio.length > 25) {
+                    val elitaBio =
+                        "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
+                    // val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
+                    Log.e("TAG", "ARTIST: " + elitaBio)
+                    textView?.setText(elitaBio)
+                    val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
                     cardBiography.visibility = VISIBLE
+                } else {
+                    val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
+                    val updatedbio = Html.fromHtml(bio).toString()
+                    if (updatedbio.length > 25) {
+                        cardBiography.visibility = VISIBLE
+                    }
+                    textView?.setText(updatedbio)
+                    if (homePatchDetail.artistName.equals(
+                            "Scarecrow",
+                            true
+                        ) || homePatchDetail.artistName.equals(
+                            "Mizan",
+                            true
+                        ) || homePatchDetail.artistName.equals(
+                            "Feedback",
+                            true
+                        ) || homePatchDetail.artistName.equals(
+                            "Vibe",
+                            true
+                        ) || homePatchDetail.artistName.equals("Kona", true)
+                        || homePatchDetail.artistName.equals(
+                            "Balam",
+                            true
+                        ) || homePatchDetail.artistName.equals(
+                            "Nancy",
+                            true
+                        ) || homePatchDetail.artistName.equals("Liza", true)
+                    ) {
+                        cardBiography.visibility = GONE
+                    }
                 }
-                textView?.setText(updatedbio)
-                if (homePatchDetail.Artist.equals(
-                        "Scarecrow",
-                        true
-                    ) || homePatchDetail.Artist.equals(
-                        "Mizan",
-                        true
-                    ) || homePatchDetail.Artist.equals(
-                        "Feedback",
-                        true
-                    ) || homePatchDetail.Artist.equals(
-                        "Vibe",
-                        true
-                    ) || homePatchDetail.Artist.equals("Kona", true)
-                    || homePatchDetail.Artist.equals(
-                        "Balam",
-                        true
-                    ) || homePatchDetail.Artist.equals(
-                        "Nancy",
-                        true
-                    ) || homePatchDetail.Artist.equals("Liza", true)
-                ) {
-                    cardBiography.visibility = GONE
-                }
-            }
 //            val updatedbio = Html.fromHtml(bio).toString()
 //            val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
 //            if (updatedbio.length > 25) {
@@ -158,80 +159,79 @@ internal class ArtistHeaderAdapter(
 //            }
 //            // textView?.text = bio?.artist?.bio?.summary
 //            textView?.text = updatedbio
-            val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
-            tvName.text = homePatchDetail.Artist + "'s"
-            val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
-            if (banner?.image?.isEmpty() == false) {
-                val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)
-                cardListen.visibility = VISIBLE
-                if (itemView.context != null) {
-                    Glide.with(itemView.context)
-                        .load(banner?.image)
-                        .into(imageArtist)
+                val tvName: TextView = itemView.findViewById(R.id.tvName)!!
+                tvName.text = homePatchDetail.artistName + "'s"
+                val imageArtist: ImageView = itemView.findViewById(R.id.imageArtist)
+                if (banner?.image?.isEmpty() == false) {
+                    val cardListen: CardView = parentView!!.findViewById(R.id.cardListen)
+                    cardListen.visibility = VISIBLE
+                    if (itemView.context != null) {
+                        Glide.with(itemView.context)
+                            .load(banner?.image)
+                            .into(imageArtist)
+                    }
                 }
-            }
-            //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
-            val moreText: TextView? = itemView.findViewById(R.id.tvReadMore)
+                //  textView?.setText(Html.fromHtml(CharParser.replaceMultipleSpaces(bio?.artist?.bio?.summary)))
+                val moreText: TextView? = itemView.findViewById(R.id.tvReadMore)
 
-            moreText?.setOnClickListener {
-                if (textView!!.isExpanded) {
-                    textView.collapse()
-                    moreText.text = "Read More"
+                moreText?.setOnClickListener {
+                    if (textView!!.isExpanded) {
+                        textView.collapse()
+                        moreText.text = "Read More"
+                    } else {
+                        textView.expand()
+                        moreText.text = "Less"
+                    }
+                }
+                Glide.with(context)
+                    .load(UtilHelper.getImageUrlSize300(homePatchDetail.imageUrl ?: ""))
+                    .into(imageView)
+                var isFav = false
+                val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.content_Id)
+                if (isAddedToFav?.content_Id != null) {
+                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                    isFav = true
                 } else {
-                    textView.expand()
-                    moreText.text = "Less"
-                }
-            }
-            Glide.with(context)
-                .load(url)
-                .into(imageView)
-            var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.ContentID)
-            if (isAddedToFav?.content_Id != null) {
-                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                isFav = true
-            } else {
-                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                isFav = false
-            }
-
-            ivFavorite?.setOnClickListener {
-                if (isFav.equals(true)) {
-                    favViewModel?.deleteFavContent(
-                        homePatchDetail.ContentID,
-                        homePatchDetail.ContentType
-                    )
-                    cacheRepository?.deleteFavoriteById(homePatchDetail.ContentID)
-                    Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
-                    Log.e("TAG", "NAME: " + isFav)
-                } else {
-                    favViewModel?.addFavContent(
-                        homePatchDetail.ContentID,
-                        homePatchDetail.ContentType
-                    )
-                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                    Log.e("TAG", "NAME123: " + isFav)
-                    cacheRepository?.insertFavSingleContent(
-                        FavData().apply {
-                            content_Id = homePatchDetail.ContentID
-                            album_Id = homePatchDetail.AlbumId
-                            albumImage = homePatchDetail.image
-                            artistName = homePatchDetail.Artist
-                            artist_Id = homePatchDetail.ArtistId
-                            clientValue = 2
-                            content_Type = homePatchDetail.ContentType
-                            fav = "1"
-                            imageUrl = homePatchDetail.image
-                            playingUrl = homePatchDetail.PlayUrl
-                            rootContentId = homePatchDetail.RootId
-                            rootContentId = homePatchDetail.RootType
-                            titleName = homePatchDetail.title
-                        }
-                    )
-                    isFav = true
-                    Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
+                }
+
+                ivFavorite?.setOnClickListener {
+                    if (isFav.equals(true)) {
+                        favViewModel?.deleteFavContent(
+                            homePatchDetail.content_Id,
+                            homePatchDetail.content_Type ?: ""
+                        )
+                        cacheRepository?.deleteFavoriteById(homePatchDetail.content_Id)
+                        Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
+                        ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                        isFav = false
+                    } else {
+                        favViewModel?.addFavContent(
+                            homePatchDetail.content_Id,
+                            homePatchDetail.content_Type ?: ""
+                        )
+                        ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                        cacheRepository?.insertFavSingleContent(
+                            FavData().apply {
+                                content_Id = homePatchDetail.content_Id
+                                album_Id = homePatchDetail.album_Id
+                                albumImage = homePatchDetail.imageUrl
+                                artistName = homePatchDetail.artistName
+                                artist_Id = homePatchDetail.artist_Id
+                                clientValue = 2
+                                content_Type = homePatchDetail.content_Type
+                                fav = "1"
+                                imageUrl = homePatchDetail.imageUrl
+                                playingUrl = homePatchDetail.playingUrl
+                                rootContentId = homePatchDetail.rootContentId
+                                rootContentId = homePatchDetail.rootContentType
+                                titleName = homePatchDetail.titleName
+                            }
+                        )
+                        isFav = true
+                        Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }

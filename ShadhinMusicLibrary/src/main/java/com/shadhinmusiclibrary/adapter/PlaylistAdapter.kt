@@ -130,15 +130,15 @@ internal class PlaylistAdapter(
             ivThumbCurrentPlayItem =
                 viewItem.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(UtilHelper.getImageUrlSize300(root.image))
+                .load(UtilHelper.getImageUrlSize300(root.imageUrl!!))
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 viewItem.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = root.title
+            tvCurrentAlbumName.text = root.titleName
 
             tvArtistName =
                 viewItem.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = root.Artist
+            tvArtistName.text = root.artistName
 
 //            ivFavorite = viewItem.findViewById(R.id.iv_favorite)
             ivPlayBtn = viewItem.findViewById(R.id.iv_play_btn)

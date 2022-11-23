@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.CircleImageView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistAdapter(
     var homePatchItem: HomePatchItemModel?,
@@ -27,7 +28,7 @@ internal class ArtistAdapter(
 
     fun initialize() {
         var items = homePatchItem?.Data
-        items = items?.filter { it.ArtistId != artistIDtoSkip }
+        items = items?.filter { it.artist_Id != artistIDtoSkip }
         filteredHomePatchItem = homePatchItem?.copy()
         if (items != null) {
             filteredHomePatchItem?.Data = items
@@ -45,8 +46,8 @@ internal class ArtistAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
-            val artistID = filteredHomePatchItem!!.Data[position].ArtistId
-            val index = homePatchItem!!.Data.indexOfFirst { it.ArtistId == artistID }
+            val artistID = filteredHomePatchItem!!.Data[position].artist_Id
+            val index = homePatchItem!!.Data.indexOfFirst { it.artist_Id == artistID }
             homeCallBack.onClickItemAndAllItem(index, homePatchItem!!)
         }
     }
@@ -61,20 +62,14 @@ internal class ArtistAdapter(
             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
             val imageView2 = itemView.findViewById(R.id.image) as CircleImageView
 
-            val url: String =
-                filteredHomePatchItem!!.Data[absoluteAdapterPosition].getImageUrl300Size()
             Glide.with(mContext)
-                .load(url)
+                .load(
+                    UtilHelper.getImageUrlSize300(
+                        filteredHomePatchItem!!.Data[absoluteAdapterPosition].imageUrl ?: ""
+                    )
+                )
                 .into(imageView2)
-
-            textViewName.setText(filteredHomePatchItem!!.Data[absoluteAdapterPosition].Artist)
-
+            textViewName.setText(filteredHomePatchItem!!.Data[absoluteAdapterPosition].artistName)
         }
     }
 }
-
-
-
-
-
-

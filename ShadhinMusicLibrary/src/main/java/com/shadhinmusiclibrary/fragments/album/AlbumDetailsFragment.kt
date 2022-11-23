@@ -77,9 +77,9 @@ internal class AlbumDetailsFragment : BaseFragment(),
         setupViewModel()
         //TODO  argHomePatchDetail!!.ContentID,
         observeData(
-            argHomePatchDetail!!.ContentID,
-            argHomePatchDetail!!.ArtistId,
-            argHomePatchDetail!!.ContentType
+            argHomePatchDetail!!.content_Id,
+            argHomePatchDetail!!.artist_Id ?: "",
+            argHomePatchDetail!!.content_Type ?: ""
         )
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -262,37 +262,21 @@ internal class AlbumDetailsFragment : BaseFragment(),
         artistAlbumModelData: List<ArtistAlbumModelData>
     ) {
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
-        val data = HomePatchDetailModel(
-            AlbumId = mArtAlbumMod.album_Id ?: "",
-            ArtistId = mArtAlbumMod.album_Id ?: "",
-            ContentID = mArtAlbumMod.content_Id ?: "",
-            ContentType = mArtAlbumMod.content_Type ?: "",
-            PlayUrl = mArtAlbumMod.playingUrl ?: "",
-            AlbumName = mArtAlbumMod.titleName ?: "",
-            AlbumImage = "",
-            fav = mArtAlbumMod.fav ?: "",
-            Banner = "",
-            Duration = mArtAlbumMod.total_duration ?: "",
-            TrackType = "",
-            image = mArtAlbumMod.imageUrl ?: "",
-            ArtistImage = "",
-            Artist = mArtAlbumMod.artistName ?: "",
-            CreateDate = "",
-            Follower = "",
-            imageWeb = "",
-            IsPaid = false,
-            NewBanner = "",
-            PlayCount = 0,
-            PlayListId = "",
-            PlayListImage = "",
-            PlayListName = "",
-            RootId = "",
-            RootType = "",
-            Seekable = false,
-            TeaserUrl = "",
-            title = mArtAlbumMod.titleName ?: "",
-            Type = ""
-        )
+        val data = HomePatchDetailModel().apply {
+            album_Id = mArtAlbumMod.album_Id ?: ""
+            album_Id = mArtAlbumMod.album_Id ?: ""
+            content_Id = mArtAlbumMod.content_Id ?: ""
+            content_Type = mArtAlbumMod.content_Type ?: ""
+            playingUrl = mArtAlbumMod.playingUrl ?: ""
+            titleName = mArtAlbumMod.titleName ?: ""
+            fav = mArtAlbumMod.fav ?: ""
+            total_duration = mArtAlbumMod.total_duration ?: ""
+            imageUrl = mArtAlbumMod.imageUrl
+            artistName = mArtAlbumMod.artistName ?: ""
+            imageWeb = ""
+            isSeekAble = false
+            titleName = mArtAlbumMod.titleName ?: ""
+        }
         argHomePatchDetail = data
         albumHeaderAdapter.setData(data)
         observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
