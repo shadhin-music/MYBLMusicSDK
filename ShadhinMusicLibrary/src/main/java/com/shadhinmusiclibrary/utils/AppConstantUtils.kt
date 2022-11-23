@@ -27,7 +27,7 @@ internal object AppConstantUtils {
     const val DataContentRequestId = "DataContentRequestId"
     const val UI_Request_Type = "UIName"
     const val Requester_Name_Home = "HomeFragment"
-    const val Requester_Name_Fav_Artist ="FavArtistDetails"
+    const val Requester_Name_Fav_Artist = "FavArtistDetails"
     const val Requester_Name_Search = "SearchFragment"
     const val Requester_Name_Download = "DownloadFragment"
     const val Requester_Name_Watchlater = "WatchlaterFragment"
@@ -36,9 +36,10 @@ internal object AppConstantUtils {
     const val Requester_Name_CreatePlaylist = "CreatePlaylistFragment"
     const val Requester_Name_CreatedPlaylistDetails = "CreatedPlaylistDetails"
     const val Requester_Name_API = "AllMusic"
-    const val PlaylistId ="PlaylistId"
+    const val PlaylistId = "PlaylistId"
     const val PlaylistName = "PlaylistName"
     const val PlaylistGradientId = "PlaylistGradientId"
-   const val token:String = "yJFcThJVfREq+8HIllm3UUtUpBsFjOtx2qCp4ZsSK4szTKY9U+Bvurz4ZTaYvPEGBazp/Wk0iiRxZcrzh3N1V19gHnB9H6IJS97O7QwRtE1Xh14yK3pBBWfod6QYF56E/E/LUKk7Oedg84iX/otlyofVDvXT6B3FngDv2z6rKECNFBHNc1sHCOxi5cDHDyGxcZeK6bdpoVdIGGLQqfE2HvvjC6koMLGOWdwu+9Pjl9nrlT9M97T1XC3snpZU5kcmZQS7rsbuK+5KV3nnAun2e4ZV5UQNiFpwTE3AZbNhhB9HWpZXlqdH5n39H0RQJvjD+Wl8Z1bAZUQjal0UsHj7BRHarZ8dZEvcvZ1scI6rYtoVBIXxBjB6+T2jf6BnoJXaMl1I4R0WNRGfYH9hH5u+iglJ2KU9sTYk6dRfJ4/ftkLJmSNZzOYO8j6jrfi8WK+kRJdzGSdVhk4vlg0A2+l3fO6+qJdR003F1j/adGW4uHMChuTeCagEaifjp2k5JyjI+SMLkNOctes/jZJj8n/FrBMKsF6hEfsuI8/xErRLNFfRoGRKtqUF5bl8uUpiEwD0/bVu1dpZma7acmGqq9wYWmDLjx3HizPeTdtr5Ii2Wv76DhFFECiKibPJBY/UpGWZmTHDBKCMLPGVrTd1pO3dj3GNkhxYzOvZuv1WWYmT9nrYrkSr3RokmcChRKJ+N7wNCVhXd60QiKx+xcM2hyyzEwCKSWphkQxJ/iu8BZmCIZ8Jo3MjksjsahGT/AUoF0Gf5X+iK8RtIzzia8EUmvSL1k4hNjmPpWHBQyiCNWlxUPVy9EQDNUoIXL64IghRsaQ9EzD2kuBTdy+lwZKE65VGsG2RsFwdctHyJtwuVdRQg87aSocjVnxBld0QfhueEc4/OZSS9smxLqwso6ygEJ8TzvoQSK/XQd8DWfdDRGnRV9g=:PU9y09qqwHOCtiHn1H/8PA=="
+    const val token: String =
+        "1RS6pYYkQjrnfkvnkh4/NIiSSnGRNABboql7ZOo3OZ6mK0EfMTqhEMazc/WbPumjmloW5AxwPcqtnLRrovttzxfmJbRNzP38S/NhfT4tb6jAlzQ8jtjkXcF0gQN5Si9c+rMQwHDhFirehCOk69PKuUxrTDsqlQwsYHxkv53wAMhnwJAcTptD4RO/qmh/FMHXEIZXJo4UtLYWXxfhy/QuR1nUtc5ZzBk7N2WlghCTL+PCJGlyAT0qb0suafQ2hbvY3NGMc9GN78Nb0qNoXMLDLbQRkjVRbAen0Nt6EIkmd83TTJwGNnIzR2j/t2IS0f65pR0bGxcYvKvpl8T2I1y8VfJDzz7ofTQCFf2rQ7Es57jBeXa9XloeLEmyp6cClo37SsaZeX/kqvDCxUs1sV0IJgd72FDKx6QnLuhlSitzvArFb4rS1/LV7A40FYGkbcfytfkHueQiBooE/UhYen7vrISZS5xmu5KnOW+fICTZQkfmSlLNYJpvHdP9vRxX2V9/lH4pjwA+oymz49ZQ9n0Ijcl2ikip6Y8wJJ3zerLezXpJ1S0LEgYu4e9N56RaeM/LZGmO1FU+/Xgo1smxpFicrNcxb3kPyvDzrmo3fTZXGXgTM2eSPSQeBPEHv9jN2UK9uAoGZxQNDv2zGsZ0p//2/aweWoZ1xhy/zADyUyXv86FRHEkx+ML0TpwfIEdf59sTwrzbyW40PW9KynHG3sZwWVMDDPq192VxZ+aFmCKJm2Rt8S6R9lL5Gf8RCrYJoJRfL6/Ug7U5/fEBINCIRQfR7QTmTuATtJhRwoJVds0jV/q/VI9ITV3n7aRZQhTKPuHcI65/VKJWjtyODiYcMempGcJtII+i1xYlgUc55e5L6BzEYLpzCvCvdnQyVc1SYB9oBPAZOiuyGaAwhoHf80BRZhLHq08Vdscjfpj9FNOIuOo=:0J0NekmTnHLSxbduJzzAQQ=="
 
 }
