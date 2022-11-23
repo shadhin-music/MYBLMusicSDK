@@ -47,6 +47,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
@@ -68,7 +69,7 @@ import java.io.Serializable
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
-    ItemClickListener {
+    ItemClickListener{
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -428,56 +429,59 @@ internal class SDKMainActivity : BaseActivity(),
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
             //  Log.e("TAG","CHECKING: "+ podcast)
-            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
-                    Bundle().apply {
-                        putSerializable(
-                            PatchItem,
-                            HomePatchItemModel(
-                                homePatchItem.Code,
-                                homePatchItem.ContentType,
-                                homePatchItem.Data,
-                                homePatchItem.Design,
-                                homePatchItem.Name,
-                                homePatchItem.Sort,
-                                homePatchItem.Total
-                            ) as Serializable
-                        )
-                        putSerializable(
-                            AppConstantUtils.PatchDetail,
-//                            HomePatchDetail(homePatchDetail.AlbumId,
-//                                homePatchDetail.AlbumImage,
-//                                homePatchDetail.AlbumName,
-//                                homePatchDetail.Artist,
-//                                homePatchDetail.ArtistId,
-//                                homePatchDetail.ArtistImage,
-//                                homePatchDetail.Banner,
-//                                homePatchDetail.ContentID,
-//                                homePatchDetail.ContentType,
-//                                homePatchDetail.CreateDate,
-//                                homePatchDetail.Duration,
-//                                homePatchDetail.Follower,
-//                                homePatchDetail.IsPaid,
-//                                homePatchDetail.NewBanner,
-//                                homePatchDetail.PlayCount,
-//                                homePatchDetail.PlayListId,
-//                                homePatchDetail.PlayListId,
-//                                homePatchDetail.PlayListImage,
-//                                homePatchDetail.PlayUrl,
-//                                homePatchDetail.RootId,
-//                                homePatchDetail.RootType,
-//                                homePatchDetail.Seekable,
-//                                homePatchDetail.TeaserUrl,
-//                                homePatchDetail.TrackType,
-//                                homePatchDetail.Type,
-//                                homePatchDetail.fav,
-//                                homePatchDetail.image,
-//                                homePatchDetail.imageWeb,
-//                                homePatchDetail.title) as Serializable
-                            homePatchDetail as Serializable
-                        )
-                    })
-            }
+//            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
+//                    Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
+//
+//                      //onPodcastClick(homePatchDetail,homePatchDetail)
+////                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+////                    Bundle().apply {
+////                        putSerializable(
+////                            PatchItem,
+////                            HomePatchItemModel(
+////                                homePatchItem.Code,
+////                                homePatchItem.ContentType,
+////                                homePatchItem.Data,
+////                                homePatchItem.Design,
+////                                homePatchItem.Name,
+////                                homePatchItem.Sort,
+////                                homePatchItem.Total
+////                            ) as Serializable
+////                        )
+////                        putSerializable(
+////                            AppConstantUtils.PatchDetail,
+//////                            HomePatchDetail(homePatchDetail.AlbumId,
+//////                                homePatchDetail.AlbumImage,
+//////                                homePatchDetail.AlbumName,
+//////                                homePatchDetail.Artist,
+//////                                homePatchDetail.ArtistId,
+//////                                homePatchDetail.ArtistImage,
+//////                                homePatchDetail.Banner,
+//////                                homePatchDetail.ContentID,
+//////                                homePatchDetail.ContentType,
+//////                                homePatchDetail.CreateDate,
+//////                                homePatchDetail.Duration,
+//////                                homePatchDetail.Follower,
+//////                                homePatchDetail.IsPaid,
+//////                                homePatchDetail.NewBanner,
+//////                                homePatchDetail.PlayCount,
+//////                                homePatchDetail.PlayListId,
+//////                                homePatchDetail.PlayListId,
+//////                                homePatchDetail.PlayListImage,
+//////                                homePatchDetail.PlayUrl,
+//////                                homePatchDetail.RootId,
+//////                                homePatchDetail.RootType,
+//////                                homePatchDetail.Seekable,
+//////                                homePatchDetail.TeaserUrl,
+//////                                homePatchDetail.TrackType,
+//////                                homePatchDetail.Type,
+//////                                homePatchDetail.fav,
+//////                                homePatchDetail.image,
+//////                                homePatchDetail.imageWeb,
+//////                                homePatchDetail.title) as Serializable
+////                            homePatchDetail as Serializable
+////                        )
+////                    })
+//            }
             when (homePatchDetail.content_Type?.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details

@@ -8,7 +8,7 @@ import java.io.Serializable
 
 
 @Keep
-internal class HomePatchDetailModel : IMusicModel, Serializable {
+class HomePatchDetailModel : IMusicModel, Serializable {
     @SerializedName("ContentID")
     @Expose
     override var content_Id: String = ""

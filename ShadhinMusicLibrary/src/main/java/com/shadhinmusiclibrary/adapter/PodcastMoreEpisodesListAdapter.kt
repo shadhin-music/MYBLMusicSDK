@@ -8,11 +8,11 @@ import android.widget.TextView
 
 
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 
 
 internal class PodcastMoreEpisodesListAdapter(
@@ -48,13 +48,13 @@ internal class PodcastMoreEpisodesListAdapter(
         fun bindItems(position: Int) {
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = episode[position].ImageUrl
+           // val url: String? = episode
 
-            textView.text = episode[position].Name
-
-            Glide.with(mContext)
-                .load(url.replace("<\$size\$>", "300"))
-                .into(imageView)
+//            textView.text = episode[position].
+//
+//            Glide.with(mContext)
+//                .load(url.replace("<\$size\$>", "300"))
+//                .into(imageView)
         }
     }
 }

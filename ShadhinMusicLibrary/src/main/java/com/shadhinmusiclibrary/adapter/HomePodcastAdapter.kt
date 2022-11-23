@@ -11,13 +11,15 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class HomePodcastAdapter(
     val homePatchItem: HomePatchItemModel,
-    private val homeCallBack: HomeCallBack
+    private val homeCallBack: HomeCallBack,
+    val podcastTrackClick : PodcastTrackCallback
 ) :
     RecyclerView.Adapter<HomePodcastAdapter.ViewHolder>() {
 
@@ -31,7 +33,8 @@ internal class HomePodcastAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.itemView.setOnClickListener {
-            homeCallBack.onClickItemAndAllItem(position, homePatchItem)
+            //homeCallBack.onClickItemAndAllItem(position, homePatchItem)
+            podcastTrackClick.onClickItem(homePatchItem.Data,position)
         }
     }
 

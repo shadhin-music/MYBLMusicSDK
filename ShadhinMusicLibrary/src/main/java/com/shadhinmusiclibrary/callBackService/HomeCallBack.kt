@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.callBackService
 
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
 
 internal interface HomeCallBack {

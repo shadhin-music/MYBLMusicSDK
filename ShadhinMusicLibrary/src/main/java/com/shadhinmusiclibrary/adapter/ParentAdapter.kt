@@ -16,15 +16,17 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.RBTDATAModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class ParentAdapter(
     var homeCallBack: HomeCallBack,
     val searchCb: SearchClickCallBack,
-    val downloadClickCallBack: DownloadClickCallBack
+    val downloadClickCallBack: DownloadClickCallBack, val podcastTrackClick: PodcastTrackCallback
     /*,val radioCallBack: RadioTrackCallBack*/
 ) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
@@ -222,12 +224,17 @@ internal class ParentAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HomePodcastAdapter(homePatchItem, homeCallBack)
+            recyclerView.adapter = HomePodcastAdapter(homePatchItem, homeCallBack, podcastTrackClick)
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 //PodcastDetailsFragment
                 homeCallBack.onClickSeeAll(homePatchItem)
             }
+/*            itemView.setOnClickListener {
+                Log.e("TAG", "URL1233444: " + homePatchItem.Data[absoluteAdapterPosition])
+                // homeCallBack.onClickItemPodcastEpisode()
+                podcastTrackClick.onClickItem(homePatchItem.Data,absoluteAdapterPosition)
+            }*/
         }
 
         private fun bindPopularAmarTunes(

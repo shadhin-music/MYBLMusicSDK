@@ -27,12 +27,13 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -40,6 +41,7 @@ import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -49,7 +51,7 @@ import java.io.Serializable
 internal class HomeFragment : BaseFragment(),
     HomeCallBack,
     SearchClickCallBack,
-    DownloadClickCallBack {
+    DownloadClickCallBack,PodcastTrackCallback {
 
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
@@ -217,9 +219,11 @@ internal class HomeFragment : BaseFragment(),
 
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
         if (dataAdapter == null) {
+            // Log.e("TAG", "URLRBT: "+ this.rbtData)
+
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this, this, this)
+            dataAdapter = ParentAdapter(this, this, this,this)
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -240,8 +244,15 @@ internal class HomeFragment : BaseFragment(),
                     super.onScrolled(recyclerView, dx, dy)
                 }
             })
+            //recyclerView.adapter=dataAdapter
+            val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+            concatAdapter = ConcatAdapter(config, dataAdapter)
+            recyclerView.adapter =  concatAdapter
+            //recyclerView.adapter =  dataAdapter
 
-            recyclerView.adapter = dataAdapter
+//            concatAdapter.removeAdapter(dataAdapter)
         }
         /* viewModelAmaraTunes.urlContent.observe(viewLifecycleOwner) { res ->
              if (res.status == Status.SUCCESS) {
@@ -252,16 +263,20 @@ internal class HomeFragment : BaseFragment(),
         homeData.let {
             it?.data?.let { it1 ->
                 dataAdapter?.setData(it1)
+                //dataAdapter?.notifyItemChanged(pageNum)
                 dataAdapter?.notifyDataSetChanged()
+                Log.e("TAG","PAGE NUMBER: "+ pageNum)
             }
         }
         if (homeData?.total == pageNum) {
             isLastPage = true
+            //Log.e("TAG","PAGE NUMBER: "+ pageNum)
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
-            recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+            concatAdapter.addAdapter(footerAdapter)
+            //recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         }
     }
 
@@ -490,4 +505,38 @@ internal class HomeFragment : BaseFragment(),
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
     }
-}
+
+    override fun onClickItem(mSongDetails: List<IMusicModel>, clickItemPosition: Int) {
+        Log.e("podcast", "clickItemPosition "+mSongDetails[clickItemPosition].titleName)
+/*        if (playerViewModel.currentMusic != null &&
+            (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
+        ) {
+            if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+                playerViewModel.skipToQueueItem(clickItemPosition)
+            } else {
+                playerViewModel.togglePlayPause()
+            }
+        } else {
+            playItem(
+                mSongDetails as MutableList<IMusicModel>,
+                clickItemPosition
+            )
+        }*/
+
+/*        playItem(
+            mSongDetails as MutableList<IMusicModel>,
+            clickItemPosition
+        )*/
+        setMusicPlayerInitData(mSongDetails as MutableList<IMusicModel>, clickItemPosition)
+    }
+
+
+    }
+
+//    override fun podcastTrackClick(homePatchItem: HomePatchItemModel) {
+//     Log.e("TAG","DATA: "+ homePatchItem)
+//    }
+
+
+
+
