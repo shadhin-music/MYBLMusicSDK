@@ -245,14 +245,14 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun searchFragmentAccess() {
-  /*      val patch = intent.extras!!.getBundle(PatchItem)!!
+        /*      val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItem
 
 */
         setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
             Bundle().apply {})
 
-
+    }
     private fun downloadFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
@@ -2089,4 +2089,5 @@ internal class SDKMainActivity : BaseActivity(),
                 .show()
         }
     }
+
 }

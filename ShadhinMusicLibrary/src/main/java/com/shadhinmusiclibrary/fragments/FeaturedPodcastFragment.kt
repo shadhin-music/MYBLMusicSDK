@@ -113,7 +113,7 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
         viewModel.fetchFeaturedPodcastJC(false)
         viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
-               podcastJCAdapter.setData(
+                podcastJCAdapter.setData(
                     response?.data?.data?.get(1)?.Data,
                     response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
                 )
@@ -121,12 +121,12 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
             } else {
                 progressBar.visibility = View.GONE
             }
-        }
-                if(response.data?.data?.get(1)?.Data !=null) {
-                    podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
-                        response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
-                }
+
+            if (response.data?.data?.get(1)?.Data != null) {
+                podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
+                    response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
             }
+        }
           //  else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
@@ -145,7 +145,7 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 //                }
 //            }
 
-    }
+
 
     override fun onRootClickItem(
         episode: MutableList<FeaturedPodcastDetailsModel>,

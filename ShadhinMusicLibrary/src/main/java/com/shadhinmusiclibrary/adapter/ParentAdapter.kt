@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
@@ -77,6 +78,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
+
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -109,7 +111,7 @@ internal class ParentAdapter(
 //        if (this.homeListData.isEmpty()) {
 //            for (item in data.indices) {
 //                search =
-//                    HomePatchItem("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+//                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
 //              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
 //            }
 //            this.homeListData.add(search!!)
@@ -118,11 +120,15 @@ internal class ParentAdapter(
 //
 //        }
 
-        if (this.homeListData.size >= 3 && downloadNotAdded){
+        if (this.homeListData.size >= 2 && downloadNotAdded){
             downloadNotAdded = false
             download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
+
         }
+        this.homeListData.addAll(data)
+        val sizeNew = this.homeListData.size
+        notifyItemRangeChanged(size, sizeNew)
 //        var exists :Boolean = false
 //        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
 //
@@ -150,9 +156,7 @@ internal class ParentAdapter(
 //
 //        }
 
-        this.homeListData.addAll(data)
-        val sizeNew = this.homeListData.size
-        notifyItemRangeChanged(size, sizeNew)
+
 
 
     }
@@ -353,7 +357,7 @@ internal class ParentAdapter(
 
         fun bind(homePatchItemModel: HomePatchItemModel?) {
             when (homePatchItemModel?.Design) {
-                "search" -> bindSearch(homePatchItemModel)
+//                "search" -> bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
