@@ -49,14 +49,14 @@ internal class RadioFragment : BaseFragment(), RadioTrackCallBack {
 
     private fun initialize() {
         setupViewModel()
-        fetchOnlineData("20148")
+        fetchOnlineData()
     }
 
     private fun setupViewModel() {
         albumVM = ViewModelProvider(this, injector.factoryAlbumVM)[AlbumViewModel::class.java]
     }
 
-    private fun fetchOnlineData(playlistId: String) {
+    private fun fetchOnlineData() {
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
