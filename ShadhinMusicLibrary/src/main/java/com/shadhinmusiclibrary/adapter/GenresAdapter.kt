@@ -38,7 +38,7 @@ internal class GenresAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
         fun bindItems(homePathitem: HomePatchDetailModel) {
-            val url: String = homePathitem.image
+            val url: String = homePathitem.imageUrl ?: ""
             val imageView = itemView.findViewById(R.id.image) as ImageView
             Glide.with(context)
                 .load(url.replace(".jpg", "_mybl.jpg"))

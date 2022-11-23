@@ -105,7 +105,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
         artistTrackAdapter = ArtistTrackAdapter(this, this, cacheRepository)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
-            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
+            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.artist_Id)
         footerAdapter = HomeFooterAdapter()
         if (argHomePatchItem?.ContentType == "P") {
             parentAdapter = ConcatAdapter(
@@ -162,7 +162,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
 
     private fun observeData() {
         argHomePatchDetail?.let {
-            viewModel.fetchArtistBioData(it.Artist)
+            viewModel.fetchArtistBioData(it.artistName ?: "")
         }
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.artistBioContent.observe(viewLifecycleOwner) { response ->
@@ -174,9 +174,8 @@ internal class ArtistDetailsFragment : BaseFragment(),
             }
         }
         argHomePatchDetail.let {
-            it?.ArtistId?.let { it1 ->
-                it1
-                    .let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
+            it?.artist_Id?.let { it1 ->
+                it1.let { it2 -> viewModelArtistBanner.fetchArtistBannerData(it2) }
             }
             viewModelArtistBanner.artistBannerContent.observe(viewLifecycleOwner) { response ->
                 if (response.status == Status.SUCCESS) {
@@ -188,7 +187,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
             }
         }
         argHomePatchDetail?.let { homeDetails ->
-            viewModelArtistSong.fetchArtistSongData(homeDetails.ArtistId)
+            viewModelArtistSong.fetchArtistSongData(homeDetails.artist_Id ?: "")
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     if (res.data?.data != null) {
@@ -205,7 +204,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
             }
         }
         argHomePatchDetail?.let {
-            viewModelArtistAlbum.fetchArtistAlbum("r", it.ArtistId)
+            viewModelArtistAlbum.fetchArtistAlbum("r", it.artist_Id ?: "")
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     artistAlbumsAdapter.setData(res.data)
@@ -236,12 +235,12 @@ internal class ArtistDetailsFragment : BaseFragment(),
     ) {
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
-        if (argHomePatchDetail?.ContentID.isNullOrEmpty()) {
-            argHomePatchDetail?.ContentID = argHomePatchDetail?.ArtistId ?: ""
+        if (argHomePatchDetail?.content_Id.isNullOrEmpty()) {
+            argHomePatchDetail?.content_Id = argHomePatchDetail?.artist_Id ?: ""
         }
         artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
-        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
+        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.artist_Id
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
 

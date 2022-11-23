@@ -136,46 +136,18 @@ internal object UtilHelper {
         }
     }
 
-    fun getEmptyHomePatchDetail() = HomePatchDetailModel(
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        false,
-        "",
-        0,
-        "",
-        "",
-        "",
-        "",
-        "0",
-        "0",
-        true,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-    )
+    fun getEmptyHomePatchDetail() = HomePatchDetailModel().apply {
+        isSeekAble = true
+    }
 
     fun getSongDetailAndRootData(
         mSongDet: SongDetailModel,
         rootPatch: HomePatchDetailModel
     ): SongDetailModel {
         mSongDet.apply {
-            rootContentId = rootPatch.ContentID
-            rootContentType = rootPatch.ContentType
-            rootImage = rootPatch.image
+            rootContentId = rootPatch.content_Id
+            rootContentType = rootPatch.content_Type
+            rootImage = rootPatch.imageUrl
         }
         return mSongDet
     }
@@ -246,9 +218,9 @@ internal object UtilHelper {
         mSongDet.apply {
             mSongDet.apply {
                 artist_Id = album_Id
-                rootContentId = rootPatch.ContentID
-                rootContentType = rootPatch.ContentType
-                rootImage = rootPatch.image
+                rootContentId = rootPatch.content_Id
+                rootContentType = rootPatch.content_Type
+                rootImage = rootPatch.imageUrl
                 isSeekAble = true
             }
             return mSongDet
@@ -260,9 +232,9 @@ internal object UtilHelper {
         rootPatch: HomePatchDetailModel
     ): SongTrackModel {
         mSongTrack.apply {
-            rootContentId = rootPatch.ContentID
-            rootContentType = rootPatch.ContentType
-            rootImage = rootPatch.image
+            rootContentId = rootPatch.content_Id
+            rootContentType = rootPatch.content_Type
+            rootImage = rootPatch.imageUrl
             isSeekAble = true
         }
         return mSongTrack
@@ -300,105 +272,42 @@ internal object UtilHelper {
             }
     }
 
-    fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel) = HomePatchDetailModel(
-        "0",
-        "",
-        "",
-        podcastDetails.ArtistName,
-        podcastDetails.Id,
-        "",
-        "",
-        podcastDetails.Id,
-        "A",
-        "",
-        "0",
-        podcastDetails.Follower,
-        false,
-        "",
-        0,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        false,
-        "",
-        "",
-        "",
-        "",
-        podcastDetails.Image,
-        "",
-        ""
-    )
+    fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel) =
+        HomePatchDetailModel().apply {
+            artistName = podcastDetails.ArtistName
+            content_Id = podcastDetails.Id
+            album_Id = podcastDetails.Id
+            content_Type = "A"
+            fav = "0"
+            podcastDetails.Follower
+            podcastDetails.Image
+        }
 
-    fun getHomePatchDetailToSearchDataModel(searchData: IMusicModel) = HomePatchDetailModel(
-        AlbumId = searchData.album_Id ?: "",
-        ArtistId = searchData.content_Id ?: "",
-        ContentID = searchData.content_Id ?: "",
-        ContentType = searchData.content_Type ?: "",
-        PlayUrl = searchData.playingUrl ?: "",
-        AlbumName = searchData.titleName ?: "",
-        AlbumImage = "",
-        fav = "",
-        Banner = "",
-        Duration = searchData.total_duration ?: "",
-        TrackType = "",
-        image = searchData.imageUrl ?: "",
-        ArtistImage = "",
-        Artist = searchData.artistName ?: "",
-        CreateDate = "",
-        Follower = "",
-        imageWeb = "",
-        IsPaid = false,
-        NewBanner = "",
-        PlayCount = 0,
-        PlayListId = "",
-        PlayListImage = "",
-        PlayListName = "",
-        RootId = "",
-        RootType = "",
-        Seekable = false,
-        TeaserUrl = "",
-        title = searchData.titleName ?: "",
-        Type = ""
-    )
+    fun getHomePatchDetailToSearchDataModel(searchData: IMusicModel) =
+        HomePatchDetailModel().apply {
+            album_Id = searchData.album_Id ?: ""
+            artist_Id = searchData.content_Id ?: ""
+            content_Id = searchData.content_Id ?: ""
+            content_Type = searchData.content_Type ?: ""
+            playingUrl = searchData.playingUrl ?: ""
+            album_Name = searchData.titleName ?: ""
+            total_duration = searchData.total_duration ?: ""
+            imageUrl = searchData.imageUrl ?: ""
+            artistName = searchData.artistName ?: ""
+            isSeekAble = false
+            titleName = searchData.titleName ?: ""
+        }
 
     fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItemModel {
         val mPatchDetail = mutableListOf<HomePatchDetailModel>()
         for (patchItem in data) {
             mPatchDetail.add(
-                HomePatchDetailModel(
-                    "0",
-                    "",
-                    "",
-                    patchItem.ArtistName,
-                    patchItem.Id,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "0",
-                    patchItem.Follower,
-                    false,
-                    "",
-                    0,
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    false,
-                    "",
-                    "",
-                    "",
-                    "",
-                    patchItem.Image,
-                    "",
-                    ""
-                )
+                HomePatchDetailModel().apply {
+                    titleName = patchItem.ArtistName
+                    content_Id = patchItem.Id
+                    follower = patchItem.Follower
+                    imageUrl = patchItem.Image
+                }
             )
         }
         return HomePatchItemModel(
@@ -414,109 +323,45 @@ internal object UtilHelper {
 
     fun getHomePatchDetailToAlbumModel(albumModel: ArtistAlbumModelData): HomePatchDetailModel {
         albumModel.apply {
-            return HomePatchDetailModel(
-                AlbumId = album_Id ?: "",
-                ArtistId = album_Id ?: "",
-                ContentID = content_Id ?: "",
-                ContentType = content_Type ?: "",
-                PlayUrl = playingUrl ?: "",
-                AlbumName = titleName ?: "",
-                AlbumImage = "",
-                fav = fav ?: "",
-                Banner = "",
-                Duration = total_duration ?: "",
-                TrackType = "",
-                image = imageUrl ?: "",
-                ArtistImage = "",
-                Artist = artistName ?: "",
-                CreateDate = "",
-                Follower = "",
-                imageWeb = "",
-                IsPaid = false,
-                NewBanner = "",
-                PlayCount = 0,
-                PlayListId = "",
-                PlayListImage = "",
-                PlayListName = "",
-                RootId = "",
-                RootType = "",
-                Seekable = false,
-                TeaserUrl = "",
-                title = "",
-                Type = ""
-            )
+            return HomePatchDetailModel().apply {
+                album_Id = album_Id ?: ""
+                artist_Id = album_Id ?: ""
+                content_Id = content_Id
+                content_Type = content_Type ?: ""
+                playingUrl = playingUrl ?: ""
+                album_Name = titleName ?: ""
+                total_duration = total_duration ?: ""
+                imageUrl = imageUrl ?: ""
+                artistName = artistName ?: ""
+            }
         }
     }
 
     fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetailModel {
         songDetail.apply {
-            return HomePatchDetailModel(
-                AlbumId = album_Id ?: content_Id!!,
-                ArtistId = artist_Id ?: "",
-                ContentID = content_Id ?: "",
-                ContentType = "",
-                PlayUrl = "",
-                AlbumName = "",
-                AlbumImage = "",
-                fav = "",
-                Banner = "",
-                Duration = "",
-                TrackType = "",
-                image = imageUrl ?: "",
-                ArtistImage = "",
-                Artist = artistName ?: "",
-                CreateDate = "",
-                Follower = "",
-                imageWeb = "",
-                IsPaid = false,
-                NewBanner = "",
-                PlayCount = 0,
-                PlayListId = "",
-                PlayListImage = "",
-                PlayListName = "",
-                RootId = "",
-                RootType = "",
-                Seekable = false,
-                TeaserUrl = "",
-                title = titleName ?: "",
-                Type = ""
-            )
+            return HomePatchDetailModel().apply {
+                album_Id = album_Id ?: content_Id
+                artist_Id = artist_Id ?: ""
+                content_Id = content_Id ?: ""
+                imageUrl = imageUrl ?: ""
+                artistName = artistName ?: ""
+                titleName = titleName ?: ""
+            }
         }
     }
 
     fun getHomePatchDetailToFeaturedPodcastDetails(episode: FeaturedPodcastDetailsModel): HomePatchDetailModel {
         episode.apply {
-            return HomePatchDetailModel(
-                AlbumId = EpisodeId,
-                AlbumImage = "",
-                AlbumName = EpisodeName,
-                Artist = "",
-                ArtistId = "",
-                ArtistImage = "",
-                Banner = "",
-                ContentID = EpisodeId,
-                ContentType = ContentType,
-                CreateDate = "",
-                Duration = "",
-                Follower = "",
-                IsPaid = false,
-                NewBanner = "",
-                PlayCount = 0,
-                PlayListId = "",
-                PlayListImage = "",
-                PlayListName = "",
-                PlayUrl = PlayUrl,
-                RootId = "",
-                RootType = "",
-                Seekable = false,
-                TeaserUrl = "",
-                TrackType = "",
-                Type = "",
-                fav = "",
-                image = ImageUrl,
-                imageWeb = ImageUrl,
-                title = TrackName
-            )
+            return HomePatchDetailModel().apply {
+                album_Id = EpisodeId
+                album_Name = EpisodeName
+                content_Id = EpisodeId
+                content_Type = ContentType
+                playingUrl = PlayUrl
+                imageUrl = ImageUrl
+                imageWeb = ImageUrl
+                titleName = TrackName
+            }
         }
     }
 

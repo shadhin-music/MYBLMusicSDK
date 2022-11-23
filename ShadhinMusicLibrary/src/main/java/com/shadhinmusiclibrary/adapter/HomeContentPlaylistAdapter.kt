@@ -48,8 +48,8 @@ internal class HomeContentPlaylistAdapter(
 //            }
             val imageView: ImageView = itemView.findViewById(R.id.image)
             // val textView:TextView = itemView.findViewById(R.id.txt_title)
-            val url: String = homePatchItem.Data[absoluteAdapterPosition].image
-            val changeURL = url.replace(".jpg", "_mybl.jpg")
+            val url: String? = homePatchItem.Data[absoluteAdapterPosition].imageUrl
+            val changeURL = url?.replace(".jpg", "_mybl.jpg")
 //                val newURL= changeURL+"_mybl.jpg"
             // val textArtist:TextView = itemView.findViewById(R.id.txt_name)
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)

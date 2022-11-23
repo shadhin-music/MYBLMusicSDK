@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.CircleImageView
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PopularArtistAdapter(
     val homePatchItem1: HomePatchItemModel,
@@ -40,12 +41,13 @@ internal class PopularArtistAdapter(
         fun bindItems(size: Int) {
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
-            val url: String = homePatchItem1.Data[absoluteAdapterPosition].getImageUrl300Size()
+            val url: String? = homePatchItem1.Data[absoluteAdapterPosition].imageUrl
+            //Todo only url
             Glide.with(context)
-                .load(url)
+                .load(UtilHelper.getImageUrlSize300(url!!))
                 .into(imageView)
 
-            textViewName.text = homePatchItem1.Data[absoluteAdapterPosition].Artist
+            textViewName.text = homePatchItem1.Data[absoluteAdapterPosition].artistName
             itemView.setOnClickListener {
 //                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 //                manager.beginTransaction()

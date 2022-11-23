@@ -78,36 +78,36 @@ internal data class VideoModel(
 ) : Parcelable {
 
     fun setData(data: HomePatchDetailModel) {
-        albumId = data.AlbumId
-        albumImage = data.AlbumImage
-        albumName = data.AlbumName
-        artist = data.Artist
-        artistId = data.ArtistId
-        artistImage = data.ArtistImage
-        banner = data.Banner
+        albumId = data.album_Id
+        albumImage = data.albumImage.toString()
+        albumName = data.album_Name
+        artist = data.artistName
+        artistId = data.artist_Id
+        artistImage = data.artistImage.toString()
+        banner = data.bannerImage
         clientValue = 2
-        contentID = data.ContentID
-        contentType = data.ContentType
-        createDate = data.CreateDate
-        duration = data.Duration
+        contentID = data.content_Id
+        contentType = data.content_Type
+        createDate = data.createDate.toString()
+        duration = data.total_duration
         fav = data.fav
-        follower = data.Follower
-        image = data.image
-        imageWeb = data.imageWeb
-        isPaid = data.IsPaid
-        newBanner = data.NewBanner
-        playCount = data.PlayCount
-        playListId = data.PlayListId
-        playListImage = data.PlayListImage
-        playListName = data.PlayListName
-        playUrl = data.PlayUrl
-        rootId = data.RootId
-        rootType = data.RootType
-        seekable = data.Seekable
-        teaserUrl = data.TeaserUrl
-        title = data.title
-        trackType = data.TrackType
-        type = data.Type
+        follower = data.follower.toString()
+        image = data.imageUrl
+        imageWeb = data.imageWeb.toString()
+        isPaid = data.isPaid
+        newBanner = data.newBanner
+        playCount = data.playCount
+        playListId = data.playListId.toString()
+        playListImage = data.playListImage.toString()
+        playListName = data.playListName.toString()
+        playUrl = data.playingUrl
+        rootId = data.rootContentId
+        rootType = data.rootContentType
+        seekable = data.isSeekAble
+        teaserUrl = data.teaserUrl
+        title = data.titleName
+        trackType = data.trackType
+        type = data.type
     }
 
     fun setData2(data: LatestVideoModelDataModel) {

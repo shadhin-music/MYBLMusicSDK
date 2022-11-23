@@ -21,7 +21,7 @@ class RootAppActivity : AppCompatActivity() {
             if (mobileNm.isNotEmpty()) {
                 startActivity(Intent(this, AppActivity::class.java)
                     .apply {
-                        putExtra("mobile_number", "")
+                        putExtra("mobile_number", mobileNm)
                     })
             } else {
                 Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()

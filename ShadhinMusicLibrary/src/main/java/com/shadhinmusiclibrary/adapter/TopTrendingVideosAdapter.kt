@@ -18,6 +18,7 @@ import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class TopTrendingVideosAdapter(
@@ -49,14 +50,14 @@ internal class TopTrendingVideosAdapter(
             val textViewName = itemView.findViewById(R.id.txt_title) as TextView
             val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
             val imageView = itemView.findViewById(R.id.image) as ImageView
-            val url:String = homePatchItemModel.Data[position].image
-            textViewName.text= homePatchItemModel.Data[position].title
-            textViewArtist.text = homePatchItemModel.Data[absoluteAdapterPosition].Artist
-              Glide.with(itemView.context).load(url.replace("<\$size\$>", "300")).into(imageView)
+            val url: String = homePatchItemModel.Data[position].imageUrl ?: ""
+            textViewName.text = homePatchItemModel.Data[position].titleName
+            textViewArtist.text = homePatchItemModel.Data[absoluteAdapterPosition].artistName
+            Glide.with(itemView.context).load(UtilHelper.getImageUrlSize300(url)).into(imageView)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in  homePatchItemModel.Data){
+                for (item in homePatchItemModel.Data) {
                     val video = VideoModel()
                     video.setData(item)
                     videoArray.add(video)

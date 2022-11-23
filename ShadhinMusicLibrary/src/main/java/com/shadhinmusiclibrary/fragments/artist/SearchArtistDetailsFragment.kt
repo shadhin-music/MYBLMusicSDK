@@ -94,7 +94,7 @@ internal class SearchArtistDetailsFragment : BaseFragment(), HomeCallBack,
         searchartistTrackAdapter = SearchArtistTrackAdapter(this, this)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
-            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.ArtistId)
+            ArtistsYouMightLikeAdapter(argHomePatchItem, this, argHomePatchDetail?.artist_Id)
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(
             config,

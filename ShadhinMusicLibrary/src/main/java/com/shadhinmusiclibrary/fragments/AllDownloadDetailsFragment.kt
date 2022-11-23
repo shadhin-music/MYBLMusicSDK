@@ -50,6 +50,7 @@ import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 internal class AllDownloadDetailsFragment : BaseFragment(),
@@ -153,19 +154,15 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     artist_Id = mSongDetails.artist_Id
                 },
             argHomePatchItem,
-            HomePatchDetailModel(
-                "", "", "",
-                mSongDetails.artistName ?: "",
-                mSongDetails.artist_Id ?: "", "", "",
-                mSongDetails.content_Id ?: "",
-                mSongDetails.rootContentType ?: "",
-                "", "", "", false, "",
-                0, "", "", "",
-                mSongDetails.playingUrl ?: "", "", "",
-                false, "", "", "", "",
-                mSongDetails.imageUrl ?: "", "",
-                mSongDetails.titleName ?: ""
-            )
+            HomePatchDetailModel().apply {
+                artistName = mSongDetails.artistName ?: ""
+                artist_Id = mSongDetails.artist_Id ?: ""
+                content_Id = mSongDetails.content_Id ?: ""
+                rootContentType = mSongDetails.rootContentType ?: ""
+                playingUrl = mSongDetails.playingUrl ?: ""
+                imageUrl = mSongDetails.imageUrl ?: ""
+                titleName = mSongDetails.titleName ?: ""
+            }
         )
     }
 
@@ -368,13 +365,13 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = argHomePatchDetail?.image
+        val url = argHomePatchDetail?.imageUrl.toString()
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = argHomePatchDetail?.title
+        title?.text = argHomePatchDetail?.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
+            Glide.with(context).load(UtilHelper.getImageUrlSize300(url)).into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
@@ -548,37 +545,16 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mSongDetails.album_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.artistName ?: "",
-                        mSongDetails.artist_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.content_Id ?: "",
-                        mSongDetails.content_Type ?: "",
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.playingUrl ?: "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mSongDetails.imageUrl.toString(),
-                        "",
-                        mSongDetails.titleName.toString()
-                    ) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
+                        mSongDetails.artist_Id.toString()
+                        content_Id = mSongDetails.content_Id ?: ""
+                        content_Type = mSongDetails.content_Type ?: ""
+                        playingUrl = mSongDetails.playingUrl ?: ""
+                        imageUrl = mSongDetails.imageUrl.toString()
+                        titleName = mSongDetails.titleName.toString()
+                    } as Serializable
                 )
             })
     }

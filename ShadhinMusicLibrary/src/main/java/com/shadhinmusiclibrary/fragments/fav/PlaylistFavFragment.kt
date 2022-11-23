@@ -161,37 +161,14 @@ internal class PlaylistFavFragment : BaseFragment(),
                     album_Id = mSongDetails.album_Id
                 },
             argHomePatchItem,
-            HomePatchDetailModel(
-                "",
-                "",
-                "",
-                mSongDetails.artistName.toString(),
-                "",
-                "",
-                "",
-                mSongDetails.content_Id.toString(),
-                mSongDetails.content_Type.toString(),
-                "",
-                "",
-                "",
-                false,
-                "",
-                0,
-                "",
-                "",
-                "",
-                mSongDetails.playingUrl.toString(),
-                "",
-                "",
-                false,
-                "",
-                "",
-                "",
-                "",
-                mSongDetails.imageUrl.toString(),
-                "",
-                mSongDetails.titleName.toString()
-            )
+            HomePatchDetailModel().apply {
+                artistName = mSongDetails.artistName.toString()
+                content_Id = mSongDetails.content_Id.toString()
+                content_Type = mSongDetails.content_Type.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+            }
         )
     }
 
@@ -267,37 +244,16 @@ internal class PlaylistFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mfavData.album_Id.toString(),
-                        "",
-                        "",
-                        mfavData.artistName.toString(),
-                        mfavData.artist_Id.toString(),
-                        "",
-                        "",
-                        mfavData.content_Id ?: "",
-                        mfavData.content_Type.toString(),
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mfavData.playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mfavData.imageUrl.toString(),
-                        "",
-                        mfavData.titleName.toString()
-                    )
+                    HomePatchDetailModel().apply {
+                        album_Id = mfavData.album_Id.toString()
+                        artistName = mfavData.artistName.toString()
+                        artist_Id = mfavData.artist_Id.toString()
+                        content_Id = mfavData.content_Id
+                        content_Type = mfavData.content_Type.toString()
+                        playingUrl = mfavData.playingUrl.toString()
+                        imageUrl = mfavData.imageUrl.toString()
+                        titleName = mfavData.titleName.toString()
+                    } as Serializable
                 )
             })
     }
@@ -327,12 +283,13 @@ internal class PlaylistFavFragment : BaseFragment(),
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
 
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = argHomePatchDetail?.title
+        title?.text = argHomePatchDetail?.titleName
         val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         tvArtistName?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context)?.load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.image!!))
-                ?.into(image)
+            Glide.with(context)
+                .load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.imageUrl!!))
+                .into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
@@ -532,37 +489,16 @@ internal class PlaylistFavFragment : BaseFragment(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    HomePatchDetailModel(
-                        mSongDetails.album_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.artistName ?: "",
-                        mSongDetails.artist_Id.toString(),
-                        "",
-                        "",
-                        mSongDetails.content_Id ?: "",
-                        mSongDetails.content_Type ?: "",
-                        "",
-                        "",
-                        "",
-                        false,
-                        "",
-                        0,
-                        "",
-                        "",
-                        "",
-                        mSongDetails.playingUrl.toString(),
-                        "",
-                        "",
-                        false,
-                        "",
-                        "",
-                        "",
-                        "",
-                        mSongDetails.imageUrl.toString(),
-                        "",
-                        mSongDetails.titleName.toString()
-                    ) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        content_Id = mSongDetails.content_Id ?: ""
+                        content_Type = mSongDetails.content_Type ?: ""
+                        playingUrl = mSongDetails.playingUrl.toString()
+                        imageUrl = mSongDetails.imageUrl.toString()
+                        titleName = mSongDetails.titleName.toString()
+                    } as Serializable
                 )
             })
     }
