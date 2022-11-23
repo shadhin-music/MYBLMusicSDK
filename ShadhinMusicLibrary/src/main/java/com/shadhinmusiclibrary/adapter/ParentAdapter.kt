@@ -24,8 +24,7 @@ internal class ParentAdapter(
     val searchCb: SearchClickCallBack,
     val downloadClickCallBack: DownloadClickCallBack
     /*,val radioCallBack: RadioTrackCallBack*/
-) :
-    RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
+) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
 
     private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
     var search: HomePatchItemModel? = null
@@ -204,7 +203,7 @@ internal class ParentAdapter(
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItem.Name
             val image: ShapeableImageView = itemView.findViewById(R.id.image)
-            Glide.with(itemView.context).load(homePatchItem.Data[0].image).into(image)
+            Glide.with(itemView.context).load(homePatchItem.Data[0].imageUrl).into(image)
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 //  homeCallBack.onClickSeeAll(homePatchItem)

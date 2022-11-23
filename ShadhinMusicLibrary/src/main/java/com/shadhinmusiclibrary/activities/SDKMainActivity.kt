@@ -429,11 +429,11 @@ internal class SDKMainActivity : BaseActivity(),
         if (selectedIndex != null) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
-            val podcast: String = homePatchDetail.ContentType
+            val podcast: String = homePatchDetail.content_Type
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
             //  Log.e("TAG","CHECKING: "+ podcast)
-            if (homePatchDetail.ContentType.toUpperCase().contains("PD")) {
+            if (homePatchDetail.content_Type.toUpperCase().contains("PD")) {
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
                     Bundle().apply {
                         putSerializable(
