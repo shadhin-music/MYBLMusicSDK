@@ -88,7 +88,6 @@ object ShadhinMusicSdkCore {
         reqContext: Context,
         contentId: String
     ) {
-
         val aaa = RetrofitClient.getInstance(getOkHttpClient()).create(ApiService::class.java)
         val call: Call<APIResponse<MutableList<SongDetailModel>>> =
             aaa.fetchGetRadioListByContentById(contentId)
@@ -101,10 +100,11 @@ object ShadhinMusicSdkCore {
                     val listRadios = mutableListOf<SongDetailModel>()
                     for (songItem in response.body()?.data!!) {
                         listRadios.add(
-                            UtilHelper.getSongDetailAndRootData(
+                            UtilHelper.getRadioSong(
                                 songItem.apply {
                                     isSeekAble = false
-                                }, UtilHelper.getEmptyHomePatchDetail()
+                                    rootContentId = contentId
+                                }
                             )
                         )
                     }

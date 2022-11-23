@@ -10,12 +10,14 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.view_holder.BaseViewHolder
+import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class RadioTrackAdapter : RecyclerView.Adapter<RadioTrackAdapter.RadioTrackVH>() {
+internal class RadioTrackAdapter(private val radioCallback: RadioTrackCallBack) :
+    RecyclerView.Adapter<RadioTrackAdapter.RadioTrackVH>() {
+
     private var listRadioTrack: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RadioTrackVH {
@@ -27,9 +29,12 @@ internal class RadioTrackAdapter : RecyclerView.Adapter<RadioTrackAdapter.RadioT
 
     override fun onBindViewHolder(holder: RadioTrackVH, position: Int) {
         holder.onBind(position)
+        val radioTrackItem = listRadioTrack[position]
+        radioCallback.getCurrentVH(holder, listRadioTrack)
         holder.itemView.setOnClickListener {
-
+            radioCallback.onClickOpenRadio(radioTrackItem)
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -37,41 +42,47 @@ internal class RadioTrackAdapter : RecyclerView.Adapter<RadioTrackAdapter.RadioT
     }
 
     fun setRadioTrackData(
-        data: MutableList<SongDetailModel>,
-        rootPatch: HomePatchDetailModel,
-        mediaId: String?
+        dataRadios: MutableList<HomePatchDetailModel>,
+        mediaId: String?,
+        globalRootConId: String
     ) {
         this.listRadioTrack = mutableListOf()
-        for (songItem in data) {
+        for (songItem in dataRadios) {
             listRadioTrack.add(
-                UtilHelper.getSongDetailAndRootData(
-                    songItem.apply { isSeekAble = false },
-                    rootPatch
-                )
+//                UtilHelper.getHomeRadioSong(
+                songItem.apply {
+                    isSeekAble = false
+                    rootContentId = globalRootConId
+                }
+//                )
             )
         }
-
-//        if (mediaId != null) {
-//            setPlayingSong(mediaId)
-//        }
 
         notifyDataSetChanged()
     }
 
     inner class RadioTrackVH(itemView: View) : BaseViewHolder(itemView) {
-
         var ivRadioPlay: ImageView? = null
+        var rootId: String = ""
+        var sivRadioIcon: ShapeableImageView?
+        var tvRadioSongName: TextView?
+
+        init {
+            ivRadioPlay = itemView.findViewById(R.id.iv_radio_play)
+            sivRadioIcon = itemView.findViewById(R.id.siv_radio_icon)
+            tvRadioSongName = itemView.findViewById(R.id.tv_radio_song_name)
+
+        }
+
         override fun onBind(position: Int) {
             val mSongDetMod = listRadioTrack[position]
-            val sivRadioIcon: ShapeableImageView = itemView.findViewById(R.id.siv_radio_icon)
-            val tvRadioSongName: TextView = itemView.findViewById(R.id.tv_radio_song_name)
-//            val ivRadioFavorite: ImageView = itemView.findViewById(R.id.iv_radio_favorite)
-            ivRadioPlay = itemView.findViewById(R.id.iv_radio_play)
-
-            Glide.with(itemView.context)
-                .load(UtilHelper.getImageUrlSize300(mSongDetMod.imageUrl!!))
-                .into(sivRadioIcon)
-            tvRadioSongName.text = mSongDetMod.titleName
+            rootId = mSongDetMod.content_Id
+            sivRadioIcon?.let {
+                Glide.with(itemView.context)
+                    .load(UtilHelper.getImageUrlSize300(mSongDetMod.imageUrl!!))
+                    .into(it)
+            }
+            tvRadioSongName?.text = mSongDetMod.titleName
         }
     }
 }

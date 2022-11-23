@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.net.Uri
+import android.util.Log
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.fav.FavData
@@ -146,10 +147,35 @@ internal object UtilHelper {
     ): SongDetailModel {
         mSongDet.apply {
             rootContentId = rootPatch.content_Id
+            content_Id = rootPatch.content_Id
             rootContentType = rootPatch.content_Type
             rootImage = rootPatch.imageUrl
         }
         return mSongDet
+    }
+
+    fun getRadioSong(
+        mSongDet: SongDetailModel
+    ): SongDetailModel {
+        mSongDet.apply {
+            rootContentId = mSongDet.rootContentId
+            content_Id = mSongDet.content_Id
+            rootContentType = mSongDet.content_Type
+            rootImage = mSongDet.imageUrl
+        }
+        return mSongDet
+    }
+
+    fun getHomeRadioSong(
+        rootPatch: HomePatchDetailModel
+    ): IMusicModel {
+        return HomePatchDetailModel().apply {
+            content_Id = rootPatch.content_Id
+            rootContentId = rootPatch.rootContentId
+            content_Type = rootPatch.content_Type
+            imageUrl = rootPatch.imageUrl
+            titleName = rootPatch.titleName
+        }
     }
 
     fun getIMusicModelAndRootData(
