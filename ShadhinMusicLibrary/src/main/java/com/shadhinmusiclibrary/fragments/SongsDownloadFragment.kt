@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,6 +32,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -53,7 +55,8 @@ internal class SongsDownloadFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     DownloadBottomSheetDialogItemCallback,
     ItemClickListener {
-
+    private lateinit var parentAdapter: ConcatAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var navController: NavController
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var favViewModel: FavViewModel
@@ -91,7 +94,10 @@ internal class SongsDownloadFragment : BaseFragment(),
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = dataAdapter
+        val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
+        footerAdapter = HomeFooterAdapter()
+        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        recyclerView.adapter = parentAdapter
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
