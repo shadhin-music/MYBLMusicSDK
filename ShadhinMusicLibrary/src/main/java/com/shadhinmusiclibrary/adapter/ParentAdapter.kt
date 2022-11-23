@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
@@ -53,7 +55,9 @@ internal class ParentAdapter(
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
+
         return DataAdapterViewHolder(view)
+
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
@@ -64,7 +68,7 @@ internal class ParentAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (homeListData.get(position).Design) {
-            "search" -> VIEW_SEARCH
+//            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
@@ -73,6 +77,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
+
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -89,6 +94,8 @@ internal class ParentAdapter(
 //            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
 //            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
 //            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
+
+
             else -> {
                 -1
             }
@@ -100,33 +107,59 @@ internal class ParentAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItemModel>) {
         val size = this.homeListData.size
-        if (this.homeListData.isEmpty()) {
-            for (item in data.indices) {
-                search =
-                    HomePatchItemModel(
-                        "007",
-                        "searchBar",
-                        data[item].Data,
-                        "search",
-                        "search",
-                        0,
-                        0
-                    )
-                // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
-            }
-            this.homeListData.add(search!!)
-            //this.homeListData.add(download!!)
-        }
-        if (this.homeListData.size >= 3 && downloadNotAdded) {
+//        if (this.homeListData.isEmpty()) {
+//            for (item in data.indices) {
+//                search =
+//                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+//              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+//            }
+//            this.homeListData.add(search!!)
+//            //this.homeListData.add(download!!)
+//
+//
+//        }
+
+        if (this.homeListData.size >= 2 && downloadNotAdded){
             downloadNotAdded = false
             download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
-        }
 
+        }
         this.homeListData.addAll(data)
         val sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
+//        var exists :Boolean = false
+//        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
+//
+//            for (item in data.indices) {
+//                Log.e("TaG","Items: "+ data[item].ContentType)
+//                download = HomePatchItem("002",
+//                    "download",
+//                    listOf(),
+//                    "download",
+//                    "download",
+//                    0,
+//                    0)
+//                if (homeListData[item].ContentType==data[item].ContentType){
+//                    exists = true
+//                    Log.e("TaG","Items123: "+ exists)
+//
+//                }
+//            }
+//
+//            if(exists) {
+//                Log.e("TaG","Items321: "+ exists)
+//                this.homeListData.add(download!!)
+//
+//            }
+//
+//        }
+
+
+
+
     }
+
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
@@ -209,8 +242,9 @@ internal class ParentAdapter(
                 //  homeCallBack.onClickSeeAll(homePatchItem)
                 // Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
+            Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
-//                ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
+                ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
             }
         }
 
@@ -275,7 +309,7 @@ internal class ParentAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-            // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
+           // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
         }
 
         private fun bindMadeForYou() {
@@ -322,7 +356,7 @@ internal class ParentAdapter(
 
         fun bind(homePatchItemModel: HomePatchItemModel?) {
             when (homePatchItemModel?.Design) {
-                "search" -> bindSearch(homePatchItemModel)
+//                "search" -> bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)

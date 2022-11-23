@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.model.fav.FavData
     entities = [
         FavData::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 

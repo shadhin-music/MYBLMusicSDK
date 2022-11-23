@@ -24,8 +24,10 @@ import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import okhttp3.OkHttpClient
+
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
 /*
@@ -125,7 +127,6 @@ internal class Module(private val applicationContext: Context) {
             .client(getBaseClient())
             .build()
     }
-
     private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerToken(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
@@ -205,6 +206,7 @@ internal class Module(private val applicationContext: Context) {
 
     private val repositoryHomeContentRBT: AmartunesContentRepository =
         AmartunesContentRepository(getApiShadhinMusicServiceV5withToken())
+
 
     private val repositoryCreatePlaylist: CreatePlaylistRepository =
         CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())

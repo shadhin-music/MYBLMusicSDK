@@ -115,7 +115,7 @@ internal class HomeFragment : BaseFragment(),
             if (res.data != null)
                 cacheRepository.insertFavoriteContent(res.data)
 
-            homeViewModel.fetchHomeData(pageNum, false)
+            //homeViewModel.fetchHomeData(pageNum, false)
 
             favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { resFavPod ->
                 if (resFavPod != null)
