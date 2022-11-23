@@ -1,5 +1,9 @@
 package com.shadhinmusiclibrary.callBackService
 
-interface RadioTrackCallBack {
-    fun onClickOpenRadio(contentId: String)
+import androidx.recyclerview.widget.RecyclerView
+import com.shadhinmusiclibrary.data.IMusicModel
+
+internal interface RadioTrackCallBack {
+    fun onClickOpenRadio(currentSong: IMusicModel)
+    fun getCurrentVH(currentVH: RecyclerView.ViewHolder, songDetails: MutableList<IMusicModel>)
 }

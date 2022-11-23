@@ -47,4 +47,12 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
             ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_play_linear)
         }
     }
+
+    fun playPauseStateBlack(playing: Boolean, ivPlayPause: ImageView) {
+        if (playing) {
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_baseline_pause_circle_filled_40)
+        } else {
+            ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_circle_filled_40)
+        }
+    }
 }

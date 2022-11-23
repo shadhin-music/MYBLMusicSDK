@@ -39,8 +39,7 @@ internal interface ApiService {
     @GET("Artist/ArtistPlayList")
     suspend fun fetchArtistBannerData(
         @Query("id") id: String?,
-
-        ): ArtistBannerModel
+    ): ArtistBannerModel
 
     @GET("Artist/GetArtistContent")
     suspend fun fetchArtistSongs(
@@ -57,6 +56,9 @@ internal interface ApiService {
     suspend fun fetchGetPlaylistContentById(
         @Query("id") id: String,
     ): APIResponse<MutableList<SongDetailModel>>
+
+    @GET("mybl/getradiosdataall")
+    suspend fun fetchGetAllRadio(@Header("Authorization") token: String): APIResponse<MutableList<HomePatchDetailModel>>
 
     @GET("Playlist/GetPlaylistContentById")
     fun fetchGetRadioListByContentById(

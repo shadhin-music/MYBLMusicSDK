@@ -10,17 +10,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.RadioTrackAdapter
+import com.shadhinmusiclibrary.callBackService.RadioTrackCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
-import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class RadioFragment : BaseFragment() {
+internal class RadioFragment : BaseFragment(), RadioTrackCallBack {
 
     private lateinit var albumVM: AlbumViewModel
     private lateinit var radioTrackAdapter: RadioTrackAdapter
-
+    private var globalRootContentId = ""
     private lateinit var parentRecycler: RecyclerView
 
     override fun onCreateView(
@@ -32,7 +35,7 @@ internal class RadioFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        radioTrackAdapter = RadioTrackAdapter()
+        radioTrackAdapter = RadioTrackAdapter(this)
         initialize()
 
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -58,13 +61,13 @@ internal class RadioFragment : BaseFragment() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        albumVM.fetchPlaylistContent(playlistId)
-        albumVM.albumContent.observe(viewLifecycleOwner) { res ->
+        albumVM.fetchGetAllRadio()
+        albumVM.radiosContent.observe(viewLifecycleOwner) { res ->
             if (res.data?.data != null && res.status == Status.SUCCESS) {
                 radioTrackAdapter.setRadioTrackData(
                     res.data.data,
-                    UtilHelper.getEmptyHomePatchDetail(),
-                    ""
+                    "",
+                    globalRootContentId
                 )
                 progressBar.visibility = View.GONE
             } else {
@@ -73,5 +76,54 @@ internal class RadioFragment : BaseFragment() {
         }
         parentRecycler.layoutManager = layoutManager
         parentRecycler.adapter = radioTrackAdapter
+    }
+
+    override fun onClickOpenRadio(currentSong: IMusicModel) {
+        globalRootContentId = currentSong.content_Id
+        if (playerViewModel.currentMusic != null) {
+            if ((globalRootContentId == playerViewModel.currentMusic?.rootId)) {
+                playerViewModel.togglePlayPause()
+            } else {
+                ShadhinMusicSdkCore.openRadio(requireContext(), globalRootContentId)
+            }
+        } else {
+            ShadhinMusicSdkCore.openRadio(requireContext(), globalRootContentId)
+        }
+    }
+
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        songDetails: MutableList<IMusicModel>
+    ) {
+        val radioTrackVH = currentVH as RadioTrackAdapter.RadioTrackVH
+        if (songDetails.size > 0 && isAdded) {
+            //DO NOT USE requireActivity()
+            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
+                if (itMusic != null) {
+                    if (globalRootContentId.isEmpty()) {
+                        globalRootContentId = itMusic.rootId ?: ""
+                    }
+                    if (radioTrackVH.rootId == globalRootContentId) {
+                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
+                            if (itPla != null && radioTrackVH.rootId == globalRootContentId) {
+                                radioTrackVH.ivRadioPlay?.let {
+                                    playPauseStateBlack(
+                                        itPla.isPlaying,
+                                        it
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        radioTrackVH.ivRadioPlay?.let {
+                            playPauseStateBlack(
+                                false,
+                                it
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
