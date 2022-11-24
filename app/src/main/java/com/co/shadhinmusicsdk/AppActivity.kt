@@ -1,5 +1,6 @@
 package com.co.shadhinmusicsdk
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         ShadhinMusicSdkCore.initializeSDK(applicationContext, TOKEN, this)
 
+        val data = intent.extras
+        data?.getString("mobile_number")
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {
 //            ShadhinMusicSdkCore.openMusic(this)

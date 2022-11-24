@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.co.shadhinmusicsdk.data.AppApiService
+import com.co.shadhinmusicsdk.data.model.ClientService
 
 class RootAppActivity : AppCompatActivity() {
     @SuppressLint("ShowToast")
@@ -19,6 +21,9 @@ class RootAppActivity : AppCompatActivity() {
         val mobileNm = etMobileNumber.text
         btnHomeFrag.setOnClickListener {
             if (mobileNm.isNotEmpty()) {
+                val callApi = ClientService.getRetrofitBaseService().create(AppApiService::class.java)
+
+
                 startActivity(Intent(this, AppActivity::class.java)
                     .apply {
                         putExtra("mobile_number", mobileNm)
