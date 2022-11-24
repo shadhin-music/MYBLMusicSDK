@@ -1,6 +1,5 @@
 package com.co.shadhinmusicsdk
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +26,6 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
 //        buttonHome.setOnClickListener {
 //            ShadhinMusicSdkCore.openMusic(this)
 //        }
-
 //        val buttonHome:Button = findViewById(R.id.buttonHome)
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
@@ -69,8 +67,6 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         viewPager.offscreenPageLimit = 2
         val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
-
-
     }
 
     override fun onDestroy() {
