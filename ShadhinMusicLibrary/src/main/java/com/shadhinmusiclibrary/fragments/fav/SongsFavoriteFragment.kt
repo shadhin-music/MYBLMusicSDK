@@ -63,7 +63,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
     private lateinit var favViewModel: FavViewModel
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
-    private lateinit var dataAdapter: FavoriteSongsAdapter
+    private lateinit var favoriteSongsAdapter: FavoriteSongsAdapter
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     override fun onCreateView(
@@ -90,23 +90,31 @@ internal class SongsFavoriteFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter =
-            cacheRepository.getSongsFavoriteContent()?.let {
-                FavoriteSongsAdapter(
-                    it.toMutableList(),
-                    this,
-                    this,
-                    cacheRepository
-                )
-            }!!
+        favoriteSongsAdapter = FavoriteSongsAdapter(this, this, cacheRepository)
+
+        cacheRepository.getSongsFavoriteContent()?.let {
+            favoriteSongsAdapter.setData(
+                it.toMutableList(),
+                argHomePatchDetail ?: HomePatchDetailModel(),
+                playerViewModel.currentMusic?.mediaId
+            )
+        }!!
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, favoriteSongsAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    favoriteSongsAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -220,11 +228,11 @@ internal class SongsFavoriteFragment : BaseFragment(),
                     }
                 }
                 "DELETED" -> {
-                    dataAdapter.notifyDataSetChanged()
+                    favoriteSongsAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
-                    dataAdapter.notifyDataSetChanged()
+                    favoriteSongsAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()

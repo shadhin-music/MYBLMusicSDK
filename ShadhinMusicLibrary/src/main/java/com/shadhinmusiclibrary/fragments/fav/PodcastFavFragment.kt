@@ -26,6 +26,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -34,8 +35,9 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 internal class PodcastFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     favItemClickCallback {
+
     private lateinit var navController: NavController
-    private lateinit var dataAdapter: FavoriteSongsAdapter
+    private lateinit var favoriteSongsAdapter: FavoriteSongsAdapter
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
 
@@ -54,16 +56,30 @@ internal class PodcastFavFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter =
-            cacheRepository.getPodcastFavContent()
-                ?.let { FavoriteSongsAdapter(it.toMutableList(), this, this, cacheRepository) }!!
+        favoriteSongsAdapter = FavoriteSongsAdapter(this, this, cacheRepository)
+        cacheRepository.getPodcastFavContent()
+            ?.let {
+                favoriteSongsAdapter.setData(
+                    it.toMutableList(),
+                    argHomePatchDetail ?: HomePatchDetailModel(),
+                    playerViewModel.currentMusic?.mediaId
+                )
+            }!!
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, favoriteSongsAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    favoriteSongsAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -136,6 +152,7 @@ internal class PodcastFavFragment : BaseFragment(),
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+
     override fun onStop() {
         super.onStop()
         LocalBroadcastManager.getInstance(requireContext())
@@ -174,10 +191,10 @@ internal class PodcastFavFragment : BaseFragment(),
                     }
                 }
                 "DELETED" -> {
-                    dataAdapter.notifyDataSetChanged()
+                    favoriteSongsAdapter.notifyDataSetChanged()
                 }
                 "PROGRESS" -> {
-                    dataAdapter.notifyDataSetChanged()
+                    favoriteSongsAdapter.notifyDataSetChanged()
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }

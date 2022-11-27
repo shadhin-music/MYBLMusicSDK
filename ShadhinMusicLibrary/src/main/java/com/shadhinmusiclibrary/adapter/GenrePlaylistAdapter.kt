@@ -110,7 +110,7 @@ internal class GenrePlaylistAdapter(
         fun bindTrackItem(mSongDetail: SongDetailModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(mSongDetail.getImageUrl300Size())
+                .load(UtilHelper.getImageUrlSize300(mSongDetail.imageUrl ?: ""))
                 .into(sivSongIcon)
             val tvSongName: TextView = viewItem.findViewById(R.id.tv_song_name)
             tvSongName.text = mSongDetail.titleName

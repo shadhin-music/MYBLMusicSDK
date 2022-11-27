@@ -439,7 +439,7 @@ internal class HomeFragment : BaseFragment(),
         }
 
         Glide.with(this)
-            .load(mSongDetails.getImageUrl300Size())
+            .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl ?: ""))
             .transition(DrawableTransitionOptions().crossFade(500))
             .fitCenter()
             .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
