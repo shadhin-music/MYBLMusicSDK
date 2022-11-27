@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,10 +50,11 @@ internal class ArtistAlbumsAdapter(
         val context = itemView.getContext()
         fun bindItems(homePatchItem: HomePatchItemModel?, artistAlbumModel: ArtistAlbumModel?) {
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+            if(artistAlbumModel?.data.isNullOrEmpty() == true){
+                tvTitle.visibility = GONE
+            }
             tvTitle.text = "Albums"
-//            if(homePatchItem?.Data?.isEmpty() == true){
-//                tvTitle.visibility = GONE
-//            }
+
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)

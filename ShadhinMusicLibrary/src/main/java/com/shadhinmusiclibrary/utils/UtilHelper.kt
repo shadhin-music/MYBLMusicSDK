@@ -360,16 +360,14 @@ internal object UtilHelper {
     }
 
     fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetailModel {
-        songDetail.apply {
             return HomePatchDetailModel().apply {
-                album_Id = album_Id ?: content_Id
-                artist_Id = artist_Id ?: ""
-                content_Id = content_Id ?: ""
-                imageUrl = imageUrl ?: ""
-                artistName = artistName ?: ""
-                titleName = titleName ?: ""
+                album_Id = songDetail.album_Id ?:""
+                artist_Id = songDetail.artist_Id ?: ""
+                content_Id = songDetail.content_Id ?: ""
+                imageUrl = songDetail.imageUrl ?: ""
+                artistName = songDetail.artistName ?: ""
+                titleName = songDetail.titleName ?: ""
             }
-        }
     }
 
     fun getHomePatchDetailToFeaturedPodcastDetails(episode: FeaturedPodcastDetailsModel): HomePatchDetailModel {
