@@ -62,7 +62,7 @@ internal class DownloadedSongsAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].content_Type.equals("PD")) {
+        if (allDownloads[position].content_Type.equals("PDJG")) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }

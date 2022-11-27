@@ -47,7 +47,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        cacheRepository.getAllSongsDownloads()
+        cacheRepository.getAllPodcastDownloads()
             ?.let {
                 downloadedSongsAdapter.setData(
                     it.toMutableList(),

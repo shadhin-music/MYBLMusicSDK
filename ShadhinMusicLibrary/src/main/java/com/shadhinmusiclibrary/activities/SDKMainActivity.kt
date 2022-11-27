@@ -1574,7 +1574,7 @@ internal class SDKMainActivity : BaseActivity(),
                 //todo iSongTrack.Id
                 favViewModel.deleteFavContent(
                     iSongTrack.content_Id.toString(),
-                    iSongTrack.content_Type!!
+                    iSongTrack.content_Type.toString()
                 )
                 cacheRepository.deleteFavoriteById(iSongTrack.content_Id.toString())
                 Toast.makeText(
@@ -1585,12 +1585,12 @@ internal class SDKMainActivity : BaseActivity(),
                     .show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
+                Log.e("TAG", "NAME: " + iSongTrack.content_Type)
             } else {
                 //todo iSongTrack.EpisodeId
                 favViewModel.addFavContent(
-                    iSongTrack.content_Id!!,
-                    iSongTrack.content_Type!!
+                    iSongTrack.content_Id,
+                    iSongTrack.content_Type.toString()
                 )
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
