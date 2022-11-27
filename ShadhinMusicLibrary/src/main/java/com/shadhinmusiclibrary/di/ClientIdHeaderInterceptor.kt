@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.di
 import okhttp3.Interceptor
 import okhttp3.Response
 
-internal class HeaderInterceptor : Interceptor {
+internal class ClientIdHeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         proceed(
             request()

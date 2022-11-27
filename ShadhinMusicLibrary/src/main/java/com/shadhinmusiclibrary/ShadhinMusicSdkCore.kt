@@ -10,7 +10,6 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.remote.ApiService
-import com.shadhinmusiclibrary.di.BearerTokenWithClientHeaderInterceptor
 import com.shadhinmusiclibrary.di.ShadhinApp
 import com.shadhinmusiclibrary.di.single.RetrofitClient
 import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
@@ -19,12 +18,11 @@ import com.shadhinmusiclibrary.fragments.home.HomeFragment
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
+import com.shadhinmusiclibrary.utils.UtilsOkHttp
 import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 @Keep
 object ShadhinMusicSdkCore {
@@ -86,10 +84,13 @@ object ShadhinMusicSdkCore {
         reqContext: Context,
         contentId: String
     ) {
-        val aaa = RetrofitClient.getInstance(getOkHttpClient()).create(ApiService::class.java)
-        val call: Call<APIResponse<MutableList<SongDetailModel>>> =
-            aaa.fetchGetRadioListByContentById(contentId)
-        call.enqueue(object : Callback<APIResponse<MutableList<SongDetailModel>>> {
+        val apiServiceIns =
+            RetrofitClient.getInstance(UtilsOkHttp.getBaseOkHttpClientWithTokenAndClient())
+                .create(ApiService::class.java)
+
+        val serviceCall: Call<APIResponse<MutableList<SongDetailModel>>> =
+            apiServiceIns.fetchGetRadioListByContentById(contentId)
+        serviceCall.enqueue(object : Callback<APIResponse<MutableList<SongDetailModel>>> {
             override fun onResponse(
                 call: Call<APIResponse<MutableList<SongDetailModel>>>,
                 response: Response<APIResponse<MutableList<SongDetailModel>>>
@@ -128,12 +129,6 @@ object ShadhinMusicSdkCore {
                 Toast.makeText(reqContext, "" + t.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun getOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(BearerTokenWithClientHeaderInterceptor())
-            .build()
     }
 
     @JvmStatic

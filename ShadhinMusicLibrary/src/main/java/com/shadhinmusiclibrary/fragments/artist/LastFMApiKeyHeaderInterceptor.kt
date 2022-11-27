@@ -8,7 +8,7 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-internal class LastFmApiKeyInterceptor : Interceptor {
+internal class LastFMApiKeyHeaderInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         var request: Request = chain.request()

@@ -24,6 +24,7 @@ import com.shadhinmusiclibrary.library.player.data.rest.user_history.UserHistory
 import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.UtilsOkHttp
 import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
@@ -31,40 +32,40 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 internal class Module(private val applicationContext: Context) {
 
-    private fun getOkHttpClientWithFMInterceptor(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                LastFmApiKeyInterceptor()
-            ).build()
-    }
-
-    fun getBaseOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                HeaderInterceptor()
-            ).build()
-    }
-
-    private fun getBaseOkHttpClientWithToken(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                BearerTokenHeaderInterceptor()
-            ).build()
-    }
-
-    private fun getBaseOkHttpClientWithTokenAndClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                BearerTokenWithClientHeaderInterceptor()
-            ).build()
-    }
+//    private fun getOkHttpClientWithFMInterceptor(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                LastFmApiKeyInterceptor()
+//            ).build()
+//    }
+//
+//    fun getBaseOkHttpClient(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                HeaderInterceptor()
+//            ).build()
+//    }
+//
+//    private fun getBaseOkHttpClientWithToken(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                BearerTokenHeaderInterceptor()
+//            ).build()
+//    }
+//
+//    private fun getBaseOkHttpClientWithTokenAndClient(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                BearerTokenWithClientHeaderInterceptor()
+//            ).build()
+//    }
 
 
     private fun getRetrofitFMAPIInstance(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.LAST_FM_API_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getOkHttpClientWithFMInterceptor())
+            .client(UtilsOkHttp.getOkHttpClientWithFMInterceptor())
             .build()
     }
 
@@ -72,23 +73,15 @@ internal class Module(private val applicationContext: Context) {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getBaseOkHttpClient())
+            .client(UtilsOkHttp.getBaseOkHttpClient())
             .build()
     }
-
-//    private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerToken(): Retrofit {
-//        return Retrofit.Builder()
-//            .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .client(getBaseOkHttpClientWithToken())
-//            .build()
-//    }
 
     private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getBaseOkHttpClientWithTokenAndClient())
+            .client(UtilsOkHttp.getBaseOkHttpClientWithTokenAndClient())
             .build()
     }
 
@@ -109,7 +102,7 @@ internal class Module(private val applicationContext: Context) {
     }
 
     private fun getRetrofitInstance(): Retrofit {
-        return RetrofitClient.getInstance(getBaseOkHttpClientWithToken())
+        return RetrofitClient.getInstance(UtilsOkHttp.getBaseOkHttpClientWithToken())
     }
 
     fun authRepository() = AuthRepository(getShadhinMusicLoginAuthServiceV5())
@@ -125,12 +118,10 @@ internal class Module(private val applicationContext: Context) {
         ArtistBannerContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryArtistSongContent: ArtistSongContentRepository =
         ArtistSongContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
-
     private val repositoryHomeContentRBT: AmartunesContentRepository =
         AmartunesContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryAlbumContent: AlbumContentRepository =
         AlbumContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
-
     private val repositoryCreatePlaylist: CreatePlaylistRepository =
         CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryFavContentRepository: FavContentRepository =

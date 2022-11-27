@@ -1,6 +1,6 @@
 package com.shadhinmusiclibrary.di.single
 
-import com.shadhinmusiclibrary.fragments.artist.LastFmApiKeyInterceptor
+import com.shadhinmusiclibrary.fragments.artist.LastFMApiKeyHeaderInterceptor
 import okhttp3.OkHttpClient
 
 internal class SingleOkHttpClient private constructor() {
@@ -14,7 +14,7 @@ internal class SingleOkHttpClient private constructor() {
 
         private fun newInstance(): OkHttpClient {
             return OkHttpClient.Builder()
-                .addInterceptor(LastFmApiKeyInterceptor()).build()
+                .addInterceptor(LastFMApiKeyHeaderInterceptor()).build()
         }
     }
 }
