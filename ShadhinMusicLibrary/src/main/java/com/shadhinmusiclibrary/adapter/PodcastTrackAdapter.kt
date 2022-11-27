@@ -109,11 +109,11 @@ internal class PodcastTrackAdapter(
 
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = iMusicModel.album_Id
+            progressIndicator.tag = iMusicModel.content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(iMusicModel.album_Id!!) ?: false
+                cacheRepository.isTrackDownloaded(iMusicModel.content_Id) ?: false
 
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

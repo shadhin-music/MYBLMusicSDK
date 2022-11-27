@@ -325,6 +325,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
             argHomePatchItem,
             argHomePatchDetail
         )
+        Log.e("TAG","DATA: "+ track.content_Id)
+        Log.e("TAG","DATA: "+ track.album_Name)
     }
 
     override fun onStart() {
