@@ -39,6 +39,4 @@ internal object AppConstantUtils {
     const val PlaylistId = "PlaylistId"
     const val PlaylistName = "PlaylistName"
     const val PlaylistGradientId = "PlaylistGradientId"
-    const val token: String =
-        ""
 }

@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
@@ -12,9 +11,7 @@ import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.di.BearerTokenWithClientHeaderInterceptor
-import com.shadhinmusiclibrary.di.HeaderInterceptor
 import com.shadhinmusiclibrary.di.ShadhinApp
-import com.shadhinmusiclibrary.di.single.BearerTokenHeaderInterceptor
 import com.shadhinmusiclibrary.di.single.RetrofitClient
 import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
 import com.shadhinmusiclibrary.di.single.SinglePlayerApiService

@@ -8,11 +8,10 @@ import okhttp3.Response
 internal class BearerTokenWithClientHeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-
         val finalToken = ("Bearer " + if (AuthRepository.appToken != null) {
             AuthRepository.appToken
         } else {
-            ""
+            AuthRepository.appToken
         })
         return chain.run {
             proceed(

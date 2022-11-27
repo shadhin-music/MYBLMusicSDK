@@ -10,7 +10,7 @@ internal class BearerTokenHeaderInterceptor : Interceptor {
         val finalToken = ("Bearer " + if (AuthRepository.appToken != null) {
             AuthRepository.appToken
         } else {
-            ""
+            AuthRepository.appToken
         })
         return chain.run {
             proceed(

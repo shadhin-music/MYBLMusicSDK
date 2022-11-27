@@ -1,16 +1,17 @@
 package com.shadhinmusiclibrary.data.repository
 
 import android.util.Log
+import com.shadhinmusiclibrary.data.remote.ApiLoginService
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.safeApiCall
 
-internal class AuthRepository(private val apiService: ApiService) {
+internal class AuthRepository(private val apiLoginSer: ApiLoginService) {
     suspend fun login(token: String): Pair<Boolean, String?> {
-        val response = safeApiCall { apiService.login("Bearer $token") }
+        val response = safeApiCall { apiLoginSer.login("Bearer $token") }
         return if (response.status == Status.SUCCESS) {
             appToken = response.data?.data?.token
-            Log.e("AuthRepository", "login: $appToken")
+            Log.e("AuthRepository: ALS", "login: $appToken")
             Pair(true, response.message)
         } else {
             appToken = null
