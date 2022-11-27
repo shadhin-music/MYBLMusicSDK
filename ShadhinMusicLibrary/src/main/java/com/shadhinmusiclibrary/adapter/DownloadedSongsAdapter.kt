@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ internal class DownloadedSongsAdapter(
 //        if(allDownloads[position].rootType.equals("S")){
         holder.itemView.setOnClickListener {
             lrOnCallBack.onClickItem(allDownloads, position)
+            Log.e("DSA", "onBindViewHolder: ")
         }
 
         //}
@@ -62,7 +64,6 @@ internal class DownloadedSongsAdapter(
         var tag: String? = null
         val context = itemView.getContext()
         fun bindItems() {
-
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
@@ -74,9 +75,8 @@ internal class DownloadedSongsAdapter(
             tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
 
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
-
+            tvSongLength.text =
+                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
         }
-
     }
 }
