@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
@@ -17,7 +18,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class DownloadedSongsAdapter(
     val allDownloads: MutableList<IMusicModel>,
-    private val lrOnCallBack: DownloadedSongOnCallBack
+    private val lrOnCallBack: DownloadedSongOnCallBack,private val openMenu: DownloadBottomSheetDialogItemCallback
 ) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +30,7 @@ internal class DownloadedSongsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-//
+  val menu :ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
 //        if(allDownloads[position].rootType.equals("V")){
 //
 //             holder.itemView.setOnClickListener {
@@ -50,6 +51,14 @@ internal class DownloadedSongsAdapter(
         holder.itemView.setOnClickListener {
             lrOnCallBack.onClickItem(allDownloads, position)
             Log.e("DSA", "onBindViewHolder: ")
+        }
+        menu.setOnClickListener {
+            openMenu.onClickBottomItemSongs(allDownloads[position])
+        }
+        if(allDownloads[position].rootContentType.equals("PDJG")){
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemPodcast(allDownloads[position])
+            }
         }
 
         //}

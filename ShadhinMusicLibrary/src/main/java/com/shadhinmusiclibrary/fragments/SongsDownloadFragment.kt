@@ -89,7 +89,7 @@ internal class SongsDownloadFragment : BaseFragment(),
         val cacheRepository = CacheRepository(requireContext())
         val dataAdapter =
             cacheRepository.getAllSongsDownloads()
-                ?.let { DownloadedSongsAdapter(it.toMutableList(), this) }
+                ?.let { DownloadedSongsAdapter(it.toMutableList(), this,this) }
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -119,11 +119,11 @@ internal class SongsDownloadFragment : BaseFragment(),
 
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
 
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -151,7 +151,7 @@ internal class SongsDownloadFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
 
     }
 

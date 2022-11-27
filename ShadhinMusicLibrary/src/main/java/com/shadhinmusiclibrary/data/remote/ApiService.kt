@@ -20,7 +20,8 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 internal interface ApiService {
-    @GET("ClientHomeContent/GetHomeContent")
+   // @GET("ClientHomeContent/GetHomeContent")
+    @GET("ClientHomeContent/GetHomeContentV2")
     suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,
         @Query("isPaid") isPaid: Boolean?,

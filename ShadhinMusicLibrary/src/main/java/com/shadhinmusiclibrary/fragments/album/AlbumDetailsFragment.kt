@@ -77,12 +77,14 @@ internal class AlbumDetailsFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         //TODO  argHomePatchDetail!!.ContentID,
-        observeData(
-            argHomePatchDetail!!.content_Id,
-            argHomePatchDetail!!.artist_Id ?: "",
-            argHomePatchDetail!!.content_Type ?: ""
-        )
-        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.content_Id)
+        argHomePatchDetail!!.album_Id?.let {
+            observeData(
+                it,
+                argHomePatchDetail!!.artist_Id ?: "",
+                argHomePatchDetail!!.content_Type ?: ""
+            )
+        }
+        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.album_Id)
         Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.artist_Id )
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)

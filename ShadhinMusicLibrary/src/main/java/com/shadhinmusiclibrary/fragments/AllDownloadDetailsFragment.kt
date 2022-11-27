@@ -79,7 +79,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allDownloadAdapter = AllDownloadedAdapter(this)
+        allDownloadAdapter = AllDownloadedAdapter(this, this)
 
         favViewModel = ViewModelProvider(
             this,
@@ -143,7 +143,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
@@ -163,7 +163,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -191,7 +191,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
         openDialog(
             VideoModel(
                 "",

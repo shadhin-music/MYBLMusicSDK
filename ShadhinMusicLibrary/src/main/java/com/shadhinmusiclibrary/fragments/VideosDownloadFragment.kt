@@ -84,15 +84,15 @@ internal class VideosDownloadFragment : BaseFragment(),
 
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
 
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
 
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
         openDialog(
             VideoModel(
                 "",

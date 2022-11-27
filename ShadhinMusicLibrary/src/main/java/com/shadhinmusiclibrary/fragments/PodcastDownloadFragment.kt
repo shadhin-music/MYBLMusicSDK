@@ -18,7 +18,6 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
-import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
@@ -46,7 +45,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
         val cacheRepository = CacheRepository(requireContext())
         val dataAdapter =
             cacheRepository.getAllPodcastDownloads()
-                ?.let { DownloadedSongsAdapter(it.toMutableList(), this) }
+                ?.let { DownloadedSongsAdapter(it.toMutableList(), this,this) }
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -77,7 +76,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     }
 
-    override fun onClickBottomItemPodcast(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
@@ -97,7 +96,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemSongs(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -115,7 +114,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
         )
     }
 
-    override fun onClickBottomItemVideo(mSongDetails: DownloadedContent) {
+    override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
 
     }
 }

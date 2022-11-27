@@ -1459,7 +1459,7 @@ internal class SDKMainActivity : BaseActivity(),
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = iSongTrack.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
-        artistname?.text = iSongTrack.album_Id
+        artistname?.text = iSongTrack.artistName
         if (image != null) {
             Glide.with(context)?.load(url?.replace("<\$size\$>", "300"))?.into(image)
         }
@@ -1481,7 +1481,7 @@ internal class SDKMainActivity : BaseActivity(),
         val textViewDownloadTitle: TextView? =
             bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloadComplete = false
-        var downloaded = cacheRepository.getDownloadById(iSongTrack.album_Id!!)
+        var downloaded = cacheRepository.getDownloadById(iSongTrack.content_Id!!)
         if (downloaded?.playingUrl != null) {
             isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -1500,25 +1500,26 @@ internal class SDKMainActivity : BaseActivity(),
         constraintDownload?.setOnClickListener {
             if (isDownloadComplete) {
 //                cacheRepository.deleteDownloadById(track.EpisodeId)
-                cacheRepository.deleteDownloadById(iSongTrack.album_Id!!)
+                cacheRepository.deleteDownloadById(iSongTrack.content_Id)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
-                    iSongTrack.album_Id!!,
+                    iSongTrack.content_Id!!,
                     false
                 )
                 val localBroadcastManager =
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
-                    .putExtra("contentID", iSongTrack.album_Id!!)
+                    .putExtra("contentID", iSongTrack.content_Id)
 //                    .putExtra("contentID", track.EpisodeId)
                 localBroadcastManager.sendBroadcast(localIntent)
 
             } else {
                 val url = "${Constants.FILE_BASE_URL}${iSongTrack.playingUrl}"
                 val downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(iSongTrack.album_Id!!, url.toUri())
+                    DownloadRequest.Builder(iSongTrack.content_Id, url.toUri())
                         .build()
+                Log.e("TAG","NAME: "+iSongTrack.titleName)
                 injector.downloadTitleMap[iSongTrack.content_Id ?: ""] = iSongTrack.titleName ?: ""
                 DownloadService.sendAddDownload(
                     applicationContext,
@@ -1531,7 +1532,7 @@ internal class SDKMainActivity : BaseActivity(),
                 if (cacheRepository.isDownloadCompleted(iSongTrack.content_Id!!)) {
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
-                            album_Id = iSongTrack.album_Id
+                            album_Id = iSongTrack.content_Id
                             rootContentId = iSongTrack.rootContentId
                             imageUrl = iSongTrack.imageUrl
                             titleName = iSongTrack.titleName
