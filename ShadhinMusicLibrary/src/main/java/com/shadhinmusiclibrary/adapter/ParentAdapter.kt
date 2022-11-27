@@ -397,7 +397,7 @@ internal class ParentAdapter(
         }
     }
 
-    private companion object {
+    public companion object {
         val VIEW_SEARCH = 0
         val VIEW_ARTIST = 1
         val VIEW_RELEASE = 2

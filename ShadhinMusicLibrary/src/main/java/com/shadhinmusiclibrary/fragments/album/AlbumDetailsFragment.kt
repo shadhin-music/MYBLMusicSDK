@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -81,6 +82,8 @@ internal class AlbumDetailsFragment : BaseFragment(),
             argHomePatchDetail!!.artist_Id ?: "",
             argHomePatchDetail!!.content_Type ?: ""
         )
+        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.content_Id)
+        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.artist_Id )
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =

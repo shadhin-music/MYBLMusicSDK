@@ -8,7 +8,7 @@ data class HomePatchItemModel(
     val Code: String,
     var ContentType: String,
     var Data: List<HomePatchDetailModel>,
-    val Design: String,
+    var Design: String,
     val Name: String,
     val Sort: Int,
     val Total: Int

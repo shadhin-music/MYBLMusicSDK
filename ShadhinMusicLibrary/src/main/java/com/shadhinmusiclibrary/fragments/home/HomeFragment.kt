@@ -154,7 +154,13 @@ internal class HomeFragment : BaseFragment(),
         homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
-                viewDataInRecyclerView(res.data)
+
+
+
+                if(res.data?.data?.isNotEmpty() == true) {
+
+                    viewDataInRecyclerView(res.data)
+                }
             } else {
                 progressBar.visibility = GONE
             }
@@ -261,12 +267,26 @@ internal class HomeFragment : BaseFragment(),
          }*/
 
         homeData.let {
-            it?.data?.let { it1 ->
-                dataAdapter?.setData(it1)
-                //dataAdapter?.notifyItemChanged(pageNum)
-                dataAdapter?.notifyDataSetChanged()
-                Log.e("TAG","PAGE NUMBER: "+ pageNum)
-            }
+          for(item in it?.data?.indices!!){
+              if (isValidDesign(it.data[item].Design) == -1){
+                  it.data[item].Design = ""
+              }
+              if(it.data[item].Design.isNotEmpty()){
+                  it.data[item].let { it1->
+                      dataAdapter?.setData(listOf(it1))
+                      //dataAdapter?.notifyItemChanged(pageNum)
+                      dataAdapter?.notifyDataSetChanged()
+                      Log.e("TAG","PAGE NUMBER: "+ it?.data?.indices)
+                  }
+//                  it.data.let {
+
+                       //   it1 ->
+
+
+                 // }
+              }
+          }
+
         }
         if (homeData?.total == pageNum) {
             isLastPage = true
@@ -277,6 +297,23 @@ internal class HomeFragment : BaseFragment(),
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             concatAdapter.addAdapter(footerAdapter)
             //recyclerView.adapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+        }
+    }
+
+    private fun isValidDesign(design: String): Int {
+        return when (design) {
+//            "search" -> VIEW_SEARCH
+            "Artist" -> ParentAdapter.VIEW_ARTIST
+            "Playlist" -> ParentAdapter.VIEW_PLAYLIST
+            "Release" -> ParentAdapter.VIEW_RELEASE
+            "Track" -> ParentAdapter.VIEW_RELEASE
+            "Podcast" -> ParentAdapter.VIEW_POPULAR_PODCAST
+            "SmallVideo" -> ParentAdapter.VIEW_TRENDING_MUSIC_VIDEO
+            "amarTune" -> ParentAdapter.VIEW_POPULAR_AMAR_TUNES
+            "download" -> ParentAdapter.VIEW_DOWNLOAD
+            else -> {
+                -1
+            }
         }
     }
 
