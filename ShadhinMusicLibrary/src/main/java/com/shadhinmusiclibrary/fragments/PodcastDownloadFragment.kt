@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -28,6 +29,8 @@ internal class PodcastDownloadFragment : BaseFragment(),
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var navController: NavController
+    private lateinit var downloadedSongsAdapter: DownloadedSongsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -38,22 +41,36 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        downloadedSongsAdapter = DownloadedSongsAdapter(this, this)
         loadData()
     }
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter =
-            cacheRepository.getAllPodcastDownloads()
-                ?.let { DownloadedSongsAdapter(it.toMutableList(), this,this) }
+        cacheRepository.getAllSongsDownloads()
+            ?.let {
+                downloadedSongsAdapter.setData(
+                    it.toMutableList(),
+                    argHomePatchDetail ?: HomePatchDetailModel(),
+                    playerViewModel.currentMusic?.mediaId
+                )
+            }
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    downloadedSongsAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

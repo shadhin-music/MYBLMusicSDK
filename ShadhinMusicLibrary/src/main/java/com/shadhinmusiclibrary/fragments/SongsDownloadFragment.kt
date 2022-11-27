@@ -61,6 +61,8 @@ internal class SongsDownloadFragment : BaseFragment(),
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var favViewModel: FavViewModel
 
+    private lateinit var downloadedSongsAdapter: DownloadedSongsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -71,7 +73,7 @@ internal class SongsDownloadFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        downloadedSongsAdapter = DownloadedSongsAdapter(this, this)
         loadData()
 
         viewModel = ViewModelProvider(
@@ -87,17 +89,30 @@ internal class SongsDownloadFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter =
-            cacheRepository.getAllSongsDownloads()
-                ?.let { DownloadedSongsAdapter(it.toMutableList(), this,this) }
+        cacheRepository.getAllSongsDownloads()
+            ?.let {
+                downloadedSongsAdapter.setData(
+                    it.toMutableList(),
+                    argHomePatchDetail ?: HomePatchDetailModel(),
+                    playerViewModel.currentMusic?.mediaId
+                )
+            }
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    downloadedSongsAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -364,7 +379,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                         content_Type = mSongDetails.content_Type ?: ""
                         playingUrl = mSongDetails.playingUrl.toString()
                         imageUrl = mSongDetails.imageUrl.toString()
-                        titleName= mSongDetails . titleName . toString ()
+                        titleName = mSongDetails.titleName.toString()
                     } as Serializable
                 )
             })

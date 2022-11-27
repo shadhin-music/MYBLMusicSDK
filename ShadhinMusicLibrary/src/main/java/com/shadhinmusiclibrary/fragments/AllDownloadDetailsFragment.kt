@@ -122,7 +122,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         Log.e(
             "ALLDDF",
-            "click rcid: " + mSongDetails[clickItemPosition].content_Id + " pcmrcid: " + playerViewModel.currentMusic?.rootId
+            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id "+mSongDetails[clickItemPosition].content_Id
         )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {

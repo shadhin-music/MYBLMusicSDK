@@ -139,7 +139,7 @@ internal object UtilHelper {
         isSeekAble = true
     }
 
-    fun getSongDetailAndRootData(
+    fun getMixdUpIMusicWithRootData(
         mSongDet: IMusicModel,
         rootPatch: HomePatchDetailModel
     ): IMusicModel {

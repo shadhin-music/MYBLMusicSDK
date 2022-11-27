@@ -17,9 +17,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCall
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -58,14 +56,12 @@ internal class AllDownloadedAdapter(
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemVideo(allDownloads[position])
-                Log.e("TAG", "ALL DownloadsVideo: " + allDownloads[position].rootContentType)
             }
         }
 
         if (mSongDetails.content_Type.equals("S")) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
-                Log.e("TAG", "ALL Downloads: " + allDownloads)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemSongs(allDownloads[position])
@@ -74,7 +70,6 @@ internal class AllDownloadedAdapter(
         if (allDownloads[position].rootContentType.equals("PDJG")) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
-                Log.e("TAG", "ALL Downloads: " + allDownloads)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
@@ -100,18 +95,17 @@ internal class AllDownloadedAdapter(
         rootPatch: HomePatchDetailModel,
         mediaId: String?
     ) {
-//        this.allDownloads = mutableListOf()
         for (songItem in data) {
             Log.e(
                 "ALLDowA",
                 "setData: " + songItem.content_Id + " " + songItem.titleName + " " + songItem.total_duration
             )
             allDownloads.add(
-                UtilHelper.getSongDetailAndRootData(
-                    songItem.apply {
-                        isSeekAble = true
-                    }, rootPatch
-                )
+                songItem.apply {
+                    isSeekAble = true
+                    rootContentId = "00$content_Id"
+                    rootContentType = content_Type
+                }
             )
         }
 
