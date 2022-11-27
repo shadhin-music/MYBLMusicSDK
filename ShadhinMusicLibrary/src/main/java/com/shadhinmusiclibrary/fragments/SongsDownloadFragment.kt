@@ -108,7 +108,6 @@ internal class SongsDownloadFragment : BaseFragment(),
                 playerViewModel.togglePlayPause()
             }
         } else {
-            //Todo Mehenaz ap please flowe as link artist/album
             playItem(
                 mSongDetails,
                 clickItemPosition

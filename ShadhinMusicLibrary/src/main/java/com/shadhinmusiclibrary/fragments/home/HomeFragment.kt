@@ -541,7 +541,7 @@ internal class HomeFragment : BaseFragment(),
         }
     }
 
-    override fun onClickItem(mSongDetails: List<IMusicModel>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         Log.e("podcast", "clickItemPosition " + mSongDetails[clickItemPosition].titleName)
 /*        if (playerViewModel.currentMusic != null &&
             (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
@@ -562,10 +562,6 @@ internal class HomeFragment : BaseFragment(),
             mSongDetails as MutableList<IMusicModel>,
             clickItemPosition
         )*/
-        setMusicPlayerInitData(mSongDetails as MutableList<IMusicModel>, clickItemPosition)
+        setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 }
-
-//    override fun podcastTrackClick(homePatchItem: HomePatchItemModel) {
-//     Log.e("TAG","DATA: "+ homePatchItem)
-//    }
