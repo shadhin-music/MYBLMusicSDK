@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.adapter.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.adapter.FeaturedPodcastHomeRecyclerViewAdapter
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
@@ -33,8 +34,8 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel
-    private lateinit var data: List<FeaturedPodcastDetailsModel>
-    private lateinit var dataJc: List<FeaturedPodcastDetailsModel>
+    private   var data: List<FeaturedPodcastDetailsModel> ?= null
+    private  var dataJc: List<FeaturedPodcastDetailsModel>  ?= null
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
     private lateinit var podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
@@ -67,7 +68,6 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 
         //tvTitle.text =  homePatchitem?.Name
         setupViewModel()
-        setAdapter()
         observeData()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -76,57 +76,58 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
         }
     }
 
-    fun setAdapter() {
+
+
+    fun observeData() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        podcastJBAdapter = FeaturedPodcastRecyclerViewAdapter(this)
-        podcastJCAdapter = FeaturePodcastJCRECAdapter(this)
-        val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
+        // var adapter = FeaturedPodcastHomeRecyclerViewAdapter(this, data[item])
 
-        parentAdapter = ConcatAdapter(
-            config,
-            podcastJBAdapter, podcastJCAdapter
-
-
-        )
-        parentRecycler.layoutManager = layoutManager
-        parentRecycler.adapter = parentAdapter
-    }
-
-    fun observeData() {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedPodcast(false)
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-                if (response.data?.data?.get(0)?.Data != null) {
-                    podcastJBAdapter.setData(
-                        response.data.data[0].Data,
-                        response.data.data[0].Data[0].ShowName
-                    )
-                }
-                progressBar.visibility = View.GONE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
-        viewModel.fetchFeaturedPodcastJC(false)
-        viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-                podcastJCAdapter.setData(
-                    response?.data?.data?.get(1)?.Data,
-                    response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
-                )
-                progressBar.visibility = View.GONE
-            } else {
-                progressBar.visibility = View.GONE
-            }
+               // Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.size)
+//                if(response.data?.data?.size!= null){
+                    val data = response.data?.data
 
-            if (response.data?.data?.get(1)?.Data != null) {
-                podcastJCAdapter.setData(response?.data?.data?.get(1)?.Data,
-                    response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString())
+                    for (item in data?.indices!!){
+                        Log.e("TAGGGGGGGY", "MESSAGE: "+data[item])
+                        Log.e("TAGGGGGGGY", "MESSAGE: "+ data.indices)
+                        var adapter = FeaturedPodcastHomeRecyclerViewAdapter(this,data)
+                        val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
+                        parentRecycler.layoutManager = layoutManager
+                        parentRecycler.adapter = adapter
+                    }
+
+
+
+
+
+
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
             }
         }
+//        viewModel.fetchFeaturedPodcastJC(false)
+//        viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
+//            if (response.status == Status.SUCCESS) {
+//                podcastJCAdapter.setData(
+//                    response?.data?.data?.get(1)?.Data,
+//                    response?.data?.data?.get(1)?.Data?.get(0)?.ShowName.toString()
+//                )
+//                progressBar.visibility = View.GONE
+//            } else {
+//                progressBar.visibility = View.GONE
+//            }
+//
+//            if (response.data?.data?.get(1)?.Data != null) {
+//                podcastJCAdapter.setData(response?.data.data.get(1).Data,
+//                    response?.data.data.get(1).Data.get(0).ShowName.toString())
+//            }
+//        }
           //  else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
