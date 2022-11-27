@@ -20,11 +20,12 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         ShadhinMusicSdkCore.initializeSDK(applicationContext, TOKEN, this)
 
+        val data = intent.extras
+        data?.getString("mobile_number")
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {
 //            ShadhinMusicSdkCore.openMusic(this)
 //        }
-
 //        val buttonHome:Button = findViewById(R.id.buttonHome)
 //        val buttonAPI: Button = findViewById(R.id.buttonAPI)
 //        buttonHome.setOnClickListener {
@@ -66,8 +67,6 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         viewPager.offscreenPageLimit = 2
         val selectedTabIndex = 0
         viewPager.setCurrentItem(selectedTabIndex, false)
-
-
     }
 
     override fun onDestroy() {
