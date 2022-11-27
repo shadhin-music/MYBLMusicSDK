@@ -15,13 +15,13 @@ internal interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE content_Type IS NOT NULL AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='V' AND isDownloaded = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE content_Type='V' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllVideosDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='S' AND isDownloaded = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE content_Type='S' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllSongsDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='PD' AND isDownloaded = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE content_Type='PD' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllPodcastDownloads(): List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded = 1 ")

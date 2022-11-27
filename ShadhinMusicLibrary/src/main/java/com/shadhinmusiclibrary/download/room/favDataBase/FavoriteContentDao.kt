@@ -17,7 +17,7 @@ internal interface FavoriteContentDao {
     @Query("SELECT * FROM FavData WHERE fav=1")
     fun getAllFavorites(): List<FavDataModel>
 
-    @Query("SELECT * FROM  FavData where content_Id = :id AND Fav=1 ")
+    @Query("SELECT * FROM  FavData where content_Id = :id AND fav=1 ")
     fun getFavoriteById(id: String): List<FavDataModel>
 
     @Query("SELECT * FROM FavData WHERE content_Type='V'  ORDER By total_duration DESC ")

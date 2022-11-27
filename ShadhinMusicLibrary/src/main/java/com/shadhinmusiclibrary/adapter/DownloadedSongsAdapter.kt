@@ -22,19 +22,19 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class DownloadedSongsAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: DownloadBottomSheetDialogItemCallback
-) : RecyclerView.Adapter<DownloadedSongsAdapter.ViewHolder>() {
+    private val openMenu: DownloadBottomSheetDialogItemCallback,
+) : RecyclerView.Adapter<DownloadedSongsAdapter.DownloadSongViewHolder>() {
     private var allDownloads: MutableList<IMusicModel> = mutableListOf()
     private var contentId: String = ""
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadSongViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
-        return ViewHolder(v)
+        return DownloadSongViewHolder(v)
     }
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DownloadSongViewHolder, position: Int) {
         val mSongDetails = allDownloads[position]
         holder.bindItems(mSongDetails)
         val menu: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
@@ -54,21 +54,21 @@ internal class DownloadedSongsAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-//        if(allDownloads[position].rootType.equals("S")){
-        holder.itemView.setOnClickListener {
-            lrOnCallBack.onClickItem(allDownloads, position)
-            Log.e("DSA", "onBindViewHolder: ")
+        if (allDownloads[position].content_Type.equals("S")) {
+            holder.itemView.setOnClickListener {
+                lrOnCallBack.onClickItem(allDownloads, position)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(allDownloads[position])
+            }
         }
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemSongs(allDownloads[position])
-        }
-        if (allDownloads[position].rootContentType.equals("PDJG")) {
+        if (allDownloads[position].content_Type.equals("PD")) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
         }
 
-        //}
+
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
@@ -82,12 +82,13 @@ internal class DownloadedSongsAdapter(
                 )
             )
         }
+
     }
 
     fun setData(
         data: MutableList<IMusicModel>,
         rootPatch: HomePatchDetailModel,
-        mediaId: String?
+        mediaId: String?,
     ) {
         for (songItem in data) {
             Log.e(
@@ -126,7 +127,7 @@ internal class DownloadedSongsAdapter(
         return allDownloads.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DownloadSongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()
         var tvSongName: TextView? = null
@@ -147,3 +148,4 @@ internal class DownloadedSongsAdapter(
         }
     }
 }
+

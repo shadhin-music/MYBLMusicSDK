@@ -65,7 +65,7 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].rootContentType.equals("PDJG")) {
+        if (allDownloads[position].rootContentType.equals("PD")) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickFavItem(allDownloads, position)
             }
