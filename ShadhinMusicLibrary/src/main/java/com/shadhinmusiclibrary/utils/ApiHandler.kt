@@ -32,7 +32,6 @@ internal data class ApiResponse<out T>(
                 message = message,
                 errorCode = errorCode
             )
-
     }
 
     fun ifSuccess(callback: (T) -> Unit) {

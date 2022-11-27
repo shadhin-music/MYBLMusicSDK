@@ -69,7 +69,7 @@ internal class ParentAdapter(
     override fun getItemCount(): Int = homeListData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (homeListData.get(position).Design) {
+        return when (homeListData[position].Design) {
 //            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
@@ -121,7 +121,7 @@ internal class ParentAdapter(
 //
 //        }
 
-        if (this.homeListData.size >= 2 && downloadNotAdded){
+        if (this.homeListData.size >= 2 && downloadNotAdded) {
             downloadNotAdded = false
             download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
@@ -156,8 +156,6 @@ internal class ParentAdapter(
 //            }
 //
 //        }
-
-
 
 
     }
@@ -224,7 +222,8 @@ internal class ParentAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = HomePodcastAdapter(homePatchItem, homeCallBack, podcastTrackClick)
+            recyclerView.adapter =
+                HomePodcastAdapter(homePatchItem, homeCallBack, podcastTrackClick)
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             seeAll.setOnClickListener {
                 //PodcastDetailsFragment
@@ -316,7 +315,7 @@ internal class ParentAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-           // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
+            // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
         }
 
         private fun bindMadeForYou() {

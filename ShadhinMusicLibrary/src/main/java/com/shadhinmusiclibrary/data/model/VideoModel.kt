@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import kotlinx.parcelize.Parcelize
@@ -209,7 +209,7 @@ internal data class VideoModel(
         type = data.content_Type
     }
 
-    internal fun setDataFavorite(data: FavData) {
+    internal fun setDataFavorite(data: FavDataModel) {
         albumId = ""
         albumImage = ""
         albumName = ""

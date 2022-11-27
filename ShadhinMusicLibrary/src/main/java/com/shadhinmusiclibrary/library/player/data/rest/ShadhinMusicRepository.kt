@@ -13,7 +13,6 @@ internal class ShadhinMusicRepository(private val playerApiService: PlayerApiSer
     override fun fetchURL(music: Music): String = runBlocking {
         val response = safeApiCall {
             playerApiService.fetchContentUrl(
-                token = null, //TODO will apply in future
                 ptype = if (music.isPodCast()) "PD" else null,
                 type = music.podcastSubType(),
                 ttype = music.trackType,
@@ -41,7 +40,6 @@ internal class ShadhinMusicRepository(private val playerApiService: PlayerApiSer
         val response = safeApiCall {
             AuthRepository.appToken?.let {
                 playerApiService.fetchDownloadContentUrl(
-                    token = "Bearer $it",
                     name = name
                 )
             }

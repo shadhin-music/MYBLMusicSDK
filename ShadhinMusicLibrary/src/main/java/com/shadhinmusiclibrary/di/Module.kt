@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.di
 
 import android.content.Context
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.shadhinmusiclibrary.data.remote.ApiLoginService
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
 import com.shadhinmusiclibrary.di.single.*
@@ -23,115 +24,56 @@ import com.shadhinmusiclibrary.library.player.data.rest.user_history.UserHistory
 import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.UtilsOkHttp
 import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 internal class Module(private val applicationContext: Context) {
-/*
-    private fun getRetrofitInstance(): Retrofit {
-        return  RetrofitClient.getInstance()
-    }
 
-    private fun getHomeApiService(): ApiService {
-        return SingleApiService.getInstance(getRetrofitInstance())
-    }
-
-    private fun getRetrofitAPIShadhinMusicInstance(): Retrofit {
-        return ShadhinRetrofitClient.getInstance()
-    }
-
-    private fun getApiShadhinMusicService(): ApiService {
-        return  ShadhinMusicAPIService.getInstance(getRetrofitAPIShadhinMusicInstance())
-    }
-
-    private fun getClient(): OkHttpClient {
-        return SingleOkHttpClient.getInstance()
-    }
-
-
-
-    private val artistAlbumApiService:ApiService = getApiShadhinMusicService()
-    
-    private val repositoryArtistContent: ArtistContentRepository =
-        ArtistContentRepository(getFMService())
-
-    private val repositoryHomeContent: HomeContentRepository =
-        HomeContentRepository(getHomeApiService())
-
-    private val repositoryArtistBannerContent: ArtistBannerContentRepository =
-        ArtistBannerContentRepository(getApiShadhinMusicService())
-
-    private val repositoryArtistSongContent: ArtistSongContentRepository =
-        ArtistSongContentRepository(getApiShadhinMusicService())
-
-    private val repositoryAlbumContent: AlbumContentRepository =
-        AlbumContentRepository(getApiShadhinMusicService())
+//    private fun getOkHttpClientWithFMInterceptor(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                LastFmApiKeyInterceptor()
+//            ).build()
+//    }
+//
+//    fun getBaseOkHttpClient(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                HeaderInterceptor()
+//            ).build()
+//    }
+//
+//    private fun getBaseOkHttpClientWithToken(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                BearerTokenHeaderInterceptor()
+//            ).build()
+//    }
+//
+//    private fun getBaseOkHttpClientWithTokenAndClient(): OkHttpClient {
+//        return OkHttpClient.Builder()
+//            .addInterceptor(
+//                BearerTokenWithClientHeaderInterceptor()
+//            ).build()
+//    }
 
 
-
-
-
-
-    val factoryHomeVM: HomeViewModelFactory
-        get() = HomeViewModelFactory(repositoryHomeContent)
-
-    val factoryArtistVM: ArtistViewModelFactory
-        get() = ArtistViewModelFactory(repositoryArtistContent)
-
-    val factoryAlbumVM: AlbumViewModelFactory
-        get() = AlbumViewModelFactory(repositoryAlbumContent)
-
-    val factoryArtistBannerVM: ArtistBannerViewModelFactory
-        get() = ArtistBannerViewModelFactory(repositoryArtistBannerContent)
-
-    val factoryArtistSongVM: ArtistContentViewModelFactory
-        get() = ArtistContentViewModelFactory(repositoryArtistSongContent)
-    private val artistAlbumContentRepository: ArtistAlbumContentRepository get() = ArtistAlbumContentRepository(
-        artistAlbumApiService)
-
-    val artistAlbumViewModelFactory: ArtistAlbumViewModelFactory
-        get() = ArtistAlbumViewModelFactory(
-        artistAlbumContentRepository)
-
-    private val podcastRepository: PodcastRepository get() = PodcastRepository(
-        getApiShadhinMusicService())
-    val podcastViewModelFactory:PodcastViewModelFactory
-        get() = PodcastViewModelFactory(podcastRepository)*/
-
-
-    /*private fun getRetrofitInstance(): Retrofit {
+    private fun getRetrofitFMAPIInstance(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(AppConstantUtils.BASE_URL)
+            .baseUrl(AppConstantUtils.LAST_FM_API_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(UtilsOkHttp.getOkHttpClientWithFMInterceptor())
             .build()
-    }*/
+    }
 
-//    private fun getHomeApiService(): ApiService {
-//        return getRetrofitInstance().create(ApiService::class.java)
-//    }
-
-//    private fun getFMClient(): Retrofit {
-//        return RetrofitFMClient.getInstance(getClient())
-//    }
-
-    //    private fun getFMService(): ApiService {
-//        return SingleFMService.getInstance(getFMClient())
-//    }
-    private fun getRetrofitAPIShadhinMusicInstanceV5(): Retrofit {
+    private fun getRetrofitAPIShadhinMusicApiLoginInstanceV5(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getBaseClient())
-            .build()
-    }
-    private fun getRetrofitAPIShadhinMusicInstanceV5WithBearerToken(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(getBaseClientWITHtOKEN())
+            .client(UtilsOkHttp.getBaseOkHttpClient())
             .build()
     }
 
@@ -139,88 +81,51 @@ internal class Module(private val applicationContext: Context) {
         return Retrofit.Builder()
             .baseUrl(AppConstantUtils.BASE_URL_API_shadhinmusic)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getBaseClientWithTokenAndClient())
+            .client(UtilsOkHttp.getBaseOkHttpClientWithTokenAndClient())
             .build()
     }
 
-    fun getBaseClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                HeaderInterceptor()
-            ).build()
+    private fun getFMService(): ApiService {
+        return getRetrofitFMAPIInstance().create(ApiService::class.java)
     }
 
-    private fun getBaseClientWITHtOKEN(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                BearerTokenHeaderInterceptor()
-            ).build()
+    private fun getShadhinMusicLoginAuthServiceV5(): ApiLoginService {
+        return getRetrofitAPIShadhinMusicApiLoginInstanceV5().create(ApiLoginService::class.java)
     }
 
-    private fun getBaseClientWithTokenAndClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                BearerTokenWithClientHeaderInterceptor()
-            ).build()
-    }
-
-    private fun getApiShadhinMusicServiceV5(): ApiService {
-        return getRetrofitAPIShadhinMusicInstanceV5().create(ApiService::class.java)
-    }
-
-    public fun authRepository() = AuthRepository(getApiShadhinMusicServiceV5())
-
-    private fun getApiShadhinMusicServiceV5withToken(): ApiService {
-        return getRetrofitAPIShadhinMusicInstanceV5WithBearerToken().create(ApiService::class.java)
-    }
+//    private fun getApiShadhinMusicServiceV5withToken(): ApiService {
+//        return getRetrofitAPIShadhinMusicInstanceV5WithBearerToken().create(ApiService::class.java)
+//    }
 
     private fun getApiShadhinMusicServiceV5withTokenAndClient(): ApiService {
         return getRetrofitAPIShadhinMusicInstanceV5WithBearerTokenAndClient().create(ApiService::class.java)
     }
 
-    private fun getFMClient(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(AppConstantUtils.LAST_FM_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(getClient())
-            .build()
+    private fun getRetrofitInstance(): Retrofit {
+        return RetrofitClient.getInstance(UtilsOkHttp.getBaseOkHttpClientWithToken())
     }
 
-    private fun getClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(
-                LastFmApiKeyInterceptor()
-            ).build()
-    }
+    fun authRepository() = AuthRepository(getShadhinMusicLoginAuthServiceV5())
 
-    private fun getFMService(): ApiService {
-        return getFMClient().create(ApiService::class.java)
-    }
-
-    private val artistAlbumApiService: ApiService = getApiShadhinMusicServiceV5()
-    private val podcastApiService: ApiService = getApiShadhinMusicServiceV5()
     private val repositoryArtistContent: ArtistContentRepository =
         ArtistContentRepository(getFMService())
+
+    private val artistAlbumApiService: ApiService = getApiShadhinMusicServiceV5withTokenAndClient()
+    private val podcastApiService: ApiService = getApiShadhinMusicServiceV5withTokenAndClient()
     private val repositoryHomeContent: HomeContentRepository =
-        HomeContentRepository(getApiShadhinMusicServiceV5())
-
+        HomeContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+    private val repositoryArtistBannerContent: ArtistBannerContentRepository =
+        ArtistBannerContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+    private val repositoryArtistSongContent: ArtistSongContentRepository =
+        ArtistSongContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryHomeContentRBT: AmartunesContentRepository =
-        AmartunesContentRepository(getApiShadhinMusicServiceV5withToken())
-
-
+        AmartunesContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+    private val repositoryAlbumContent: AlbumContentRepository =
+        AlbumContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryCreatePlaylist: CreatePlaylistRepository =
         CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())
-
     private val repositoryFavContentRepository: FavContentRepository =
         FavContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
-    private val repositoryArtistBannerContent: ArtistBannerContentRepository =
-        ArtistBannerContentRepository(getApiShadhinMusicServiceV5())
-    private val repositoryArtistSongContent: ArtistSongContentRepository =
-        ArtistSongContentRepository(
-            getApiShadhinMusicServiceV5()
-        )
-    private val repositoryAlbumContent: AlbumContentRepository =
-        AlbumContentRepository(getApiShadhinMusicServiceV5())
 
     val factoryHomeVM: HomeViewModelFactory
         get() = HomeViewModelFactory(repositoryHomeContent)
@@ -258,7 +163,7 @@ internal class Module(private val applicationContext: Context) {
 
     private val featuredpodcastRepository: FeaturedPodcastRepository
         get() = FeaturedPodcastRepository(
-            getApiShadhinMusicServiceV5()
+            getApiShadhinMusicServiceV5withTokenAndClient()
         )
     val featuredpodcastViewModelFactory: FeaturedPodcastViewModelFactory
         get() = FeaturedPodcastViewModelFactory(featuredpodcastRepository)
@@ -299,13 +204,6 @@ internal class Module(private val applicationContext: Context) {
 
     val exoplayerCache: SimpleCache
         get() = PlayerCache.getInstance(applicationContext)
-
-    private fun getRetrofitInstance(): Retrofit {
-//        MehenazBranch
-        val client = getBaseClient()
-        return RetrofitClient.getInstance(client)
-//        return RetrofitClient.getInstance()
-    }
 
     private val playerApiService: PlayerApiService
         get() = SinglePlayerApiService.getInstance(getRetrofitInstance())

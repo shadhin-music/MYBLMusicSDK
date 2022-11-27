@@ -38,7 +38,7 @@ internal class AlbumViewModel(private val albumContentRepository: AlbumContentRe
     }
 
     fun fetchGetAllRadio() = viewModelScope.launch {
-        val response = albumContentRepository.fetchGetAllRadio("Bearer " + AppConstantUtils.token)
+        val response = albumContentRepository.fetchGetAllRadio()
         _allRadios.postValue(response)
     }
 }

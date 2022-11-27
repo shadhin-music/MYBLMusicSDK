@@ -9,17 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
-import kotlin.random.Random
 
 internal class UserCreatedPlaylistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
@@ -132,7 +130,7 @@ internal class UserCreatedPlaylistHeaderAdapter(
                     ivFavorite.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
-                        FavData().apply {
+                        FavDataModel().apply {
                             content_Id = homePatchDetail?.content_Id.toString()
                             album_Id = homePatchDetail?.album_Id
                             imageUrl = homePatchDetail?.imageUrl

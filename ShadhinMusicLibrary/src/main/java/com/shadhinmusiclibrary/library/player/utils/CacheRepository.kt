@@ -5,7 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.room.DatabaseClient
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -18,12 +18,12 @@ internal class CacheRepository(val context: Context) {
     private val watchLaterDb = databaseClient.getWatchlaterDatabase()
     private val downloadDb = databaseClient.getDownloadDatabase()
     private val favoriteContentDB = databaseClient.getFavoriteContentDatabase()
-    fun insertFavoriteContent(favData: MutableList<FavData>?) {
+    fun insertFavoriteContent(favData: MutableList<FavDataModel>?) {
         favoriteContentDB?.FavoriteContentDao()?.insertAll(favData)
         //  Log.i("dfsfsdff", "insertFavoriteContent: ${a}")
     }
 
-    fun insertFavSingleContent(favData: FavData) {
+    fun insertFavSingleContent(favData: FavDataModel) {
         favoriteContentDB?.FavoriteContentDao()?.insert(favData)
     }
 
@@ -42,7 +42,7 @@ internal class CacheRepository(val context: Context) {
         watchLaterDb?.WatchlaterContentDao()?.insert(watchLaterContent)
     }
 
-    fun getFavoriteById(id: String): FavData? {
+    fun getFavoriteById(id: String): FavDataModel? {
         var contents = favoriteContentDB?.FavoriteContentDao()?.getFavoriteById(id)
         if (contents?.size ?: 0 > 0) {
             return contents!![0]

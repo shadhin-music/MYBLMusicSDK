@@ -45,7 +45,7 @@ import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManagerFacto
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.di.ActivityEntryPoint
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DatabaseClient
@@ -472,7 +472,7 @@ internal class VideoActivity : AppCompatActivity(),
 
                     favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository.insertFavSingleContent(
-                        FavData().apply {
+                        FavDataModel().apply {
                             content_Id = currentVideoID.toString()
                             album_Id = currentRootID
                             rootImage = currentImage
@@ -878,7 +878,7 @@ internal class VideoActivity : AppCompatActivity(),
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 favImageView.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 cacheRepository.insertFavSingleContent(
-                    FavData()
+                    FavDataModel()
                         .apply {
                             content_Id = item.contentID.toString()
                             album_Id = item.albumId

@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -129,7 +129,7 @@ internal class PlaylistHeaderAdapter(
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     Log.e("TAG", "NAME123: " + isFav)
                     cacheRepository?.insertFavSingleContent(
-                        FavData()
+                        FavDataModel()
                             .apply {
                                 content_Id = homePatchDetail?.content_Id.toString()
                                 album_Id = homePatchDetail?.album_Id

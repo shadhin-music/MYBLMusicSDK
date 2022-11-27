@@ -59,7 +59,7 @@ internal interface ApiService {
     ): APIResponse<MutableList<SongDetailModel>>
 
     @GET("mybl/getradiosdataall")
-    suspend fun fetchGetAllRadio(@Header("Authorization") token: String): APIResponse<MutableList<HomePatchDetailModel>>
+    suspend fun fetchGetAllRadio(): APIResponse<MutableList<HomePatchDetailModel>>
 
     @GET("Playlist/GetPlaylistContentById")
     fun fetchGetRadioListByContentById(
@@ -106,8 +106,8 @@ internal interface ApiService {
     @GET("Track/TopTrending")
     suspend fun getTopTrendingItems(@Query("type") type: String): TopTrendingModel
 
-    @GET("mybl/Login")
-    suspend fun login(@Header("Authorization") token: String): LoginResponse
+//    @GET("mybl/Login")
+//    suspend fun login(@Header("Authorization") token: String): LoginResponse
 
 
     @POST("Playlist/PostUserplayList")

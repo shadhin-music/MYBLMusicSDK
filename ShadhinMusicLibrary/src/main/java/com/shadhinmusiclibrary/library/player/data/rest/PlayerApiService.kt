@@ -8,7 +8,6 @@ internal interface PlayerApiService {
 
     @GET("streaming/getpth")
     suspend fun fetchContentUrl(
-        @Header("Authorization") token: String?,
         @Query("ptype") ptype: String?,
         @Query("type") type: String?,
         @Query("ttype") ttype: String?,
@@ -18,7 +17,6 @@ internal interface PlayerApiService {
 
     @GET("clientstreaming/getdwnpth")
     suspend fun fetchDownloadContentUrl(
-        @Header("Authorization") token: String,
         @Query("name") name: String?
     ): ContentUrlResponse
 

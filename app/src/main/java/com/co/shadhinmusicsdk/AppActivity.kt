@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.co.shadhinmusicsdk.data.model.LoginData
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
@@ -18,10 +19,17 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.app_activity)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        ShadhinMusicSdkCore.initializeSDK(applicationContext, TOKEN, this)
 
-        val data = intent.extras
-        data?.getString("mobile_number")
+        val data = intent.extras?.getBundle("loginData")
+        if (data != null) {
+            val mLoginData: LoginData = data.getSerializable("loginData") as LoginData
+            Log.e("AA", "onCreate: " + mLoginData.accessToken)
+            ShadhinMusicSdkCore.initializeSDK(
+                applicationContext,
+                mLoginData.accessToken.toString(),
+                this
+            )
+        }
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {
 //            ShadhinMusicSdkCore.openMusic(this)
@@ -75,10 +83,11 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     override fun tokenStatus(isTokenValid: Boolean, error: String) {
-        Log.i("TAG", "isTokenValid: $isTokenValid $error ")
+        Log.i("APPActivity", "isTokenValid: $isTokenValid $error ")
     }
 
     companion object {
-        const val TOKEN: String ="eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTAwMDAwMDAwIiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2OTI4MzI3OCwiZXhwIjoxNjY5MzI3MjI1LCJpYXQiOjE2NjkyODMyNzgsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.wsb3EgB5RqQE5Klw_97eTC7rV5QAFEMpf9CcQKMlxo85UeBz6dFcTIzquuf9eMGsfs3K8lpak76zGEpyelMDvg"
+//        const val TOKEN: String =
+//            "eyJhbGciOiJIUzUxMiIsInR5cCI6IkJlYXJlciJ9.eyJjbGllbnQiOiJNWUJMIiwiZnVsbE5hbWUiOiIiLCJtc2lzZG4iOiI4ODAxOTAwMDAwMDAwIiwiaW1hZ2VVUkwiOiIiLCJnZW5kZXIiOiIiLCJkZXZpY2VUb2tlbiI6IiIsIm5iZiI6MTY2OTExNDc3MSwiZXhwIjoxNjY5MTk5Nzg4LCJpYXQiOjE2NjkxMTQ3NzEsImlzcyI6IkJMTVVTSUMgIiwiYXVkIjoiU2hhZGhpbiAifQ.5yK_3CBfWc853zsNSJzYEj-CcKW_zrwK0ukwg9dZ4KMu0Eay0oFXPFVuNiP66dmrVYX_tmrLm6lZuiQVo6kLMw"
     }
 }

@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.net.Uri
-import android.util.Log
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
-import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
@@ -348,18 +346,16 @@ internal object UtilHelper {
     }
 
     fun getHomePatchDetailToAlbumModel(albumModel: ArtistAlbumModelData): HomePatchDetailModel {
-        albumModel.apply {
-            return HomePatchDetailModel().apply {
-                album_Id = album_Id ?: ""
-                artist_Id = album_Id ?: ""
-                content_Id = content_Id
-                content_Type = content_Type ?: ""
-                playingUrl = playingUrl ?: ""
-                album_Name = titleName ?: ""
-                total_duration = total_duration ?: ""
-                imageUrl = imageUrl ?: ""
-                artistName = artistName ?: ""
-            }
+        return HomePatchDetailModel().apply {
+            album_Id = albumModel.album_Id ?: ""
+            artist_Id = albumModel.artist_Id ?: ""
+            content_Id = albumModel.content_Id
+            content_Type = albumModel.content_Type ?: ""
+            playingUrl = albumModel.playingUrl ?: ""
+            album_Name = albumModel.titleName ?: ""
+            total_duration = albumModel.total_duration ?: ""
+            imageUrl = albumModel.imageUrl ?: ""
+            artistName = albumModel.artistName ?: ""
         }
     }
 

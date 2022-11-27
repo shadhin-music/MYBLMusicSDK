@@ -13,7 +13,7 @@ internal class AlbumContentRepository(private val apiService: ApiService) {
         apiService.fetchGetPlaylistContentById(contentId)
     }
 
-    suspend fun fetchGetAllRadio(token: String) = safeApiCall {
-        apiService.fetchGetAllRadio(token)
+    suspend fun fetchGetAllRadio() = safeApiCall {
+        apiService.fetchGetAllRadio()
     }
 }
