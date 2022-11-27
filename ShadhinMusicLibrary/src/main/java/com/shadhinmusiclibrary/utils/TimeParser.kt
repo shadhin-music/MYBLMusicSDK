@@ -6,13 +6,13 @@ internal object TimeParser {
         if (mDuration == null) {
             mDuration = ""
         }
-        if (mDuration.isEmpty()) {
-            return "0:0"
-        }
+//        if (mDuration.isEmpty()) {
+//            return "0:0"
+//        }
         val time: Int = try {
             mDuration.toInt()
         } catch (e: NumberFormatException) {
-            0
+            return duration ?: ""
         }
         val min = time / 60
         val seconds = time % 60

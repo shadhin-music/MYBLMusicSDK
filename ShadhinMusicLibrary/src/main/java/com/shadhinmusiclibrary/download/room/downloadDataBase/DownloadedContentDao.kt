@@ -12,19 +12,19 @@ internal interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE content_Type  IS  NULL ORDER By total_duration ASC ")
     fun getAllPendingDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE content_Type IS NOT NULL AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE content_Type IS NOT NULL AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='V' AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='V' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllVideosDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='S' AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='S' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllSongsDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='PDJG' AND isDownloaded_dc = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE rootContentType='PD' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllPodcastDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded_dc = 1 ")
+    @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded = 1 ")
     fun getDownloadById(id: String): List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where rootContentId = :albumId")
@@ -45,19 +45,19 @@ internal interface DownloadedContentDao {
 //    @Query("SELECT * from DownloadedContent WHERE path IS NOT NULL GROUP BY albumId ORDER By createTime DESC ")
 //    fun getAllAlbums():List<DownloadedContent>
 
-    @Query("SELECT playingUrl FROM DownloadedContent where content_Id = :contentId  AND isDownloaded_dc = 1")
+    @Query("SELECT playingUrl FROM DownloadedContent where content_Id = :contentId  AND isDownloaded = 1")
     fun getTrackById(contentId: String): String
 
-    @Query("SELECT * FROM DownloadedContent where  isDownloaded_dc = 1")
+    @Query("SELECT * FROM DownloadedContent where  isDownloaded = 1")
     fun getAllDownloadedTrackById(): List<DownloadedContent>
 
-    @Query("SELECT isDownloaded_dc FROM DownloadedContent WHERE  content_Id = :contentId AND isDownloaded_dc =1 LIMIT 1")
+    @Query("SELECT isDownloaded FROM DownloadedContent WHERE  content_Id = :contentId AND isDownloaded =1 LIMIT 1")
     fun downloadedContent(contentId: String): Boolean?
 
-    @Query("SELECT isDownloaded_dc FROM DownloadedContent WHERE content_Type = 'V' AND content_Id = :contentId AND isDownloaded_dc =1 LIMIT 1")
+    @Query("SELECT isDownloaded FROM DownloadedContent WHERE content_Type = 'V' AND content_Id = :contentId AND isDownloaded =1 LIMIT 1")
     fun downloadedVideoContent(contentId: String): Boolean?
 
-    @Query("UPDATE DownloadedContent SET isDownloaded_dc = :isDownloaded WHERE content_Id = :contentId")
+    @Query("UPDATE DownloadedContent SET isDownloaded = :isDownloaded WHERE content_Id = :contentId")
     fun downloadState(contentId: String, isDownloaded: Int)
 
 //    @Query("SELECT track FROM DownloadedContent where contentId = :contentId & isDownloaded = 1")

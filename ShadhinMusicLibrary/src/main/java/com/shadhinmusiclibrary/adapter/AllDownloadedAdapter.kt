@@ -60,7 +60,7 @@ internal class AllDownloadedAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if(allDownloads[position].rootContentType.equals("PDJG")){
+        if(allDownloads[position].rootContentType.equals("PD")){
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
                 Log.e("TAG","ALL Downloads: "+ allDownloads)

@@ -52,10 +52,10 @@ class DownloadedContent : IMusicModel {
     @Expose
     override var rootContentType: String? = null
 
-    @ColumnInfo(name = "isDownloaded_dc")
+    @SerializedName("isDownloaded")
     private var isDownloaded: Int? = 0
 
-    @ColumnInfo(name = "isFavorite_dc")
+    @SerializedName("isFavorite")
     private var isFavorite: Int? = 0
 
     override var bannerImage: String? = null

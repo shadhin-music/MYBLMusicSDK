@@ -1519,7 +1519,7 @@ internal class SDKMainActivity : BaseActivity(),
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(iSongTrack.content_Id, url.toUri())
                         .build()
-                Log.e("TAG","NAME: "+iSongTrack.titleName)
+                Log.e("TAG","NAME: "+iSongTrack.titleName + " URL "+url)
                 injector.downloadTitleMap[iSongTrack.content_Id ?: ""] = iSongTrack.titleName ?: ""
                 DownloadService.sendAddDownload(
                     applicationContext,
@@ -1532,13 +1532,14 @@ internal class SDKMainActivity : BaseActivity(),
                 if (cacheRepository.isDownloadCompleted(iSongTrack.content_Id!!)) {
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
-                            album_Id = iSongTrack.content_Id
+                            content_Id = iSongTrack.content_Id
+                            album_Id = iSongTrack.album_Id
                             rootContentId = iSongTrack.rootContentId
                             imageUrl = iSongTrack.imageUrl
                             titleName = iSongTrack.titleName
                             content_Type = iSongTrack.content_Type
                             playingUrl = iSongTrack.playingUrl
-                            content_Type = "1"
+                            content_Type = iSongTrack.content_Type
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
                             total_duration = iSongTrack.total_duration
