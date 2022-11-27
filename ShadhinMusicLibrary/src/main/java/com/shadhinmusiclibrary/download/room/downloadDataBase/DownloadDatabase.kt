@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.download.room.DownloadedContent
     entities = [
         DownloadedContent::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 

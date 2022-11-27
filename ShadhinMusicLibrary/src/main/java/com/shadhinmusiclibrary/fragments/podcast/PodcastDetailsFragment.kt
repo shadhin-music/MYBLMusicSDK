@@ -263,10 +263,12 @@ internal class PodcastDetailsFragment : BaseFragment(),
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
-            if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
-                playerViewModel.togglePlayPause()
-            } else {
-                playItem(lSongDetails, clickItemPosition)
+            if (lSongDetails.size > clickItemPosition) {
+                if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+                    playerViewModel.togglePlayPause()
+                } else {
+                    playItem(lSongDetails, clickItemPosition)
+                }
             }
         }
     }
