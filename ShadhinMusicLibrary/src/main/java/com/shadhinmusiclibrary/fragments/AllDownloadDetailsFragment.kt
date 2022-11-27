@@ -101,6 +101,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             argHomePatchDetail ?: HomePatchDetailModel(),
             playerViewModel.currentMusic?.mediaId
         )
+        Log.e("TAG","DATA: "+ cacheRepository.getAllDownloads()?.toMutableList())
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
