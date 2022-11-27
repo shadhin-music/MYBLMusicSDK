@@ -65,6 +65,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var navController: NavController
+    private lateinit var allDownloadAdapter: AllDownloadedAdapter
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
 
@@ -78,6 +79,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        allDownloadAdapter = AllDownloadedAdapter(this, this)
 
         favViewModel = ViewModelProvider(
             this,
@@ -94,18 +96,34 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter =
-            AllDownloadedAdapter(cacheRepository.getAllDownloads()!!.toMutableList(), this,this)
+        allDownloadAdapter.setData(
+            cacheRepository.getAllDownloads()?.toMutableList() ?: mutableListOf(),
+            argHomePatchDetail ?: HomePatchDetailModel(),
+            playerViewModel.currentMusic?.mediaId
+        )
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, allDownloadAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
+
+
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    allDownloadAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e(
+            "ALLDDF",
+            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id "+mSongDetails[clickItemPosition].content_Id
+        )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)

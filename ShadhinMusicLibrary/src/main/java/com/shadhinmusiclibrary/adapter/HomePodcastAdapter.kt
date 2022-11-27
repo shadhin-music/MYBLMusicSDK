@@ -34,7 +34,7 @@ internal class HomePodcastAdapter(
         holder.bindItems()
         holder.itemView.setOnClickListener {
             //homeCallBack.onClickItemAndAllItem(position, homePatchItem)
-            podcastTrackClick.onClickItem(homePatchItem.Data,position)
+            podcastTrackClick.onClickItem(homePatchItem.Data.toMutableList(),position)
         }
     }
 

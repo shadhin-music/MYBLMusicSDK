@@ -89,7 +89,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             this,
             this
         )
-        Log.e("TAG", "Track123: " + cacheRepository.getAllFavoriteContent())
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

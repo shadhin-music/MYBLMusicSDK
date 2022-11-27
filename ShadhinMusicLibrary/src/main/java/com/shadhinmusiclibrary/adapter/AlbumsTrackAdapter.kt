@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +80,7 @@ internal class AlbumsTrackAdapter(
         this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootData(
+                UtilHelper.getMixdUpIMusicWithRootData(
                     songItem.apply {
                         isSeekAble = true
                     }, rootPatch

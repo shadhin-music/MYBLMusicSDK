@@ -59,7 +59,7 @@ internal object UtilHelper {
                         displayDescription = "",
                         displayIconUrl = getImageUrlSize300(imageUrl!!),
                         mediaUrl = Constants.FILE_BASE_URL + playingUrl,
-                        artistName = artistName,
+                        artistName = artistName ?: "",
                         date = "",
                         contentType = content_Type,
                         userPlayListId = "",
@@ -72,7 +72,7 @@ internal object UtilHelper {
                         rootId = rootContentId,
                         rootImage = rootImage,
                         rootType = rootContentType,
-                        rootTitle = titleName
+                        rootTitle = titleName ?: ""
                     )
                 )
             }
@@ -139,10 +139,10 @@ internal object UtilHelper {
         isSeekAble = true
     }
 
-    fun getSongDetailAndRootData(
-        mSongDet: SongDetailModel,
+    fun getMixdUpIMusicWithRootData(
+        mSongDet: IMusicModel,
         rootPatch: HomePatchDetailModel
-    ): SongDetailModel {
+    ): IMusicModel {
         mSongDet.apply {
             rootContentId = rootPatch.content_Id
             content_Id = rootPatch.content_Id
