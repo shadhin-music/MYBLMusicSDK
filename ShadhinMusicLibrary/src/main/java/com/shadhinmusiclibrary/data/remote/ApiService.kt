@@ -58,7 +58,7 @@ internal interface ApiService {
     ): APIResponse<MutableList<SongDetailModel>>
 
     @GET("mybl/getradiosdataall")
-    suspend fun fetchGetAllRadio(@Header("Authorization") token: String): APIResponse<MutableList<HomePatchDetailModel>>
+    suspend fun fetchGetAllRadio(): APIResponse<MutableList<HomePatchDetailModel>>
 
     @GET("Playlist/GetPlaylistContentById")
     fun fetchGetRadioListByContentById(

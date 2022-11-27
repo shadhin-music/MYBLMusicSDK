@@ -17,7 +17,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
@@ -213,7 +213,7 @@ internal class ArtistHeaderAdapter(
                         )
                         ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                         cacheRepository?.insertFavSingleContent(
-                            FavData().apply {
+                            FavDataModel().apply {
                                 content_Id = homePatchDetail.content_Id
                                 album_Id = homePatchDetail.album_Id
                                 albumImage = homePatchDetail.imageUrl

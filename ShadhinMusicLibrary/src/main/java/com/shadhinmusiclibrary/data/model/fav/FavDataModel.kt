@@ -9,7 +9,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 
 @Keep
 @Entity(tableName = "FavData")
-class FavData : IMusicModel {
+class FavDataModel : IMusicModel {
     @PrimaryKey
     @SerializedName("ContentID")
     override var content_Id: String = ""

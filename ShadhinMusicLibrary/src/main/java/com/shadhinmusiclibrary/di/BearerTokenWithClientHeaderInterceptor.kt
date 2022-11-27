@@ -7,14 +7,19 @@ import okhttp3.Response
 
 internal class BearerTokenWithClientHeaderInterceptor : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response  {
-        val finalToken = ("Bearer ${AuthRepository.appToken?:AppConstantUtils.token}")
+    override fun intercept(chain: Interceptor.Chain): Response {
+
+        val finalToken = ("Bearer " + if (AuthRepository.appToken != null) {
+            AuthRepository.appToken
+        } else {
+            ""
+        })
         return chain.run {
             proceed(
                 request()
                     .newBuilder()
                     .addHeader("Authorization", finalToken)
-                    .addHeader("Client","2")
+                    .addHeader("Client", "2")
                     .build()
             )
         }

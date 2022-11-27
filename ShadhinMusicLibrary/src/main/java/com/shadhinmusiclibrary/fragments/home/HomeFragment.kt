@@ -31,9 +31,9 @@ import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -41,7 +41,6 @@ import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
-import com.shadhinmusiclibrary.utils.*
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -51,7 +50,7 @@ import java.io.Serializable
 internal class HomeFragment : BaseFragment(),
     HomeCallBack,
     SearchClickCallBack,
-    DownloadClickCallBack,PodcastTrackCallback {
+    DownloadClickCallBack, PodcastTrackCallback {
 
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
@@ -114,8 +113,11 @@ internal class HomeFragment : BaseFragment(),
         favViewModel.getFavContentSong("S")
         favViewModel.getFavContentPlaylist("P")
         favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
-            if (res.data != null)
+            if (res?.data != null) {
                 cacheRepository.insertFavoriteContent(res.data)
+            } else {
+                cacheRepository.insertFavoriteContent(mutableListOf())
+            }
 
             //homeViewModel.fetchHomeData(pageNum, false)
 
@@ -223,7 +225,7 @@ internal class HomeFragment : BaseFragment(),
 
             footerAdapter = HomeFooterAdapter()
 
-            dataAdapter = ParentAdapter(this, this, this,this)
+            dataAdapter = ParentAdapter(this, this, this, this)
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
@@ -249,7 +251,7 @@ internal class HomeFragment : BaseFragment(),
                 .setIsolateViewTypes(false)
                 .build()
             concatAdapter = ConcatAdapter(config, dataAdapter)
-            recyclerView.adapter =  concatAdapter
+            recyclerView.adapter = concatAdapter
             //recyclerView.adapter =  dataAdapter
 
 //            concatAdapter.removeAdapter(dataAdapter)
@@ -265,7 +267,7 @@ internal class HomeFragment : BaseFragment(),
                 dataAdapter?.setData(it1)
                 //dataAdapter?.notifyItemChanged(pageNum)
                 dataAdapter?.notifyDataSetChanged()
-                Log.e("TAG","PAGE NUMBER: "+ pageNum)
+                Log.e("TAG", "PAGE NUMBER: " + pageNum)
             }
         }
         if (homeData?.total == pageNum) {
@@ -507,7 +509,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: List<IMusicModel>, clickItemPosition: Int) {
-        Log.e("podcast", "clickItemPosition "+mSongDetails[clickItemPosition].titleName)
+        Log.e("podcast", "clickItemPosition " + mSongDetails[clickItemPosition].titleName)
 /*        if (playerViewModel.currentMusic != null &&
             (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
         ) {
@@ -531,7 +533,7 @@ internal class HomeFragment : BaseFragment(),
     }
 
 
-    }
+}
 
 //    override fun podcastTrackClick(homePatchItem: HomePatchItemModel) {
 //     Log.e("TAG","DATA: "+ homePatchItem)

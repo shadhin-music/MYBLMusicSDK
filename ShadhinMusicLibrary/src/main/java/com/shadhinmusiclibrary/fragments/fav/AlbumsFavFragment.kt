@@ -45,7 +45,7 @@ import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -246,7 +246,7 @@ internal class AlbumsFavFragment : BaseFragment(),
     }
 
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<FavData>) {
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<FavDataModel>) {
         val favDat = favData[itemPosition]
         navController.navigate(
             R.id.favoriteAlbum,
@@ -441,7 +441,7 @@ internal class AlbumsFavFragment : BaseFragment(),
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
-                    FavData()
+                    FavDataModel()
                         .apply {
                             content_Id = mSongDetails.content_Id
                             album_Id = mSongDetails.album_Id
@@ -611,5 +611,5 @@ internal class AlbumsFavFragment : BaseFragment(),
 }
 
 internal interface onFavAlbumClick {
-    fun onFavAlbumClick(itemPosition: Int, favData: List<FavData>)
+    fun onFavAlbumClick(itemPosition: Int, favData: List<FavDataModel>)
 }

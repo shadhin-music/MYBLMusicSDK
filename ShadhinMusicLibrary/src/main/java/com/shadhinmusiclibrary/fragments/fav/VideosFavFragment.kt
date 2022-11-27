@@ -33,7 +33,7 @@ import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -324,7 +324,7 @@ internal class VideosFavFragment : BaseFragment(),
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
-                    FavData().apply {
+                    FavDataModel().apply {
                         content_Id = mSongDetail.contentID.toString()
                         album_Id = mSongDetail.albumId
                         albumImage = mSongDetail.image

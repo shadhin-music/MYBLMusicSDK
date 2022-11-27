@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 internal class FavViewModel(private val favContentRepository: FavContentRepository) : ViewModel() {
     private val _getFavContentAlbum: MutableLiveData<FavDataResponseModel> = MutableLiveData()
-    val getFavContentAlbum: LiveData<FavDataResponseModel> = _getFavContentAlbum
+    val getFavContentAlbum: LiveData<FavDataResponseModel?> = _getFavContentAlbum
 
     private val _addFavContent: MutableLiveData<FavDataResponseModel> = MutableLiveData()
     val addFavContent: LiveData<FavDataResponseModel> = _addFavContent

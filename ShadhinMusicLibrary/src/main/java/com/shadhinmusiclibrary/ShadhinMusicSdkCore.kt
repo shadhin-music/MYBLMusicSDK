@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.model.APIResponse
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.remote.ApiService
+import com.shadhinmusiclibrary.di.BearerTokenWithClientHeaderInterceptor
 import com.shadhinmusiclibrary.di.HeaderInterceptor
 import com.shadhinmusiclibrary.di.ShadhinApp
 import com.shadhinmusiclibrary.di.single.BearerTokenHeaderInterceptor
@@ -134,10 +135,7 @@ object ShadhinMusicSdkCore {
 
     private fun getOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(
-                HeaderInterceptor()
-            )
-            .addInterceptor(BearerTokenHeaderInterceptor())
+            .addInterceptor(BearerTokenWithClientHeaderInterceptor())
             .build()
     }
 

@@ -25,7 +25,7 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -275,7 +275,7 @@ internal class WatchLaterFragment : BaseFragment(),
                 favViewModel.addFavContent(item.contentID.toString(), "V")
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
-                    FavData().apply {
+                    FavDataModel().apply {
                         content_Id = item.contentID.toString()
                         album_Id = item.albumId
                         albumImage = item.image

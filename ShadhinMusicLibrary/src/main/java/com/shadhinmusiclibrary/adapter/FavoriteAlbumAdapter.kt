@@ -11,14 +11,14 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.fav.onFavAlbumClick
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoriteAlbumAdapter(
-    val allDownloads: List<FavData>,
+    val allDownloads: List<FavDataModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: favItemClickCallback,
     private val cacheRepository: CacheRepository, private val albumClick: onFavAlbumClick

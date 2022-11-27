@@ -39,7 +39,7 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -319,7 +319,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 )
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
-                    FavData().apply {
+                    FavDataModel().apply {
                         content_Id = mSongDetails.content_Id
                         album_Id = mSongDetails.album_Id
                         albumImage = mSongDetails.imageUrl

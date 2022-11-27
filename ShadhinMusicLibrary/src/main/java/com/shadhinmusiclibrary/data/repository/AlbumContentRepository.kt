@@ -14,6 +14,6 @@ internal class AlbumContentRepository(private val apiService: ApiService) {
     }
 
     suspend fun fetchGetAllRadio(token: String) = safeApiCall {
-        apiService.fetchGetAllRadio(token)
+        apiService.fetchGetAllRadio()
     }
 }

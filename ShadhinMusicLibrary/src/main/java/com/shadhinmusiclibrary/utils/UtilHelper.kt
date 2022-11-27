@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.net.Uri
-import android.util.Log
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.*
-import com.shadhinmusiclibrary.data.model.fav.FavData
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel

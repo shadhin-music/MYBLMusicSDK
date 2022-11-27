@@ -17,13 +17,13 @@ import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavData
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavVideoAdapter(
-    val allDownloads: List<FavData>,
+    val allDownloads: List<FavDataModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: favItemClickCallback,
     private val cacheRepository: CacheRepository
