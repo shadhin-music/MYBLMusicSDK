@@ -318,7 +318,7 @@ internal object UtilHelper {
             total_duration = searchData.total_duration ?: ""
             imageUrl = searchData.imageUrl ?: ""
             artistName = searchData.artistName ?: ""
-            isSeekAble = false
+            isSeekAble = true
             titleName = searchData.titleName ?: ""
         }
 
@@ -360,14 +360,14 @@ internal object UtilHelper {
     }
 
     fun getHomePatchDetailToSongDetail(songDetail: IMusicModel): HomePatchDetailModel {
-            return HomePatchDetailModel().apply {
-                album_Id = songDetail.album_Id ?:""
-                artist_Id = songDetail.artist_Id ?: ""
-                content_Id = songDetail.content_Id ?: ""
-                imageUrl = songDetail.imageUrl ?: ""
-                artistName = songDetail.artistName ?: ""
-                titleName = songDetail.titleName ?: ""
-            }
+        return HomePatchDetailModel().apply {
+            album_Id = songDetail.album_Id ?: ""
+            artist_Id = songDetail.artist_Id ?: ""
+            content_Id = songDetail.content_Id ?: ""
+            imageUrl = songDetail.imageUrl ?: ""
+            artistName = songDetail.artistName ?: ""
+            titleName = songDetail.titleName ?: ""
+        }
     }
 
     fun getHomePatchDetailToFeaturedPodcastDetails(episode: FeaturedPodcastDetailsModel): HomePatchDetailModel {

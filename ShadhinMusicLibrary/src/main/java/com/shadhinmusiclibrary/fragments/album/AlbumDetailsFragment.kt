@@ -279,7 +279,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
             imageUrl = mArtAlbumMod.imageUrl
             artistName = mArtAlbumMod.artistName ?: ""
             imageWeb = ""
-            isSeekAble = false
+            isSeekAble = true
             titleName = mArtAlbumMod.titleName ?: ""
         }
         argHomePatchDetail = data
