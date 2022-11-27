@@ -2034,7 +2034,7 @@ internal class SDKMainActivity : BaseActivity(),
                         imageUrl = mSongDetails.imageUrl
                         artistName = mSongDetails.artistName
                         rootContentType = "P"
-                        isSeekAble = false
+                        isSeekAble = true
                         titleName = ""
                     } as Serializable
                 )

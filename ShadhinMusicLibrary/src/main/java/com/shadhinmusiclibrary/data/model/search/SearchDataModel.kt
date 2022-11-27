@@ -102,8 +102,4 @@ internal class SearchDataModel : IMusicModel {
     override var isPlaying: Boolean = false
 
     override var isSeekAble: Boolean? = false
-
-    fun getImageUrl300Size(): String? {
-        return imageUrl?.replace("<\$size\$>", "300")
-    }
 }

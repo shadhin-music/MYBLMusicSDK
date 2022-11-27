@@ -125,7 +125,7 @@ internal class AlbumsTrackAdapter(
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
             tvSongName!!.text = dataSongDetail.titleName
-            textArtist.text = dataSongDetail.artistName + "" + dataSongDetail.isSeekAble.toString()
+            textArtist.text = dataSongDetail.artistName
             tvSongLength.text = TimeParser.secToMin(dataSongDetail.total_duration)
             progressIndicator.tag = dataSongDetail.content_Id
             downloaded.tag = 200

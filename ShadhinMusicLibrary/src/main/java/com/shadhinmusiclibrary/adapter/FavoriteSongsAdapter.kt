@@ -1,10 +1,13 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -12,16 +15,19 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoriteSongsAdapter(
-    val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: favItemClickCallback,
     private val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<FavoriteSongsAdapter.ViewHolder>() {
+    private var allDownloads: MutableList<IMusicModel> = mutableListOf()
+    private var contentId: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -30,6 +36,7 @@ internal class FavoriteSongsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val mSongDetails = allDownloads[position]
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
 //        if(allDownloads[position].rootType.equals("V")){
@@ -59,6 +66,57 @@ internal class FavoriteSongsAdapter(
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
         }
+
+        if (mSongDetails.isPlaying) {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
+            )
+        } else {
+            holder.tvSongName?.setTextColor(
+                ContextCompat.getColor(
+                    holder.context,
+                    R.color.my_sdk_black2
+                )
+            )
+        }
+    }
+
+    fun setData(
+        data: MutableList<IMusicModel>,
+        rootPatch: HomePatchDetailModel,
+        mediaId: String?
+    ) {
+        for (songItem in data) {
+            Log.e(
+                "ALLDowA",
+                "setData: " + songItem.content_Id + " " + songItem.titleName + " " + songItem.total_duration
+            )
+            allDownloads.add(
+                songItem.apply {
+                    isSeekAble = true
+                    rootContentId = "00$content_Id"
+                    rootContentType = content_Type
+                }
+            )
+        }
+
+        if (mediaId != null) {
+            setPlayingSong(mediaId)
+        }
+
+        notifyDataSetChanged()
+    }
+
+    fun setPlayingSong(mediaId: String) {
+        contentId = mediaId
+        val newList: List<IMusicModel> =
+            UtilHelper.getCurrentRunningSongToNewSongList(mediaId, allDownloads)
+        val callback = AnyTrackDiffCB(allDownloads, newList)
+        val diffResult = DiffUtil.calculateDiff(callback)
+        allDownloads.clear()
+        allDownloads.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -68,14 +126,14 @@ internal class FavoriteSongsAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()
-
+        var tvSongName: TextView? = null
         fun bindItems() {
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
-            val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
+            tvSongName = itemView.findViewById(R.id.tv_song_name)
+            tvSongName?.text = allDownloads[absoluteAdapterPosition].titleName
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
             tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
