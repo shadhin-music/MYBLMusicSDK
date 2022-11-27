@@ -138,14 +138,11 @@ internal class CacheRepository(val context: Context) {
 
     fun isTrackDownloaded(contentId: String): Boolean {
         val path = downloadDb?.DownloadedContentDao()?.getTrackById(contentId)
-        Log.e("TAG", "Track: " + path)
         return if (path == null) {
-            Log.e("TAG", "Track123: " + path)
             false
         } else {
             true
         }
-
     }
 
     fun getDownloadedContent() = downloadDb?.DownloadedContentDao()?.getAllDownloadedTrackById()
@@ -174,10 +171,8 @@ internal class CacheRepository(val context: Context) {
         val completed = databaseClient.getDownloadDatabase()?.DownloadedContentDao()
             ?.downloadedContent(contentId)
         if (completed?.equals(null) == true) {
-            Log.e("TAG", "TrackDownload: " + completed)
             return false
         } else {
-            Log.e("TAG", "TrackDownload: " + completed)
             return true
         }
     }
