@@ -25,8 +25,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -45,7 +45,7 @@ import java.io.Serializable
 internal class ArtistDetailsFragment : BaseFragment(),
     HomeCallBack,
     CommonPlayControlCallback,
-    BottomSheetDialogItemCallback {
+    CommonSinglePlayControlCallback {
 
     private lateinit var navController: NavController
     var artistContent: ArtistContentModel? = null

@@ -10,7 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 internal class UserCreatedPlaylistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
     var playlistName: String?,
-    private val itemClickCB: OnItemClickCallback,
+    private val itemClickCB: CommonPlayControlCallback,
     private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,
     val gradientDrawable: Int

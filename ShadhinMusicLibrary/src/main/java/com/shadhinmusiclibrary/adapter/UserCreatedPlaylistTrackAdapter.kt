@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
@@ -21,7 +20,7 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class UserCreatedPlaylistTrackAdapter(
-    private val itemClickCB: OnItemClickCallback,
+    private val itemClickCB: CommonPlayControlCallback,
     val bsDialogItemCallback: CreatedPlaylistSongBottomSheetDialogItemCallback,
     val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<UserCreatedPlaylistTrackAdapter.PlaylistTrackVH>() {

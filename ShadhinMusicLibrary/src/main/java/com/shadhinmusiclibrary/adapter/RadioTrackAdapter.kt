@@ -34,7 +34,6 @@ internal class RadioTrackAdapter(private val radioCallback: RadioTrackCallBack) 
         holder.itemView.setOnClickListener {
             radioCallback.onClickItem(radioTrackItem)
         }
-
     }
 
     override fun getItemCount(): Int {

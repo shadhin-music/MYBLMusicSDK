@@ -33,8 +33,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistTrackAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -51,7 +51,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class UserCreatedPlaylistDetailsFragment :
     PlaylistBaseFragment(),
-    OnItemClickCallback,
+    CommonPlayControlCallback,
     CreatedPlaylistSongBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: CreateplaylistViewModel

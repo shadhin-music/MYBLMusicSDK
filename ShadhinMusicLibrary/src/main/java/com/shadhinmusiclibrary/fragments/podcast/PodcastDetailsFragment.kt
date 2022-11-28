@@ -21,9 +21,9 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -35,10 +35,9 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
-
 internal class PodcastDetailsFragment : BaseFragment(),
     HomeCallBack,
-    PodcastOnItemClickCallback,
+    CommonPlayControlCallback,
     PodcastBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: PodcastViewModel
@@ -273,34 +272,34 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
     }
 
-    override fun onClickItem(mTracks: MutableList<IMusicModel>, clickItemPosition: Int) {
+    override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         if (playerViewModel.currentMusic != null) {
-            if ((mTracks[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
-                if ((mTracks[clickItemPosition].content_Id.toString() != playerViewModel.currentMusic?.mediaId)) {
+                if ((mSongDetails[clickItemPosition].content_Id.toString() != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
             } else {
-                playItem(mTracks, clickItemPosition)
+                playItem(mSongDetails, clickItemPosition)
             }
         } else {
-            playItem(mTracks, clickItemPosition)
+            playItem(mSongDetails, clickItemPosition)
         }
     }
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        mTracks: MutableList<IMusicModel>
+        songDetails: MutableList<IMusicModel>
     ) {
 //        val mSongDet = podcastTrackAdapter.tracks
         val podcastHeaderVH = currentVH as PodcastHeaderAdapter.PodcastHeaderVH
-        if (mTracks.size > 0 && isAdded) {
+        if (songDetails.size > 0 && isAdded) {
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    if ((mTracks.indexOfFirst {
+                    if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.rootContentId == itMusic.rootId &&
                                     it.content_Id.toString() == itMusic.mediaId
@@ -327,8 +326,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
             argHomePatchItem,
             argHomePatchDetail
         )
-        Log.e("TAG","DATA: "+ track.content_Id)
-        Log.e("TAG","DATA: "+ track.album_Name)
+        Log.e("TAG", "DATA: " + track.content_Id)
+        Log.e("TAG", "DATA: " + track.album_Name)
     }
 
     override fun onStart() {

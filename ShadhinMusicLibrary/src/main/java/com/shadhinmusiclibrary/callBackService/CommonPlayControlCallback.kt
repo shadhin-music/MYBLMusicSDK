@@ -3,7 +3,7 @@ package com.shadhinmusiclibrary.callBackService
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.data.IMusicModel
 
-interface CommonPlayControlCallback {
+internal interface CommonPlayControlCallback {
     fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
     fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
     fun getCurrentVH(

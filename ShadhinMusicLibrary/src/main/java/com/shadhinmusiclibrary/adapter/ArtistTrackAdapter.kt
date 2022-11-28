@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistTrackAdapter(
     private val itemClickCB: CommonPlayControlCallback,
-    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback,
+    val bottomSheetDialogItemCallback: CommonSinglePlayControlCallback,
     val cacheRepository: CacheRepository?
 ) : RecyclerView.Adapter<ArtistTrackAdapter.ArtistTrackVH>() {
     var artistSongList: MutableList<IMusicModel> = mutableListOf()

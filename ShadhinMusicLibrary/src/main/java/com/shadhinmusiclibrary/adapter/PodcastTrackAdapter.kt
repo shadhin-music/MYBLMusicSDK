@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
@@ -22,7 +22,7 @@ import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PodcastTrackAdapter(
-    private val itemClickCB: PodcastOnItemClickCallback,
+    private val itemClickCB: CommonPlayControlCallback,
     private val bsDialogItemCallback: PodcastBottomSheetDialogItemCallback,
     val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<PodcastTrackAdapter.PodcastTrackVH>() {

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AlbumHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
-    private val itemClickCB: OnItemClickCallback,
+    private val itemClickCB: CommonPlayControlCallback,
 ) : RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
 
     var cacheRepository: CacheRepository? = null

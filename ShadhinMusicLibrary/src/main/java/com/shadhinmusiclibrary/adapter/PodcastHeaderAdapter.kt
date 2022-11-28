@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.PodcastOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PodcastHeaderAdapter(
-    private val pcOnCallback: PodcastOnItemClickCallback,
+    private val pcOnCallback: CommonPlayControlCallback,
     private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,
     private val homePatchDetail: HomePatchDetailModel?

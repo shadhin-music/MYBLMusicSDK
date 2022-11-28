@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -20,7 +20,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class BottomSheetArtistTrackAdapter(
     private val itemClickCB: CommonPlayControlCallback,
-    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+    val bottomSheetDialogItemCallback: CommonSinglePlayControlCallback
 ) : RecyclerView.Adapter<BottomSheetArtistTrackAdapter.ArtistTrackVH>() {
     //   private var artistContent: ArtistContent? = null
 //    private var songDetail: MutableList<SongDetail> = ArrayList()

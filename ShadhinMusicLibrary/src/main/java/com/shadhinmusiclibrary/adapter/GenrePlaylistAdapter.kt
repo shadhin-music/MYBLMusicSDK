@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class GenrePlaylistAdapter(
-    private val bsDialogItemCallback: BottomSheetDialogItemCallback
+    private val bsDialogItemCallback: CommonSinglePlayControlCallback
 ) : RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
 
     private var rootDataContent: HomePatchDetailModel? = null
