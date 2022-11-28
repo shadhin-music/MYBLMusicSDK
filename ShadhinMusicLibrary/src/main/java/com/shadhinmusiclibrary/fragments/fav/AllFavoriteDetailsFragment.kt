@@ -33,8 +33,8 @@ import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -54,8 +54,8 @@ import java.io.Serializable
 
 internal class AllFavoriteDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    favItemClickCallback,
-    ItemClickListener,onFavArtistClickAll {
+    CommonPSVCallback,
+    ItemClickListener, onFavArtistClickAll {
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
@@ -87,6 +87,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         favViewModel =
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
+
         dataAdapter  = AllFavoriteAdapter(this, this,this)
 
         cacheRepository.getAllFavoriteContent()?.let {
@@ -444,19 +445,19 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
         val constraintPlaylist: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
-        if(argHomePatchDetail?.content_Type?.equals("P") == true){
-              constraintAlbum?.visibility =GONE
-            constraintDownload?.visibility =GONE
-            constraintPlaylist?.visibility =GONE
+        if (argHomePatchDetail?.content_Type?.equals("P") == true) {
+            constraintAlbum?.visibility = GONE
+            constraintDownload?.visibility = GONE
+            constraintPlaylist?.visibility = GONE
         }
-        if(argHomePatchDetail?.content_Type?.equals("A") == true){
-            constraintDownload?.visibility =GONE
-            constraintPlaylist?.visibility =GONE
+        if (argHomePatchDetail?.content_Type?.equals("A") == true) {
+            constraintDownload?.visibility = GONE
+            constraintPlaylist?.visibility = GONE
 
         }
-        if(argHomePatchDetail?.content_Type?.equals("R") == true){
-            constraintDownload?.visibility =GONE
-            constraintPlaylist?.visibility =GONE
+        if (argHomePatchDetail?.content_Type?.equals("R") == true) {
+            constraintDownload?.visibility = GONE
+            constraintPlaylist?.visibility = GONE
 
         }
         val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
@@ -759,14 +760,14 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     }
 
     fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
-        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id!!) }
+        id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        val favDat = favData[itemPosition]
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
+        val favDat = mSongDetails[itemPosition]
         navController.navigate(
             R.id.favoriteAlbum,
             Bundle().apply {
@@ -842,6 +843,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 
 
 }
+
 internal interface onFavArtistClickAll {
     fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>)
     fun onFavPlaylistClick(itemPosition: Int, favData: List<IMusicModel>)

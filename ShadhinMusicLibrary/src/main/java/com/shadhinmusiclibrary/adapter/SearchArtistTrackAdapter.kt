@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
+import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class SearchArtistTrackAdapter(
-    private val itemClickCB: ArtistOnItemClickCallback,
-    val bottomSheetDialogItemCallback: BottomSheetDialogItemCallback
+    private val itemClickCB: CommonPlayControlCallback,
+    val bottomSheetDialogItemCallback: CommonBottomCallback
 ) : RecyclerView.Adapter<SearchArtistTrackAdapter.ArtistTrackVH>() {
     //   private var artistContent: ArtistContent? = null
 //    private var songDetail: MutableList<SongDetail> = ArrayList()

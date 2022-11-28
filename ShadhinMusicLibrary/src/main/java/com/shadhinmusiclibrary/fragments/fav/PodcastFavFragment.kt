@@ -22,8 +22,8 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -31,10 +31,9 @@ import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
-
 internal class PodcastFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    favItemClickCallback {
+    CommonPSVCallback {
 
     private lateinit var navController: NavController
     private lateinit var favoriteSongsAdapter: FavoriteSongsAdapter
@@ -100,8 +99,8 @@ internal class PodcastFavFragment : BaseFragment(),
         }
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

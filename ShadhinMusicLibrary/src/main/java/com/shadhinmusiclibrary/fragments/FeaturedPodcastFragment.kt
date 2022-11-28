@@ -34,8 +34,8 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel
-    private   var data: List<FeaturedPodcastDetailsModel> ?= null
-    private  var dataJc: List<FeaturedPodcastDetailsModel>  ?= null
+    private var data: List<FeaturedPodcastDetailsModel>? = null
+    private var dataJc: List<FeaturedPodcastDetailsModel>? = null
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
     private lateinit var podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
@@ -77,7 +77,6 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     }
 
 
-
     fun observeData() {
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -88,24 +87,15 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
         viewModel.fetchFeaturedPodcast(false)
         viewModel.featuredpodcastContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
-               // Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.size)
+                // Log.e("TAGGGGGGGY", "MESSAGE: "+response?.data?.data?.size)
 //                if(response.data?.data?.size!= null){
-                    val data = response.data?.data
-
-                    for (item in data?.indices!!){
-                        Log.e("TAGGGGGGGY", "MESSAGE: "+data[item])
-                        Log.e("TAGGGGGGGY", "MESSAGE: "+ data.indices)
-                        var adapter = FeaturedPodcastHomeRecyclerViewAdapter(this,data)
-                        val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
-                        parentRecycler.layoutManager = layoutManager
-                        parentRecycler.adapter = adapter
-                    }
-
-
-
-
-
-
+                val data = response.data?.data
+                for (item in data?.indices!!) {
+                    var adapter = FeaturedPodcastHomeRecyclerViewAdapter(this, data)
+                    val parentRecycler: RecyclerView = requireView().findViewById(R.id.recyclerView)
+                    parentRecycler.layoutManager = layoutManager
+                    parentRecycler.adapter = adapter
+                }
                 progressBar.visibility = View.GONE
             } else {
                 progressBar.visibility = View.GONE
@@ -128,12 +118,12 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 //                    response?.data.data.get(1).Data.get(0).ShowName.toString())
 //            }
 //        }
-          //  else {
+        //  else {
 //                progressBar.visibility = View.GONE
 //                Toast.makeText(requireContext(),"Error happened!", Toast.LENGTH_SHORT).show()
 //                showDialog()
-          //  }
-        }
+        //  }
+    }
 //        viewModel.fetchFeaturedPodcastJC(false)
 //            viewModel.featuredpodcastContentJC.observe(viewLifecycleOwner) { response ->
 //                if (response.status == Status.SUCCESS) {
@@ -145,7 +135,6 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 ////                showDialog()
 //                }
 //            }
-
 
 
     override fun onRootClickItem(

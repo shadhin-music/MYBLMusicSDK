@@ -38,8 +38,8 @@ import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoritePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -58,7 +58,7 @@ import java.io.Serializable
 
 internal class PlaylistFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    favItemClickCallback,
+    CommonPSVCallback,
     onFavPlaylistClick,
     ItemClickListener {
 
@@ -111,7 +111,7 @@ internal class PlaylistFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter)
+        parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
     }
 
@@ -146,8 +146,7 @@ internal class PlaylistFavFragment : BaseFragment(),
         }
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

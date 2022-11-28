@@ -8,6 +8,4 @@ internal interface SearchItemCallBack {
     fun onClickPlayItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int)
     fun onClickPlaySearchItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int)
     fun onClickPlayVideoItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int)
-//    fun onClickAlbumItem(albumModelData: SearchData)
-//    fun onAlbumClick(itemPosition: Int, songDetail: MutableList<ArtistAlbumModelData>)
 }

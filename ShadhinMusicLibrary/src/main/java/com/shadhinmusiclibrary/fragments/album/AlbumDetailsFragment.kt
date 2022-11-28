@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -23,10 +23,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.adapter.*
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.adapter.AlbumHeaderAdapter
+import com.shadhinmusiclibrary.adapter.AlbumsTrackAdapter
+import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -41,8 +44,8 @@ import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment : BaseFragment(),
-    OnItemClickCallback,
-    BottomSheetDialogItemCallback,
+    CommonPlayControlCallback,
+    CommonBottomCallback,
     HomeCallBack {
 
     private lateinit var albumViewModel: AlbumViewModel

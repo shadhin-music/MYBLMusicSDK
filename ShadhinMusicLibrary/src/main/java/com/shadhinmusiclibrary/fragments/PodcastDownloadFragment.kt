@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -23,10 +23,9 @@ import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
-
 internal class PodcastDownloadFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    DownloadBottomSheetDialogItemCallback {
+    CommonPSVCallback {
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var navController: NavController
@@ -77,7 +76,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         Log.e(
             "ALLDDF",
-            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id "+mSongDetails[clickItemPosition].content_Id
+            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id " + mSongDetails[clickItemPosition].content_Id
         )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
@@ -98,8 +97,8 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

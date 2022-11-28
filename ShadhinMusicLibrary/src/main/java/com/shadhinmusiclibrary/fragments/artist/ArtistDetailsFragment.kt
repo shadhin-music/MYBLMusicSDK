@@ -23,20 +23,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
-import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
-import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
@@ -46,8 +44,8 @@ import java.io.Serializable
 
 internal class ArtistDetailsFragment : BaseFragment(),
     HomeCallBack,
-    ArtistOnItemClickCallback,
-    BottomSheetDialogItemCallback {
+    CommonPlayControlCallback,
+    CommonBottomCallback {
 
     private lateinit var navController: NavController
     var artistContent: ArtistContentModel? = null

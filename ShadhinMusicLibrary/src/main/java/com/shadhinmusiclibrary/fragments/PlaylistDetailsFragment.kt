@@ -25,8 +25,8 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.PlaylistTrackAdapter
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.fragments.album.AlbumViewModel
@@ -37,7 +37,8 @@ import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
 internal class PlaylistDetailsFragment : BaseFragment(),
-    OnItemClickCallback, BottomSheetDialogItemCallback {
+    CommonPlayControlCallback,
+    CommonBottomCallback {
 
     private lateinit var navController: NavController
     private lateinit var albumViewModel: AlbumViewModel
@@ -223,11 +224,13 @@ internal class PlaylistDetailsFragment : BaseFragment(),
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
     }
+
     override fun onStop() {
         super.onStop()
         LocalBroadcastManager.getInstance(requireContext())
             .unregisterReceiver(MyBroadcastReceiver())
     }
+
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
             val progressIndicator: CircularProgressIndicator? =

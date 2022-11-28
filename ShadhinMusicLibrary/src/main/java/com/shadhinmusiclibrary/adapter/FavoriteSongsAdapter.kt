@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -23,7 +23,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoriteSongsAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: favItemClickCallback,
+    private val openMenu: CommonPSVCallback,
     private val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<FavoriteSongsAdapter.ViewHolder>() {
     private var allDownloads: MutableList<IMusicModel> = mutableListOf()
@@ -63,14 +63,14 @@ internal class FavoriteSongsAdapter(
         }
         val contentPodcast = allDownloads[position].content_Type
 
-       if (contentPodcast?.contains("PD")==true) {
+        if (contentPodcast?.contains("PD") == true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
-            Log.e("TAG","DATA: "+ allDownloads[position].content_Type)
-            Log.e("TAG","DATA: "+ allDownloads[position].rootContentType)
-            Log.e("TAG","DATA: "+ allDownloads[position].content_Id)
-            Log.e("TAG","DATA: "+ allDownloads[position].playingUrl)
+            Log.e("TAG", "DATA: " + allDownloads[position].content_Type)
+            Log.e("TAG", "DATA: " + allDownloads[position].rootContentType)
+            Log.e("TAG", "DATA: " + allDownloads[position].content_Id)
+            Log.e("TAG", "DATA: " + allDownloads[position].playingUrl)
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickFavItem(allDownloads, position)
             }

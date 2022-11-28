@@ -21,7 +21,9 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.TITLE
 import com.shadhinmusiclibrary.utils.Status
 
-internal class LatestReleaseFragment : BaseFragment(), LatestReleaseOnCallBack {
+internal class LatestReleaseFragment : BaseFragment(),
+    LatestReleaseOnCallBack {
+
     lateinit var viewModel: FeaturedTracklistViewModel
 
     private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter

@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
-import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -21,8 +20,8 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class PlaylistAdapter(
-    private val itemClickCB: OnItemClickCallback,
-    private val bsDialogItemCallback: BottomSheetDialogItemCallback,
+    private val itemClickCB: CommonPlayControlCallback,
+    private val bsDialogItemCallback: CommonBottomCallback,
     val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<PlaylistAdapter.PlaylistVH>() {
 

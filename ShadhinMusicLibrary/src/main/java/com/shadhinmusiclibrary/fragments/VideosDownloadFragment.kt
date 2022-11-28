@@ -20,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.DownloadedVideoAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
@@ -34,7 +34,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class VideosDownloadFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    DownloadBottomSheetDialogItemCallback {
+    CommonPSVCallback {
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
     private var isDownloaded: Boolean = false
@@ -61,7 +61,7 @@ internal class VideosDownloadFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
     }
 
@@ -84,8 +84,7 @@ internal class VideosDownloadFragment : BaseFragment(),
 
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

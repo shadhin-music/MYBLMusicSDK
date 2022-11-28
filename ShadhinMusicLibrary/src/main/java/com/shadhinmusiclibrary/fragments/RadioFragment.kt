@@ -19,7 +19,8 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.Status
 
-internal class RadioFragment : BaseFragment(), RadioTrackCallBack {
+internal class RadioFragment : BaseFragment(),
+    RadioTrackCallBack {
 
     private lateinit var albumVM: AlbumViewModel
     private lateinit var radioTrackAdapter: RadioTrackAdapter
@@ -78,7 +79,7 @@ internal class RadioFragment : BaseFragment(), RadioTrackCallBack {
         parentRecycler.adapter = radioTrackAdapter
     }
 
-    override fun onClickOpenRadio(currentSong: IMusicModel) {
+    override fun onClickItem(currentSong: IMusicModel) {
         globalRootContentId = currentSong.content_Id
         if (playerViewModel.currentMusic != null) {
             if ((globalRootContentId == playerViewModel.currentMusic?.rootId)) {

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AllDownloadedAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: DownloadBottomSheetDialogItemCallback
+    private val openMenu: CommonPSVCallback
 ) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
     private var allDownloads: MutableList<IMusicModel> = mutableListOf()
     private var contentId: String = ""

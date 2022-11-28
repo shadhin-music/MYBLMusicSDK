@@ -363,7 +363,7 @@ internal object UtilHelper {
         return HomePatchDetailModel().apply {
             album_Id = songDetail.album_Id ?: ""
             artist_Id = songDetail.artist_Id ?: ""
-            content_Id = songDetail.content_Id ?: ""
+            content_Id = songDetail.content_Id
             imageUrl = songDetail.imageUrl ?: ""
             artistName = songDetail.artistName ?: ""
             titleName = songDetail.titleName ?: ""

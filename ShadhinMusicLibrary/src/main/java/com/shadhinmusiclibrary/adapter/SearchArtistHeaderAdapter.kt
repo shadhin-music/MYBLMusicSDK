@@ -11,16 +11,16 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.search.SearchArtistDataModel
-import com.shadhinmusiclibrary.data.model.ArtistBannerModel
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 
 internal class SearchArtistHeaderAdapter(
     var homePatchDetail: SearchArtistDataModel?,
-    private val itemClickCB: ArtistOnItemClickCallback
+    private val itemClickCB: CommonPlayControlCallback
 ) : RecyclerView.Adapter<SearchArtistHeaderAdapter.ArtistHeaderVH>() {
 
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
