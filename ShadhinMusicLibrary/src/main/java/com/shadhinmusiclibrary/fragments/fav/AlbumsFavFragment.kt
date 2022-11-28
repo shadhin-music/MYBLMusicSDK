@@ -144,6 +144,10 @@ internal class AlbumsFavFragment : BaseFragment(),
         }
     }
 
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
     }
 
@@ -246,7 +250,7 @@ internal class AlbumsFavFragment : BaseFragment(),
     }
 
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<FavDataModel>) {
+    override fun onFavAlbumClick2(itemPosition: Int, favData: List<FavDataModel>) {
         val favDat = favData[itemPosition]
         navController.navigate(
             R.id.favoriteAlbum,
@@ -611,5 +615,5 @@ internal class AlbumsFavFragment : BaseFragment(),
 }
 
 internal interface onFavAlbumClick {
-    fun onFavAlbumClick(itemPosition: Int, favData: List<FavDataModel>)
+    fun onFavAlbumClick2(itemPosition: Int, favData: List<FavDataModel>)
 }

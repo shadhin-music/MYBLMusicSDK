@@ -134,6 +134,10 @@ internal class SongsDownloadFragment : BaseFragment(),
 
     }
 
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
 
     }

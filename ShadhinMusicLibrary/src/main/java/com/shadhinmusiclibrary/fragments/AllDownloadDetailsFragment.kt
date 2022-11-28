@@ -107,7 +107,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, allDownloadAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, allDownloadAdapter)
         recyclerView.adapter = parentAdapter
 
 
@@ -144,12 +144,17 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     }
 
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
             SongTrackModel().apply {
                 rootContentType = mSongDetails.rootContentType
+                content_Type = "PD"
                 artistName = mSongDetails.artistName
                 total_duration = mSongDetails.total_duration
                 content_Id = mSongDetails.content_Id

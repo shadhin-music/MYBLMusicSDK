@@ -48,16 +48,17 @@ internal class FavoriteAlbumAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-//        if(allDownloads[position].rootType.equals("S")){
-//        val position =allDownloads[position]
-        holder.itemView.setOnClickListener {
-            albumClick.onFavAlbumClick(position, allDownloads)
-            //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+        if(allDownloads[position].content_Type.equals("R")) {
+
+            holder.itemView.setOnClickListener {
+                albumClick.onFavAlbumClick2(position, allDownloads)
+                //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(allDownloads[position])
+            }
         }
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemSongs(allDownloads[position])
-        }
-        if (allDownloads[position].content_Type.equals("PDJG")) {
+        if (allDownloads[position].content_Type?.contains("PD")==true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }

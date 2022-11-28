@@ -92,7 +92,7 @@ internal class MyPlaylistFragment : BaseFragment(),
                 val config = ConcatAdapter.Config.Builder()
                     .setIsolateViewTypes(false)
                     .build()
-                val concatAdapter = ConcatAdapter(config, myPlaylistAdapter, footerAdapter)
+                val concatAdapter = ConcatAdapter(config, myPlaylistAdapter)
                 val layoutManager = GridLayoutManager(context, horizontalSpanCount)
                 val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
                     object : GridLayoutManager.SpanSizeLookup() {

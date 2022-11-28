@@ -24,28 +24,36 @@ internal class FavoriteViewPagerAdapter(
         return when (position) {
 
             0 -> {
-               SongsFavoriteFragment()
+              AllFavoriteDetailsFragment()
             }
            1-> {
-              VideosFavFragment()
+               SongsFavoriteFragment()
+
 
             }
             2-> {
-               PodcastFavFragment()
+                VideosFavFragment()
+
 
             }
 
             3-> {
-               ArtistFavFragment()
+                PodcastFavFragment()
+
 
             }
             4-> {
-               AlbumsFavFragment()
+                ArtistFavFragment()
+
 
             }
             5-> {
-               PlaylistFavFragment()
+                AlbumsFavFragment()
 
+
+            }
+            6->{
+                PlaylistFavFragment()
             }
             else -> getItem(position)
         }

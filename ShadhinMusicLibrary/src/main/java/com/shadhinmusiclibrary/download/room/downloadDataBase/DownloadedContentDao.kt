@@ -21,7 +21,7 @@ internal interface DownloadedContentDao {
     @Query("SELECT * FROM DownloadedContent WHERE content_Type='S' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllSongsDownloads(): List<DownloadedContent>
 
-    @Query("SELECT * FROM DownloadedContent WHERE content_Type='PDJG' AND isDownloaded = 1 ORDER By total_duration DESC ")
+    @Query("SELECT * FROM DownloadedContent WHERE content_Type LIKE 'PD%' AND isDownloaded = 1 ORDER By total_duration DESC ")
     fun getAllPodcastDownloads(): List<DownloadedContent>
 
     @Query("SELECT * FROM DownloadedContent where content_Id = :id AND isDownloaded = 1 ")

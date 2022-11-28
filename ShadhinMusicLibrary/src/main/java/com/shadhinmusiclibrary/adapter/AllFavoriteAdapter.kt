@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +15,19 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
+import com.shadhinmusiclibrary.fragments.fav.onFavAlbumClick
+import com.shadhinmusiclibrary.fragments.fav.onFavArtistClick
+import com.shadhinmusiclibrary.fragments.fav.onFavArtistClickAll
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class AllFavoriteAdapter(
     val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: favItemClickCallback
+    private val openMenu: favItemClickCallback,private val artistClick: onFavArtistClickAll
+
+
 ) : RecyclerView.Adapter<AllFavoriteAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +40,8 @@ internal class AllFavoriteAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
-        if (allDownloads[position].rootContentType.equals("V")) {
+
+        if (allDownloads[position].content_Type.equals("V")) {
 
 
             holder.itemView.setOnClickListener {
@@ -42,7 +50,7 @@ internal class AllFavoriteAdapter(
 
                 for (item in allDownloads) {
                     val video = VideoModel()
-                    if (item.rootContentType.equals("V")) {
+                    if (item.content_Type.equals("V")) {
                         video.setDataFavoriteIM(item)
                         videoArray.add(video)
                     }
@@ -57,7 +65,7 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemVideo(allDownloads[position])
             }
         }
-        if (allDownloads[position].rootContentType.equals("S")) {
+        if (allDownloads[position].content_Type.equals("S")) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickFavItem(allDownloads, position)
             }
@@ -65,7 +73,36 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].rootContentType.equals("PD")) {
+        if (allDownloads[position].content_Type.equals("P")) {
+            holder.itemView.setOnClickListener {
+                artistClick.onFavPlaylistClick( position,allDownloads)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(allDownloads[position])
+            }
+        }
+        if(allDownloads[position].content_Type.equals("A")) {
+
+            holder.itemView.setOnClickListener {
+                artistClick.onFavArtistClick(position, allDownloads)
+                //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(allDownloads[position])
+            }
+        }
+        if(allDownloads[position].content_Type.equals("R")) {
+
+            holder.itemView.setOnClickListener {
+                lrOnCallBack.onFavAlbumClick(position,allDownloads)
+                //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(allDownloads[position])
+            }
+        }
+        if (allDownloads[position].content_Type?.contains("PD")==true) {
+            Log.e("TAG","DATA: "+allDownloads[position].rootContentType )
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickFavItem(allDownloads, position)
             }

@@ -111,7 +111,7 @@ internal class PlaylistFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config,dataAdapter)
         recyclerView.adapter = parentAdapter
     }
 
@@ -144,6 +144,10 @@ internal class PlaylistFavFragment : BaseFragment(),
                 clickItemPosition
             )
         }
+    }
+
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

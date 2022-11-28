@@ -59,7 +59,7 @@ internal class FavoritePlaylistAdapter(
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (allDownloads[position].content_Type.equals("PDJG")) {
+        if (allDownloads[position].content_Type?.contains("PD")==true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
