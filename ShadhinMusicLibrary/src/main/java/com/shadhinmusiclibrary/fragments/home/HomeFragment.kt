@@ -248,7 +248,6 @@ internal class HomeFragment : BaseFragment(),
                     super.onScrolled(recyclerView, dx, dy)
                 }
             })
-            //recyclerView.adapter=dataAdapter
             val config = ConcatAdapter.Config.Builder()
                 .setIsolateViewTypes(false)
                 .build()
@@ -277,10 +276,7 @@ internal class HomeFragment : BaseFragment(),
                         Log.e("TAG", "PAGE NUMBER: " + it?.data?.indices)
                     }
 //                  it.data.let {
-
                     //   it1 ->
-
-
                     // }
                 }
             }

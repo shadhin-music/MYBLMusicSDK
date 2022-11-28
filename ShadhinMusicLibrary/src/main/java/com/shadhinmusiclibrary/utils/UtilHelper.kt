@@ -208,31 +208,31 @@ internal object UtilHelper {
         return iMusicData
     }
 
-    fun getSongDetailAndRootDataForUSERPLAYLIST(
-        mSongDet: UserSongsPlaylistDataModel
-    ): SongDetailModel {
-        mSongDet.apply {
-            return SongDetailModel().apply {
-                content_Id = contentID.toString()
-                imageUrl = image.toString()
-                titleName = title.toString()
-                content_Type = contentType.toString()
-                playingUrl = playUrl.toString()
-                artist = artist.toString()
-                duration = duration.toString()
-                copyright = copyright.toString()
-                labelname = labelname.toString()
-                releaseDate = releaseDate.toString()
-                fav = ""
-                artist_Id = artistId.toString()
-                albumId = albumId.toString()
-                userPlayListId = userPlayListId
-                rootContentId = contentID.toString()
-                rootContentType = ""
-                rootImage = ""
-            }
-        }
-    }
+    /* fun getSongDetailAndRootDataForUSERPLAYLIST(
+         mSongDet: UserSongsPlaylistDataModel
+     ): SongDetailModel {
+         mSongDet.apply {
+             return SongDetailModel().apply {
+                 content_Id = contentID.toString()
+                 imageUrl = image.toString()
+                 titleName = title.toString()
+                 content_Type = contentType.toString()
+                 playingUrl = playUrl.toString()
+                 artist = artist.toString()
+                 duration = duration.toString()
+                 copyright = copyright.toString()
+                 labelname = labelname.toString()
+                 releaseDate = releaseDate.toString()
+                 fav = ""
+                 artist_Id = artistId.toString()
+                 albumId = albumId.toString()
+                 userPlayListId = userPlayListId
+                 rootContentId = contentID.toString()
+                 rootContentType = ""
+                 rootImage = ""
+             }
+         }
+     }*/
 
     fun getArtistContentDataToRootData(
         mSongDet: ArtistContentDataModel,

@@ -11,24 +11,24 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
-import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
-import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class UserCreatedPlaylistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
     var playlistName: String?,
-    private val itemClickCB: OnItemClickCallback, private val cacheRepository: CacheRepository?,
+    private val itemClickCB: OnItemClickCallback,
+    private val cacheRepository: CacheRepository?,
     private val favViewModel: FavViewModel,
     val gradientDrawable: Int
 ) : RecyclerView.Adapter<UserCreatedPlaylistHeaderAdapter.UserCreatedPlaylistHeaderVH>() {
 
-    private var dataSongDetail: MutableList<SongDetailModel> = mutableListOf()
+    var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserCreatedPlaylistHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_playlist_header, parent, false)
@@ -49,22 +49,19 @@ internal class UserCreatedPlaylistHeaderAdapter(
         return 1
     }
 
-    fun setSongAndData(data: List<UserSongsPlaylistDataModel>?) {
-        this.dataSongDetail = mutableListOf()
-        for (songItem in data!!) {
+    fun setSongAndData(data: MutableList<IMusicModel>, rootConId: String) {
+        for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootDataForUSERPLAYLIST(songItem)
+                songItem.apply {
+                    isSeekAble = true
+                    rootContentId = rootConId
+                    rootContentType = content_Type
+                }
             )
         }
 
-        //this.homePatchDetail = homePatchDetail
         notifyDataSetChanged()
     }
-
-//    fun setData(homePatchDetail: HomePatchDetail) {
-//        this.homePatchDetail = homePatchDetail
-//        notifyDataSetChanged()
-//    }
 
     inner class UserCreatedPlaylistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val mContext = itemView.context
@@ -98,12 +95,9 @@ internal class UserCreatedPlaylistHeaderAdapter(
             val isAddedToFav =
                 cacheRepository?.getFavoriteById(homePatchDetail?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {
-
                 ivFavorite.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
-
             } else {
-
                 ivFavorite.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav = false
             }

@@ -28,11 +28,11 @@ internal class ParentAdapter(
     val downloadClickCallBack: DownloadClickCallBack, val podcastTrackClick: PodcastTrackCallback
     /*,val radioCallBack: RadioTrackCallBack*/
 ) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
-
     private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
     var search: HomePatchItemModel? = null
     var download: HomePatchItemModel? = null
     private var rbtData: MutableList<RBTDATAModel> = mutableListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
             VIEW_SEARCH -> R.layout.my_bl_sdk_item_search
@@ -49,16 +49,13 @@ internal class ParentAdapter(
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
 //            VIEW_POPULAR_PODCAST -> R.layout.item_top_trending
 //            VIEW_BL_MUSIC_OFFERS -> R.layout.item_my_bl_offers
-
             else -> throw IllegalArgumentException("Invalid view type")
         }
 
         val view = LayoutInflater
             .from(parent.context)
             .inflate(layout, parent, false)
-
         return DataAdapterViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
@@ -78,7 +75,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-           // "PodcastLive" ->  VIEW_PODCAST_LIVE
+            // "PodcastLive" ->  VIEW_PODCAST_LIVE
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -95,8 +92,6 @@ internal class ParentAdapter(
 //            is DataModel.PopularPodcast -> VIEW_POPULAR_PODCAST
 //            is DataModel.BlOffers -> VIEW_BL_MUSIC_OFFERS
 //            is DataModel.TrendingMusicVideo -> VIEW_TRENDING_MUSIC_VIDEO
-
-
             else -> {
                 -1
             }
@@ -116,22 +111,18 @@ internal class ParentAdapter(
 //            }
 //            this.homeListData.add(search!!)
 //            //this.homeListData.add(download!!)
-//
-//
 //        }
 
         if (this.homeListData.size >= 2 && downloadNotAdded) {
             downloadNotAdded = false
             download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
-
         }
         this.homeListData.addAll(data)
         val sizeNew = this.homeListData.size
         notifyItemRangeChanged(size, sizeNew)
 //        var exists :Boolean = false
 //        if (this.homeListData.isNotEmpty() && this.homeListData.size >= 3) {
-//
 //            for (item in data.indices) {
 //                Log.e("TaG","Items: "+ data[item].ContentType)
 //                download = HomePatchItem("002",
@@ -143,22 +134,15 @@ internal class ParentAdapter(
 //                    0)
 //                if (homeListData[item].ContentType==data[item].ContentType){
 //                    exists = true
-//                    Log.e("TaG","Items123: "+ exists)
-//
 //                }
 //            }
 //
 //            if(exists) {
 //                Log.e("TaG","Items321: "+ exists)
 //                this.homeListData.add(download!!)
-//
 //            }
-//
 //        }
-
-
     }
-
 
     inner class DataAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
@@ -216,6 +200,11 @@ internal class ParentAdapter(
         }
 
         private fun bindPopularPodcast(homePatchItem: HomePatchItemModel) {
+            for (hoPatItem in homePatchItem.Data) {
+                hoPatItem.apply {
+                    isSeekAble = true
+                }
+            }
             val title: TextView = itemView.findViewById(R.id.tvTitle)
             title.text = homePatchItem.Name
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -378,7 +367,7 @@ internal class ParentAdapter(
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
-               // "PodcastLive" -> bindAd(homePatchItemModel)
+                // "PodcastLive" -> bindAd(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
@@ -418,7 +407,7 @@ internal class ParentAdapter(
         val VIEW_POPULAR_PODCAST = 10
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
-        val  VIEW_PODCAST_LIVE =13
+        val VIEW_PODCAST_LIVE = 13
         const val VIEW_TYPE = 10
     }
 }

@@ -7,7 +7,7 @@ import androidx.annotation.Keep
 @Keep
 data class UserSongsPlaylistModel(
     @SerializedName("data")
-    var `data`: List<UserSongsPlaylistDataModel>?,
+    var `data`: MutableList<UserSongsPlaylistDataModel>?,
     @SerializedName("fav")
     var fav: Any?,
     @SerializedName("follow")
