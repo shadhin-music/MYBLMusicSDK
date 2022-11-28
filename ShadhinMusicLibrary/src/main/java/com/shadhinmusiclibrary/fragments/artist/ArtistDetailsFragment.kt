@@ -26,7 +26,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -45,7 +45,7 @@ import java.io.Serializable
 internal class ArtistDetailsFragment : BaseFragment(),
     HomeCallBack,
     CommonPlayControlCallback,
-    CommonSinglePlayControlCallback {
+    CommonBottomCallback {
 
     private lateinit var navController: NavController
     var artistContent: ArtistContentModel? = null

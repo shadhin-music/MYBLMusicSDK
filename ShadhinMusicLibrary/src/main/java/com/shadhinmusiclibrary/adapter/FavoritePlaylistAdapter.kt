@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.fav.onFavPlaylistClick
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -22,7 +22,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class FavoritePlaylistAdapter(
     val allDownloads: List<FavDataModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: favItemClickCallback,
+    private val openMenu: CommonPSVCallback,
     private val cacheRepository: CacheRepository, private val albumClick: onFavPlaylistClick
 ) : RecyclerView.Adapter<FavoritePlaylistAdapter.ViewHolder>() {
 
@@ -59,7 +59,7 @@ internal class FavoritePlaylistAdapter(
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (allDownloads[position].content_Type?.contains("PD")==true) {
+        if (allDownloads[position].content_Type?.contains("PD") == true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }

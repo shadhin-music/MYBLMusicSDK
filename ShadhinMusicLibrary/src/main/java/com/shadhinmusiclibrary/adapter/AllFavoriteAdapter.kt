@@ -11,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
-import com.shadhinmusiclibrary.data.model.fav.FavDataModel
-import com.shadhinmusiclibrary.fragments.fav.onFavAlbumClick
-import com.shadhinmusiclibrary.fragments.fav.onFavArtistClick
 import com.shadhinmusiclibrary.fragments.fav.onFavArtistClickAll
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -25,7 +22,8 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class AllFavoriteAdapter(
     val allDownloads: MutableList<IMusicModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: favItemClickCallback,private val artistClick: onFavArtistClickAll
+    private val openMenu: CommonPSVCallback,
+    private val artistClick: onFavArtistClickAll
 
 
 ) : RecyclerView.Adapter<AllFavoriteAdapter.ViewHolder>() {
@@ -75,13 +73,13 @@ internal class AllFavoriteAdapter(
         }
         if (allDownloads[position].content_Type.equals("P")) {
             holder.itemView.setOnClickListener {
-                artistClick.onFavPlaylistClick( position,allDownloads)
+                artistClick.onFavPlaylistClick(position, allDownloads)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if(allDownloads[position].content_Type.equals("A")) {
+        if (allDownloads[position].content_Type.equals("A")) {
 
             holder.itemView.setOnClickListener {
                 artistClick.onFavArtistClick(position, allDownloads)
@@ -91,18 +89,18 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if(allDownloads[position].content_Type.equals("R")) {
+        if (allDownloads[position].content_Type.equals("R")) {
 
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onFavAlbumClick(position,allDownloads)
+                lrOnCallBack.onFavAlbumClick(position, allDownloads)
                 //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].content_Type?.contains("PD")==true) {
-            Log.e("TAG","DATA: "+allDownloads[position].rootContentType )
+        if (allDownloads[position].content_Type?.contains("PD") == true) {
+            Log.e("TAG", "DATA: " + allDownloads[position].rootContentType)
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickFavItem(allDownloads, position)
             }

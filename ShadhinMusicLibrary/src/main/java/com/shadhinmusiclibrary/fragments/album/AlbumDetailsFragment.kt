@@ -28,7 +28,7 @@ import com.shadhinmusiclibrary.adapter.AlbumsTrackAdapter
 import com.shadhinmusiclibrary.adapter.ArtistAlbumsAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
@@ -45,7 +45,7 @@ import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment : BaseFragment(),
     CommonPlayControlCallback,
-    CommonSinglePlayControlCallback,
+    CommonBottomCallback,
     HomeCallBack {
 
     private lateinit var albumViewModel: AlbumViewModel

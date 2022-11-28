@@ -37,8 +37,8 @@ import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -57,7 +57,7 @@ import java.io.Serializable
 
 internal class SongsFavoriteFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    favItemClickCallback,
+    CommonPSVCallback,
     ItemClickListener {
 
     private lateinit var favViewModel: FavViewModel
@@ -147,8 +147,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
         }
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

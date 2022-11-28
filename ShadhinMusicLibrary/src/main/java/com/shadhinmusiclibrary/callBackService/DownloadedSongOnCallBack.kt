@@ -6,5 +6,5 @@ import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 internal interface DownloadedSongOnCallBack {
     fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
     fun onClickFavItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int)
-    fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>)
+    fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>)
 }

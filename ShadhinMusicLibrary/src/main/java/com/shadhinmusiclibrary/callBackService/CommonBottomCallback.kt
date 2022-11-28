@@ -2,6 +2,6 @@ package com.shadhinmusiclibrary.callBackService
 
 import com.shadhinmusiclibrary.data.IMusicModel
 
-internal interface CommonSinglePlayControlCallback {
+internal interface CommonBottomCallback {
     fun onClickBottomItem(mSongDetails: IMusicModel)
 }

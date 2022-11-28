@@ -34,7 +34,7 @@ import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AllDownloadedAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -44,8 +44,8 @@ import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
-import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.download.room.DownloadedContent
+import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
@@ -57,7 +57,7 @@ import java.io.Serializable
 
 internal class AllDownloadDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    DownloadBottomSheetDialogItemCallback,
+    CommonPSVCallback,
     ItemClickListener {
 
     private lateinit var viewModel: CreateplaylistViewModel
@@ -144,8 +144,8 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
+
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {

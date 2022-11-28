@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
@@ -21,7 +21,7 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class UserCreatedPlaylistTrackAdapter(
     private val itemClickCB: CommonPlayControlCallback,
-    val bsDialogItemCallback: CommonSinglePlayControlCallback,
+    val bsDialogItemCallback: CommonBottomCallback,
     val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<UserCreatedPlaylistTrackAdapter.PlaylistTrackVH>() {
     var dataSongDetail: MutableList<IMusicModel> = mutableListOf()

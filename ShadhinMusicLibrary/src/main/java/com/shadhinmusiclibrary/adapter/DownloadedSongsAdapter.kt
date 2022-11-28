@@ -11,18 +11,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.DownloadBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class DownloadedSongsAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: DownloadBottomSheetDialogItemCallback,
+    private val openMenu: CommonPSVCallback,
 ) : RecyclerView.Adapter<DownloadedSongsAdapter.DownloadSongViewHolder>() {
     private var allDownloads: MutableList<IMusicModel> = mutableListOf()
     private var contentId: String = ""
@@ -64,14 +63,14 @@ internal class DownloadedSongsAdapter(
         }
         val contentPodcast = allDownloads[position].content_Type
 
-        if (contentPodcast?.contains("PD")==true) {
+        if (contentPodcast?.contains("PD") == true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
             }
-            Log.e("TAG","DATA: "+ allDownloads[position].content_Type)
-            Log.e("TAG","DATA: "+ allDownloads[position].rootContentType)
-            Log.e("TAG","DATA: "+ allDownloads[position].content_Id)
-            Log.e("TAG","DATA: "+ allDownloads[position].playingUrl)
+            Log.e("TAG", "DATA: " + allDownloads[position].content_Type)
+            Log.e("TAG", "DATA: " + allDownloads[position].rootContentType)
+            Log.e("TAG", "DATA: " + allDownloads[position].content_Id)
+            Log.e("TAG", "DATA: " + allDownloads[position].playingUrl)
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
             }

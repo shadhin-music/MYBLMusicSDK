@@ -9,14 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class GenrePlaylistAdapter(
-    private val bsDialogItemCallback: CommonSinglePlayControlCallback
+    private val bsDialogItemCallback: CommonBottomCallback
 ) : RecyclerView.Adapter<GenrePlaylistAdapter.GenrePlaylistVH>() {
 
     private var rootDataContent: HomePatchDetailModel? = null

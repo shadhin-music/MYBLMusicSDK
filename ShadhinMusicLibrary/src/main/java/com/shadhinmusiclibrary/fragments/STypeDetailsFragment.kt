@@ -14,13 +14,13 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenrePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 
 internal class STypeDetailsFragment : BaseFragment(),
-    CommonSinglePlayControlCallback {
+    CommonBottomCallback {
 
     private lateinit var navController: NavController
     private lateinit var adapter: GenrePlaylistAdapter

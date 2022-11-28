@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
+import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -37,7 +37,7 @@ import com.shadhinmusiclibrary.utils.Status
 internal class BottomSheetArtistDetailsFragment : BaseFragment(),
     HomeCallBack,
     CommonPlayControlCallback,
-    CommonSinglePlayControlCallback {
+    CommonBottomCallback {
 
     private lateinit var navController: NavController
     var homePatchItem: HomePatchItemModel? = null

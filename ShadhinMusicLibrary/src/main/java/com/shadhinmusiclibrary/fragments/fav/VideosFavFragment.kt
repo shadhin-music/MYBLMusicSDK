@@ -28,8 +28,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FavVideoAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
-import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
@@ -41,10 +41,9 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
-
 internal class VideosFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
-    favItemClickCallback {
+    CommonPSVCallback {
     private lateinit var dataAdapter: FavVideoAdapter
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
@@ -74,7 +73,7 @@ internal class VideosFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config, dataAdapter, footerAdapter)
         recyclerView.adapter = parentAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
         favViewModel =
@@ -113,8 +112,8 @@ internal class VideosFavFragment : BaseFragment(),
 //            }
     }
 
-    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
-        TODO("Not yet implemented")
+    override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
+       
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
