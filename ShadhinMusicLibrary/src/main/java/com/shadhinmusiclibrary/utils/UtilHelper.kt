@@ -300,10 +300,11 @@ internal object UtilHelper {
             artistName = podcastDetails.ArtistName
             content_Id = podcastDetails.Id
             album_Id = podcastDetails.Id
+            artist_Id = podcastDetails.Id
             content_Type = "A"
             fav = "0"
-            podcastDetails.Follower
-            podcastDetails.Image
+            follower = podcastDetails.Follower
+            imageUrl = podcastDetails.Image
         }
 
     fun getHomePatchDetailToSearchDataModel(searchData: IMusicModel) =
