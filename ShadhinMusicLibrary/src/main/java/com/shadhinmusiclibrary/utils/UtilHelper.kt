@@ -141,7 +141,7 @@ internal object UtilHelper {
 
     fun getMixdUpIMusicWithRootData(
         mSongDet: IMusicModel,
-        rootPatch: HomePatchDetailModel
+        rootPatch: HomePatchDetailModel,
     ): IMusicModel {
         mSongDet.apply {
             rootContentId = rootPatch.content_Id
@@ -152,7 +152,7 @@ internal object UtilHelper {
     }
 
     fun getRadioSong(
-        mSongDet: SongDetailModel
+        mSongDet: SongDetailModel,
     ): SongDetailModel {
         mSongDet.apply {
             rootContentId = mSongDet.rootContentId
@@ -164,7 +164,7 @@ internal object UtilHelper {
     }
 
     fun getHomeRadioSong(
-        rootPatch: HomePatchDetailModel
+        rootPatch: HomePatchDetailModel,
     ): IMusicModel {
         return HomePatchDetailModel().apply {
             content_Id = rootPatch.content_Id
@@ -176,7 +176,7 @@ internal object UtilHelper {
     }
 
     fun getIMusicModelAndRootData(
-        mSongDet: MutableList<SearchDataModel>
+        mSongDet: MutableList<SearchDataModel>,
     ): MutableList<IMusicModel> {
         val iMusicData = mutableListOf<IMusicModel>()
         for (seaDataItem in mSongDet) {
@@ -236,7 +236,7 @@ internal object UtilHelper {
 
     fun getArtistContentDataToRootData(
         mSongDet: ArtistContentDataModel,
-        rootPatch: HomePatchDetailModel
+        rootPatch: HomePatchDetailModel,
     ): ArtistContentDataModel {
         mSongDet.apply {
             mSongDet.apply {
@@ -252,7 +252,7 @@ internal object UtilHelper {
 
     fun getTrackToRootData(
         mSongTrack: SongTrackModel,
-        rootPatch: HomePatchDetailModel
+        rootPatch: HomePatchDetailModel,
     ): SongTrackModel {
         mSongTrack.apply {
             rootContentId = rootPatch.content_Id
@@ -264,7 +264,7 @@ internal object UtilHelper {
     }
 
     fun getSearchDataToRootData(
-        rootPatch: CommonSearchData
+        rootPatch: CommonSearchData,
     ): MutableList<IMusicModel> {
         return mutableListOf<IMusicModel>()
             .apply {
@@ -300,10 +300,11 @@ internal object UtilHelper {
             artistName = podcastDetails.ArtistName
             content_Id = podcastDetails.Id
             album_Id = podcastDetails.Id
+            artist_Id = podcastDetails.Id
             content_Type = "A"
             fav = "0"
-            podcastDetails.Follower
-            podcastDetails.Image
+            follower = podcastDetails.Follower
+            imageUrl = podcastDetails.Image
         }
 
     fun getHomePatchDetailToSearchDataModel(searchData: IMusicModel) =
@@ -458,7 +459,7 @@ internal object UtilHelper {
 
     fun getCurrentRunningSongToNewSongList(
         mediaId: String?,
-        aaa: List<IMusicModel>
+        aaa: List<IMusicModel>,
     ): MutableList<IMusicModel> {
         val newList: MutableList<IMusicModel> = ArrayList()
         aaa.forEach {

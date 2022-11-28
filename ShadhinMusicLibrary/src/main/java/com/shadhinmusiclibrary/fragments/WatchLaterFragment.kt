@@ -76,7 +76,7 @@ internal class WatchLaterFragment : BaseFragment(),
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        parentAdapter= ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter= ConcatAdapter(config,dataAdapter)
         recyclerView.adapter = parentAdapter
 
     }

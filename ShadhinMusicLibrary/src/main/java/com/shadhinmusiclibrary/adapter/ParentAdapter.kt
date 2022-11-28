@@ -66,7 +66,7 @@ internal class ParentAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (homeListData[position].Design) {
-//            "search" -> VIEW_SEARCH
+            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
@@ -103,15 +103,15 @@ internal class ParentAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItemModel>) {
         val size = this.homeListData.size
-//        if (this.homeListData.isEmpty()) {
-//            for (item in data.indices) {
-//                search =
-//                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-//              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
-//            }
-//            this.homeListData.add(search!!)
-//            //this.homeListData.add(download!!)
-//        }
+        if (this.homeListData.isEmpty()) {
+            for (item in data.indices) {
+                search =
+                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+            }
+            this.homeListData.add(search!!)
+            //this.homeListData.add(download!!)
+        }
 
         if (this.homeListData.size >= 2 && downloadNotAdded) {
             downloadNotAdded = false
@@ -358,7 +358,7 @@ internal class ParentAdapter(
 
         fun bind(homePatchItemModel: HomePatchItemModel?) {
             when (homePatchItemModel?.Design) {
-//                "search" -> bindSearch(homePatchItemModel)
+                "search" -> bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)

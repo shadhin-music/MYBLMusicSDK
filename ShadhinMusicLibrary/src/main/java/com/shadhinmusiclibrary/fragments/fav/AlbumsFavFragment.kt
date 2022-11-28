@@ -108,7 +108,7 @@ internal class AlbumsFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config,dataAdapter,footerAdapter)
+        parentAdapter = ConcatAdapter(config,dataAdapter)
         recyclerView.adapter = parentAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
 

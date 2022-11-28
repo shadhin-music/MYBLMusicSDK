@@ -32,6 +32,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
+import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.callBackService.favItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -60,6 +61,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     private lateinit var favViewModel: FavViewModel
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
+    private lateinit var dataAdapter: AllFavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,16 +87,28 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         favViewModel =
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter = AllFavoriteAdapter(
-            cacheRepository.getAllFavoriteContent()!!.toMutableList(),
-            this,
-            this,this
-        )
+        dataAdapter  = AllFavoriteAdapter(this, this,this)
+
+        cacheRepository.getAllFavoriteContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList(),
+                "",
+                playerViewModel.currentMusic?.mediaId
+            )
+        }!!
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    dataAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
