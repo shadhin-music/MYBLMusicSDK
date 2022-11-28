@@ -84,8 +84,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
                 argHomePatchDetail!!.content_Type ?: ""
             )
         }
-        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.album_Id)
-        Log.e("TAGGGG","DATA: " +  argHomePatchDetail!!.artist_Id )
+
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =

@@ -15,7 +15,6 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.callBackService.OnItemClickCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -24,13 +23,12 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class UserCreatedPlaylistTrackAdapter(
     private val itemClickCB: OnItemClickCallback,
     val bsDialogItemCallback: CreatedPlaylistSongBottomSheetDialogItemCallback,
-    val cacheRepository: CacheRepository,
+    val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<UserCreatedPlaylistTrackAdapter.PlaylistTrackVH>() {
     var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistTrackVH {
-//        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_latest_music_view_item, parent, false)
         return PlaylistTrackVH(parentView!!)
@@ -40,12 +38,15 @@ internal class UserCreatedPlaylistTrackAdapter(
         val mSongDetails = dataSongDetail[position]
         holder.bindTrackItem(mSongDetails)
         holder.itemView.setOnClickListener {
-            itemClickCB.onClickItem(dataSongDetail.toMutableList(), position)
+            itemClickCB.onClickItem(dataSongDetail, position)
         }
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
-                ContextCompat.getColor(holder.mContext, R.color.my_sdk_color_primary)
+                ContextCompat.getColor(
+                    holder.mContext,
+                    R.color.my_sdk_color_primary
+                )
             )
         } else {
             holder.tvSongName?.setTextColor(
@@ -63,18 +64,22 @@ internal class UserCreatedPlaylistTrackAdapter(
         return dataSongDetail.size
     }
 
-    fun setData(data: List<UserSongsPlaylistDataModel>?, mediaId: String?) {
-        this.dataSongDetail = mutableListOf()
-        for (songItem in data!!) {
+    fun setData(data: MutableList<IMusicModel>, rootConId: String, mediaId: String?) {
+        for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getSongDetailAndRootDataForUSERPLAYLIST(songItem)
+                songItem.apply {
+                    isSeekAble = true
+                    rootContentId = rootConId
+                    rootContentType = content_Type
+                }
             )
         }
-        notifyDataSetChanged()
 
         if (mediaId != null) {
             setPlayingSong(mediaId)
         }
+
+        notifyDataSetChanged()
     }
 
     fun setPlayingSong(mediaId: String) {
@@ -83,13 +88,15 @@ internal class UserCreatedPlaylistTrackAdapter(
         val callback = AnyTrackDiffCB(dataSongDetail, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
         dataSongDetail.clear()
-        dataSongDetail.addAll(newList.toMutableList())
+        dataSongDetail.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     inner class PlaylistTrackVH(private val viewItem: View) : RecyclerView.ViewHolder(viewItem) {
         val mContext = itemView.getContext()
         var tvSongName: TextView? = null
+
         fun bindTrackItem(mSongDetail: IMusicModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
@@ -109,7 +116,7 @@ internal class UserCreatedPlaylistTrackAdapter(
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             downloaded.tag = 220
-            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id) ?: false
 
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

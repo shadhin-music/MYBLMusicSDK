@@ -49,21 +49,20 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
+internal class UserCreatedPlaylistDetailsFragment :
+    PlaylistBaseFragment(),
     OnItemClickCallback,
     CreatedPlaylistSongBottomSheetDialogItemCallback {
 
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
+    private lateinit var cacheRepository: CacheRepository
+    private lateinit var favViewModel: FavViewModel
 
     private lateinit var playlistHeaderAdapter: UserCreatedPlaylistHeaderAdapter
     private lateinit var playlistTrackAdapter: UserCreatedPlaylistTrackAdapter
-
-    //    private lateinit var adapter: PlaylistAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
-    private lateinit var cacheRepository: CacheRepository
 
-    private lateinit var favViewModel: FavViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -81,29 +80,34 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
                 this,
                 injector.factoryCreatePlaylistVM
             )[CreateplaylistViewModel::class.java]
+    }
+
+    private fun setupFavViewModel() {
         favViewModel =
-            ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
+            ViewModelProvider(
+                this,
+                injector.factoryFavContentVM
+            )[FavViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
+        setupFavViewModel()
         cacheRepository = CacheRepository(requireContext())
-        // playlistTrackAdapter = PlaylistTrackAdapter(this, cacheRepository!!)
         playlistHeaderAdapter = UserCreatedPlaylistHeaderAdapter(
             argHomePatchDetail,
             playlistName,
             this,
-            cacheRepository!!,
+            cacheRepository,
             favViewModel,
             gradientDrawable!!
         )
-        playlistTrackAdapter = UserCreatedPlaylistTrackAdapter(this, this, cacheRepository!!)
-//        adapter = PlaylistAdapter(this, this)
+        playlistTrackAdapter = UserCreatedPlaylistTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
+        setupViewModel()
         ///read data from online
         playlistId?.let { fetchOnlineData(it, playlistName) }
-        Log.e("TAG", "SONGS: " + playlistId)
+
 //        adapter.setRootData(argHomePatchDetail!!)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -119,15 +123,16 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
             footerAdapter
         )
         recyclerView.adapter = concatAdapter
-        concatAdapter.notifyDataSetChanged()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
-            if (music?.mediaId != null) {
-                playlistTrackAdapter.setPlayingSong(music.mediaId!!)
+            if (music != null) {
+                if (music.mediaId != null) {
+                    playlistTrackAdapter.setPlayingSong(music.mediaId!!)
+                }
             }
         }
     }
@@ -137,11 +142,12 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
         viewModel.getUserSongsPlaylist.observe(viewLifecycleOwner) { res ->
             if (res.data != null) {
                 playlistTrackAdapter.setData(
-                    res.data,
+                    res.data?.toMutableList()!!,
+                    contentId,
                     playerViewModel.currentMusic?.mediaId
                 )
                 playlistHeaderAdapter.setSongAndData(
-                    res.data,
+                    res.data?.toMutableList()!!, contentId
                 )
 //                updateAndSetAdapter(res!!.data!!.data)
             } else {
@@ -164,19 +170,15 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
                 )
             }
         }
-//        viewModel.getUserSongsPlaylist.observe(viewLifecycleOwner) { res ->
-//
-//        }
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = playlistTrackAdapter.dataSongDetail
         if (lSongDetails.size > clickItemPosition) {
-            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((lSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 playerViewModel.togglePlayPause()
-                // Log.e("TAG","Post: ")
             } else {
-                playItem(mSongDetails, clickItemPosition)
+                playItem(lSongDetails, clickItemPosition)
             }
         }
     }

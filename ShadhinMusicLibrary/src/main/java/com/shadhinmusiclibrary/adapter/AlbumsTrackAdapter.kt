@@ -54,7 +54,10 @@ internal class AlbumsTrackAdapter(
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
-                ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
+                ContextCompat.getColor(
+                    holder.context,
+                    R.color.my_sdk_color_primary
+                )
             )
         } else {
             holder.tvSongName?.setTextColor(
