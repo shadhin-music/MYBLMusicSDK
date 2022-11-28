@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
+import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FeaturedPodcastAdapter(
     var data: MutableList<FeaturedPodcastDetailsModel>,
@@ -41,13 +42,14 @@ internal class FeaturedPodcastAdapter(
             val textViewName = itemView.findViewById(R.id.txt_title) as TextView
             val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
             val imageView = itemView.findViewById(R.id.image) as ImageView
-            val url: String? = data.get(absoluteAdapterPosition).getImageUrl300Size()
-            textViewArtist.text = data.get(absoluteAdapterPosition).TrackName
+            val url: String? =
+                UtilHelper.getImageUrlSize300(data[absoluteAdapterPosition].ImageUrl)
+            textViewArtist.text = data[absoluteAdapterPosition].TrackName
             Glide.with(context)
                 .load(url)
                 .into(imageView)
 
-            textViewName.text = data.get(absoluteAdapterPosition).EpisodeName
+            textViewName.text = data[absoluteAdapterPosition].EpisodeName
             // textViewArtist.text = data?.get(absoluteAdapterPosition)?.EpisodeName
 //            val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
 //            val imageView2 = itemView.findViewById(R.id.civ_person_image) as CircleImageView

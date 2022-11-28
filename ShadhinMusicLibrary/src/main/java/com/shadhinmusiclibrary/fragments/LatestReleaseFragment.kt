@@ -19,7 +19,9 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.utils.DataContentType.TITLE
 import com.shadhinmusiclibrary.utils.Status
 
-internal class LatestReleaseFragment : BaseFragment(), LatestReleaseOnCallBack {
+internal class LatestReleaseFragment : BaseFragment(),
+    LatestReleaseOnCallBack {
+
     lateinit var viewModel: FeaturedTracklistViewModel
 
     private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter
@@ -73,7 +75,7 @@ internal class LatestReleaseFragment : BaseFragment(), LatestReleaseOnCallBack {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
 
                 recyclerView.layoutManager =
-                   GridLayoutManager(requireContext(), 3)
+                    GridLayoutManager(requireContext(), 3)
                 response?.data?.data?.let {
                     featuredLatestTracksAdapter.setData(
                         it,

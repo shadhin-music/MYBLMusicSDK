@@ -17,10 +17,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.*
-import com.shadhinmusiclibrary.callBackService.ArtistOnItemClickCallback
 import com.shadhinmusiclibrary.callBackService.BottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -36,8 +35,10 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class SearchArtistDetailsFragment : BaseFragment(), HomeCallBack,
-    ArtistOnItemClickCallback, BottomSheetDialogItemCallback {
+internal class SearchArtistDetailsFragment : BaseFragment(),
+    HomeCallBack,
+    CommonPlayControlCallback,
+    BottomSheetDialogItemCallback {
     private lateinit var navController: NavController
     var artistContent: ArtistContentModel? = null
     private lateinit var viewModel: ArtistViewModel

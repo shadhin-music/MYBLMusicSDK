@@ -32,7 +32,7 @@ internal class RadioTrackAdapter(private val radioCallback: RadioTrackCallBack) 
         val radioTrackItem = listRadioTrack[position]
         radioCallback.getCurrentVH(holder, listRadioTrack)
         holder.itemView.setOnClickListener {
-            radioCallback.onClickOpenRadio(radioTrackItem)
+            radioCallback.onClickItem(radioTrackItem)
         }
 
     }

@@ -16,6 +16,7 @@ internal class FeaturedPodcastViewModel(private val featuredPodcastRepository: F
         MutableLiveData()
     val featuredpodcastContent: LiveData<ApiResponse<FeaturedPodcastModel>> =
         _featuredpodcastContent
+
     private val _featuredpodcastContentJC: MutableLiveData<ApiResponse<FeaturedPodcastModel>> =
         MutableLiveData()
     val featuredpodcastContentJC: LiveData<ApiResponse<FeaturedPodcastModel>> =

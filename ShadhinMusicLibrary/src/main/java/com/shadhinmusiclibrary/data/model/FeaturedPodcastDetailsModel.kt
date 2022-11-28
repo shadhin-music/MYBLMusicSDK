@@ -29,8 +29,4 @@ internal data class FeaturedPodcastDetailsModel(
     val TrackType: String,
     val TracktId: String,
     val fav: String
-){
-    fun getImageUrl300Size(): String {
-        return this.ImageUrl.replace("<\$size\$>", "300")
-    }
-}
+)
