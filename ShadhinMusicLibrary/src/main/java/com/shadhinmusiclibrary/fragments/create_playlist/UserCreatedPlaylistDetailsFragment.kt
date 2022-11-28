@@ -34,7 +34,7 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.UserCreatedPlaylistTrackAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CreatedPlaylistSongBottomSheetDialogItemCallback
+import com.shadhinmusiclibrary.callBackService.CommonSinglePlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -49,10 +49,9 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class UserCreatedPlaylistDetailsFragment :
-    PlaylistBaseFragment(),
+internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
     CommonPlayControlCallback,
-    CreatedPlaylistSongBottomSheetDialogItemCallback {
+    CommonSinglePlayControlCallback {
 
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
