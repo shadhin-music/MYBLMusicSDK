@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        cacheRepository.getAllSongsDownloads()
+        cacheRepository.getAllPodcastDownloads()
             ?.let {
                 downloadedSongsAdapter.setData(
                     it.toMutableList(),
@@ -61,7 +62,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter)
         recyclerView.adapter = parentAdapter
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -74,6 +75,10 @@ internal class PodcastDownloadFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e(
+            "ALLDDF",
+            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id "+mSongDetails[clickItemPosition].content_Id
+        )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -93,12 +98,17 @@ internal class PodcastDownloadFragment : BaseFragment(),
 
     }
 
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
             SongTrackModel().apply {
                 rootContentType = mSongDetails.rootContentType
+                content_Type = mSongDetails.content_Type
                 artistName = mSongDetails.artistName
                 total_duration = mSongDetails.total_duration
                 content_Id = mSongDetails.content_Id

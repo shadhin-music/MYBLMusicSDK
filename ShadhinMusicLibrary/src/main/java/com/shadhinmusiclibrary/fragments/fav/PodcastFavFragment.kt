@@ -70,7 +70,7 @@ internal class PodcastFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, favoriteSongsAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, favoriteSongsAdapter)
         recyclerView.adapter = parentAdapter
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -100,12 +100,16 @@ internal class PodcastFavFragment : BaseFragment(),
         }
     }
 
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        TODO("Not yet implemented")
+    }
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
             SongTrackModel().apply {
-                content_Type = mSongDetails.content_Type.toString()
+                content_Type = mSongDetails.content_Type
                 artistName = mSongDetails.artistName.toString()
                 total_duration = mSongDetails.total_duration.toString()
                 content_Id = mSongDetails.content_Id

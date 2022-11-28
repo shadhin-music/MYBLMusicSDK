@@ -35,7 +35,7 @@ internal interface FavoriteContentDao {
     @Query("SELECT * FROM FavData WHERE content_Type='P'  ORDER By total_duration DESC ")
     fun getPlaylistFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='PD'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type LIKE 'PD%'  ORDER By total_duration DESC ")
     fun getAllPodcastFav(): List<FavDataModel>
 
     //

@@ -1223,7 +1223,7 @@ internal class SDKMainActivity : BaseActivity(),
                             titleName = mSongDetails.titleName
                             content_Type = mSongDetails.content_Type
                             playingUrl = mSongDetails.playingUrl
-                            rootContentType = mSongDetails.content_Type
+                            rootContentType = mSongDetails.rootContentType
                             mSongDetails.artistName
                             mSongDetails.artist_Id.toString()
                             mSongDetails.total_duration
@@ -1504,7 +1504,7 @@ internal class SDKMainActivity : BaseActivity(),
                 DownloadService.sendRemoveDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
-                    iSongTrack.content_Id!!,
+                    iSongTrack.content_Id,
                     false
                 )
                 val localBroadcastManager =
@@ -1529,9 +1529,13 @@ internal class SDKMainActivity : BaseActivity(),
                 )
 
                 //Todo iSongTrack.EpisodeId
-                if (cacheRepository.isDownloadCompleted(iSongTrack.content_Id!!)) {
+                if (cacheRepository.isDownloadCompleted(iSongTrack.content_Id)) {
+//                    val contentType = iSongTrack.content_Type
+//                    val podcastType = contentType?.take(2)
+//                    val  Type = contentType?.takeLast(2)
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
+
                             content_Id = iSongTrack.content_Id
                             album_Id = iSongTrack.album_Id
                             rootContentId = iSongTrack.rootContentId
@@ -1539,7 +1543,7 @@ internal class SDKMainActivity : BaseActivity(),
                             titleName = iSongTrack.titleName
                             content_Type = iSongTrack.content_Type
                             playingUrl = iSongTrack.playingUrl
-                            content_Type = iSongTrack.content_Type
+                            rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
                             total_duration = iSongTrack.total_duration
@@ -1571,10 +1575,13 @@ internal class SDKMainActivity : BaseActivity(),
 
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
+                val contentType = iSongTrack.content_Type
+                val podcastType = contentType?.take(2)
+                val  Type = contentType?.takeLast(2)
                 //todo iSongTrack.Id
                 favViewModel.deleteFavContent(
                     iSongTrack.content_Id.toString(),
-                    iSongTrack.content_Type!!
+                  iSongTrack.content_Type.toString()
                 )
                 cacheRepository.deleteFavoriteById(iSongTrack.content_Id.toString())
                 Toast.makeText(
@@ -1585,12 +1592,15 @@ internal class SDKMainActivity : BaseActivity(),
                     .show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                Log.e("TAG", "NAME: " + isFav)
+                Log.e("TAG", "NAME: " + iSongTrack.content_Type)
             } else {
+                val contentType = iSongTrack.content_Type
+                val podcastType = contentType?.take(2)
+                val  Type = contentType?.takeLast(2)
                 //todo iSongTrack.EpisodeId
                 favViewModel.addFavContent(
-                    iSongTrack.content_Id!!,
-                    iSongTrack.content_Type!!
+                    iSongTrack.content_Id,
+                    iSongTrack.content_Type.toString()
                 )
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
@@ -1603,7 +1613,7 @@ internal class SDKMainActivity : BaseActivity(),
                         album_Id = iSongTrack.content_Id.toString()
                         albumImage = iSongTrack.imageUrl
                         clientValue = 2
-                        content_Type = iSongTrack.content_Type
+                        content_Type = iSongTrack.content_Type.toString()
                         fav = "1"
                         imageUrl = iSongTrack.imageUrl
                         playingUrl = iSongTrack.playingUrl
@@ -1645,6 +1655,12 @@ internal class SDKMainActivity : BaseActivity(),
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
+        Log.e("TAG","INSERT: "+ mSongDetails.rootContentId)
+        Log.e("TAG","INSERT: "+ argHomePatchDetail?.playListId)
+        Log.e("TAG","INSERT: "+ argHomePatchDetail?.album_Id)
+        Log.e("TAG","INSERT: "+ argHomePatchDetail?.content_Id)
+        Log.e("TAG","INSERT: "+ mSongDetails.content_Id)
+        Log.e("TAG","INSERT: "+ mSongDetails.album_Id)
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
@@ -1670,7 +1686,7 @@ internal class SDKMainActivity : BaseActivity(),
         val textViewDownloadTitle: TextView? =
             bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloadComplete = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
         if (downloaded?.playingUrl != null) {
             isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -1687,23 +1703,24 @@ internal class SDKMainActivity : BaseActivity(),
         val constraintDownload: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintDownload)
         constraintDownload?.setOnClickListener {
+
             if (isDownloadComplete.equals(true)) {
-                cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
+                cacheRepository.deleteDownloadById(mSongDetails.content_Id.toString())
                 DownloadService.sendRemoveDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
-                    mSongDetails.content_Id!!,
+                    mSongDetails.content_Id.toString(),
                     false
                 )
                 val localBroadcastManager =
                     LocalBroadcastManager.getInstance(applicationContext)
                 val localIntent = Intent("DELETED")
-                    .putExtra("contentID", mSongDetails.content_Id!!)
+                    .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl!!}"
                 val downloadRequest: DownloadRequest =
-                    DownloadRequest.Builder(mSongDetails.content_Id!!, url.toUri())
+                    DownloadRequest.Builder(mSongDetails.content_Id.toString(), url.toUri())
                         .build()
                 injector.downloadTitleMap[mSongDetails.content_Id ?: ""] =
                     mSongDetails.titleName ?: ""
@@ -1715,7 +1732,8 @@ internal class SDKMainActivity : BaseActivity(),
                     /* foreground= */ false
                 )
 
-                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id!!)) {
+                if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id.toString())) {
+
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
                             content_Id = mSongDetails.content_Id.toString()
@@ -1728,6 +1746,7 @@ internal class SDKMainActivity : BaseActivity(),
                             artistName = mSongDetails.artistName
                             artist_Id = mSongDetails.artist_Id.toString()
                             total_duration = mSongDetails.total_duration
+                            album_Id = mSongDetails.album_Id
                         }
                     )
                 }
@@ -1746,7 +1765,7 @@ internal class SDKMainActivity : BaseActivity(),
         val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
         var isFav = false
-        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id!!)
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id.toString())
         if (isAddedToFav?.content_Id != null) {
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -1761,10 +1780,10 @@ internal class SDKMainActivity : BaseActivity(),
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
                 favViewModel.deleteFavContent(
-                    mSongDetails.content_Id!!,
+                    mSongDetails.content_Id.toString(),
                     mSongDetails.content_Type!!
                 )
-                cacheRepository.deleteFavoriteById(mSongDetails.content_Id!!)
+                cacheRepository.deleteFavoriteById(mSongDetails.content_Id.toString())
                 Toast.makeText(
                     applicationContext,
                     "Removed from favorite",
@@ -1776,7 +1795,7 @@ internal class SDKMainActivity : BaseActivity(),
                 Log.e("TAG", "NAME: " + isFav)
             } else {
                 favViewModel.addFavContent(
-                    mSongDetails.content_Id!!,
+                    mSongDetails.content_Id.toString(),
                     mSongDetails.content_Type!!
                 )
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)

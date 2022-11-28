@@ -67,7 +67,7 @@ internal class AllDownloadedAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].rootContentType.equals("PD")) {
+        if (allDownloads[position].content_Type?.contains("PD")==true) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
             }

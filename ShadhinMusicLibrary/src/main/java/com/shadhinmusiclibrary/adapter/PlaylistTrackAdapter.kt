@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,8 @@ internal class PlaylistTrackAdapter(
         ivSongMenuIcon.setOnClickListener {
             val songDetail = dataSongDetail[position]
             bsDialogItemCallback.onClickBottomItem(songDetail)
+            Log.e("TAG","DATA: "+ songDetail.content_Id)
+            Log.e("TAG","DATA: "+ songDetail.titleName)
         }
 
         if (mSongDetails.isPlaying) {
@@ -122,11 +125,11 @@ internal class PlaylistTrackAdapter(
             val ivSongMenuIcon: ImageView = viewItem.findViewById(R.id.iv_song_menu_icon)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = mSongDetail.content_Id!!
+            progressIndicator.tag = mSongDetail.content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
-            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id!!) ?: false
-
+            val isDownloaded = cacheRepository.isTrackDownloaded(mSongDetail.content_Id.toString()) ?: false
+            Log.e("TAG","DATA: "+ mSongDetail.content_Id)
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE

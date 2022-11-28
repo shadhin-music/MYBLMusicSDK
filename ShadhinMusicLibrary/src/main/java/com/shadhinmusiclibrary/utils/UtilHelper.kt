@@ -145,7 +145,6 @@ internal object UtilHelper {
     ): IMusicModel {
         mSongDet.apply {
             rootContentId = rootPatch.content_Id
-            content_Id = rootPatch.content_Id
             rootContentType = rootPatch.content_Type
             rootImage = rootPatch.imageUrl
         }

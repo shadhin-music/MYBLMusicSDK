@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -53,7 +54,7 @@ import java.io.Serializable
 internal class AllFavoriteDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     favItemClickCallback,
-    ItemClickListener {
+    ItemClickListener,onFavArtistClickAll {
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
@@ -87,7 +88,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         val dataAdapter = AllFavoriteAdapter(
             cacheRepository.getAllFavoriteContent()!!.toMutableList(),
             this,
-            this
+            this,this
         )
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -423,6 +424,27 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         closeButton?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
+        val constraintDownload: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintDownload)
+        val constraintAlbum: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAlbum)
+        val constraintPlaylist: ConstraintLayout? =
+            bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
+        if(argHomePatchDetail?.content_Type?.equals("P") == true){
+              constraintAlbum?.visibility =GONE
+            constraintDownload?.visibility =GONE
+            constraintPlaylist?.visibility =GONE
+        }
+        if(argHomePatchDetail?.content_Type?.equals("A") == true){
+            constraintDownload?.visibility =GONE
+            constraintPlaylist?.visibility =GONE
+
+        }
+        if(argHomePatchDetail?.content_Type?.equals("R") == true){
+            constraintDownload?.visibility =GONE
+            constraintPlaylist?.visibility =GONE
+
+        }
         val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
         textAlbum?.text = "Go to Artist"
@@ -452,8 +474,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         } else {
             textViewDownloadTitle?.text = "Download Offline"
         }
-        val constraintDownload: ConstraintLayout? =
-            bottomSheetDialog.findViewById(R.id.constraintDownload)
+
         constraintDownload?.setOnClickListener {
             if (isDownloaded.equals(true)) {
                 cacheRepository.deleteDownloadById(mSongDetails.content_Id!!)
@@ -503,8 +524,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             }
             bottomSheetDialog.dismiss()
         }
-        val constraintAlbum: ConstraintLayout? =
-            bottomSheetDialog.findViewById(R.id.constraintAlbum)
+
         constraintAlbum?.setOnClickListener {
             gotoArtist(
                 bsdNavController,
@@ -515,8 +535,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             )
             bottomSheetDialog.dismiss()
         }
-        val constraintPlaylist: ConstraintLayout? =
-            bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
+
         constraintPlaylist?.setOnClickListener {
             gotoPlayList(context, mSongDetails)
 
@@ -731,4 +750,85 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
+
+    override fun onFavAlbumClick(itemPosition: Int, favData: List<IMusicModel>) {
+        val favDat = favData[itemPosition]
+        navController.navigate(
+            R.id.favoriteAlbum,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItemModel("", "R", mutableListOf(), "Release", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetailModel().apply {
+                        album_Id = favDat.album_Id.toString()
+                        artistName = favDat.artistName.toString()
+                        artist_Id = favDat.artist_Id.toString()
+                        content_Id = favDat.content_Id
+                        content_Type = favDat.content_Type.toString()
+                        playingUrl = favDat.playingUrl.toString()
+                        imageUrl = favDat.imageUrl.toString()
+                        titleName = favDat.titleName.toString()
+                    } as Serializable
+                )
+            })
+    }
+
+    override fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>) {
+        val mFavData = favData[itemPosition]
+        navController.navigate(
+            R.id.favoriteArtist,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItemModel("", "A", mutableListOf(), "Artist", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetailModel().apply {
+                        album_Id = mFavData.album_Id.toString()
+                        artistName = mFavData.artistName.toString()
+                        artist_Id = mFavData.artist_Id.toString()
+                        content_Id = mFavData.content_Id
+                        content_Type = mFavData.content_Type.toString()
+                        playingUrl = mFavData.playingUrl.toString()
+                        imageUrl = mFavData.imageUrl.toString()
+                        titleName = mFavData.titleName.toString()
+                    } as Serializable
+                )
+            })
+    }
+
+    override fun onFavPlaylistClick(itemPosition: Int, favData: List<IMusicModel>) {
+        val mfavData = favData[itemPosition]
+        navController.navigate(
+            R.id.favoritePlaylist,
+            Bundle().apply {
+                putSerializable(
+                    AppConstantUtils.PatchItem,
+                    HomePatchItemModel("", "P", mutableListOf(), "Playlist", "", 0, 0)
+                )
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    HomePatchDetailModel().apply {
+                        album_Id = mfavData.album_Id.toString()
+                        artistName = mfavData.artistName.toString()
+                        artist_Id = mfavData.artist_Id.toString()
+                        content_Id = mfavData.content_Id
+                        content_Type = mfavData.content_Type.toString()
+                        playingUrl = mfavData.playingUrl.toString()
+                        imageUrl = mfavData.imageUrl.toString()
+                        titleName = mfavData.titleName.toString()
+                    } as Serializable
+                )
+            })
+    }
+
+
+}
+internal interface onFavArtistClickAll {
+    fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>)
+    fun onFavPlaylistClick(itemPosition: Int, favData: List<IMusicModel>)
 }

@@ -61,9 +61,18 @@ internal class FavoriteSongsAdapter(
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (allDownloads[position].content_Type.equals("PD")) {
+        val contentPodcast = allDownloads[position].content_Type
+
+       if (contentPodcast?.contains("PD")==true) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(allDownloads[position])
+            }
+            Log.e("TAG","DATA: "+ allDownloads[position].content_Type)
+            Log.e("TAG","DATA: "+ allDownloads[position].rootContentType)
+            Log.e("TAG","DATA: "+ allDownloads[position].content_Id)
+            Log.e("TAG","DATA: "+ allDownloads[position].playingUrl)
+            holder.itemView.setOnClickListener {
+                lrOnCallBack.onClickFavItem(allDownloads, position)
             }
         }
 
