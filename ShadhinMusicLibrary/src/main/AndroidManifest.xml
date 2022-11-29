@@ -48,8 +48,9 @@
 
         <provider
             android:name=".utils.MySuggestionProvider"
-            android:authorities="com.shadhinmusiclibrary.utils.MySuggestionProvider"
-            android:enabled="true" />
+            android:authorities="${applicationId}.com.shadhinmusiclibrary.utils.MySuggestionProvider"
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
             android:name=".download.MyBLDownloadService$DownloadCancelBroadcastListeners"

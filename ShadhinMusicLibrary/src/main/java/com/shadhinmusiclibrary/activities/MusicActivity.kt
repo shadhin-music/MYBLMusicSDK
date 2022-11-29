@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.AppCompatImageView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.utils.AppConstantUtils
-import java.io.Serializable
 
 internal class MusicActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,14 +16,13 @@ internal class MusicActivity : AppCompatActivity() {
         imageBackBtn.setOnClickListener {
             onBackPressed()
         }
-        val search_bar: AppCompatImageView = findViewById(R.id.search_bar)
-        search_bar.setOnClickListener {
+        val acivSearchBar: AppCompatImageView = findViewById(R.id.search_bar)
+        acivSearchBar.setOnClickListener {
             openSearch()
         }
     }
 
-    fun openSearch() {
-        ShadhinMusicSdkCore.pressCountIncrement()
+    private fun openSearch() {
         startActivity(Intent(this, SDKMainActivity::class.java)
             .apply {
                 putExtra(

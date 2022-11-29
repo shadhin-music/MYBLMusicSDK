@@ -123,7 +123,7 @@ internal class MyPlaylistFragment : BaseFragment(),
     }
 
     fun clickOnAddPlaylist(selectedHomePatchItem: HomePatchItemModel) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -161,7 +161,7 @@ internal class MyPlaylistFragment : BaseFragment(),
         name: String,
         gradientResId: Int
     ) {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,

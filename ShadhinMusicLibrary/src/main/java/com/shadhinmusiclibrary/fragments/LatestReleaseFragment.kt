@@ -24,7 +24,7 @@ import com.shadhinmusiclibrary.utils.Status
 internal class LatestReleaseFragment : BaseFragment(),
     LatestReleaseOnCallBack {
 
-    lateinit var viewModel: FeaturedTracklistViewModel
+    private lateinit var featuredTrackViewModel: FeaturedTracklistViewModel
 
     private lateinit var featuredLatestTracksAdapter: FeaturedLatestTracksAdapter
 
@@ -37,8 +37,7 @@ internal class LatestReleaseFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        featuredLatestTracksAdapter =
-            FeaturedLatestTracksAdapter(this)
+        featuredLatestTracksAdapter = FeaturedLatestTracksAdapter(this)
 
         setupViewModel()
         setupUI()
@@ -62,7 +61,7 @@ internal class LatestReleaseFragment : BaseFragment(),
     }
 
     private fun setupViewModel() {
-        viewModel =
+        featuredTrackViewModel =
             ViewModelProvider(
                 this,
                 injector.featuredtrackListViewModelFactory
@@ -71,15 +70,16 @@ internal class LatestReleaseFragment : BaseFragment(),
 
     fun observeData() {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel.fetchFeaturedTrackList()
-        viewModel.featuredTracklistContent.observe(viewLifecycleOwner) { response ->
-          val  footerAdapter = HomeFooterAdapter()
+        featuredTrackViewModel.fetchFeaturedTrackList()
+        featuredTrackViewModel.featuredTracklistContent.observe(viewLifecycleOwner) { response ->
+            val footerAdapter = HomeFooterAdapter()
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
                 val config = ConcatAdapter.Config.Builder()
                     .setIsolateViewTypes(false)
                     .build()
-                val concatAdapter = ConcatAdapter(config, featuredLatestTracksAdapter,footerAdapter)
+                val concatAdapter =
+                    ConcatAdapter(config, featuredLatestTracksAdapter, footerAdapter)
                 val layoutManager = GridLayoutManager(context, 3)
                 val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
                     object : GridLayoutManager.SpanSizeLookup() {
@@ -112,8 +112,7 @@ internal class LatestReleaseFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        if (playerViewModel.currentMusic != null &&
-            (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
+        if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)
         ) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
