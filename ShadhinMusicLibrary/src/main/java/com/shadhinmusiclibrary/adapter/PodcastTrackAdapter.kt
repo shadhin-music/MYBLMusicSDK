@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ internal class PodcastTrackAdapter(
         holder.bindItems(trackItem)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
+            Log.e("TAG","DATA: "+ trackItem)
         }
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {

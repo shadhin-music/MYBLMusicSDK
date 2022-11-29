@@ -172,6 +172,12 @@ internal data class Music(
         }
         return null
     }
+    fun podcastTrackType(): String? {
+        if (isPodCast()) {
+            return trackType?.toUpperCase()
+        }
+        return null
+    }
 
     fun isLive(): Boolean {
         return trackType.equals("LM", true)

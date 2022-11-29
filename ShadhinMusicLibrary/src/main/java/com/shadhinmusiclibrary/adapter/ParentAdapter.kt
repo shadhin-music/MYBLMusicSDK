@@ -252,7 +252,7 @@ internal class ParentAdapter(
                 .into(image)
             itemView.setOnClickListener {
                 Log.e("TAG","POSITION: "+  absoluteAdapterPosition)
-               // homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
+               homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
                // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
 
             }

@@ -75,9 +75,10 @@ internal class BhootPodcastDetailsFragment : BaseFragment(),
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             contentId = it.content_Id.toInt()
-            selectedEpisodeID = it.album_Id?.toInt() ?: 0
+            selectedEpisodeID = it.album_Id?.toInt() ?: it.content_Id.toInt()
         }
-        Log.e("TAG","PODCASTDATA: "+ contentId)
+        Log.e("TAG","PODCASTDATA: "+ contentType)
+        Log.e("TAG","PODCASTDATA: "+ selectedEpisodeID)
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
         if (selectedEpisodeID == contentId) {
@@ -99,7 +100,7 @@ internal class BhootPodcastDetailsFragment : BaseFragment(),
 
     private fun getPodcastShowDetailsInitialize() {
         setupAdapters()
-        //observePodcastShowData()
+        observePodcastShowData()
     }
 
     private fun getPodcastDetailsInitialize() {
@@ -143,45 +144,45 @@ internal class BhootPodcastDetailsFragment : BaseFragment(),
         )[FavViewModel::class.java]
     }
 
-//    private fun observePodcastShowData() {
-//        viewModel.fetchPodcastShowContent(podcastType, contentType, false)
-//        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-//        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
-//            if (response.status == Status.SUCCESS) {
-//                response?.data?.data?.EpisodeList?.let { itEpisod ->
-////                    podcastHeaderAdapter.setHeader(
-////                        itEpisod,
-////                        itEpisod[0].TrackList
-////                    )
-//                    podcastHeaderAdapter.setTrackData(
+    private fun observePodcastShowData() {
+        viewModel.fetchPodcastShowContent(podcastType, contentType, false)
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+            if (response.status == Status.SUCCESS) {
+                response?.data?.data?.EpisodeList?.let { itEpisod ->
+//                    podcastHeaderAdapter.setHeader(
 //                        itEpisod,
-//                        itEpisod[0].TrackList,
-//                        argHomePatchDetail!!
+//                        itEpisod[0].TrackList
 //                    )
-//                }
-//                response.data?.data?.EpisodeList?.get(0)
-//                    ?.let {
-//                        podcastTrackAdapter.setData(
-//                            it.TrackList,
-//                            argHomePatchDetail!!,
-//                            playerViewModel.currentMusic?.mediaId
-//                        )
-//                    }
-//                response.data?.data?.let {
-//                    it.EpisodeList.let { it1 ->
-//                        podcastMoreEpisodesAdapter.setData(it1)
-//                    }
-//                }
-//                parentRecycler.adapter = concatAdapter
-//                progressBar.visibility = View.GONE
-//            } else {
-//                progressBar.visibility = View.GONE
-//            }
-//        }
-//    }
+                    podcastHeaderAdapter.setTrackData(
+                        itEpisod,
+                        itEpisod[0].TrackList,
+                        argHomePatchDetail!!
+                    )
+                }
+                response.data?.data?.EpisodeList?.get(0)
+                    ?.let {
+                        podcastTrackAdapter.setData(
+                            it.TrackList,
+                            argHomePatchDetail!!,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                    }
+                response.data?.data?.let {
+                    it.EpisodeList.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1)
+                    }
+                }
+                parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
 
     private fun observePodcastDetailsData() {
-        viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
+        viewModel.fetchPodcastContent(podcastType, contentId, contentType, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
