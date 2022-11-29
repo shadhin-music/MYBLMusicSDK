@@ -20,8 +20,10 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 internal class FeaturedLatestTracksAdapter(
     private val lrOnCallBack: LatestReleaseOnCallBack
 ) : RecyclerView.Adapter<FeaturedLatestTracksAdapter.ViewHolder>() {
+
     private var listSongDetail: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 //        val v = LayoutInflater.from(parent.context)
         parentView = LayoutInflater.from(parent.context)
@@ -59,10 +61,12 @@ internal class FeaturedLatestTracksAdapter(
         /*   rootPatch: HomePatchDetail,*/
         mediaId: String?
     ) {
-        this.listSongDetail = mutableListOf()
+//        this.listSongDetail = mutableListOf()
         for (songItem in data) {
             listSongDetail.add(
-                songItem                /*UtilHelper.getFeaturedSongDetailAndRootData(songItem*//*, rootPatch*//*)*/
+                songItem.apply {
+                    isSeekAble = true
+                }
             )
         }
 
