@@ -2,6 +2,8 @@ package com.shadhinmusiclibrary.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -486,7 +488,12 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val constraintPlaylist: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
         constraintPlaylist?.setOnClickListener {
-            gotoPlayList(context, mSongDetails)
+            if(isNetworkAvailable(requireContext())==true){
+                gotoPlayList(context, mSongDetails)
+            }else{
+            Toast.makeText(requireContext(),"Please check network",Toast.LENGTH_LONG).show()
+            }
+
             bottomSheetDialog.dismiss()
         }
 
@@ -612,7 +619,8 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
         btnCreateplaylist?.setOnClickListener {
-            openCreatePlaylist(context)
+//            if(isNetworkAvailable(requireContext()).equals(true)){
+                openCreatePlaylist(context)
             bottomSheetDialogPlaylist.dismiss()
         }
         viewModel.createPlaylist.observe(this) { res ->
@@ -672,7 +680,12 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
-
+    fun isNetworkAvailable(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetworkInfo: NetworkInfo? = null
+        activeNetworkInfo = cm.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
+    }
     private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
