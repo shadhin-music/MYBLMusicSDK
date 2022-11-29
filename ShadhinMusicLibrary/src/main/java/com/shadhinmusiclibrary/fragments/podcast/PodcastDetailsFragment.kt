@@ -97,13 +97,15 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     private fun getPodcastShowDetailsInitialize() {
-        setupAdapters()
+        Log.e("TAG","getPodcastShowDetailsInitialize: ")
         observePodcastShowData()
+        setupAdapters()
     }
 
     private fun getPodcastDetailsInitialize() {
-        setupAdapters()
+        Log.e("TAG","getPodcastDetailsInitialize: ")
         observePodcastDetailsData()
+        setupAdapters()
     }
 
     private fun setupAdapters() {
@@ -273,6 +275,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e("PDF", "onClickItem: " )
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
