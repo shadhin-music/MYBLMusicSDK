@@ -75,7 +75,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-            // "PodcastLive" ->  VIEW_PODCAST_LIVE
+             "PodcastLive" ->  VIEW_PODCAST_LIVE
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -243,13 +243,19 @@ internal class ParentAdapter(
         }
 
         private fun bindAd(homePatchItemModel: HomePatchItemModel) {
-//            val title: TextView = itemView.findViewById(R.id.tvTitle)
-//            title.text =homePatchItemModel.Name
-//            val image: ShapeableImageView = itemView.findViewById(R.id.image)
-//            val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
-//            Glide.with(mContext)
-//                .load(imageurl?.replace("<\$size\$>", "300"))
-//                .into(image)
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text =homePatchItemModel.Name
+            val image: ShapeableImageView = itemView.findViewById(R.id.image)
+            val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
+            Glide.with(mContext)
+                .load(imageurl?.replace("<\$size\$>", "984"))
+                .into(image)
+            itemView.setOnClickListener {
+                Log.e("TAG","POSITION: "+  absoluteAdapterPosition)
+               // homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
+               // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
+
+            }
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             //  Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
@@ -367,7 +373,7 @@ internal class ParentAdapter(
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
-                // "PodcastLive" -> bindAd(homePatchItemModel)
+                 "PodcastLive" -> bindAd(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()

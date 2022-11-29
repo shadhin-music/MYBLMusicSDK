@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.Editable
@@ -421,65 +423,123 @@ internal class SDKMainActivity : BaseActivity(),
 
     private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
         if (selectedIndex != null) {
+            Log.e("TAG","homepatch: "+ selectedIndex)
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
+
             val podcast: String = homePatchDetail.content_Type ?: ""
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
+            if (homePatchDetail.content_Type?.contains("PD") == true) {
+                Log.e("TAG","homepatch123: "+ homePatchItem.ContentType)
+                Log.e("TAG","homepatch123: "+ homePatchItem.Design)
+                Log.e("TAG","homepatch123: "+ homePatchDetail.fav)
+                //onPodcastClick(homePatchDetail,homePatchDetail)
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            HomePatchItemModel(
+                                homePatchItem.Code,
+                                homePatchItem.ContentType,
+                                homePatchItem.Data,
+                                homePatchItem.Design,
+                                homePatchItem.Name,
+                                homePatchItem.Sort,
+                                homePatchItem.Total
+                            ) as Serializable
+                        )
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            homePatchDetail as Serializable
+//                            HomePatchDetail(homePatchDetail.AlbumId,
+//                                homePatchDetail.AlbumImage,
+//                                homePatchDetail.AlbumName,
+//                                homePatchDetail.Artist,
+//                                homePatchDetail.ArtistId,
+//                                homePatchDetail.ArtistImage,
+//                                homePatchDetail.Banner,
+//                                homePatchDetail.ContentID,
+//                                homePatchDetail.ContentType,
+//                                homePatchDetail.CreateDate,
+//                                homePatchDetail.Duration,
+//                                homePatchDetail.Follower,
+//                                homePatchDetail.IsPaid,
+//                                homePatchDetail.NewBanner,
+//                                homePatchDetail.PlayCount,
+//                                homePatchDetail.PlayListId,
+//                                homePatchDetail.PlayListId,
+//                                homePatchDetail.PlayListImage,
+//                                homePatchDetail.PlayUrl,
+//                                homePatchDetail.RootId,
+//                                homePatchDetail.RootType,
+//                                homePatchDetail.Seekable,
+//                                homePatchDetail.TeaserUrl,
+//                                homePatchDetail.TrackType,
+//                                homePatchDetail.Type,
+//                                homePatchDetail.fav,
+//                                homePatchDetail.image,
+//                                homePatchDetail.imageWeb,
+//                                homePatchDetail.title) as Serializable
+                           // homePatchDetail as Serializable
+                        )
+                    })
+            }
             //  Log.e("TAG","CHECKING: "+ podcast)
 //            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
 //                    Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
 //
 //                      //onPodcastClick(homePatchDetail,homePatchDetail)
-////                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
-////                    Bundle().apply {
-////                        putSerializable(
-////                            PatchItem,
-////                            HomePatchItemModel(
-////                                homePatchItem.Code,
-////                                homePatchItem.ContentType,
-////                                homePatchItem.Data,
-////                                homePatchItem.Design,
-////                                homePatchItem.Name,
-////                                homePatchItem.Sort,
-////                                homePatchItem.Total
-////                            ) as Serializable
-////                        )
-////                        putSerializable(
-////                            AppConstantUtils.PatchDetail,
-//////                            HomePatchDetail(homePatchDetail.AlbumId,
-//////                                homePatchDetail.AlbumImage,
-//////                                homePatchDetail.AlbumName,
-//////                                homePatchDetail.Artist,
-//////                                homePatchDetail.ArtistId,
-//////                                homePatchDetail.ArtistImage,
-//////                                homePatchDetail.Banner,
-//////                                homePatchDetail.ContentID,
-//////                                homePatchDetail.ContentType,
-//////                                homePatchDetail.CreateDate,
-//////                                homePatchDetail.Duration,
-//////                                homePatchDetail.Follower,
-//////                                homePatchDetail.IsPaid,
-//////                                homePatchDetail.NewBanner,
-//////                                homePatchDetail.PlayCount,
-//////                                homePatchDetail.PlayListId,
-//////                                homePatchDetail.PlayListId,
-//////                                homePatchDetail.PlayListImage,
-//////                                homePatchDetail.PlayUrl,
-//////                                homePatchDetail.RootId,
-//////                                homePatchDetail.RootType,
-//////                                homePatchDetail.Seekable,
-//////                                homePatchDetail.TeaserUrl,
-//////                                homePatchDetail.TrackType,
-//////                                homePatchDetail.Type,
-//////                                homePatchDetail.fav,
-//////                                homePatchDetail.image,
-//////                                homePatchDetail.imageWeb,
-//////                                homePatchDetail.title) as Serializable
-////                            homePatchDetail as Serializable
-////                        )
-////                    })
+//                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+//                    Bundle().apply {
+//                        putSerializable(
+//                            PatchItem,
+//                            HomePatchItemModel(
+//                                homePatchItem.Code,
+//                                homePatchItem.ContentType,
+//                                homePatchItem.Data,
+//                                homePatchItem.Design,
+//                                homePatchItem.Name,
+//                                homePatchItem.Sort,
+//                                homePatchItem.Total
+//                            ) as Serializable
+//                        )
+//                        putSerializable(
+//                            AppConstantUtils.PatchDetail,
+////                            HomePatchDetail(homePatchDetail.AlbumId,
+////                                homePatchDetail.AlbumImage,
+////                                homePatchDetail.AlbumName,
+////                                homePatchDetail.Artist,
+////                                homePatchDetail.ArtistId,
+////                                homePatchDetail.ArtistImage,
+////                                homePatchDetail.Banner,
+////                                homePatchDetail.ContentID,
+////                                homePatchDetail.ContentType,
+////                                homePatchDetail.CreateDate,
+////                                homePatchDetail.Duration,
+////                                homePatchDetail.Follower,
+////                                homePatchDetail.IsPaid,
+////                                homePatchDetail.NewBanner,
+////                                homePatchDetail.PlayCount,
+////                                homePatchDetail.PlayListId,
+////                                homePatchDetail.PlayListId,
+////                                homePatchDetail.PlayListImage,
+////                                homePatchDetail.PlayUrl,
+////                                homePatchDetail.RootId,
+////                                homePatchDetail.RootType,
+////                                homePatchDetail.Seekable,
+////                                homePatchDetail.TeaserUrl,
+////                                homePatchDetail.TrackType,
+////                                homePatchDetail.Type,
+////                                homePatchDetail.fav,
+////                                homePatchDetail.image,
+////                                homePatchDetail.imageWeb,
+////                                homePatchDetail.title) as Serializable
+//                            homePatchDetail as Serializable
+//                        )
+//                    })
 //            }
+
             when (homePatchDetail.content_Type?.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
@@ -548,7 +608,8 @@ internal class SDKMainActivity : BaseActivity(),
         } else {
             if (homePatchItem.ContentType.toUpperCase().contains("PD")) {
                 //open podcast
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
+                //setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast,
                     Bundle().apply {
                         putSerializable(
                             PatchItem,
@@ -895,7 +956,13 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnLibraryAdd.setOnClickListener {
-            gotoPlayList(this, mSongDetails[clickItemPosition])
+           if(isNetworkAvailable(this).equals(true)){
+               gotoPlayList(this, mSongDetails[clickItemPosition])
+           }else{
+               Toast.makeText(this,"Please check network",Toast.LENGTH_LONG).show()
+           }
+
+
         }
 
         ibtnQueueMusic.setOnClickListener {
@@ -923,7 +990,12 @@ internal class SDKMainActivity : BaseActivity(),
             )
         }
     }
-
+    fun isNetworkAvailable(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetworkInfo: NetworkInfo? = null
+        activeNetworkInfo = cm.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
+    }
     private fun songDownload(mSongDetails: IMusicModel) {
         var isDownloaded = false
         var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
@@ -1155,7 +1227,7 @@ internal class SDKMainActivity : BaseActivity(),
 //        val url = argHomePatchDetail?.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = argHomePatchDetail?.titleName
-        val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
+        var artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
             Glide.with(context)
@@ -1224,9 +1296,9 @@ internal class SDKMainActivity : BaseActivity(),
                             content_Type = mSongDetails.content_Type
                             playingUrl = mSongDetails.playingUrl
                             rootContentType = mSongDetails.rootContentType
-                            mSongDetails.artistName
-                            mSongDetails.artist_Id.toString()
-                            mSongDetails.total_duration
+                            artistName= mSongDetails.artistName
+                            artist_Id=mSongDetails.artist_Id.toString()
+                            total_duration=mSongDetails.total_duration
                         }
                     )
                     isDownloadComplete = true
@@ -1322,6 +1394,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration = mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -1620,6 +1693,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentId = iSongTrack.rootContentId
                         rootContentType = iSongTrack.rootContentType
                         titleName = iSongTrack.titleName
+                        total_duration = iSongTrack.total_duration
                     }
                 )
                 isFav = true
@@ -1814,6 +1888,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration = mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -1999,6 +2074,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration = mSongDetails.total_duration
                     }
                 )
                 isFav = true

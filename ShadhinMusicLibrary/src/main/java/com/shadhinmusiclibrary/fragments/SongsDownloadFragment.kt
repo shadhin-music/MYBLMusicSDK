@@ -103,7 +103,7 @@ internal class SongsDownloadFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, downloadedSongsAdapter)
         recyclerView.adapter = parentAdapter
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -166,6 +166,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl ?: ""
                 rootImage = mSongDetails.rootImage ?: ""
                 titleName = mSongDetails.titleName ?: ""
+                total_duration =mSongDetails.total_duration?:""
             }
         )
     }
@@ -351,6 +352,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration =mSongDetails.total_duration
                     }
                 )
                 isFav = true

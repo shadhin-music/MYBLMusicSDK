@@ -115,7 +115,7 @@ internal class ArtistFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
     }
@@ -172,6 +172,7 @@ internal class ArtistFavFragment : BaseFragment(),
                 total_duration = mSongDetails.total_duration.toString()
                 artist_Id = mSongDetails.artist_Id
                 album_Id = mSongDetails.album_Id
+                total_duration =mSongDetails.total_duration
             },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -184,6 +185,7 @@ internal class ArtistFavFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl.toString()
                 imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
+                total_duration =mSongDetails.total_duration
             }
         )
     }
@@ -279,6 +281,7 @@ internal class ArtistFavFragment : BaseFragment(),
                         playingUrl = mFavData.playingUrl.toString()
                         imageUrl = mFavData.imageUrl.toString()
                         titleName = mFavData.titleName.toString()
+                        total_duration =mFavData.total_duration
                     } as Serializable
                 )
             })
@@ -463,6 +466,7 @@ internal class ArtistFavFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration= mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -513,6 +517,7 @@ internal class ArtistFavFragment : BaseFragment(),
                         playingUrl = mSongDetails.playingUrl.toString()
                         imageUrl = mSongDetails.imageUrl.toString()
                         titleName = mSongDetails.titleName.toString()
+                        total_duration =mSongDetails.total_duration
                     } as Serializable
                 )
             })

@@ -108,7 +108,7 @@ internal class AlbumsFavFragment : BaseFragment(),
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         footerAdapter = HomeFooterAdapter()
-        parentAdapter = ConcatAdapter(config, dataAdapter, footerAdapter)
+        parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
 
@@ -166,6 +166,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                     total_duration = mSongDetails.total_duration.toString()
                     artist_Id = mSongDetails.artist_Id
                     album_Id = mSongDetails.album_Id
+                    total_duration =mSongDetails.total_duration
                 },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -175,6 +176,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl.toString()
                 imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
+                total_duration =mSongDetails.total_duration
             }
         )
     }
@@ -270,6 +272,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                         playingUrl = favDat.playingUrl.toString()
                         imageUrl = favDat.imageUrl.toString()
                         titleName = favDat.titleName.toString()
+                        total_duration =favDat.total_duration
                     } as Serializable
                 )
             })
@@ -458,9 +461,10 @@ internal class AlbumsFavFragment : BaseFragment(),
                             imageUrl = mSongDetails.imageUrl
                             isPaid = false
                             playingUrl = mSongDetails.playingUrl
-                            mSongDetails.rootContentId
-                            mSongDetails.rootContentType
-                            mSongDetails.titleName
+                           rootContentId= mSongDetails.rootContentId
+                           rootContentType= mSongDetails.rootContentType
+                           titleName= mSongDetails.titleName
+                            total_duration =mSongDetails.total_duration
                         }
                 )
                 isFav = true
