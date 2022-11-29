@@ -59,11 +59,17 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
+        //val tvTitle: TextView = requireView().findViewById(R.id.tvTitle)
 
-        kotlin.runCatching {
-            val title = arguments?.getString(DataContentType.TITLE)
-            view.findViewById<TextView>(R.id.tvTitle)?.text = title
+//        kotlin.runCatching {
+//            val title = arguments?.getString(DataContentType.TITLE)
+//            view.findViewById<TextView>(R.id.tvTitle)?.text = title
+//        }
+        val title: TextView = view.findViewById(R.id.tvTitle)
+        if(argHomePatchItem?.Name.isNullOrEmpty()){
+            title.text = "Back"
+        }else{
+            title.text = argHomePatchItem!!.Name
         }
 
         //tvTitle.text =  homePatchitem?.Name
@@ -149,7 +155,8 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
-        val mEpisod = episode[clickItemPosition]
+        var mEpisod = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[clickItemPosition])
+        mEpisod.content_Id = "0"
         navController.navigate(
             R.id.to_podcast_details,
             Bundle().apply {
@@ -159,7 +166,7 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(mEpisod) as Serializable
+                    mEpisod as Serializable
                 )
             })
     }

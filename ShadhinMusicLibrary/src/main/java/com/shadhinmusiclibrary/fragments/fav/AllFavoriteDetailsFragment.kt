@@ -30,8 +30,10 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
+import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -40,6 +42,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
+import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.download.room.WatchLaterContent
@@ -60,6 +63,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     private lateinit var favViewModel: FavViewModel
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var navController: NavController
+    private lateinit var dataAdapter: AllFavoriteAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,16 +89,29 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         favViewModel =
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter = AllFavoriteAdapter(
-            cacheRepository.getAllFavoriteContent()!!.toMutableList(),
-            this,
-            this, this
-        )
+
+        dataAdapter  = AllFavoriteAdapter(this, this,this)
+
+        cacheRepository.getAllFavoriteContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList(),
+                "",
+                playerViewModel.currentMusic?.mediaId
+            )
+        }!!
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = dataAdapter
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
+        playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
+            if (music != null) {
+                if (music.mediaId != null) {
+                    dataAdapter.setPlayingSong(music.mediaId!!)
+                }
+            }
+        }
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -117,35 +134,24 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         }
     }
 
+
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
-//        (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
-//            navController,
-//            context = requireContext(),
-//            Track("",
-//                track.rootType,
-//                track.artist,
-//                track.timeStamp,
-//                track.contentId,
-//                0,
-//                track.rootImg,
-//                false,
-//                track.rootTitle,
-//                track.track.toString(),
-//                false,
-//                "",
-//                0,
-//                "",
-//                "",
-//                "",
-//                0,
-//
-//                track.rootId,
-//                track.rootImg,
-//                "",
-//                false),
-//            argHomePatchItem,
-//            argHomePatchDetail
-//        )
+        (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
+            navController,
+            context = requireContext(),
+            SongTrackModel().apply {
+                content_Type = mSongDetails.content_Type
+                artistName = mSongDetails.artistName.toString()
+                total_duration = mSongDetails.total_duration.toString()
+                content_Id = mSongDetails.content_Id
+                imageUrl = mSongDetails.imageUrl.toString()
+                titleName = mSongDetails.titleName.toString()
+                playingUrl = mSongDetails.playingUrl.toString()
+                rootContentId = mSongDetails.rootContentId.toString()
+            },
+            argHomePatchItem,
+            argHomePatchDetail
+        )
     }
 
     override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
@@ -162,6 +168,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 total_duration = mSongDetails.total_duration.toString()
                 artist_Id = mSongDetails.artist_Id
                 album_Id = mSongDetails.album_Id
+                total_duration=mSongDetails.total_duration
             },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -174,6 +181,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl.toString()
                 imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
+                total_duration =mSongDetails.total_duration
             }
         )
     }
@@ -397,6 +405,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = item.playUrl
                         rootContentId = item.rootId
                         titleName = item.title
+                        total_duration =item.duration
                     }
                 )
                 isFav = true
@@ -603,6 +612,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        total_duration =mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -653,6 +663,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = mSongDetails.playingUrl.toString()
                         imageUrl = mSongDetails.imageUrl.toString()
                         titleName = mSongDetails.titleName.toString()
+                        total_duration = mSongDetails.total_duration
                     } as Serializable
                 )
             })
@@ -771,6 +782,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = favDat.playingUrl.toString()
                         imageUrl = favDat.imageUrl.toString()
                         titleName = favDat.titleName.toString()
+                        total_duration =favDat.total_duration
                     } as Serializable
                 )
             })
@@ -796,6 +808,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = mFavData.playingUrl.toString()
                         imageUrl = mFavData.imageUrl.toString()
                         titleName = mFavData.titleName.toString()
+                        total_duration =mFavData.total_duration
                     } as Serializable
                 )
             })
@@ -821,6 +834,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = mfavData.playingUrl.toString()
                         imageUrl = mfavData.imageUrl.toString()
                         titleName = mfavData.titleName.toString()
+                        total_duration =mfavData.total_duration
                     } as Serializable
                 )
             })

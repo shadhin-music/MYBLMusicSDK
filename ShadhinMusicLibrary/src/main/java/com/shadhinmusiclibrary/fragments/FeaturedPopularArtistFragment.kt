@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,18 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.adapter.FeaturedPopularArtistAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.adapter.PopularArtistAdapter
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.LatestVideoModelDataModel
 import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.artist.PopularArtistViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -32,7 +38,7 @@ internal class FeaturedPopularArtistFragment : BaseFragment(),
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: PopularArtistViewModel
-
+    private lateinit var popularArtistAdapter: FeaturedPopularArtistAdapter
     private fun setupViewModel() {
         viewModel =
             ViewModelProvider(
@@ -74,13 +80,28 @@ internal class FeaturedPopularArtistFragment : BaseFragment(),
         viewModel.popularArtistContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-                recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
-                recyclerView.adapter =
-                    response.data?.let {
-                        it?.data?.let { it1 ->
-                            FeaturedPopularArtistAdapter(it1, this)
+               val footerAdapter = HomeFooterAdapter()
+                response.data?.let {
+                    it.data.let { it1 ->
+                        popularArtistAdapter = FeaturedPopularArtistAdapter(it1, this)
+                    }
+                }
+                val config = ConcatAdapter.Config.Builder()
+                    .setIsolateViewTypes(false)
+                    .build()
+                val concatAdapter = ConcatAdapter(config, popularArtistAdapter, footerAdapter)
+                val layoutManager = GridLayoutManager(context, 4)
+                val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
+                    object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return if (concatAdapter.getItemViewType(position) == HomeFooterAdapter.VIEW_TYPE) 4 else 1
                         }
                     }
+                recyclerView.layoutManager = layoutManager
+                layoutManager.spanSizeLookup = onSpanSizeLookup
+                recyclerView.adapter = concatAdapter
+
+              
                 progressBar.visibility = View.GONE
             } else {
                 progressBar.visibility = View.GONE
@@ -103,7 +124,9 @@ internal class FeaturedPopularArtistFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     UtilHelper.getHomePatchDetailToData(sSelectedData) as Serializable
+
                 )
+                Log.e("TAG","DATA: "+sSelectedData)
             })
 //            AppConstantUtils.PatchDetail,
 //            UtilHelper.getHomePatchDetailToData(selectedData) as Serializable

@@ -21,7 +21,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
@@ -33,14 +32,13 @@ import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
-import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
-import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
-import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -305,7 +303,7 @@ internal class HomeFragment : BaseFragment(),
             "SmallVideo" -> ParentAdapter.VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> ParentAdapter.VIEW_POPULAR_AMAR_TUNES
             "download" -> ParentAdapter.VIEW_DOWNLOAD
-            //  "PodcastLive" -> ParentAdapter.VIEW_PODCAST_LIVE
+            "PodcastLive" -> ParentAdapter.VIEW_PODCAST_LIVE
             else -> {
                 -1
             }

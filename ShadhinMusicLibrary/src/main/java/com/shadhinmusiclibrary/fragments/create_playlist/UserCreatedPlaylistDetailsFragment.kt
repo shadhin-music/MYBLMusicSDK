@@ -119,7 +119,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
             playlistHeaderAdapter,
             playlistTrackAdapter,
             /*adapter,*/
-            footerAdapter
+//            footerAdapter
         )
         recyclerView.adapter = concatAdapter
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)

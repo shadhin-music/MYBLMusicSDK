@@ -8,10 +8,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FeaturedLatestTracksAdapter
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.LatestReleaseOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.fragments.artist.FeaturedTracklistViewModel
@@ -71,18 +73,34 @@ internal class LatestReleaseFragment : BaseFragment(),
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.fetchFeaturedTrackList()
         viewModel.featuredTracklistContent.observe(viewLifecycleOwner) { response ->
+          val  footerAdapter = HomeFooterAdapter()
             if (response.status == Status.SUCCESS) {
                 val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
-
-                recyclerView.layoutManager =
-                    GridLayoutManager(requireContext(), 3)
+                val config = ConcatAdapter.Config.Builder()
+                    .setIsolateViewTypes(false)
+                    .build()
+                val concatAdapter = ConcatAdapter(config, featuredLatestTracksAdapter,footerAdapter)
+                val layoutManager = GridLayoutManager(context, 3)
+                val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
+                    object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return if (concatAdapter.getItemViewType(position) == HomeFooterAdapter.VIEW_TYPE) 3 else 1
+                        }
+                    }
                 response?.data?.data?.let {
                     featuredLatestTracksAdapter.setData(
                         it,
                         playerViewModel.currentMusic?.mediaId
                     )
                 }
-                recyclerView.adapter = featuredLatestTracksAdapter
+                recyclerView.layoutManager = layoutManager
+                layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+                recyclerView.adapter = concatAdapter
+                concatAdapter.notifyDataSetChanged()
+//                recyclerView.layoutManager =
+//                   GridLayoutManager(requireContext(), 3)
+//
+//                recyclerView.adapter = featuredLatestTracksAdapter
 //                    response?.data?.data?.let { FeaturedLatestTracksAdapter(it, this) }
                 progressBar.visibility = View.GONE
             } else {

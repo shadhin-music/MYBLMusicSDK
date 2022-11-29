@@ -66,7 +66,7 @@ internal class ParentAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (homeListData[position].Design) {
-//            "search" -> VIEW_SEARCH
+            "search" -> VIEW_SEARCH
             "Artist" -> VIEW_ARTIST
             "Playlist" -> VIEW_PLAYLIST
             "Release" -> VIEW_RELEASE
@@ -75,7 +75,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-            // "PodcastLive" ->  VIEW_PODCAST_LIVE
+             "PodcastLive" ->  VIEW_PODCAST_LIVE
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -103,15 +103,15 @@ internal class ParentAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<HomePatchItemModel>) {
         val size = this.homeListData.size
-//        if (this.homeListData.isEmpty()) {
-//            for (item in data.indices) {
-//                search =
-//                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-//              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
-//            }
-//            this.homeListData.add(search!!)
-//            //this.homeListData.add(download!!)
-//        }
+        if (this.homeListData.isEmpty()) {
+            for (item in data.indices) {
+                search =
+                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
+              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+            }
+            this.homeListData.add(search!!)
+            //this.homeListData.add(download!!)
+        }
 
         if (this.homeListData.size >= 2 && downloadNotAdded) {
             downloadNotAdded = false
@@ -243,13 +243,19 @@ internal class ParentAdapter(
         }
 
         private fun bindAd(homePatchItemModel: HomePatchItemModel) {
-//            val title: TextView = itemView.findViewById(R.id.tvTitle)
-//            title.text =homePatchItemModel.Name
-//            val image: ShapeableImageView = itemView.findViewById(R.id.image)
-//            val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
-//            Glide.with(mContext)
-//                .load(imageurl?.replace("<\$size\$>", "300"))
-//                .into(image)
+            val title: TextView = itemView.findViewById(R.id.tvTitle)
+            title.text =homePatchItemModel.Name
+            val image: ShapeableImageView = itemView.findViewById(R.id.image)
+            val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
+            Glide.with(mContext)
+                .load(imageurl?.replace("<\$size\$>", "984"))
+                .into(image)
+            itemView.setOnClickListener {
+                Log.e("TAG","POSITION: "+  absoluteAdapterPosition)
+               // homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
+               // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
+
+            }
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             //  Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
@@ -358,7 +364,7 @@ internal class ParentAdapter(
 
         fun bind(homePatchItemModel: HomePatchItemModel?) {
             when (homePatchItemModel?.Design) {
-//                "search" -> bindSearch(homePatchItemModel)
+                "search" -> bindSearch(homePatchItemModel)
                 "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
                 "Playlist" -> bindPlaylist(homePatchItemModel)
                 "Release" -> bindRelease(homePatchItemModel)
@@ -367,7 +373,7 @@ internal class ParentAdapter(
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
-                // "PodcastLive" -> bindAd(homePatchItemModel)
+                 "PodcastLive" -> bindAd(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
