@@ -20,15 +20,14 @@ internal class CreatePlaylistListAdapter(
 ) : RecyclerView.Adapter<CreatePlaylistListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.my_bl_sdk_add_songs_to_playlist_item, parent, false)
+        val v = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_bl_sdk_add_songs_to_playlist_item, parent, false)
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         holder.bindItems()
+        holder.bindItems()
 //        if(allDownloads[position].rootType.equals("V")){
-//
 //             holder.itemView.setOnClickListener {
 //                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
 //                 val videoArray = ArrayList<Video>()
@@ -44,15 +43,11 @@ internal class CreatePlaylistListAdapter(
 //             }
 //        }
 //        if(allDownloads[position].rootType.equals("S")){
-            holder.itemView.setOnClickListener {
-              itemClick.onClick(position,mSongDetails,data[position].id)
+        holder.itemView.setOnClickListener {
+            itemClick.onClick(position, mSongDetails, data[position].id)
 //             Log.e("TAG","ALL Downloads: "+ allDownloads)
         }
-
-
-
         //}
-
     }
 
     override fun getItemCount(): Int {
@@ -60,36 +55,31 @@ internal class CreatePlaylistListAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tag:String?=null
+        var tag: String? = null
         val context = itemView.context
         var rnd = Random
-
-
-//        var currentColor: Int =
+        //        var currentColor: Int =
 //            Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
-
-        val images = arrayListOf<Int>(R.drawable.my_bl_sdk_playlist_first_gradient,R.drawable.my_bl_sdk_playlist_second_gradient,R.drawable.my_bl_sdk_playlist_third_gradient,
-            R.drawable.my_bl_sdk_playlist_fourth_gradient, R.drawable.my_bl_sdk_playlist_fifth_gradient)
+        val images = arrayListOf<Int>(
+            R.drawable.my_bl_sdk_playlist_first_gradient,
+            R.drawable.my_bl_sdk_playlist_second_gradient,
+            R.drawable.my_bl_sdk_playlist_third_gradient,
+            R.drawable.my_bl_sdk_playlist_fourth_gradient,
+            R.drawable.my_bl_sdk_playlist_fifth_gradient
+        )
         var randomNumber: Int = rnd.nextInt(images.size)
-        val imageId: Int = images.get(randomNumber)
-        fun bindItems() {
+        val imageId: Int = images[randomNumber]
 
+        fun bindItems() {
             val imageView: ImageView = itemView.findViewById(R.id.siv_song_icon)
             imageView.setImageResource(imageId)
             imageView.setBackgroundResource(R.drawable.my_bl_sdk_playlist_bg)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
             tvSongName.text = data[absoluteAdapterPosition].name
-
-
 //            val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
 //            tvSingerName.text = allDownloads[absoluteAdapterPosition].artist
-//
-            val tvSongLength: TextView =itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = data[absoluteAdapterPosition].data?.size.toString()+" " +"Songs"
-
+            val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
+            tvSongLength.text = data[absoluteAdapterPosition].data?.size.toString() + " " + "Songs"
         }
-
     }
-
-
 }

@@ -424,7 +424,7 @@ internal class SDKMainActivity : BaseActivity(),
 
     private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
         if (selectedIndex != null) {
-            Log.e("TAG","homepatch: "+ selectedIndex)
+            Log.e("TAG", "homepatch: " + selectedIndex)
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
 
@@ -432,9 +432,9 @@ internal class SDKMainActivity : BaseActivity(),
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
             if (homePatchDetail.content_Type?.contains("PD") == true) {
-                Log.e("TAG","homepatch123: "+ homePatchItem.ContentType)
-                Log.e("TAG","homepatch123: "+ homePatchItem.Design)
-                Log.e("TAG","homepatch123: "+ homePatchDetail.fav)
+                Log.e("TAG", "homepatch123: " + homePatchItem.ContentType)
+                Log.e("TAG", "homepatch123: " + homePatchItem.Design)
+                Log.e("TAG", "homepatch123: " + homePatchDetail.fav)
                 //onPodcastClick(homePatchDetail,homePatchDetail)
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
                     Bundle().apply {
@@ -482,7 +482,7 @@ internal class SDKMainActivity : BaseActivity(),
 //                                homePatchDetail.image,
 //                                homePatchDetail.imageWeb,
 //                                homePatchDetail.title) as Serializable
-                           // homePatchDetail as Serializable
+                            // homePatchDetail as Serializable
                         )
                     })
             }
@@ -957,11 +957,11 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnLibraryAdd.setOnClickListener {
-           if(isNetworkAvailable(this).equals(true)){
-               gotoPlayList(this, mSongDetails[clickItemPosition])
-           }else{
-               Toast.makeText(this,"Please check network",Toast.LENGTH_LONG).show()
-           }
+            if (isNetworkAvailable(this).equals(true)) {
+                gotoPlayList(this, mSongDetails[clickItemPosition])
+            } else {
+                Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+            }
 
 
         }
@@ -991,12 +991,14 @@ internal class SDKMainActivity : BaseActivity(),
             )
         }
     }
+
     fun isNetworkAvailable(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var activeNetworkInfo: NetworkInfo? = null
         activeNetworkInfo = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
+
     private fun songDownload(mSongDetails: IMusicModel) {
         var isDownloaded = false
         val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
@@ -1297,9 +1299,9 @@ internal class SDKMainActivity : BaseActivity(),
                             content_Type = mSongDetails.content_Type
                             playingUrl = mSongDetails.playingUrl
                             rootContentType = mSongDetails.rootContentType
-                            artistName= mSongDetails.artistName
-                            artist_Id=mSongDetails.artist_Id.toString()
-                            total_duration=mSongDetails.total_duration
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id.toString()
+                            total_duration = mSongDetails.total_duration
                         }
                     )
                     isDownloadComplete = true
@@ -1428,8 +1430,10 @@ internal class SDKMainActivity : BaseActivity(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                recyclerView?.adapter = res.data?.let {
+                    CreatePlaylistListAdapter(it, this, mSongDetails)
+                }
             }
         }
         val btnCreatePlaylist: AppCompatButton? =
