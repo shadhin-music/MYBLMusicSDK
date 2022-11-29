@@ -442,7 +442,7 @@ internal class SDKMainActivity : BaseActivity(),
                             PatchItem,
                             HomePatchItemModel(
                                 homePatchItem.Code,
-                                homePatchItem.ContentType,
+                                "PDBC",
                                 homePatchItem.Data,
                                 homePatchItem.Design,
                                 homePatchItem.Name,

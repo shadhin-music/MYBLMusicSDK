@@ -75,7 +75,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
             contentId = it.content_Id.toInt()
-            selectedEpisodeID = it.album_Id?.toInt() ?: 0
+            selectedEpisodeID = it.album_Id?.toInt() ?: it.content_Id.toInt()
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()

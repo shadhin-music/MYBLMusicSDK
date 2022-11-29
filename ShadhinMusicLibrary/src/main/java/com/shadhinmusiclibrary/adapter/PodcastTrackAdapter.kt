@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ internal class PodcastTrackAdapter(
         holder.bindItems(trackItem)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
+            Log.e("TAG","DATA: "+ trackItem)
         }
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
@@ -99,8 +101,10 @@ internal class PodcastTrackAdapter(
         var tvSongName: TextView? = null
         fun bindItems(iMusicModel: IMusicModel) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
-            val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
-            textArtistName.text = iMusicModel.total_duration
+            val textArtistName: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration :TextView = itemView.findViewById(R.id.tv_song_length)
+            textDuration.text = iMusicModel.total_duration
+            textArtistName.text = iMusicModel.artistName
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(iMusicModel.imageUrl!!))
                 .into(image)

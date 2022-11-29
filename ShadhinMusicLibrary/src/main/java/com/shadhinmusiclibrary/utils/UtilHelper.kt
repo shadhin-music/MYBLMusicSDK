@@ -328,7 +328,12 @@ internal object UtilHelper {
             mPatchDetail.add(
                 HomePatchDetailModel().apply {
                     titleName = patchItem.ArtistName
+                    artistName = patchItem.ArtistName
                     content_Id = patchItem.Id
+                    album_Id = patchItem.Id
+                    artist_Id = patchItem.Id
+                    content_Type = "A"
+                    fav = "0"
                     follower = patchItem.Follower
                     imageUrl = patchItem.Image
                 }

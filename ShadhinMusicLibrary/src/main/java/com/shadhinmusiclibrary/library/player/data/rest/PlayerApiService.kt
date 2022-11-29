@@ -6,7 +6,7 @@ import retrofit2.http.*
 
 internal interface PlayerApiService {
 
-    @GET("streaming/getpth")
+    @GET("clientstreaming/getpth")
     suspend fun fetchContentUrl(
         @Query("ptype") ptype: String?,
         @Query("type") type: String?,

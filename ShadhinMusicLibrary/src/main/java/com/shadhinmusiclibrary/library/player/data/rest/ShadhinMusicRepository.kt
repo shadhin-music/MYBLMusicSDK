@@ -15,7 +15,7 @@ internal class ShadhinMusicRepository(private val playerApiService: PlayerApiSer
             playerApiService.fetchContentUrl(
                 ptype = if (music.isPodCast()) "PD" else null,
                 type = music.podcastSubType(),
-                ttype = music.trackType,
+                ttype = music.podcastTrackType()?:music.trackType,
                 name = if (!music.filePath().isNullOrEmpty()) music.filePath() else null
             )
         }
