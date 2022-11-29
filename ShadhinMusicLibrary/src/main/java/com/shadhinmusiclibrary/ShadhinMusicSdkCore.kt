@@ -50,7 +50,7 @@ object ShadhinMusicSdkCore {
         scope?.launch {
             val res = ShadhinApp.module(context).authRepository().login(token)
             withContext(Dispatchers.Main) {
-                refSdkCall.tokenStatus(res.first, res.second ?: "")
+                refSdkCall.tokenStatus(true, res.second ?: "")
             }
         }
     }

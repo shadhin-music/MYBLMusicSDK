@@ -47,7 +47,7 @@
 
         <provider
             android:name=".utils.MySuggestionProvider"
-            android:authorities="com.shadhinmusiclibrary.utils.MySuggestionProvider"
+            android:authorities="${applicationId}.com.shadhinmusiclibrary.utils.MySuggestionProvider"
             android:enabled="true" />
 
         <receiver

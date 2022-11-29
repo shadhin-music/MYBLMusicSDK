@@ -25,7 +25,7 @@ internal class MusicActivity : AppCompatActivity() {
     }
 
     fun openSearch() {
-        ShadhinMusicSdkCore.pressCountIncrement()
+//        ShadhinMusicSdkCore.pressCountIncrement()
         startActivity(Intent(this, SDKMainActivity::class.java)
             .apply {
                 putExtra(

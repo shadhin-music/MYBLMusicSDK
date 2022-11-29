@@ -35,6 +35,7 @@ internal class FeaturedHomeFragment : Fragment() {
         val btnMusic: Button = requireView().findViewById(R.id.btnMusic)
         val cvRadioButton: CardView = requireView().findViewById(R.id.include_radio_layout)
         val btnRadioSeeAll: TextView = requireView().findViewById(R.id.btn_radio_see_all)
+
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
         }
