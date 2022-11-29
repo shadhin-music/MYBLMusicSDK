@@ -101,8 +101,10 @@ internal class PodcastTrackAdapter(
         var tvSongName: TextView? = null
         fun bindItems(iMusicModel: IMusicModel) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
-            val textArtistName: TextView = itemView.findViewById(R.id.tv_song_length)
-            textArtistName.text = iMusicModel.total_duration
+            val textArtistName: TextView = itemView.findViewById(R.id.tv_singer_name)
+            val textDuration :TextView = itemView.findViewById(R.id.tv_song_length)
+              textDuration.text = iMusicModel.total_duration
+            textArtistName.text = iMusicModel.artistName
             Glide.with(context)
                 .load(UtilHelper.getImageUrlSize300(iMusicModel.imageUrl!!))
                 .into(image)
