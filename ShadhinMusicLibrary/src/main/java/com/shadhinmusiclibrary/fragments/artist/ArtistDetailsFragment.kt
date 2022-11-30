@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -88,6 +89,8 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun initialize() {
+//        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artistName)
+//        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artist_Id)
         setupAdapters()
         setupViewModel()
         observeData()
@@ -159,6 +162,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun observeData() {
+
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.artistName ?: "")
         }

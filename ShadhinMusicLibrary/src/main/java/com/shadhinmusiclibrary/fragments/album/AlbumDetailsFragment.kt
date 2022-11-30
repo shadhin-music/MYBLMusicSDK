@@ -198,7 +198,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-       intentFilter.addAction("DELETED123")
+        intentFilter.addAction("DELETED123")
         intentFilter.addAction("DELETED")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
