@@ -1,7 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.PatchCallBack
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.data.model.LatestVideoModelDataModel
 import com.shadhinmusiclibrary.data.model.PodcastDetailsModel
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -27,7 +22,6 @@ internal class FeaturedPopularArtistAdapter(
             .inflate(R.layout.my_bl_sdk_layout_circle_image_view, parent, false)
         return ViewHolder(v)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mPodcastDetMod = homePatchItem1[position]
@@ -44,11 +38,12 @@ internal class FeaturedPopularArtistAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
+
         fun bindItems(mPodcastMod: PodcastDetailsModel) {
             val textViewName = itemView.findViewById(R.id.tv_person_name) as TextView
             val imageView = itemView.findViewById(R.id.civ_person_image) as CircleImageView
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(mPodcastMod.Image))
+                .load(UtilHelper.getImageUrlSize300(mPodcastMod.Image ?: ""))
                 .into(imageView)
             textViewName.text = mPodcastMod.ArtistName
             itemView.setOnClickListener {

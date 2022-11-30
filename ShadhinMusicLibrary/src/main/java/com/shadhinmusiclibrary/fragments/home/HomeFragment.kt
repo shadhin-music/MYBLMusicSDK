@@ -126,7 +126,6 @@ internal class HomeFragment : BaseFragment(),
 
     private fun observeData() {
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
@@ -144,12 +143,10 @@ internal class HomeFragment : BaseFragment(),
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
         }
-
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
             if (it != null)
                 miniPlayerPlayPauseState(it.isPlaying)
         }
-
         playerViewModel.playerProgress.observe(viewLifecycleOwner) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
@@ -161,40 +158,49 @@ internal class HomeFragment : BaseFragment(),
         }
 
         try {
-//            srlHomeRefresh.isRefreshing = false
             favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
 
             favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
         } catch (e: Exception) {
         }
+    }
+
+    private fun srlHide() {
+        srlHomeRefresh.isRefreshing = false
     }
 
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {

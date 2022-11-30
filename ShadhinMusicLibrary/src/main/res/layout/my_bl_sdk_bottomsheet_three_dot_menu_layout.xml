@@ -96,19 +96,19 @@
                     android:id="@+id/imgDownload"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/my_bl_sdk_icon_dowload"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
+                    android:id="@+id/tv_download"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
-                    android:id="@+id/tv_download"
                     android:text="Download Offline"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@id/imgDownload"
@@ -134,13 +134,13 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
+                    android:id="@+id/tvFav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="Favorite"
-                    android:id="@+id/tvFav"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@id/imgLike"
                     tools:ignore="MissingConstraints" />
@@ -225,12 +225,12 @@
                     tools:ignore="MissingConstraints" />
 
                 <TextView
+                    android:id="@+id/tvPlaylist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:id="@+id/tvPlaylist"
                     android:text="Add to Playlist"
                     android:textAlignment="center"
                     app:layout_constraintStart_toEndOf="@id/imgPlaylist"
@@ -250,10 +250,10 @@
                     android:id="@+id/imgAlbum"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/my_bl_sdk_ic_artist"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
@@ -296,9 +296,9 @@
                     android:paddingBottom="10dp"
                     android:text="Share"
                     android:textAlignment="center"
-                    app:layout_constraintStart_toEndOf="@id/imgShare" />
+                    app:layout_constraintStart_toEndOf="@id/imgShare"
+                    tools:ignore="MissingConstraints" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

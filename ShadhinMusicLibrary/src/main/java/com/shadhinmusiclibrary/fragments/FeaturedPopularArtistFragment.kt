@@ -126,7 +126,6 @@ internal class FeaturedPopularArtistFragment : BaseFragment(),
                     UtilHelper.getHomePatchDetailToData(sSelectedData) as Serializable
 
                 )
-                Log.e("TAG","DATA: "+sSelectedData)
             })
 //            AppConstantUtils.PatchDetail,
 //            UtilHelper.getHomePatchDetailToData(selectedData) as Serializable

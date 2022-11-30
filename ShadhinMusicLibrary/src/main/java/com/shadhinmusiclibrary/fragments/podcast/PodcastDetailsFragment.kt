@@ -79,6 +79,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
+        Log.e("PDF", "onViewCreated: contentId: $contentId selectedEpisodeID: $selectedEpisodeID")
         if (selectedEpisodeID == contentId) {
             getPodcastShowDetailsInitialize()
         } else {
@@ -97,13 +98,13 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     private fun getPodcastShowDetailsInitialize() {
-        Log.e("TAG","getPodcastShowDetailsInitialize: ")
+        Log.e("PDF", "getPodcastShowDetailsInitialize: ")
         observePodcastShowData()
         setupAdapters()
     }
 
     private fun getPodcastDetailsInitialize() {
-        Log.e("TAG","getPodcastDetailsInitialize: ")
+        Log.e("PDF", "getPodcastDetailsInitialize: ")
         observePodcastDetailsData()
         setupAdapters()
     }
@@ -125,10 +126,12 @@ internal class PodcastDetailsFragment : BaseFragment(),
             podcastHeaderAdapter,
             PodcastTrackHeaderAdapter(),
             podcastTrackAdapter,
-            podcastMoreEpisodesAdapter, footerAdapter
+            podcastMoreEpisodesAdapter,
+            footerAdapter
         )
         concatAdapter.notifyDataSetChanged()
         parentRecycler.layoutManager = layoutManager
+        parentRecycler.adapter = concatAdapter
     }
 
     private fun setupViewModel() {
@@ -159,20 +162,19 @@ internal class PodcastDetailsFragment : BaseFragment(),
                         argHomePatchDetail!!
                     )
                 }
-                response.data?.data?.EpisodeList?.get(0)
-                    ?.let {
-                        podcastTrackAdapter.setData(
-                            it.TrackList,
-                            argHomePatchDetail!!,
-                            playerViewModel.currentMusic?.mediaId
-                        )
-                    }
+                response.data?.data?.EpisodeList?.get(0)?.let {
+                    podcastTrackAdapter.setData(
+                        it.TrackList,
+                        argHomePatchDetail!!,
+                        playerViewModel.currentMusic?.mediaId
+                    )
+                }
                 response.data?.data?.let {
                     it.EpisodeList.let { it1 ->
                         podcastMoreEpisodesAdapter.setData(it1)
                     }
                 }
-                parentRecycler.adapter = concatAdapter
+//                parentRecycler.adapter = concatAdapter
                 progressBar.visibility = View.GONE
             } else {
                 progressBar.visibility = View.GONE
@@ -209,25 +211,13 @@ internal class PodcastDetailsFragment : BaseFragment(),
                         podcastMoreEpisodesAdapter.setData(it1)
                     }
                 }
-                parentRecycler.adapter = concatAdapter
+//                parentRecycler.adapter = concatAdapter
                 progressBar.visibility = View.GONE
             } else {
                 progressBar.visibility = View.GONE
             }
         }
     }
-
-    private fun showDialog() {
-        AlertDialog.Builder(requireContext()) //set icon
-            .setIcon(android.R.drawable.ic_dialog_alert) //set title
-            .setTitle("An Error Happend") //set message
-            .setMessage("Go back to previous page") //set positive button
-            .setPositiveButton("Okay",
-                DialogInterface.OnClickListener { dialogInterface, i ->
-                })
-            .show()
-    }
-
 
     override fun onClickItemAndAllItem(
         itemPosition: Int,
@@ -275,7 +265,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e("PDF", "onClickItem: " )
+        Log.e("PDF", "onClickItem: ")
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
