@@ -492,8 +492,12 @@ internal class SongsFavoriteFragment : BaseFragment(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
         }
         val btnCreateplaylist: AppCompatButton? =

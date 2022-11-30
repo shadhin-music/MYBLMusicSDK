@@ -298,9 +298,9 @@ internal object UtilHelper {
     fun getHomePatchDetailToData(podcastDetails: PodcastDetailsModel) =
         HomePatchDetailModel().apply {
             artistName = podcastDetails.ArtistName
-            content_Id = podcastDetails.Id
-            album_Id = podcastDetails.Id
-            artist_Id = podcastDetails.Id
+            content_Id = podcastDetails.Id ?: ""
+            album_Id = podcastDetails.Id ?: ""
+            artist_Id = podcastDetails.Id ?: ""
             content_Type = "A"
             fav = "0"
             follower = podcastDetails.Follower

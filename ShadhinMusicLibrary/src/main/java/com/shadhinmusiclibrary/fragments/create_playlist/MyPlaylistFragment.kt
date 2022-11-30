@@ -72,40 +72,42 @@ internal class MyPlaylistFragment : BaseFragment(),
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         viewModel.getuserPlaylist()
         viewModel.getUserPlaylist.observe(viewLifecycleOwner) { res ->
-            Log.e("TAG","DATA: "+res.data)
-            if (res.data?.size?.equals(0) == true) {
-                val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
-                layout?.visibility = VISIBLE
-                recyclerView.visibility = GONE
-                val btnCreatePlaylist: AppCompatButton =
-                    requireView().findViewById(R.id.btnCreatePlaylist)
-                btnCreatePlaylist.setOnClickListener {
-                    openCreatePlaylist()
-                }
-            } else {
-                val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
-                layout?.visibility = GONE
-                recyclerView.visibility = VISIBLE
-                footerAdapter = HomeFooterAdapter()
-                myPlaylistAdapter = MyPlaylistAdapter(res.data, this)
-
-                val config = ConcatAdapter.Config.Builder()
-                    .setIsolateViewTypes(false)
-                    .build()
-                val concatAdapter = ConcatAdapter(config, myPlaylistAdapter)
-                val layoutManager = GridLayoutManager(context, horizontalSpanCount)
-                val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
-                    object : GridLayoutManager.SpanSizeLookup() {
-                        override fun getSpanSize(position: Int): Int {
-                            return if (concatAdapter.getItemViewType(position) == HomeFooterAdapter.VIEW_TYPE) horizontalSpanCount else verticalSpanCount
+            if (res != null) {
+                if (res.data != null) {
+                    if (res.data?.size?.equals(0) == true) {
+                        val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
+                        layout?.visibility = VISIBLE
+                        recyclerView.visibility = GONE
+                        val btnCreatePlaylist: AppCompatButton =
+                            requireView().findViewById(R.id.btnCreatePlaylist)
+                        btnCreatePlaylist.setOnClickListener {
+                            openCreatePlaylist()
                         }
-                    }
-                recyclerView.layoutManager = layoutManager
-                layoutManager.setSpanSizeLookup(onSpanSizeLookup)
-                recyclerView.adapter = concatAdapter
-                concatAdapter.notifyDataSetChanged()
-            }
+                    } else {
+                        val layout: ConstraintLayout? = view.findViewById(R.id.createPlaylist)
+                        layout?.visibility = GONE
+                        recyclerView.visibility = VISIBLE
+                        footerAdapter = HomeFooterAdapter()
+                        myPlaylistAdapter = MyPlaylistAdapter(res.data, this)
 
+                        val config = ConcatAdapter.Config.Builder()
+                            .setIsolateViewTypes(false)
+                            .build()
+                        val concatAdapter = ConcatAdapter(config, myPlaylistAdapter)
+                        val layoutManager = GridLayoutManager(context, horizontalSpanCount)
+                        val onSpanSizeLookup: GridLayoutManager.SpanSizeLookup =
+                            object : GridLayoutManager.SpanSizeLookup() {
+                                override fun getSpanSize(position: Int): Int {
+                                    return if (concatAdapter.getItemViewType(position) == HomeFooterAdapter.VIEW_TYPE) horizontalSpanCount else verticalSpanCount
+                                }
+                            }
+                        recyclerView.layoutManager = layoutManager
+                        layoutManager.setSpanSizeLookup(onSpanSizeLookup)
+                        recyclerView.adapter = concatAdapter
+                        concatAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
         }
         val addPlaylist: AppCompatImageView = requireView().findViewById(R.id.imageAddPlaylist)
 

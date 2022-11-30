@@ -166,7 +166,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                     total_duration = mSongDetails.total_duration.toString()
                     artist_Id = mSongDetails.artist_Id
                     album_Id = mSongDetails.album_Id
-                    total_duration =mSongDetails.total_duration
+                    total_duration = mSongDetails.total_duration
                 },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -176,7 +176,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl.toString()
                 imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
-                total_duration =mSongDetails.total_duration
+                total_duration = mSongDetails.total_duration
             }
         )
     }
@@ -272,7 +272,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                         playingUrl = favDat.playingUrl.toString()
                         imageUrl = favDat.imageUrl.toString()
                         titleName = favDat.titleName.toString()
-                        total_duration =favDat.total_duration
+                        total_duration = favDat.total_duration
                     } as Serializable
                 )
             })
@@ -461,10 +461,10 @@ internal class AlbumsFavFragment : BaseFragment(),
                             imageUrl = mSongDetails.imageUrl
                             isPaid = false
                             playingUrl = mSongDetails.playingUrl
-                           rootContentId= mSongDetails.rootContentId
-                           rootContentType= mSongDetails.rootContentType
-                           titleName= mSongDetails.titleName
-                            total_duration =mSongDetails.total_duration
+                            rootContentId = mSongDetails.rootContentId
+                            rootContentType = mSongDetails.rootContentType
+                            titleName = mSongDetails.titleName
+                            total_duration = mSongDetails.total_duration
                         }
                 )
                 isFav = true
@@ -535,10 +535,13 @@ internal class AlbumsFavFragment : BaseFragment(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)

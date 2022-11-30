@@ -236,7 +236,6 @@ internal class ParentAdapter(
                 //  homeCallBack.onClickSeeAll(homePatchItem)
                 // Log.d("TAG","CLICK ITEM: "+ homePatchItem)
             }
-            Log.e("TAG", "URL1233444: " + rbtData)
             itemView.setOnClickListener {
                 ShadhinMusicSdkCore.openPatch(itemView.context, "BNMAIN01")
             }
@@ -251,23 +250,13 @@ internal class ParentAdapter(
                 .load(imageurl?.replace("<\$size\$>", "984"))
                 .into(image)
             itemView.setOnClickListener {
-                Log.e("TAG","POSITION: "+  absoluteAdapterPosition)
                homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
                // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
-
             }
           //  val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             //  Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 //            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager =
-//                    (mContext as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container, AmartunesWebviewFragment.newInstance())
-//                    .addToBackStack("Fragment")
-//                    .commit()
-//            }
         }
 
 //        private fun bundRadio(homePatchItemModel: HomePatchItemModel) {

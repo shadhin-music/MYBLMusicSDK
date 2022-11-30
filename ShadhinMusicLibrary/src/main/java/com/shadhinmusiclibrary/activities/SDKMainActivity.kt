@@ -423,8 +423,7 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
-        if (selectedIndex != null) {
-            Log.e("TAG","homepatch: "+ selectedIndex)
+        if (selectedIndex != null && homePatchItem.Data.size > selectedIndex) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
 
@@ -432,9 +431,6 @@ internal class SDKMainActivity : BaseActivity(),
             val podcastType = podcast.take(2)
             val contentType = podcast.takeLast(2)
             if (homePatchDetail.content_Type?.contains("PD") == true) {
-                Log.e("TAG","homepatch123: "+ homePatchItem.ContentType)
-                Log.e("TAG","homepatch123: "+ homePatchItem.Design)
-                Log.e("TAG","homepatch123: "+ homePatchDetail.fav)
                 //onPodcastClick(homePatchDetail,homePatchDetail)
                 setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
                     Bundle().apply {
@@ -482,7 +478,7 @@ internal class SDKMainActivity : BaseActivity(),
 //                                homePatchDetail.image,
 //                                homePatchDetail.imageWeb,
 //                                homePatchDetail.title) as Serializable
-                           // homePatchDetail as Serializable
+                            // homePatchDetail as Serializable
                         )
                     })
             }
@@ -957,11 +953,11 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnLibraryAdd.setOnClickListener {
-           if(isNetworkAvailable(this).equals(true)){
-               gotoPlayList(this, mSongDetails[clickItemPosition])
-           }else{
-               Toast.makeText(this,"Please check network",Toast.LENGTH_LONG).show()
-           }
+            if (isNetworkAvailable(this).equals(true)) {
+                gotoPlayList(this, mSongDetails[clickItemPosition])
+            } else {
+                Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+            }
 
 
         }
@@ -991,12 +987,14 @@ internal class SDKMainActivity : BaseActivity(),
             )
         }
     }
+
     fun isNetworkAvailable(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var activeNetworkInfo: NetworkInfo? = null
         activeNetworkInfo = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
+
     private fun songDownload(mSongDetails: IMusicModel) {
         var isDownloaded = false
         val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
@@ -1298,9 +1296,9 @@ internal class SDKMainActivity : BaseActivity(),
                             content_Type = mSongDetails.content_Type
                             playingUrl = mSongDetails.playingUrl
                             rootContentType = mSongDetails.rootContentType
-                            artistName= mSongDetails.artistName
-                            artist_Id=mSongDetails.artist_Id.toString()
-                            total_duration=mSongDetails.total_duration
+                            artistName = mSongDetails.artistName
+                            artist_Id = mSongDetails.artist_Id.toString()
+                            total_duration = mSongDetails.total_duration
                         }
                     )
                     isDownloadComplete = true
@@ -1429,8 +1427,12 @@ internal class SDKMainActivity : BaseActivity(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
         }
         val btnCreatePlaylist: AppCompatButton? =
@@ -1735,13 +1737,15 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = mSongDetails.imageUrl
+//        val url = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = mSongDetails.titleName
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName
         if (image != null) {
-            Glide.with(context).load(UtilHelper.getImageUrlSize300(url!!)).into(image)
+            Glide.with(context)
+                .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl ?: ""))
+                .into(image)
         }
         val constraintAlbum: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAlbum)
@@ -1778,11 +1782,11 @@ internal class SDKMainActivity : BaseActivity(),
         constraintDownload?.setOnClickListener {
 
             if (isDownloadComplete.equals(true)) {
-                cacheRepository.deleteDownloadById(mSongDetails.content_Id.toString())
+                cacheRepository.deleteDownloadById(mSongDetails.content_Id)
                 DownloadService.sendRemoveDownload(
                     applicationContext,
                     MyBLDownloadService::class.java,
-                    mSongDetails.content_Id.toString(),
+                    mSongDetails.content_Id,
                     false
                 )
                 val localBroadcastManager =
@@ -1946,7 +1950,7 @@ internal class SDKMainActivity : BaseActivity(),
         val textViewDownloadTitle: TextView? =
             bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloadComplete = false
-        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
         if (downloaded?.playingUrl != null) {
             isDownloadComplete = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)

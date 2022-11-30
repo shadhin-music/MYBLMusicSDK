@@ -273,7 +273,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
         val mArtAlbumMod = artistAlbumModelData[itemPosition]
         val data = HomePatchDetailModel().apply {
             album_Id = mArtAlbumMod.album_Id ?: ""
-            album_Id = mArtAlbumMod.album_Id ?: ""
+            artist_Id = mArtAlbumMod.artist_Id ?: ""
             content_Id = mArtAlbumMod.content_Id ?: ""
             content_Type = mArtAlbumMod.content_Type ?: ""
             playingUrl = mArtAlbumMod.playingUrl ?: ""

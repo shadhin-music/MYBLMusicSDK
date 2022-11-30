@@ -90,7 +90,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
 
-        dataAdapter  = AllFavoriteAdapter(this, this,this)
+        dataAdapter = AllFavoriteAdapter(this, this, this)
 
         cacheRepository.getAllFavoriteContent()?.let {
             dataAdapter.setData(
@@ -168,7 +168,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 total_duration = mSongDetails.total_duration.toString()
                 artist_Id = mSongDetails.artist_Id
                 album_Id = mSongDetails.album_Id
-                total_duration=mSongDetails.total_duration
+                total_duration = mSongDetails.total_duration
             },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -181,7 +181,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl.toString()
                 imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
-                total_duration =mSongDetails.total_duration
+                total_duration = mSongDetails.total_duration
             }
         )
     }
@@ -405,7 +405,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = item.playUrl
                         rootContentId = item.rootId
                         titleName = item.title
-                        total_duration =item.duration
+                        total_duration = item.duration
                     }
                 )
                 isFav = true
@@ -612,7 +612,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
-                        total_duration =mSongDetails.total_duration
+                        total_duration = mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -684,8 +684,12 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
         }
         val btnCreateplaylist: AppCompatButton? =
@@ -782,7 +786,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = favDat.playingUrl.toString()
                         imageUrl = favDat.imageUrl.toString()
                         titleName = favDat.titleName.toString()
-                        total_duration =favDat.total_duration
+                        total_duration = favDat.total_duration
                     } as Serializable
                 )
             })
@@ -808,7 +812,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = mFavData.playingUrl.toString()
                         imageUrl = mFavData.imageUrl.toString()
                         titleName = mFavData.titleName.toString()
-                        total_duration =mFavData.total_duration
+                        total_duration = mFavData.total_duration
                     } as Serializable
                 )
             })
@@ -834,7 +838,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         playingUrl = mfavData.playingUrl.toString()
                         imageUrl = mfavData.imageUrl.toString()
                         titleName = mfavData.titleName.toString()
-                        total_duration =mfavData.total_duration
+                        total_duration = mfavData.total_duration
                     } as Serializable
                 )
             })

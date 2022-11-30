@@ -103,7 +103,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             argHomePatchDetail ?: HomePatchDetailModel(),
             playerViewModel.currentMusic?.mediaId
         )
-        Log.e("TAG","DATA: "+ cacheRepository.getAllDownloads()?.toMutableList())
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -125,7 +125,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         Log.e(
             "ALLDDF",
-            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id "+mSongDetails[clickItemPosition].content_Id
+            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id " + mSongDetails[clickItemPosition].content_Id
         )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
@@ -434,7 +434,6 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     mSongDetails.content_Id ?: "",
                     false
                 )
-                Log.e("TAG", "DELETED: " + isDownloadedComplete)
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id)
@@ -488,10 +487,10 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val constraintPlaylist: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
         constraintPlaylist?.setOnClickListener {
-            if(isNetworkAvailable(requireContext())==true){
+            if (isNetworkAvailable(requireContext()) == true) {
                 gotoPlayList(context, mSongDetails)
-            }else{
-            Toast.makeText(requireContext(),"Please check network",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "Please check network", Toast.LENGTH_LONG).show()
             }
 
             bottomSheetDialog.dismiss()
@@ -612,15 +611,19 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
         btnCreateplaylist?.setOnClickListener {
 //            if(isNetworkAvailable(requireContext()).equals(true)){
-                openCreatePlaylist(context)
+            openCreatePlaylist(context)
             bottomSheetDialogPlaylist.dismiss()
         }
         viewModel.createPlaylist.observe(this) { res ->
@@ -680,12 +683,14 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
+
     fun isNetworkAvailable(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var activeNetworkInfo: NetworkInfo? = null
         activeNetworkInfo = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
+
     private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->

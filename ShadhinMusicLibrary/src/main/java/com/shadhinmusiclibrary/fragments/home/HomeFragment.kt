@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -53,6 +54,8 @@ internal class HomeFragment : BaseFragment(),
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
 
+    private lateinit var srlHomeRefresh: SwipeRefreshLayout
+
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
@@ -80,7 +83,14 @@ internal class HomeFragment : BaseFragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.my_bl_sdk_fragment_home, container, false)
+        val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_home, container, false)
+        srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
+
+        srlHomeRefresh.setOnRefreshListener {
+            homeViewModel.fetchHomeData(pageNum, false)
+        }
+//
+        return viewRef
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,7 +126,6 @@ internal class HomeFragment : BaseFragment(),
 
     private fun observeData() {
         playerViewModel.startObservePlayerProgress(viewLifecycleOwner)
-
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         homeViewModel.homeContent.observe(viewLifecycleOwner) { res ->
             if (res.status == Status.SUCCESS) {
@@ -134,12 +143,10 @@ internal class HomeFragment : BaseFragment(),
                 setupMiniMusicPlayerAndFunctionality(UtilHelper.getSongDetailToMusic(itMus))
             }
         }
-
         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) {
             if (it != null)
                 miniPlayerPlayPauseState(it.isPlaying)
         }
-
         playerViewModel.playerProgress.observe(viewLifecycleOwner) {
             tvTotalDurationMini.text = it.currentPositionTimeLabel()
         }
@@ -155,43 +162,50 @@ internal class HomeFragment : BaseFragment(),
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
 
             favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
             favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
+                srlHide()
             }
         } catch (e: Exception) {
         }
     }
 
+    private fun srlHide() {
+        srlHomeRefresh.isRefreshing = false
+    }
+
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
         if (dataAdapter == null) {
-            // Log.e("TAG", "URLRBT: "+ this.rbtData)
-
             footerAdapter = HomeFooterAdapter()
-
             dataAdapter = ParentAdapter(this, this, this, this)
 
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
@@ -245,7 +259,6 @@ internal class HomeFragment : BaseFragment(),
                     // }
                 }
             }
-
         }
         if (homeData?.total == pageNum) {
             isLastPage = true

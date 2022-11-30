@@ -169,7 +169,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl ?: ""
                 rootImage = mSongDetails.rootImage ?: ""
                 titleName = mSongDetails.titleName ?: ""
-                total_duration =mSongDetails.total_duration?:""
+                total_duration = mSongDetails.total_duration ?: ""
             }
         )
     }
@@ -274,7 +274,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                             total_duration = mSongDetails.total_duration
                         }
                     )
-                   // downloadedSongsAdapter.notifyDataSetChanged()
+                    // downloadedSongsAdapter.notifyDataSetChanged()
                     isDownloaded = true
                 }
             }
@@ -296,10 +296,10 @@ internal class SongsDownloadFragment : BaseFragment(),
         val constraintPlaylist: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
         constraintPlaylist?.setOnClickListener {
-            if(isNetworkAvailable(requireContext())==true){
+            if (isNetworkAvailable(requireContext()) == true) {
                 gotoPlayList(context, mSongDetails)
-            }else{
-                Toast.makeText(requireContext(),"Please check network",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "Please check network", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -362,7 +362,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
-                        total_duration =mSongDetails.total_duration
+                        total_duration = mSongDetails.total_duration
                     }
                 )
                 isFav = true
@@ -416,10 +416,13 @@ internal class SongsDownloadFragment : BaseFragment(),
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView?.adapter = res.data?.let {
-                CreatePlaylistListAdapter(it, this, mSongDetails)
+            if (res != null) {
+                if (res.data != null) {
+                    recyclerView?.adapter = res.data?.let {
+                        CreatePlaylistListAdapter(it, this, mSongDetails)
+                    }
+                }
             }
-
         }
         val btnCreateplaylist: AppCompatButton? =
             bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
@@ -484,12 +487,14 @@ internal class SongsDownloadFragment : BaseFragment(),
     override fun onClick(position: Int, mSongDetails: IMusicModel, id: String?) {
         addSongsToPlaylist(mSongDetails, id)
     }
+
     fun isNetworkAvailable(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var activeNetworkInfo: NetworkInfo? = null
         activeNetworkInfo = cm.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting
     }
+
     private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id ?: "") }
         viewModel.songsAddedToPlaylist.observe(this) { res ->

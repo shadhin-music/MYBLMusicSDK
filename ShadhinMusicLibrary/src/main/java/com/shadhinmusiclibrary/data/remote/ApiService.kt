@@ -1,23 +1,16 @@
 package com.shadhinmusiclibrary.data.remote
 
 import com.shadhinmusiclibrary.data.model.*
-import com.shadhinmusiclibrary.data.model.auth.LoginResponse
 import com.shadhinmusiclibrary.data.model.fav.FavDataResponseModel
 import com.shadhinmusiclibrary.data.model.lastfm.LastFmResult
 import com.shadhinmusiclibrary.data.model.podcast.PodcastModel
 import com.shadhinmusiclibrary.data.model.search.SearchModel
 import com.shadhinmusiclibrary.data.model.search.TopTrendingModel
-import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
-import com.shadhinmusiclibrary.data.model.ArtistBannerModel
-import com.shadhinmusiclibrary.data.model.ArtistContentModel
 import com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistResponseModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserPlayListModel
 import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistModel
-import retrofit2.http.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 internal interface ApiService {
    // @GET("ClientHomeContent/GetHomeContent")
