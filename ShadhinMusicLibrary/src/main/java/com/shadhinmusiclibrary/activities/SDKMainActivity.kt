@@ -269,7 +269,7 @@ internal class SDKMainActivity : BaseActivity(),
                     PatchItem,
                     patch as Serializable
                 )
-            }, R.id.download
+            }, R.id.download_fragment
         )
     }
 
