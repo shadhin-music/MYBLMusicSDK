@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.album
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -197,7 +198,8 @@ internal class AlbumDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
-        intentFilter.addAction("REMOVESONG")
+       intentFilter.addAction("DELETED123")
+        intentFilter.addAction("DELETED")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
@@ -297,6 +299,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
             //  val downloaded: ImageView?= view?.findViewWithTag(200)
             progressIndicator?.visibility = VISIBLE
             progressIndicator?.progress = it.progress.toInt()
+
 //            val isDownloaded =
 //                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
 //            if (!isDownloaded) {
@@ -307,6 +310,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
     }
 
     inner class MyBroadcastReceiver : BroadcastReceiver() {
+        @SuppressLint("NotifyDataSetChanged")
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
                 "ACTION" -> {
@@ -317,7 +321,10 @@ internal class AlbumDetailsFragment : BaseFragment(),
                         progressIndicatorUpdate(it)
                     }
                 }
-                "RMOVESONG" -> {
+                "DELETED123" -> {
+                    albumsTrackAdapter.notifyDataSetChanged()
+                }
+                "DELETED" -> {
                     albumsTrackAdapter.notifyDataSetChanged()
                 }
                 "PROGRESS" -> {

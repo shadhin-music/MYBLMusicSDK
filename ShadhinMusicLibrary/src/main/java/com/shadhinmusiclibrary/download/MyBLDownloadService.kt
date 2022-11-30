@@ -326,6 +326,10 @@ class MyBLDownloadService : DownloadService(
         manager.addListener(object : DownloadManager.Listener {
             override fun onDownloadRemoved(downloadManager: DownloadManager, download: Download) {
                 Toast.makeText(applicationContext, "Deleted", Toast.LENGTH_SHORT).show()
+                val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
+                   val localIntent = Intent("DELETED123")
+                        .putExtra("contentID", download.request.id)
+                  localBroadcastManager.sendBroadcast(localIntent)
             }
 
             override fun onDownloadsPausedChanged(

@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_playlist_details"
-    app:startDestination="@id/playlist_details1">
+    app:startDestination="@id/playlist_details">
 
     <fragment
-        android:id="@+id/playlist_details1"
+        android:id="@+id/playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
         android:label="Playlist Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
@@ -40,7 +40,7 @@
             app:destination="@id/artist_details_fragment" />
         <action
             android:id="@+id/to_playlist_details"
-            app:destination="@id/playlist_details1" />
+            app:destination="@id/playlist_details" />
     </fragment>
 
     <fragment
@@ -48,7 +48,7 @@
         android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
         android:label="PlaylistFavFragment">
         <action
-            android:id="@+id/action_playlistFavFragment_to_playlist_details1"
-            app:destination="@id/playlist_details1" />
+            android:id="@+id/action_playlistFavFragment_to_playlist_details"
+            app:destination="@id/playlist_details" />
     </fragment>
 </navigation>
