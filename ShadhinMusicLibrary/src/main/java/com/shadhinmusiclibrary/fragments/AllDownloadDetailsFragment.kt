@@ -574,7 +574,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         argHomePatchDetail: HomePatchDetailModel?
     ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
-        bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
+        bsdNavController.navigate(R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

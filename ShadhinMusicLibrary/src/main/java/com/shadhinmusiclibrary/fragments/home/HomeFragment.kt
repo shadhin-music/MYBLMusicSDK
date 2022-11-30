@@ -87,6 +87,7 @@ internal class HomeFragment : BaseFragment(),
         srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
 
         srlHomeRefresh.setOnRefreshListener {
+            pageNum = 1
             homeViewModel.fetchHomeData(pageNum, false)
         }
 //

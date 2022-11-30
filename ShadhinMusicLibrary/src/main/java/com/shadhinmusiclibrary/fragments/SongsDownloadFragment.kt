@@ -379,7 +379,7 @@ internal class SongsDownloadFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-        bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
+        bsdNavController.navigate(R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

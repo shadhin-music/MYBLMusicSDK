@@ -255,7 +255,7 @@ internal class AlbumsFavFragment : BaseFragment(),
     override fun onFavAlbumClick2(itemPosition: Int, favData: List<FavDataModel>) {
         val favDat = favData[itemPosition]
         navController.navigate(
-            R.id.favoriteAlbum,
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

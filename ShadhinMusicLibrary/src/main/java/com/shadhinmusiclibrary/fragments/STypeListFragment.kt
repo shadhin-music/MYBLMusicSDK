@@ -75,7 +75,7 @@ internal class STypeListFragment : BaseFragment(), HomeCallBack {
 //        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchDetail = selectedHomePatchItem.Data[itemPosition]
         navController.navigate(
-            R.id.to_single_details,
+            R.id.to_s_type_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

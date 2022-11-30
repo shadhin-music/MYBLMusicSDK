@@ -646,7 +646,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 //            })
 
         bsdNavController.navigate(
-            R.id.action_favorite_to_artist_details_fragment,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -769,7 +769,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
         val favDat = mSongDetails[itemPosition]
         navController.navigate(
-            R.id.favoriteAlbum,
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
