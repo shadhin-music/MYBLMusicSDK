@@ -10,14 +10,15 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
 internal class TopTenItemAdapter(
-    val topTenDataItems: MutableList<IMusicModel>,
     private val seaItemCallback: SearchItemCallBack
-) :
-    RecyclerView.Adapter<TopTenItemAdapter.TopTenItemVH>() {
+) : RecyclerView.Adapter<TopTenItemAdapter.TopTenItemVH>() {
+    private val topTenDataItems: MutableList<IMusicModel> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopTenItemVH {
         return TopTenItemVH(
@@ -32,6 +33,22 @@ internal class TopTenItemAdapter(
         holder.itemView.setOnClickListener {
             seaItemCallback.onClickPlayItem(topTenDataItems, position)
         }
+    }
+
+    fun setData(
+        data: MutableList<IMusicModel>,
+        rootPatch: HomePatchDetailModel
+    ) {
+        for (songItem in data) {
+            topTenDataItems.add(
+                UtilHelper.getMixdUpIMusicWithRootData(
+                    songItem.apply {
+                        isSeekAble = true
+                    }, rootPatch
+                )
+            )
+        }
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

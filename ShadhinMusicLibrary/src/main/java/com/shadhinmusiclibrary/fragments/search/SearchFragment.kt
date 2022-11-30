@@ -35,6 +35,7 @@ import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
@@ -162,7 +163,7 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
         svSearchInput.suggestionsAdapter = mSuggestionAdapter
         svSearchInput.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-                val cursor: Cursor = getRecentSuggestions(newText)!!
+                val cursor: Cursor? = getRecentSuggestions(newText)
                 if (newText.length > 1) {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
@@ -178,7 +179,9 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                         delay(1000)
 //                        observeData(searchText)
                         observeData("\"\"")
-                        mSuggestionAdapter?.swapCursor(cursor)
+                        if (cursor != null) {
+                            mSuggestionAdapter?.swapCursor(cursor)
+                        }
 //                        tvTrendingSearchItem.visibility = GONE
 //                        cvTrendingSearchItem.visibility = GONE
 //                        rvWeeklyTrending.visibility = GONE
@@ -287,7 +290,12 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                     response.data.data.let {
                         rvWeeklyTrending?.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                        rvWeeklyTrending?.adapter = TopTenItemAdapter(it.toMutableList(), this)
+                        rvWeeklyTrending?.adapter = TopTenItemAdapter(this).apply {
+                            setData(
+                                it.toMutableList(),
+                                argHomePatchDetail ?: HomePatchDetailModel()
+                            )
+                        }
                     }
                 } else {
                     llTrendingSearchItem.visibility = GONE
