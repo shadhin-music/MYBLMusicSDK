@@ -139,6 +139,9 @@ internal class AlbumsTrackAdapter(
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE
                 progressIndicator.visibility = View.GONE
+            }else{
+                progressIndicator.visibility = View.GONE
+                downloaded.visibility = View.GONE
             }
         }
     }

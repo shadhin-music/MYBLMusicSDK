@@ -64,14 +64,14 @@ internal class PodcastHeaderAdapter(
             )
         }
         this.episode = episode
-        this.listSongTrack = listSongTrack
+        this.listSongTrack =listSongTrack
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<IMusicModel>) {
+    fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<SongTrackModel>) {
         this.episode = episode
-        listSongTrack = trackList
+        listSongTrack = trackList.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -112,17 +112,17 @@ internal class PodcastHeaderAdapter(
                 .into(imageView)
 
             var isFav = false
-//            val isAddedToFav = cacheRepository?.getFavoriteById(listSongTrack[0].content_Id ?: "")
-//            if (isAddedToFav?.content_Id != null) {
-//
-//                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-//                isFav = true
-//
-//            } else {
-//
-//                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-//                isFav = false
-//            }
+            val isAddedToFav = cacheRepository?.getFavoriteById(listSongTrack[0].content_Id?: "")
+            if (isAddedToFav?.content_Id != null) {
+
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                isFav = true
+
+            } else {
+
+                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                isFav = false
+            }
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {

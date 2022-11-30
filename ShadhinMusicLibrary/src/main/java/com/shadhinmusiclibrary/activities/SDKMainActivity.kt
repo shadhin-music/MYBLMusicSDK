@@ -1041,13 +1041,14 @@ internal class SDKMainActivity : BaseActivity(),
             if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id ?: "") == true) {
                 cacheRepository.insertDownload(
                     DownloadedContent().apply {
+                        content_Id = mSongDetails.content_Id
                         album_Id = mSongDetails.album_Id
                         rootContentId = mSongDetails.rootContentId
                         imageUrl = mSongDetails.imageUrl
                         titleName = mSongDetails.titleName
                         content_Type = mSongDetails.content_Type
                         playingUrl = mSongDetails.playingUrl
-                        content_Type = "1"
+                        content_Type = mSongDetails.content_Type
                         titleName = mSongDetails.titleName
                         artist_Id = mSongDetails.artist_Id
                         total_duration = mSongDetails.total_duration
@@ -1925,7 +1926,7 @@ internal class SDKMainActivity : BaseActivity(),
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
         val url = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = mSongDetails?.titleName ?: ""
+        title?.text = mSongDetails.titleName ?: ""
         if (image != null) {
             Glide.with(context).load(UtilHelper.getImageUrlSize300(url!!)).into(image)
         }
@@ -2111,7 +2112,7 @@ internal class SDKMainActivity : BaseActivity(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?
     ) {
-        bsdNavController.navigate(R.id.artist_details_fragment,
+        bsdNavController.navigate(R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     PatchItem,

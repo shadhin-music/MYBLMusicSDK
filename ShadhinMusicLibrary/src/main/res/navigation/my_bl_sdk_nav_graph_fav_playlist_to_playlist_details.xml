@@ -17,5 +17,26 @@
 <fragment  android:id="@+id/to_playlist_details"
     android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
     android:label="favPlaylist"
-    tools:layout="@layout/my_bl_sdk_fragment_playlist_details" />
+    tools:layout="@layout/my_bl_sdk_fragment_playlist_details">
+    <action
+        android:id="@+id/action_to_playlist_details_to_artistDetailsFragment3"
+        app:destination="@id/artistDetailsFragment3" />
+</fragment>
+    <action
+        android:id="@+id/to_artist_details"
+        app:destination="@id/artist_details_fragment" />
+    <fragment
+        android:id="@+id/artistDetailsFragment3"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="ArtistDetailsFragment" >
+        <action
+            android:id="@+id/action_artistDetailsFragment3_to_albumDetailsFragment2"
+            app:destination="@id/albumDetailsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/albumDetailsFragment2"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="AlbumDetailsFragment" />
+
+
 </navigation>

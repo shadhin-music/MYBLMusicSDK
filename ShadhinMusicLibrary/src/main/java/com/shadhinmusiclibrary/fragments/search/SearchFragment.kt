@@ -117,9 +117,8 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_search, container, false)
         navController = findNavController()
-        initUI(viewRef)
-        setupViewModel()
 
+        initUI(viewRef)
         return viewRef
     }
 
@@ -129,6 +128,8 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        setupViewModel()
         searchArtistAdapter = SearchArtistAdapter(this)
         searchAlbumsAdapter = SearchAlbumsAdapter(this)
         searchTracksAdapter = SearchTracksAdapter(this)
@@ -226,6 +227,7 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                 return true
             }
         })
+        observe()
 //        var url = ""
 //        var GET_PODCAST_DETAILS = "\(BASE_URL)/Podcast/Podcast"
 //        if (0 == 0) {
@@ -320,6 +322,9 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
         searchViewModel.getSearchPodcastShow(searchText)
         searchViewModel.getSearchPodcastTrack(searchText)
 
+
+    }
+    fun observe(){
         searchViewModel.searchArtistContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
@@ -656,6 +661,11 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+//    override fun onDestroyView() {
+//        searchViewModel.removeObservers(parentFragment?.viewLifecycleOwner)
+//        super.onDestroyView()
+//
+//    }
 
 /*    override fun onClickAlbumItem(albumModelData: SearchAlbumdata) {
         ShadhinMusicSdkCore.pressCountIncrement()
