@@ -5,17 +5,4 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/favoritePlaylist">
 
-    <fragment
-        android:id="@+id/favoritePlaylist"
-        android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
-        android:label="favorite"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
-        <action
-            android:id="@+id/fav_to_playlist_details"
-            app:destination="@id/to_playlist_details" />
-    </fragment>
-<fragment  android:id="@+id/to_playlist_details"
-    android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
-    android:label="favPlaylist"
-    tools:layout="@layout/my_bl_sdk_fragment_playlist_details" />
 </navigation>

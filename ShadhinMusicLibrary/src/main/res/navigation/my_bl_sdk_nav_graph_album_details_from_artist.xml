@@ -5,24 +5,5 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/album_details_fragment">
 
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="fragment_albums_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/album_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/artist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-
-        <action
-            android:id="@+id/action_artist_details_fragment_to_album_details_fragment"
-            app:destination="@id/album_details_fragment" />
-    </fragment>
 </navigation>
