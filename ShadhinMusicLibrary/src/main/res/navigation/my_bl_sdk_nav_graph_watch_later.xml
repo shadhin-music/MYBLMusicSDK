@@ -4,11 +4,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/watchlater">
-
-    <fragment
-        android:id="@+id/watchlater"
-        android:name="com.shadhinmusiclibrary.fragments.WatchLaterFragment"
-        android:label="fragment_watchlater"
-        tools:layout="@layout/my_bl_sdk_fragment_watch_later"/>
-
 </navigation>

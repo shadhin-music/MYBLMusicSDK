@@ -3,13 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_bl_sdk_nav_graph_common">
+
     <fragment
-        android:id="@+id/album_fragment"
+        android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
         <action
             android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+
+        <action
+            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment"
+            app:destination="@id/artist_details_fragment" />
+
+        <action
+            android:id="@+id/action_albumDetailsFragment_to_to_artistDetailsFragment"
             app:destination="@id/artist_details_fragment" />
     </fragment>
 
@@ -18,23 +27,24 @@
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="Artist Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
+
         <action
             android:id="@+id/to_album_details"
-            app:destination="@id/album_fragment" />
+            app:destination="@id/album_details_fragment" />
 
         <action
             android:id="@+id/action_artist_details_fragment_to_album_details_fragment"
             app:destination="@id/album_details_fragment" />
 
         <action
-            android:id="@+id/to_album_details"
-            app:destination="@id/album_details_fragment" />
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
 
         <action
-            android:id="@+id/to_album_details"
+            android:id="@+id/to_albumDetailsFragment"
+            app:destination="@id/album_details_fragment" />
+        <action
+            android:id="@+id/action_artistDetailsFragment_to_albumDetailsFragment"
             app:destination="@id/album_details_fragment" />
     </fragment>
 
@@ -47,6 +57,7 @@
         <action
             android:id="@+id/action_downloadAlbum_to_artist_details_fragment"
             app:destination="@id/artist_details_fragment" />
+
     </fragment>
 
     <fragment
@@ -59,16 +70,6 @@
             android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
     </fragment>
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="Album Details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
 
     <fragment
         android:id="@+id/favoriteAlbum"
@@ -78,52 +79,39 @@
         <action
             android:id="@+id/fav_album_to_artist_details"
             app:destination="@id/artist_details_fragment" />
+
+        <action
+            android:id="@+id/fav_to_album_details"
+            app:destination="@id/to_album_details" />
     </fragment>
+
     <fragment
         android:id="@+id/favoritePlaylist"
         android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
         android:label="fragment_favplaylist"
         tools:layout="@layout/my_bl_sdk_fragment_download_details">
+
         <action
             android:id="@+id/favoritePlaylist_to_artist_details"
             app:destination="@id/artist_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/downloadAlbum"
-        android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
-        android:label="fragment_download_album"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
 
         <action
-            android:id="@+id/action_downloadAlbum_to_artist_details_fragment"
-            app:destination="@id/artist_details_fragment" />
+            android:id="@+id/fav_to_playlist_details"
+            app:destination="@id/to_playlist_details" />
     </fragment>
 
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/favorite"
-        android:name="com.shadhinmusiclibrary.fragments.fav.FavoriteFragment"
-        android:label="fragment_favorite"
-        tools:layout="@layout/my_bl_sdk_fragment_favorite">
-        <action
-            android:id="@+id/action_favorite_to_artist_details_fragment"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
     <fragment
         android:id="@+id/download"
         android:name="com.shadhinmusiclibrary.fragments.DownloadFragment"
         android:label="fragment_download"
         tools:layout="@layout/my_bl_sdk_fragment_download">
+
         <action
             android:id="@+id/action_download_to_artist_details_fragment"
+            app:destination="@id/artist_details_fragment" />
+
+        <action
+            android:id="@+id/action_download_to_to_artistDetailsFragment"
             app:destination="@id/artist_details_fragment" />
     </fragment>
 
@@ -137,86 +125,11 @@
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
     </fragment>
-    <fragment
-        android:id="@+id/artist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-        <action
-            android:id="@+id/to_album_details"
-            app:destination="@id/album_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/favoriteAlbum"
-        android:name="com.shadhinmusiclibrary.fragments.fav.AlbumsFavFragment"
-        android:label="fragment_fav album"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
-        <action
-            android:id="@+id/fav_album_to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
 
-    <fragment
-        android:id="@+id/downloadAlbum"
-        android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
-        android:label="fragment_download_album"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
-
-        <action
-            android:id="@+id/action_downloadAlbum_to_artist_details_fragment"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/artist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="Artist Details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-
-        <!--        <action-->
-        <!--            android:id="@+id/action_artist_details_fragment_to_album_details_fragment"-->
-        <!--            app:destination="@id/action_artist_details_fragment_to_album_details_fragment"-->
-        <!--            />-->
-    </fragment>
-
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="Album Details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
     <fragment
         android:id="@+id/bottom_artist_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.BottomSheetArtistDetailsFragment"
         android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-
-        <action
-            android:id="@+id/to_album_details"
-            app:destination="@id/album_details_fragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/album_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="fragment_artist_details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/artist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="Artist Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
         <action
@@ -231,104 +144,374 @@
         tools:layout="@layout/my_bl_sdk_fragment_create_playlist" />
 
     <fragment
-        android:id="@+id/download"
-        android:name="com.shadhinmusiclibrary.fragments.DownloadFragment"
-        android:label="fragment_download"
-        tools:layout="@layout/my_bl_sdk_fragment_download">
-
-        <action
-            android:id="@+id/action_download_to_to_artistDetailsFragment"
-            app:destination="@id/to_artistDetailsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/to_artistDetailsFragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="ArtistDetailsFragment">
-        <action
-            android:id="@+id/to_album_details"
-            app:destination="@id/albumDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/albumDetailsFragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="AlbumDetailsFragment">
-        <action
-            android:id="@+id/action_albumDetailsFragment_to_to_artistDetailsFragment"
-            app:destination="@id/to_artistDetailsFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/downloadSong"
         android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
         android:label="SongsDownloadFragment">
 
         <action
             android:id="@+id/action_downloadSong_to_artistDetailsFragment"
-            app:destination="@id/artistDetailsFragment" />
+            app:destination="@id/to_artist_details" />
     </fragment>
-    <fragment
-        android:id="@+id/artistDetailsFragment"
-        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
-        android:label="ArtistDetailsFragment">
-        <action
-            android:id="@+id/to_albumDetailsFragment"
-            app:destination="@id/albumDetailsFragment" />
-        <action
-            android:id="@+id/action_artistDetailsFragment_to_albumDetailsFragment"
-            app:destination="@id/albumDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/albumDetailsFragment"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="AlbumDetailsFragment">
-        <action
-            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment"
-            app:destination="@id/artistDetailsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/favoriteAlbum"
-        android:name="com.shadhinmusiclibrary.fragments.fav.AlbumsFavFragment"
-        android:label="favorite"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
-        <action
-            android:id="@+id/fav_to_album_details"
-            app:destination="@id/to_album_details" />
-    </fragment>
-    <fragment
-        android:id="@+id/to_album_details"
-        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="favArtist"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
 
     <fragment
         android:id="@+id/favoriteArtist"
         android:name="com.shadhinmusiclibrary.fragments.fav.ArtistFavFragment"
-        android:label="favorite"
         tools:layout="@layout/my_bl_sdk_fragment_download_details">
         <action
             android:id="@+id/fav_to_artist_details"
             app:destination="@id/to_artist_details" />
     </fragment>
+
+    <fragment
+        android:id="@+id/favorite"
+        android:name="com.shadhinmusiclibrary.fragments.fav.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/my_bl_sdk_fragment_favorite">
+
+        <action
+            android:id="@+id/action_favorite_to_artist_details_fragment"
+            app:destination="@id/to_artist_details" />
+        <action
+            android:id="@+id/favoriteArtist"
+            app:destination="@id/to_artist_details" />
+        <action
+            android:id="@+id/favoriteAlbum"
+            app:destination="@id/to_album_details" />
+        <action
+            android:id="@+id/favoritePlaylist"
+            app:destination="@id/to_playlist_details" />
+
+        <action
+            android:id="@+id/action_favorite_to_artist_details_fragment"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/to_artist_details"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="favArtist"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
-
     <fragment
-        android:id="@+id/favoritePlaylist"
-        android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
-        android:label="favorite"
-        tools:layout="@layout/my_bl_sdk_fragment_download_details">
-        <action
-            android:id="@+id/fav_to_playlist_details"
-            app:destination="@id/to_playlist_details" />
-    </fragment>
+        android:id="@+id/to_album_details"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="favAlbums"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
     <fragment
         android:id="@+id/to_playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
-        android:label="favPlaylist"
+        android:label="PlaylistDetailsFragment" />
+
+    <fragment
+        android:id="@+id/myPlaylist"
+        android:name="com.shadhinmusiclibrary.fragments.create_playlist.MyPlaylistFragment"
+        android:label="fragment_my_playlist"
+        tools:layout="@layout/my_bl_sdk_fragment_my_playlist" />
+
+    <fragment
+        android:id="@+id/featured_popular_artist_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPopularArtistFragment"
+        tools:layout="@layout/my_bl_sdk_fragment_featured_popular_artist">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/amartunesWebviewFragment"
+        android:name="com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment"
+        tools:layout="@layout/my_bl_sdk_fragment_amar_tunes_webview" />
+
+    <fragment
+        android:id="@+id/featured_podcast_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_podcast_details"
+            app:destination="@id/podcast_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/podcast_details"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
+        android:label="fragment_featuredPodcast_details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/latestReleaseFragment"
+        android:name="com.shadhinmusiclibrary.fragments.LatestReleaseFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/playlist_details1"
+        android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
+        android:label="Playlist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="Artist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_playlist_details"
+            app:destination="@id/playlist_details1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playlistFavFragment"
+        android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
+        android:label="PlaylistFavFragment">
+        <action
+            android:id="@+id/action_playlistFavFragment_to_playlist_details1"
+            app:destination="@id/playlist_details1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playlist_list"
+        android:name="com.shadhinmusiclibrary.fragments.PlaylistListFragment"
+        android:label="fragment_playlist_list"
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
+
+        <action
+            android:id="@+id/to_playlist_details"
+            app:destination="@id/playlist_details" />
+        <action
+            android:id="@+id/action_playlist_list_to_album_details_fragment"
+            app:destination="@id/album_details_fragment" />
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playlist_details"
+        android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
+        android:label="Playlist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/action_playlist_details_to_album_details_fragment"
+            app:destination="@id/album_details_fragment" />
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_playlist_details"
+            app:destination="@id/playlist_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="Artist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+        <action
+            android:id="@+id/to_playlist_details"
+            app:destination="@id/playlist_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/podcast_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
+        android:label="Podcast Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/featured_podcast_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_podcast_details"
+            app:destination="@id/podcast_details" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/podcast_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
+        android:label="Podcast Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/radioFragment"
+        android:name="com.shadhinmusiclibrary.fragments.RadioFragment"
+        android:label="Radio"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/s_type_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.STypeDetailsFragment"
+        android:label="Playlist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_layout" />
+
+    <fragment
+        android:id="@+id/s_type_list_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.STypeListFragment"
+        android:label="fragment_playlist_list"
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
+        <action
+            android:id="@+id/to_single_details"
+            app:destination="@id/s_type_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/s_type_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.STypeDetailsFragment"
+        android:label="Playlist Details"
+        tools:layout="@layout/my_bl_sdk_fragment_s_type_details" />
+
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/my_bl_sdk_fragment_search">
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_podcast_details"
+            app:destination="@id/podcast_details_fragment" />
+        <action
+            android:id="@+id/to_music_video"
+            app:destination="@id/music_video_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
+        android:label="Artist Details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="album details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/podcast_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
+        android:label="Podcast details"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
+    <fragment
+        android:id="@+id/music_video_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.MusicVideoFragment"
+        android:label="Music Video" />
+
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/my_bl_sdk_fragment_search">
+        <action
+            android:id="@+id/to_album_details"
+            app:destination="@id/album_details_fragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/album_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
+        android:label="fragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/to_artist_details"
+            app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/to_search"
+            app:destination="@id/search_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/user_playlist_details_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.create_playlist.UserCreatedPlaylistDetailsFragment"
+        android:label="Details"
         tools:layout="@layout/my_bl_sdk_fragment_playlist_details" />
+
+    <fragment
+        android:id="@+id/video_list_fragment"
+        android:name="com.shadhinmusiclibrary.fragments.TopTrendingBanglaMusicFragment"
+        android:label="fragment_video_list"
+        tools:layout="@layout/my_bl_sdk_fragment_top_trending_bangla_music" />
+
+    <fragment
+        android:id="@+id/watchlater"
+        android:name="com.shadhinmusiclibrary.fragments.WatchLaterFragment"
+        android:label="fragment_watchlater"
+        tools:layout="@layout/my_bl_sdk_fragment_watch_later" />
 </navigation>

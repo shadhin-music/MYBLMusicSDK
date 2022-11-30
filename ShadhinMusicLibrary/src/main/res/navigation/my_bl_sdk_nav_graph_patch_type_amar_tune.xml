@@ -5,8 +5,5 @@
     android:id="@+id/nav_graph_patch_type_amar_tune"
     app:startDestination="@id/amartunesWebviewFragment">
 
-    <fragment
-        android:id="@+id/amartunesWebviewFragment"
-        android:name="com.shadhinmusiclibrary.fragments.amar_tunes.AmartunesWebviewFragment"
-        tools:layout="@layout/my_bl_sdk_fragment_amar_tunes_webview" />
+
 </navigation>

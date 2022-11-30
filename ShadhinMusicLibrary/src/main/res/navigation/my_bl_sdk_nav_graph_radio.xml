@@ -5,9 +5,5 @@
     android:id="@+id/my_bl_sdk_nav_graph_radio"
     app:startDestination="@id/radioFragment">
 
-    <fragment
-        android:id="@+id/radioFragment"
-        android:name="com.shadhinmusiclibrary.fragments.RadioFragment"
-        android:label="Radio"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
 </navigation>

@@ -5,19 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/user_playlist_details_fragment">
 
-<!--    <fragment-->
-<!--        android:id="@+id/myPlaylist"-->
-<!--        android:name="com.shadhinmusiclibrary.fragments.create_playlist.MyPlaylistFragment"-->
-<!--        android:label="fragment_my_playlist"-->
-<!--        tools:layout="@layout/my_bl_sdk_fragment_my_playlist">-->
-<!--        <action-->
-<!--            android:id="@+id/to_user_playlist_details"-->
-<!--            app:destination="@id/user_playlist_details_fragment" />-->
-<!--    </fragment>-->
-    <fragment
-        android:id="@+id/user_playlist_details_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.create_playlist.UserCreatedPlaylistDetailsFragment"
-        android:label="Details"
-        tools:layout="@layout/my_bl_sdk_fragment_playlist_details" />
+
 
 </navigation>

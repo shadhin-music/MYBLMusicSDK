@@ -5,9 +5,5 @@
     android:id="@+id/nav_graph_video_list_fragment"
     app:startDestination="@id/video_list_fragment">
 
-    <fragment
-        android:id="@+id/video_list_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.TopTrendingBanglaMusicFragment"
-        android:label="fragment_video_list"
-        tools:layout="@layout/my_bl_sdk_fragment_top_trending_bangla_music" />
+
 </navigation>

@@ -5,8 +5,5 @@
     android:id="@+id/nav_grap_patch_type_r"
     app:startDestination="@id/latestReleaseFragment">
 
-    <fragment
-        android:id="@+id/latestReleaseFragment"
-        android:name="com.shadhinmusiclibrary.fragments.LatestReleaseFragment"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+
 </navigation>
