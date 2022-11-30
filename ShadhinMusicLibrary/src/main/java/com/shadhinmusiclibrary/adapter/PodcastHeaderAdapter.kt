@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,7 @@ internal class PodcastHeaderAdapter(
     private val homePatchDetail: HomePatchDetailModel?
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
 
-    var episode: List<EpisodeModel>? = null
+    private var episode: List<EpisodeModel>? = null
     private var listSongTrack: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
@@ -39,11 +40,14 @@ internal class PodcastHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
-        holder.bindItems(position)
+        Log.i("setTrackData", "onBindViewHolder: ${episode?.map { it.Code }}")
+
         pcOnCallback.getCurrentVH(holder, listSongTrack)
         holder.ivPlayBtn?.setOnClickListener {
             pcOnCallback.onRootClickItem(listSongTrack, position)
         }
+
+        holder.bindItems(position)
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -63,17 +67,17 @@ internal class PodcastHeaderAdapter(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
-        this.episode = episode
-        this.listSongTrack =listSongTrack
+        Log.i("setTrackData", "setTrackData: ${episode.map { it.Code }}")
+        this.episode = ArrayList(episode)
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+   /* @SuppressLint("NotifyDataSetChanged")
     fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<SongTrackModel>) {
         this.episode = episode
         listSongTrack = trackList.toMutableList()
         notifyDataSetChanged()
-    }
+    }*/
 
     inner class PodcastHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
@@ -110,9 +114,12 @@ internal class PodcastHeaderAdapter(
             Glide.with(context)
                 .load(url?.replace("<\$size\$>", "300"))
                 .into(imageView)
-
+            Log.e("TAG","NameShowId :"+episode?.get(position)?.ShowId)
+            Log.e("TAG","NameCode :"+episode?.get(position)?.Code)
+            Log.e("TAG","NameId :"+episode?.get(position)?.Id)
+//            Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(listSongTrack[0].content_Id?: "")
+            val isAddedToFav = cacheRepository?.getFavoriteById((episode?.get(position)?.Id?: "").toString())
             if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
@@ -126,12 +133,12 @@ internal class PodcastHeaderAdapter(
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
-                    listSongTrack[0].content_Id.let { it1 ->
-                        favViewModel.deleteFavContent(
-                            it1,
-                            listSongTrack[0].content_Type ?: ""
-                        )
-                    }
+
+                    favViewModel.deleteFavContent(
+                        episode?.get(position)?.Id.toString(),
+                        episode?.get(position)?.ContentType ?: ""
+                    )
+//                    Log.e("TAG", "Namecontent_Id :" + listSongTrack[0].content_Id)
                     cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
@@ -139,27 +146,27 @@ internal class PodcastHeaderAdapter(
                 } else {
 
                     favViewModel.addFavContent(
-                        homePatchDetail?.content_Id.toString(),
-                        homePatchDetail?.content_Type.toString()
+                        episode?.get(position)?.Id.toString(),
+                        episode?.get(position)?.ContentType.toString()
                     )
 
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavDataModel().apply {
-                            content_Id = listSongTrack[0].content_Id.toString()
-                            album_Id = listSongTrack[0].album_Id
-                            albumImage = listSongTrack[0].imageUrl
-                            artistName = listSongTrack[0].artistName
-                            artist_Id = listSongTrack[0].artist_Id
+                            content_Id =  episode?.get(position)?.Id.toString()
+                            album_Id = episode?.get(position)?.Id.toString()
+                            albumImage = episode?.get(position)?.ImageUrl
+                            artistName = ""
+                            artist_Id = ""
                             clientValue = 2
-                            content_Type = listSongTrack[0].content_Type.toString()
+                            content_Type = episode?.get(position)?.ContentType.toString()
                             fav = "1"
-                            imageUrl = listSongTrack[0].imageUrl
-                            playingUrl = listSongTrack[0].playingUrl
-                            rootContentId = listSongTrack[0].rootContentId
-                            rootContentType = listSongTrack[0].rootContentType
-                            titleName = listSongTrack[0].titleName
-                            total_duration = listSongTrack[0].total_duration
+                            imageUrl =  episode?.get(position)?.ImageUrl
+                            playingUrl =  ""
+                            rootContentId = ""
+                            rootContentType =""
+                            titleName = episode?.get(position)?.Name
+                            total_duration = ""
                         }
                     )
                     isFav = true

@@ -30,11 +30,19 @@
     <fragment  android:id="@+id/to_artist_details"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="favArtist"
-        tools:layout="@layout/my_bl_sdk_fragment_artist_details" />
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" >
+        <action
+            android:id="@+id/action_to_artist_details_to_to_album_details"
+            app:destination="@id/to_album_details" />
+    </fragment>
     <fragment  android:id="@+id/to_album_details"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="favAlbums"
-        tools:layout="@layout/my_bl_sdk_fragment_album_details" />
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" >
+        <action
+            android:id="@+id/action_to_album_details_to_to_artist_details"
+            app:destination="@id/to_artist_details" />
+    </fragment>
     <fragment
         android:id="@+id/to_playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"

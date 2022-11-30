@@ -20,23 +20,27 @@
     tools:layout="@layout/my_bl_sdk_fragment_playlist_details">
     <action
         android:id="@+id/action_to_playlist_details_to_artistDetailsFragment3"
-        app:destination="@id/artistDetailsFragment3" />
+        app:destination="@id/artistDetailsFragment" />
 </fragment>
     <action
         android:id="@+id/to_artist_details"
         app:destination="@id/artist_details_fragment" />
     <fragment
-        android:id="@+id/artistDetailsFragment3"
+        android:id="@+id/artistDetailsFragment"
         android:name="com.shadhinmusiclibrary.fragments.artist.ArtistDetailsFragment"
         android:label="ArtistDetailsFragment" >
         <action
-            android:id="@+id/action_artistDetailsFragment3_to_albumDetailsFragment2"
-            app:destination="@id/albumDetailsFragment2" />
+            android:id="@+id/action_artistDetailsFragment_to_albumDetailsFragment"
+            app:destination="@id/albumDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/albumDetailsFragment2"
+        android:id="@+id/albumDetailsFragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
-        android:label="AlbumDetailsFragment" />
+        android:label="AlbumDetailsFragment" >
+        <action
+            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment2"
+            app:destination="@id/artistDetailsFragment" />
+    </fragment>
 
 
 </navigation>

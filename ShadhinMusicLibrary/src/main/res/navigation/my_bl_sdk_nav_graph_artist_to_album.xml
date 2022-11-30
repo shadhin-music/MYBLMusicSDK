@@ -15,12 +15,19 @@
         <!--            android:id="@+id/action_artist_details_fragment_to_album_details_fragment"-->
         <!--            app:destination="@id/action_artist_details_fragment_to_album_details_fragment"-->
         <!--            />-->
+        <action
+            android:id="@+id/action_artist_details_fragment_to_album_details_fragment2"
+            app:destination="@id/album_details_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/album_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.album.AlbumDetailsFragment"
         android:label="Album Details"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" />
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout" >
+        <action
+            android:id="@+id/action_album_details_fragment_to_artist_details_fragment2"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
 
 </navigation>

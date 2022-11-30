@@ -85,6 +85,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
         } else {
             getPodcastDetailsInitialize()
         }
+        setupAdapters()
 
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
@@ -95,18 +96,57 @@ internal class PodcastDetailsFragment : BaseFragment(),
                 podcastTrackAdapter.setPlayingSong(music.mediaId!!)
             }
         }
+
+
+        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
+        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+
+            Log.i("PDF", "podcastDetailsContent: observe")
+            if (response.status == Status.SUCCESS) {
+                response.data?.data?.let {
+                    it.EpisodeList.let { it1 ->
+                        podcastMoreEpisodesAdapter.setData(it1)
+                    }
+                }
+                response?.data?.data?.EpisodeList?.let { itEpisod ->
+//                    podcastHeaderAdapter.setHeader(
+//                        itEpisod,
+//                        itEpisod[0].TrackList
+//                    )
+                    podcastHeaderAdapter.setTrackData(
+                        itEpisod,
+                        itEpisod[0].TrackList,
+                        argHomePatchDetail!!
+                    )
+                }
+                response.data?.data?.EpisodeList?.get(0)
+                    ?.let {
+                        podcastTrackAdapter.setData(
+                            it.TrackList,
+                            argHomePatchDetail!!,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                    }
+
+//                parentRecycler.adapter = concatAdapter
+                progressBar.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
         observePodcastShowData()
-        setupAdapters()
+
     }
 
     private fun getPodcastDetailsInitialize() {
         Log.e("PDF", "getPodcastDetailsInitialize: ")
         observePodcastDetailsData()
-        setupAdapters()
+
     }
 
     private fun setupAdapters() {
@@ -129,7 +169,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
             podcastMoreEpisodesAdapter,
             footerAdapter
         )
-        concatAdapter.notifyDataSetChanged()
+       // concatAdapter.notifyDataSetChanged()
         parentRecycler.layoutManager = layoutManager
         parentRecycler.adapter = concatAdapter
     }
@@ -149,7 +189,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     private fun observePodcastShowData() {
         viewModel.fetchPodcastShowContent(podcastType, contentType, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
+        /*viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
             if (response.status == Status.SUCCESS) {
                 response?.data?.data?.EpisodeList?.let { itEpisod ->
 //                    podcastHeaderAdapter.setHeader(
@@ -179,44 +219,13 @@ internal class PodcastDetailsFragment : BaseFragment(),
             } else {
                 progressBar.visibility = View.GONE
             }
-        }
+        }*/
     }
 
     private fun observePodcastDetailsData() {
+        Log.i("PDF", "observePodcastDetailsData: ")
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
-        val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
-            if (response.status == Status.SUCCESS) {
-                response?.data?.data?.EpisodeList?.let { itEpisod ->
-//                    podcastHeaderAdapter.setHeader(
-//                        itEpisod,
-//                        itEpisod[0].TrackList
-//                    )
-                    podcastHeaderAdapter.setTrackData(
-                        itEpisod,
-                        itEpisod[0].TrackList,
-                        argHomePatchDetail!!
-                    )
-                }
-                response.data?.data?.EpisodeList?.get(0)
-                    ?.let {
-                        podcastTrackAdapter.setData(
-                            it.TrackList,
-                            argHomePatchDetail!!,
-                            playerViewModel.currentMusic?.mediaId
-                        )
-                    }
-                response.data?.data?.let {
-                    it.EpisodeList.let { it1 ->
-                        podcastMoreEpisodesAdapter.setData(it1)
-                    }
-                }
-//                parentRecycler.adapter = concatAdapter
-                progressBar.visibility = View.GONE
-            } else {
-                progressBar.visibility = View.GONE
-            }
-        }
+
     }
 
     override fun onClickItemAndAllItem(
@@ -239,7 +248,9 @@ internal class PodcastDetailsFragment : BaseFragment(),
         val episode = selectedEpisode[itemPosition]
         selectedEpisodeID = episode.Id
         argHomePatchDetail?.content_Id = episode.Id.toString()
+
         observePodcastDetailsData()
+
         //podcastHeaderAdapter.setHeader(data)
         // podcastEpisodesAdapter.setData
 //        artistHeaderAdapter.setData(argHomePatchDetail!!)
@@ -247,8 +258,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //    parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
-        concatAdapter.notifyDataSetChanged()
-        parentRecycler.scrollToPosition(0)
+       // concatAdapter.notifyDataSetChanged()
+      //  parentRecycler.scrollToPosition(0)
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

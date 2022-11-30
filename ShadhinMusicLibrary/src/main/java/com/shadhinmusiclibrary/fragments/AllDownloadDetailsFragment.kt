@@ -185,6 +185,8 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     artistName = mSongDetails.artistName
                     total_duration = mSongDetails.total_duration
                     artist_Id = mSongDetails.artist_Id
+                    album_Id = mSongDetails.album_Id
+                    content_Type = mSongDetails.content_Type
                 },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -195,6 +197,9 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl ?: ""
                 imageUrl = mSongDetails.imageUrl ?: ""
                 titleName = mSongDetails.titleName ?: ""
+                total_duration =mSongDetails.total_duration
+                album_Id = mSongDetails.album_Id
+                content_Type = mSongDetails.content_Type
             }
         )
     }
