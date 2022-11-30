@@ -88,6 +88,7 @@ internal class HomeFragment : BaseFragment(),
 
         srlHomeRefresh.setOnRefreshListener {
             homeViewModel.fetchHomeData(pageNum, false)
+            srlHomeRefresh.isRefreshing = false
         }
 //
         return viewRef
@@ -162,45 +163,35 @@ internal class HomeFragment : BaseFragment(),
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
             favViewModel.getFavContentPodcast.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
             favViewModel.getFavContentArtist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
             favViewModel.getFavContentVideo.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
 
             favViewModel.getFavContentSong.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
             favViewModel.getFavContentPlaylist.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
-                srlHide()
             }
         } catch (e: Exception) {
         }
-    }
-
-    private fun srlHide() {
-        srlHomeRefresh.isRefreshing = false
     }
 
     private fun viewDataInRecyclerView(homeData: HomeDataModel?) {
