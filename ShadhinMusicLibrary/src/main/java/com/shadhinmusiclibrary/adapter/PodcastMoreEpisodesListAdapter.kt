@@ -15,12 +15,15 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 
+typealias SelectedIdFunc = ((id:Int) -> Unit)
 
 internal class PodcastMoreEpisodesListAdapter(
     var episode: MutableList<EpisodeModel>,
     val homeCallBack: HomeCallBack
 ) :
     RecyclerView.Adapter<PodcastMoreEpisodesListAdapter.ViewHolder>() {
+
+    var selectedIdFunc:SelectedIdFunc?=null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v =
@@ -34,8 +37,11 @@ internal class PodcastMoreEpisodesListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(position)
 
+
         holder.itemView.setOnClickListener {
             homeCallBack.onClickItemPodcastEpisode(position, episode)
+            selectedIdFunc?.invoke( episode[position].Id)
+
         }
     }
 

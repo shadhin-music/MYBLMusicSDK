@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,11 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
     RecyclerView.Adapter<PodcastMoreEpisodesAdapter.PodcastMoreEpisodesViewHolder>() {
     var episode: MutableList<EpisodeModel> = ArrayList()
     private var filteredItem: MutableList<EpisodeModel>? = null
+    private var selectedId:Int?=null
+    val selectedIdFuncX:SelectedIdFunc = {
+        selectedId = it
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,6 +36,7 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
 
 
     override fun onBindViewHolder(holder: PodcastMoreEpisodesViewHolder, position: Int) {
+        Log.i("setData", "setData: ${episode.map { it.Code }}")
         holder.bindItems()
 
 
@@ -41,7 +48,9 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
     }
 
     fun setData(episodeList: MutableList<EpisodeModel>) {
+
         this.episode = episodeList
+        Log.i("setData", "setData: ${episodeList.map { it.Code }}")
     }
 
     inner class PodcastMoreEpisodesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,15 +58,21 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
         fun bindItems() {
             if (episode.isNotEmpty()) {
 
-                episode.removeAt(0)
-                episode.addAll(episode)
+                val index = episode.indexOfFirst { it.Id == selectedId }
+                if(index !=-1){
+                    episode.removeAt(index)
+                }
+                /*episode.removeAt(0)
+                episode.addAll(episode)*/
                 val textView: TextView = itemView.findViewById(R.id.tvTitle)
                 textView.text= "More Episode"
                 val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
                 recyclerView.layoutManager =
                     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
-                recyclerView.adapter = PodcastMoreEpisodesListAdapter(episode,homeCallBack)
+                recyclerView.adapter = PodcastMoreEpisodesListAdapter(episode,homeCallBack).apply {
+                    this.selectedIdFunc = selectedIdFuncX
+                }
             }
 
 

@@ -1625,6 +1625,7 @@ internal class SDKMainActivity : BaseActivity(),
                             rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
+                            artistName =iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
                         }
                     )

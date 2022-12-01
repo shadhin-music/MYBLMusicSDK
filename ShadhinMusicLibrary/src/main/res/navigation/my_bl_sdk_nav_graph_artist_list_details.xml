@@ -41,6 +41,9 @@
         <action
             android:id="@+id/fav_album_to_artist_details"
             app:destination="@id/artist_details_fragment" />
+        <action
+            android:id="@+id/action_favoriteAlbum_to_album_details_fragment"
+            app:destination="@id/album_details_fragment" />
     </fragment>
 
     <fragment
@@ -51,6 +54,14 @@
       
         <action
             android:id="@+id/action_downloadAlbum_to_artist_details_fragment"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/artistFavFragment"
+        android:name="com.shadhinmusiclibrary.fragments.fav.ArtistFavFragment"
+        android:label="ArtistFavFragment" >
+        <action
+            android:id="@+id/action_artistFavFragment_to_artist_details_fragment"
             app:destination="@id/artist_details_fragment" />
     </fragment>
 </navigation>
