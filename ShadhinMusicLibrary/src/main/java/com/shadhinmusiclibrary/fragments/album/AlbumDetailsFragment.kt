@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -81,13 +82,19 @@ internal class AlbumDetailsFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         //TODO  argHomePatchDetail!!.ContentID,
-        argHomePatchDetail!!.album_Id?.let {
-            observeData(
-                it,
-                argHomePatchDetail!!.artist_Id ?: "",
-                argHomePatchDetail!!.content_Type ?: ""
-            )
-        }
+        Log.e(
+            "CommAlDF",
+            "onClickItemAndAllItem:\n"
+                    + " content_Id: " + argHomePatchDetail?.content_Id
+                    + " artist_Id: " + argHomePatchDetail?.artist_Id
+                    + " album_Id: " + argHomePatchDetail?.album_Id
+        )
+
+        observeData(
+            argHomePatchDetail!!.album_Id ?: "",
+            argHomePatchDetail!!.artist_Id ?: "",
+            argHomePatchDetail!!.content_Type ?: ""
+        )
 
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)

@@ -97,7 +97,13 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun setupAdapters() {
-
+        Log.e(
+            "CommArDF",
+            "onClickItemAndAllItem:\n"
+                    + " content_Id: " + argHomePatchDetail?.content_Id
+                    + " artist_Id: " + argHomePatchDetail?.artist_Id
+                    + " album_Id: " + argHomePatchDetail?.album_Id
+        )
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -240,6 +246,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
         if (argHomePatchDetail?.content_Id.isNullOrEmpty()) {
             argHomePatchDetail?.content_Id = argHomePatchDetail?.artist_Id ?: ""
         }
+
         artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
         artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.artist_Id
