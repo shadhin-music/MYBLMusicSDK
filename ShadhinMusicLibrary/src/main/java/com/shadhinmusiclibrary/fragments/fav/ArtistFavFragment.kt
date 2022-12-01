@@ -258,7 +258,7 @@ internal class ArtistFavFragment : BaseFragment(),
         // Log.e("i am being called", "test test test "+navController.graph.displayName)
         val mFavData = favData[itemPosition]
         navController.navigate(
-            R.id.favoriteArtist,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -496,7 +496,7 @@ internal class ArtistFavFragment : BaseFragment(),
 //            })
 
         bsdNavController.navigate(
-            R.id.favoriteArtist,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

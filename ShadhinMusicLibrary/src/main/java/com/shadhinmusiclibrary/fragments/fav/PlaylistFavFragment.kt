@@ -242,7 +242,7 @@ internal class PlaylistFavFragment : BaseFragment(),
     override fun onFavPlaylistClick(itemPosition: Int, favData: List<FavDataModel>) {
         val mfavData = favData[itemPosition]
         navController.navigate(
-            R.id.favoritePlaylist,
+            R.id.to_playlist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -482,7 +482,7 @@ internal class PlaylistFavFragment : BaseFragment(),
 //            })
 
         bsdNavController.navigate(
-            R.id.favoriteArtist,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
