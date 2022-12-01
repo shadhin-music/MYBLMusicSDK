@@ -100,23 +100,13 @@ internal class PodcastFavFragment : BaseFragment(),
     }
 
     override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
-
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
-            SongTrackModel().apply {
-                content_Type = mSongDetails.content_Type
-                artistName = mSongDetails.artistName.toString()
-                total_duration = mSongDetails.total_duration.toString()
-                content_Id = mSongDetails.content_Id
-                imageUrl = mSongDetails.imageUrl.toString()
-                titleName = mSongDetails.titleName.toString()
-                playingUrl = mSongDetails.playingUrl.toString()
-                rootContentId = mSongDetails.rootContentId.toString()
-            },
+            mSongDetails,
             argHomePatchItem,
             argHomePatchDetail
         )
@@ -143,7 +133,6 @@ internal class PodcastFavFragment : BaseFragment(),
     }
 
     override fun onClickBottomItemVideo(mSongDetails: IMusicModel) {
-
     }
 
     override fun onStart() {
@@ -163,10 +152,7 @@ internal class PodcastFavFragment : BaseFragment(),
     }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
-
         downloadingItems.forEach {
-
-
             val progressIndicator: CircularProgressIndicator? =
                 view?.findViewWithTag(it.contentId)
             val downloaded: ImageView? = view?.findViewWithTag(220)

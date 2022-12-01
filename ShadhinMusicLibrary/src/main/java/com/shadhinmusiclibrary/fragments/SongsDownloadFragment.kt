@@ -182,7 +182,7 @@ internal class SongsDownloadFragment : BaseFragment(),
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
@@ -375,7 +375,7 @@ internal class SongsDownloadFragment : BaseFragment(),
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
@@ -388,10 +388,10 @@ internal class SongsDownloadFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel().apply {
-                        album_Id = mSongDetails.album_Id.toString()
-                        artistName = mSongDetails.artistName ?: ""
-                        artist_Id = mSongDetails.artist_Id.toString()
                         content_Id = mSongDetails.content_Id ?: ""
+                        album_Id = mSongDetails.album_Id.toString()
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
                         content_Type = mSongDetails.content_Type ?: ""
                         playingUrl = mSongDetails.playingUrl.toString()
                         imageUrl = mSongDetails.imageUrl.toString()
@@ -401,7 +401,7 @@ internal class SongsDownloadFragment : BaseFragment(),
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
+    private fun gotoPlayList(context: Context, mSongDetails: IMusicModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)

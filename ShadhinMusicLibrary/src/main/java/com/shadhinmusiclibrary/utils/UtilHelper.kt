@@ -139,18 +139,6 @@ internal object UtilHelper {
         isSeekAble = true
     }
 
-    fun getMixdUpIMusicWithRootData(
-        mSongDet: IMusicModel,
-        rootPatch: HomePatchDetailModel,
-    ): IMusicModel {
-        mSongDet.apply {
-            rootContentId = rootPatch.content_Id
-            rootContentType = rootPatch.content_Type
-            rootImage = rootPatch.imageUrl
-        }
-        return mSongDet
-    }
-
     fun getRadioSong(
         mSongDet: SongDetailModel,
     ): SongDetailModel {
@@ -208,39 +196,13 @@ internal object UtilHelper {
         return iMusicData
     }
 
-    /* fun getSongDetailAndRootDataForUSERPLAYLIST(
-         mSongDet: UserSongsPlaylistDataModel
-     ): SongDetailModel {
-         mSongDet.apply {
-             return SongDetailModel().apply {
-                 content_Id = contentID.toString()
-                 imageUrl = image.toString()
-                 titleName = title.toString()
-                 content_Type = contentType.toString()
-                 playingUrl = playUrl.toString()
-                 artist = artist.toString()
-                 duration = duration.toString()
-                 copyright = copyright.toString()
-                 labelname = labelname.toString()
-                 releaseDate = releaseDate.toString()
-                 fav = ""
-                 artist_Id = artistId.toString()
-                 albumId = albumId.toString()
-                 userPlayListId = userPlayListId
-                 rootContentId = contentID.toString()
-                 rootContentType = ""
-                 rootImage = ""
-             }
-         }
-     }*/
-
     fun getArtistContentDataToRootData(
         mSongDet: ArtistContentDataModel,
         rootPatch: HomePatchDetailModel,
     ): ArtistContentDataModel {
         mSongDet.apply {
             mSongDet.apply {
-                artist_Id = album_Id
+                /*artist_Id = album_Id*/
                 rootContentId = rootPatch.content_Id
                 rootContentType = rootPatch.content_Type
                 rootImage = rootPatch.imageUrl
@@ -248,6 +210,19 @@ internal object UtilHelper {
             }
             return mSongDet
         }
+    }
+
+    fun getMixdUpIMusicWithRootData(
+        mSongDet: IMusicModel,
+        rootPatch: HomePatchDetailModel,
+    ): IMusicModel {
+        mSongDet.apply {
+            rootContentId = rootPatch.content_Id
+            rootContentType = rootPatch.content_Type
+            rootImage = rootPatch.imageUrl
+            isSeekAble = true
+        }
+        return mSongDet
     }
 
     fun getTrackToRootData(

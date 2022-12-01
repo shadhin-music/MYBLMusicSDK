@@ -81,7 +81,7 @@ internal class ArtistTrackAdapter(
         this.artistSongList.clear()
         for (songItem in data) {
             artistSongList.add(
-                UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
+                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
         }
 
@@ -121,12 +121,12 @@ internal class ArtistTrackAdapter(
             val progressIndicatorArtist: CircularProgressIndicator =
                 itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicatorArtist.tag = artistContent.content_Id!!
+            progressIndicatorArtist.tag = artistContent.content_Id
             downloaded.tag = 200
             progressIndicatorArtist.visibility = View.GONE
             downloaded.visibility = View.GONE
             val isDownloaded =
-                cacheRepository?.isTrackDownloaded(artistContent.content_Id!!) ?: false
+                cacheRepository?.isTrackDownloaded(artistContent.content_Id) ?: false
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE
                 progressIndicatorArtist.visibility = View.GONE

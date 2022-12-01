@@ -63,16 +63,16 @@ internal class BottomSheetArtistTrackAdapter(
         }
     }
 
-    fun setArtistTrack(data: List<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
-        this.artistSongList = mutableListOf()
-        this.artistSongList.clear()
-        for (songItem in data) {
-            artistSongList.add(
-                UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
-            )
-        }
-        this.notifyDataSetChanged()
-    }
+//    fun setArtistTrack(data: List<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
+//        this.artistSongList = mutableListOf()
+//        this.artistSongList.clear()
+//        for (songItem in data) {
+//            artistSongList.add(
+//                UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
+//            )
+//        }
+//        this.notifyDataSetChanged()
+//    }
 
     inner class ArtistTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()

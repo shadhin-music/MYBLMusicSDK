@@ -408,6 +408,10 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
+        Log.e(
+            "CommArDF",
+            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
+        )
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
             context = requireContext(),

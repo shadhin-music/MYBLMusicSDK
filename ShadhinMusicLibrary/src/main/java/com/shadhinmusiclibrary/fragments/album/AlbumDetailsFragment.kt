@@ -246,16 +246,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: IMusicModel) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
-    }
-
     override fun onClickItemAndAllItem(
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
@@ -298,6 +288,19 @@ internal class AlbumDetailsFragment : BaseFragment(),
         observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
     }
 
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
+        Log.e(
+            "CommArDF",
+            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
+        )
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
+    }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {
