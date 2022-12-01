@@ -84,14 +84,4 @@ internal class FavoriteFragment : Fragment() {
             requireActivity().onBackPressed()
         }
     }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            FavoriteFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
-    }
 }
