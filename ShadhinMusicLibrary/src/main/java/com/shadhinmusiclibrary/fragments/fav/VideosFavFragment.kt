@@ -27,6 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.FavVideoAdapter
+import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
@@ -65,9 +66,13 @@ internal class VideosFavFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter = cacheRepository.getVideoFavContent()
-            ?.let { FavVideoAdapter(it, this, this, cacheRepository) }!!
+        dataAdapter =  FavVideoAdapter(this, this,   cacheRepository)
 
+        cacheRepository.getVideoFavContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList()
+            )
+        }!!
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -321,6 +326,7 @@ internal class VideosFavFragment : BaseFragment(),
                 Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
+                dataAdapter.updateData(cacheRepository.getVideoFavContent())
             } else {
 
                 favViewModel.addFavContent(mSongDetail.contentID.toString(), "V")

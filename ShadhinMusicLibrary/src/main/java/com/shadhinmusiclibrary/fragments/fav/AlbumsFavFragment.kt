@@ -37,6 +37,7 @@ import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
+import com.shadhinmusiclibrary.adapter.FavoriteArtistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
@@ -93,16 +94,15 @@ internal class AlbumsFavFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter =
-            cacheRepository.getAlbumsFavoriteContent()?.let {
-                FavoriteAlbumAdapter(
-                    it,
-                    this,
-                    this,
-                    cacheRepository, this
-                )
-            }!!
 
+
+        dataAdapter =  FavoriteAlbumAdapter(this, this,   cacheRepository, this)
+
+        cacheRepository.getAlbumsFavoriteContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList()
+            )
+        }!!
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -442,7 +442,8 @@ internal class AlbumsFavFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                parentAdapter.notifyDataSetChanged()
+                dataAdapter.updateData(cacheRepository.getAlbumsFavoriteContent())
+               // parentAdapter.notifyDataSetChanged()
                 Log.e("TAG", "NAME: " + isFav)
             } else {
 

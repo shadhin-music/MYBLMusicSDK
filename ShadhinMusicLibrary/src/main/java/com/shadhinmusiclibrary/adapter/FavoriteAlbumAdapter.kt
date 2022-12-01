@@ -18,12 +18,11 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoriteAlbumAdapter(
-    val allDownloads: List<FavDataModel>,
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: CommonPSVCallback,
     private val cacheRepository: CacheRepository, private val albumClick: onFavAlbumClick
 ) : RecyclerView.Adapter<FavoriteAlbumAdapter.ViewHolder>() {
-
+    private var allFav: MutableList<FavDataModel> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
@@ -48,52 +47,63 @@ internal class FavoriteAlbumAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-        if (allDownloads[position].content_Type.equals("R")) {
+        if (allFav[position].content_Type.equals("R")) {
 
             holder.itemView.setOnClickListener {
-                albumClick.onFavAlbumClick2(position, allDownloads)
+                albumClick.onFavAlbumClick2(position, allFav)
                 //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
             }
             menu.setOnClickListener {
-                openMenu.onClickBottomItemSongs(allDownloads[position])
+                openMenu.onClickBottomItemSongs(allFav[position])
             }
         }
-        if (allDownloads[position].content_Type?.contains("PD") == true) {
+        if (allFav[position].content_Type?.contains("PD") == true) {
             menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allDownloads[position])
+                openMenu.onClickBottomItemPodcast(allFav[position])
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return allDownloads.size
+        return allFav.size
     }
 
+    fun setData(data: MutableList<FavDataModel>) {
+        allFav = data.toMutableList()
+        notifyDataSetChanged()
+
+    }
+    fun updateData(artistFavoriteContent: List<FavDataModel>?) {
+        allFav.clear()
+        artistFavoriteContent?.let {allFav.addAll(it) }
+        notifyDataSetChanged()
+
+    }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()
         fun bindItems() {
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
+                .load(UtilHelper.getImageUrlSize300(allFav[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
+            tvSongName.text = allFav[absoluteAdapterPosition].titleName
 
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
+            tvSingerName.text = allFav[absoluteAdapterPosition].artistName
 
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
             tvSongLength.text =
-                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
+                TimeParser.secToMin(allFav[absoluteAdapterPosition].total_duration)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = allDownloads[absoluteAdapterPosition].content_Id
+            progressIndicator.tag = allFav[absoluteAdapterPosition].content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             downloaded.tag = 220
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].content_Id!!)
+                cacheRepository.isTrackDownloaded(allFav[absoluteAdapterPosition].content_Id!!)
                     ?: false
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

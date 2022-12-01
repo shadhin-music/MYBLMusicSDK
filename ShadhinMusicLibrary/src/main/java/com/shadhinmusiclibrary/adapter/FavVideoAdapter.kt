@@ -23,12 +23,12 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavVideoAdapter(
-    val allDownloads: List<FavDataModel>,
+
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: CommonPSVCallback,
     private val cacheRepository: CacheRepository
 ) : RecyclerView.Adapter<FavVideoAdapter.ViewHolder>() {
-
+    private var allFav: MutableList<FavDataModel> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_row_video_li, parent, false)
@@ -38,12 +38,12 @@ internal class FavVideoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.threeDotButton)
-        if (allDownloads[position].content_Type.equals("V")) {
+        if (allFav[position].content_Type.equals("V")) {
 //
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads) {
+                for (item in allFav) {
                     val video = VideoModel()
                     video.setDataFavorite(item)
                     videoArray.add(video)
@@ -54,7 +54,7 @@ internal class FavVideoAdapter(
                 holder.itemView.context.startActivity(intent)
             }
             menu.setOnClickListener {
-                openMenu.onClickBottomItemVideo(allDownloads[position])
+                openMenu.onClickBottomItemVideo(allFav[position])
             }
         }
 //        if(allDownloads[position].rootType.equals("S")){
@@ -64,9 +64,19 @@ internal class FavVideoAdapter(
         // }
         //}
     }
+    fun setData(data: MutableList<FavDataModel>) {
+        allFav = data.toMutableList()
+        notifyDataSetChanged()
 
+    }
+    fun updateData(artistFavoriteContent: List<FavDataModel>?) {
+        allFav.clear()
+        artistFavoriteContent?.let {allFav.addAll(it) }
+        notifyDataSetChanged()
+
+    }
     override fun getItemCount(): Int {
-        return allDownloads.size
+        return allFav.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -80,28 +90,28 @@ internal class FavVideoAdapter(
         private var threeDotButton: ImageButton = itemView.findViewById(R.id.threeDotButton)
 
         fun bindItems() {
-            titleTextView.text = allDownloads[absoluteAdapterPosition].titleName
+            titleTextView.text = allFav[absoluteAdapterPosition].titleName
             durationTextView.text =
-                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
+                TimeParser.secToMin(allFav[absoluteAdapterPosition].total_duration)
 //            if (item.isPlaying) {
 //                titleTextView.setTextColor( ContextCompat.getColor(itemView.context,R.color.my_sdk_color_primary))
 //            } else {
 //                titleTextView.setTextColor(ContextCompat.getColor(itemView.context,R.color.my_sdk_down_title))
 //            }
-            subTitleTextView.text = allDownloads[absoluteAdapterPosition].artistName
+            subTitleTextView.text = allFav[absoluteAdapterPosition].artistName
 
             Glide.with(itemView.context)
-                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
+                .load(UtilHelper.getImageUrlSize300(allFav[absoluteAdapterPosition].imageUrl!!))
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = allDownloads[absoluteAdapterPosition].content_Id
+            progressIndicator.tag = allFav[absoluteAdapterPosition].content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
 //            downloaded.tag = 200
             val isDownloaded =
-                cacheRepository.isVideoDownloaded(allDownloads[absoluteAdapterPosition].content_Id)
+                cacheRepository.isVideoDownloaded(allFav[absoluteAdapterPosition].content_Id)
             if (isDownloaded) {
                 Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)
                 downloaded.visibility = View.VISIBLE

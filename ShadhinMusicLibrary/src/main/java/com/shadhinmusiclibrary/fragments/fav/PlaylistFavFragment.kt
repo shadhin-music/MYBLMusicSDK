@@ -36,6 +36,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
+import com.shadhinmusiclibrary.adapter.FavoriteAlbumAdapter
 import com.shadhinmusiclibrary.adapter.FavoritePlaylistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
@@ -96,15 +97,22 @@ internal class PlaylistFavFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter =
-            cacheRepository.getPlaylistFavoriteContent()?.let {
-                FavoritePlaylistAdapter(
-                    it,
-                    this,
-                    this,
-                    cacheRepository, this
-                )
-            }!!
+//        dataAdapter =
+//            cacheRepository.getPlaylistFavoriteContent()?.let {
+//                FavoritePlaylistAdapter(
+//                    it,
+//                    this,
+//                    this,
+//                    cacheRepository, this
+//                )
+//            }!!
+        dataAdapter =  FavoritePlaylistAdapter(this, this,   cacheRepository, this)
+
+        cacheRepository.getPlaylistFavoriteContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList()
+            )
+        }!!
 
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -435,6 +443,7 @@ internal class PlaylistFavFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
+                dataAdapter.updateData(cacheRepository.getPlaylistFavoriteContent())
             } else {
                 favViewModel.addFavContent(
                     mSongDetails.content_Id ?: "",
