@@ -1447,7 +1447,7 @@ internal class SDKMainActivity : BaseActivity(),
         }
     }
     private fun addQueue(context: Context) {
-        val bottomSheetDialogPlaylist =
+        val bottomSheetDialogQueue =
             BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             inflate(
@@ -1455,15 +1455,15 @@ internal class SDKMainActivity : BaseActivity(),
                 R.layout.my_bl_sdk_bottomsheet_add_queue,
                 null
             )
-        bottomSheetDialogPlaylist.setContentView(contentView)
-        bottomSheetDialogPlaylist.show()
+        bottomSheetDialogQueue.setContentView(contentView)
+        bottomSheetDialogQueue.show()
         val closeButton: ImageView? =
-            bottomSheetDialogPlaylist.findViewById(R.id.closeButton)
+            bottomSheetDialogQueue.findViewById(R.id.closeButton)
         closeButton?.setOnClickListener {
-            bottomSheetDialogPlaylist.dismiss()
+            bottomSheetDialogQueue.dismiss()
         }
         val recyclerView: RecyclerView? =
-            bottomSheetDialogPlaylist.findViewById(R.id.recyclerView)
+            bottomSheetDialogQueue.findViewById(R.id.recyclerView)
 
 
     }
