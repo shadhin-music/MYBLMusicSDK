@@ -60,7 +60,7 @@ internal object UtilHelper {
                         displayIconUrl = getImageUrlSize300(imageUrl!!),
                         mediaUrl = Constants.FILE_BASE_URL + playingUrl,
                         artistName = artistName ?: "",
-                        date = "",
+                        date = total_duration,
                         contentType = content_Type,
                         userPlayListId = "",
                         episodeId = "",
@@ -83,30 +83,29 @@ internal object UtilHelper {
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
         for (musicItem in musicList) {
-            musicItem.apply {
-                songDetailList.add(
-                    SongDetailModel().apply {
-                        content_Id = mediaId ?: ""
-                        imageUrl = displayIconUrl ?: ""
-                        titleName = title ?: ""
-                        content_Type = contentType ?: ""
-                        playingUrl = mediaUrl ?: ""
-                        artistName = artistName ?: ""
-                        total_duration = date ?: ""
+
+            songDetailList.add(
+                SongDetailModel()
+                    .apply {
+                        content_Id = musicItem.mediaId ?: ""
+                        imageUrl = musicItem.displayIconUrl ?: ""
+                        titleName = musicItem.title ?: ""
+                        content_Type = musicItem.contentType ?: ""
+                        playingUrl = musicItem.mediaUrl ?: ""
+                        artistName = musicItem.artistName
+                        total_duration = musicItem.date
                         copyright = ""
                         labelname = ""
                         releaseDate = ""
-                        fav = ""
+                        fav = musicItem.fav
                         artist_Id = ""
                         album_Id = ""
-                        userPlayListId = userPlayListId ?: ""
-                        rootContentId = rootId ?: ""
-                        rootContentType = rootType ?: ""
-                        rootImage = rootImage ?: ""
+                        rootContentId = musicItem.rootId ?: ""
+                        rootContentType = musicItem.rootType ?: ""
+                        rootImage = musicItem.rootImage ?: ""
                         isSeekAble = musicItem.seekable
                     }
-                )
-            }
+            )
         }
         return songDetailList
     }

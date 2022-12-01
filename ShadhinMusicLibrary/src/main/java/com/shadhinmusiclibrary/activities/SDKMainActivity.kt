@@ -44,6 +44,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
+import com.shadhinmusiclibrary.adapter.QueueTrackAdapter
+import com.shadhinmusiclibrary.callBackService.CommonSingleCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -69,7 +71,7 @@ import java.io.Serializable
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
-    ItemClickListener {
+    ItemClickListener, CommonSingleCallback {
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -115,6 +117,7 @@ internal class SDKMainActivity : BaseActivity(),
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var favViewModel: FavViewModel
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
+    private lateinit var queueTrackAdapter: QueueTrackAdapter
     private lateinit var listData: MutableList<HomePatchDetailModel>
 
     private fun uiInitMiniMusicPlayer() {
@@ -239,7 +242,6 @@ internal class SDKMainActivity : BaseActivity(),
         playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
     }
-
 
     val cacheRepository by lazy {
         CacheRepository(this)
@@ -958,12 +960,10 @@ internal class SDKMainActivity : BaseActivity(),
             } else {
                 Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
             }
-
-
         }
 
         ibtnQueueMusic.setOnClickListener {
-            addQueue(this)
+            addQueue(this, mSongDetails)
         }
 
         ibtnDownload.setOnClickListener {
@@ -1446,7 +1446,10 @@ internal class SDKMainActivity : BaseActivity(),
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
-    private fun addQueue(context: Context) {
+
+    private fun addQueue(context: Context, mSongDetails: MutableList<IMusicModel>) {
+        queueTrackAdapter = QueueTrackAdapter(this)
+        queueTrackAdapter.setQueueTrack(mSongDetails, playerViewModel.currentMusic?.mediaId)
         val bottomSheetDialogQueue =
             BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
@@ -1462,11 +1465,18 @@ internal class SDKMainActivity : BaseActivity(),
         closeButton?.setOnClickListener {
             bottomSheetDialogQueue.dismiss()
         }
-        val recyclerView: RecyclerView? =
-            bottomSheetDialogQueue.findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView? = bottomSheetDialogQueue.findViewById(R.id.recyclerView)
+        recyclerView?.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.adapter = queueTrackAdapter
 
-
+        playerViewModel.currentMusicLiveData.observe(this) { music ->
+            if (music?.mediaId != null) {
+                queueTrackAdapter.setPlayingSong(music.mediaId!!)
+            }
+        }
     }
+
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -1646,7 +1656,7 @@ internal class SDKMainActivity : BaseActivity(),
                             rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
-                            artistName =iSongTrack.artistName.toString()
+                            artistName = iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
                         }
                     )
@@ -2188,5 +2198,9 @@ internal class SDKMainActivity : BaseActivity(),
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onClickItem(currentSong: IMusicModel, clickItemPosition: Int) {
+        playerViewModel.skipToQueueItem(clickItemPosition)
     }
 }
