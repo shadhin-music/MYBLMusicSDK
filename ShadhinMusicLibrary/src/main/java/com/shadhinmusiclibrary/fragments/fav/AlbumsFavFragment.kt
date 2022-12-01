@@ -500,7 +500,7 @@ internal class AlbumsFavFragment : BaseFragment(),
 //            })
 
         bsdNavController.navigate(
-            R.id.favoriteArtist,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,

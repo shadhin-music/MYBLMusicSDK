@@ -60,7 +60,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/downloadAlbum"
+        android:id="@+id/songs_download_fragment"
         android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
         android:label="fragment_download_album"
         tools:layout="@layout/my_bl_sdk_fragment_download_details">
@@ -68,7 +68,6 @@
         <action
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
-
     </fragment>
 
     <fragment
@@ -97,7 +96,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/favoritePlaylist"
+        android:id="@+id/playlist_fav_fragment"
         android:name="com.shadhinmusiclibrary.fragments.fav.PlaylistFavFragment"
         android:label="fragment_favplaylist"
         tools:layout="@layout/my_bl_sdk_fragment_download_details">
@@ -151,17 +150,7 @@
         tools:layout="@layout/my_bl_sdk_fragment_create_playlist" />
 
     <fragment
-        android:id="@+id/downloadSong"
-        android:name="com.shadhinmusiclibrary.fragments.SongsDownloadFragment"
-        android:label="SongsDownloadFragment">
-
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/favoriteArtist"
+        android:id="@+id/artist_fav_fragment"
         android:name="com.shadhinmusiclibrary.fragments.fav.ArtistFavFragment"
         tools:layout="@layout/my_bl_sdk_fragment_download_details">
         <action
