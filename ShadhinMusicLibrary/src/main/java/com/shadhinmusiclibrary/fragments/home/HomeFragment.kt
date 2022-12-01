@@ -55,8 +55,6 @@ internal class HomeFragment : BaseFragment(),
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
 
-//    private lateinit var srlHomeRefresh: SwipeRefreshLayout
-
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
@@ -85,12 +83,6 @@ internal class HomeFragment : BaseFragment(),
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_home, container, false)
-//        srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
-
-//        srlHomeRefresh.setOnRefreshListener {
-//            homeViewModel.fetchHomeData(1, false)
-//            srlHomeRefresh.isRefreshing = false
-//        }
 
         return viewRef
     }
