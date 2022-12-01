@@ -245,6 +245,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                     .putExtra("contentID", mSongDetails.content_Id ?: "")
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
+                downloadedSongsAdapter.upDateData(cacheRepository.getAllSongsDownloads()?.toMutableList())
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =

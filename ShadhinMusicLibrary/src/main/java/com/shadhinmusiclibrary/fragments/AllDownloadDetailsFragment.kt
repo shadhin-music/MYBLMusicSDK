@@ -1,7 +1,10 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -39,8 +42,7 @@ import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.HomePatchItemModel
+import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
@@ -94,8 +96,10 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         )[CreateplaylistViewModel::class.java]
 
         loadData()
+
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
         allDownloadAdapter.setData(
@@ -111,6 +115,8 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(config, allDownloadAdapter)
         recyclerView.adapter = parentAdapter
+
+
 
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -299,6 +305,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
 
+
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 val downloadRequest: DownloadRequest =
@@ -440,10 +447,13 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     false
                 )
                 val localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
-                val localIntent = Intent("DELETED")
+                val localIntent = Intent("DELETE")
                     .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloadedComplete = false
+                allDownloadAdapter.upDateData(cacheRepository.getAllDownloads()?.toMutableList())
+               // parentAdapter.notifyDataSetChanged()
+
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 var downloadRequest: DownloadRequest =
@@ -470,6 +480,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                                 artistName = mSongDetails.artistName
                                 artist_Id = mSongDetails.artist_Id
                                 total_duration = mSongDetails.total_duration
+                                album_Id =mSongDetails.album_Id
                             }
                     )
                     isDownloadedComplete = true
@@ -540,6 +551,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
+
             } else {
                 favViewModel.addFavContent(
                     mSongDetails.content_Id ?: "",
@@ -702,4 +714,53 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             Toast.makeText(requireContext(), res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
+//    override fun onStart() {
+//        super.onStart()
+//        val intentFilter = IntentFilter()
+//        intentFilter.addAction("ACTION")
+//        intentFilter.addAction("DELETED123")
+//        intentFilter.addAction("DELETE")
+//        intentFilter.addAction("PROGRESS")
+//        LocalBroadcastManager.getInstance(requireContext())
+//            .registerReceiver(MyBroadcastReceiver(), intentFilter)
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        LocalBroadcastManager.getInstance(requireContext())
+//            .unregisterReceiver(MyBroadcastReceiver())
+//    }
+//    inner class MyBroadcastReceiver : BroadcastReceiver() {
+//        @SuppressLint("NotifyDataSetChanged")
+//        override fun onReceive(context: Context, intent: Intent) {
+//            when (intent.action) {
+//                "ACTION" -> {
+//                    //parentAdapter.notifyDataSetChanged()
+//                    //val data = intent.getIntExtra("currentProgress",0)
+////                    val downloadingItems =
+////                        intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
+////                    downloadingItems?.let {
+////                        progressIndicatorUpdate(it)
+////                        Log.e("getDownloadManagerx",
+////                            "habijabi: ${it.toString()} ")
+//                    }
+//
+//                "DELETED123" -> {
+//                   // val cacheRepository = CacheRepository(requireContext())
+//
+//                   // allDownloadAdapter.notifyDataSetChanged()
+//                   // Log.e("DELETED", "STATE_REMOVING FIRED <--> CLICK")
+//                }
+//                "DELETE" -> {
+//                  // loadData()
+//                  // parentAdapter.notifyDataSetChanged()
+//                    Log.e("DELETED12333", "STATE_REMOVING FIRED <--> CLICK")
+//                }
+////                "PROGRESS" -> {
+////                    parentAdapter.notifyDataSetChanged()
+////                }
+//                else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
+//            }
+//        }
+//    }
 }

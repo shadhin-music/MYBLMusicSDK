@@ -110,6 +110,7 @@ internal class AlbumsFavFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
+
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
 
     }
@@ -441,6 +442,7 @@ internal class AlbumsFavFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
+                parentAdapter.notifyDataSetChanged()
                 Log.e("TAG", "NAME: " + isFav)
             } else {
 

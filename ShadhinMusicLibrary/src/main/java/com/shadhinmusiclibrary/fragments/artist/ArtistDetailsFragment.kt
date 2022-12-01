@@ -89,8 +89,8 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun initialize() {
-//        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artistName)
-//        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artist_Id)
+        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artistName)
+        Log.e("TAG","ARTIST: " + argHomePatchDetail?.artist_Id)
         setupAdapters()
         setupViewModel()
         observeData()
@@ -350,6 +350,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED123")
         intentFilter.addAction("DELETED")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
@@ -388,6 +389,9 @@ internal class ArtistDetailsFragment : BaseFragment(),
                     downloadingItems?.let {
                         progressIndicatorUpdate(it)
                     }
+                }
+                "DELETED123" -> {
+                    artistTrackAdapter.notifyDataSetChanged()
                 }
                 "DELETED" -> {
                     artistTrackAdapter.notifyDataSetChanged()

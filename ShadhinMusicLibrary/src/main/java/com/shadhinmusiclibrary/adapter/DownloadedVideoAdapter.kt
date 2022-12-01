@@ -3,6 +3,7 @@ package com.shadhinmusiclibrary.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.video.VideoActivity
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -30,7 +32,7 @@ internal class DownloadedVideoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
-        if (allDownloads[position].rootContentType.equals("V")) {
+        if (allDownloads[position].content_Type.equals("V")) {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
@@ -57,6 +59,13 @@ internal class DownloadedVideoAdapter(
         return allDownloads.size
     }
 
+    fun upDateData(data: MutableList<DownloadedContent>?) {
+        var allDownloads: MutableList<IMusicModel> = mutableListOf()
+        allDownloads.clear()
+        data?.let { allDownloads.addAll(it) }
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()
@@ -80,6 +89,7 @@ internal class DownloadedVideoAdapter(
                 .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
+            threeDotButton.visibility =GONE
 //            if (item.isPlaystate) {
 //                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
 //            } else {
@@ -88,9 +98,9 @@ internal class DownloadedVideoAdapter(
 //            itemView.setOnClickListener {
 //                videoItemClickFunc?.invoke(getItem(absoluteAdapterPosition),false)
 //            }
-//            threeDotButton.setOnClickListener {
-//                bottomsheetDialog.openDialog(item)
-//            }
+            threeDotButton.setOnClickListener {
+                //lrOnCallBack.openDialog(item)
+            }
         }
     }
 }
