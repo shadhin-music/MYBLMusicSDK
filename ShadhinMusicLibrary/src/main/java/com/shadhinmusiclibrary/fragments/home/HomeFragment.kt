@@ -16,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -54,8 +53,6 @@ internal class HomeFragment : BaseFragment(),
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
 
-    private lateinit var srlHomeRefresh: SwipeRefreshLayout
-
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
     private lateinit var ivSongThumbMini: ImageView
@@ -84,13 +81,7 @@ internal class HomeFragment : BaseFragment(),
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_home, container, false)
-        srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
 
-        srlHomeRefresh.setOnRefreshListener {
-            homeViewModel.fetchHomeData(pageNum, false)
-            srlHomeRefresh.isRefreshing = false
-        }
-//
         return viewRef
     }
 
@@ -136,6 +127,8 @@ internal class HomeFragment : BaseFragment(),
                 }
             } else {
                 progressBar.visibility = GONE
+                pageNum = 1
+                homeViewModel.fetchHomeData(pageNum, false)
             }
             isLoading = false
         }
@@ -243,7 +236,6 @@ internal class HomeFragment : BaseFragment(),
                         dataAdapter?.setData(listOf(it1))
                         //dataAdapter?.notifyItemChanged(pageNum)
                         dataAdapter?.notifyDataSetChanged()
-                        Log.e("TAG", "PAGE NUMBER: " + it?.data?.indices)
                     }
 //                  it.data.let {
                     //   it1 ->

@@ -60,7 +60,7 @@ internal object UtilHelper {
                         displayIconUrl = getImageUrlSize300(imageUrl!!),
                         mediaUrl = Constants.FILE_BASE_URL + playingUrl,
                         artistName = artistName ?: "",
-                        date = "",
+                        date = total_duration,
                         contentType = content_Type,
                         userPlayListId = "",
                         episodeId = "",
@@ -83,30 +83,29 @@ internal object UtilHelper {
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
         for (musicItem in musicList) {
-            musicItem.apply {
-                songDetailList.add(
-                    SongDetailModel().apply {
-                        content_Id = mediaId ?: ""
-                        imageUrl = displayIconUrl ?: ""
-                        titleName = title ?: ""
-                        content_Type = contentType ?: ""
-                        playingUrl = mediaUrl ?: ""
-                        artistName = artistName ?: ""
-                        total_duration = date ?: ""
+
+            songDetailList.add(
+                SongDetailModel()
+                    .apply {
+                        content_Id = musicItem.mediaId ?: ""
+                        imageUrl = musicItem.displayIconUrl ?: ""
+                        titleName = musicItem.title ?: ""
+                        content_Type = musicItem.contentType ?: ""
+                        playingUrl = musicItem.mediaUrl ?: ""
+                        artistName = musicItem.artistName
+                        total_duration = musicItem.date
                         copyright = ""
                         labelname = ""
                         releaseDate = ""
-                        fav = ""
+                        fav = musicItem.fav
                         artist_Id = ""
                         album_Id = ""
-                        userPlayListId = userPlayListId ?: ""
-                        rootContentId = rootId ?: ""
-                        rootContentType = rootType ?: ""
-                        rootImage = rootImage ?: ""
+                        rootContentId = musicItem.rootId ?: ""
+                        rootContentType = musicItem.rootType ?: ""
+                        rootImage = musicItem.rootImage ?: ""
                         isSeekAble = musicItem.seekable
                     }
-                )
-            }
+            )
         }
         return songDetailList
     }
@@ -137,18 +136,6 @@ internal object UtilHelper {
 
     fun getEmptyHomePatchDetail() = HomePatchDetailModel().apply {
         isSeekAble = true
-    }
-
-    fun getMixdUpIMusicWithRootData(
-        mSongDet: IMusicModel,
-        rootPatch: HomePatchDetailModel,
-    ): IMusicModel {
-        mSongDet.apply {
-            rootContentId = rootPatch.content_Id
-            rootContentType = rootPatch.content_Type
-            rootImage = rootPatch.imageUrl
-        }
-        return mSongDet
     }
 
     fun getRadioSong(
@@ -208,39 +195,13 @@ internal object UtilHelper {
         return iMusicData
     }
 
-    /* fun getSongDetailAndRootDataForUSERPLAYLIST(
-         mSongDet: UserSongsPlaylistDataModel
-     ): SongDetailModel {
-         mSongDet.apply {
-             return SongDetailModel().apply {
-                 content_Id = contentID.toString()
-                 imageUrl = image.toString()
-                 titleName = title.toString()
-                 content_Type = contentType.toString()
-                 playingUrl = playUrl.toString()
-                 artist = artist.toString()
-                 duration = duration.toString()
-                 copyright = copyright.toString()
-                 labelname = labelname.toString()
-                 releaseDate = releaseDate.toString()
-                 fav = ""
-                 artist_Id = artistId.toString()
-                 albumId = albumId.toString()
-                 userPlayListId = userPlayListId
-                 rootContentId = contentID.toString()
-                 rootContentType = ""
-                 rootImage = ""
-             }
-         }
-     }*/
-
     fun getArtistContentDataToRootData(
         mSongDet: ArtistContentDataModel,
         rootPatch: HomePatchDetailModel,
     ): ArtistContentDataModel {
         mSongDet.apply {
             mSongDet.apply {
-                artist_Id = album_Id
+                /*artist_Id = album_Id*/
                 rootContentId = rootPatch.content_Id
                 rootContentType = rootPatch.content_Type
                 rootImage = rootPatch.imageUrl
@@ -248,6 +209,19 @@ internal object UtilHelper {
             }
             return mSongDet
         }
+    }
+
+    fun getMixdUpIMusicWithRootData(
+        mSongDet: IMusicModel,
+        rootPatch: HomePatchDetailModel,
+    ): IMusicModel {
+        mSongDet.apply {
+            rootContentId = rootPatch.content_Id
+            rootContentType = rootPatch.content_Type
+            rootImage = rootPatch.imageUrl
+            isSeekAble = true
+        }
+        return mSongDet
     }
 
     fun getTrackToRootData(

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -81,13 +82,19 @@ internal class AlbumDetailsFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
         //TODO  argHomePatchDetail!!.ContentID,
-        argHomePatchDetail!!.album_Id?.let {
-            observeData(
-                it,
-                argHomePatchDetail!!.artist_Id ?: "",
-                argHomePatchDetail!!.content_Type ?: ""
-            )
-        }
+        Log.e(
+            "CommAlDF",
+            "onClickItemAndAllItem:\n"
+                    + " content_Id: " + argHomePatchDetail?.content_Id
+                    + " artist_Id: " + argHomePatchDetail?.artist_Id
+                    + " album_Id: " + argHomePatchDetail?.album_Id
+        )
+
+        observeData(
+            argHomePatchDetail!!.album_Id ?: "",
+            argHomePatchDetail!!.artist_Id ?: "",
+            argHomePatchDetail!!.content_Type ?: ""
+        )
 
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -183,6 +190,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
+                    playerViewModel.play()
                 } else {
                     playerViewModel.togglePlayPause()
                 }
@@ -239,16 +247,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
         }
     }
 
-    override fun onClickBottomItem(mSongDetails: IMusicModel) {
-        (activity as? SDKMainActivity)?.showBottomSheetDialog(
-            navController,
-            context = requireContext(),
-            mSongDetails,
-            argHomePatchItem,
-            argHomePatchDetail
-        )
-    }
-
     override fun onClickItemAndAllItem(
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
@@ -291,6 +289,19 @@ internal class AlbumDetailsFragment : BaseFragment(),
         observeData(mArtAlbumMod.content_Id ?: "", mArtAlbumMod.artist_Id ?: "", "r")
     }
 
+    override fun onClickBottomItem(mSongDetails: IMusicModel) {
+        Log.e(
+            "CommArDF",
+            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
+        )
+        (activity as? SDKMainActivity)?.showBottomSheetDialog(
+            navController,
+            context = requireContext(),
+            mSongDetails,
+            argHomePatchItem,
+            argHomePatchDetail
+        )
+    }
 
     private fun progressIndicatorUpdate(downloadingItems: List<DownloadingItem>) {
         downloadingItems.forEach {

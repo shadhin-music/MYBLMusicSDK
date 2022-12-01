@@ -47,6 +47,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.MusicPlayAdapter
+import com.shadhinmusiclibrary.adapter.QueueTrackAdapter
+import com.shadhinmusiclibrary.callBackService.CommonSingleCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
@@ -72,7 +74,7 @@ import java.io.Serializable
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
-    ItemClickListener {
+    ItemClickListener, CommonSingleCallback {
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -118,6 +120,7 @@ internal class SDKMainActivity : BaseActivity(),
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var favViewModel: FavViewModel
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
+    private lateinit var queueTrackAdapter: QueueTrackAdapter
     private lateinit var listData: MutableList<HomePatchDetailModel>
 
     private fun uiInitMiniMusicPlayer() {
@@ -161,6 +164,7 @@ internal class SDKMainActivity : BaseActivity(),
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fcv_navigation_host) as NavHostFragment
         navController = navHostFragment.navController
+
         slCustomBottomSheet = findViewById(R.id.sl_custom_bottom_sheet)
         slCustomBottomSheet.isEnabled = true
         rlContentMain = findViewById(R.id.rl_content_main)
@@ -243,7 +247,6 @@ internal class SDKMainActivity : BaseActivity(),
         //  routeDataArtistType()
     }
 
-
     val cacheRepository by lazy {
         CacheRepository(this)
     }
@@ -253,8 +256,10 @@ internal class SDKMainActivity : BaseActivity(),
             .getSerializable(PatchItem) as HomePatchItem
 
 */
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_search,
-            Bundle().apply {})
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {}, R.id.search_fragment
+        )
 
     }
 
@@ -262,26 +267,30 @@ internal class SDKMainActivity : BaseActivity(),
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_download,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
                     patch as Serializable
                 )
-            })
+            }, R.id.download_fragment
+        )
     }
 
     private fun watchLaterFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_watch_later,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
                     patch as Serializable
                 )
-            })
+            }, R.id.watch_later_fragment
+        )
     }
 
     private fun homeFragmentAccess() {
@@ -300,39 +309,45 @@ internal class SDKMainActivity : BaseActivity(),
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_my_playlist,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
                     patch as Serializable
                 )
-            })
+            }, R.id.my_playlist_fragment
+        )
     }
 
     private fun myFavoriteFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_my_favorite,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
                     patch as Serializable
                 )
-            })
+            }, R.id.favorite_fragment
+        )
     }
 
     private fun createPlaylistFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
 
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_create_playlist,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
                     patch as Serializable
                 )
-            })
+            }, R.id.create_playlist_fragment
+        )
     }
 
     //    private fun FavArtistDetailsFragmentAccess() {
@@ -355,7 +370,8 @@ internal class SDKMainActivity : BaseActivity(),
             .getSerializable(PatchItem) as HomePatchItemModel
         val id = intent.extras!!.getBundle(PlaylistId)!!.getSerializable(PlaylistId) as String
         val name = intent.extras!!.getBundle(PlaylistName)!!.getSerializable(PlaylistName) as String
-        setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_user_playlist_details,
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 putSerializable(
                     PatchItem,
@@ -367,7 +383,8 @@ internal class SDKMainActivity : BaseActivity(),
                     AppConstantUtils.PlaylistGradientId,
                     intent.extras!!.getInt(AppConstantUtils.PlaylistGradientId)
                 )
-            })
+            }, R.id.user_playlist_details_fragment
+        )
     }
 
     private fun patchFragmentAccess() {
@@ -380,47 +397,60 @@ internal class SDKMainActivity : BaseActivity(),
     private fun routeDataPatch(contentType: String) {
         when (contentType.toUpperCase(Locale.ENGLISH)) {
             DataContentType.CONTENT_TYPE_R_RC201 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_r, Bundle().apply {
-                    putString(DataContentType.TITLE, "Latest Release")
-                })
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        putString(DataContentType.TITLE, "Latest Release")
+                    }, R.id.latest_release_fragment
+                )
             }
             DataContentType.CONTENT_TYPE_PD_RC202 -> {
                 setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast,
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putString(DataContentType.TITLE, "Featured Podcast")
-                    })
+                    }, R.id.featured_podcast_fragment
+                )
             }
             DataContentType.CONTENT_TYPE_A_RC203 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_a, Bundle().apply {
-                    putString(DataContentType.TITLE, "Popular Artists")
-                })
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        putString(DataContentType.TITLE, "Popular Artists")
+                    }, R.id.featured_popular_artist_fragment
+                )
             }
             DataContentType.AMR_TUNE_ALL -> {
                 setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune,
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putString(DataContentType.CONTENT_TYPE, contentType)
-                    })
+                    }, R.id.amartunes_web_view_fragment
+                )
             }
             DataContentType.AMR_TUNE -> {
                 setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_patch_type_amar_tune,
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putString(DataContentType.CONTENT_TYPE, contentType)
-                    })
+                    }, R.id.amartunes_web_view_fragment
+                )
             }
             DataContentType.CONTENT_TYPE_V_RC204 -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_music_video,
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putString(DataContentType.TITLE, "Music Video")
-                    })
+                    }, R.id.music_video_fragment
+                )
             }
             DataContentType.CONTENT_TYPE_RADIO -> {
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_radio,
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putString(DataContentType.TITLE, "Radio")
-                    })
+                    }, R.id.radio_fragment
+                )
             }
         }
     }
@@ -435,7 +465,8 @@ internal class SDKMainActivity : BaseActivity(),
             val contentType = podcast.takeLast(2)
             if (homePatchDetail.content_Type?.contains("PD") == true) {
                 //onPodcastClick(homePatchDetail,homePatchDetail)
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putSerializable(
                             PatchItem,
@@ -452,6 +483,30 @@ internal class SDKMainActivity : BaseActivity(),
                         putSerializable(
                             AppConstantUtils.PatchDetail,
                             homePatchDetail as Serializable
+                        )
+                    }, R.id.podcast_details_fragment
+                )
+            }
+/*            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
+                    Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
+
+                      //onPodcastClick(homePatchDetail,homePatchDetail)
+                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
+                    Bundle().apply {
+                        putSerializable(
+                            PatchItem,
+                            HomePatchItemModel(
+                                homePatchItem.Code,
+                                homePatchItem.ContentType,
+                                homePatchItem.Data,
+                                homePatchItem.Design,
+                                homePatchItem.Name,
+                                homePatchItem.Sort,
+                                homePatchItem.Total
+                            ) as Serializable
+                        )
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
 //                            HomePatchDetail(homePatchDetail.AlbumId,
 //                                homePatchDetail.AlbumImage,
 //                                homePatchDetail.AlbumName,
@@ -481,70 +536,16 @@ internal class SDKMainActivity : BaseActivity(),
 //                                homePatchDetail.image,
 //                                homePatchDetail.imageWeb,
 //                                homePatchDetail.title) as Serializable
-                            // homePatchDetail as Serializable
+                            homePatchDetail as Serializable
                         )
                     })
-            }
-            //  Log.e("TAG","CHECKING: "+ podcast)
-//            if (homePatchDetail.content_Type?.toUpperCase()!!.contains("PD")) {
-//                    Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
-//
-//                      //onPodcastClick(homePatchDetail,homePatchDetail)
-//                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_details,
-//                    Bundle().apply {
-//                        putSerializable(
-//                            PatchItem,
-//                            HomePatchItemModel(
-//                                homePatchItem.Code,
-//                                homePatchItem.ContentType,
-//                                homePatchItem.Data,
-//                                homePatchItem.Design,
-//                                homePatchItem.Name,
-//                                homePatchItem.Sort,
-//                                homePatchItem.Total
-//                            ) as Serializable
-//                        )
-//                        putSerializable(
-//                            AppConstantUtils.PatchDetail,
-////                            HomePatchDetail(homePatchDetail.AlbumId,
-////                                homePatchDetail.AlbumImage,
-////                                homePatchDetail.AlbumName,
-////                                homePatchDetail.Artist,
-////                                homePatchDetail.ArtistId,
-////                                homePatchDetail.ArtistImage,
-////                                homePatchDetail.Banner,
-////                                homePatchDetail.ContentID,
-////                                homePatchDetail.ContentType,
-////                                homePatchDetail.CreateDate,
-////                                homePatchDetail.Duration,
-////                                homePatchDetail.Follower,
-////                                homePatchDetail.IsPaid,
-////                                homePatchDetail.NewBanner,
-////                                homePatchDetail.PlayCount,
-////                                homePatchDetail.PlayListId,
-////                                homePatchDetail.PlayListId,
-////                                homePatchDetail.PlayListImage,
-////                                homePatchDetail.PlayUrl,
-////                                homePatchDetail.RootId,
-////                                homePatchDetail.RootType,
-////                                homePatchDetail.Seekable,
-////                                homePatchDetail.TeaserUrl,
-////                                homePatchDetail.TrackType,
-////                                homePatchDetail.Type,
-////                                homePatchDetail.fav,
-////                                homePatchDetail.image,
-////                                homePatchDetail.imageWeb,
-////                                homePatchDetail.title) as Serializable
-//                            homePatchDetail as Serializable
-//                        )
-//                    })
-//            }
+            }*/
 
             when (homePatchDetail.content_Type?.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(
-                        R.navigation.my_bl_sdk_nav_graph_artist_details,
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -554,11 +555,13 @@ internal class SDKMainActivity : BaseActivity(),
                                 AppConstantUtils.PatchDetail,
                                 homePatchDetail as Serializable
                             )
-                        })
+                        }, R.id.artist_details_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_album_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -568,11 +571,13 @@ internal class SDKMainActivity : BaseActivity(),
                                 AppConstantUtils.PatchDetail,
                                 homePatchDetail as Serializable
                             )
-                        })
+                        }, R.id.album_details_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_playlist_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -582,11 +587,13 @@ internal class SDKMainActivity : BaseActivity(),
                                 AppConstantUtils.PatchDetail,
                                 homePatchDetail as Serializable
                             )
-                        })
+                        }, R.id.playlist_details_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_s_type_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
@@ -596,7 +603,8 @@ internal class SDKMainActivity : BaseActivity(),
                                 AppConstantUtils.PatchDetail,
                                 homePatchDetail as Serializable
                             )
-                        })
+                        }, R.id.s_type_details_fragment
+                    )
                 }
                 homePatchDetail.content_Type?.contains("PD").toString() -> {
                     Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
@@ -609,74 +617,91 @@ internal class SDKMainActivity : BaseActivity(),
             if (homePatchItem.ContentType.toUpperCase().contains("PD")) {
                 //open podcast
                 //setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
-                setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_patch_type_featured_podcast,
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
                     Bundle().apply {
                         putSerializable(
                             PatchItem,
                             homePatchItem as Serializable
                         )
-                    })
+                    }, R.id.featured_podcast_fragment
+                )
             }
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_artist_list_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                        })
+                        }, R.id.popular_artist_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_R -> {
                     //open album details
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_album_list,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
                                 homePatchItem
                             )
-                        })
+                        }, R.id.release_list_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_playlist_list,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                        })
+                        }, R.id.playlist_list_fragment
+                    )
                 }
                 DataContentType.CONTENT_TYPE_S -> {
                     //open songs
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_s_type_list_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                        })
+                        }, R.id.s_type_list_fragment
+                    )
                 }
 
                 DataContentType.CONTENT_TYPE_V -> {
                     //open video
-                    setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_video_list_and_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             putSerializable(
                                 PatchItem,
                                 homePatchItem as Serializable
                             )
-                        })
+                        }, R.id.video_list_fragment
+                    )
                 }
             }
         }
     }
 
-    private fun setupNavGraphAndArg(@NavigationRes graphResId: Int, bundleData: Bundle) {
+    private fun setupNavGraphAndArg(
+        @NavigationRes graphResId: Int,
+        bundleData: Bundle,
+        resId: Int,
+    ) {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
+        navGraph.startDestination = resId
         navController.setGraph(navGraph, bundleData)
     }
 
@@ -961,12 +986,10 @@ internal class SDKMainActivity : BaseActivity(),
             } else {
                 Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
             }
-
-
         }
 
         ibtnQueueMusic.setOnClickListener {
-            addQueue(this)
+            addQueue(this, mSongDetails)
         }
 
         ibtnDownload.setOnClickListener {
@@ -1449,7 +1472,10 @@ internal class SDKMainActivity : BaseActivity(),
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
-    private fun addQueue(context: Context) {
+
+    private fun addQueue(context: Context, mSongDetails: MutableList<IMusicModel>) {
+        queueTrackAdapter = QueueTrackAdapter(this)
+        queueTrackAdapter.setQueueTrack(mSongDetails, playerViewModel.currentMusic?.mediaId)
         val bottomSheetDialogQueue =
             BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
@@ -1465,11 +1491,18 @@ internal class SDKMainActivity : BaseActivity(),
         closeButton?.setOnClickListener {
             bottomSheetDialogQueue.dismiss()
         }
-        val recyclerView: RecyclerView? =
-            bottomSheetDialogQueue.findViewById(R.id.recyclerView)
+        val recyclerView: RecyclerView? = bottomSheetDialogQueue.findViewById(R.id.recyclerView)
+        recyclerView?.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.adapter = queueTrackAdapter
 
-
+        playerViewModel.currentMusicLiveData.observe(this) { music ->
+            if (music?.mediaId != null) {
+                queueTrackAdapter.setPlayingSong(music.mediaId!!)
+            }
+        }
     }
+
     private fun setUpVolume(context: Context) {
         val bottomSheetDialogVolume =
             BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -1487,36 +1520,34 @@ internal class SDKMainActivity : BaseActivity(),
 //            bottomSheetDialogQueue.dismiss()
 //        }
 
-           val volumeBar:SeekBar? = bottomSheetDialogVolume.findViewById(R.id.volume_bar)
-           val volumeFull:ImageView? =bottomSheetDialogVolume.findViewById(R.id.volume_full)
-        val volumeOff:ImageView? =bottomSheetDialogVolume.findViewById(R.id.volume_off)
-            val audioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
-            if (audioManager != null) {
-                volumeBar?.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
-                volumeBar?.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-                volumeFull?.setImageDrawable(AppCompatResources.getDrawable(applicationContext,
-                    R.drawable.ic_volume_up))
-                volumeBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, newVolume: Int, b: Boolean) {
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0)
-                        if (newVolume == 0) {
-                           volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                                applicationContext,
-                                R.drawable.ic_volume_mute))
-                        } else {
-                          volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                              applicationContext,
-                                R.drawable.ic_volume_down))
-                        }
+        val volumeBar: SeekBar? = bottomSheetDialogVolume.findViewById(R.id.volume_bar)
+        val volumeFull: ImageView? = bottomSheetDialogVolume.findViewById(R.id.volume_full)
+        val volumeOff: ImageView? = bottomSheetDialogVolume.findViewById(R.id.volume_off)
+        val audioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
+        if (audioManager != null) {
+            volumeBar?.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
+            volumeBar?.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+            volumeFull?.setImageDrawable(AppCompatResources.getDrawable(applicationContext,
+                R.drawable.ic_volume_up))
+            volumeBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, newVolume: Int, b: Boolean) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0)
+                    if (newVolume == 0) {
+                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
+                            applicationContext,
+                            R.drawable.ic_volume_mute))
+                    } else {
+                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
+                            applicationContext,
+                            R.drawable.ic_volume_down))
                     }
+                }
 
-                    override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                    override fun onStopTrackingTouch(seekBar: SeekBar) {}
-                })
-            }
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
         }
-
-
+    }
 
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
@@ -1697,7 +1728,7 @@ internal class SDKMainActivity : BaseActivity(),
                             rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
-                            artistName =iSongTrack.artistName.toString()
+                            artistName = iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
                         }
                     )
@@ -2238,6 +2269,15 @@ internal class SDKMainActivity : BaseActivity(),
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id) }
         viewModel.songsAddedToPlaylist.observe(this) { res ->
             Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onClickItem(currentSong: IMusicModel, clickItemPosition: Int) {
+        if ((currentSong.content_Id == playerViewModel.currentMusic?.mediaId)) {
+            playerViewModel.togglePlayPause()
+        } else {
+            playerViewModel.skipToQueueItem(clickItemPosition)
+            playerViewModel.play()
         }
     }
 }

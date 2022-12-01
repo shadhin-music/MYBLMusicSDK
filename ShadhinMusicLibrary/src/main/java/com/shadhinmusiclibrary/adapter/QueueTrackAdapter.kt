@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,47 +13,36 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
-import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
+import com.shadhinmusiclibrary.callBackService.CommonSingleCallback
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-internal class ArtistTrackAdapter(
-    private val itemClickCB: CommonPlayControlCallback,
-    val bottomSheetDialogItemCallback: CommonBottomCallback,
-    val cacheRepository: CacheRepository?
-) : RecyclerView.Adapter<ArtistTrackAdapter.ArtistTrackVH>() {
-    var artistSongList: MutableList<IMusicModel> = mutableListOf()
+internal class QueueTrackAdapter(private val mItemClick: CommonSingleCallback) :
+    RecyclerView.Adapter<QueueTrackAdapter.QueueTrackVH>() {
+
+    var queueSongList: MutableList<IMusicModel> = mutableListOf()
     private var parentView: View? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistTrackVH {
-//        val v = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): QueueTrackVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_video_podcast_epi_single_item, parent, false)
-        return ArtistTrackVH(parentView!!)
+        return QueueTrackVH(parentView!!)
     }
 
-    override fun onBindViewHolder(holder: ArtistTrackVH, position: Int) {
-        val mArtistConData = artistSongList[position]
-        holder.bindItems(mArtistConData)
+    override fun onBindViewHolder(holder: QueueTrackVH, position: Int) {
+        val mQueueSongItem = queueSongList[position]
+        holder.bindItems(mQueueSongItem)
 
         holder.itemView.setOnClickListener {
-            itemClickCB.onClickItem(artistSongList, position)
-        }
-        val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
-        ivSongMenuIcon.setOnClickListener {
-            val artistContent = artistSongList[position]
-            bottomSheetDialogItemCallback.onClickBottomItem(
-                artistContent
-            )
+            mItemClick.onClickItem(mQueueSongItem, position)
         }
 
-        if (mArtistConData.isPlaying) {
+        if (mQueueSongItem.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
             )
@@ -66,24 +56,20 @@ internal class ArtistTrackAdapter(
         }
     }
 
-    override fun getItemViewType(position: Int) = VIEW_TYPE
-
     override fun getItemCount(): Int {
-        return artistSongList.size
+        return queueSongList.size
     }
 
-    fun setArtistTrack(
-        data: MutableList<ArtistContentDataModel>,
-        rootPatch: HomePatchDetailModel,
+    fun setQueueTrack(
+        data: MutableList<IMusicModel>,
         mediaId: String?
     ) {
-        this.artistSongList = mutableListOf()
-        this.artistSongList.clear()
         for (songItem in data) {
-            artistSongList.add(
-                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
-            )
+//            artistSongList.add(
+            Log.e("QTA", "setQueueTrack: " + songItem.artistName + " " + songItem.total_duration)
+//            )
         }
+        queueSongList = data
 
         if (mediaId != null) {
             setPlayingSong(mediaId)
@@ -94,18 +80,19 @@ internal class ArtistTrackAdapter(
 
     fun setPlayingSong(mediaId: String) {
         val newList: List<IMusicModel> =
-            UtilHelper.getCurrentRunningSongToNewSongList(mediaId, artistSongList)
-        val callback = AnyTrackDiffCB(artistSongList, newList)
+            UtilHelper.getCurrentRunningSongToNewSongList(mediaId, queueSongList)
+        val callback = AnyTrackDiffCB(queueSongList, newList)
         val diffResult = DiffUtil.calculateDiff(callback)
-        artistSongList.clear()
-        artistSongList.addAll(newList)
+        queueSongList.clear()
+        queueSongList.addAll(newList)
         diffResult.dispatchUpdatesTo(this)
         notifyDataSetChanged()
     }
 
-    inner class ArtistTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class QueueTrackVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         var tvSongName: TextView? = null
+
         fun bindItems(artistContent: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
@@ -120,21 +107,11 @@ internal class ArtistTrackAdapter(
 
             val progressIndicatorArtist: CircularProgressIndicator =
                 itemView.findViewById(R.id.progress)
-            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicatorArtist.tag = artistContent.content_Id
-            downloaded.tag = 200
             progressIndicatorArtist.visibility = View.GONE
+            val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
             downloaded.visibility = View.GONE
-            val isDownloaded =
-                cacheRepository?.isTrackDownloaded(artistContent.content_Id) ?: false
-            if (isDownloaded) {
-                downloaded.visibility = View.VISIBLE
-                progressIndicatorArtist.visibility = View.GONE
-            }
+            val ivSongMenuIcon: ImageView = itemView.findViewById(R.id.iv_song_menu_icon)
+            ivSongMenuIcon.visibility = View.GONE
         }
-    }
-
-    companion object {
-        const val VIEW_TYPE = 2
     }
 }

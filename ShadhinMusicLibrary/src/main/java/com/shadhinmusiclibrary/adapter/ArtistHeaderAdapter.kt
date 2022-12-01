@@ -58,11 +58,14 @@ internal class ArtistHeaderAdapter(
         return 1
     }
 
-    fun setSongAndData(data: MutableList<ArtistContentDataModel>, rootPatch: HomePatchDetailModel) {
-        this.dataSongDetail = mutableListOf()
+    fun setSongAndData(
+        data: MutableList<ArtistContentDataModel>,
+        rootPatch: HomePatchDetailModel
+    ) {
+//        this.dataSongDetail = mutableListOf()
         for (songItem in data) {
             dataSongDetail.add(
-                UtilHelper.getArtistContentDataToRootData(songItem, rootPatch)
+                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
         }
         this.homePatchDetail = homePatchDetail

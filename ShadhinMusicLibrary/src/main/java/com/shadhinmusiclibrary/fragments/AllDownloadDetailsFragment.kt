@@ -178,22 +178,14 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     }
 
     override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
+        Log.e(
+            "CommADDF",
+            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
+        )
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetailModel()
-                .apply {
-                    content_Id = mSongDetails.content_Id
-                    imageUrl = mSongDetails.imageUrl
-                    titleName = mSongDetails.titleName
-                    rootContentType = mSongDetails.rootContentType
-                    playingUrl = mSongDetails.playingUrl
-                    artistName = mSongDetails.artistName
-                    total_duration = mSongDetails.total_duration
-                    artist_Id = mSongDetails.artist_Id
-                    album_Id = mSongDetails.album_Id
-                    content_Type = mSongDetails.content_Type
-                },
+            mSongDetails,
             argHomePatchItem,
             HomePatchDetailModel().apply {
                 artistName = mSongDetails.artistName ?: ""
@@ -203,7 +195,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 playingUrl = mSongDetails.playingUrl ?: ""
                 imageUrl = mSongDetails.imageUrl ?: ""
                 titleName = mSongDetails.titleName ?: ""
-                total_duration =mSongDetails.total_duration
+                total_duration = mSongDetails.total_duration
                 album_Id = mSongDetails.album_Id
                 content_Type = mSongDetails.content_Type
             }
@@ -392,7 +384,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
@@ -586,12 +578,12 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?
     ) {
         //  Log.e("Check", ""+bsdNavController.graph.displayName)
-        bsdNavController.navigate(R.id.action_download_to_to_artistDetailsFragment,
+        bsdNavController.navigate(R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -600,10 +592,10 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel().apply {
-                        album_Id = mSongDetails.album_Id.toString()
-                        artistName = mSongDetails.artistName ?: ""
-                        mSongDetails.artist_Id.toString()
                         content_Id = mSongDetails.content_Id ?: ""
+                        album_Id = mSongDetails.album_Id.toString()
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
                         content_Type = mSongDetails.content_Type ?: ""
                         playingUrl = mSongDetails.playingUrl ?: ""
                         imageUrl = mSongDetails.imageUrl.toString()
@@ -613,7 +605,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
+    private fun gotoPlayList(context: Context, mSongDetails: IMusicModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)

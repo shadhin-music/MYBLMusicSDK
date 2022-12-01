@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.RBTModel
 import com.shadhinmusiclibrary.data.repository.HomeContentRepository
 import com.shadhinmusiclibrary.utils.ApiResponse
+import com.shadhinmusiclibrary.utils.Status
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(private val homeContentRepository: HomeContentRepository) :
@@ -18,6 +20,8 @@ internal class HomeViewModel(private val homeContentRepository: HomeContentRepos
     val urlContent: LiveData<ApiResponse<RBTModel>> = _urlContent
 
     fun fetchHomeData(pageNumber: Int?, isPaid: Boolean?) = viewModelScope.launch {
+//        _homeContent.postValue(ApiResponse(Status.ERROR, HomeDataModel(), ""))
+        Log.e("HVM", "fetchHomeData: $pageNumber")
         val response = homeContentRepository.fetchHomeData(pageNumber, isPaid)
         _homeContent.postValue(response)
     }

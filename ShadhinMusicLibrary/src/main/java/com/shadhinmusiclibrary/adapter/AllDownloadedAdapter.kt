@@ -70,7 +70,7 @@ internal class AllDownloadedAdapter(
                 openMenu.onClickBottomItemSongs(allDownloads[position])
             }
         }
-        if (allDownloads[position].content_Type?.contains("PD")==true) {
+        if (allDownloads[position].content_Type?.contains("PD") == true) {
             holder.itemView.setOnClickListener {
                 lrOnCallBack.onClickItem(allDownloads, position)
             }
@@ -100,8 +100,8 @@ internal class AllDownloadedAdapter(
     ) {
         for (songItem in data) {
             Log.e(
-                "ALLDowA",
-                "setData: " + songItem.content_Id + " " + songItem.titleName + " " + songItem.total_duration
+                "CommADA",
+                "setData: content_Id: " + songItem.content_Id + " artist_Id: " + songItem.artist_Id + " album_Id: " + songItem.album_Id
             )
             allDownloads.add(
                 songItem.apply {

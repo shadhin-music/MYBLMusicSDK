@@ -127,18 +127,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
         showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
-            SongTrackModel().apply {
-                rootContentType = mSongDetails.rootContentType
-                content_Type = mSongDetails.content_Type
-                artistName = mSongDetails.artistName
-                total_duration = mSongDetails.total_duration
-                content_Id = mSongDetails.content_Id
-                imageUrl = mSongDetails.imageUrl
-                titleName = mSongDetails.titleName
-                playingUrl = mSongDetails.playingUrl
-                rootContentId = mSongDetails.rootContentId
-                rootImage = mSongDetails.imageUrl
-            },
+           mSongDetails,
             argHomePatchItem,
             argHomePatchDetail
         )
@@ -148,15 +137,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
         (activity as? SDKMainActivity)?.showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetailModel().apply {
-                content_Id = mSongDetails.content_Id
-                imageUrl = mSongDetails.imageUrl
-                titleName = mSongDetails.titleName
-                rootContentType = mSongDetails.rootContentType
-                playingUrl = mSongDetails.playingUrl
-                artistName = mSongDetails.artistName
-                total_duration = mSongDetails.total_duration
-            },
+            mSongDetails,
             argHomePatchItem,
             argHomePatchDetail
         )

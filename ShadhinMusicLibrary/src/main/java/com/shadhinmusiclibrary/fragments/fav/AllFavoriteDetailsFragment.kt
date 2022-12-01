@@ -30,10 +30,8 @@ import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
-import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
-import com.shadhinmusiclibrary.adapter.FavoriteSongsAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
@@ -58,6 +56,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     CommonPSVCallback,
     ItemClickListener, onFavArtistClickAll {
+
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel
@@ -134,9 +133,8 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         }
     }
 
-
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
-      showBottomSheetDialogForPodcast(
+        showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
             SongTrackModel().apply {
@@ -158,28 +156,17 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetailModel().apply {
-                content_Id = mSongDetails.content_Id
-                imageUrl = mSongDetails.imageUrl.toString()
-                titleName = mSongDetails.titleName.toString()
-                content_Type = mSongDetails.content_Type.toString()
-                playingUrl = mSongDetails.playingUrl.toString()
-                artistName = mSongDetails.artistName.toString()
-                total_duration = mSongDetails.total_duration.toString()
-                artist_Id = mSongDetails.artist_Id
-                album_Id = mSongDetails.album_Id
-                total_duration = mSongDetails.total_duration
-            },
+            mSongDetails,
             argHomePatchItem,
             HomePatchDetailModel().apply {
-                album_Id = mSongDetails.album_Id.toString()
-                album_Name = mSongDetails.album_Name.toString()
-                artistName = mSongDetails.artistName.toString()
-                artist_Id = mSongDetails.artist_Id.toString()
                 content_Id = mSongDetails.content_Id
+                album_Id = mSongDetails.album_Id.toString()
+                artist_Id = mSongDetails.artist_Id.toString()
+                album_Name = mSongDetails.album_Name.toString()
+                imageUrl = mSongDetails.imageUrl.toString()
+                artistName = mSongDetails.artistName.toString()
                 content_Type = mSongDetails.content_Type.toString()
                 playingUrl = mSongDetails.playingUrl.toString()
-                imageUrl = mSongDetails.imageUrl.toString()
                 titleName = mSongDetails.titleName.toString()
                 total_duration = mSongDetails.total_duration
             }
@@ -420,11 +407,10 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -471,7 +457,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id!!)
+        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id)
         if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -479,7 +465,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             isDownloaded = false
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_icon_dowload)
         }
-
         if (isDownloaded) {
             textViewDownloadTitle?.text = "Remove From Download"
         } else {
@@ -549,7 +534,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 
         constraintPlaylist?.setOnClickListener {
             gotoPlayList(context, mSongDetails)
-
             bottomSheetDialog.dismiss()
         }
 
@@ -561,7 +545,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 //        favViewModel.getFavContentSong.observe(this){res->
 //            res.data?.forEach{
 //                if(it.contentID.equals(mSongDetails.ContentID)) {
-//
 //                    isFav = true
 //                    favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
 //                }
@@ -569,10 +552,9 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 //                    isFav = false
 //                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
 //                }
-//
 //            }
 //        }
-        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id!!)
+        val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id)
         if (isAddedToFav?.content_Id != null) {
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
@@ -582,8 +564,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             isFav = false
             textFav?.text = "Favorite"
         }
-
-
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
                 favViewModel.deleteFavContent(
@@ -628,7 +608,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?
     ) {
@@ -649,7 +629,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
 //            })
 
         bsdNavController.navigate(
-            R.id.action_favorite_to_artist_details_fragment,
+            R.id.to_artist_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -672,7 +652,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
+    private fun gotoPlayList(context: Context, mSongDetails: IMusicModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)
@@ -772,7 +752,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     override fun onFavAlbumClick(itemPosition: Int, mSongDetails: MutableList<IMusicModel>) {
         val favDat = mSongDetails[itemPosition]
         navController.navigate(
-            R.id.favoriteAlbum,
+            R.id.to_album_details,
             Bundle().apply {
                 putSerializable(
                     AppConstantUtils.PatchItem,
@@ -962,7 +942,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                             rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
                             artist_Id = iSongTrack.artist_Id
-                            artistName =iSongTrack.artistName.toString()
+                            artistName = iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
                         }
                     )

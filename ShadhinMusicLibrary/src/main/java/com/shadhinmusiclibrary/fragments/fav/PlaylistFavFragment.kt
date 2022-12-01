@@ -165,18 +165,7 @@ internal class PlaylistFavFragment : BaseFragment(),
         showBottomSheetDialog(
             navController,
             context = requireContext(),
-            SongDetailModel()
-                .apply {
-                    content_Id = mSongDetails.content_Id
-                    imageUrl = mSongDetails.imageUrl.toString()
-                    titleName = mSongDetails.titleName.toString()
-                    content_Type = mSongDetails.content_Type.toString()
-                    playingUrl = mSongDetails.playingUrl.toString()
-                    artistName = mSongDetails.artistName.toString()
-                    total_duration = mSongDetails.total_duration.toString()
-                    artist_Id = mSongDetails.artist_Id
-                    album_Id = mSongDetails.album_Id
-                },
+            mSongDetails,
             argHomePatchItem,
             HomePatchDetailModel().apply {
                 artistName = mSongDetails.artistName.toString()
@@ -279,11 +268,10 @@ internal class PlaylistFavFragment : BaseFragment(),
     fun showBottomSheetDialog(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
-
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -311,7 +299,7 @@ internal class PlaylistFavFragment : BaseFragment(),
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
         var isDownloaded = false
-        var downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
+        val downloaded = cacheRepository.getDownloadById(mSongDetails.content_Id ?: "")
         if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
@@ -396,7 +384,6 @@ internal class PlaylistFavFragment : BaseFragment(),
         constraintPlaylist?.visibility = GONE
         constraintPlaylist?.setOnClickListener {
             gotoPlayList(context, mSongDetails)
-
             bottomSheetDialog.dismiss()
         }
 
@@ -408,7 +395,6 @@ internal class PlaylistFavFragment : BaseFragment(),
 //        favViewModel.getFavContentSong.observe(this){res->
 //            res.data?.forEach{
 //                if(it.contentID.equals(mSongDetails.ContentID)) {
-//
 //                    isFav = true
 //                    favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
 //                }
@@ -416,25 +402,22 @@ internal class PlaylistFavFragment : BaseFragment(),
 //                    isFav = false
 //                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
 //                }
-//
 //            }
 //        }
+
         val isAddedToFav = cacheRepository.getFavoriteById(mSongDetails.content_Id ?: "")
         if (isAddedToFav?.content_Id != null) {
-
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
             isFav = true
             textFav?.text = "Remove From favorite"
         } else {
-
             favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
             isFav = false
             textFav?.text = "Favorite"
         }
 
-
         constraintFav?.setOnClickListener {
-            if (isFav.equals(true)) {
+            if (isFav == true) {
                 favViewModel.deleteFavContent(
                     mSongDetails.content_Id ?: "",
                     mSongDetails.content_Type ?: ""
@@ -454,9 +437,9 @@ internal class PlaylistFavFragment : BaseFragment(),
                     FavDataModel().apply {
                         content_Id = mSongDetails.content_Id
                         album_Id = mSongDetails.album_Id
+                        artist_Id = mSongDetails.artist_Id
                         imageUrl = mSongDetails.imageUrl
                         artistName = mSongDetails.artistName
-                        artist_Id = mSongDetails.artist_Id
                         clientValue = 2
                         content_Type = mSongDetails.content_Type
                         fav = "1"
@@ -477,7 +460,7 @@ internal class PlaylistFavFragment : BaseFragment(),
     private fun gotoArtist(
         bsdNavController: NavController,
         context: Context,
-        mSongDetails: SongDetailModel,
+        mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
 
@@ -508,20 +491,21 @@ internal class PlaylistFavFragment : BaseFragment(),
                 putSerializable(
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel().apply {
-                        album_Id = mSongDetails.album_Id.toString()
-                        artistName = mSongDetails.artistName ?: ""
-                        artist_Id = mSongDetails.artist_Id.toString()
                         content_Id = mSongDetails.content_Id ?: ""
+                        album_Id = mSongDetails.album_Id.toString()
+                        artist_Id = mSongDetails.artist_Id.toString()
+                        artistName = mSongDetails.artistName ?: ""
                         content_Type = mSongDetails.content_Type ?: ""
                         playingUrl = mSongDetails.playingUrl.toString()
                         imageUrl = mSongDetails.imageUrl.toString()
                         titleName = mSongDetails.titleName.toString()
+                        album_Name = mSongDetails.album_Name
                     } as Serializable
                 )
             })
     }
 
-    private fun gotoPlayList(context: Context, mSongDetails: SongDetailModel) {
+    private fun gotoPlayList(context: Context, mSongDetails: IMusicModel) {
         val bottomSheetDialogPlaylist = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             View.inflate(context, R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list, null)

@@ -280,8 +280,9 @@ internal class PodcastDetailsFragment : BaseFragment(),
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
-                if ((mSongDetails[clickItemPosition].content_Id.toString() != playerViewModel.currentMusic?.mediaId)) {
+                if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
+                    playerViewModel.play()
                 } else {
                     playerViewModel.togglePlayPause()
                 }
