@@ -264,8 +264,6 @@ internal class BottomSheetArtistDetailsFragment : BaseFragment(),
 //                    ) as Serializable
 //                )
 //            })
-//
-
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {

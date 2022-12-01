@@ -187,6 +187,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
+                    playerViewModel.play()
                 } else {
                     playerViewModel.togglePlayPause()
                 }
