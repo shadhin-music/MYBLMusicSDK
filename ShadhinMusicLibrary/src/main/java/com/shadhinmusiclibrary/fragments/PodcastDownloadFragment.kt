@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -65,6 +66,8 @@ internal class PodcastDownloadFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         downloadedSongsAdapter = DownloadedSongsAdapter(this, this)
         loadData()
+        favViewModel =
+            ViewModelProvider(this, injector.factoryFavContentVM)[FavViewModel::class.java]
     }
 
     fun loadData() {
