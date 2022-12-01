@@ -122,7 +122,7 @@ internal class PodcastFavFragment : BaseFragment(),
     }
 
     override fun onClickBottomItemPodcast(mSongDetails: IMusicModel) {
-      showBottomSheetDialogForPodcast(
+        showBottomSheetDialogForPodcast(
             navController,
             context = requireContext(),
             mSongDetails,
@@ -130,6 +130,7 @@ internal class PodcastFavFragment : BaseFragment(),
             argHomePatchDetail
         )
     }
+
     fun showBottomSheetDialogForPodcast(
         bsdNavController: NavController,
         context: Context,
@@ -234,9 +235,9 @@ internal class PodcastFavFragment : BaseFragment(),
 //                    val  Type = contentType?.takeLast(2)
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
-
                             content_Id = iSongTrack.content_Id
                             album_Id = iSongTrack.album_Id
+                            artist_Id = iSongTrack.artist_Id
                             rootContentId = iSongTrack.rootContentId
                             imageUrl = iSongTrack.imageUrl
                             titleName = iSongTrack.titleName
@@ -244,8 +245,7 @@ internal class PodcastFavFragment : BaseFragment(),
                             playingUrl = iSongTrack.playingUrl
                             rootContentType = iSongTrack.rootContentType
                             titleName = iSongTrack.titleName
-                            artist_Id = iSongTrack.artist_Id
-                            artistName =iSongTrack.artistName.toString()
+                            artistName = iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
                         }
                     )
@@ -292,7 +292,9 @@ internal class PodcastFavFragment : BaseFragment(),
                     .show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
-                favoriteSongsAdapter.updateData(cacheRepository.getPodcastFavContent()?.toMutableList())
+                favoriteSongsAdapter.updateData(
+                    cacheRepository.getPodcastFavContent()?.toMutableList()
+                )
                 Log.e("TAG", "NAME: " + iSongTrack.content_Type)
             } else {
                 val contentType = iSongTrack.content_Type
@@ -334,6 +336,7 @@ internal class PodcastFavFragment : BaseFragment(),
             bottomSheetDialog.findViewById(R.id.constraintAddtoPlaylist)
         constraintPlaylist?.visibility = View.GONE
     }
+
     override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
 //        (activity as? SDKMainActivity)?.showBottomSheetDialog(
 //            navController,
