@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,7 +55,7 @@ internal class HomeFragment : BaseFragment(),
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
 
-    private lateinit var srlHomeRefresh: SwipeRefreshLayout
+//    private lateinit var srlHomeRefresh: SwipeRefreshLayout
 
     //mini music player
     private lateinit var llMiniMusicPlayer: CardView
@@ -84,13 +85,13 @@ internal class HomeFragment : BaseFragment(),
         savedInstanceState: Bundle?,
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_fragment_home, container, false)
-        srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
+//        srlHomeRefresh = viewRef.findViewById(R.id.srl_home_refresh)
 
-        srlHomeRefresh.setOnRefreshListener {
-            homeViewModel.fetchHomeData(pageNum, false)
-            srlHomeRefresh.isRefreshing = false
-        }
-//
+//        srlHomeRefresh.setOnRefreshListener {
+//            homeViewModel.fetchHomeData(1, false)
+//            srlHomeRefresh.isRefreshing = false
+//        }
+
         return viewRef
     }
 
@@ -136,6 +137,8 @@ internal class HomeFragment : BaseFragment(),
                 }
             } else {
                 progressBar.visibility = GONE
+                pageNum = 1
+                homeViewModel.fetchHomeData(pageNum, false)
             }
             isLoading = false
         }
@@ -243,7 +246,6 @@ internal class HomeFragment : BaseFragment(),
                         dataAdapter?.setData(listOf(it1))
                         //dataAdapter?.notifyItemChanged(pageNum)
                         dataAdapter?.notifyDataSetChanged()
-                        Log.e("TAG", "PAGE NUMBER: " + it?.data?.indices)
                     }
 //                  it.data.let {
                     //   it1 ->
