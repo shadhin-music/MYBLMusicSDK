@@ -2224,6 +2224,11 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     override fun onClickItem(currentSong: IMusicModel, clickItemPosition: Int) {
-        playerViewModel.skipToQueueItem(clickItemPosition)
+        if ((currentSong.content_Id == playerViewModel.currentMusic?.mediaId)) {
+            playerViewModel.togglePlayPause()
+        } else {
+            playerViewModel.skipToQueueItem(clickItemPosition)
+            playerViewModel.play()
+        }
     }
 }
