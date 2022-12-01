@@ -361,6 +361,7 @@ class MyBLDownloadService : DownloadService(
                         .putExtra("progress", 100)
                     localBroadcastManager.sendBroadcast(localIntent)
                     cacheRepository.downloadState(download.request.id, isDownloaded = true)
+                    Log.e("DELETED", "STATE_REMOVING FIRED <--> "+download.request.id +" ${download.percentDownloaded}")
                 }
 //                else if(download.state == STATE_REMOVING){
 //

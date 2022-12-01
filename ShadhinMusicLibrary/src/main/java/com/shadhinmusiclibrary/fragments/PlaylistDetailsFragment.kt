@@ -219,6 +219,7 @@ internal class PlaylistDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED123")
         intentFilter.addAction("DELETE")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
@@ -259,6 +260,10 @@ internal class PlaylistDetailsFragment : BaseFragment(),
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
+                }
+                "DELETED123" -> {
+                    playlistTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
                 }
                 "DELETE" -> {
                     playlistTrackAdapter.notifyDataSetChanged()

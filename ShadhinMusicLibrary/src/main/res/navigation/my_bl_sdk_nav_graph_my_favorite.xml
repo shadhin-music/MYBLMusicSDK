@@ -46,5 +46,10 @@
     <fragment
         android:id="@+id/to_playlist_details"
         android:name="com.shadhinmusiclibrary.fragments.PlaylistDetailsFragment"
-        android:label="PlaylistDetailsFragment" />
+        android:label="PlaylistDetailsFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        <action
+            android:id="@+id/action_to_playlist_details_to_to_artist_details"
+            app:destination="@id/to_artist_details" />
+    </fragment>
 </navigation>

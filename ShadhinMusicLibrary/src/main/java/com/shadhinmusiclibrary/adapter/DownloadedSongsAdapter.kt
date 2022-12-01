@@ -15,6 +15,7 @@ import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
@@ -133,7 +134,12 @@ internal class DownloadedSongsAdapter(
     override fun getItemCount(): Int {
         return allDownloads.size
     }
+    fun upDateData(data: MutableList<DownloadedContent>?) {
+        allDownloads.clear()
+        data?.let { allDownloads.addAll(it) }
+        notifyDataSetChanged()
 
+    }
     inner class DownloadSongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()

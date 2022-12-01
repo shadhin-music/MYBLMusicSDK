@@ -16,6 +16,7 @@ import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
 import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -130,6 +131,13 @@ internal class FavoriteSongsAdapter(
 
     override fun getItemCount(): Int {
         return allDownloads.size
+    }
+
+    fun updateData(songsFavoriteContent: List<FavDataModel>?) {
+        allDownloads.clear()
+        songsFavoriteContent?.let { allDownloads.addAll(it) }
+        notifyDataSetChanged()
+
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

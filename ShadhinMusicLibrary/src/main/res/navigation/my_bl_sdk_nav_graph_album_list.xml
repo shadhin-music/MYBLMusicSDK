@@ -70,7 +70,8 @@
     <fragment
         android:id="@+id/songsFavoriteFragment"
         android:name="com.shadhinmusiclibrary.fragments.fav.SongsFavoriteFragment"
-        android:label="SongsFavoriteFragment" >
+        android:label="SongsFavoriteFragment"
+        tools:layout="@layout/my_bl_sdk_fragment_download_details">
         <action
             android:id="@+id/action_songsFavoriteFragment_to_artist_details_fragment"
             app:destination="@id/artist_details_fragment" />
@@ -78,9 +79,19 @@
     <fragment
         android:id="@+id/artistFavFragment2"
         android:name="com.shadhinmusiclibrary.fragments.fav.ArtistFavFragment"
-        android:label="ArtistFavFragment" >
+        android:label="ArtistFavFragment"
+        tools:layout="@layout/my_bl_sdk_fragment_download_details">
         <action
             android:id="@+id/action_artistFavFragment2_to_artist_details_fragment"
+            app:destination="@id/artist_details_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allFavoriteDetailsFragment"
+        android:name="com.shadhinmusiclibrary.fragments.fav.AllFavoriteDetailsFragment"
+        android:label="AllFavoriteDetailsFragment"
+        tools:layout="@layout/my_bl_sdk_fragment_download_details">
+        <action
+            android:id="@+id/action_allFavoriteDetailsFragment_to_artist_details_fragment"
             app:destination="@id/artist_details_fragment" />
     </fragment>
 </navigation>

@@ -297,6 +297,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
                     .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
+
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =
@@ -393,6 +394,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
+                favoriteSongsAdapter.updateData(cacheRepository.getSongsFavoriteContent())
             } else {
                 favViewModel.addFavContent(mSongDetails.content_Id, mSongDetails.content_Type!!)
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)

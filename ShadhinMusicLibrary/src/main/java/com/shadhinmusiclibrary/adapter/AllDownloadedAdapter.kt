@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.R.attr
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,13 +19,15 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
+
 internal class AllDownloadedAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
-    private val openMenu: CommonPSVCallback
+    private val openMenu: CommonPSVCallback,
 ) : RecyclerView.Adapter<AllDownloadedAdapter.ViewHolder>() {
     private var allDownloads: MutableList<IMusicModel> = mutableListOf()
     private var contentId: String = ""
@@ -93,7 +96,7 @@ internal class AllDownloadedAdapter(
     fun setData(
         data: MutableList<IMusicModel>,
         rootPatch: HomePatchDetailModel,
-        mediaId: String?
+        mediaId: String?,
     ) {
         for (songItem in data) {
             Log.e(
@@ -115,7 +118,12 @@ internal class AllDownloadedAdapter(
 
         notifyDataSetChanged()
     }
+    fun upDateData(data: MutableList<DownloadedContent>?) {
+        allDownloads.clear()
+        data?.let { allDownloads.addAll(it) }
+        notifyDataSetChanged()
 
+    }
     fun setPlayingSong(mediaId: String) {
         contentId = mediaId
         val newList: List<IMusicModel> =

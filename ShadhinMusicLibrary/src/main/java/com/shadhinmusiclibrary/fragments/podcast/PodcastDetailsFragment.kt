@@ -338,6 +338,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
         super.onStart()
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
+        intentFilter.addAction("DELETED123")
         intentFilter.addAction("REMOVE")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
@@ -378,6 +379,10 @@ internal class PodcastDetailsFragment : BaseFragment(),
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
+                }
+                "DELETED123" -> {
+                    podcastTrackAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
                 }
                 "REMOVE" -> {
                     podcastTrackAdapter.notifyDataSetChanged()

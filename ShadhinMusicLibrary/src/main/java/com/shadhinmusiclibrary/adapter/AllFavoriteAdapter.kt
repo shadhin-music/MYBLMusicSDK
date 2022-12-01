@@ -18,6 +18,7 @@ import com.shadhinmusiclibrary.callBackService.DownloadedSongOnCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.VideoModel
+import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.fav.onFavArtistClickAll
 import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
@@ -165,6 +166,13 @@ internal class AllFavoriteAdapter(
 
     override fun getItemCount(): Int {
         return allDownloads.size
+    }
+
+    fun updateData(allFavoriteContent: List<FavDataModel>?) {
+        allDownloads.clear()
+        allFavoriteContent?.let { allDownloads.addAll(it) }
+        notifyDataSetChanged()
+
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

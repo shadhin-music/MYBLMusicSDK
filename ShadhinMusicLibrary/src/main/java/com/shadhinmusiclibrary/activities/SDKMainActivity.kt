@@ -963,6 +963,7 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnQueueMusic.setOnClickListener {
+            addQueue(this)
         }
 
         ibtnDownload.setOnClickListener {
@@ -1445,7 +1446,27 @@ internal class SDKMainActivity : BaseActivity(),
             Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
         }
     }
+    private fun addQueue(context: Context) {
+        val bottomSheetDialogPlaylist =
+            BottomSheetDialog(context, R.style.BottomSheetDialog)
+        val contentView =
+            inflate(
+                context,
+                R.layout.my_bl_sdk_bottomsheet_add_queue,
+                null
+            )
+        bottomSheetDialogPlaylist.setContentView(contentView)
+        bottomSheetDialogPlaylist.show()
+        val closeButton: ImageView? =
+            bottomSheetDialogPlaylist.findViewById(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            bottomSheetDialogPlaylist.dismiss()
+        }
+        val recyclerView: RecyclerView? =
+            bottomSheetDialogPlaylist.findViewById(R.id.recyclerView)
 
+
+    }
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 

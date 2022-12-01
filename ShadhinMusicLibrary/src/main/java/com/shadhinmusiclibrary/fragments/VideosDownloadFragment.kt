@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.DownloadedSongsAdapter
 import com.shadhinmusiclibrary.adapter.DownloadedVideoAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.CommonPSVCallback
@@ -39,7 +40,7 @@ internal class VideosDownloadFragment : BaseFragment(),
     private lateinit var footerAdapter: HomeFooterAdapter
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
-
+    private lateinit var dataAdapter: DownloadedVideoAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -49,13 +50,14 @@ internal class VideosDownloadFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val cacheRepository = CacheRepository(requireContext())
+        dataAdapter =
+            cacheRepository.getAllVideosDownloads()?.let { DownloadedVideoAdapter(it, this) }!!
         loadData()
     }
 
     fun loadData() {
-        val cacheRepository = CacheRepository(requireContext())
-        val dataAdapter =
-            cacheRepository.getAllVideosDownloads()?.let { DownloadedVideoAdapter(it, this) }
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -188,7 +190,7 @@ internal class VideosDownloadFragment : BaseFragment(),
                     .putExtra("contentID", item.contentID.toString())
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
-
+                dataAdapter.upDateData(cacheRepository.getAllVideosDownloads()?.toMutableList())
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 val downloadRequest: DownloadRequest =
