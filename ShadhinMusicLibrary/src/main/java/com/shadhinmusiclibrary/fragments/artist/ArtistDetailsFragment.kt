@@ -224,8 +224,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
                 "Okay"
             ) { _, _ ->
                 requireActivity().finish()
-            }
-            .show()
+            }.show()
     }
 
     override fun onClickItemAndAllItem(
