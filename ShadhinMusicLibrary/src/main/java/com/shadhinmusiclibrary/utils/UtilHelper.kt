@@ -46,36 +46,34 @@ internal object UtilHelper {
     fun getMusicListToSongDetailList(mSongDetails: MutableList<IMusicModel>): MutableList<Music> {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
-            songItem.apply {
-                val newPlayUrl = if (playingUrl!!.contains(
-                        "http",
-                        true
-                    )
-                ) playingUrl!! else Constants.FILE_BASE_URL + playingUrl!!
-                musicList.add(
-                    Music(
-                        mediaId = content_Id,
-                        title = titleName,
-                        displayDescription = "",
-                        displayIconUrl = getImageUrlSize300(imageUrl!!),
-                        mediaUrl = Constants.FILE_BASE_URL + playingUrl,
-                        artistName = artistName ?: "",
-                        date = total_duration,
-                        contentType = content_Type,
-                        userPlayListId = "",
-                        episodeId = "",
-                        starring = "",
-                        seekable = isSeekAble,
-                        details = "",
-                        fav = "" /*fav value set for this song are radio or normal song*/,
-                        totalStream = 0L,
-                        rootId = rootContentId,
-                        rootImage = rootImage,
-                        rootType = rootContentType,
-                        rootTitle = titleName ?: ""
-                    )
+            val newPlayUrl = if (songItem.playingUrl!!.contains(
+                    "http",
+                    true
                 )
-            }
+            ) songItem.playingUrl!! else Constants.FILE_BASE_URL + songItem.playingUrl!!
+            musicList.add(
+                Music(
+                    mediaId = songItem.content_Id,
+                    title = songItem.titleName,
+                    displayDescription = "",
+                    displayIconUrl = getImageUrlSize300(songItem.imageUrl!!),
+                    mediaUrl = Constants.FILE_BASE_URL + songItem.playingUrl,
+                    artistName = songItem.artistName ?: "",
+                    date = songItem.total_duration,
+                    contentType = songItem.content_Type,
+                    userPlayListId = "",
+                    episodeId = "",
+                    starring = "",
+                    seekable = songItem.isSeekAble,
+                    details = "",
+                    fav = "" /*fav value set for this song are radio or normal song*/,
+                    totalStream = 0L,
+                    rootId = songItem.rootContentId,
+                    rootImage = songItem.rootImage,
+                    rootType = songItem.rootContentType,
+                    rootTitle = songItem.titleName ?: ""
+                )
+            )
         }
         return musicList
     }

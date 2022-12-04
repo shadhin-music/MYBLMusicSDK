@@ -67,7 +67,7 @@ internal class PodcastHeaderAdapter(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
             )
         }
-        Log.i("setTrackData", "setTrackData: ${episode.map { it.Code }}")
+
         this.episode = ArrayList(episode)
         notifyDataSetChanged()
     }
