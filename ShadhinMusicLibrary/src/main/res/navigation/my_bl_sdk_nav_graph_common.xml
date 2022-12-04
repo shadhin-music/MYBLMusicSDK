@@ -235,7 +235,6 @@
             app:destination="@id/artist_details_fragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/podcast_details_fragment"
         android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsFragment"
