@@ -70,7 +70,9 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         argHomePatchDetail?.let {
+
             val Type: String = it.content_Type ?: ""
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
