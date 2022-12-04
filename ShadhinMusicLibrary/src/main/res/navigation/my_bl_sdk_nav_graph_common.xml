@@ -10,13 +10,13 @@
         android:label="Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
-        <action
-            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment"
-            app:destination="@id/artist_details_fragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment"-->
+<!--            app:destination="@id/artist_details_fragment" />-->
 
-        <action
-            android:id="@+id/action_albumDetailsFragment_to_to_artistDetailsFragment"
-            app:destination="@id/artist_details_fragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_albumDetailsFragment_to_to_artistDetailsFragment"-->
+<!--            app:destination="@id/artist_details_fragment" />-->
 
         <action
             android:id="@+id/to_artist_details"
@@ -37,9 +37,9 @@
         android:label="Artist Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
-        <action
-            android:id="@+id/to_artist_details"
-            app:destination="@id/artist_details_fragment" />
+<!--        <action-->
+<!--            android:id="@+id/to_artist_details"-->
+<!--            app:destination="@id/artist_details_fragment" />-->
 
         <action
             android:id="@+id/to_album_details"
