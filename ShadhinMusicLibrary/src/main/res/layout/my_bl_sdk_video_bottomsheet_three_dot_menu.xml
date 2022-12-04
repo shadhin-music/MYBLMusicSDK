@@ -30,7 +30,8 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/thumb_card"
                 android:layout_width="200dp"
-                android:layout_height="200dp"
+                app:layout_constraintDimensionRatio="16:9"
+                android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 app:cardCornerRadius="16dp"
@@ -43,7 +44,8 @@
                 <ImageView
                     android:id="@+id/thumb"
                     android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/my_bl_sdk_ic_artist" />
 
             </androidx.cardview.widget.CardView>

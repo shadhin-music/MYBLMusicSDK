@@ -8,7 +8,7 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
     entities = [
         WatchLaterContent::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 

@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
 import com.shadhinmusiclibrary.callBackService.WatchlaterOnCallBack
@@ -45,6 +46,7 @@ internal class WatchLaterFragment : BaseFragment(),
     private lateinit var favViewModel: FavViewModel
     private lateinit var parentAdapter: ConcatAdapter
     private lateinit var footerAdapter: HomeFooterAdapter
+    private lateinit var dataAdapter: WatchlaterAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -71,13 +73,15 @@ internal class WatchLaterFragment : BaseFragment(),
 
         val cacheRepository = CacheRepository(requireContext())
         footerAdapter = HomeFooterAdapter()
-        val dataAdapter = WatchlaterAdapter(cacheRepository.getAllWatchlater()!!,this)
+         dataAdapter = WatchlaterAdapter(this)
+        dataAdapter.setData(cacheRepository.getAllWatchlater() as MutableList<WatchLaterContent>)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         parentAdapter= ConcatAdapter(config,dataAdapter)
         recyclerView.adapter = parentAdapter
+       
 
     }
 
@@ -207,7 +211,7 @@ internal class WatchLaterFragment : BaseFragment(),
         val watchlaterImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgWatchlater)
         val textViewWatchlaterTitle: TextView? = bottomSheetDialog.findViewById(R.id.txtwatchLater)
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
-        if (watched?.track != null) {
+        if (watched?.isWatched ==1) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
 //            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
@@ -228,6 +232,8 @@ internal class WatchLaterFragment : BaseFragment(),
             if (iswatched) {
                 cacheRepository.deleteWatchlaterById(item.contentID.toString())
                 iswatched = false
+                dataAdapter.updateData(cacheRepository.getAllWatchlater())
+               // parentAdapter.notifyDataSetChanged()
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 cacheRepository.insertWatchLater(
@@ -240,7 +246,7 @@ internal class WatchLaterFragment : BaseFragment(),
                         url,
                         item.contentType.toString(),
                         0,
-                        0,
+                        0,1,
                         item.artist.toString(),
                         item.duration.toString()
                     )

@@ -259,7 +259,7 @@ internal class VideosFavFragment : BaseFragment(),
         val watchlaterImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgWatchlater)
         val textViewWatchlaterTitle: TextView? = bottomSheetDialog.findViewById(R.id.txtwatchLater)
         val watched = cacheRepository.getWatchedVideoById(mSongDetail.contentID.toString())
-        if (watched?.track != null) {
+        if (watched?.isWatched ==1) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
 //            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
@@ -292,7 +292,7 @@ internal class VideosFavFragment : BaseFragment(),
                         url,
                         mSongDetail.contentType.toString(),
                         0,
-                        0,
+                        0,1,
                         mSongDetail.artist.toString(),
                         mSongDetail.duration.toString()
                     )

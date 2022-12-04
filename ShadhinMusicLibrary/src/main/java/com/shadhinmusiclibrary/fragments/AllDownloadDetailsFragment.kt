@@ -336,7 +336,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
 
-        if (watched?.track != null) {
+        if (watched?.isWatched==1) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
 //            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
@@ -371,6 +371,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                         item.contentType.toString(),
                         0,
                         0,
+                        1,
                         item.artist.toString(),
                         item.duration.toString()
                     )
