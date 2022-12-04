@@ -56,11 +56,11 @@ internal class ArtistDetailsFragment : BaseFragment(),
     private lateinit var viewModelArtistAlbum: ArtistAlbumsViewModel
     private var cacheRepository: CacheRepository? = null
     private lateinit var parentAdapter: ConcatAdapter
-    private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var artistHeaderAdapter: ArtistHeaderAdapter
-    private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
     private lateinit var artistTrackAdapter: ArtistTrackAdapter
     private lateinit var artistAlbumsAdapter: ArtistAlbumsAdapter
+    private lateinit var artistsYouMightLikeAdapter: ArtistsYouMightLikeAdapter
+    private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
     private lateinit var favViewModel: FavViewModel
 
@@ -75,6 +75,8 @@ internal class ArtistDetailsFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupViewModel()
+
         cacheRepository = CacheRepository(requireContext())
         initialize()
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
@@ -89,21 +91,11 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun initialize() {
-        Log.e("TAG", "ARTIST: " + argHomePatchDetail?.artistName)
-        Log.e("TAG", "ARTIST: " + argHomePatchDetail?.artist_Id)
         setupAdapters()
-        setupViewModel()
         observeData()
     }
 
     private fun setupAdapters() {
-        Log.e(
-            "CommArDF",
-            "onClickItemAndAllItem:\n"
-                    + " content_Id: " + argHomePatchDetail?.content_Id
-                    + " artist_Id: " + argHomePatchDetail?.artist_Id
-                    + " album_Id: " + argHomePatchDetail?.album_Id
-        )
         parentRecycler = requireView().findViewById(R.id.recyclerView)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -168,7 +160,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     private fun observeData() {
-
         argHomePatchDetail?.let {
             viewModel.fetchArtistBioData(it.artistName ?: "")
         }
@@ -233,8 +224,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
                 "Okay"
             ) { _, _ ->
                 requireActivity().finish()
-            }
-            .show()
+            }.show()
     }
 
     override fun onClickItemAndAllItem(
@@ -252,7 +242,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
         artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.artist_Id
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
-
     }
 
     override fun onArtistAlbumClick(
@@ -413,10 +402,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
-        Log.e(
-            "CommArDF",
-            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
-        )
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
             context = requireContext(),

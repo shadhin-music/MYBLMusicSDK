@@ -81,14 +81,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
         albumsTrackAdapter = AlbumsTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
-        //TODO  argHomePatchDetail!!.ContentID,
-        Log.e(
-            "CommAlDF",
-            "onClickItemAndAllItem:\n"
-                    + " content_Id: " + argHomePatchDetail?.content_Id
-                    + " artist_Id: " + argHomePatchDetail?.artist_Id
-                    + " album_Id: " + argHomePatchDetail?.album_Id
-        )
 
         observeData(
             argHomePatchDetail!!.album_Id ?: "",
@@ -170,6 +162,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
             if (res.status == Status.SUCCESS) {
                 artistAlbumsAdapter.setData(res.data)
             } else {
+                viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
             }
         }
     }
@@ -290,10 +283,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
     }
 
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
-        Log.e(
-            "CommArDF",
-            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
-        )
         (activity as? SDKMainActivity)?.showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -315,7 +304,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
 //                cacheRepository?.isTrackDownloaded(it.contentId) ?: false
 //            if (!isDownloaded) {
 //                progressIndicator?.visibility = GONE
-////                    downloaded?.visibility = VISIBLE
+//                    downloaded?.visibility = VISIBLE
 //            }
         }
     }

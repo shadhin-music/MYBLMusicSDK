@@ -1,7 +1,9 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
-import android.app.AlertDialog
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,7 +55,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     var podcastType: String = ""
     var contentType: String = ""
-    private var selectedEpisodeID: String =""
+    private var selectedEpisodeID: String = ""
     var contentId: String = ""
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
@@ -81,7 +83,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
-        Log.e("PDF", "onViewCreated: contentId: $contentId selectedEpisodeID: $selectedEpisodeID")
+
         if (selectedEpisodeID == contentId) {
             getPodcastShowDetailsInitialize()
         } else {
@@ -98,7 +100,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
                 podcastTrackAdapter.setPlayingSong(music.mediaId!!)
             }
         }
-
 
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->
@@ -136,19 +137,16 @@ internal class PodcastDetailsFragment : BaseFragment(),
                 progressBar.visibility = View.GONE
             }
         }
-
     }
 
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
         observePodcastShowData()
-
     }
 
     private fun getPodcastDetailsInitialize() {
         Log.e("PDF", "getPodcastDetailsInitialize: ")
         observePodcastDetailsData()
-
     }
 
     private fun setupAdapters() {
@@ -171,7 +169,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
             podcastMoreEpisodesAdapter,
             footerAdapter
         )
-       // concatAdapter.notifyDataSetChanged()
+        // concatAdapter.notifyDataSetChanged()
         parentRecycler.layoutManager = layoutManager
         parentRecycler.adapter = concatAdapter
     }
@@ -260,8 +258,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
 //    parentAdapter.notifyDataSetChanged()
 //        parentRecycler.scrollToPosition(0)
-       // concatAdapter.notifyDataSetChanged()
-      //  parentRecycler.scrollToPosition(0)
+        // concatAdapter.notifyDataSetChanged()
+        //  parentRecycler.scrollToPosition(0)
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -306,10 +304,16 @@ internal class PodcastDetailsFragment : BaseFragment(),
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
+                    Log.e(
+                        "PDF",
+                        "getCurrentVH: rootConType: " + songDetails[0].rootContentType + " " + itMusic.rootType
+                                + " rootConId: " + songDetails[0].rootContentId + " " + itMusic.rootId
+                                + " content_Id: " + songDetails[0].content_Id + " " + itMusic.mediaId
+                    )
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.rootContentId == itMusic.rootId &&
-                                    it.content_Id.toString() == itMusic.mediaId
+                                    it.content_Id == itMusic.mediaId
                             /*     it.Id.toString() == itMusic.mediaId*/
                         } != -1)
                     ) {
@@ -317,9 +321,9 @@ internal class PodcastDetailsFragment : BaseFragment(),
                             if (itPla != null)
                                 playPauseState(itPla.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
+                    } else {
+                        podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                     }
-                } else {
-                    podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,7 @@ internal class ArtistAdapter(
     var homePatchItem: HomePatchItemModel?,
     private val homeCallBack: HomeCallBack,
     var artistIDtoSkip: String? = null
-) :
-    RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ArtistAdapter.ViewHolder>() {
 
     private var filteredHomePatchItem: HomePatchItemModel? = null
 
@@ -35,13 +33,11 @@ internal class ArtistAdapter(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_artist_list, parent, false)
         return ViewHolder(v)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
@@ -69,7 +65,7 @@ internal class ArtistAdapter(
                     )
                 )
                 .into(imageView2)
-            textViewName.setText(filteredHomePatchItem!!.Data[absoluteAdapterPosition].artistName)
+            textViewName.text = filteredHomePatchItem!!.Data[absoluteAdapterPosition].artistName
         }
     }
 }
