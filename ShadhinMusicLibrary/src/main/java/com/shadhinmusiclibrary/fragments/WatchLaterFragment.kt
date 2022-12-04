@@ -81,7 +81,7 @@ internal class WatchLaterFragment : BaseFragment(),
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
         parentAdapter= ConcatAdapter(config,dataAdapter)
         recyclerView.adapter = parentAdapter
-       
+
 
     }
 
