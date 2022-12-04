@@ -17,6 +17,7 @@ data class WatchLaterContent(
     var type: String,
     var isDownloaded: Int,
     var isFavorite: Int,
+    var isWatched:Int,
     var artist: String,
     var timeStamp: String
 ) : Serializable {

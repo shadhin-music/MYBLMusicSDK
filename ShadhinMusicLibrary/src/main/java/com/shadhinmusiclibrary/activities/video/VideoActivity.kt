@@ -18,6 +18,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
@@ -40,8 +41,6 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManager
-import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
@@ -54,12 +53,15 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.ShadhinMusicQueueNavigator
+import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManager
+import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManagerFactory
 import com.shadhinmusiclibrary.library.player.data.source.MediaSources
 import com.shadhinmusiclibrary.library.player.data.source.ShadhinVideoMediaSource
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
+
 
 internal class VideoActivity : AppCompatActivity(),
     ActivityEntryPoint,
@@ -195,11 +197,10 @@ internal class VideoActivity : AppCompatActivity(),
                 var iswatched = false
                 val watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
                 val downloaded = cacheRepository.getDownloadById(item.contentID.toString())
-                if (watched?.track != null) {
+                if (watched?.isWatched ==1) {
                     iswatched = true
-                    watchIcon.setColorFilter(
-                        applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc)
-                    )
+                    watchIcon.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
+
                 } else {
                     iswatched = false
                     watchIcon.setColorFilter(
@@ -242,7 +243,7 @@ internal class VideoActivity : AppCompatActivity(),
                 cacheRepository.getDownloadById(videoList?.get(currentPosition)?.contentID.toString())
             val watched =
                 cacheRepository.getWatchedVideoById(videoList?.get(currentPosition)?.contentID.toString())
-
+             Log.e("TAG","Message: " + watched?.isWatched)
             if (downloaded?.playingUrl != null) {
                 downloadImage.setColorFilter(applicationContext.resources.getColor(R.color.my_sdk_color_primary))
                 isDownloaded = true
@@ -251,15 +252,17 @@ internal class VideoActivity : AppCompatActivity(),
                 isDownloaded = false
             }
 
-            if (watched != null) {
+            if (watched?.isWatched ==1) {
                 // watchIcon.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
                 watchIcon.setColorFilter(
                     applicationContext.resources.getColor(R.color.my_sdk_color_primary)
                 )
+                iswatched = true
             } else {
                 watchIcon.setColorFilter(
                     applicationContext.resources.getColor(R.color.my_sdk_down_item_desc)
                 )
+                iswatched = false
             }
             var isFav = false
             val isAddedToFav =
@@ -317,18 +320,20 @@ internal class VideoActivity : AppCompatActivity(),
                 isDownloaded = false
             }
 
-            if (watched != null) {
+            if (watched?.isWatched==1) {
                 watchIcon.setColorFilter(
                     applicationContext.resources.getColor(R.color.my_sdk_color_primary)
                 )
+                iswatched = true
             } else {
                 watchIcon.setColorFilter(
                     applicationContext.resources.getColor(R.color.my_sdk_down_item_desc)
                 )
+                iswatched = false
             }
 
             watchlaterLayout.setOnClickListener {
-                if (iswatched) {
+                if (iswatched.equals(true)) {
 
                     //  val currentVideoID =   viewModel.currentVideo.value?.contentID
                     val currentURL = viewModel.currentVideo.value?.playUrl
@@ -364,6 +369,7 @@ internal class VideoActivity : AppCompatActivity(),
                             currentRootType.toString(),
                             0,
                             0,
+                            1,
                             currentArtist.toString(),
                             duration.toString()
                         )
@@ -717,11 +723,14 @@ internal class VideoActivity : AppCompatActivity(),
         }
         val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         tvArtistName?.text = item.artist
-        val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+        var image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
+
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
-        title?.text = item.title
-        if (image != null) {
+         title?.text = item.title
+
+            if (image != null) {
             Glide.with(this).load(UtilHelper.getImageUrlSize300(item.image!!)).into(image)
+
         }
 
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
@@ -800,30 +809,33 @@ internal class VideoActivity : AppCompatActivity(),
             bottomSheetDialog.findViewById(R.id.txtwatchLater)
         var iswatched = false
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
-        if (watched?.track != null) {
+        if (watched?.isWatched== 1) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
             watchIcon.setColorFilter(
                 applicationContext.getResources().getColor(R.color.my_sdk_color_primary)
             )
+            textViewWatchlaterTitle?.text = "Remove From Watchlater"
         } else {
             iswatched = false
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
             watchIcon.setColorFilter(
                 applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc)
             )
-        }
-
-        if (iswatched) {
-            textViewWatchlaterTitle?.text = "Remove From Watchlater"
-        } else {
             textViewWatchlaterTitle?.text = "Watch Later"
         }
+
         val constraintWatchlater: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintAddtoWatch)
         constraintWatchlater?.setOnClickListener {
             if (iswatched.equals(true)) {
                 cacheRepository.deleteWatchlaterById(item.contentID.toString())
+                watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_ic_watch_later)
+                watchIcon.setColorFilter(
+                    applicationContext.getResources().getColor(R.color.my_sdk_down_item_desc)
+                )
+                Log.e("TAG","DATA: "+ iswatched)
+                iswatched= false
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 cacheRepository.insertWatchLater(
@@ -837,10 +849,16 @@ internal class VideoActivity : AppCompatActivity(),
                         item.contentType.toString(),
                         0,
                         0,
+                        1,
                         item.artist.toString(),
                         item.duration.toString()
                     )
                 )
+                watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
+                watchIcon.setColorFilter(
+                    applicationContext.getResources().getColor(R.color.my_sdk_color_primary)
+                )
+
                 iswatched = true
             }
             bottomSheetDialog.dismiss()
