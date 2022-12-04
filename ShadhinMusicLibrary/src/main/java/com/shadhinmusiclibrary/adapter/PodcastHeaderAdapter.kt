@@ -5,6 +5,7 @@ import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -91,6 +92,7 @@ internal class PodcastHeaderAdapter(
             val url: String? = episode?.get(0)?.ImageUrl
             val details: String = episode?.get(position)?.Details.toString()
             ivFavorite = itemView.findViewById(R.id.favorite)
+           // ivFavorite?.visibility = GONE
             val result = Html.fromHtml(details).toString()
 //            if(textArtist?.text.isNullOrEmpty())
             // Log.e("TAG","Name :"+episode?.get(position))
@@ -117,9 +119,10 @@ internal class PodcastHeaderAdapter(
             Log.e("TAG","NameShowId :"+episode?.get(position)?.ShowId)
             Log.e("TAG","NameCode :"+episode?.get(position)?.Code)
             Log.e("TAG","NameId :"+episode?.get(position)?.Id)
-//            Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
+           // Log.e("TAG","NameId :"+ listSongTrack[0].content_Id)
+            Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById((episode?.get(position)?.Id?: "").toString())
+            val isAddedToFav = cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
@@ -135,34 +138,35 @@ internal class PodcastHeaderAdapter(
                 if (isFav.equals(true)) {
 
                     favViewModel.deleteFavContent(
-                        episode?.get(position)?.Id.toString(),
-                        episode?.get(position)?.ContentType ?: ""
+                        episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
+                        episode?.get(position)?.TrackList?.get(0)?.content_Type?: ""
                     )
-//                    Log.e("TAG", "Namecontent_Id :" + listSongTrack[0].content_Id)
-                    cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())
+                    Log.e("TAG", "Namecontent_Id :" + listSongTrack[0].content_Id)
+                    Log.e("TAG", "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
+                    cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
 
                     favViewModel.addFavContent(
-                        episode?.get(position)?.Id.toString(),
-                        episode?.get(position)?.ContentType.toString()
+                       episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
+                        episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
                     )
 
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavDataModel().apply {
-                            content_Id =  episode?.get(position)?.Id.toString()
+                            content_Id =  episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
                             album_Id = episode?.get(position)?.Id.toString()
                             albumImage = episode?.get(position)?.ImageUrl
-                            artistName = ""
+                            artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
                             artist_Id = ""
                             clientValue = 2
                             content_Type = episode?.get(position)?.ContentType.toString()
                             fav = "1"
-                            imageUrl =  episode?.get(position)?.ImageUrl
-                            playingUrl =  ""
+                            imageUrl =  episode?.get(position)?.TrackList?.get(0)?.imageUrl
+                            playingUrl =  episode?.get(position)?.TrackList?.get(0)?.playingUrl
                             rootContentId = ""
                             rootContentType =""
                             titleName = episode?.get(position)?.Name
