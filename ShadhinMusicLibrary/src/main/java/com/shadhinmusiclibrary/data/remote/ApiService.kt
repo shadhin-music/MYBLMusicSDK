@@ -62,7 +62,7 @@ internal interface ApiService {
     @GET("Podcast/PodcastbyepisodeIdV3")
     suspend fun fetchPodcastByID(
         @Query("podType") podType: String,
-        @Query("episodeId") episodeId: Int,
+        @Query("episodeId") episodeId: String,
         @Query("contentTYpe") contentTYpe: String,
         @Query("isPaid") isPaid: Boolean,
     ): PodcastModel

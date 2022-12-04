@@ -6,7 +6,7 @@ import com.shadhinmusiclibrary.utils.safeApiCall
 internal class PodcastRepository(private val apiService: ApiService) {
     suspend fun fetchPodcastByID(
         podType: String,
-        episodeId: Int,
+        episodeId: String,
         contentType: String,
         isPaid: Boolean
     ) = safeApiCall {

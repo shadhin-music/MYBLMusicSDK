@@ -35,6 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.ItemClickListener
+import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteArtistAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
@@ -95,16 +96,15 @@ internal class ArtistFavFragment : BaseFragment(),
 
     fun loadData() {
         val cacheRepository = CacheRepository(requireContext())
-        dataAdapter =
-            cacheRepository.getArtistFavoriteContent()?.let {
-                FavoriteArtistAdapter(
-                    it,
-                    this,
-                    this,
-                    cacheRepository, this
-                )
-            }!!
 
+
+        dataAdapter =  FavoriteArtistAdapter(this, this,   cacheRepository, this)
+
+        cacheRepository.getArtistFavoriteContent()?.let {
+            dataAdapter.setData(
+                it.toMutableList()
+            )
+        }!!
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -112,6 +112,9 @@ internal class ArtistFavFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
+       // parentAdapter.notifyDataSetChanged()
+
+        // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
@@ -182,6 +185,7 @@ internal class ArtistFavFragment : BaseFragment(),
         val intentFilter = IntentFilter()
         intentFilter.addAction("ACTION")
         intentFilter.addAction("DELETED")
+        intentFilter.addAction("DELETED123")
         intentFilter.addAction("PROGRESS")
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(MyBroadcastReceiver(), intentFilter)
@@ -226,13 +230,20 @@ internal class ArtistFavFragment : BaseFragment(),
 //                            "habijabi: ${it.toString()} ")
                     }
                 }
+                "DELETED123" -> {
+                    //  loadData()
+                    parentAdapter.notifyDataSetChanged()
+                    Log.e("DELETED", "broadcast fired")
+                }
+
                 "DELETED" -> {
-                    dataAdapter.notifyDataSetChanged()
+                  //  loadData()
+                    parentAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
 
-                    dataAdapter.notifyDataSetChanged()
+                   // dataAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
@@ -334,7 +345,9 @@ internal class ArtistFavFragment : BaseFragment(),
                 val localIntent = Intent("DELETED")
                     .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
+
                 isDownloaded = false
+
             } else {
                 val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =
@@ -426,6 +439,7 @@ internal class ArtistFavFragment : BaseFragment(),
                 cacheRepository.deleteFavoriteById(mSongDetails.content_Id ?: "")
                 Toast.makeText(requireContext(), "Removed from favorite", Toast.LENGTH_LONG).show()
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
+                dataAdapter.updateData(cacheRepository.getArtistFavoriteContent())
                 isFav = false
             } else {
                 favViewModel.addFavContent(

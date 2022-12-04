@@ -158,6 +158,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 artistName = mSongDetails.artistName
                 total_duration = mSongDetails.total_duration
                 artist_Id = mSongDetails.artist_Id
+
             },
             argHomePatchItem,
             HomePatchDetailModel().apply {
@@ -170,6 +171,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                 rootImage = mSongDetails.rootImage ?: ""
                 titleName = mSongDetails.titleName ?: ""
                 total_duration = mSongDetails.total_duration ?: ""
+
             }
         )
     }

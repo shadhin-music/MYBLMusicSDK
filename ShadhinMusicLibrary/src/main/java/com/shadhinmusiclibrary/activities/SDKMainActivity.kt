@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
+import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
@@ -17,7 +18,9 @@ import android.view.View
 import android.view.View.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.annotation.NavigationRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
@@ -694,7 +697,7 @@ internal class SDKMainActivity : BaseActivity(),
     private fun setupNavGraphAndArg(
         @NavigationRes graphResId: Int,
         bundleData: Bundle,
-        resId: Int
+        resId: Int,
     ) {
         val inflater = navHostFragment.navController.navInflater
         val navGraph = inflater.inflate(graphResId)
@@ -833,13 +836,13 @@ internal class SDKMainActivity : BaseActivity(),
 
             override fun onScrollStart(
                 currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-                adapterPosition: Int
+                adapterPosition: Int,
             ) {
             }
 
             override fun onScrollEnd(
                 currentItemHolder: MusicPlayAdapter.MusicPlayVH,
-                adapterPosition: Int
+                adapterPosition: Int,
             ) {
                 currentItemHolder.sMusicData.album_Name
                 playerViewModel.skipToQueueItem(adapterPosition)
@@ -853,7 +856,7 @@ internal class SDKMainActivity : BaseActivity(),
                 currentPosition: Int,
                 newPosition: Int,
                 currentHolder: MusicPlayAdapter.MusicPlayVH?,
-                newCurrent: MusicPlayAdapter.MusicPlayVH?
+                newCurrent: MusicPlayAdapter.MusicPlayVH?,
             ) {
             }
         })
@@ -974,7 +977,7 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnVolume.setOnClickListener {
-
+            setUpVolume(this)
         }
 
         ibtnLibraryAdd.setOnClickListener {
@@ -1500,6 +1503,52 @@ internal class SDKMainActivity : BaseActivity(),
         }
     }
 
+    private fun setUpVolume(context: Context) {
+        val bottomSheetDialogVolume =
+            BottomSheetDialog(context, R.style.BottomSheetDialog)
+        val contentView =
+            inflate(
+                context,
+                R.layout.my_bl_sdk_add_volume,
+                null
+            )
+        bottomSheetDialogVolume.setContentView(contentView)
+        bottomSheetDialogVolume.show()
+//        val closeButton: ImageView? =
+//            bottomSheetDialogVolume.findViewById(R.id.closeButton)
+//        closeButton?.setOnClickListener {
+//            bottomSheetDialogQueue.dismiss()
+//        }
+
+        val volumeBar: SeekBar? = bottomSheetDialogVolume.findViewById(R.id.volume_bar)
+        val volumeFull: ImageView? = bottomSheetDialogVolume.findViewById(R.id.volume_full)
+        val volumeOff: ImageView? = bottomSheetDialogVolume.findViewById(R.id.volume_off)
+        val audioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
+        if (audioManager != null) {
+            volumeBar?.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
+            volumeBar?.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+            volumeFull?.setImageDrawable(AppCompatResources.getDrawable(applicationContext,
+                R.drawable.ic_volume_up))
+            volumeBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, newVolume: Int, b: Boolean) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0)
+                    if (newVolume == 0) {
+                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
+                            applicationContext,
+                            R.drawable.ic_volume_mute))
+                    } else {
+                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
+                            applicationContext,
+                            R.drawable.ic_volume_down))
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
+        }
+    }
+
     fun openCreatePlaylist(context: Context) {
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
 
@@ -1550,7 +1599,7 @@ internal class SDKMainActivity : BaseActivity(),
                 s: CharSequence?,
                 start: Int,
                 count: Int,
-                after: Int
+                after: Int,
             ) {
             }
 
@@ -1558,7 +1607,7 @@ internal class SDKMainActivity : BaseActivity(),
                 s: CharSequence?,
                 start: Int,
                 before: Int,
-                count: Int
+                count: Int,
             ) {
             }
         })
@@ -2145,7 +2194,7 @@ internal class SDKMainActivity : BaseActivity(),
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
-        argHomePatchDetail: HomePatchDetailModel?
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         bsdNavController.navigate(R.id.artist_details_fragment,
             Bundle().apply {
@@ -2165,7 +2214,7 @@ internal class SDKMainActivity : BaseActivity(),
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
-        argHomePatchDetail: HomePatchDetailModel?
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         bsdNavController.navigate(R.id.to_artist_details,
             Bundle().apply {
@@ -2196,7 +2245,7 @@ internal class SDKMainActivity : BaseActivity(),
         context: Context,
         mSongDetails: IMusicModel,
         argHomePatchItem: HomePatchItemModel?,
-        argHomePatchDetail: HomePatchDetailModel?
+        argHomePatchDetail: HomePatchDetailModel?,
     ) {
         bsdNavController.navigate(
             R.id.to_album_details,

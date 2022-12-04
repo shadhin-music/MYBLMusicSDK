@@ -53,8 +53,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     var podcastType: String = ""
     var contentType: String = ""
-    private var selectedEpisodeID: Int = 0
-    var contentId: Int = 0
+    private var selectedEpisodeID: String =""
+    var contentId: String = ""
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var parentRecycler: RecyclerView
     private var cacheRepository: CacheRepository? = null
@@ -74,8 +74,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
             val Type: String = it.content_Type ?: ""
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
-            contentId = it.content_Id.toInt()
-            selectedEpisodeID = it.album_Id?.toInt() ?: it.content_Id.toInt()
+            contentId = it.content_Id
+            selectedEpisodeID = it.album_Id ?: it.content_Id
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
@@ -246,7 +246,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
         val episode = selectedEpisode[itemPosition]
-        selectedEpisodeID = episode.Id
+        selectedEpisodeID = episode.Id.toString()
         argHomePatchDetail?.content_Id = episode.Id.toString()
 
         observePodcastDetailsData()

@@ -14,7 +14,7 @@ internal class PodcastViewModel(private val podcastRepository: PodcastRepository
     private val _podcastContent: MutableLiveData<ApiResponse<PodcastModel>> = MutableLiveData()
     val podcastDetailsContent: LiveData<ApiResponse<PodcastModel>> = _podcastContent
 
-    fun fetchPodcastContent(podType: String, episodeId: Int, contentType: String, isPaid: Boolean) =
+    fun fetchPodcastContent(podType: String, episodeId: String, contentType: String, isPaid: Boolean) =
         viewModelScope.launch {
             val response =
                 podcastRepository.fetchPodcastByID(podType, episodeId, contentType, isPaid)
