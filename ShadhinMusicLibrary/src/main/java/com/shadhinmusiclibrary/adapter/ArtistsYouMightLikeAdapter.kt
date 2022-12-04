@@ -29,20 +29,19 @@ internal class ArtistsYouMightLikeAdapter(
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.bindItems(homePatchItem)
-
-
     }
+
     override fun getItemViewType(position: Int) = VIEW_TYPE
+
     override fun getItemCount(): Int {
         return 1
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val  context = itemView.getContext()
+        val context = itemView.getContext()
+
         fun bindItems(homePatchItem: HomePatchItemModel?) {
             val textView: TextView = itemView.findViewById(R.id.tvTitle)
             textView.text = "You might like also"
@@ -55,36 +54,22 @@ internal class ArtistsYouMightLikeAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack,artistIDToSkip)
+            adapter = ArtistAdapter(homePatchItem, homeCallBack = homeCallBack, artistIDToSkip)
             recyclerView.adapter = adapter
-
 //             val textViewName = itemView.findViewById(R.id.txt_name) as TextView
 ////            val imageView2 = itemView.findViewById(R.id.image) as ImageView
 ////            itemView.setOnClickListener {
-////                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-////                manager.beginTransaction()
-////                    .replace(R.id.container , PlaylistFragment.newInstance())
-////                    .commit()
 ////            }
 ////            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 ////            entityId = banner.entityId
 //            //getActorName(entityId!!)
-//
 ////            //textViewName.setText(banner.name)
 ////            textViewName.text = LOADING_TXT
 ////           textViewName.tag = banner.entityId
-
-
         }
-
     }
+
     companion object {
         const val VIEW_TYPE = 4
     }
 }
-
-
-
-
-
-
