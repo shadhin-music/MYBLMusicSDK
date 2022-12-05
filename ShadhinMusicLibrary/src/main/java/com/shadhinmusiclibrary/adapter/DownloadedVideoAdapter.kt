@@ -31,18 +31,25 @@ internal class DownloadedVideoAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val mSongDetails = allDownloads[position]
+
         holder.bindItems()
-        if (allDownloads[position].content_Type.equals("V")) {
+        if (mSongDetails.content_Type == "V") {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads) {
+                for (item in allDownloads.filter { it.content_Type == "V" }
+                    .toMutableList()) {
                     val video = VideoModel()
                     video.setDataDownload(item)
                     videoArray.add(video)
                 }
+
+                val clickIndex =
+                    allDownloads.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
                 val videos: ArrayList<VideoModel> = videoArray
-                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickIndex)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 holder.itemView.context.startActivity(intent)
             }
@@ -60,7 +67,7 @@ internal class DownloadedVideoAdapter(
     }
 
     fun upDateData(data: MutableList<DownloadedContent>?) {
-        var allDownloads: MutableList<IMusicModel> = mutableListOf()
+        val allDownloads: MutableList<IMusicModel> = mutableListOf()
         allDownloads.clear()
         data?.let { allDownloads.addAll(it) }
         notifyDataSetChanged()
@@ -89,7 +96,7 @@ internal class DownloadedVideoAdapter(
                 .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
-            threeDotButton.visibility =GONE
+            threeDotButton.visibility = GONE
 //            if (item.isPlaystate) {
 //                playPauseImage.setImageResource(R.drawable.my_bl_sdk_ic_pause_n)
 //            } else {

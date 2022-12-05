@@ -20,12 +20,13 @@ import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class FavoritePlaylistAdapter(
-
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: CommonPSVCallback,
-    private val cacheRepository: CacheRepository, private val albumClick: onFavPlaylistClick
+    private val cacheRepository: CacheRepository,
+    private val albumClick: onFavPlaylistClick
 ) : RecyclerView.Adapter<FavoritePlaylistAdapter.ViewHolder>() {
-    private var allFav: MutableList<FavDataModel> = mutableListOf()
+
+    private var allDownloads: MutableList<FavDataModel> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_download_songs_item, parent, false)
@@ -33,6 +34,7 @@ internal class FavoritePlaylistAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val mSongDetails = allDownloads[position]
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
 //        if(allDownloads[position].rootType.equals("V")){
@@ -53,31 +55,40 @@ internal class FavoritePlaylistAdapter(
 //        if(allDownloads[position].rootType.equals("S")){
 //        val position =allDownloads[position]
         holder.itemView.setOnClickListener {
-            albumClick.onFavPlaylistClick(position, allFav)
+            albumClick.onFavPlaylistClick(position, allDownloads)
             //lrOnCallBack.onClickFavItem(allDownloads as MutableList<FavData>, position)
         }
         menu.setOnClickListener {
-            openMenu.onClickBottomItemSongs(allFav[position])
+            openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (allFav[position].content_Type?.contains("PD") == true) {
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allFav[position])
-            }
+//        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
+        menu.setOnClickListener {
+            val filterData =
+                allDownloads.filter { it.content_Type?.substring(0, 2) == "PD" }
+                    .toMutableList()
+            val clickIndex =
+                filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+            openMenu.onClickBottomItemPodcast(filterData[clickIndex])
         }
+//        }
     }
+
     fun setData(data: MutableList<FavDataModel>) {
-        allFav = data.toMutableList()
+        allDownloads = data.toMutableList()
         notifyDataSetChanged()
 
     }
+
     fun updateData(artistFavoriteContent: List<FavDataModel>?) {
-        allFav.clear()
-        artistFavoriteContent?.let {allFav.addAll(it) }
+        allDownloads.clear()
+        artistFavoriteContent?.let { allDownloads.addAll(it) }
         notifyDataSetChanged()
 
     }
+
     override fun getItemCount(): Int {
-        return allFav.size
+        return allDownloads.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -86,26 +97,26 @@ internal class FavoritePlaylistAdapter(
         fun bindItems() {
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(allFav[absoluteAdapterPosition].imageUrl!!))
+                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
                 .into(sivSongIcon)
             val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
-            tvSongName.text = allFav[absoluteAdapterPosition].titleName
+            tvSongName.text = allDownloads[absoluteAdapterPosition].titleName
 
             val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            tvSingerName.text = allFav[absoluteAdapterPosition].artistName
+            tvSingerName.text = allDownloads[absoluteAdapterPosition].artistName
             tvSingerName.visibility = GONE
             val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
             tvSongLength.visibility = GONE
             tvSongLength.text =
-                TimeParser.secToMin(allFav[absoluteAdapterPosition].total_duration)
+                TimeParser.secToMin(allDownloads[absoluteAdapterPosition].total_duration)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
-            progressIndicator.tag = allFav[absoluteAdapterPosition].content_Id
+            progressIndicator.tag = allDownloads[absoluteAdapterPosition].content_Id
             progressIndicator.visibility = View.GONE
             downloaded.visibility = View.GONE
             downloaded.tag = 220
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(allFav[absoluteAdapterPosition].content_Id!!)
+                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].content_Id!!)
                     ?: false
             if (isDownloaded) {
                 Log.e("TAG", "ISDOWNLOADED: " + isDownloaded)

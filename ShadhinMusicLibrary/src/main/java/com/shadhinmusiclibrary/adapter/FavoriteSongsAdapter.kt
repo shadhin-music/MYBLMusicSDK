@@ -38,6 +38,7 @@ internal class FavoriteSongsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mSongDetails = allDownloads[position]
+
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
 //        if(allDownloads[position].rootType.equals("V")){
@@ -55,27 +56,37 @@ internal class FavoriteSongsAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-//        if(allDownloads[position].rootType.equals("S")){
-        holder.itemView.setOnClickListener {
-            lrOnCallBack.onClickFavItem(allDownloads, position)
-        }
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemSongs(allDownloads[position])
-        }
-        val contentPodcast = allDownloads[position].content_Type
-
-        if (contentPodcast?.contains("PD") == true) {
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allDownloads[position])
-            }
-            Log.e("TAG", "DATA: " + allDownloads[position].content_Type)
-            Log.e("TAG", "DATA: " + allDownloads[position].rootContentType)
-            Log.e("TAG", "DATA: " + allDownloads[position].content_Id)
-            Log.e("TAG", "DATA: " + allDownloads[position].playingUrl)
+        if (mSongDetails.content_Type.equals("S")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickFavItem(allDownloads, position)
+                val filterData =
+                    allDownloads.filter { it.content_Type == "S" }.toMutableList()
+
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+                lrOnCallBack.onClickFavItem(filterData, clickIndex)
+            }
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
+//        val contentPodcast = allDownloads[position].content_Type
+
+//        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
+        holder.itemView.setOnClickListener {
+            val filterData =
+                allDownloads.filter { it.content_Type?.substring(0, 2) == "PD" }
+                    .toMutableList()
+            val clickIndex =
+                filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+            lrOnCallBack.onClickFavItem(filterData, clickIndex)
+        }
+
+        menu.setOnClickListener {
+            openMenu.onClickBottomItemPodcast(mSongDetails)
+        }
+//        }
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
@@ -97,10 +108,6 @@ internal class FavoriteSongsAdapter(
         mediaId: String?
     ) {
         for (songItem in data) {
-            Log.e(
-                "ALLDowA",
-                "setData: " + songItem.content_Id + " " + songItem.titleName + " " + songItem.total_duration
-            )
             allDownloads.add(
                 songItem.apply {
                     isSeekAble = true

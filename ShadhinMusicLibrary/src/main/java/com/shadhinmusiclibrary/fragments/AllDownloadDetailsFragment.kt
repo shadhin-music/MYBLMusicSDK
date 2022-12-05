@@ -107,7 +107,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
             argHomePatchDetail ?: HomePatchDetailModel(),
             playerViewModel.currentMusic?.mediaId
         )
-         Log.e("TAG","DATA: "+ cacheRepository.getAllDownloads())
+
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -115,7 +115,6 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(config, allDownloadAdapter)
         recyclerView.adapter = parentAdapter
-
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
             if (music != null) {
@@ -127,10 +126,6 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e(
-            "ALLDDF",
-            "click rcid: " + mSongDetails[clickItemPosition].titleName + " id " + mSongDetails[clickItemPosition].content_Id
-        )
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -176,10 +171,6 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
     }
 
     override fun onClickBottomItemSongs(mSongDetails: IMusicModel) {
-        Log.e(
-            "CommADDF",
-            "onClickBottomItem: content_Id: " + mSongDetails.content_Id + " artist_Id: " + mSongDetails.artist_Id + " album_Id: " + mSongDetails.album_Id
-        )
         showBottomSheetDialog(
             navController,
             context = requireContext(),
@@ -255,11 +246,13 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = item.artist
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = item.image
+//        val url = item.image
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = item.title
         if (image != null) {
-            Glide.with(this).load(url?.replace("<\$size\$>", "300")).into(image)
+            Glide.with(this)
+                .load(UtilHelper.getImageUrlSize300(item.image ?: ""))
+                .into(image)
         }
 
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
@@ -294,8 +287,6 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     .putExtra("contentID", item.contentID.toString())
                 localBroadcastManager.sendBroadcast(localIntent)
                 isDownloaded = false
-
-
             } else {
                 val url = "${Constants.FILE_BASE_URL}${item.playUrl}"
                 val downloadRequest: DownloadRequest =
@@ -308,7 +299,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                     downloadRequest,
                     /* foreground= */ false
                 )
-                Log.e("TAG", "DELETED: " + item.playUrl)
+
                 if (cacheRepository.isDownloadCompleted(item.contentID.toString()).equals(true)) {
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
@@ -334,7 +325,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
 
         var watched = cacheRepository.getWatchedVideoById(item.contentID.toString())
 
-        if (watched?.isWatched==1) {
+        if (watched?.isWatched == 1) {
             iswatched = true
             watchlaterImage?.setImageResource(R.drawable.my_bl_sdk_watch_later_remove)
 //            watchIcon.setColorFilter(applicationContext.getResources().getColor(R.color.my_sdk_color_primary))
@@ -471,7 +462,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                                 artistName = mSongDetails.artistName
                                 artist_Id = mSongDetails.artist_Id
                                 total_duration = mSongDetails.total_duration
-                                album_Id =mSongDetails.album_Id
+                                album_Id = mSongDetails.album_Id
                             }
                     )
                     isDownloadedComplete = true

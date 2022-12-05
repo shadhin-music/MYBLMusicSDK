@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.R.attr
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import com.shadhinmusiclibrary.utils.AnyTrackDiffCB
 import com.shadhinmusiclibrary.utils.TimeParser
 import com.shadhinmusiclibrary.utils.UtilHelper
 
-
 internal class AllDownloadedAdapter(
     private val lrOnCallBack: DownloadedSongOnCallBack,
     private val openMenu: CommonPSVCallback,
@@ -40,6 +38,7 @@ internal class AllDownloadedAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val mSongDetails = allDownloads[position]
+
         holder.bindItems(mSongDetails)
         val menu: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
 
@@ -47,35 +46,59 @@ internal class AllDownloadedAdapter(
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads) {
+                for (item in allDownloads.filter { it.content_Type == "V" }
+                    .toMutableList()) {
                     val video = VideoModel()
                     video.setDataDownloadIM(item)
                     videoArray.add(video)
                 }
+                val clickIndex =
+                    videoArray.indexOfFirst { it.contentID == mSongDetails.content_Id }
+
                 val videos: ArrayList<VideoModel> = videoArray
-                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, position)
+                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickIndex)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videos)
                 holder.itemView.context.startActivity(intent)
             }
             menu.setOnClickListener {
-                openMenu.onClickBottomItemVideo(allDownloads[position])
+                openMenu.onClickBottomItemVideo(mSongDetails)
             }
         }
 
         if (mSongDetails.content_Type.equals("S")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickItem(allDownloads, position)
+                val filterData =
+                    allDownloads.filter { it.content_Type == "S" }
+                        .toMutableList()
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+                lrOnCallBack.onClickItem(filterData, clickIndex)
             }
             menu.setOnClickListener {
-                openMenu.onClickBottomItemSongs(allDownloads[position])
+                openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (allDownloads[position].content_Type?.contains("PD") == true) {
+
+        if (mSongDetails.content_Type == "PDJG" ||
+            mSongDetails.content_Type == "PDJC" ||
+            mSongDetails.content_Type == "PDBC"
+        ) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickItem(allDownloads, position)
+                val filterData =
+                    allDownloads.filter {
+                        it.content_Type == "PDJG"
+                                || it.content_Type == "PDJC"
+                                || it.content_Type == "PDBC"
+                    }
+                        .toMutableList()
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+                lrOnCallBack.onClickItem(filterData, clickIndex)
             }
             menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allDownloads[position])
+                openMenu.onClickBottomItemPodcast(mSongDetails)
             }
         }
 
@@ -99,10 +122,6 @@ internal class AllDownloadedAdapter(
         mediaId: String?,
     ) {
         for (songItem in data) {
-            Log.e(
-                "CommADA",
-                "setData: content_Id: " + songItem.content_Id + " artist_Id: " + songItem.artist_Id + " album_Id: " + songItem.album_Id
-            )
             allDownloads.add(
                 songItem.apply {
                     isSeekAble = true
@@ -118,12 +137,14 @@ internal class AllDownloadedAdapter(
 
         notifyDataSetChanged()
     }
+
     fun upDateData(data: MutableList<DownloadedContent>?) {
         allDownloads.clear()
         data?.let { allDownloads.addAll(it) }
         notifyDataSetChanged()
 
     }
+
     fun setPlayingSong(mediaId: String) {
         contentId = mediaId
         val newList: List<IMusicModel> =
