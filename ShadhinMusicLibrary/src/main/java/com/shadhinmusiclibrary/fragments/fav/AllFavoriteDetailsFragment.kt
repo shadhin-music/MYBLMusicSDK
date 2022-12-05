@@ -56,7 +56,6 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
     CommonPSVCallback,
     ItemClickListener, onFavArtistClickAll {
-
     private var isDownloaded: Boolean = false
     private var iswatched: Boolean = false
     private lateinit var favViewModel: FavViewModel

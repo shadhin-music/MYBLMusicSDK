@@ -190,46 +190,52 @@ internal class ArtistHeaderAdapter(
                     .load(UtilHelper.getImageUrlSize300(homePatchDetail.imageUrl ?: ""))
                     .into(imageView)
                 var isFav = false
-                val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.content_Id)
-                if (isAddedToFav?.content_Id != null) {
+                val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.artist_Id.toString())
+                if (isAddedToFav?.artist_Id != null) {
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     isFav = true
                 } else {
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 }
-
+                Log.e("TAG","DATA: "+ homePatchDetail.artist_Id)
+                Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
                 ivFavorite?.setOnClickListener {
                     if (isFav.equals(true)) {
                         favViewModel?.deleteFavContent(
-                            homePatchDetail.content_Id,
-                            homePatchDetail.content_Type ?: ""
+                            homePatchDetail.artist_Id.toString(),
+                            "A" ?: ""
                         )
-                        cacheRepository?.deleteFavoriteById(homePatchDetail.content_Id)
+                        cacheRepository?.deleteFavoriteById(homePatchDetail.artist_Id.toString())
                         Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                         ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                         isFav = false
                     } else {
                         favViewModel?.addFavContent(
-                            homePatchDetail.content_Id,
-                            homePatchDetail.content_Type ?: ""
+                            homePatchDetail.artist_Id.toString(),
+                            "A" ?: ""
                         )
+                        Log.e("TAG","DATA: "+ homePatchDetail.titleName)
+                        Log.e("TAG","DATA: "+ homePatchDetail.artistName)
+                        Log.e("TAG","DATA: "+ homePatchDetail.content_Id)
+                        Log.e("TAG","DATA: "+ homePatchDetail.artist_Id)
                         ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                         cacheRepository?.insertFavSingleContent(
                             FavDataModel().apply {
-                                content_Id = homePatchDetail.content_Id
+                                content_Id = homePatchDetail.artist_Id.toString()
                                 album_Id = homePatchDetail.album_Id
                                 albumImage = homePatchDetail.imageUrl
                                 artistName = homePatchDetail.artistName
                                 artist_Id = homePatchDetail.artist_Id
                                 clientValue = 2
-                                content_Type = homePatchDetail.content_Type
+                                content_Type = "A"
                                 fav = "1"
                                 imageUrl = homePatchDetail.imageUrl
                                 playingUrl = homePatchDetail.playingUrl
                                 rootContentId = homePatchDetail.rootContentId
                                 rootContentId = homePatchDetail.rootContentType
-                                titleName = homePatchDetail.titleName
+                                titleName =  homePatchDetail.artistName
+
                             }
                         )
                         isFav = true

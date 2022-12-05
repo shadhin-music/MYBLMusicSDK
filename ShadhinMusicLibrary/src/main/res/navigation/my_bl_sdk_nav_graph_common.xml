@@ -52,8 +52,8 @@
 
     <fragment
         android:id="@+id/featured_podcast_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastSeeAllDetailsFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
         <action
             android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />

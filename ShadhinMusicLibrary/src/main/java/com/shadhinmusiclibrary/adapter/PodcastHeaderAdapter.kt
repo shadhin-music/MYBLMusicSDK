@@ -120,7 +120,7 @@ internal class PodcastHeaderAdapter(
             Log.e("TAG","NameCode :"+episode?.get(position)?.Code)
             Log.e("TAG","NameId :"+episode?.get(position)?.Id)
            // Log.e("TAG","NameId :"+ listSongTrack[0].content_Id)
-            Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
+           // Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
             var isFav = false
             val isAddedToFav = cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {

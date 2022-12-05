@@ -7,4 +7,7 @@ internal class FeaturedPodcastRepository(private val apiService: ApiService) {
     suspend fun fetchFeaturedPodcast(isPaid: Boolean) = safeApiCall {
         apiService.fetchFeturedPodcast(isPaid)
     }
+    suspend fun fetchPodcastSeeAll(isPaid: Boolean) = safeApiCall {
+        apiService.fetchPodcastSeeAll(isPaid)
+    }
 }

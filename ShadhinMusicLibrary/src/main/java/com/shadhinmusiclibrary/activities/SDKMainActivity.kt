@@ -1064,7 +1064,9 @@ internal class SDKMainActivity : BaseActivity(),
                 downloadRequest,
                 /* foreground= */ false
             )
-            Log.e("DELETEDX", "openDialog123:" + downloaded?.getIsDownloaded())
+            Log.e("DELETEDX", "openDialog123:" + mSongDetails.album_Id )
+            Log.e("DELETEDX", "openDialog123:" + mSongDetails.content_Id )
+            Log.e("DELETEDX", "openDialog123:" + mSongDetails.playingUrl)
             if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id ?: "") == true) {
                 cacheRepository.insertDownload(
                     DownloadedContent().apply {
@@ -1076,9 +1078,10 @@ internal class SDKMainActivity : BaseActivity(),
                         content_Type = mSongDetails.content_Type
                         playingUrl = mSongDetails.playingUrl
                         content_Type = mSongDetails.content_Type
-                        titleName = mSongDetails.titleName
+                        artistName = mSongDetails.artistName
                         artist_Id = mSongDetails.artist_Id
                         total_duration = mSongDetails.total_duration
+
                     }
                 )
                 isDownloaded = true
