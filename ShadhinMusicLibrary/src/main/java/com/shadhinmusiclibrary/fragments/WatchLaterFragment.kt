@@ -73,7 +73,7 @@ internal class WatchLaterFragment : BaseFragment(),
 
         val cacheRepository = CacheRepository(requireContext())
         footerAdapter = HomeFooterAdapter()
-         dataAdapter = WatchlaterAdapter(this)
+        dataAdapter = WatchlaterAdapter(this)
         dataAdapter.setData(cacheRepository.getAllWatchlater() as MutableList<WatchLaterContent>)
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recyclerView)
         recyclerView.layoutManager =
@@ -246,7 +246,8 @@ internal class WatchLaterFragment : BaseFragment(),
                         url,
                         item.contentType.toString(),
                         0,
-                        0,1,
+                        0,
+                        1,
                         item.artist.toString(),
                         item.duration.toString()
                     )

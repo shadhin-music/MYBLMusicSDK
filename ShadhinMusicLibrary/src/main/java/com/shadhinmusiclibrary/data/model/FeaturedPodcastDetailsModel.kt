@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 @Keep
 internal data class FeaturedPodcastDetailsModel(
     val About: String,
-    val CeateDate: String,
+    val CreateDate: String,
     val ContentType: String,
     val Duration: String,
     val EndDate: String,

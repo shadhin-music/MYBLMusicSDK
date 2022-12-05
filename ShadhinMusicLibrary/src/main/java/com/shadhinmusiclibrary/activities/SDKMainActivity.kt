@@ -42,7 +42,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.offline.*
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
@@ -455,10 +456,6 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
-        Log.e(
-            "SDKMA",
-            "routeDataHomeFragment: " + homePatchItem.Data[2].content_Id + " " + homePatchItem.Data[2].content_Type
-        )
         if (selectedIndex != null && homePatchItem.Data.size > selectedIndex) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
@@ -630,10 +627,6 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.featured_podcast_fragment
                 )
             }
-            Log.e(
-                "SDKMA",
-                "else: " + homePatchItem.Data[2].content_Id + " " + homePatchItem.Data[2].content_Type
-            )
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
@@ -1083,6 +1076,7 @@ internal class SDKMainActivity : BaseActivity(),
                         content_Type = mSongDetails.content_Type
                         rootContentType = mSongDetails.rootContentType
                         playingUrl = mSongDetails.playingUrl
+                        content_Type = mSongDetails.content_Type
                         titleName = mSongDetails.titleName
                         artist_Id = mSongDetails.artist_Id
                         artistName = mSongDetails.artistName

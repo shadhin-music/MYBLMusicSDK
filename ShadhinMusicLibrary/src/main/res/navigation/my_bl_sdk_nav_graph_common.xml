@@ -10,14 +10,6 @@
         android:label="Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
-        <!--        <action-->
-        <!--            android:id="@+id/action_albumDetailsFragment_to_artistDetailsFragment"-->
-        <!--            app:destination="@id/artist_details_fragment" />-->
-
-        <!--        <action-->
-        <!--            android:id="@+id/action_albumDetailsFragment_to_to_artistDetailsFragment"-->
-        <!--            app:destination="@id/artist_details_fragment" />-->
-
         <action
             android:id="@+id/to_artist_details"
             app:destination="@id/artist_details_fragment" />
@@ -37,10 +29,6 @@
         android:label="Artist Details"
         tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
 
-        <!--        <action-->
-        <!--            android:id="@+id/to_artist_details"-->
-        <!--            app:destination="@id/artist_details_fragment" />-->
-
         <action
             android:id="@+id/to_album_details"
             app:destination="@id/album_details_fragment" />
@@ -52,9 +40,8 @@
 
     <fragment
         android:id="@+id/featured_podcast_fragment"
-        android:name="com.shadhinmusiclibrary.fragments.FeaturedPodcastFragment"
-        tools:layout="@layout/my_bl_sdk_common_rv_pb_layout">
-
+        android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastSeeAllDetailsFragment"
+        tools:layout="@layout/my_bl_sdk_common_rv_layout">
         <action
             android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />

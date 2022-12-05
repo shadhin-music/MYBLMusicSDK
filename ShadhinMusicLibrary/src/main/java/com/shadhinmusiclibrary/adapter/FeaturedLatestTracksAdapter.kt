@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,6 +101,7 @@ internal class FeaturedLatestTracksAdapter(
                 .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
                 .into(imageView!!)
             tvSongName?.text = mSongDetails.titleName
+            Log.e("TAG","Song: "+ mSongDetails.titleName )
             textArtist.text = mSongDetails.artistName
             textDuration.text = TimeParser.secToMin(mSongDetails.total_duration)
         }

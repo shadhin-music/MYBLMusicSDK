@@ -17,18 +17,18 @@ internal class FeaturedPodcastViewModel(private val featuredPodcastRepository: F
     val featuredpodcastContent: LiveData<ApiResponse<FeaturedPodcastModel>> =
         _featuredpodcastContent
 
-    private val _featuredpodcastContentJC: MutableLiveData<ApiResponse<FeaturedPodcastModel>> =
+    private val _podcastSeeAllContent: MutableLiveData<ApiResponse<FeaturedPodcastModel>> =
         MutableLiveData()
-    val featuredpodcastContentJC: LiveData<ApiResponse<FeaturedPodcastModel>> =
-        _featuredpodcastContentJC
+    val podcastSeeAllContent: LiveData<ApiResponse<FeaturedPodcastModel>> =
+        _podcastSeeAllContent
 
     fun fetchFeaturedPodcast(isPaid: Boolean) = viewModelScope.launch {
         val response = featuredPodcastRepository.fetchFeaturedPodcast(isPaid)
         _featuredpodcastContent.postValue(response)
     }
 
-    fun fetchFeaturedPodcastJC(isPaid: Boolean) = viewModelScope.launch {
-        val response = featuredPodcastRepository.fetchFeaturedPodcast(isPaid)
-        _featuredpodcastContentJC.postValue(response)
+    fun fetchPodcastSeeAll(isPaid: Boolean) = viewModelScope.launch {
+        val response = featuredPodcastRepository.fetchPodcastSeeAll(isPaid)
+        _podcastSeeAllContent.postValue(response)
     }
 }

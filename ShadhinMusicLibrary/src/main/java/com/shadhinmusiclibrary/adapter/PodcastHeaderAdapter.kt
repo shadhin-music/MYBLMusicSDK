@@ -115,11 +115,6 @@ internal class PodcastHeaderAdapter(
             Glide.with(context)
                 .load(url?.replace("<\$size\$>", "300"))
                 .into(imageView)
-            Log.e("TAG", "NameShowId :" + episode?.get(position)?.ShowId)
-            Log.e("TAG", "NameCode :" + episode?.get(position)?.Code)
-            Log.e("TAG", "NameId :" + episode?.get(position)?.Id)
-            // Log.e("TAG","NameId :"+ listSongTrack[0].content_Id)
-            Log.e("TAG", "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id)
             var isFav = false
             val isAddedToFav =
                 cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
@@ -141,11 +136,7 @@ internal class PodcastHeaderAdapter(
                         episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
                         episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
                     )
-                    Log.e("TAG", "Namecontent_Id :" + listSongTrack[0].content_Id)
-                    Log.e(
-                        "TAG",
-                        "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
-                    )
+
                     cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
@@ -180,7 +171,6 @@ internal class PodcastHeaderAdapter(
                     isFav = true
                     Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
                 }
-                // favClickCallback.favItemClick(songDetail)
             }
         }
     }

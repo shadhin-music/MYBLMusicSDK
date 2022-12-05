@@ -28,7 +28,7 @@ internal class FeaturedPodcastHomeRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int {
-        return featuredPodcastDataModel!!?.size
+        return featuredPodcastDataModel!!?.size!!
     }
 //
 //    @JvmName("setData1")
