@@ -276,7 +276,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e("PDF", "onClickItem: ")
+        Log.e("PDF", "onClickItem: " + mSongDetails[clickItemPosition].rootContentId)
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/

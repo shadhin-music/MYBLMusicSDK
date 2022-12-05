@@ -71,7 +71,7 @@ internal class PodcastTrackAdapter(
         rootPatch: HomePatchDetailModel,
         mediaId: String?
     ) {
-        this.tracks = mutableListOf()
+//        this.tracks = mutableListOf()
         for (songItem in songTrack) {
             tracks.add(
                 UtilHelper.getTrackToRootData(songItem, rootPatch)
