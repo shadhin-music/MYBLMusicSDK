@@ -98,7 +98,7 @@ internal class ArtistFavFragment : BaseFragment(),
         val cacheRepository = CacheRepository(requireContext())
 
 
-        dataAdapter =  FavoriteArtistAdapter(this, this,   cacheRepository, this)
+        dataAdapter = FavoriteArtistAdapter(this, this, cacheRepository, this)
 
         cacheRepository.getArtistFavoriteContent()?.let {
             dataAdapter.setData(
@@ -112,7 +112,7 @@ internal class ArtistFavFragment : BaseFragment(),
         footerAdapter = HomeFooterAdapter()
         parentAdapter = ConcatAdapter(config, dataAdapter)
         recyclerView.adapter = parentAdapter
-       // parentAdapter.notifyDataSetChanged()
+        // parentAdapter.notifyDataSetChanged()
 
         // Log.e("TAG","VIDEOS: "+ cacheRepository.getAllVideosDownloads())
     }
@@ -223,9 +223,7 @@ internal class ArtistFavFragment : BaseFragment(),
                         intent.getParcelableArrayListExtra<DownloadingItem>("downloading_items")
 
                     downloadingItems?.let {
-
                         progressIndicatorUpdate(it)
-
 //                        Log.e("getDownloadManagerx",
 //                            "habijabi: ${it.toString()} ")
                     }
@@ -237,21 +235,19 @@ internal class ArtistFavFragment : BaseFragment(),
                 }
 
                 "DELETED" -> {
-                  //  loadData()
+                    //  loadData()
                     parentAdapter.notifyDataSetChanged()
                     Log.e("DELETED", "broadcast fired")
                 }
                 "PROGRESS" -> {
 
-                   // dataAdapter.notifyDataSetChanged()
+                    // dataAdapter.notifyDataSetChanged()
                     Log.e("PROGRESS", "broadcast fired")
                 }
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
-
         }
     }
-
 
     override fun onFavArtistClick(itemPosition: Int, favData: List<IMusicModel>) {
         // val homePatchDetail = this.argHomePatchItem!!.Data[itemPosition]
@@ -268,9 +264,9 @@ internal class ArtistFavFragment : BaseFragment(),
                     AppConstantUtils.PatchDetail,
                     HomePatchDetailModel().apply {
                         album_Id = mFavData.album_Id.toString()
-                        artistName = mFavData.artistName.toString()
                         artist_Id = mFavData.artist_Id.toString()
                         content_Id = mFavData.content_Id
+                        artistName = mFavData.artistName.toString()
                         content_Type = mFavData.content_Type.toString()
                         playingUrl = mFavData.playingUrl.toString()
                         imageUrl = mFavData.imageUrl.toString()

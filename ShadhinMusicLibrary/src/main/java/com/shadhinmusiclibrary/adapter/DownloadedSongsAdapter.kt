@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +35,10 @@ internal class DownloadedSongsAdapter(
 
     override fun onBindViewHolder(holder: DownloadSongViewHolder, position: Int) {
         val mSongDetails = allDownloads[position]
+
         holder.bindItems(mSongDetails)
         val menu: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
 //        if(allDownloads[position].rootType.equals("V")){
-//
 //             holder.itemView.setOnClickListener {
 //                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
 //                 val videoArray = ArrayList<Video>()
@@ -54,29 +53,36 @@ internal class DownloadedSongsAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-        if (allDownloads[position].content_Type.equals("S")) {
+        if (mSongDetails.content_Type.equals("S")) {
             holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickItem(allDownloads, position)
-            }
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemSongs(allDownloads[position])
-            }
-        }
-        val contentPodcast = allDownloads[position].content_Type
+                val filterData =
+                    allDownloads.filter { it.content_Type == "S" }
+                        .toMutableList()
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
-        if (contentPodcast?.contains("PD") == true) {
-            menu.setOnClickListener {
-                openMenu.onClickBottomItemPodcast(allDownloads[position])
+                lrOnCallBack.onClickItem(filterData, clickIndex)
             }
-            Log.e("TAG", "DATA: " + allDownloads[position].content_Type)
-            Log.e("TAG", "DATA: " + allDownloads[position].rootContentType)
-            Log.e("TAG", "DATA: " + allDownloads[position].content_Id)
-            Log.e("TAG", "DATA: " + allDownloads[position].playingUrl)
-            holder.itemView.setOnClickListener {
-                lrOnCallBack.onClickItem(allDownloads, position)
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
 
+//        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
+        holder.itemView.setOnClickListener {
+            val filterData =
+                allDownloads.filter { it.content_Type?.substring(0, 2) == "PD" }
+                    .toMutableList()
+            val clickIndex =
+                filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+            lrOnCallBack.onClickItem(filterData, clickIndex)
+        }
+
+        menu.setOnClickListener {
+            openMenu.onClickBottomItemPodcast(mSongDetails)
+        }
+//        }
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(
@@ -99,10 +105,6 @@ internal class DownloadedSongsAdapter(
         mediaId: String?,
     ) {
         for (songItem in data) {
-            Log.e(
-                "ALLDowA",
-                "setData: " + songItem.content_Id + " " + songItem.titleName + " " + songItem.total_duration
-            )
             allDownloads.add(
                 songItem.apply {
                     isSeekAble = true
@@ -134,12 +136,14 @@ internal class DownloadedSongsAdapter(
     override fun getItemCount(): Int {
         return allDownloads.size
     }
+
     fun upDateData(data: MutableList<DownloadedContent>?) {
         allDownloads.clear()
         data?.let { allDownloads.addAll(it) }
         notifyDataSetChanged()
 
     }
+
     inner class DownloadSongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tag: String? = null
         val context = itemView.getContext()
