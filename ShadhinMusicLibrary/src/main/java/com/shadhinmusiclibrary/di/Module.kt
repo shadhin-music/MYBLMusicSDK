@@ -102,7 +102,7 @@ internal class Module(private val applicationContext: Context) {
     }
 
     private fun getRetrofitInstance(): Retrofit {
-        return RetrofitClient.getInstance(UtilsOkHttp.getBaseOkHttpClientWithToken())
+        return RetrofitClient.getInstance(UtilsOkHttp.getBaseOkHttpClientWithTokenAndClient())
     }
 
     fun authRepository() = AuthRepository(getShadhinMusicLoginAuthServiceV5())
