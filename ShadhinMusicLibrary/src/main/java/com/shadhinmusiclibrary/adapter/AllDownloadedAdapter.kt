@@ -41,7 +41,7 @@ internal class AllDownloadedAdapter(
 
         holder.bindItems(mSongDetails)
         val menu: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
-       
+
         if (mSongDetails.content_Type.equals("V")) {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)

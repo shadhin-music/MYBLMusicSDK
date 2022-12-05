@@ -40,7 +40,7 @@ internal class TopTenItemAdapter(
             topTenDataItems.add(
                 songItem.apply {
                     isSeekAble = true
-                    content_Type?.toUpperCase()
+                    content_Type = content_Type?.toUpperCase()
                     rootContentId = content_Id
                     rootContentType = content_Type?.toUpperCase()
                 }
