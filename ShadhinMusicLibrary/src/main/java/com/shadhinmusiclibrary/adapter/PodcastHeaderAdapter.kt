@@ -1,11 +1,9 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.annotation.SuppressLint
 import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,10 +28,10 @@ internal class PodcastHeaderAdapter(
     private val favViewModel: FavViewModel,
     private val homePatchDetail: HomePatchDetailModel?
 ) : RecyclerView.Adapter<PodcastHeaderAdapter.PodcastHeaderVH>() {
-
-    private var episode: List<EpisodeModel>? = null
     private var listSongTrack: MutableList<IMusicModel> = mutableListOf()
+    private var episode: List<EpisodeModel>? = null
     private var parentView: View? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PodcastHeaderVH {
         parentView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_podcast_header_layout, parent, false)
@@ -64,8 +62,9 @@ internal class PodcastHeaderAdapter(
     ) {
         this.listSongTrack = mutableListOf()
         for (songItem in data) {
+            Log.e("PHA", "setTrackData: " + rootPatch.content_Id + " " + rootPatch.content_Type)
             listSongTrack.add(
-                UtilHelper.getTrackToRootData(songItem, rootPatch)
+                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
         }
 
@@ -73,12 +72,12 @@ internal class PodcastHeaderAdapter(
         notifyDataSetChanged()
     }
 
-   /* @SuppressLint("NotifyDataSetChanged")
-    fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<SongTrackModel>) {
-        this.episode = episode
-        listSongTrack = trackList.toMutableList()
-        notifyDataSetChanged()
-    }*/
+    /* @SuppressLint("NotifyDataSetChanged")
+     fun setHeader(episode: List<EpisodeModel>, trackList: MutableList<SongTrackModel>) {
+         this.episode = episode
+         listSongTrack = trackList.toMutableList()
+         notifyDataSetChanged()
+     }*/
 
     inner class PodcastHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
@@ -92,7 +91,7 @@ internal class PodcastHeaderAdapter(
             val url: String? = episode?.get(0)?.ImageUrl
             val details: String = episode?.get(position)?.Details.toString()
             ivFavorite = itemView.findViewById(R.id.favorite)
-           // ivFavorite?.visibility = GONE
+            // ivFavorite?.visibility = GONE
             val result = Html.fromHtml(details).toString()
 //            if(textArtist?.text.isNullOrEmpty())
             // Log.e("TAG","Name :"+episode?.get(position))
@@ -116,13 +115,14 @@ internal class PodcastHeaderAdapter(
             Glide.with(context)
                 .load(url?.replace("<\$size\$>", "300"))
                 .into(imageView)
-            Log.e("TAG","NameShowId :"+episode?.get(position)?.ShowId)
-            Log.e("TAG","NameCode :"+episode?.get(position)?.Code)
-            Log.e("TAG","NameId :"+episode?.get(position)?.Id)
-           // Log.e("TAG","NameId :"+ listSongTrack[0].content_Id)
-            Log.e("TAG","Namecontent_Id :"+ episode?.get(position)?.TrackList?.get(0)?.content_Id)
+            Log.e("TAG", "NameShowId :" + episode?.get(position)?.ShowId)
+            Log.e("TAG", "NameCode :" + episode?.get(position)?.Code)
+            Log.e("TAG", "NameId :" + episode?.get(position)?.Id)
+            // Log.e("TAG","NameId :"+ listSongTrack[0].content_Id)
+            Log.e("TAG", "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id)
             var isFav = false
-            val isAddedToFav = cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
+            val isAddedToFav =
+                cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {
 
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
@@ -139,10 +139,13 @@ internal class PodcastHeaderAdapter(
 
                     favViewModel.deleteFavContent(
                         episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
-                        episode?.get(position)?.TrackList?.get(0)?.content_Type?: ""
+                        episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
                     )
                     Log.e("TAG", "Namecontent_Id :" + listSongTrack[0].content_Id)
-                    Log.e("TAG", "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
+                    Log.e(
+                        "TAG",
+                        "Namecontent_Id :" + episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
+                    )
                     cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
@@ -150,14 +153,15 @@ internal class PodcastHeaderAdapter(
                 } else {
 
                     favViewModel.addFavContent(
-                       episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
+                        episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
                         episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
                     )
 
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavDataModel().apply {
-                            content_Id =  episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
+                            content_Id =
+                                episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
                             album_Id = episode?.get(position)?.Id.toString()
                             albumImage = episode?.get(position)?.ImageUrl
                             artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
@@ -165,10 +169,10 @@ internal class PodcastHeaderAdapter(
                             clientValue = 2
                             content_Type = episode?.get(position)?.ContentType.toString()
                             fav = "1"
-                            imageUrl =  episode?.get(position)?.TrackList?.get(0)?.imageUrl
-                            playingUrl =  episode?.get(position)?.TrackList?.get(0)?.playingUrl
+                            imageUrl = episode?.get(position)?.TrackList?.get(0)?.imageUrl
+                            playingUrl = episode?.get(position)?.TrackList?.get(0)?.playingUrl
                             rootContentId = ""
-                            rootContentType =""
+                            rootContentType = ""
                             titleName = episode?.get(position)?.Name
                             total_duration = ""
                         }

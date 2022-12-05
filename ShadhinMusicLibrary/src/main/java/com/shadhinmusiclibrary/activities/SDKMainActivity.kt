@@ -74,7 +74,8 @@ import java.io.Serializable
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
-    ItemClickListener, CommonSingleCallback {
+    ItemClickListener,
+    CommonSingleCallback {
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -456,6 +457,10 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun routeDataHomeFragment(homePatchItem: HomePatchItemModel, selectedIndex: Int?) {
+        Log.e(
+            "SDKMA",
+            "routeDataHomeFragment: " + homePatchItem.Data[2].content_Id + " " + homePatchItem.Data[2].content_Type
+        )
         if (selectedIndex != null && homePatchItem.Data.size > selectedIndex) {
             //Single Item Click event
             val homePatchDetail = homePatchItem.Data[selectedIndex]
@@ -627,6 +632,10 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.featured_podcast_fragment
                 )
             }
+            Log.e(
+                "SDKMA",
+                "else: " + homePatchItem.Data[2].content_Id + " " + homePatchItem.Data[2].content_Type
+            )
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
                 DataContentType.CONTENT_TYPE_A -> {
@@ -1527,19 +1536,29 @@ internal class SDKMainActivity : BaseActivity(),
         if (audioManager != null) {
             volumeBar?.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
             volumeBar?.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-            volumeFull?.setImageDrawable(AppCompatResources.getDrawable(applicationContext,
-                R.drawable.ic_volume_up))
+            volumeFull?.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    applicationContext,
+                    R.drawable.ic_volume_up
+                )
+            )
             volumeBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, newVolume: Int, b: Boolean) {
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0)
                     if (newVolume == 0) {
-                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                            applicationContext,
-                            R.drawable.ic_volume_mute))
+                        volumeOff?.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                applicationContext,
+                                R.drawable.ic_volume_mute
+                            )
+                        )
                     } else {
-                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                            applicationContext,
-                            R.drawable.ic_volume_down))
+                        volumeOff?.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                applicationContext,
+                                R.drawable.ic_volume_down
+                            )
+                        )
                     }
                 }
 
@@ -2112,6 +2131,7 @@ internal class SDKMainActivity : BaseActivity(),
                             artistName = mSongDetails.artistName
                             artist_Id = mSongDetails.artist_Id.toString()
                             total_duration = mSongDetails.total_duration
+                            rootContentType = argHomePatchDetail?.content_Type
                         }
                     )
                 }
@@ -2175,8 +2195,8 @@ internal class SDKMainActivity : BaseActivity(),
                         fav = "1"
                         imageUrl = mSongDetails.imageUrl
                         playingUrl = mSongDetails.playingUrl
-                        rootContentId = mSongDetails.rootContentId
-                        rootContentType = mSongDetails.rootContentType
+                        rootContentId = argHomePatchDetail?.rootContentId
+                        rootContentType = argHomePatchDetail?.rootContentType
                         titleName = mSongDetails.titleName
                         total_duration = mSongDetails.total_duration
                     }
@@ -2233,6 +2253,7 @@ internal class SDKMainActivity : BaseActivity(),
                         imageUrl = mSongDetails.imageUrl
                         artistName = mSongDetails.artistName
                         rootContentType = "P"
+                        rootContentId = argHomePatchDetail?.content_Id
                         isSeekAble = true
                         titleName = ""
                     } as Serializable
@@ -2256,7 +2277,17 @@ internal class SDKMainActivity : BaseActivity(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    UtilHelper.getHomePatchDetailToSongDetail(mSongDetails) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id ?: ""
+                        artist_Id = mSongDetails.artist_Id ?: ""
+                        content_Id = mSongDetails.content_Id
+                        imageUrl = mSongDetails.imageUrl ?: ""
+                        artistName = mSongDetails.artistName ?: ""
+                        titleName = mSongDetails.titleName ?: ""
+                        content_Type = mSongDetails.content_Type
+                        rootContentId = argHomePatchDetail?.content_Id
+                        rootContentType = argHomePatchItem?.ContentType
+                    } as Serializable
                 )
             })
     }

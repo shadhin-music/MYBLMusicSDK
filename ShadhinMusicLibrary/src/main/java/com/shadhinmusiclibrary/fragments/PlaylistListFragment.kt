@@ -24,16 +24,17 @@ import java.io.Serializable
 
 
 internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
-    var homePatchItem: HomePatchItemModel? = null
+    //    var homePatchItem: HomePatchItemModel? = null
     private lateinit var navController: NavController
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var genresAdapter: GenresAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
-        }
-    }
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//            homePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,11 +50,11 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         super.onViewCreated(view, savedInstanceState)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         val tvTitle: TextView = view.findViewById(R.id.tvTitle)
-        tvTitle.text = homePatchItem!!.Name
+        tvTitle.text = argHomePatchItem!!.Name
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
         footerAdapter = HomeFooterAdapter()
-        genresAdapter = GenresAdapter(homePatchItem!!, this)
+        genresAdapter = GenresAdapter(argHomePatchItem!!, this)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
@@ -76,7 +77,7 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
 //        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         // recyclerView.adapter = concatAdapter
         val textTitle: TextView = requireView().findViewById(R.id.tvTitle)
-        textTitle.text = homePatchItem!!.Name
+        textTitle.text = argHomePatchItem!!.Name
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }

@@ -279,7 +279,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
         Log.e("PDF", "onClickItem: " + mSongDetails[clickItemPosition].rootContentId)
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
-                /*if ((mTracks[clickItemPosition].Id.toString() != playerViewModel.currentMusic?.mediaId)) {*/
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                     playerViewModel.play()
@@ -304,12 +303,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
             //DO NOT USE requireActivity()
             playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
                 if (itMusic != null) {
-                    Log.e(
-                        "PDF",
-                        "getCurrentVH: rootConType: " + songDetails[0].rootContentType + " " + itMusic.rootType
-                                + " rootConId: " + songDetails[0].rootContentId + " " + itMusic.rootId
-                                + " content_Id: " + songDetails[0].content_Id + " " + itMusic.mediaId
-                    )
                     if ((songDetails.indexOfFirst {
                             it.rootContentType == itMusic.rootType &&
                                     it.rootContentId == itMusic.rootId &&

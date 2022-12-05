@@ -21,6 +21,7 @@ internal object UtilsOkHttp {
             ).build()
     }
 
+    @Deprecated("Only Token not have client ID")
     fun getBaseOkHttpClientWithToken(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(
