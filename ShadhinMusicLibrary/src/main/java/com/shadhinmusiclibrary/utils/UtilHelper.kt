@@ -58,7 +58,7 @@ internal object UtilHelper {
                     displayDescription = "",
                     displayIconUrl = getImageUrlSize300(songItem.imageUrl!!),
                     mediaUrl = Constants.FILE_BASE_URL + songItem.playingUrl,
-                    artistName = songItem.artistName ?: "",
+                    artistName = songItem.artistName,
                     date = songItem.total_duration,
                     contentType = songItem.content_Type,
                     userPlayListId = "",

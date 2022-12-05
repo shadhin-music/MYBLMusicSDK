@@ -10,8 +10,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.SearchItemCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
-import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
@@ -36,16 +34,16 @@ internal class TopTenItemAdapter(
     }
 
     fun setData(
-        data: MutableList<IMusicModel>,
-        rootPatch: HomePatchDetailModel
+        ableList: MutableList<IMusicModel>
     ) {
-        for (songItem in data) {
+        for (songItem in ableList) {
             topTenDataItems.add(
-                UtilHelper.getMixdUpIMusicWithRootData(
-                    songItem.apply {
-                        isSeekAble = true
-                    }, rootPatch
-                )
+                songItem.apply {
+                    isSeekAble = true
+                    content_Type?.toUpperCase()
+                    rootContentId = content_Id
+                    rootContentType = content_Type?.toUpperCase()
+                }
             )
         }
         notifyDataSetChanged()

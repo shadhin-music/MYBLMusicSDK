@@ -72,21 +72,28 @@ internal class FavoriteSongsAdapter(
         }
 //        val contentPodcast = allDownloads[position].content_Type
 
-//        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
-        holder.itemView.setOnClickListener {
-            val filterData =
-                allDownloads.filter { it.content_Type?.substring(0, 2) == "PD" }
-                    .toMutableList()
-            val clickIndex =
-                filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+        if (mSongDetails.content_Type == "PDJG" ||
+            mSongDetails.content_Type == "PDJC" ||
+            mSongDetails.content_Type == "PDBC"
+        ) {
+            holder.itemView.setOnClickListener {
+                val filterData =
+                    allDownloads.filter {
+                        it.content_Type == "PDJG"
+                                || it.content_Type == "PDJC"
+                                || it.content_Type == "PDBC"
+                    }
+                        .toMutableList()
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
-            lrOnCallBack.onClickFavItem(filterData, clickIndex)
-        }
+                lrOnCallBack.onClickFavItem(filterData, clickIndex)
+            }
 
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemPodcast(mSongDetails)
+            menu.setOnClickListener {
+                openMenu.onClickBottomItemPodcast(mSongDetails)
+            }
         }
-//        }
 
         if (mSongDetails.isPlaying) {
             holder.tvSongName?.setTextColor(

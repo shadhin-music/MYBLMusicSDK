@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -293,10 +294,7 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                         rvWeeklyTrending?.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                         rvWeeklyTrending?.adapter = TopTenItemAdapter(this).apply {
-                            setData(
-                                it.toMutableList(),
-                                argHomePatchDetail ?: HomePatchDetailModel()
-                            )
+                            setData(it.toMutableList())
                         }
                     }
                 } else {
@@ -324,7 +322,8 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
 
 
     }
-    fun observe(){
+
+    fun observe() {
         searchViewModel.searchArtistContent.observe(viewLifecycleOwner) { response ->
             if (response != null && response.status == Status.SUCCESS) {
                 progressBar.visibility = GONE
@@ -559,6 +558,14 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
 
     //Top Tend play. whene fast search fragment came
     override fun onClickPlayItem(songItem: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e(
+            "SF",
+            "onClickPlayItem: "
+                    + songItem[clickItemPosition].content_Type + " "
+                    + songItem[clickItemPosition].rootContentType + " "
+                    + songItem[clickItemPosition].content_Id + " "
+                    + songItem[clickItemPosition].artistName
+        )
         if (playerViewModel.currentMusic != null) {
             if ((songItem[clickItemPosition].rootContentType == playerViewModel.currentMusic?.rootType)) {
                 if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
