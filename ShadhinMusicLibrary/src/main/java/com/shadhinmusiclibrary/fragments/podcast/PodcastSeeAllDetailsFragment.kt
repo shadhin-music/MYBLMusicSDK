@@ -13,10 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PodcastSeeAllDetailsAdapter
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.utils.AppConstantUtils
+import com.shadhinmusiclibrary.utils.UtilHelper
+import java.io.Serializable
 
 
-internal class PodcastSeeAllDetailsFragment : BaseFragment() {
+internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallback{
     lateinit var viewModel: FeaturedPodcastViewModel
     private lateinit var navController: NavController
     private var dataAdapter: PodcastSeeAllDetailsAdapter? = null
@@ -48,7 +52,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment() {
     }
       fun observeData(){
           viewModel.podcastSeeAllContent.observe(viewLifecycleOwner){res->
-              dataAdapter = PodcastSeeAllDetailsAdapter()
+              dataAdapter = PodcastSeeAllDetailsAdapter(this)
 
               val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
               val layoutManager =
@@ -76,7 +80,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment() {
       }
     private fun isValidDesign(patchType: String): Int {
         return when (patchType) {
-//            "search" -> VIEW_SEARCH
+
             "PP" -> ParentAdapter.VIEW_ARTIST
             "TN" -> ParentAdapter.VIEW_PLAYLIST
             "SS" -> ParentAdapter.VIEW_RELEASE
@@ -86,4 +90,43 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment() {
             }
         }
     }
+
+    override fun onPodcastLatestShowClick(show: List<FeaturedPodcastDetailsModel>, position: Int) {
+
+        var mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(show[position])
+
+        navController.navigate(
+            R.id.to_podcast_details,
+            Bundle().apply {
+
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    mEpisode as Serializable
+                )
+            })
+    }
+
+    override fun onPodcastEpisodeClick(episode: List<FeaturedPodcastDetailsModel>, position: Int) {
+        var mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[position])
+
+        navController.navigate(
+            R.id.to_podcast_details,
+            Bundle().apply {
+
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                     mEpisode as Serializable
+                )
+            })
+    }
+
 }
+
+interface PodcastDetailsCallback {
+     fun onPodcastLatestShowClick(patchItem: List<FeaturedPodcastDetailsModel>, position: Int)
+     fun onPodcastEpisodeClick(data: List<FeaturedPodcastDetailsModel>, position: Int)
+}
+
+
+
+

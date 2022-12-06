@@ -28,6 +28,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -83,8 +84,10 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
-
+//        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
+//        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
         if (selectedEpisodeID == contentId) {
+
             getPodcastShowDetailsInitialize()
         } else {
             getPodcastDetailsInitialize()
@@ -141,7 +144,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
-        observePodcastShowData()
+       observePodcastShowData()
+        //observePodcastDetailsData()
     }
 
     private fun getPodcastDetailsInitialize() {
@@ -223,7 +227,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     private fun observePodcastDetailsData() {
-        Log.i("PDF", "observePodcastDetailsData: ")
+        Log.i("PDF", "observePodcastDetailsData: " + selectedEpisodeID)
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
 
     }
@@ -261,6 +265,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
         // concatAdapter.notifyDataSetChanged()
         //  parentRecycler.scrollToPosition(0)
     }
+
+
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = podcastTrackAdapter.tracks

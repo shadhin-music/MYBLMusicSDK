@@ -253,7 +253,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
         val textViewDownloadTitle: TextView? = bottomSheetDialog.findViewById(R.id.tv_download)
 
-        val downloaded = cacheRepository.getDownloadById(item.contentID.toString())
+        var downloaded = cacheRepository.getDownloadById(item.contentID.toString())
         if (downloaded?.playingUrl != null) {
             isDownloaded = true
             downloadImage?.setImageResource(R.drawable.my_bl_sdk_ic_delete)
