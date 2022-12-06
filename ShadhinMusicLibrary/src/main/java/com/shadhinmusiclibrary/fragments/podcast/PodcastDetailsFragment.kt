@@ -84,8 +84,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
-        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
-        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
+//        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
+//        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
         if (selectedEpisodeID == contentId) {
 
             getPodcastShowDetailsInitialize()
@@ -144,7 +144,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
-        observePodcastShowData()
+       observePodcastShowData()
+        //observePodcastDetailsData()
     }
 
     private fun getPodcastDetailsInitialize() {
@@ -226,7 +227,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     private fun observePodcastDetailsData() {
-        Log.i("PDF", "observePodcastDetailsData: ")
+        Log.i("PDF", "observePodcastDetailsData: " + selectedEpisodeID)
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
 
     }
