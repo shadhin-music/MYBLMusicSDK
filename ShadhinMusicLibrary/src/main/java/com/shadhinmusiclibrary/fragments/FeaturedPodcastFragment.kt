@@ -158,7 +158,7 @@ internal class FeaturedPodcastFragment : BaseFragment(),
     ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
-        var mEpisod =
+        val mEpisod =
             UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[clickItemPosition])
         mEpisod.content_Id = "0"
         navController.navigate(

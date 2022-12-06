@@ -17,7 +17,7 @@ internal class SongTrackModel : IMusicModel {
 
     @SerializedName("EpisodeId")
     @Expose
-    override var album_Id: String? = null
+    var episodeId: String? = null
 
     @SerializedName("ImageUrl")
     @Expose
@@ -101,6 +101,7 @@ internal class SongTrackModel : IMusicModel {
     @Expose
     var isPaid: Boolean? = null
 
+    override var album_Id: String? = null
     override var album_Name: String? = null
     override var rootContentId: String? = null
     override var rootContentType: String? = null

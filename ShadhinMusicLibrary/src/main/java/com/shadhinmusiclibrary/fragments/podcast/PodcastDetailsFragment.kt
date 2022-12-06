@@ -62,6 +62,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     private lateinit var parentRecycler: RecyclerView
     private var cacheRepository: CacheRepository? = null
     private lateinit var favViewModel: FavViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -75,7 +76,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
 
         argHomePatchDetail?.let {
-
             val Type: String = it.content_Type ?: ""
             podcastType = Type.take(2)
             contentType = Type.takeLast(2)
@@ -125,14 +125,13 @@ internal class PodcastDetailsFragment : BaseFragment(),
                         argHomePatchDetail!!
                     )
                 }
-                response.data?.data?.EpisodeList?.get(0)
-                    ?.let {
-                        podcastTrackAdapter.setData(
-                            it.TrackList,
-                            argHomePatchDetail!!,
-                            playerViewModel.currentMusic?.mediaId
-                        )
-                    }
+                response.data?.data?.EpisodeList?.get(0)?.let {
+                    podcastTrackAdapter.setData(
+                        it.TrackList,
+                        argHomePatchDetail!!,
+                        playerViewModel.currentMusic?.mediaId
+                    )
+                }
 
 //                parentRecycler.adapter = concatAdapter
                 progressBar.visibility = View.GONE
@@ -229,7 +228,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
     private fun observePodcastDetailsData() {
         Log.i("PDF", "observePodcastDetailsData: " + selectedEpisodeID)
         viewModel.fetchPodcastContent(podcastType, selectedEpisodeID, contentType, false)
-
     }
 
     override fun onClickItemAndAllItem(

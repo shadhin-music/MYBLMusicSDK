@@ -4,6 +4,7 @@ import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.utils.safeApiCall
 
 internal class PodcastRepository(private val apiService: ApiService) {
+
     suspend fun fetchPodcastByID(
         podType: String,
         episodeId: String,
@@ -20,6 +21,4 @@ internal class PodcastRepository(private val apiService: ApiService) {
     ) = safeApiCall {
         apiService.fetchPodcastShow(podType, contentType, isPaid)
     }
-
-
 }

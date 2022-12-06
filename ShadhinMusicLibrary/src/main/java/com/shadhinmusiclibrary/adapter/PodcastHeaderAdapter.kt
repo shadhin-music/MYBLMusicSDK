@@ -63,8 +63,14 @@ internal class PodcastHeaderAdapter(
         this.listSongTrack = mutableListOf()
         for (songItem in data) {
             Log.e("PHA", "setTrackData: " + rootPatch.content_Id + " " + rootPatch.content_Type)
+            //Todo un complete task
             listSongTrack.add(
-                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
+                songItem.apply {
+                    rootContentId = episodeId
+                    rootContentType = rootPatch.content_Type
+                    rootImage = rootPatch.imageUrl
+                    isSeekAble = true
+                }
             )
         }
 

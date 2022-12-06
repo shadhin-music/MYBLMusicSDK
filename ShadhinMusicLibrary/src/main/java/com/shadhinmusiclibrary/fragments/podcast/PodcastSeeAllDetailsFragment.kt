@@ -26,7 +26,9 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCallback {
+internal class PodcastSeeAllDetailsFragment : BaseFragment(),
+    PodcastDetailsCallback {
+
     lateinit var viewModel: FeaturedPodcastViewModel
     private lateinit var navController: NavController
     private var dataAdapter: PodcastSeeAllDetailsAdapter? = null
