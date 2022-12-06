@@ -45,12 +45,13 @@ internal class PodcastTNTypeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+       // podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         holder.bindItems()
         holder.itemView.setOnClickListener {
           podcastDetailsCallback.onPodcastTrackClick(patchItem.Data,position)
         }
 
-        //podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
+
         val pd_download = holder.itemView.findViewById(R.id.pd_download) as ImageView
         var isDownloadComplete = false
         val downloaded = cacheRepository.getDownloadById(patchItem.Data[position].TracktId)
