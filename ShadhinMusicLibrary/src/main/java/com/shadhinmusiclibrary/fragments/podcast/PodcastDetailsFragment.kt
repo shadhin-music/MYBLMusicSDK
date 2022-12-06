@@ -144,7 +144,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
 
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
-       observePodcastShowData()
+        observePodcastShowData()
         //observePodcastDetailsData()
     }
 
@@ -266,8 +266,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
         //  parentRecycler.scrollToPosition(0)
     }
 
-
-
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = podcastTrackAdapter.tracks
         if (lSongDetails.size > clickItemPosition) {
@@ -282,9 +280,8 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        Log.e("PDF", "onClickItem: " + mSongDetails[clickItemPosition].rootContentId)
         if (playerViewModel.currentMusic != null) {
-            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
+            if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId) && (mSongDetails[clickItemPosition].rootContentId != "0")) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
                     playerViewModel.skipToQueueItem(clickItemPosition)
                     playerViewModel.play()
@@ -336,8 +333,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
             argHomePatchItem,
             argHomePatchDetail
         )
-        Log.e("TAG", "DATA: " + track.content_Id)
-        Log.e("TAG", "DATA: " + track.album_Name)
     }
 
     override fun onStart() {
