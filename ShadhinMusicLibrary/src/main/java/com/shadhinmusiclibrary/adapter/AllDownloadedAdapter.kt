@@ -81,17 +81,21 @@ internal class AllDownloadedAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-
-        if (mSongDetails.content_Type == "PDJG" ||
-            mSongDetails.content_Type == "PDJC" ||
-            mSongDetails.content_Type == "PDBC"
+//                ||
+//                mSongDetails.content_Type == "PDJC" ||
+//                mSongDetails.content_Type == "PDBC"
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.length!! > 2 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
+            Log.e("ADA", "onBindViewHolder: " + mSongDetails.content_Type?.length)
+//Todo next day bug need fix
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type == "PDJG"
-                                || it.content_Type == "PDJC"
-                                || it.content_Type == "PDBC"
+                        it.content_Type?.substring(0, 2) == "PD"
+                        /*  || it.content_Type?.substring(0, 2) == "PDJC"
+                          || it.content_Type?.substring(0, 2) == "PDBC"*/
                     }
                         .toMutableList()
                 val clickIndex =

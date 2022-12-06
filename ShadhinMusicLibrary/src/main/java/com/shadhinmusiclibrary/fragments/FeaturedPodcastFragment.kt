@@ -30,7 +30,9 @@ import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
 
 
-internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemClickCallback {
+internal class FeaturedPodcastFragment : BaseFragment(),
+    FeaturedPodcastOnItemClickCallback {
+
     private lateinit var navController: NavController
     private var homePatchitem: HomePatchItemModel? = null
     lateinit var viewModel: FeaturedPodcastViewModel
@@ -39,6 +41,7 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     private lateinit var podcastJBAdapter: FeaturedPodcastRecyclerViewAdapter
     private lateinit var podcastJCAdapter: FeaturePodcastJCRECAdapter
     private lateinit var parentAdapter: ConcatAdapter
+
     private fun setupViewModel() {
         viewModel =
             ViewModelProvider(
@@ -66,9 +69,9 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
 //            view.findViewById<TextView>(R.id.tvTitle)?.text = title
 //        }
         val title: TextView = view.findViewById(R.id.tvTitle)
-        if(argHomePatchItem?.Name.isNullOrEmpty()){
+        if (argHomePatchItem?.Name.isNullOrEmpty()) {
             title.text = "Back"
-        }else{
+        } else {
             title.text = argHomePatchItem!!.Name
         }
 
@@ -155,7 +158,8 @@ internal class FeaturedPodcastFragment : BaseFragment(), FeaturedPodcastOnItemCl
     ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
         val homePatchItem = argHomePatchItem
-        var mEpisod = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[clickItemPosition])
+        var mEpisod =
+            UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[clickItemPosition])
         mEpisod.content_Id = "0"
         navController.navigate(
             R.id.to_podcast_details,

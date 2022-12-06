@@ -123,16 +123,17 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (mSongDetails.content_Type == "PDJG" ||
-            mSongDetails.content_Type == "PDJC" ||
-            mSongDetails.content_Type == "PDBC"
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.length!! > 2 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
+            Log.e("AFA", "onBindViewHolder: " + mSongDetails.content_Type?.length)
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type == "PDJG"
-                                || it.content_Type == "PDJC"
-                                || it.content_Type == "PDBC"
+                        it.content_Type == "PD"
+                        /*    || it.content_Type == "PDJC"
+                            || it.content_Type == "PDBC"*/
                     }
                         .toMutableList()
                 val clickIndex =
