@@ -23,6 +23,7 @@ import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -233,6 +234,7 @@ internal class SearchArtistDetailsFragment : BaseFragment(),
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
     }
+
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
     }

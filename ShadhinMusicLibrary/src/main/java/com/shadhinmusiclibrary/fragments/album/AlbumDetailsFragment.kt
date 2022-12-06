@@ -34,6 +34,7 @@ import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -256,6 +257,8 @@ internal class AlbumDetailsFragment : BaseFragment(),
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
 
     }
+
+
 
     override fun onArtistAlbumClick(
         itemPosition: Int,

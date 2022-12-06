@@ -26,6 +26,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -262,6 +263,8 @@ internal class BhootPodcastDetailsFragment : BaseFragment(),
         concatAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
     }
+
+
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
         val lSongDetails = podcastTrackAdapter.tracks

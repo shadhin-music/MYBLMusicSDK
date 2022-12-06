@@ -29,6 +29,7 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -72,7 +73,7 @@ internal class HomeFragment : BaseFragment(),
     //var page = -1
     var isLoading = false
     var isLastPage = false
-    private lateinit var rvAllHome: RecyclerView
+
     private lateinit var footerAdapter: HomeFooterAdapter
     private lateinit var cacheRepository: CacheRepository
 
@@ -321,6 +322,8 @@ internal class HomeFragment : BaseFragment(),
     ) {
 
     }
+
+
 
     private fun fetchOnlineData(playlistId: String) {
 //        albumVM.fetchPlaylistContent(playlistId)

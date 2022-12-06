@@ -10,28 +10,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
-import com.shadhinmusiclibrary.callBackService.HomeCallBack
-import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
-import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
-import com.shadhinmusiclibrary.data.model.HomePatchItemModel
-import com.shadhinmusiclibrary.data.model.RBTDATAModel
+import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsCallback
 
 
-internal class PodcastSeeAllDetailsAdapter(
+internal class PodcastSeeAllDetailsAdapter(val podcastDetailsCallback: PodcastDetailsCallback
 ) : RecyclerView.Adapter<PodcastSeeAllDetailsAdapter.DataAdapterViewHolder>() {
-    private var homeListData: MutableList<FeaturedPodcastDataModel> = mutableListOf()
-//    var search: HomePatchItemModel? = null
-//    var download: HomePatchItemModel? = null
-    private var rbtData: MutableList<RBTDATAModel> = mutableListOf()
+    private var listData: MutableList<FeaturedPodcastDataModel> = mutableListOf()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataAdapterViewHolder {
         val layout = when (viewType) {
 
-            VIEW_PP -> R.layout.my_bl_sdk_item_artist
-            VIEW_TN -> R.layout.my_bl_sdk_item_playlist
-            VIEW_SS -> R.layout.my_bl_sdk_item_release_patch
+            VIEW_PP -> R.layout.my_bl_sdk_pp_type_podcast_layout
+            VIEW_TN -> R.layout.my_bl_sdk_pp_type_podcast_layout
+            VIEW_SS -> R.layout.my_bl_sdk_pp_type_podcast_layout
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -43,13 +36,13 @@ internal class PodcastSeeAllDetailsAdapter(
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
-        holder.bind(homeListData.get(position))
+        holder.bind(listData.get(position))
     }
 
-    override fun getItemCount(): Int = homeListData.size
+    override fun getItemCount(): Int = listData.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (homeListData[position].PatchType) {
+        return when (listData[position].PatchType) {
             "PP" -> VIEW_PP
             "TN" -> VIEW_TN
             "SS" -> VIEW_SS
@@ -65,10 +58,10 @@ internal class PodcastSeeAllDetailsAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<FeaturedPodcastDataModel>) {
-        val size = this.homeListData.size
+        val size = this.listData.size
 
-        this.homeListData.addAll(data)
-        val sizeNew = this.homeListData.size
+        this.listData.addAll(data)
+        val sizeNew = this.listData.size
         notifyItemRangeChanged(size, sizeNew)
 
     }
@@ -90,22 +83,30 @@ internal class PodcastSeeAllDetailsAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = PodcastPPTypeAdapter(patchItem)
+            recyclerView.adapter = PodcastPPTypeAdapter(patchItem,podcastDetailsCallback)
         }
 
-//        fun bindRelease(homePatchItem: HomePatchItemModel) {
-//            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
-//            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-//            tvTitle.text = homePatchItem.Name
-//            seeAll.setOnClickListener {
-//                //TopTrendingFragment
-//                homeCallBack.onClickSeeAll(homePatchItem)
-//            }
-//            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
-//            recyclerView.layoutManager =
-//                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-//            recyclerView.adapter = HomeReleaseAdapter(homePatchItem, homeCallBack)
-//        }
+        fun bindTN(patchItem: FeaturedPodcastDataModel) {
+
+            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.text = patchItem.PatchName
+
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
+            recyclerView.adapter = PodcastTNTypeAdapter(patchItem)
+
+        }
+        fun bindSS(patchItem: FeaturedPodcastDataModel) {
+
+            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+            tvTitle.text = patchItem.PatchName
+
+            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
+            recyclerView.layoutManager =
+                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = PodcastSSTypeAdapter(patchItem.Data,podcastDetailsCallback)
+        }
 
 //        private fun bindPlaylist(homePatchItem: HomePatchItemModel) {
 //            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
@@ -156,8 +157,8 @@ internal class PodcastSeeAllDetailsAdapter(
         fun bind(homePatchItemModel: FeaturedPodcastDataModel) {
             when (homePatchItemModel?.PatchType) {
                     "PP"-> bindPP(homePatchItemModel)
-//                    "TN"->
-//                    "SS"->
+                    "TN"-> bindTN(homePatchItemModel)
+                    "SS"->bindSS(homePatchItemModel)
 //                "search" -> bindSearch(homePatchItemModel)
 //                "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
 //                "Playlist" -> bindPlaylist(homePatchItemModel)

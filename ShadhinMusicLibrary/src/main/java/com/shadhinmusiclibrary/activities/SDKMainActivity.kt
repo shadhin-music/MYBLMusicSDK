@@ -624,7 +624,7 @@ internal class SDKMainActivity : BaseActivity(),
                             PatchItem,
                             homePatchItem as Serializable
                         )
-                    }, R.id.featured_podcast_fragment
+                    }, R.id.podcast_see_all_fragment
                 )
             }
             //See All Item Click event
