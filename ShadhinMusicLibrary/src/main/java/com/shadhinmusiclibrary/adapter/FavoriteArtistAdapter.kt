@@ -62,8 +62,8 @@ internal class FavoriteArtistAdapter(
             openMenu.onClickBottomItemSongs(mSongDetails)
         }
 
-        if (mSongDetails.content_Type?.length!! >= 1 &&
-            mSongDetails.content_Type?.length!! > 2
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
             menu.setOnClickListener {
                 openMenu.onClickBottomItemPodcast(mSongDetails)

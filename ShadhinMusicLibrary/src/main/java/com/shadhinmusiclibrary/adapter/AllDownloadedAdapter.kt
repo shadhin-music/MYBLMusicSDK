@@ -42,11 +42,11 @@ internal class AllDownloadedAdapter(
         holder.bindItems(mSongDetails)
         val menu: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
 
-        if (mSongDetails.content_Type.equals("V")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("V")) {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads.filter { it.content_Type == "V" }
+                for (item in allDownloads.filter { it.content_Type?.toUpperCase() == "V" }
                     .toMutableList()) {
                     val video = VideoModel()
                     video.setDataDownloadIM(item)
@@ -65,12 +65,10 @@ internal class AllDownloadedAdapter(
             }
         }
 
-        if (mSongDetails.content_Type.equals("S") ||
-            mSongDetails.content_Type.equals("s")
-        ) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("S")) {
             holder.itemView.setOnClickListener {
                 val filterData =
-                    allDownloads.filter { it.content_Type == "S" || it.content_Type == "s" }
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "S" }
                         .toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
@@ -81,23 +79,15 @@ internal class AllDownloadedAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-//                ||
-//                mSongDetails.content_Type == "PDJC" ||
-//                mSongDetails.content_Type == "PDBC"
         if (mSongDetails.content_Type?.length!! > 1 &&
-            mSongDetails.content_Type?.length!! > 2 &&
             mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
-            Log.e("ADA", "onBindViewHolder: " + mSongDetails.content_Type?.length)
-//Todo next day bug need fix
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type?.substring(0, 2) == "PD"
-                        /*  || it.content_Type?.substring(0, 2) == "PDJC"
-                          || it.content_Type?.substring(0, 2) == "PDBC"*/
-                    }
-                        .toMutableList()
+                        it.content_Type?.length!! > 1 &&
+                                it.content_Type?.substring(0, 2) == "PD"
+                    }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 

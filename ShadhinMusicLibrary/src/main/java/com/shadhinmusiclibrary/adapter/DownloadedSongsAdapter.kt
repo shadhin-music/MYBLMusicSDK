@@ -53,13 +53,10 @@ internal class DownloadedSongsAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-        if (mSongDetails.content_Type.equals("S") ||
-            mSongDetails.content_Type.equals("s")
-        ) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("S")) {
             holder.itemView.setOnClickListener {
                 val filterData =
-                    allDownloads.filter { it.content_Type == "S" || it.content_Type == "s" }
-                        .toMutableList()
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "S" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
@@ -76,9 +73,8 @@ internal class DownloadedSongsAdapter(
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type == "PD"
-                        /*  || it.content_Type == "PDJC"
-                          || it.content_Type == "PDBC"*/
+                        it.content_Type?.length!! > 1 &&
+                                it.content_Type?.substring(0, 2) == "PD"
                     }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }

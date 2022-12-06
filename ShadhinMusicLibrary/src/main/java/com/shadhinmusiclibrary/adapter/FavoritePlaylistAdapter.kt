@@ -61,17 +61,21 @@ internal class FavoritePlaylistAdapter(
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-//        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
-        menu.setOnClickListener {
-            val filterData =
-                allDownloads.filter { it.content_Type?.substring(0, 2) == "PD" }
-                    .toMutableList()
-            val clickIndex =
-                filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
+        ) {
+            menu.setOnClickListener {
+                val filterData =
+                    allDownloads.filter {
+                        it.content_Type?.length!! > 1 &&
+                                it.content_Type?.substring(0, 2) == "PD"
+                    }.toMutableList()
+                val clickIndex =
+                    filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
-            openMenu.onClickBottomItemPodcast(filterData[clickIndex])
+                openMenu.onClickBottomItemPodcast(filterData[clickIndex])
+            }
         }
-//        }
     }
 
     fun setData(data: MutableList<FavDataModel>) {
