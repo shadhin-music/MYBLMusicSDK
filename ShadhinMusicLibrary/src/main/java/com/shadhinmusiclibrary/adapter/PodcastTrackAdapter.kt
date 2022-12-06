@@ -73,8 +73,9 @@ internal class PodcastTrackAdapter(
     ) {
         this.tracks = mutableListOf()
         for (songItem in songTrack) {
+            Log.e("PHA", "setTrackData: " + rootPatch.content_Id + " " + rootPatch.content_Type)
             tracks.add(
-                UtilHelper.getTrackToRootData(songItem, rootPatch)
+                UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
         }
         if (mediaId != null) {

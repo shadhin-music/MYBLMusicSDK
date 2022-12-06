@@ -65,10 +65,12 @@ internal class AllDownloadedAdapter(
             }
         }
 
-        if (mSongDetails.content_Type.equals("S")) {
+        if (mSongDetails.content_Type.equals("S") ||
+            mSongDetails.content_Type.equals("s")
+        ) {
             holder.itemView.setOnClickListener {
                 val filterData =
-                    allDownloads.filter { it.content_Type == "S" }
+                    allDownloads.filter { it.content_Type == "S" || it.content_Type == "s" }
                         .toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }

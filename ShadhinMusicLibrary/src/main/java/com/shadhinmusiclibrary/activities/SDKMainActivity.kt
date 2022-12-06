@@ -42,7 +42,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.offline.*
+import com.google.android.exoplayer2.offline.DownloadRequest
+import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.CreatePlaylistListAdapter
@@ -74,7 +75,8 @@ import java.io.Serializable
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
-    ItemClickListener, CommonSingleCallback {
+    ItemClickListener,
+    CommonSingleCallback {
 
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
@@ -254,13 +256,11 @@ internal class SDKMainActivity : BaseActivity(),
     private fun searchFragmentAccess() {
         /*      val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItem
-
-*/
+        */
         setupNavGraphAndArg(
             R.navigation.my_bl_sdk_nav_graph_common,
-            Bundle().apply {}, R.id.search_fragment
+            Bundle().apply { }, R.id.search_fragment
         )
-
     }
 
     private fun downloadFragmentAccess() {
@@ -1036,18 +1036,18 @@ internal class SDKMainActivity : BaseActivity(),
                 applicationContext.resources.getColor(R.color.my_sdk_color_white)
             )
         }
-        if (isDownloaded == true) {
+        if (isDownloaded) {
             cacheRepository.deleteDownloadById(mSongDetails.content_Id)
             DownloadService.sendRemoveDownload(
                 applicationContext,
                 MyBLDownloadService::class.java,
-                mSongDetails.content_Id ?: "",
+                mSongDetails.content_Id,
                 false
             )
             //  Log.e("TAG","DELETED: "+ isDownloaded)
             val localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
             val localIntent = Intent("DELETED")
-                .putExtra("contentID", mSongDetails.content_Id ?: "")
+                .putExtra("contentID", mSongDetails.content_Id)
             localBroadcastManager.sendBroadcast(localIntent)
             ibtnDownload.setColorFilter(
                 applicationContext.resources.getColor(R.color.my_sdk_color_white)
@@ -1055,7 +1055,7 @@ internal class SDKMainActivity : BaseActivity(),
         } else {
             val url = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
             val downloadRequest: DownloadRequest =
-                DownloadRequest.Builder(mSongDetails.content_Id ?: "", url.toUri())
+                DownloadRequest.Builder(mSongDetails.content_Id, url.toUri())
                     .build()
             injector.downloadTitleMap[mSongDetails.content_Id ?: ""] = mSongDetails.titleName ?: ""
             DownloadService.sendAddDownload(
@@ -1064,10 +1064,8 @@ internal class SDKMainActivity : BaseActivity(),
                 downloadRequest,
                 /* foreground= */ false
             )
-            Log.e("DELETEDX", "openDialog123:" + mSongDetails.album_Id )
-            Log.e("DELETEDX", "openDialog123:" + mSongDetails.content_Id )
-            Log.e("DELETEDX", "openDialog123:" + mSongDetails.playingUrl)
-            if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id ?: "") == true) {
+            if (cacheRepository.isDownloadCompleted(mSongDetails.content_Id)) {
+                Log.e("SDKM", "songDownload: " + mSongDetails.content_Type)
                 cacheRepository.insertDownload(
                     DownloadedContent().apply {
                         content_Id = mSongDetails.content_Id
@@ -1076,17 +1074,19 @@ internal class SDKMainActivity : BaseActivity(),
                         imageUrl = mSongDetails.imageUrl
                         titleName = mSongDetails.titleName
                         content_Type = mSongDetails.content_Type
+                        rootContentType = mSongDetails.rootContentType
                         playingUrl = mSongDetails.playingUrl
                         content_Type = mSongDetails.content_Type
-                        artistName = mSongDetails.artistName
+                        titleName = mSongDetails.titleName
                         artist_Id = mSongDetails.artist_Id
+                        artistName = mSongDetails.artistName
+                        album_Name = mSongDetails.album_Name
                         total_duration = mSongDetails.total_duration
-
                     }
                 )
                 isDownloaded = true
                 ibtnDownload.setColorFilter(
-                    applicationContext.getResources().getColor(R.color.my_sdk_color_primary)
+                    applicationContext.resources.getColor(R.color.my_sdk_color_primary)
                 )
             }
         }
@@ -1530,19 +1530,29 @@ internal class SDKMainActivity : BaseActivity(),
         if (audioManager != null) {
             volumeBar?.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC))
             volumeBar?.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
-            volumeFull?.setImageDrawable(AppCompatResources.getDrawable(applicationContext,
-                R.drawable.ic_volume_up))
+            volumeFull?.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    applicationContext,
+                    R.drawable.ic_volume_up
+                )
+            )
             volumeBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, newVolume: Int, b: Boolean) {
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0)
                     if (newVolume == 0) {
-                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                            applicationContext,
-                            R.drawable.ic_volume_mute))
+                        volumeOff?.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                applicationContext,
+                                R.drawable.ic_volume_mute
+                            )
+                        )
                     } else {
-                        volumeOff?.setImageDrawable(AppCompatResources.getDrawable(
-                            applicationContext,
-                            R.drawable.ic_volume_down))
+                        volumeOff?.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                applicationContext,
+                                R.drawable.ic_volume_down
+                            )
+                        )
                     }
                 }
 
@@ -2106,15 +2116,17 @@ internal class SDKMainActivity : BaseActivity(),
                     cacheRepository.insertDownload(
                         DownloadedContent().apply {
                             content_Id = mSongDetails.content_Id.toString()
-                            rootContentId = mSongDetails.rootContentId
+                            artist_Id = mSongDetails.artist_Id.toString()
                             imageUrl = mSongDetails.imageUrl
                             titleName = mSongDetails.titleName
                             content_Type = mSongDetails.content_Type
                             playingUrl = mSongDetails.playingUrl
                             rootContentType = mSongDetails.content_Type
                             artistName = mSongDetails.artistName
-                            artist_Id = mSongDetails.artist_Id.toString()
                             total_duration = mSongDetails.total_duration
+
+                            rootContentId = argHomePatchDetail?.rootContentId
+                            rootContentType = argHomePatchDetail?.content_Type
                         }
                     )
                 }
@@ -2174,14 +2186,14 @@ internal class SDKMainActivity : BaseActivity(),
                         artistName = mSongDetails.artistName
                         artist_Id = mSongDetails.artist_Id
                         clientValue = 2
+                        titleName = mSongDetails.titleName
                         content_Type = mSongDetails.content_Type
                         fav = "1"
+                        total_duration = mSongDetails.total_duration
                         imageUrl = mSongDetails.imageUrl
                         playingUrl = mSongDetails.playingUrl
-                        rootContentId = mSongDetails.rootContentId
-                        rootContentType = mSongDetails.rootContentType
-                        titleName = mSongDetails.titleName
-                        total_duration = mSongDetails.total_duration
+                        rootContentId = argHomePatchDetail?.rootContentId
+                        rootContentType = argHomePatchDetail?.rootContentType
                     }
                 )
                 isFav = true
@@ -2235,7 +2247,9 @@ internal class SDKMainActivity : BaseActivity(),
                         playingUrl = mSongDetails.playingUrl
                         imageUrl = mSongDetails.imageUrl
                         artistName = mSongDetails.artistName
-                        rootContentType = "P"
+                        /*   rootContentType = "P"*/
+                        rootContentType = argHomePatchDetail?.content_Type
+                        rootContentId = argHomePatchDetail?.content_Id
                         isSeekAble = true
                         titleName = ""
                     } as Serializable
@@ -2259,7 +2273,17 @@ internal class SDKMainActivity : BaseActivity(),
                 )
                 putSerializable(
                     AppConstantUtils.PatchDetail,
-                    UtilHelper.getHomePatchDetailToSongDetail(mSongDetails) as Serializable
+                    HomePatchDetailModel().apply {
+                        album_Id = mSongDetails.album_Id ?: ""
+                        artist_Id = mSongDetails.artist_Id ?: ""
+                        content_Id = mSongDetails.content_Id
+                        imageUrl = mSongDetails.imageUrl ?: ""
+                        artistName = mSongDetails.artistName ?: ""
+                        content_Type = mSongDetails.content_Type
+                        titleName = mSongDetails.titleName ?: ""
+                        rootContentId = argHomePatchDetail?.content_Id
+                        rootContentType = argHomePatchItem?.ContentType
+                    } as Serializable
                 )
             })
     }
