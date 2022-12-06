@@ -77,7 +77,40 @@ internal object UtilHelper {
         }
         return musicList
     }
-
+    fun getMusicListToPodcastDetailsList(mSongDetails: MutableList<FeaturedPodcastDetailsModel>): MutableList<Music> {
+        val musicList = mutableListOf<Music>()
+        for (songItem in mSongDetails) {
+            val newPlayUrl = if (songItem.PlayUrl!!.contains(
+                    "http",
+                    true
+                )
+            ) songItem.PlayUrl!! else Constants.FILE_BASE_URL + songItem.PlayUrl!!
+            musicList.add(
+                Music(
+                    mediaId = songItem.TracktId,
+                    title = songItem.TrackName,
+                    displayDescription = "",
+                    displayIconUrl = getImageUrlSize300(songItem.ImageUrl),
+                    mediaUrl = Constants.FILE_BASE_URL + songItem.PlayUrl,
+                    artistName = songItem.Presenter,
+                    date = songItem.Duration,
+                    contentType = songItem.ContentType,
+                    userPlayListId = "",
+                    episodeId = "",
+                    starring = "",
+                    seekable = songItem.Seekable,
+                    details = "",
+                    fav = "" /*fav value set for this song are radio or normal song*/,
+                    totalStream = 0L,
+                    rootId = songItem.TracktId,
+                    rootImage = songItem.ImageUrl,
+                    rootType = songItem.ContentType,
+                    rootTitle = songItem.ShowName ?: ""
+                )
+            )
+        }
+        return musicList
+    }
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
         for (musicItem in musicList) {
