@@ -247,6 +247,8 @@ internal class SDKMainActivity : BaseActivity(),
         //DO NOT Call this function multiple times
         playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
+
+        playerViewModel.startUserSession()
     }
 
     val cacheRepository by lazy {
@@ -981,10 +983,16 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnLibraryAdd.setOnClickListener {
-            if (isNetworkAvailable(this).equals(true)) {
-                gotoPlayList(this, mSongDetails[clickItemPosition])
-            } else {
-                Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+            if(mSongDetails[clickItemPosition]?.content_Type?.contains("PD") == true){
+                ibtnLibraryAdd.isClickable = false
+               // Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+            }else {
+                ibtnLibraryAdd.isClickable = true
+                if (isNetworkAvailable(this).equals(true)) {
+                    gotoPlayList(this, mSongDetails[clickItemPosition])
+                } else {
+                    Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -1224,7 +1232,8 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     override fun onDestroy() {
-        DownloadOrDeleteObserver.removeSubscriber()
+       // DownloadOrDeleteObserver.removeSubscriber()
+        playerViewModel.endUserSession()
         super.onDestroy()
         //   playerViewModel.disconnect()
     }
@@ -1812,6 +1821,7 @@ internal class SDKMainActivity : BaseActivity(),
                         content_Type = iSongTrack.content_Type.toString()
                         fav = "1"
                         imageUrl = iSongTrack.imageUrl
+                        artistName =iSongTrack.artistName
                         playingUrl = iSongTrack.playingUrl
                         rootContentId = iSongTrack.rootContentId
                         rootContentType = iSongTrack.rootContentType

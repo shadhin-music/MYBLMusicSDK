@@ -136,4 +136,8 @@ internal interface ApiService {
 
     @HTTP(method = "DELETE", path = "Favourite", hasBody = true)
     suspend fun deleteFavorite(@Body body: AddtoFavBody): FavDataResponseModel
+
+    @POST("ClientActivity/UserSession")
+    suspend fun userSession(@Body body:UserSessionBody):UserSessionResponse
+
 }

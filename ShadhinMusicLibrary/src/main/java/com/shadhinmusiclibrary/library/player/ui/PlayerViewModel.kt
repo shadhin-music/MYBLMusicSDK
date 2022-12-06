@@ -1,19 +1,26 @@
 package com.shadhinmusiclibrary.library.player.ui
 
 import androidx.lifecycle.*
+import com.shadhinmusiclibrary.data.repository.UserSessionRepository
 import com.shadhinmusiclibrary.library.player.connection.MusicServiceController
 import com.shadhinmusiclibrary.library.player.data.model.PlayerProgress
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-internal class PlayerViewModel(private val musicServiceController: MusicServiceController) :
+internal class PlayerViewModel(
+    private val musicServiceController: MusicServiceController,
+    private val userSessionRepository: UserSessionRepository
+) :
     ViewModel(),
     MusicServiceController by musicServiceController {
 
     private val _playerProgress: MutableLiveData<PlayerProgress> = MutableLiveData()
     val playerProgress: LiveData<PlayerProgress> = _playerProgress
+
+
 
     init {
         connect()
@@ -37,5 +44,11 @@ internal class PlayerViewModel(private val musicServiceController: MusicServiceC
                 updateJob?.cancel()
             }
         }
+    }
+    fun startUserSession()  = viewModelScope.launch{
+        userSessionRepository.start()
+    }
+    fun endUserSession() = viewModelScope.launch(NonCancellable){
+        userSessionRepository.end()
     }
 }

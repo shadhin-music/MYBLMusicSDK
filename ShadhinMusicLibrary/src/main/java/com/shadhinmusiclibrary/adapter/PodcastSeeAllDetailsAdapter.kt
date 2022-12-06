@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
+import com.shadhinmusiclibrary.di.Module
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsCallback
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
@@ -19,7 +20,8 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 internal class PodcastSeeAllDetailsAdapter(
     val podcastDetailsCallback: PodcastDetailsCallback,
     val cacheRepository: CacheRepository,
-   val favViewModel: FavViewModel
+    val favViewModel: FavViewModel,
+    val injector: Module
 ) : RecyclerView.Adapter<PodcastSeeAllDetailsAdapter.DataAdapterViewHolder>() {
     private var listData: MutableList<FeaturedPodcastDataModel> = mutableListOf()
 
@@ -99,7 +101,7 @@ internal class PodcastSeeAllDetailsAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
-            recyclerView.adapter = PodcastTNTypeAdapter(patchItem,podcastDetailsCallback, cacheRepository, favViewModel)
+            recyclerView.adapter = PodcastTNTypeAdapter(patchItem,podcastDetailsCallback, cacheRepository, favViewModel, injector)
 
 
         }

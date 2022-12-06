@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +26,16 @@ internal class CreatePlaylistListAdapter(
         return ViewHolder(v)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
+        val tvSongLength: TextView = holder.itemView.findViewById(R.id.tv_song_length)
+        if(data[position].data == null){
+            tvSongLength.text = "0" + " " + "Songs"
+        }else {
+            tvSongLength.text =
+                data[position].data?.size.toString() + " " + "Songs"
+        }
 //        if(allDownloads[position].rootType.equals("V")){
 //             holder.itemView.setOnClickListener {
 //                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
@@ -70,6 +79,7 @@ internal class CreatePlaylistListAdapter(
         var randomNumber: Int = rnd.nextInt(images.size)
         val imageId: Int = images[randomNumber]
 
+        @SuppressLint("SetTextI18n")
         fun bindItems() {
             val imageView: ImageView = itemView.findViewById(R.id.siv_song_icon)
             imageView.setImageResource(imageId)
@@ -78,8 +88,7 @@ internal class CreatePlaylistListAdapter(
             tvSongName.text = data[absoluteAdapterPosition].name
 //            val tvSingerName: TextView = itemView.findViewById(R.id.tv_singer_name)
 //            tvSingerName.text = allDownloads[absoluteAdapterPosition].artist
-            val tvSongLength: TextView = itemView.findViewById(R.id.tv_song_length)
-            tvSongLength.text = data[absoluteAdapterPosition].data?.size.toString() + " " + "Songs"
+
         }
     }
 }

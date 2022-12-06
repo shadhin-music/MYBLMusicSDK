@@ -61,7 +61,7 @@
                 android:padding="10dp"
                 android:src="@drawable/my_bl_sdk_ic_search_download"
                 android:tint="@color/my_sdk_color_black"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
