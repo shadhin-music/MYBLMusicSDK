@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -61,6 +63,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallb
         }
     }
       fun observeData(){
+          val progress: ProgressBar = requireView().findViewById(R.id.progress_bar)
          val favViewModel =
               ViewModelProvider(
                   this,
@@ -69,7 +72,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallb
           val cacheRepository = CacheRepository(requireContext())
           viewModel.podcastSeeAllContent.observe(viewLifecycleOwner){res->
               dataAdapter = PodcastSeeAllDetailsAdapter(this,cacheRepository,favViewModel)
-
+              progress.visibility = GONE
               val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
               val layoutManager =
                   LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

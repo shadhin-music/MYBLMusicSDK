@@ -61,9 +61,9 @@ internal class FavoritePlaylistAdapter(
         menu.setOnClickListener {
             openMenu.onClickBottomItemSongs(allDownloads[position])
         }
-        if (mSongDetails.content_Type?.length!! > 1 &&
-            mSongDetails.content_Type?.substring(0, 2) == "PD"
-        ) {
+        if (mSongDetails?.content_Type?.contains("PD") == true
+
+        ){
             menu.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
