@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,9 @@ import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PodcastSeeAllDetailsAdapter
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
@@ -34,6 +38,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallb
                 this,
                 injector.featuredpodcastViewModelFactory
             )[FeaturedPodcastViewModel::class.java]
+
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,12 +52,23 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallb
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
+
         viewModel.fetchPodcastSeeAll(false)
        observeData()
+        val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
+        imageBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
       fun observeData(){
+         val favViewModel =
+              ViewModelProvider(
+                  this,
+                  injector.factoryFavContentVM
+              )[FavViewModel::class.java]
+          val cacheRepository = CacheRepository(requireContext())
           viewModel.podcastSeeAllContent.observe(viewLifecycleOwner){res->
-              dataAdapter = PodcastSeeAllDetailsAdapter(this)
+              dataAdapter = PodcastSeeAllDetailsAdapter(this,cacheRepository,favViewModel)
 
               val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
               val layoutManager =
@@ -120,11 +136,31 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),PodcastDetailsCallb
             })
     }
 
+    override fun onPodcastTrackClick(data: List<FeaturedPodcastDetailsModel>, position: Int) {
+           setMusicPlayerInitData(data as MutableList<FeaturedPodcastDetailsModel>,position)
+    }
+
+
+
+    fun setMusicPlayerInitData(mSongDetails: MutableList<FeaturedPodcastDetailsModel>, clickItemPosition: Int) {
+
+        playerViewModel.unSubscribe()
+        playerViewModel.subscribe(
+            MusicPlayList(
+                UtilHelper.getMusicListToPodcastDetailsList(mSongDetails),
+                0
+            ),
+            false,
+            clickItemPosition
+        )
+    }
 }
 
 interface PodcastDetailsCallback {
      fun onPodcastLatestShowClick(patchItem: List<FeaturedPodcastDetailsModel>, position: Int)
      fun onPodcastEpisodeClick(data: List<FeaturedPodcastDetailsModel>, position: Int)
+     fun onPodcastTrackClick(data: List<FeaturedPodcastDetailsModel>, position: Int)
+
 }
 
 

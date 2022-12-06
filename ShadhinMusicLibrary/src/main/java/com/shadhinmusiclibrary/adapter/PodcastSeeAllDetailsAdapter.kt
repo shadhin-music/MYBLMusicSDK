@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
+import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.fragments.podcast.PodcastDetailsCallback
+import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 
 
-internal class PodcastSeeAllDetailsAdapter(val podcastDetailsCallback: PodcastDetailsCallback
+internal class PodcastSeeAllDetailsAdapter(
+    val podcastDetailsCallback: PodcastDetailsCallback,
+    val cacheRepository: CacheRepository,
+   val favViewModel: FavViewModel
 ) : RecyclerView.Adapter<PodcastSeeAllDetailsAdapter.DataAdapterViewHolder>() {
     private var listData: MutableList<FeaturedPodcastDataModel> = mutableListOf()
 
@@ -54,7 +59,7 @@ internal class PodcastSeeAllDetailsAdapter(val podcastDetailsCallback: PodcastDe
         }
     }
 
-    var downloadNotAdded = true
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<FeaturedPodcastDataModel>) {
@@ -94,7 +99,8 @@ internal class PodcastSeeAllDetailsAdapter(val podcastDetailsCallback: PodcastDe
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
-            recyclerView.adapter = PodcastTNTypeAdapter(patchItem)
+            recyclerView.adapter = PodcastTNTypeAdapter(patchItem,podcastDetailsCallback, cacheRepository, favViewModel)
+
 
         }
         fun bindSS(patchItem: FeaturedPodcastDataModel) {

@@ -87,7 +87,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
 //        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
 //        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
         if (selectedEpisodeID == contentId) {
-
+            getPodcastDetailsInitialize()
             getPodcastShowDetailsInitialize()
         } else {
             getPodcastDetailsInitialize()
