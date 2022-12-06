@@ -71,9 +71,7 @@ internal class FavoriteSongsAdapter(
         }
 //        val contentPodcast = allDownloads[position].content_Type
 
-        if (mSongDetails?.content_Type?.contains("PD") == true
-
-        ) {
+        if (mSongDetails.content_Type?.contains("PD") == true) {
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {

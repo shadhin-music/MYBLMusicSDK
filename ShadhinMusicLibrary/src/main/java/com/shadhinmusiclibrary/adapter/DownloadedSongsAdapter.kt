@@ -67,9 +67,7 @@ internal class DownloadedSongsAdapter(
             }
         }
 
-        if (mSongDetails?.content_Type?.contains("PD") == true
-
-        ) {
+        if (mSongDetails.content_Type?.contains("PD") == true) {
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
