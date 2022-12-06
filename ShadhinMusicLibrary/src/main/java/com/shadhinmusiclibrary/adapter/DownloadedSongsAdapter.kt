@@ -67,8 +67,8 @@ internal class DownloadedSongsAdapter(
             }
         }
 
-        if (mSongDetails.content_Type?.length!! >= 1 &&
-            mSongDetails.content_Type?.length!! > 2
+        if (mSongDetails?.content_Type?.contains("PD") == true
+
         ) {
             holder.itemView.setOnClickListener {
                 val filterData =
