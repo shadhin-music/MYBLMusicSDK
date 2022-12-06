@@ -1,7 +1,6 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -16,16 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.adapter.ParentAdapter
-import com.shadhinmusiclibrary.adapter.PlaylistHeaderAdapter
 import com.shadhinmusiclibrary.adapter.PodcastSeeAllDetailsAdapter
-import com.shadhinmusiclibrary.adapter.PodcastTNTypeAdapter
-import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
-import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
@@ -35,10 +30,6 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
     lateinit var viewModel: FeaturedPodcastViewModel
     private lateinit var navController: NavController
     private var dataAdapter: PodcastSeeAllDetailsAdapter? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     private fun setupViewModel() {
         viewModel =
@@ -46,7 +37,6 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
                 this,
                 injector.featuredpodcastViewModelFactory
             )[FeaturedPodcastViewModel::class.java]
-
     }
 
     override fun onCreateView(
@@ -86,7 +76,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = dataAdapter
-            Log.e("TAG", "PodcastDATA: " + res.data?.data)
+
             for (item in res?.data?.data?.indices!!) {
                 if (isValidDesign(res.data.data[item].PatchType) == -1) {
                     res.data.data[item].PatchType = ""
@@ -97,31 +87,27 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
                         //dataAdapter?.notifyItemChanged(pageNum)
                         dataAdapter?.notifyDataSetChanged()
                     }
-//                  it.data.let {
-                    //   it1 ->
-                    // }
                 }
             }
         }
-
     }
 
     private fun isValidDesign(patchType: String): Int {
         return when (patchType) {
-
             "PP" -> ParentAdapter.VIEW_ARTIST
             "TN" -> ParentAdapter.VIEW_PLAYLIST
             "SS" -> ParentAdapter.VIEW_RELEASE
-
             else -> {
                 -1
             }
         }
     }
 
-    override fun onPodcastLatestShowClick(show: List<FeaturedPodcastDetailsModel>, position: Int) {
-
-        var mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(show[position])
+    override fun onPodcastLatestShowClick(
+        patchItem: List<FeaturedPodcastDetailsModel>,
+        position: Int
+    ) {
+        val mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(patchItem[position])
 
         navController.navigate(
             R.id.to_podcast_details,
@@ -134,9 +120,8 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
             })
     }
 
-    override fun onPodcastEpisodeClick(episode: List<FeaturedPodcastDetailsModel>, position: Int) {
-        var mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(episode[position])
-
+    override fun onPodcastEpisodeClick(data: List<FeaturedPodcastDetailsModel>, position: Int) {
+        val mEpisode = UtilHelper.getHomePatchDetailToFeaturedPodcastDetails(data[position])
         navController.navigate(
             R.id.to_podcast_details,
             Bundle().apply {
@@ -162,13 +147,13 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
 //
 //            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
 //                if (itMusic != null) {
-////                    Log.e("TAG", "HELLO: "
-////                            + data[0].ContentType
-////                            + " " + itMusic.rootType
-////                            + " " + data[0].TracktId
-////                            + " " + itMusic.rootId
-////                            + " " + data[0].TracktId
-////                            + " " + itMusic.mediaId)
+//                    Log.e("TAG", "HELLO: "
+//                            + data[0].ContentType
+//                            + " " + itMusic.rootType
+//                            + " " + data[0].TracktId
+//                            + " " + itMusic.rootId
+//                            + " " + data[0].TracktId
+//                            + " " + itMusic.mediaId)
 //                    if ((data.indexOfFirst {
 //                            it.ContentType == itMusic.rootType &&
 //                                    it.TracktId == itMusic.rootId &&
@@ -187,7 +172,6 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
 //            }
 //        }
 //    }
-
 
     fun playPauseStatePodcast(playing: Boolean, ivPlayPause: ImageView) {
         if (playing) {
@@ -236,7 +220,3 @@ interface PodcastDetailsCallback {
 //        data: List<FeaturedPodcastDetailsModel>,
 //    )
 }
-
-
-
-

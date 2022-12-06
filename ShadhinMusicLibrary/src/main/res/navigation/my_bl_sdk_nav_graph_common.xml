@@ -46,6 +46,7 @@
             android:id="@+id/to_podcast_details"
             app:destination="@id/podcast_details_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/podcast_see_all_fragment"
         android:name="com.shadhinmusiclibrary.fragments.podcast.PodcastSeeAllDetailsFragment"
