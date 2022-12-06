@@ -25,7 +25,6 @@ import com.shadhinmusiclibrary.library.player.singleton.PlayerCache
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModelFactory
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilsOkHttp
-import okhttp3.OkHttpClient
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -218,7 +217,15 @@ internal class Module(private val applicationContext: Context) {
 
     val downloadTitleMap: MutableMap<String, String>
         get() = SingleDownloadMap.getInstance()
+    private val _userSessionRepository:UserSessionRepository = UserSessionRepositoryImpl(getApiShadhinMusicServiceV5withTokenAndClient())
+
+    val userSessionRepository:UserSessionRepository
+        get() = _userSessionRepository
+
 
     val playerViewModelFactory: PlayerViewModelFactory
-        get() = PlayerViewModelFactory(musicServiceController)
+        get() = PlayerViewModelFactory(musicServiceController,userSessionRepository)
+
+
+
 }

@@ -34,7 +34,8 @@ internal class PodcastTNTypeAdapter(
     var patchItem: FeaturedPodcastDataModel,
     val podcastDetailsCallback: PodcastDetailsCallback,
     val cacheRepository: CacheRepository,
-   val favViewModel: FavViewModel
+    val favViewModel: FavViewModel,
+    val injector: Module
 ) : RecyclerView.Adapter<PodcastTNTypeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,6 +49,8 @@ internal class PodcastTNTypeAdapter(
         holder.itemView.setOnClickListener {
           podcastDetailsCallback.onPodcastTrackClick(patchItem.Data,position)
         }
+
+        //podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         val pd_download = holder.itemView.findViewById(R.id.pd_download) as ImageView
         var isDownloadComplete = false
         val downloaded = cacheRepository.getDownloadById(patchItem.Data[position].TracktId)
@@ -56,7 +59,7 @@ internal class PodcastTNTypeAdapter(
             pd_download.setColorFilter(holder.itemView.context.resources.getColor(R.color.my_sdk_color_primary))
         } else {
             isDownloadComplete = false
-            pd_download?.setImageResource(R.drawable.my_bl_sdk_ic_download_round)
+            pd_download.setImageResource(R.drawable.my_bl_sdk_ic_download_round)
         }
         pd_download.setOnClickListener {
 
@@ -76,14 +79,14 @@ internal class PodcastTNTypeAdapter(
 //                    .putExtra("contentID", track.EpisodeId)
                     localBroadcastManager.sendBroadcast(localIntent)
                     isDownloadComplete = false
-                    pd_download?.setImageResource(R.drawable.my_bl_sdk_ic_download_round)
+                    pd_download.setImageResource(R.drawable.my_bl_sdk_ic_download_round)
                 } else {
                     val mPlayingUrl = "${Constants.FILE_BASE_URL}${patchItem.Data[position].PlayUrl}"
                     val downloadRequest: DownloadRequest =
                         DownloadRequest.Builder(patchItem.Data[position].TracktId, mPlayingUrl.toUri())
                             .build()
                    // Log.e("TAG", "NAME: " + iSongTrack.titleName + " URL " + mPlayingUrl)
-                  //  injector.downloadTitleMap[patchItem.Data[position].TracktId ?: ""] = patchItem.Data[position].TrackName ?: ""
+                    injector.downloadTitleMap[patchItem.Data[position].TracktId ?: ""] = patchItem.Data[position].TrackName ?: ""
                     DownloadService.sendAddDownload(
                         holder.itemView.context,
                         MyBLDownloadService::class.java,
@@ -123,8 +126,8 @@ internal class PodcastTNTypeAdapter(
         //todo iSongTrack.Id
         val isAddedToFav = cacheRepository.getFavoriteById(patchItem.Data[position].TracktId)
         if (isAddedToFav?.content_Id != null) {
-
-            pd_favorite.setColorFilter(holder.itemView.context.resources.getColor(R.color.my_sdk_color_primary))
+            pd_favorite.setImageResource(R.drawable.my_bl_sdk_ic_pd_favorite_added)
+          //  pd_favorite.setColorFilter(holder.itemView.context.resources.getColor(R.color.my_sdk_color_primary))
             isFav = true
             //textFav?.text = "Remove From favorite"
         } else {
@@ -164,7 +167,7 @@ internal class PodcastTNTypeAdapter(
                         patchItem.Data[position].ContentType
                     )
 
-                    pd_favorite.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
+
 
                     // todo iSongTrack.Id.toString(),
                     //      iSongTrack.Id.toString(),
@@ -185,6 +188,7 @@ internal class PodcastTNTypeAdapter(
                             total_duration = patchItem.Data[position].Duration
                         }
                     )
+                    pd_favorite.setImageResource(R.drawable.my_bl_sdk_ic_pd_favorite_added)
                     isFav = true
                     Toast.makeText(holder.itemView.context, "Added to favorite", Toast.LENGTH_LONG)
                         .show()
@@ -199,20 +203,21 @@ internal class PodcastTNTypeAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
+        var ivPlayBtn: ImageView? = null
         fun bindItems() {
             val textViewName = itemView.findViewById(R.id.show_title) as TextView
             val textViewSubtitle = itemView.findViewById(R.id.sub_title) as TextView
             val show_des = itemView.findViewById(R.id.show_des) as TextView
             val txt_time =itemView.findViewById(R.id.txt_time) as TextView
-            val imageView2 = itemView.findViewById(R.id.image) as ImageView
-
+            val imageView = itemView.findViewById(R.id.image) as ImageView
+            ivPlayBtn = itemView.findViewById(R.id.pd_play)
             Glide.with(mContext)
                 .load(
                     UtilHelper.getImageUrlSize300(
                         patchItem.Data[absoluteAdapterPosition].ImageUrl ?: ""
                     )
                 )
-                .into(imageView2)
+                .into(imageView)
             val result = Html.fromHtml(patchItem.Data[absoluteAdapterPosition].About).toString()
             textViewName.text = patchItem.Data[absoluteAdapterPosition].TrackName
             txt_time.text = patchItem.Data[absoluteAdapterPosition].Duration
