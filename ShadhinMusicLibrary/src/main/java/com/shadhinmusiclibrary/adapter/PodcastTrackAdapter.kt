@@ -40,7 +40,7 @@ internal class PodcastTrackAdapter(
         holder.bindItems(trackItem)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
-            Log.e("TAG","DATA: "+ trackItem)
+            Log.e("TAG", "DATA: " + trackItem)
         }
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
         ivSongMenuIcon.setOnClickListener {
@@ -73,7 +73,14 @@ internal class PodcastTrackAdapter(
     ) {
         this.tracks = mutableListOf()
         for (songItem in songTrack) {
-            Log.e("PHA", "setTrackData: " + rootPatch.content_Id + " " + rootPatch.content_Type)
+            Log.e(
+                "PHA",
+                "setTrackData: "
+                        + rootPatch.content_Id + " "
+                        + rootPatch.content_Type + " "
+                        + songItem.content_Id + " "
+                        + songItem.rootContentId
+            )
             tracks.add(
                 UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
@@ -103,7 +110,7 @@ internal class PodcastTrackAdapter(
         fun bindItems(iMusicModel: IMusicModel) {
             val image: ShapeableImageView = itemView.findViewById(R.id.siv_song_icon)
             val textArtistName: TextView = itemView.findViewById(R.id.tv_singer_name)
-            val textDuration :TextView = itemView.findViewById(R.id.tv_song_length)
+            val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
             textDuration.text = iMusicModel.total_duration
             textArtistName.text = iMusicModel.artistName
             Glide.with(context)

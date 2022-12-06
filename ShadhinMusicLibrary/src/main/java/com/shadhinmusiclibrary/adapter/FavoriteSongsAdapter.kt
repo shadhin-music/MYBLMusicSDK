@@ -1,6 +1,5 @@
 package com.shadhinmusiclibrary.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,10 +55,10 @@ internal class FavoriteSongsAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-        if (mSongDetails.content_Type.equals("S")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("S")) {
             holder.itemView.setOnClickListener {
                 val filterData =
-                    allDownloads.filter { it.content_Type == "S" }.toMutableList()
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "S" }.toMutableList()
 
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
@@ -72,18 +71,15 @@ internal class FavoriteSongsAdapter(
         }
 //        val contentPodcast = allDownloads[position].content_Type
 
-        if (mSongDetails.content_Type == "PDJG" ||
-            mSongDetails.content_Type == "PDJC" ||
-            mSongDetails.content_Type == "PDBC"
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type == "PDJG"
-                                || it.content_Type == "PDJC"
-                                || it.content_Type == "PDBC"
-                    }
-                        .toMutableList()
+                        it.content_Type?.length!! > 1 &&
+                                it.content_Type?.substring(0, 2) == "PD"
+                    }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 

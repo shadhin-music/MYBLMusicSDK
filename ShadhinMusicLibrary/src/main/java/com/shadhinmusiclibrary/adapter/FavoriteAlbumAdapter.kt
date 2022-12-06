@@ -50,11 +50,10 @@ internal class FavoriteAlbumAdapter(
 //                 holder.itemView.context.startActivity(intent)
 //             }
 //        }
-        if (mSongDetails.content_Type == "R") {
+        if (mSongDetails.content_Type?.toUpperCase() == "R") {
             holder.itemView.setOnClickListener {
                 val filterData =
-                    allDownloads.filter { it.content_Type == "R" }
-                        .toMutableList()
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "R" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 

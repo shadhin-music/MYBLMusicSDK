@@ -53,6 +53,10 @@ class RootAppActivity : AppCompatActivity() {
                             goToSdk()
                             Log.e("RAppA", "onResponse: " + response.code())
                         } else {
+                            Log.e(
+                                "RAppA",
+                                "onResponse: " + response.body()?.message + " \n" + response.message()
+                            )
                             Toast.makeText(
                                 this@RootAppActivity,
                                 response.body()?.message.toString() + "",

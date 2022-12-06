@@ -14,6 +14,7 @@ internal class AuthRepository(private val apiLoginSer: ApiLoginService) {
             Log.e("AuthRepository: ALS", "login: $appToken")
             Pair(true, response.message)
         } else {
+            Log.e("RAA", "onResponse: " + response.message)
             appToken = null
             Pair(false, response.message)
         }

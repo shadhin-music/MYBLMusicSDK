@@ -44,7 +44,7 @@ internal class AllFavoriteAdapter(
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.iv_song_menu_icon)
 
-        if (mSongDetails.content_Type.equals("V")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("V")) {
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
@@ -52,7 +52,7 @@ internal class AllFavoriteAdapter(
 
                 for (item in allDownloads) {
                     val video = VideoModel()
-                    if (item.content_Type.equals("V")) {
+                    if (item.content_Type?.toUpperCase().equals("V")) {
                         video.setDataFavoriteIM(item)
                         videoArray.add(video)
                     }
@@ -68,9 +68,10 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemVideo(allDownloads[position])
             }
         }
-        if (mSongDetails.content_Type.equals("S")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("S")) {
             holder.itemView.setOnClickListener {
-                val filterData = allDownloads.filter { it.content_Type == "S" }.toMutableList()
+                val filterData =
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "S" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
@@ -80,9 +81,10 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (mSongDetails.content_Type.equals("P")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("P")) {
             holder.itemView.setOnClickListener {
-                val filterData = allDownloads.filter { it.content_Type == "P" }.toMutableList()
+                val filterData =
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "P" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
@@ -92,9 +94,10 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (mSongDetails.content_Type.equals("A")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("A")) {
             holder.itemView.setOnClickListener {
-                val filterData = allDownloads.filter { it.content_Type == "A" }.toMutableList()
+                val filterData =
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "A" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
@@ -107,9 +110,10 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (mSongDetails.content_Type.equals("R")) {
+        if (mSongDetails.content_Type?.toUpperCase().equals("R")) {
             holder.itemView.setOnClickListener {
-                val filterData = allDownloads.filter { it.content_Type == "R" }.toMutableList()
+                val filterData =
+                    allDownloads.filter { it.content_Type?.toUpperCase() == "R" }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 
@@ -123,18 +127,15 @@ internal class AllFavoriteAdapter(
                 openMenu.onClickBottomItemSongs(mSongDetails)
             }
         }
-        if (mSongDetails.content_Type == "PDJG" ||
-            mSongDetails.content_Type == "PDJC" ||
-            mSongDetails.content_Type == "PDBC"
+        if (mSongDetails.content_Type?.length!! > 1 &&
+            mSongDetails.content_Type?.substring(0, 2) == "PD"
         ) {
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type == "PDJG"
-                                || it.content_Type == "PDJC"
-                                || it.content_Type == "PDBC"
-                    }
-                        .toMutableList()
+                        it.content_Type?.length!! > 1 &&
+                                it.content_Type?.substring(0, 2) == "PD"
+                    }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
 

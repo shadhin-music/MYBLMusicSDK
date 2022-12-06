@@ -34,11 +34,11 @@ internal class DownloadedVideoAdapter(
         val mSongDetails = allDownloads[position]
 
         holder.bindItems()
-        if (mSongDetails.content_Type == "V") {
+        if (mSongDetails.content_Type?.toUpperCase().equals("V")) {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads.filter { it.content_Type == "V" }
+                for (item in allDownloads.filter { it.content_Type?.toUpperCase() == "V" }
                     .toMutableList()) {
                     val video = VideoModel()
                     video.setDataDownload(item)
