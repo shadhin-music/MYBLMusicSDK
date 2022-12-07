@@ -77,11 +77,12 @@ internal class FavoriteSongsAdapter(
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type?.length!! > 1 &&
-                                it.content_Type?.substring(0, 2) == "PD"
+                        it.content_Type?.toUpperCase()?.contains("PD") == true
                     }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+
+
 
                 lrOnCallBack.onClickFavItem(filterData, clickIndex)
             }

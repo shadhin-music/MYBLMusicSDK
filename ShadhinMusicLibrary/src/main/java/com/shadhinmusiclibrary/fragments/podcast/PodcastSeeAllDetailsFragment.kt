@@ -80,7 +80,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
         val cacheRepository = CacheRepository(requireContext())
         viewModel.podcastSeeAllContent.observe(viewLifecycleOwner) { res ->
             dataAdapter = PodcastSeeAllDetailsAdapter(this, cacheRepository, favViewModel, injector)
-            progress.visibility = GONE
+           // progress.visibility = GONE
             val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
             val layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -214,15 +214,15 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(), PodcastDetailsCall
 //                mSongDetails,
 //                clickItemPosition
 //            )
-            playerViewModel.unSubscribe()
-            playerViewModel.subscribe(
-                MusicPlayList(
-                    UtilHelper.getMusicListToPodcastDetailsList(mSongDetails),
-                    0
-                ),
-                false,
-                clickItemPosition
-            )
+//            playerViewModel.unSubscribe()
+//            playerViewModel.subscribe(
+//                MusicPlayList(
+//                    UtilHelper.getMusicListToPodcastDetailsList(mSongDetails),
+//                    0
+//                ),
+//                false,
+//                clickItemPosition
+//            )
         }
     }
 }

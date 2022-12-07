@@ -49,20 +49,31 @@ internal class AllFavoriteAdapter(
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-
-                for (item in allDownloads) {
+                for (item in allDownloads.filter { it.content_Type == "V" }
+                    .toMutableList()) {
                     val video = VideoModel()
-                    if (item.content_Type?.toUpperCase().equals("V")) {
-                        video.setDataFavoriteIM(item)
-                        videoArray.add(video)
-                    }
+                    video.setDataFavoriteIM(item)
+                    videoArray.add(video)
                 }
                 val clickIndex =
-                    allDownloads.indexOfFirst { it.content_Id == mSongDetails.content_Id }
-
+                    videoArray.indexOfFirst { it.contentID == mSongDetails.content_Id }
+                //  val videos :ArrayList<Video> = videoArray
                 intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickIndex)
                 intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videoArray)
                 holder.itemView.context.startActivity(intent)
+//                for (item in allDownloads) {
+//                    val video = VideoModel()
+////                    if (item.content_Type?.toUpperCase().equals("V")) {
+//                        video.setDataFavoriteIM(item)
+//                        videoArray.add(video)
+//                   // }
+//                }
+//                val clickIndex =
+//                    allDownloads.indexOfFirst { it.content_Id == mSongDetails.content_Id }
+//
+//                intent.putExtra(VideoActivity.INTENT_KEY_POSITION, clickIndex)
+//                intent.putExtra(VideoActivity.INTENT_KEY_DATA_LIST, videoArray)
+//                holder.itemView.context.startActivity(intent)
             }
             menu.setOnClickListener {
                 openMenu.onClickBottomItemVideo(allDownloads[position])
@@ -133,8 +144,7 @@ internal class AllFavoriteAdapter(
             holder.itemView.setOnClickListener {
                 val filterData =
                     allDownloads.filter {
-                        it.content_Type?.length!! > 1 &&
-                                it.content_Type?.substring(0, 2) == "PD"
+                        it.content_Type?.toUpperCase()?.contains("PD") == true
                     }.toMutableList()
                 val clickIndex =
                     filterData.indexOfFirst { it.content_Id == mSongDetails.content_Id }

@@ -40,12 +40,12 @@ internal class FavVideoAdapter(
 
         holder.bindItems()
         val menu = holder.itemView.findViewById<ImageView>(R.id.threeDotButton)
-        if (mSongDetails.content_Type == "V") {
+        if (mSongDetails.content_Type?.toUpperCase() == "V") {
 //
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoActivity::class.java)
                 val videoArray = ArrayList<VideoModel>()
-                for (item in allDownloads.filter { it.content_Type == "V" }
+                for (item in allDownloads.filter { it.content_Type?.toUpperCase() == "V" }
                     .toMutableList()) {
                     val video = VideoModel()
                     video.setDataFavorite(item)
