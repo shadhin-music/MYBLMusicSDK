@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_marginStart="16dp"
@@ -46,7 +47,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="Ami Bhabi Tumi"
+                    android:text=""
                     android:textColor="@color/my_sdk_black2"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -58,15 +59,16 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="Habib Wahid"
+                    android:text=""
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_song_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.32"
-                    android:textSize="10sp" />
+                    android:text=""
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
 
             <LinearLayout

@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Mehnaz hossain"
+                android:text=""
                 android:textColor="#212121"
                 android:textSize="14sp" />
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
-            android:text="10 min ago"
+            android:text=""
             android:textSize="12sp" />
 
         <TextView
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/user_name_layout"
             android:layout_marginTop="4dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. At hac ultricies mattis neque. Id augue at hendrerit et."
+            android:text=""
             android:textColor="#212121"
             android:textSize="12sp" />
 
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/reply"
-            android:text="14 reply"
+            android:text=""
             android:textColor="@color/my_sdk_color_primary"
             android:textSize="14sp"
             android:visibility="gone" />

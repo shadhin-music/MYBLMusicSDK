@@ -43,7 +43,6 @@ internal class ArtistHeaderAdapter(
         return ArtistHeaderVH(parentView!!)
     }
 
-
     override fun onBindViewHolder(holder: ArtistHeaderVH, position: Int) {
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
@@ -112,16 +111,16 @@ internal class ArtistHeaderAdapter(
                 ivFavorite = itemView.findViewById(R.id.favorite)
 //            val url: String = homePatchDetail!!.getImageUrl300Size()
                 val textArtist: TextView = itemView.findViewById(R.id.name)
-                textArtist.text = homePatchDetail.artistName
+                textArtist.text = homePatchDetail.artistName ?: ""
                 val textView: ExpandableTextView? = itemView.findViewById(R.id.tvDescription)
-                val bio: String = bio?.artist?.bio?.summary.toString()
+                val bio: String = bio?.artist?.bio?.summary ?: ""
                 if (homePatchDetail.artistName.equals("Elita", true)) {
 
                     val elitaBio =
                         "Elita Karim is a Bangladeshi popular pop singer. She is one of the heart-touching female singers in the country. Her full name Dilshan Karim Elita but she is best known as Elita around the country.Elita Karim started her career as a journalist in the country’s leading English daily the Daily Star. Then she connected with the Black Band but her first mixed album was released in 2009 with the title ‘Amar Prithibi’.In 2009, her mixed album ‘Antohin’ was released and is well discussed in the market. Elita Karim couldn’t release her single music album even after lots of time since her career began, finally in 2015; she released her first single album Elita 2015."
                     // val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)
                     Log.e("TAG", "ARTIST: " + elitaBio)
-                    textView?.setText(elitaBio)
+                    textView?.text = elitaBio
                     val cardBiography: CardView = itemView.findViewById(R.id.cardBiography)
                     cardBiography.visibility = VISIBLE
                 } else {
@@ -190,7 +189,8 @@ internal class ArtistHeaderAdapter(
                     .load(UtilHelper.getImageUrlSize300(homePatchDetail.imageUrl ?: ""))
                     .into(imageView)
                 var isFav = false
-                val isAddedToFav = cacheRepository?.getFavoriteById(homePatchDetail.artist_Id.toString())
+                val isAddedToFav =
+                    cacheRepository?.getFavoriteById(homePatchDetail.artist_Id.toString())
                 if (isAddedToFav?.artist_Id != null) {
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     isFav = true
@@ -198,8 +198,7 @@ internal class ArtistHeaderAdapter(
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 }
-                Log.e("TAG","DATA: "+ homePatchDetail.artist_Id)
-                Log.e("TAG","DATA: "+ homePatchDetail.content_Type)
+
                 ivFavorite?.setOnClickListener {
                     if (isFav.equals(true)) {
                         favViewModel?.deleteFavContent(
@@ -215,10 +214,7 @@ internal class ArtistHeaderAdapter(
                             homePatchDetail.artist_Id.toString(),
                             "A" ?: ""
                         )
-                        Log.e("TAG","DATA: "+ homePatchDetail.titleName)
-                        Log.e("TAG","DATA: "+ homePatchDetail.artistName)
-                        Log.e("TAG","DATA: "+ homePatchDetail.content_Id)
-                        Log.e("TAG","DATA: "+ homePatchDetail.artist_Id)
+
                         ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                         cacheRepository?.insertFavSingleContent(
                             FavDataModel().apply {
@@ -234,7 +230,7 @@ internal class ArtistHeaderAdapter(
                                 playingUrl = homePatchDetail.playingUrl
                                 rootContentId = homePatchDetail.rootContentId
                                 rootContentId = homePatchDetail.rootContentType
-                                titleName =  homePatchDetail.artistName
+                                titleName = homePatchDetail.artistName
 
                             }
                         )

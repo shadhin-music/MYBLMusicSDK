@@ -61,7 +61,7 @@
                 android:lines="1"
                 android:textColor="@color/my_sdk_down_title"
                 android:textSize="16sp"
-                tools:text="God’s Plan" />
+                tools:text="" />
 
             <View
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                 android:lines="1"
                 android:textColor="@color/my_sdk_down_title"
                 android:textSize="12sp"
-                tools:text="Drake" />
+                tools:text="" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

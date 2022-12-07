@@ -47,14 +47,14 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:textStyle="bold"
-                tools:text="Ki jala diye gela" />
+                tools:text="" />
 
             <TextView
                 android:id="@+id/tv_video_length"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                tools:text="02:20:00" />
+                tools:text="" />
         </LinearLayout>
 
         <ImageButton

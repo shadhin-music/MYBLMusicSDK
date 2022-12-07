@@ -24,7 +24,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_thumb_card"
                 android:layout_width="200dp"
@@ -53,7 +52,6 @@
                 android:textColor="@color/my_sdk_color_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/tv_artist_name"
