@@ -168,7 +168,6 @@ internal class ShadhinMusicServiceConnection(
 
     override fun reAssignAll() {
         if (/*mediaControllerCompat?.playbackState?.isPlaying == true &&*/ _currentPlayingSong.value == null) {
-            Log.e("SMSC", "reAssignAll: " + _musicListLiveData.value?.list?.size)
             sendCommand(Command.RE_ASSIGN_CALLBACK) {
                 _currentPlayingSong.value =
                     it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as? Music?
