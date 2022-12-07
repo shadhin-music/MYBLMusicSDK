@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -82,8 +84,20 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
     override fun onClickItemAndAllItem(
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
@@ -105,6 +119,7 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
+        
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
