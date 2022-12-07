@@ -724,9 +724,15 @@ internal class VideoActivity : AppCompatActivity(),
         val tvArtistName = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         tvArtistName?.text = item.artist
         var image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-
+       // var thumbCard: CardView? = bottomSheetDialog.findViewById(R.id.thumb_card)
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
+//        val layoutParams = FrameLayout.LayoutParams(300, 250)
+//        image?.setLayoutParams(layoutParams)
          title?.text = item.title
+         //thumbCard?.minimumHeight=LinearLayout.LayoutParams.WRAP_CONTENT
+//        val height = LinearLayout.LayoutParams.WRAP_CONTENT
+//        val parms = LinearLayout.LayoutParams(200,height)
+
 
             if (image != null) {
             Glide.with(this).load(UtilHelper.getImageUrlSize300(item.image!!)).into(image)
