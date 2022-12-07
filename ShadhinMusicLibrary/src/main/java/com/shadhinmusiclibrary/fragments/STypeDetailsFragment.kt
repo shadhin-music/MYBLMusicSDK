@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 internal class STypeDetailsFragment : BaseFragment(),
     CommonBottomCallback {
@@ -60,8 +62,20 @@ internal class STypeDetailsFragment : BaseFragment(),
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogForPlaylist(
             navController,

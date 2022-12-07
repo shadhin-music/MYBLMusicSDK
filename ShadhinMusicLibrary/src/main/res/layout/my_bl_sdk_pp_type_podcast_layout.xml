@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:layout_marginTop="12dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="16dp">
 
     <RelativeLayout
@@ -15,7 +15,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintRelease"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -23,9 +25,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:paddingStart="16dp"
-                android:paddingTop="5dp"
                 android:paddingEnd="16dp"
-                android:paddingBottom="5dp"
                 android:textColor="#2E2E2E"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -33,24 +33,24 @@
                 app:layout_constraintStart_toStartOf="@id/constraintRelease"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvSeeALL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableEnd="@drawable/my_bl_sdk_ic_arrow"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="See All"
-                android:textColor="#2E2E2E"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/constraintRelease"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvSeeALL"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:drawableEnd="@drawable/my_bl_sdk_ic_arrow"-->
+<!--                android:paddingStart="16dp"-->
+<!--                android:paddingTop="16dp"-->
+<!--                android:paddingEnd="16dp"-->
+<!--                android:paddingBottom="16dp"-->
+<!--                android:text="See All"-->
+<!--                android:textColor="#2E2E2E"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/constraintRelease"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 internal class DownloadFragment : BaseFragment() {
     lateinit var tabLayout: TabLayout
@@ -31,7 +34,10 @@ internal class DownloadFragment : BaseFragment() {
             requireContext(), childFragmentManager,
             tabLayout.tabCount
         )
-
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
         viewPager.adapter = adapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -54,5 +60,14 @@ internal class DownloadFragment : BaseFragment() {
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 }

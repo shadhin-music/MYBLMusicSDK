@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.AllFavoriteAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.WatchlaterAdapter
@@ -34,6 +35,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 
@@ -66,6 +68,10 @@ internal class WatchLaterFragment : BaseFragment(),
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
+        }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
         }
     }
 
@@ -302,6 +308,15 @@ internal class WatchLaterFragment : BaseFragment(),
             }
             bottomSheetDialog.dismiss()
         }
+    }
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 }
 

@@ -84,6 +84,10 @@ internal class ArtistDetailsFragment : BaseFragment(),
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
             if (music?.mediaId != null) {
                 artistTrackAdapter.setPlayingSong(music.mediaId!!)
@@ -403,7 +407,15 @@ internal class ArtistDetailsFragment : BaseFragment(),
             }
         }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,

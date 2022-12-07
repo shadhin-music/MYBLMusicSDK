@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.adapter.FeaturePodcastJCRECAdapter
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastHomeRecyclerViewAdapter
 import com.shadhinmusiclibrary.adapter.FeaturedPodcastRecyclerViewAdapter
 import com.shadhinmusiclibrary.callBackService.FeaturedPodcastOnItemClickCallback
@@ -83,8 +85,20 @@ internal class FeaturedPodcastFragment : BaseFragment(),
             //requireActivity().finish()
             requireActivity().onBackPressed()
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
 
     fun observeData() {
         val layoutManager =

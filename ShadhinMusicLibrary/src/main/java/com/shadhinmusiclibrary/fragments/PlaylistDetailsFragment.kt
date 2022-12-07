@@ -34,6 +34,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 internal class PlaylistDetailsFragment : BaseFragment(),
@@ -106,6 +107,10 @@ internal class PlaylistDetailsFragment : BaseFragment(),
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
+        }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
         }
 
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
@@ -278,6 +283,15 @@ internal class PlaylistDetailsFragment : BaseFragment(),
                 else -> Toast.makeText(context, "Action Not Found", Toast.LENGTH_LONG).show()
             }
         }
+    }
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 }
 

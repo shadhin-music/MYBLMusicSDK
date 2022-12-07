@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.fav
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +14,11 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.DownlodViewPagerAdapter
 import com.shadhinmusiclibrary.adapter.FavoriteViewPagerAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 
 
 internal class FavoriteFragment : Fragment() {
@@ -43,7 +46,10 @@ internal class FavoriteFragment : Fragment() {
         viewPager = view.findViewById(R.id.viewPager)
 
 
-
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
 
 
         tabLayout.tabGravity = TabLayout.GRAVITY_START
@@ -83,5 +89,14 @@ internal class FavoriteFragment : Fragment() {
              }*/
             requireActivity().onBackPressed()
         }
+    }
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 }

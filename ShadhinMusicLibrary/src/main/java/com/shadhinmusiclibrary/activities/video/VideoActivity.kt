@@ -18,6 +18,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
@@ -41,6 +42,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.VideoAdapter
 import com.shadhinmusiclibrary.data.model.DownloadingItem
 import com.shadhinmusiclibrary.data.model.VideoModel
@@ -58,6 +60,7 @@ import com.shadhinmusiclibrary.library.player.audio_focus.AudioFocusManagerFacto
 import com.shadhinmusiclibrary.library.player.data.source.MediaSources
 import com.shadhinmusiclibrary.library.player.data.source.ShadhinVideoMediaSource
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
@@ -163,6 +166,10 @@ internal class VideoActivity : AppCompatActivity(),
         findViewById<ImageView>(R.id.imageBack).setOnClickListener {
             onBackPressed()
         }
+        val searchBar: AppCompatImageView = findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
         mainLayout = findViewById(R.id.main)
         videoRecyclerView = findViewById(R.id.videoRecyclerView)
         videoTitleTextView = findViewById(R.id.videoTitle)
@@ -187,6 +194,16 @@ internal class VideoActivity : AppCompatActivity(),
         backButton.setOnClickListener { onBackPressed() }
         fullscreenToggleButton.setOnClickListener { toggleOrientation() }
         configOrientation(resources.configuration.orientation)
+    }
+
+    private fun openSearch() {
+        startActivity(Intent(this, SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 
     private fun setupAdapter() {

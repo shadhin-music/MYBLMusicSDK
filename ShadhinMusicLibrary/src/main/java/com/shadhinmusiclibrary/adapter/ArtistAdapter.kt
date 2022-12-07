@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
+import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.utils.CircleImageView
 import com.shadhinmusiclibrary.utils.UtilHelper

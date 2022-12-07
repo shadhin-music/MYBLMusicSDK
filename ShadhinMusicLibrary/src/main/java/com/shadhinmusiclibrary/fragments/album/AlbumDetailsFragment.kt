@@ -13,6 +13,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +45,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 internal class AlbumDetailsFragment : BaseFragment(),
@@ -78,6 +80,10 @@ internal class AlbumDetailsFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         cacheRepository = CacheRepository(requireContext())
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
         albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
         albumsTrackAdapter = AlbumsTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
@@ -115,6 +121,16 @@ internal class AlbumDetailsFragment : BaseFragment(),
                 }
             }
         }
+    }
+
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
     }
 
     private fun setupViewModel() {
@@ -337,4 +353,5 @@ internal class AlbumDetailsFragment : BaseFragment(),
             }
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,6 +65,10 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
+        }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
         }
     }
 
@@ -201,7 +206,15 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
             )
         }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
 }
 
 interface PodcastDetailsCallback {

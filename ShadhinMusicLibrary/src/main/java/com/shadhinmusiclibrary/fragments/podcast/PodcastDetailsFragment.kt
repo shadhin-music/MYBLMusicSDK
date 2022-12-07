@@ -36,6 +36,7 @@ import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
+import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 
 internal class PodcastDetailsFragment : BaseFragment(),
@@ -139,8 +140,20 @@ internal class PodcastDetailsFragment : BaseFragment(),
                 progressBar.visibility = View.GONE
             }
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
     private fun getPodcastShowDetailsInitialize() {
         Log.e("PDF", "getPodcastShowDetailsInitialize: ")
         observePodcastShowData()

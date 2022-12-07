@@ -78,8 +78,8 @@ internal class PodcastSeeAllDetailsAdapter(
 
 
         private fun bindPP(patchItem: FeaturedPodcastDataModel) {
-            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
-            seeAll.visibility = GONE
+//            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+//            seeAll.visibility = GONE
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = patchItem.PatchName
 //            seeAll.setOnClickListener {
