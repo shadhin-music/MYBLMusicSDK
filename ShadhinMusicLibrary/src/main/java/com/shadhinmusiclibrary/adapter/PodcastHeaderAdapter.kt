@@ -39,14 +39,12 @@ internal class PodcastHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: PodcastHeaderVH, position: Int) {
-        Log.i("setTrackData", "onBindViewHolder: ${episode?.map { it.Code }}")
+        holder.bindItems(position)
 
         pcOnCallback.getCurrentVH(holder, listSongTrack)
         holder.ivPlayBtn?.setOnClickListener {
             pcOnCallback.onRootClickItem(listSongTrack, position)
         }
-
-        holder.bindItems(position)
     }
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
@@ -112,23 +110,19 @@ internal class PodcastHeaderAdapter(
                     moreText.text = "Less"
                 }
             }
-
 //            val tvName: TextView = itemView?.findViewById(R.id.tvName)!!
 //            tvName.text = argHomePatchDetail.Artist + "'s"
             // val imageArtist: ImageView = itemView!!.findViewById(R.id.imageArtist)
             Glide.with(context)
-                .load(url?.replace("<\$size\$>", "300"))
+                .load(UtilHelper.getImageUrlSize300(url ?: ""))
                 .into(imageView)
             var isFav = false
             val isAddedToFav =
                 cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
             if (isAddedToFav?.content_Id != null) {
-
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
-
             } else {
-
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav = false
             }
@@ -146,7 +140,6 @@ internal class PodcastHeaderAdapter(
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
-
                     favViewModel.addFavContent(
                         episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
                         episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
