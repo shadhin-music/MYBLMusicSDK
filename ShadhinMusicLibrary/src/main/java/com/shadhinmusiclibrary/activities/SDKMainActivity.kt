@@ -983,10 +983,10 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
         ibtnLibraryAdd.setOnClickListener {
-            if(mSongDetails[clickItemPosition]?.content_Type?.contains("PD") == true){
+            if (mSongDetails[clickItemPosition]?.content_Type?.contains("PD") == true) {
                 ibtnLibraryAdd.isClickable = false
-               // Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
-            }else {
+                // Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+            } else {
                 ibtnLibraryAdd.isClickable = true
                 if (isNetworkAvailable(this).equals(true)) {
                     gotoPlayList(this, mSongDetails[clickItemPosition])
@@ -1188,12 +1188,15 @@ internal class SDKMainActivity : BaseActivity(),
     override fun onBackPressed() {
         if (playerMode == PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
-
-            if (!navController.navigateUp()) {
-                super.onBackPressed()
-            }
+            Log.e("SDKMA", "onBackPressed: if ")
+//            if (!navController.navigateUp()) {
+//                Log.e("SDKMA", "onBackPressed: navigateUp if ")
+//                super.onBackPressed()
+//            }
         } else {
+            Log.e("SDKMA", "onBackPressed: else")
             if (!navController.navigateUp()) {
+                Log.e("SDKMA", "onBackPressed: navigateUp else")
                 super.onBackPressed()
             }
         }
@@ -1232,7 +1235,7 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     override fun onDestroy() {
-       // DownloadOrDeleteObserver.removeSubscriber()
+        // DownloadOrDeleteObserver.removeSubscriber()
         playerViewModel.endUserSession()
         super.onDestroy()
         //   playerViewModel.disconnect()
@@ -1821,7 +1824,7 @@ internal class SDKMainActivity : BaseActivity(),
                         content_Type = iSongTrack.content_Type.toString()
                         fav = "1"
                         imageUrl = iSongTrack.imageUrl
-                        artistName =iSongTrack.artistName
+                        artistName = iSongTrack.artistName
                         playingUrl = iSongTrack.playingUrl
                         rootContentId = iSongTrack.rootContentId
                         rootContentType = iSongTrack.rootContentType
