@@ -13,12 +13,14 @@ internal class ShadhinMediaSources(
     private val musicList: List<Music>,
     private val cache: SimpleCache,
     private val musicRepository: MusicRepository
-): MediaSources {
+) : MediaSources {
     override fun createSources(): List<ProgressiveMediaSource> {
-        return musicList.map {createSource(it)}.toList()
+        return musicList.map { createSource(it) }.toList()
     }
+
     private fun createSource(music: Music): ProgressiveMediaSource {
-        val dataSource: DataSource.Factory = ShadhinDataSourceFactory.build(context,music,cache,musicRepository)
+        val dataSource: DataSource.Factory =
+            ShadhinDataSourceFactory.build(context, music, cache, musicRepository)
         val pla = music.toPlayerMediaItem()
         return ProgressiveMediaSource.Factory(dataSource)
             .createMediaSource(pla)

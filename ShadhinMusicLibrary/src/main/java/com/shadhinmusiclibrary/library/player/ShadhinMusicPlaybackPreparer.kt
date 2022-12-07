@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
@@ -77,7 +78,7 @@ internal class ShadhinMusicPlaybackPreparer(
                         exoPlayer?.currentMediaItem?.toMusic()
                     )
                     putSerializable(
-                        Command.RE_ASSIGN_CALLBACK.dataKey2,
+                        Command.RE_ASSIGN_CALLBACK.dataKey3,
                         MusicPlayList(playList.toList(), defaultPosition)
                     )
                 }
@@ -155,6 +156,7 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     private fun progressRequestCommand(resultReceiver: ResultReceiver?) {
+        reAssignAll(resultReceiver)
         val command = Command.MUSIC_PROGRESS_REQUEST
         val musicPosition = exoPlayer?.let { PlayerProgress.fromPlayer(it) }
         exH { resultReceiver?.send(command.resultCode, musicPosition?.toBundle(command.dataKey)) }
@@ -234,7 +236,6 @@ internal class ShadhinMusicPlaybackPreparer(
         playList.addAll(playlist.list)
         //playlist.loadAllImage(context)
         exoPlayer?.currentMediaItemIndex?.let { playListUpdateFunc?.invoke(it) }
-
     }
 
     override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {

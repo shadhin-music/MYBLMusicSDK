@@ -248,7 +248,7 @@ internal class SDKMainActivity : BaseActivity(),
         //DO NOT Call this function multiple times
         playerViewModel.startObservePlayerProgress(this)
         //  routeDataArtistType()
-
+        Log.e("SDKMA", "onCreate: " + playerViewModel.isMediaDataAvailable())
         playerViewModel.startUserSession()
     }
 
@@ -1227,7 +1227,7 @@ internal class SDKMainActivity : BaseActivity(),
                 }
             }
         }
-
+        Log.e("SDKMA", "onResume: " + playerViewModel.isMediaDataAvailable())
         if (playerViewModel.isMediaDataAvailable()) {
             miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
         } else {
