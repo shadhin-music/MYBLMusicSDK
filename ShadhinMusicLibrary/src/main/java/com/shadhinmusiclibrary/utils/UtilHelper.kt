@@ -9,9 +9,7 @@ import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.podcast.SongTrackModel
 import com.shadhinmusiclibrary.data.model.search.CommonSearchData
 import com.shadhinmusiclibrary.data.model.search.SearchDataModel
-import com.shadhinmusiclibrary.data.model.ArtistContentDataModel
 import com.shadhinmusiclibrary.fragments.artist.ArtistAlbumModelData
-import com.shadhinmusiclibrary.fragments.create_playlist.UserSongsPlaylistDataModel
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.data.model.Music
 import java.io.File
@@ -46,17 +44,18 @@ internal object UtilHelper {
     fun getMusicListToSongDetailList(mSongDetails: MutableList<IMusicModel>): MutableList<Music> {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
-            val newPlayUrl = if (songItem.playingUrl!!.contains(
-                    "http",
-                    true
-                )
-            ) songItem.playingUrl!! else Constants.FILE_BASE_URL + songItem.playingUrl!!
+//            val newPlayUrl = if (songItem.playingUrl!!.contains(
+//                    "http",
+//                    true
+//                )
+//            ) songItem.playingUrl!! else Constants.FILE_BASE_URL + songItem.playingUrl!!
+
             musicList.add(
                 Music(
                     mediaId = songItem.content_Id,
                     title = songItem.titleName,
                     displayDescription = "",
-                    displayIconUrl = getImageUrlSize300(songItem.imageUrl!!),
+                    displayIconUrl = getImageUrlSize300(songItem.imageUrl ?: ""),
                     mediaUrl = Constants.FILE_BASE_URL + songItem.playingUrl,
                     artistName = songItem.artistName,
                     date = songItem.total_duration,
@@ -77,6 +76,7 @@ internal object UtilHelper {
         }
         return musicList
     }
+
     fun getMusicListToPodcastDetailsList(mSongDetails: MutableList<FeaturedPodcastDetailsModel>): MutableList<Music> {
         val musicList = mutableListOf<Music>()
         for (songItem in mSongDetails) {
@@ -111,6 +111,7 @@ internal object UtilHelper {
         }
         return musicList
     }
+
     fun getSongDetailToMusicList(musicList: MutableList<Music>): MutableList<IMusicModel> {
         val songDetailList = mutableListOf<IMusicModel>()
         for (musicItem in musicList) {

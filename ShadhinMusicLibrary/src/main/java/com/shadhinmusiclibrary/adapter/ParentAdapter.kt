@@ -2,7 +2,6 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,8 @@ import com.shadhinmusiclibrary.data.model.RBTDATAModel
 internal class ParentAdapter(
     var homeCallBack: HomeCallBack,
     val searchCb: SearchClickCallBack,
-    val downloadClickCallBack: DownloadClickCallBack, val podcastTrackClick: PodcastTrackCallback
+    val downloadClickCallBack: DownloadClickCallBack,
+    val podcastTrackClick: PodcastTrackCallback
     /*,val radioCallBack: RadioTrackCallBack*/
 ) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
     private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
@@ -75,7 +75,7 @@ internal class ParentAdapter(
             "SmallVideo" -> VIEW_TRENDING_MUSIC_VIDEO
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
-             "PodcastLive" ->  VIEW_PODCAST_LIVE
+            "PodcastLive" -> VIEW_PODCAST_LIVE
 //            "Artist" -> VIEW_AD
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
@@ -106,8 +106,16 @@ internal class ParentAdapter(
         if (this.homeListData.isEmpty()) {
             for (item in data.indices) {
                 search =
-                    HomePatchItemModel("007", "searchBar", data[item].Data, "search", "search", 0, 0)
-              // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
+                    HomePatchItemModel(
+                        "007",
+                        "searchBar",
+                        data[item].Data,
+                        "search",
+                        "search",
+                        0,
+                        0
+                    )
+                // download = HomePatchItem("002","download",data[item].Data,"download","download",0,0)
             }
             this.homeListData.add(search!!)
             //this.homeListData.add(download!!)
@@ -242,7 +250,7 @@ internal class ParentAdapter(
         }
 
         private fun bindBhoot(homePatchItemModel: HomePatchItemModel) {
-          //  val title: TextView = itemView.findViewById(R.id.tvTitle)
+            //  val title: TextView = itemView.findViewById(R.id.tvTitle)
 //            title.
             val image: ShapeableImageView = itemView.findViewById(R.id.image)
             val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
@@ -250,10 +258,10 @@ internal class ParentAdapter(
                 .load(imageurl?.replace("<\$size\$>", "984"))
                 .into(image)
             itemView.setOnClickListener {
-               homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
-               // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
+                homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
+                // homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
             }
-          //  val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
+            //  val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             //  Do your view assignment here from the data model
 //            itemView.findViewById<ConstraintLayout>(R.id.clRoot)?.setBackgroundColor(item.bgColor)
 //            itemView.findViewById<AppCompatTextView>(R.id.tvNameLabel)?.text = item.title
@@ -284,7 +292,7 @@ internal class ParentAdapter(
                 downloadClickCallBack.clickOnDownload(homePatchItemModel)
             }
             watchlater.setOnClickListener {
-                downloadClickCallBack.clickOnWatchlater(homePatchItemModel)
+                downloadClickCallBack.clickOnWatchLater(homePatchItemModel)
             }
             playlist.setOnClickListener {
                 downloadClickCallBack.clickOnMyPlaylist(homePatchItemModel)
@@ -362,7 +370,7 @@ internal class ParentAdapter(
                 "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
-                 "PodcastLive" -> bindBhoot(homePatchItemModel)
+                "PodcastLive" -> bindBhoot(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()

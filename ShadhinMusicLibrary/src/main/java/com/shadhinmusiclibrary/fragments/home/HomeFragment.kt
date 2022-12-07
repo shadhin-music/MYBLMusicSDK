@@ -444,7 +444,7 @@ internal class HomeFragment : BaseFragment(),
             })
     }
 
-    override fun clickOnWatchlater(selectedHomePatchItem: HomePatchItemModel) {
+    override fun clickOnWatchLater(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
         val data = Bundle()
         data.putSerializable(
