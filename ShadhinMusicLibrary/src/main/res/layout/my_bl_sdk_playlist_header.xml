@@ -50,7 +50,6 @@
                 android:gravity="center"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:text="playlist name"
                 android:textColor="@color/my_sdk_color_black"
                 android:textSize="20sp"
                 android:textStyle="bold" />

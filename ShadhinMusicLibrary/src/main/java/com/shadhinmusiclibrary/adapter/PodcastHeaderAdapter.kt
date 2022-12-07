@@ -91,16 +91,16 @@ internal class PodcastHeaderAdapter(
             val textArtist: TextView? = itemView.findViewById(R.id.name)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             val url: String? = episode?.get(0)?.ImageUrl
-            val details: String = episode?.get(position)?.Details.toString()
+            val details: String = episode?.get(position)?.Details ?: ""
             ivFavorite = itemView.findViewById(R.id.favorite)
             // ivFavorite?.visibility = GONE
             val result = Html.fromHtml(details).toString()
 //            if(textArtist?.text.isNullOrEmpty())
             // Log.e("TAG","Name :"+episode?.get(position))
-            textArtist?.text = episode?.get(position)?.Name.toString()
+            textArtist?.text = episode?.get(position)?.Name ?: ""
             val textView: ExpandableTextView? = itemView.findViewById(R.id.tvDescription)
             val moreText: TextView? = itemView.findViewById(R.id.tvReadMore)
-            textView?.setText(result)
+            textView?.text = result
             moreText?.setOnClickListener {
                 if (textView!!.isExpanded) {
                     textView.collapse()

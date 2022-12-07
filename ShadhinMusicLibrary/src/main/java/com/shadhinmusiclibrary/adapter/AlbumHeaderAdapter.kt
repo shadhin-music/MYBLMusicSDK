@@ -101,9 +101,9 @@ internal class AlbumHeaderAdapter(
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 itemView.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = homePatchDetail.titleName
+            tvCurrentAlbumName.text = homePatchDetail.titleName ?: ""
             if (homePatchDetail.titleName.isNullOrEmpty()) {
-                tvCurrentAlbumName.text = homePatchDetail.album_Name
+                tvCurrentAlbumName.text = homePatchDetail.album_Name ?: ""
             }
 //            if(root.Artist.isNullOrEmpty()){
 //                tvArtistName.text = rootDataContent?.AlbumName
@@ -116,14 +116,11 @@ internal class AlbumHeaderAdapter(
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
             var isFav = false
-            val isAddedToFav = cacheRepository.getFavoriteById(homePatchDetail?.content_Id!!)
+            val isAddedToFav = cacheRepository.getFavoriteById(homePatchDetail.content_Id)
             if (isAddedToFav?.content_Id != null) {
-
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
-
             } else {
-
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                 isFav = false
             }
