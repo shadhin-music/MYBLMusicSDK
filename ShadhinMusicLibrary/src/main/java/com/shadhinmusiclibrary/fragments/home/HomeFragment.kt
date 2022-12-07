@@ -49,7 +49,8 @@ import java.io.Serializable
 internal class HomeFragment : BaseFragment(),
     HomeCallBack,
     SearchClickCallBack,
-    DownloadClickCallBack, PodcastTrackCallback {
+    DownloadClickCallBack,
+    PodcastTrackCallback {
 
     private lateinit var concatAdapter: ConcatAdapter
     private lateinit var favViewModel: FavViewModel
@@ -322,7 +323,6 @@ internal class HomeFragment : BaseFragment(),
     ) {
 
     }
-
 
 
     private fun fetchOnlineData(playlistId: String) {

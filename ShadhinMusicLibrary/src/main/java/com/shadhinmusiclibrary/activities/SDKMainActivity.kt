@@ -1188,15 +1188,8 @@ internal class SDKMainActivity : BaseActivity(),
     override fun onBackPressed() {
         if (playerMode == PlayerMode.MAXIMIZED) {
             changePlayerView(PlayerMode.MINIMIZED)
-            Log.e("SDKMA", "onBackPressed: if ")
-//            if (!navController.navigateUp()) {
-//                Log.e("SDKMA", "onBackPressed: navigateUp if ")
-//                super.onBackPressed()
-//            }
         } else {
-            Log.e("SDKMA", "onBackPressed: else")
             if (!navController.navigateUp()) {
-                Log.e("SDKMA", "onBackPressed: navigateUp else")
                 super.onBackPressed()
             }
         }
@@ -1231,6 +1224,12 @@ internal class SDKMainActivity : BaseActivity(),
                 } catch (exception: Exception) {
                 }
             }
+        }
+
+        if (playerViewModel.isMediaDataAvailable()) {
+            miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
+        } else {
+            miniMusicPlayerHideShow(playerViewModel.isMediaDataAvailable())
         }
     }
 
