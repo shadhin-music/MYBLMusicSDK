@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackParameters
 import com.google.android.exoplayer2.Player
@@ -69,6 +70,7 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     private fun reAssignAll(cb: ResultReceiver?) {
+        Log.e("SMPP", "reAssignAll: " + playList.size)
         exH {
             cb?.send(Command.RE_ASSIGN_CALLBACK.resultCode,
                 Bundle().apply {
@@ -77,7 +79,7 @@ internal class ShadhinMusicPlaybackPreparer(
                         exoPlayer?.currentMediaItem?.toMusic()
                     )
                     putSerializable(
-                        Command.RE_ASSIGN_CALLBACK.dataKey2,
+                        Command.RE_ASSIGN_CALLBACK.dataKey3,
                         MusicPlayList(playList.toList(), defaultPosition)
                     )
                 }
@@ -86,14 +88,17 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     private fun unsubscribe() {
+        Log.e("SMPP", "unsubscribe: ")
         this.unsubscribeFunc?.invoke()
     }
 
     fun unsubscribeListener(unsubscribeFunc: UnsubscribeFunc?) {
+        Log.e("SMPP", "unsubscribeListener: ")
         this.unsubscribeFunc = unsubscribeFunc
     }
 
     private fun getSleepTime(cb: ResultReceiver?) {
+        Log.e("SMPP", "getSleepTime: ")
         cb?.send(Command.GET_SLEEP_TIME.resultCode, Bundle().apply {
             putLong(Command.GET_SLEEP_TIME.dataKey, sleepTimeMillis)
             putString(Command.GET_SLEEP_TIME.dataKey2, startTime?.normalize())
@@ -101,6 +106,7 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     private fun setSleepTime(extras: Bundle?) {
+        Log.e("SMPP", "setSleepTime: ")
         val isStart = extras?.getBoolean(Command.SLEEP_TIMER.tag2)
         val time = extras?.getLong(Command.SLEEP_TIMER.tag) ?: 0L
         removeTimerHandler()
@@ -120,18 +126,21 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     fun removeTimerHandler() {
+        Log.e("SMPP", "removeTimerHandler: ")
         if (timerHandler != null) {
             timerHandler?.removeCallbacksAndMessages(null)
         }
     }
 
     private fun setPlayerSpeed(extras: Bundle?) {
+        Log.e("SMPP", "setPlayerSpeed: ")
         val speed = extras?.getFloat(Command.PLAYER_SPEED.dataKey)
         val param = PlaybackParameters(speed ?: 1.0f)
         exoPlayer?.playbackParameters = param
     }
 
     private fun commandPlayListGet(cb: ResultReceiver?) {
+        Log.e("SMPP", "commandPlayListGet: ")
         val command = Command.GET_PLAYLIST
         playListUpdateFunc = { position ->
             cb?.send(command.resultCode, MusicPlayList(playList, position).toBundle(command))
@@ -140,6 +149,7 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     private fun errorCallback(cb: ResultReceiver?) {
+        Log.e("SMPP", "errorCallback: ")
         errorCallbackFunc = { isDataSourceError, message, errorCode, currentMusic ->
             cb?.send(
                 Command.ERROR_CALLBACK.resultCode,
@@ -149,23 +159,30 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     fun stop() {
+        Log.e(
+            "SMPP", "stop: size: " + playList.size
+        )
         removeTimerHandler()
         exoPlayer?.clearMediaItems()
         exoPlayer?.stop()
     }
 
     private fun progressRequestCommand(resultReceiver: ResultReceiver?) {
+        reAssignAll(resultReceiver)
+        Log.e("SMPP", "progressRequestCommand: " + playList.size)
         val command = Command.MUSIC_PROGRESS_REQUEST
         val musicPosition = exoPlayer?.let { PlayerProgress.fromPlayer(it) }
         exH { resultReceiver?.send(command.resultCode, musicPosition?.toBundle(command.dataKey)) }
     }
 
     private fun changeMusicCommand(extras: Bundle?) {
+        Log.e("SMPP", "changeMusicCommand: ")
         val position = extras?.getInt(Command.CHANGE_MUSIC.dataKey)
         position?.let { exoPlayer?.seekTo(it, 0L) }
     }
 
     private fun addPlayListCommand(extras: Bundle?, cb: ResultReceiver?) {
+        Log.e("SMPP", "addPlayListCommand: ")
         val command = Command.ADD_PLAYLIST
         val serializable = serializableObject(extras, command)
         if (serializable is MusicPlayList) {
@@ -183,11 +200,15 @@ internal class ShadhinMusicPlaybackPreparer(
     )
 
     override fun getSupportedPrepareActions(): Long {
+        Log.e(
+            "SMPP", "getSupportedPrepareActions: size: " + playList.size
+        )
         return PlaybackStateCompat.ACTION_PREPARE_FROM_MEDIA_ID or
                 PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID
     }
 
     fun restartPlayer() {
+        Log.e("SMPP", "restartPlayer: ")
         if (!playList.isNullOrEmpty()) {
             concatenatingMediaSource.clear()
             val mediaSources: MediaSources =
@@ -201,10 +222,12 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     fun isLive(): Boolean {
+        Log.e("SMPP", "isLive: ")
         return exoPlayer?.currentMediaItem?.toMusic()?.isLive() == true
     }
 
     fun initPlayList(playlist: MusicPlayList) {
+        Log.e("SMPP", "initPlayList: ")
         playList.clear()
         playList.addAll(playlist.list)
         concatenatingMediaSource.clear()
@@ -222,22 +245,24 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     override fun onPrepare(playWhenReady: Boolean) {
+        Log.e("SMPP", "onPrepare: ")
         exoPlayer?.prepare()
         exoPlayer?.playWhenReady = true
         playListUpdateFunc?.invoke(defaultPosition)
     }
 
     fun addPlaylist(playlist: MusicPlayList) {
+        Log.e("SMPP", "addPlaylist: ")
         val mediaSources: MediaSources =
             ShadhinMediaSources(context, playList, exoplayerCache, musicRepository)
         concatenatingMediaSource.addMediaSources(mediaSources.createSources())
         playList.addAll(playlist.list)
         //playlist.loadAllImage(context)
         exoPlayer?.currentMediaItemIndex?.let { playListUpdateFunc?.invoke(it) }
-
     }
 
     override fun onPrepareFromMediaId(mediaId: String, playWhenReady: Boolean, extras: Bundle?) {
+        Log.e("SMPP", "onPrepareFromMediaId: ")
         val index = playList.indexOfFirst { song -> song.mediaId == mediaId }
         exoPlayer?.seekTo(index, 0L)
         exoPlayer?.playWhenReady = true
@@ -257,10 +282,12 @@ internal class ShadhinMusicPlaybackPreparer(
     }
 
     fun currentMusic(): Music? {
+        Log.e("SMPP", "currentMusic: ")
         return exoPlayer?.currentMediaItem?.toMusic()
     }
 
     fun playerProgress(): PlayerProgress? {
+        Log.e("SMPP", "playerProgress: ")
         return exoPlayer?.let { PlayerProgress.fromPlayer(it) }
     }
 
@@ -274,6 +301,7 @@ internal class ShadhinMusicPlaybackPreparer(
         errorCode: Int?,
         currentMusic: Music?
     ) {
+        Log.e("SMPP", "sendError: ")
         errorCallbackFunc?.invoke(isDataSourceError, errorMessage, errorCode, currentMusic)
     }
 }

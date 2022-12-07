@@ -36,9 +36,9 @@ import kotlinx.coroutines.launch
  */
 private const val TAG = "ShadhinMusicPlayer"
 
-internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPlayerContext,
+internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(),
+    ShadhinMusicPlayerContext,
     ServiceEntryPoint {
-
 
     private var mediaSession: MediaSessionCompat? = null
     private var mediaSessionConnector: MediaSessionConnector? = null
@@ -46,7 +46,6 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
     private var shadhinMusicQueueNavigator: ShadhinMusicQueueNavigator? = null
     private var musicPlayerNotificationListener: ShadhinMusicPlayerNotificationListener? = null
     private var shadhinPlayerListener: ShadhinPlayerListener? = null
-
     override var exoPlayer: ExoPlayer? = null
     override var musicPlaybackPreparer: ShadhinMusicPlaybackPreparer? = null
     override var scope: CoroutineScope? = null
@@ -133,7 +132,6 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         super.onTaskRemoved(rootIntent)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         //isFirstTime = true
@@ -162,14 +160,11 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         else BrowserRoot(ROOT_ID_EMPTY, null)
     }
 
-
     override fun onLoadChildren(
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>,
         options: Bundle
     ) {
-
-
         val musicPlayList = MusicPlayList.fromBundle(
             options,
             ShadhinMusicServiceConnection.Command.SUBSCRIBE
@@ -177,10 +172,7 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         val isPlayWhenReady = options.getBoolean(Constants.PLAY_WHEN_READY_KEY)
         val isUpdatePlaylist = options.getBoolean(Constants.PLAYLIST_UPDATE)
         val defaultPosition = options.getInt(Constants.DEFAULT_POSITION_KEY)
-
         exH { sendData(musicPlayList, result, isPlayWhenReady, defaultPosition) }
-
-
     }
 
     private fun sendData(
@@ -189,7 +181,6 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
         isPlayWhenReady: Boolean = false,
         defaultPosition: Int
     ) {
-
         shadhinMusicNotificationManager?.showNotification(exoPlayer)
         if (musicPlayList.isValidPlayList()) {
             //musicPlayList.loadAllImage(this)
@@ -197,7 +188,6 @@ internal class ShadhinMusicPlayer : MediaBrowserServiceCompat(), ShadhinMusicPla
             musicPlaybackPreparer?.initPlayList(musicPlayList)
             musicPlaybackPreparer?.onPrepare(isPlayWhenReady)
             result.sendResult(musicPlayList.list.toServiceMediaItemMutableList() ?: mutableListOf())
-
         } else {
             result.sendResult(mutableListOf())
         }

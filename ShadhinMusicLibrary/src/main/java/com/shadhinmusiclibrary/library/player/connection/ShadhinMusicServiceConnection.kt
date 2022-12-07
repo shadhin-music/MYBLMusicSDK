@@ -10,6 +10,7 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -166,12 +167,13 @@ internal class ShadhinMusicServiceConnection(
     }
 
     override fun reAssignAll() {
-        if (mediaControllerCompat?.playbackState?.isPlaying == true && _currentPlayingSong.value == null) {
+        if (/*mediaControllerCompat?.playbackState?.isPlaying == true &&*/ _currentPlayingSong.value == null) {
+            Log.e("SMSC", "reAssignAll: " + _musicListLiveData.value?.list?.size)
             sendCommand(Command.RE_ASSIGN_CALLBACK) {
                 _currentPlayingSong.value =
                     it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey) as? Music?
                 _musicListLiveData.value =
-                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey2) as? MusicPlayList
+                    it?.getSerializable(Command.RE_ASSIGN_CALLBACK.dataKey3) as? MusicPlayList
             }
             _playbackState.postValue(mediaControllerCompat?.playbackState)
         }
@@ -303,6 +305,8 @@ internal class ShadhinMusicServiceConnection(
 
     override fun playerProgress(playerProgressCallbackFunc: (PlayerProgress) -> Unit) {
         reAssignAll()
+//        Log.e("SMSC", "playerProgress: " + _musicListLiveData.value?.list?.size)
+
         sendCommand(Command.MUSIC_PROGRESS_REQUEST) {
             val playerProgress = it?.toPlayerProgress(Command.MUSIC_PROGRESS_REQUEST.dataKey)
             playerProgress?.let { it1 -> playerProgressCallbackFunc(it1) }
@@ -396,6 +400,8 @@ internal class ShadhinMusicServiceConnection(
             get() = tag2
         val tag2: String
             get() = "${tag}a"
+        val dataKey3: String
+            get() = tag3
         val tag3: String
             get() = "${tag}b"
     }
