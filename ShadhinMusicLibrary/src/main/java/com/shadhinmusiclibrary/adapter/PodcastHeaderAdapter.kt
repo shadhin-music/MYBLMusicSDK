@@ -62,8 +62,6 @@ internal class PodcastHeaderAdapter(
     ) {
         this.listSongTrack = mutableListOf()
         for (songItem in data) {
-            Log.e("PHA", "setTrackData: " + rootPatch.content_Id + " " + rootPatch.content_Type)
-            //Todo un complete task
             listSongTrack.add(
                 songItem.apply {
                     rootContentId = episodeId
