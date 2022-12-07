@@ -39,8 +39,8 @@
                     android:padding="8dp">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/my_bl_sdk_ic_icon_download" />
 
                     <TextView
@@ -62,8 +62,8 @@
                     android:visibility="visible">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/my_bl_sdk_ic_icon_fav" />
 
                     <TextView
@@ -85,8 +85,8 @@
                     android:visibility="visible">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/my_bl_sdk_ic_icon_playlist" />
 
                     <TextView
@@ -107,7 +107,7 @@
                     android:padding="8dp">
 
                     <com.shadhinmusiclibrary.utils.CircleImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="42dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/my_bl_sdk_ic_icon_watch_later" />
 

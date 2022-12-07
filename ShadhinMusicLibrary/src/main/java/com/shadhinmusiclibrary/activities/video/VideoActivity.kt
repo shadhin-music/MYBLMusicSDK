@@ -61,6 +61,9 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.calculateVideoHeight
 import com.shadhinmusiclibrary.utils.px
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 internal class VideoActivity : AppCompatActivity(),
@@ -449,6 +452,9 @@ internal class VideoActivity : AppCompatActivity(),
                 isFav = false
                 // textFav?.text = "Favorite"
             }
+            val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+            val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+            val DateTime = "$formatedDate  $formatedTime"
             favLayout.setOnClickListener {
                 if (isFav.equals(true)) {
                     //  val currentVideoID = viewModel.currentVideo.value?.contentID
@@ -492,6 +498,7 @@ internal class VideoActivity : AppCompatActivity(),
                             titleName = currentTitle
                             rootContentType = currentRootType
                             total_duration = duration
+                            createDate = DateTime
                         }
                     )
                     isFav = true
@@ -869,6 +876,9 @@ internal class VideoActivity : AppCompatActivity(),
             }
             bottomSheetDialog.dismiss()
         }
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val constraintFav: ConstraintLayout? =
             bottomSheetDialog.findViewById(R.id.constraintFav)
         val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
@@ -916,6 +926,7 @@ internal class VideoActivity : AppCompatActivity(),
                             playingUrl = item.playUrl
                             rootContentId = item.rootId
                             titleName = item.title
+                            createDate = DateTime
                         }
                 )
                 isFav = true

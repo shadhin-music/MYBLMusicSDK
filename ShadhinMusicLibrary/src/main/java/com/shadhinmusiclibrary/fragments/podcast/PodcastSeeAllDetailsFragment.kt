@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.fragments.podcast
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -14,13 +15,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PodcastSeeAllDetailsAdapter
+import com.shadhinmusiclibrary.adapter.PodcastTNTypeAdapter
+import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
@@ -139,41 +144,31 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
         setMusicPlayerInitData(data as MutableList<FeaturedPodcastDetailsModel>, position)
     }
 
-//    override fun getCurrentVH(
-//        currentVH: RecyclerView.ViewHolder,
-//        data: List<FeaturedPodcastDetailsModel>,
-//    ) {
-//        var trackViewHolder = currentVH as PodcastTNTypeAdapter.ViewHolder
-//        Log.e("TAG", "HELLO: " + trackViewHolder)
-//        if (data.size > 0 && isAdded) {
-//
-//            playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
-//                if (itMusic != null) {
-//                    Log.e("TAG", "HELLO: "
-//                            + data[0].ContentType
-//                            + " " + itMusic.rootType
-//                            + " " + data[0].TracktId
-//                            + " " + itMusic.rootId
-//                            + " " + data[0].TracktId
-//                            + " " + itMusic.mediaId)
-//                    if ((data.indexOfFirst {
-//                            it.ContentType == itMusic.rootType &&
-//                                    it.TracktId == itMusic.rootId &&
-//                                    it.TracktId == itMusic.mediaId
-//                        } != -1)
-//                    ) {
-//                        //DO NOT USE requireActivity()
-//
-//                        playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
-//                            playPauseStatePodcast(itPla!!.isPlaying, trackViewHolder.ivPlayBtn!!)
-//                        }
-//                    } else {
-//                        trackViewHolder.ivPlayBtn?.let { playPauseStatePodcast(false, it) }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    override fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        data: List<FeaturedPodcastDetailsModel>,
+    ) {
+        val trackViewHolder = currentVH as PodcastTNTypeAdapter.ViewHolder
+
+        trackViewHolder.let {
+            if ( isAdded) {
+                playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { itMusic ->
+                    if (itMusic != null) {
+                        trackViewHolder.item.let {
+                            if (it?.TracktId == itMusic.mediaId &&
+                                it?.ContentType == itMusic.rootType){
+                                playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
+                                    playPauseStatePodcast(itPla.isPlaying, trackViewHolder.ivPlayBtn!!)
+                                }
+                            }else{
+                                trackViewHolder.ivPlayBtn?.let { playPauseStatePodcast(false, it) }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun playPauseStatePodcast(playing: Boolean, ivPlayPause: ImageView) {
         if (playing) {
@@ -188,7 +183,6 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
         clickItemPosition: Int,
     ) {
 
-//
         if (playerViewModel.currentMusic != null && (mSongDetails[clickItemPosition].TracktId == playerViewModel.currentMusic?.rootId)) {
             if ((mSongDetails[clickItemPosition].TracktId != playerViewModel.currentMusic?.mediaId)) {
                 playerViewModel.skipToQueueItem(clickItemPosition)
@@ -196,29 +190,26 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
                 playerViewModel.togglePlayPause()
             }
         } else {
-//            playItem(
-//                mSongDetails,
-//                clickItemPosition
-//            )
-//            playerViewModel.unSubscribe()
-//            playerViewModel.subscribe(
-//                MusicPlayList(
-//                    UtilHelper.getMusicListToPodcastDetailsList(mSongDetails),
-//                    0
-//                ),
-//                false,
-//                clickItemPosition
-//            )
+            playerViewModel.unSubscribe()
+            playerViewModel.subscribe(
+                MusicPlayList(
+                    UtilHelper.getMusicListToPodcastDetailsList(mSongDetails),
+                    0
+                ),
+                false,
+                clickItemPosition
+            )
         }
     }
+
 }
 
 interface PodcastDetailsCallback {
     fun onPodcastLatestShowClick(patchItem: List<FeaturedPodcastDetailsModel>, position: Int)
     fun onPodcastEpisodeClick(data: List<FeaturedPodcastDetailsModel>, position: Int)
     fun onPodcastTrackClick(data: List<FeaturedPodcastDetailsModel>, position: Int)
-//    fun getCurrentVH(
-//        currentVH: RecyclerView.ViewHolder,
-//        data: List<FeaturedPodcastDetailsModel>,
-//    )
+    fun getCurrentVH(
+        currentVH: RecyclerView.ViewHolder,
+        data: List<FeaturedPodcastDetailsModel>,
+    )
 }

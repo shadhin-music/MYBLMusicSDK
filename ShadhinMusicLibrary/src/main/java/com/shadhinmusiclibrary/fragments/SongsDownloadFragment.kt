@@ -53,6 +53,8 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class SongsDownloadFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -333,7 +335,9 @@ internal class SongsDownloadFragment : BaseFragment(),
             isFav = false
             textFav?.text = "Favorite"
         }
-
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
                 favViewModel.deleteFavContent(
@@ -366,6 +370,7 @@ internal class SongsDownloadFragment : BaseFragment(),
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
                         total_duration = mSongDetails.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true

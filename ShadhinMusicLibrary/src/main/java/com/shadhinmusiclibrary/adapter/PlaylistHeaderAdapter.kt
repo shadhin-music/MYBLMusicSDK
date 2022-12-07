@@ -18,6 +18,8 @@ import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.UtilHelper
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class PlaylistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
@@ -75,7 +77,9 @@ internal class PlaylistHeaderAdapter(
         var ivFavorite: ImageView? = null
         var ivPlayBtn: ImageView? = null
         var menu: ImageView? = null
-
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         fun bindItems(homePatchDetail: HomePatchDetailModel?) {
 
             ivThumbCurrentPlayItem =
@@ -144,6 +148,7 @@ internal class PlaylistHeaderAdapter(
                                 rootContentId = homePatchDetail?.rootContentId
                                 rootContentType = homePatchDetail?.rootContentType
                                 titleName = homePatchDetail?.titleName
+                                createDate = DateTime
                             }
                     )
                     isFav = true

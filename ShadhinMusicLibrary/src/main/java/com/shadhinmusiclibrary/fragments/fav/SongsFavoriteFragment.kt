@@ -54,6 +54,8 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class SongsFavoriteFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -240,6 +242,9 @@ internal class SongsFavoriteFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -414,6 +419,7 @@ internal class SongsFavoriteFragment : BaseFragment(),
                         rootContentId = mSongDetails.rootContentId
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
+                        createDate = DateTime
                     }
                 )
                 isFav = true

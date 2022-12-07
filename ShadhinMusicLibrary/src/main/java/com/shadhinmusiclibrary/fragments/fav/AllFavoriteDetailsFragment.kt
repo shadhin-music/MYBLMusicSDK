@@ -51,6 +51,8 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class AllFavoriteDetailsFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -212,6 +214,9 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
     }
 
     fun openDialog(item: VideoModel) {
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -396,6 +401,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         rootContentId = item.rootId
                         titleName = item.title
                         total_duration = item.duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true
@@ -412,6 +418,9 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val cacheRepository = CacheRepository(requireContext())
         val contentView =
@@ -597,6 +606,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
                         total_duration = mSongDetails.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true
@@ -835,6 +845,9 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
         argHomePatchItem: HomePatchItemModel?,
         argHomePatchDetail: HomePatchDetailModel?,
     ) {
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val cacheRepository = CacheRepository(requireContext())
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
@@ -945,6 +958,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                             artist_Id = iSongTrack.artist_Id
                             artistName = iSongTrack.artistName.toString()
                             total_duration = iSongTrack.total_duration
+
                         }
                     )
                 }
@@ -1020,6 +1034,7 @@ internal class AllFavoriteDetailsFragment : BaseFragment(),
                         rootContentType = iSongTrack.rootContentType
                         titleName = iSongTrack.titleName
                         total_duration = iSongTrack.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true

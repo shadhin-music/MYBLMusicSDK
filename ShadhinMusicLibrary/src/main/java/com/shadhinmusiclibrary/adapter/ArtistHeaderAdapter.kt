@@ -25,6 +25,8 @@ import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
@@ -103,7 +105,9 @@ internal class ArtistHeaderAdapter(
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
         var ivFavorite: ImageView? = null
-
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         fun bindItems(homePatchDetail: HomePatchDetailModel?) {
             if (homePatchDetail != null) {
                 val imageView: ImageView = itemView.findViewById(R.id.thumb)
@@ -231,6 +235,7 @@ internal class ArtistHeaderAdapter(
                                 rootContentId = homePatchDetail.rootContentId
                                 rootContentId = homePatchDetail.rootContentType
                                 titleName = homePatchDetail.artistName
+                                createDate = DateTime
 
                             }
                         )

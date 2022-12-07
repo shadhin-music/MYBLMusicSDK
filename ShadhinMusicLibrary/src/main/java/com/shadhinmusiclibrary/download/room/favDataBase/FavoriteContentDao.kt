@@ -14,28 +14,28 @@ internal interface FavoriteContentDao {
     fun insertAll(favData: MutableList<FavDataModel>?)
 
 
-    @Query("SELECT * FROM FavData WHERE fav=1")
+    @Query("SELECT * FROM FavData WHERE fav=1 ORDER By createDate DESC")
     fun getAllFavorites(): List<FavDataModel>
 
     @Query("SELECT * FROM  FavData where content_Id = :id AND fav=1 ")
     fun getFavoriteById(id: String): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='V'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='V'  ORDER By createDate DESC ")
     fun getAllVideosFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='S'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='S'  ORDER By createDate DESC ")
     fun getAllSongsFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='A'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='A'  ORDER By createDate DESC")
     fun getArtistFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='R'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='R'  ORDER By createDate DESC ")
     fun getAlbumsFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type='P'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type='P'  ORDER By createDate DESC")
     fun getPlaylistFav(): List<FavDataModel>
 
-    @Query("SELECT * FROM FavData WHERE content_Type LIKE 'PD%'  ORDER By total_duration DESC ")
+    @Query("SELECT * FROM FavData WHERE content_Type LIKE 'PD%'  ORDER By createDate DESC")
     fun getAllPodcastFav(): List<FavDataModel>
 
     //

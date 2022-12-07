@@ -21,6 +21,9 @@ import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 internal class PodcastHeaderAdapter(
     private val pcOnCallback: CommonPlayControlCallback,
@@ -144,7 +147,9 @@ internal class PodcastHeaderAdapter(
                         episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
                         episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
                     )
-
+                    val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                    val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                    val DateTime = "$formatedDate  $formatedTime"
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavDataModel().apply {
@@ -163,6 +168,7 @@ internal class PodcastHeaderAdapter(
                             rootContentType = ""
                             titleName = episode?.get(position)?.Name
                             total_duration = ""
+                            createDate =DateTime
                         }
                     )
                     isFav = true

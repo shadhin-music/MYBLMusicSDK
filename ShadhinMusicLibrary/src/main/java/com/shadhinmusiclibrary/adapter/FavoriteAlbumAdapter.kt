@@ -68,9 +68,9 @@ internal class FavoriteAlbumAdapter(
             }
         }
 //        if (mSongDetails.content_Type?.substring(0, 2) == "PD") {
-        menu.setOnClickListener {
-            openMenu.onClickBottomItemPodcast(mSongDetails)
-        }
+//        menu.setOnClickListener {
+//            openMenu.onClickBottomItemPodcast(mSongDetails)
+//        }
 //        }
     }
 

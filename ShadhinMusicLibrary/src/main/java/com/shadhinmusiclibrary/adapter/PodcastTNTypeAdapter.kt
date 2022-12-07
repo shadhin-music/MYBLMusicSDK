@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest
 import com.google.android.exoplayer2.offline.DownloadService
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
+import com.shadhinmusiclibrary.data.model.FeaturedPodcastDetailsModel
 import com.shadhinmusiclibrary.data.model.fav.FavDataModel
 import com.shadhinmusiclibrary.di.Module
 import com.shadhinmusiclibrary.di.ShadhinApp
@@ -45,10 +46,12 @@ internal class PodcastTNTypeAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       // podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         holder.bindItems()
+        holder.item = patchItem.Data[position]
+        podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         holder.itemView.setOnClickListener {
           podcastDetailsCallback.onPodcastTrackClick(patchItem.Data,position)
+            Log.e("TAG","DATA: "+ patchItem)
         }
 
 
@@ -205,6 +208,7 @@ internal class PodcastTNTypeAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
         var ivPlayBtn: ImageView? = null
+        var item: FeaturedPodcastDetailsModel? = null
         fun bindItems() {
             val textViewName = itemView.findViewById(R.id.show_title) as TextView
             val textViewSubtitle = itemView.findViewById(R.id.sub_title) as TextView

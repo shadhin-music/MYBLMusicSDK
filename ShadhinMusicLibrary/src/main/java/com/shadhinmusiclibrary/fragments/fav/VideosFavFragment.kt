@@ -41,6 +41,8 @@ import com.shadhinmusiclibrary.download.room.WatchLaterContent
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class VideosFavFragment : BaseFragment(),
     DownloadedSongOnCallBack,
@@ -301,6 +303,9 @@ internal class VideosFavFragment : BaseFragment(),
             }
             bottomSheetDialog.dismiss()
         }
+        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+        val DateTime = "$formatedDate  $formatedTime"
         val constraintFav: ConstraintLayout? = bottomSheetDialog.findViewById(R.id.constraintFav)
         val favImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgLike)
         val textFav: TextView? = bottomSheetDialog.findViewById(R.id.tvFav)
@@ -346,6 +351,7 @@ internal class VideosFavFragment : BaseFragment(),
                         playingUrl = mSongDetail.playUrl
                         rootContentId = mSongDetail.rootId
                         titleName = mSongDetail.title
+                        createDate = DateTime
                     }
                 )
                 isFav = true

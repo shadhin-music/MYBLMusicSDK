@@ -72,6 +72,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 
 internal class SDKMainActivity : BaseActivity(),
@@ -1090,6 +1091,7 @@ internal class SDKMainActivity : BaseActivity(),
                         artistName = mSongDetails.artistName
                         album_Name = mSongDetails.album_Name
                         total_duration = mSongDetails.total_duration
+
                     }
                 )
                 isDownloaded = true
@@ -1417,6 +1419,9 @@ internal class SDKMainActivity : BaseActivity(),
                     mSongDetails.content_Id,
                     mSongDetails.content_Type!!
                 )
+                val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                val DateTime = "$formatedDate  $formatedTime"
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
                     FavDataModel().apply {
@@ -1434,6 +1439,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
                         total_duration = mSongDetails.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true
@@ -1809,7 +1815,9 @@ internal class SDKMainActivity : BaseActivity(),
                 )
 
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
-
+                val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                val DateTime = "$formatedDate  $formatedTime"
                 // todo iSongTrack.Id.toString(),
                 //      iSongTrack.Id.toString(),
                 cacheRepository.insertFavSingleContent(
@@ -1827,6 +1835,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentType = iSongTrack.rootContentType
                         titleName = iSongTrack.titleName
                         total_duration = iSongTrack.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true
@@ -2001,6 +2010,9 @@ internal class SDKMainActivity : BaseActivity(),
                     mSongDetails.content_Id.toString(),
                     mSongDetails.content_Type!!
                 )
+                val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                val DateTime = "$formatedDate  $formatedTime"
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
                     FavDataModel().apply {
@@ -2018,6 +2030,7 @@ internal class SDKMainActivity : BaseActivity(),
                         rootContentType = mSongDetails.rootContentType
                         titleName = mSongDetails.titleName
                         total_duration = mSongDetails.total_duration
+                        createDate = DateTime
                     }
                 )
                 isFav = true
@@ -2187,6 +2200,9 @@ internal class SDKMainActivity : BaseActivity(),
                     mSongDetails.content_Id,
                     mSongDetails.content_Type!!
                 )
+                val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                val DateTime = "$formatedDate  $formatedTime"
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_icon_fav)
                 cacheRepository.insertFavSingleContent(
                     FavDataModel().apply {
@@ -2204,6 +2220,7 @@ internal class SDKMainActivity : BaseActivity(),
                         playingUrl = mSongDetails.playingUrl
                         rootContentId = argHomePatchDetail?.rootContentId
                         rootContentType = argHomePatchDetail?.rootContentType
+                        createDate = DateTime
                     }
                 )
                 isFav = true

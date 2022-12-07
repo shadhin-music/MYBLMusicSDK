@@ -155,6 +155,7 @@ internal class HomeFragment : BaseFragment(),
         try {
             favViewModel.getFavContentAlbum.observe(viewLifecycleOwner) { res ->
                 if (res?.status == "success") {
+                    //Log.e("TAG","FAV"+ res.data.)
                     cacheRepository.insertFavoriteContent(res.data?.toMutableList())
                 }
             }
