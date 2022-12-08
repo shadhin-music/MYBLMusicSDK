@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -193,11 +194,27 @@ internal class AlbumDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e(
+            "CommAlDF",
+            "onClickItem: sRCId " + mSongDetails[clickItemPosition].rootContentId
+                    + " pCMRId " + playerViewModel.currentMusic?.rootId
+        )
+        Log.e(
+            "CommAlDF",
+            "onClickItem: sCId " + mSongDetails[clickItemPosition].content_Id
+                    + " pmId " + playerViewModel.currentMusic?.mediaId
+        )
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                    playerViewModel.play()
+                    val songListSize = playerViewModel.musicList?.size
+                    if (songListSize != mSongDetails.size) {
+                        playItem(mSongDetails, clickItemPosition)
+                    } else {
+                        playerViewModel.skipToQueueItem(clickItemPosition)
+                        playerViewModel.play()
+                    }
+                    //Todo change for album to artist(no have multiple item)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
@@ -244,7 +261,12 @@ internal class AlbumDetailsFragment : BaseFragment(),
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             if (itPla != null)
-                                albumHeaderVH.ivPlayBtn?.let { playPauseStateRed(itPla.isPlaying, it) }
+                                albumHeaderVH.ivPlayBtn?.let {
+                                    playPauseStateRed(
+                                        itPla.isPlaying,
+                                        it
+                                    )
+                                }
                         }
                     } else {
                         albumHeaderVH.ivPlayBtn?.let { playPauseStateRed(false, it) }
@@ -270,7 +292,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {
 
     }
-
 
 
     override fun onArtistAlbumClick(

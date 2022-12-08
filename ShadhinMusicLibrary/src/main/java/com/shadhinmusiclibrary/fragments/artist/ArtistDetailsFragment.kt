@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -270,7 +271,6 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
 
-
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        observeData()
 //        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.ArtistId
@@ -293,11 +293,29 @@ internal class ArtistDetailsFragment : BaseFragment(),
     }
 
     override fun onClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        Log.e(
+            "CommArDF",
+            "onClickItem: sRCId " + mSongDetails[clickItemPosition].rootContentId
+                    + " pCMRId " + playerViewModel.currentMusic?.rootId
+        )
+        Log.e(
+            "CommAlDF",
+            "onClickItem: sCId " + mSongDetails[clickItemPosition].content_Id
+                    + " pmId " + playerViewModel.currentMusic?.mediaId
+        )
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-                    playerViewModel.skipToQueueItem(clickItemPosition)
-                    playerViewModel.play()
+                    val songListSize = playerViewModel.musicList?.size
+                    if (songListSize != mSongDetails.size) {
+                        Log.e("CommAlDF", "onClickItem: $songListSize")
+                        playItem(mSongDetails, clickItemPosition)
+                    } else {
+                        Log.e("CommAlDF", "skipToQueueItem: $clickItemPosition")
+                        playerViewModel.skipToQueueItem(clickItemPosition)
+                        playerViewModel.play()
+                    }
+                    //Todo change for album to artist(no have multiple item)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
@@ -405,6 +423,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
             }
         }
     }
+
     private fun openSearch() {
         startActivity(Intent(requireContext(), SDKMainActivity::class.java)
             .apply {
@@ -414,6 +433,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
                 )
             })
     }
+
     override fun onClickBottomItem(mSongDetails: IMusicModel) {
         (activity as? SDKMainActivity)?.showBottomSheetDialogGoTOALBUM(
             navController,
