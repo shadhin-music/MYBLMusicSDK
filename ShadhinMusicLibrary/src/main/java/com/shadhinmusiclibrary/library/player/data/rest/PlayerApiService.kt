@@ -25,6 +25,11 @@ internal interface PlayerApiService {
         @Body body: HashMap<String?, Any?>?
     ): SongTrackingModel?
 
+    @POST("ClientActivity/Livepodcasthistory")
+    suspend fun trackPodcastLivePlaying(
+        @Body body: HashMap<String?, Any?>?
+    ): SongTrackingModel?
+
     @POST("ClientActivity/UserHistory")
     suspend fun trackSongPlaying(
         @Body body: HashMap<String?, Any?>?
