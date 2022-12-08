@@ -922,22 +922,33 @@ internal class SDKMainActivity : BaseActivity(),
                     ibtnShuffle.setColorFilter(0)
                 }
                 PlaybackStateCompat.REPEAT_MODE_ONE -> {
-                    setResource(
-                        ibtnRepeatSong,
-                        R.drawable.my_bl_sdk_ic_baseline_repeat_one_on_24
-                    )
-                    ibtnShuffle.isEnabled = false
-                    ibtnShuffle.setColorFilter(
-                        ContextCompat.getColor(
-                            this,
-                            R.color.my_sdk_color_transparent
-                        ), PorterDuff.Mode.SRC_IN
-                    )
+
+                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                        setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_24)
+                    }else{
+                        setResource(
+                            ibtnRepeatSong,
+                            R.drawable.my_bl_sdk_ic_baseline_repeat_one_on_24
+                        )
+                        ibtnShuffle.isEnabled = false
+                        ibtnShuffle.setColorFilter(
+                            ContextCompat.getColor(
+                                this,
+                                R.color.my_sdk_color_transparent
+                            ), PorterDuff.Mode.SRC_IN
+                        )
+                    }
+
                 }
                 PlaybackStateCompat.REPEAT_MODE_ALL -> {
-                    setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_on_24)
-                    ibtnShuffle.isEnabled = true
-                    ibtnShuffle.setColorFilter(0)
+
+                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                        setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_24)
+                    }else{
+                        setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_on_24)
+                        ibtnShuffle.isEnabled = true
+                        ibtnShuffle.setColorFilter(0)
+                    }
                 }
             }
         }
@@ -948,7 +959,12 @@ internal class SDKMainActivity : BaseActivity(),
                     ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
                 }
                 PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
-                    ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_on_24)
+                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                        ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
+                    }else{
+                        ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_on_24)
+                    }
+
                 }
             }
         }
