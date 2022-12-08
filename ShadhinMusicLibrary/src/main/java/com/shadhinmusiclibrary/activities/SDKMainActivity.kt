@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.media.AudioManager
@@ -1162,7 +1163,13 @@ internal class SDKMainActivity : BaseActivity(),
         val palette: Palette = Palette.from(imBitmapData).generate()
         val vibrantSwatch: Palette.Swatch? = palette.vibrantSwatch
         if (vibrantSwatch != null) {
-            if (vibrantSwatch.rgb.red > 0.90 && vibrantSwatch.rgb.green > 0.90 && vibrantSwatch.rgb.blue > 0.90) {
+            /*  Log.e(
+                  "SDKMA",
+                  "vibrantSwatch: red " + vibrantSwatch.rgb.red
+                          + " green " + vibrantSwatch.rgb.green
+                          + " blue: " + vibrantSwatch.rgb.blue
+              )*/
+            if ((vibrantSwatch.rgb.red <= 241 && vibrantSwatch.rgb.green <= 241 && vibrantSwatch.rgb.blue <= 241)) {
                 val gradientDrawable = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
                     intArrayOf(
@@ -1170,6 +1177,18 @@ internal class SDKMainActivity : BaseActivity(),
                         vibrantSwatch.rgb
                     )
                 )
+                Log.e("SDKMA", "vibrantSwatch if: " + vibrantSwatch.rgb)
+                gradientDrawable.cornerRadius = 0f
+                clMainMusicPlayer.background = gradientDrawable
+            } else {
+                val gradientDrawable = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(
+                        ContextCompat.getColor(this, R.color.my_sdk_shadin_required_color),
+                        Color.rgb(179, 179, 179)
+                    )
+                )
+                Log.e("SDKMA", "vibrantSwatch if: " + vibrantSwatch.rgb)
                 gradientDrawable.cornerRadius = 0f
                 clMainMusicPlayer.background = gradientDrawable
             }
