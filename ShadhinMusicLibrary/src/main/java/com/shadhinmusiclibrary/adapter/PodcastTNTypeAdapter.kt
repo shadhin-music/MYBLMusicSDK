@@ -48,7 +48,7 @@ internal class PodcastTNTypeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.item = patchItem.Data[position]
-       // podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
+       podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         holder.itemView.setOnClickListener {
           podcastDetailsCallback.onPodcastTrackClick(patchItem.Data,position)
 
