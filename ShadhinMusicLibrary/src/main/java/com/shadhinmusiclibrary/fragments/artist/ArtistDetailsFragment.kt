@@ -306,10 +306,16 @@ internal class ArtistDetailsFragment : BaseFragment(),
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-//                    playerViewModel.skipToQueueItem(clickItemPosition)
-//                    playerViewModel.play()
+                    val songListSize = playerViewModel.musicList?.size
+                    if (songListSize != mSongDetails.size) {
+                        Log.e("CommAlDF", "onClickItem: $songListSize")
+                        playItem(mSongDetails, clickItemPosition)
+                    } else {
+                        Log.e("CommAlDF", "skipToQueueItem: $clickItemPosition")
+                        playerViewModel.skipToQueueItem(clickItemPosition)
+                        playerViewModel.play()
+                    }
                     //Todo change for album to artist(no have multiple item)
-                    playItem(mSongDetails, clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }

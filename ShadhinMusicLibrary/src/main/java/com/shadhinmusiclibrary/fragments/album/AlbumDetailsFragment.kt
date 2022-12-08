@@ -207,10 +207,14 @@ internal class AlbumDetailsFragment : BaseFragment(),
         if (playerViewModel.currentMusic != null) {
             if ((mSongDetails[clickItemPosition].rootContentId == playerViewModel.currentMusic?.rootId)) {
                 if ((mSongDetails[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-//                    playerViewModel.skipToQueueItem(clickItemPosition)
-//                    playerViewModel.play()
+                    val songListSize = playerViewModel.musicList?.size
+                    if (songListSize != mSongDetails.size) {
+                        playItem(mSongDetails, clickItemPosition)
+                    } else {
+                        playerViewModel.skipToQueueItem(clickItemPosition)
+                        playerViewModel.play()
+                    }
                     //Todo change for album to artist(no have multiple item)
-                    playItem(mSongDetails, clickItemPosition)
                 } else {
                     playerViewModel.togglePlayPause()
                 }
