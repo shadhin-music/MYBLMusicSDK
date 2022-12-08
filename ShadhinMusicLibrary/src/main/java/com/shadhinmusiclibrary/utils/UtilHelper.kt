@@ -106,7 +106,9 @@ internal object UtilHelper {
                     rootId = songItem.TracktId,
                     rootImage = songItem.ImageUrl,
                     rootType = songItem.ContentType,
-                    rootTitle = songItem.ShowName ?: ""
+                    rootTitle = songItem.ShowName ?: "",
+                    trackType = songItem.TrackType?:""
+
                 )
             )
         }
@@ -137,6 +139,7 @@ internal object UtilHelper {
                         rootContentType = musicItem.rootType ?: ""
                         rootImage = musicItem.rootImage ?: ""
                         isSeekAble = musicItem.seekable
+                        trackType = musicItem.trackType?: ""
                     }
             )
         }
@@ -163,6 +166,7 @@ internal object UtilHelper {
             rootContentType = mMusic.rootType ?: ""
             rootImage = mMusic.rootImage ?: ""
             isSeekAble = mMusic.seekable
+            trackType = mMusic.trackType
             /*fav value set for this song are radio or normal song*/
         }
     }
@@ -222,6 +226,7 @@ internal object UtilHelper {
                     rootContentId = seaDataItem.album_Id
                     rootContentType = seaDataItem.content_Type
                     isSeekAble = true
+                    trackType = seaDataItem.trackType
                 }
             )
         }
@@ -393,6 +398,7 @@ internal object UtilHelper {
                 imageUrl = ImageUrl
                 imageWeb = ImageUrl
                 titleName = TrackName
+                trackType = TrackType
             }
         }
     }

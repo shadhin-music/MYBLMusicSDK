@@ -71,10 +71,28 @@ internal class PlayerLogSender(
         if (isMusicChange) {
             endTime = System.currentTimeMillis()
             sendData()
+            sendLive()
             oldMediaId = currentMediaId
             oldMusic = currentMusic
             timeDuration = 0
             isMusicChange = false
+        }
+    }
+
+    private fun sendLive() {
+        if(currentMusic?.isLive() == true) {
+            val time = System.currentTimeMillis().toDateTimeString()
+            eventLogger(
+                1,
+                time,
+                time,
+                currentMusic?.isPodCast(),
+                currentMusic?.isVideo(),
+                currentMusic?.mediaId,
+                currentMusic?.contentType,
+                currentMusic?.userPlayListId,
+                isLive = true
+            )
         }
     }
 
@@ -116,7 +134,8 @@ internal class PlayerLogSender(
         isVideo: Boolean? = false,
         id: String?,
         type: String?,
-        userPlayListId: String?
+        userPlayListId: String?,
+        isLive:Boolean = false
     ) {
         serviceScope?.launch {
             postEventLog(
@@ -127,7 +146,8 @@ internal class PlayerLogSender(
                 isVideo,
                 id,
                 type,
-                userPlayListId
+                userPlayListId,
+                isLive
             )
         }
     }
@@ -140,22 +160,26 @@ internal class PlayerLogSender(
         isVideo: Boolean? = false,
         id: String?,
         type: String?,
-        userPlayListId: String?
+        userPlayListId: String?,
+        isLive:Boolean = false
     ) {
         if (sTime == null || eTime == null || id == null || type == null) {
             return
         }
-        userHistoryRepository.postHistory(
-            isPD = isPodcast ?: false,
-            isVideo = isVideo ?: false,
-            conId = id,
-            type = type,
-            playCount = "1",
-            time = timeCountSecond,
-            sTime = sTime,
-            eTime = eTime,
-            userPlayListId = userPlayListId,
-        )
+
+            userHistoryRepository.postHistory(
+                isPD = isPodcast ?: false,
+                isVideo = isVideo ?: false,
+                conId = id,
+                type = type,
+                playCount = "1",
+                time = timeCountSecond,
+                sTime = sTime,
+                eTime = eTime,
+                userPlayListId = userPlayListId,
+                isLive
+            )
+
     }
 
     companion object {

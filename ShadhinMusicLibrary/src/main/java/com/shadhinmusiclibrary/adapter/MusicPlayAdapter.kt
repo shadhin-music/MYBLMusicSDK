@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
@@ -83,12 +85,18 @@ internal class MusicPlayAdapter(
             itemView.findViewById(R.id.cv_banner_parent)
         val ivCurrentPlayImage: ImageView =
             itemView.findViewById(R.id.iv_current_play_image)
+        val ivCurrentPlayLiveImage: ImageView =
+            itemView.findViewById(R.id.imgLive)
         lateinit var sMusicData: IMusicModel
 
         override fun onBind(position: Int) {
             super.onBind(position)
             sMusicData = listMusicData!![position]
-
+            if (sMusicData.trackType=="LM"){
+                ivCurrentPlayLiveImage.visibility =  VISIBLE
+            }else{
+                ivCurrentPlayLiveImage.visibility =  GONE
+            }
             Glide.with(itemView.context)
                 .load(UtilHelper.getImageUrlSize300(sMusicData.imageUrl!!))
                 .transition(DrawableTransitionOptions().crossFade(500))

@@ -45,7 +45,9 @@
     <style name="ShapeAppearanceOverlay.App.CornerSize10Percent" parent="">
         <item name="cornerSize">10%</item>
     </style>
-
+    <style name="ShapeAppearanceOverlay.App.CornerSize30Percent" parent="">
+        <item name="cornerSize">30%</item>
+    </style>
     <style name="buttonShape">
         <item name="cornerFamily">rounded</item>
     </style>

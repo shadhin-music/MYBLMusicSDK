@@ -121,7 +121,7 @@ internal class ParentAdapter(
             //this.homeListData.add(download!!)
         }
 
-        if (this.homeListData.size >= 2 && downloadNotAdded) {
+        if (this.homeListData.size >= 3 && downloadNotAdded) {
             downloadNotAdded = false
             download = HomePatchItemModel("002", "download", listOf(), "download", "download", 0, 0)
             this.homeListData.add(download!!)
@@ -255,7 +255,7 @@ internal class ParentAdapter(
             val image: ShapeableImageView = itemView.findViewById(R.id.image)
             val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
             Glide.with(mContext)
-                .load(imageurl?.replace("<\$size\$>", "300"))
+                .load(imageurl?.replace("<\$size\$>", "984"))
                 .into(image)
             itemView.setOnClickListener {
                 homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)
