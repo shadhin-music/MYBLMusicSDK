@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,6 +81,7 @@ internal class ArtistTrackAdapter(
         this.artistSongList = mutableListOf()
         this.artistSongList.clear()
         for (songItem in data) {
+            Log.e("ATA", "setArtistTrack: " + rootPatch.content_Id + " " + songItem.rootContentId)
             artistSongList.add(
                 UtilHelper.getMixdUpIMusicWithRootData(songItem, rootPatch)
             )
