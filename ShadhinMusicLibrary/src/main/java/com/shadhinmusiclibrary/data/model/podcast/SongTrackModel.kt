@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.shadhinmusiclibrary.data.IMusicModel
 
-// this is used hor search page Song play
+// this is used for search page Song play
 @Keep
 internal class SongTrackModel : IMusicModel {
     @SerializedName("Id")
@@ -95,7 +95,7 @@ internal class SongTrackModel : IMusicModel {
 
     @SerializedName("TrackType")
     @Expose
-    var trackType: String? = null
+    override var trackType: String? = null
 
     @SerializedName("IsPaid")
     @Expose

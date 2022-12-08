@@ -96,7 +96,7 @@ class FavDataModel : IMusicModel {
     override var titleName: String? = null
 
     @SerializedName("TrackType")
-    var trackType: String? = null
+    override var trackType: String? = null
 
     @SerializedName("Type")
     var type: String? = null

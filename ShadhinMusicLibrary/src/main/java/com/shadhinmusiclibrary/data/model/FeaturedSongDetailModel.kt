@@ -44,7 +44,7 @@ internal class FeaturedSongDetailModel : IMusicModel {
 
     @SerializedName("artistId")
     override var artist_Id: String? = null
-
+    override var trackType: String? = null
     override var bannerImage: String? = null
     override var album_Name: String? = null
     override var rootContentId: String? = null

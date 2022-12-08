@@ -84,14 +84,16 @@ internal class PodcastDetailsFragment : BaseFragment(),
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
-//        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
-//        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
+        Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
+        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
         if (selectedEpisodeID == contentId) {
             getPodcastDetailsInitialize()
             getPodcastShowDetailsInitialize()
-        } else {
-            getPodcastDetailsInitialize()
+            //getPodcastShowDetailsInitialize()
         }
+        //getPodcastDetailsInitialize()
+           // getPodcastDetailsInitialize()
+
         setupAdapters()
 
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)

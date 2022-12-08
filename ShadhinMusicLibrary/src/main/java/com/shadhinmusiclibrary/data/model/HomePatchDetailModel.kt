@@ -67,7 +67,7 @@ class HomePatchDetailModel : IMusicModel, Serializable {
 
     @SerializedName("TrackType")
     @Expose
-    var trackType: String? = null
+    override var trackType: String? = null
 
     @SerializedName("ArtistId")
     @Expose

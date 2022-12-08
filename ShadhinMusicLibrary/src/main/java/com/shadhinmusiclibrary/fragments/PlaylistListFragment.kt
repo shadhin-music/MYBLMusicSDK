@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.GenresAdapter
 import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
@@ -43,7 +45,6 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -51,11 +52,11 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         super.onViewCreated(view, savedInstanceState)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         val tvTitle: TextView = view.findViewById(R.id.tvTitle)
-        tvTitle.text = argHomePatchItem!!.Name
+        tvTitle.text = argHomePatchItem?.Name
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
         footerAdapter = HomeFooterAdapter()
-        genresAdapter = GenresAdapter(argHomePatchItem!!, this)
+        genresAdapter = argHomePatchItem?.let { GenresAdapter(it, this) }!!
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }
@@ -82,8 +83,20 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         imageBackBtn.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
+        searchBar.setOnClickListener {
+            openSearch()
+        }
     }
-
+    private fun openSearch() {
+        startActivity(Intent(requireContext(), SDKMainActivity::class.java)
+            .apply {
+                putExtra(
+                    AppConstantUtils.UI_Request_Type,
+                    AppConstantUtils.Requester_Name_Search
+                )
+            })
+    }
     override fun onClickItemAndAllItem(
         itemPosition: Int,
         selectedHomePatchItem: HomePatchItemModel
@@ -105,6 +118,7 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
     }
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
+
     }
 
     override fun onClickItemPodcastEpisode(itemPosition: Int, selectedEpisode: List<EpisodeModel>) {

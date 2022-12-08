@@ -64,7 +64,7 @@ class DownloadedContent : IMusicModel {
     override var rootImage: String? = null
     override var isPlaying: Boolean = false
     override var isSeekAble: Boolean? = null
-
+    override var trackType: String? = null
     fun setIsDownloaded(isDownloaded: Int) {
         this.isDownloaded = isDownloaded
     }

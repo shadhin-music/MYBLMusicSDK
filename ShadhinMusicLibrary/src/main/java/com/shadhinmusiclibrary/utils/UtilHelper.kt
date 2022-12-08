@@ -70,7 +70,8 @@ internal object UtilHelper {
                     rootId = songItem.rootContentId,
                     rootImage = songItem.rootImage,
                     rootType = songItem.rootContentType,
-                    rootTitle = songItem.titleName ?: ""
+                    rootTitle = songItem.titleName ?: "",
+                    trackType = songItem.trackType
                 )
             )
         }

@@ -68,7 +68,7 @@ internal class ArtistContentDataModel : IMusicModel {
     @SerializedName("Client")
     @Expose
     var client: Int? = null
-
+    override var trackType: String? = null
     override var bannerImage: String? = null
 
     override var album_Name: String? = null
