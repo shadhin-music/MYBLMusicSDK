@@ -48,26 +48,26 @@ internal class PodcastTNTypeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems()
         holder.item = patchItem.Data[position]
-        podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
+       // podcastDetailsCallback.getCurrentVH(holder, patchItem.Data)
         holder.itemView.setOnClickListener {
           podcastDetailsCallback.onPodcastTrackClick(patchItem.Data,position)
-            Log.e("TAG","DATA: "+ patchItem)
+
         }
 
 
         val pd_download = holder.itemView.findViewById(R.id.pd_download) as ImageView
         var isDownloadComplete = false
         val downloaded = cacheRepository.getDownloadById(patchItem.Data[position].TracktId)
-        if (downloaded?.playingUrl != null) {
+        if (downloaded?.getIsDownloaded()  == 1) {
             isDownloadComplete = true
-            pd_download.setColorFilter(holder.itemView.context.resources.getColor(R.color.my_sdk_color_primary))
+            pd_download.setImageResource(R.drawable.my_bl_sdk_ic_download_round_red)
         } else {
             isDownloadComplete = false
             pd_download.setImageResource(R.drawable.my_bl_sdk_ic_download_round)
         }
         pd_download.setOnClickListener {
 
-                if (isDownloadComplete) {
+                if (isDownloadComplete == true) {
 //                cacheRepository.deleteDownloadById(track.EpisodeId)
                     cacheRepository.deleteDownloadById(patchItem.Data[position].TracktId)
                     DownloadService.sendRemoveDownload(
@@ -100,6 +100,8 @@ internal class PodcastTNTypeAdapter(
 
                     //Todo iSongTrack.EpisodeId
                     if (cacheRepository.isDownloadCompleted(patchItem.Data[position].TracktId)) {
+                        pd_download.setImageResource(R.drawable.my_bl_sdk_ic_download_round_red)
+                        isDownloadComplete = true
 //                    val contentType = iSongTrack.content_Type
 //                    val podcastType = contentType?.take(2)
 //                    val  Type = contentType?.takeLast(2)
@@ -118,8 +120,7 @@ internal class PodcastTNTypeAdapter(
                                 total_duration = patchItem.Data[position].Duration
                             }
                         )
-                        pd_download.setColorFilter(holder.itemView.context.resources.getColor(R.color.my_sdk_color_primary))
-                        isDownloadComplete = true
+
                     }
                 }
 
@@ -202,7 +203,7 @@ internal class PodcastTNTypeAdapter(
     }
 
     override fun getItemCount(): Int {
-        return patchItem.Data.size ?: 0
+        return patchItem.Data.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -228,6 +229,7 @@ internal class PodcastTNTypeAdapter(
             txt_time.text = patchItem.Data[absoluteAdapterPosition].Duration
             textViewSubtitle.text =patchItem.Data[absoluteAdapterPosition].Presenter
             show_des.text = result
+            Log.e("TAG","DATA: "+ patchItem.Data.size)
             val pd_download = itemView.findViewById(R.id.pd_download) as ImageView
             val pd_favorite = itemView.findViewById(R.id.pd_favorite) as ImageView
         }

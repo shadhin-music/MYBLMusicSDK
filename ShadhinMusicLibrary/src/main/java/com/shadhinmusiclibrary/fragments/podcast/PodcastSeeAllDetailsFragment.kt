@@ -106,9 +106,9 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
 
     private fun isValidDesign(patchType: String): Int {
         return when (patchType) {
-            "PP" -> ParentAdapter.VIEW_ARTIST
-            "TN" -> ParentAdapter.VIEW_PLAYLIST
-            "SS" -> ParentAdapter.VIEW_RELEASE
+            "PP" -> PodcastSeeAllDetailsAdapter.VIEW_PP
+            "TN" -> PodcastSeeAllDetailsAdapter.VIEW_TN
+            "SS" -> PodcastSeeAllDetailsAdapter.VIEW_SS
             else -> {
                 -1
             }

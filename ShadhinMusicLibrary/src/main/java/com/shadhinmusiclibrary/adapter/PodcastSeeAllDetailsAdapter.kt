@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -43,6 +44,7 @@ internal class PodcastSeeAllDetailsAdapter(
     }
 
     override fun onBindViewHolder(holder: DataAdapterViewHolder, position: Int) {
+
         holder.bind(listData.get(position))
     }
 
@@ -101,6 +103,9 @@ internal class PodcastSeeAllDetailsAdapter(
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
+
+            Log.i("bindTN", "bindTN: ${patchItem.Data.size}")
+
             recyclerView.adapter = PodcastTNTypeAdapter(patchItem,podcastDetailsCallback, cacheRepository, favViewModel, injector)
 
 
@@ -166,7 +171,7 @@ internal class PodcastSeeAllDetailsAdapter(
             when (homePatchItemModel?.PatchType) {
                     "PP"-> bindPP(homePatchItemModel)
                     "TN"-> bindTN(homePatchItemModel)
-                    "SS"->bindSS(homePatchItemModel)
+                    "SS"-> bindSS(homePatchItemModel)
 //                "search" -> bindSearch(homePatchItemModel)
 //                "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
 //                "Playlist" -> bindPlaylist(homePatchItemModel)

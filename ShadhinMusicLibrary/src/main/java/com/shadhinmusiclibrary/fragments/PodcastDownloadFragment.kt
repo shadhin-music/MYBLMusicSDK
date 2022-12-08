@@ -342,6 +342,7 @@ internal class PodcastDownloadFragment : BaseFragment(),
                         titleName = iSongTrack.titleName
                         total_duration = iSongTrack.total_duration
                         createDate = DateTime
+                        artistName = iSongTrack.artistName
                     }
                 )
                 isFav = true

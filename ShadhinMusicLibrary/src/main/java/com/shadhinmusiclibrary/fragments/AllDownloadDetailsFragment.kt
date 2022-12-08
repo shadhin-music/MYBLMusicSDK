@@ -308,6 +308,7 @@ internal class AllDownloadDetailsFragment : BaseFragment(),
                             artistName = item.artist.toString()
                             artist_Id = item.artistId.toString()
                             total_duration = item.duration.toString()
+
                         }
                     )
                     isDownloaded = true
