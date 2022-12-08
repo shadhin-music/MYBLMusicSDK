@@ -852,6 +852,12 @@ internal class SDKMainActivity : BaseActivity(),
                 tvSongName.text = currentItemHolder.sMusicData.titleName
                 tvSingerName.text = currentItemHolder.sMusicData.artistName
                 setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
+                if(mSongDetails[clickItemPosition].trackType=="LM"){
+                    Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+                    ibtnRepeatSong.setImageResource(R.drawable.my_bl_sdk_ic_baseline_repeat_24)
+                    ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
+
+                }
             }
 
             override fun onScroll(
@@ -861,6 +867,7 @@ internal class SDKMainActivity : BaseActivity(),
                 currentHolder: MusicPlayAdapter.MusicPlayVH?,
                 newCurrent: MusicPlayAdapter.MusicPlayVH?,
             ) {
+
             }
         })
 
@@ -945,6 +952,66 @@ internal class SDKMainActivity : BaseActivity(),
                 }
             }
         }
+        if(mSongDetails[clickItemPosition].trackType=="LM"){
+            Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+            ibtnShuffle.isEnabled = false
+            ibtnRepeatSong.isEnabled = false
+            ibtnLibraryAdd.isEnabled = false
+            ibtnDownload.isEnabled = false
+            ibtnQueueMusic.isEnabled = false
+        }else{
+            Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+            ibtnShuffle.isEnabled = true
+            ibtnRepeatSong.isEnabled = true
+            ibtnLibraryAdd.isEnabled = true
+            ibtnDownload.isEnabled = true
+            ibtnQueueMusic.isEnabled = true
+            ibtnShuffle.setOnClickListener {
+                playerViewModel.shuffleToggle()
+            }
+
+            ibtnSkipPrevious.setOnClickListener {
+                playerViewModel.skipToPrevious()
+            }
+
+            ibtnPlayPause.setOnClickListener {
+                playerViewModel.togglePlayPause()
+            }
+
+            ibtnSkipNext.setOnClickListener {
+                playerViewModel.skipToNext()
+            }
+
+            ibtnRepeatSong.setOnClickListener {
+                playerViewModel.repeatTrack()
+            }
+
+            ibtnVolume.setOnClickListener {
+                setUpVolume(this)
+            }
+
+            ibtnLibraryAdd.setOnClickListener {
+                if (mSongDetails[clickItemPosition]?.content_Type?.contains("PD") == true) {
+                    ibtnLibraryAdd.isClickable = false
+                    // Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+                } else {
+                    ibtnLibraryAdd.isClickable = true
+                    if (isNetworkAvailable(this).equals(true)) {
+                        gotoPlayList(this, mSongDetails[clickItemPosition])
+                    } else {
+                        Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+            ibtnQueueMusic.setOnClickListener {
+                addQueue(this, mSongDetails)
+            }
+
+            ibtnDownload.setOnClickListener {
+                songDownload(mSongDetails[clickItemPosition])
+            }
+        }
         // var isDownloaded = false
         val downloaded =
             cacheRepository.getDownloadById(mSongDetails[clickItemPosition].content_Id)
@@ -959,51 +1026,8 @@ internal class SDKMainActivity : BaseActivity(),
                 applicationContext.resources.getColor(R.color.my_sdk_color_white)
             )
         }
-        ibtnShuffle.setOnClickListener {
-            playerViewModel.shuffleToggle()
-        }
 
-        ibtnSkipPrevious.setOnClickListener {
-            playerViewModel.skipToPrevious()
-        }
 
-        ibtnPlayPause.setOnClickListener {
-            playerViewModel.togglePlayPause()
-        }
-
-        ibtnSkipNext.setOnClickListener {
-            playerViewModel.skipToNext()
-        }
-
-        ibtnRepeatSong.setOnClickListener {
-            playerViewModel.repeatTrack()
-        }
-
-        ibtnVolume.setOnClickListener {
-            setUpVolume(this)
-        }
-
-        ibtnLibraryAdd.setOnClickListener {
-            if (mSongDetails[clickItemPosition]?.content_Type?.contains("PD") == true) {
-                ibtnLibraryAdd.isClickable = false
-                // Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
-            } else {
-                ibtnLibraryAdd.isClickable = true
-                if (isNetworkAvailable(this).equals(true)) {
-                    gotoPlayList(this, mSongDetails[clickItemPosition])
-                } else {
-                    Toast.makeText(this, "Please check network", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-
-        ibtnQueueMusic.setOnClickListener {
-            addQueue(this, mSongDetails)
-        }
-
-        ibtnDownload.setOnClickListener {
-            songDownload(mSongDetails[clickItemPosition])
-        }
 
         acivMinimizePlayerBtn.setOnClickListener {
             toggleMiniPlayerView(true)

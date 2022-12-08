@@ -86,14 +86,16 @@ internal class PodcastDetailsFragment : BaseFragment(),
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
         Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
-        Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
-        if (selectedEpisodeID == contentId) {
-            getPodcastDetailsInitialize()
+        //Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
+        if (selectedEpisodeID.isNullOrEmpty()) {
             getPodcastShowDetailsInitialize()
-            //getPodcastShowDetailsInitialize()
+            Log.e("PDF", "getPodcastShowDetailsInitialize")
+        }else{
+            getPodcastDetailsInitialize()
+            Log.e("PDF", "getPodcastDetailsInitialize")
         }
-        //getPodcastDetailsInitialize()
-           // getPodcastDetailsInitialize()
+
+
 
         setupAdapters()
 

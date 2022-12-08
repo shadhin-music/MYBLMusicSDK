@@ -18,4 +18,13 @@
         android:layout_height="match_parent"
         android:src="@drawable/my_bl_sdk_default_song"
         android:visibility="visible" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/my_bl_sdk_live_icon"
+        android:layout_gravity="top|right"
+        android:id="@+id/imgLive"
+        android:padding="6dp"
+
+    />
 </androidx.cardview.widget.CardView>
