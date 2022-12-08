@@ -23,7 +23,6 @@ import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -290,7 +289,7 @@ internal class SearchArtistDetailsFragment : BaseFragment(),
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             if (itPla != null)
-                                albumVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                                albumVH.ivPlayBtn?.let { playPauseStateRed(itPla.isPlaying, it) }
                         }
                     }
                 }

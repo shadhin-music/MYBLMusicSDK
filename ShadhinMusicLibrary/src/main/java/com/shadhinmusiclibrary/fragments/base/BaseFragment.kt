@@ -42,7 +42,7 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
         (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 
-    fun playPauseState(playing: Boolean, ivPlayPause: ImageView) {
+    fun playPauseStateRed(playing: Boolean, ivPlayPause: ImageView) {
         if (playing) {
             ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_pause_circle_filled)
         } else {

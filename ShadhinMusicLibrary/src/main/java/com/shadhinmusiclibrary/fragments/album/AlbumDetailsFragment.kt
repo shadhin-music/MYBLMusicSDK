@@ -6,14 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
@@ -35,7 +33,6 @@ import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -247,10 +244,10 @@ internal class AlbumDetailsFragment : BaseFragment(),
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             if (itPla != null)
-                                albumHeaderVH.ivPlayBtn?.let { playPauseState(itPla.isPlaying, it) }
+                                albumHeaderVH.ivPlayBtn?.let { playPauseStateRed(itPla.isPlaying, it) }
                         }
                     } else {
-                        albumHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
+                        albumHeaderVH.ivPlayBtn?.let { playPauseStateRed(false, it) }
                     }
                 }
             }

@@ -26,7 +26,6 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastBottomSheetDialogItemCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.DownloadingItem
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.podcast.DataModel
 import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
@@ -316,11 +315,11 @@ internal class BhootPodcastDetailsFragment : BaseFragment(),
                     ) {
                         playerViewModel.playbackStateLiveData.observe(viewLifecycleOwner) { itPla ->
                             if (itPla != null)
-                                playPauseState(itPla.isPlaying, podcastHeaderVH.ivPlayBtn!!)
+                                playPauseStateRed(itPla.isPlaying, podcastHeaderVH.ivPlayBtn!!)
                         }
                     }
                 } else {
-                    podcastHeaderVH.ivPlayBtn?.let { playPauseState(false, it) }
+                    podcastHeaderVH.ivPlayBtn?.let { playPauseStateRed(false, it) }
                 }
             }
         }
