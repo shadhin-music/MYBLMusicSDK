@@ -11,5 +11,6 @@ internal interface UserHistoryRepository {
         sTime: String,
         eTime: String,
         userPlayListId: String?,
+        isLive:Boolean = false
     )
 }
