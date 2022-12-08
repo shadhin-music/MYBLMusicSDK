@@ -255,7 +255,7 @@ internal class ParentAdapter(
             val image: ShapeableImageView = itemView.findViewById(R.id.image)
             val imageurl = homePatchItemModel.Data[0].imageWeb.toString()
             Glide.with(mContext)
-                .load(imageurl?.replace("<\$size\$>", "984"))
+                .load(imageurl?.replace("<\$size\$>", "300"))
                 .into(image)
             itemView.setOnClickListener {
                 homeCallBack.onClickItemAndAllItem(0, homePatchItemModel)

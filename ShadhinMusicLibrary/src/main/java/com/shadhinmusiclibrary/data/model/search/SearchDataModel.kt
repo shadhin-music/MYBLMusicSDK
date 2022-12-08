@@ -50,7 +50,7 @@ internal class SearchDataModel : IMusicModel {
     var seekable: Boolean? = null
 
     @SerializedName("TrackType")
-    var trackType: String? = null
+    override var trackType: String? = null
 
     @SerializedName("ArtistId")
     override var artist_Id: String? = null

@@ -3,6 +3,8 @@ package com.shadhinmusiclibrary.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -40,12 +42,22 @@ internal class PodcastTrackAdapter(
         holder.bindItems(trackItem)
         holder.itemView.setOnClickListener {
             itemClickCB.onClickItem(tracks, position)
-            Log.e("TAG", "DATA: " + trackItem)
+            Log.e("TAG", "DATA: " + trackItem?.trackType)
         }
+
         val ivSongMenuIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_menu_icon)
-        ivSongMenuIcon.setOnClickListener {
-            bsDialogItemCallback.onClickBottomItem(trackItem)
+        val ivSongLiveIcon: ImageView = holder.itemView.findViewById(R.id.iv_song_live_icon)
+        if(trackItem?.trackType?.toUpperCase()=="LM"){
+            ivSongMenuIcon.visibility = GONE
+            ivSongLiveIcon.visibility = VISIBLE
+        }else{
+            ivSongMenuIcon.visibility = VISIBLE
+            ivSongLiveIcon.visibility = GONE
+            ivSongMenuIcon.setOnClickListener {
+                bsDialogItemCallback.onClickBottomItem(trackItem)
+            }
         }
+
         if (trackItem.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)

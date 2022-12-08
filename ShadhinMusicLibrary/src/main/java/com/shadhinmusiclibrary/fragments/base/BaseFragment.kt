@@ -37,6 +37,7 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
     }
 
     fun playItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
+        
         (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 

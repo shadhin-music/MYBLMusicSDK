@@ -53,7 +53,7 @@ internal class ArtistAlbumModelData : IMusicModel {
     @SerializedName("Client")
     @Expose
     private val client: Int? = null
-
+    override var trackType: String? = null
     override var bannerImage: String? = null
     override var album_Name: String? = null
     override var rootContentId: String? = null

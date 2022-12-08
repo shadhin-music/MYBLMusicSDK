@@ -10,17 +10,18 @@ import kotlinx.coroutines.runBlocking
 
 internal class ShadhinMusicRepository(private val playerApiService: PlayerApiService) :
     MusicRepository {
+
     override fun fetchURL(music: Music): String = runBlocking {
+
         val response = safeApiCall {
             playerApiService.fetchContentUrl(
                 ptype = if (music.isPodCast()) "PD" else null,
                 type = music.podcastSubType(),
-                ttype = music.podcastTrackType()?:music.trackType,
+                ttype = music.podcastTrackType(),
                 name = if (!music.filePath().isNullOrEmpty()) music.filePath() else null
             )
         }
-        Log.e("Check 0", music.toString())
-        Log.e("Check 1", response.toString())
+
         val url = if (response.status == Status.SUCCESS && response.data?.data != null) {
             response.data.data
         } else {
@@ -44,7 +45,6 @@ internal class ShadhinMusicRepository(private val playerApiService: PlayerApiSer
                 )
             }
         }
-        Log.e("Check", "Response"+response.toString())
         val url = if (response.status == Status.SUCCESS && response.data?.data != null) {
             response.data.data
         } else {

@@ -72,4 +72,5 @@ internal class TopTrendingDataModel : IMusicModel {
     override var rootImage: String? = null
     override var isPlaying: Boolean = false
     override var isSeekAble: Boolean? = false
+    override var trackType: String? = null
 }

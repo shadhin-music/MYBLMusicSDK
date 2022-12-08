@@ -45,7 +45,6 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
     ): View? {
         val viewRef = inflater.inflate(R.layout.my_bl_sdk_common_rv_layout, container, false)
         navController = findNavController()
-
         return viewRef
     }
 
@@ -53,11 +52,11 @@ internal class PlaylistListFragment : BaseFragment(), HomeCallBack {
         super.onViewCreated(view, savedInstanceState)
         val imageBackBtn: AppCompatImageView = view.findViewById(R.id.imageBack)
         val tvTitle: TextView = view.findViewById(R.id.tvTitle)
-        tvTitle.text = argHomePatchItem!!.Name
+        tvTitle.text = argHomePatchItem?.Name
         val verticalSpanCount = 1
         val horizontalSpanCount = 2
         footerAdapter = HomeFooterAdapter()
-        genresAdapter = GenresAdapter(argHomePatchItem!!, this)
+        genresAdapter = argHomePatchItem?.let { GenresAdapter(it, this) }!!
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         //  recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
 //        popularArtistAdapter = argHomePatchItem.let { PopularArtistAdapter(it!!, this) }

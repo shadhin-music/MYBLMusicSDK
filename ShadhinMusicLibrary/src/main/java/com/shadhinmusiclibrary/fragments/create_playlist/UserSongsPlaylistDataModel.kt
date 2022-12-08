@@ -61,4 +61,5 @@ class UserSongsPlaylistDataModel() : IMusicModel {
     override var isPlaying: Boolean = false
 
     override var isSeekAble: Boolean? = false
+    override var trackType: String? = null
 }

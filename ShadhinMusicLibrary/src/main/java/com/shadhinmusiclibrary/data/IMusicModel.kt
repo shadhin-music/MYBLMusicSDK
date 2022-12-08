@@ -15,6 +15,8 @@ interface IMusicModel {
     var album_Id: String?
     var album_Name: String?
     var total_duration: String?
+    var trackType: String?
+
 
     var rootContentId: String?
     var rootContentType: String?
