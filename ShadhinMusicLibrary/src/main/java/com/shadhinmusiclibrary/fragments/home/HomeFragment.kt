@@ -29,7 +29,6 @@ import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
 import com.shadhinmusiclibrary.callBackService.SearchClickCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.data.model.FeaturedPodcastDataModel
 import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
@@ -281,7 +280,7 @@ internal class HomeFragment : BaseFragment(),
         selectedHomePatchItem: HomePatchItemModel
     ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-        userActivityMonitoring(selectedHomePatchItem)
+        patchMonitoring(selectedHomePatchItem)
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -303,7 +302,7 @@ internal class HomeFragment : BaseFragment(),
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
-        userActivityMonitoring(selectedHomePatchItem)
+        patchMonitoring(selectedHomePatchItem)
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,

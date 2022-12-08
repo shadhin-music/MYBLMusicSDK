@@ -59,7 +59,7 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
         }
     }
 
-    fun userActivityMonitoring(argo: HomePatchItemModel) {
+    fun patchMonitoring(argo: HomePatchItemModel) {
         Toast.makeText(requireContext(), "" + argo.Code + " " + argo.Name, Toast.LENGTH_SHORT)
             .show()
         Log.e("BF", "userActivityMonitoring: " + argo.Code + " " + argo.Name)
