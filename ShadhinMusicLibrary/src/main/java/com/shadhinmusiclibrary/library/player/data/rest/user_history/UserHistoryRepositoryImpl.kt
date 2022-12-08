@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.library.player.data.rest.user_history
 
 import com.shadhinmusiclibrary.library.player.data.rest.PlayerApiService
+import com.shadhinmusiclibrary.utils.delay
 import com.shadhinmusiclibrary.utils.postContentType
 import com.shadhinmusiclibrary.utils.preContentType
 
@@ -53,6 +54,8 @@ internal class UserHistoryRepositoryImpl(private val playerApiService: PlayerApi
         }else{
             jsonParams["Type"] = type.trim().uppercase().preContentType()
             jsonParams["ContentType"] = type.trim().uppercase()
+            val delay = (1..5).random()*1000L
+            kotlinx.coroutines.delay(delay)
             playerApiService.trackPodcastLivePlaying(jsonParams)
         }
     }
