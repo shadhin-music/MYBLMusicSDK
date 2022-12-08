@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 internal interface ApiService {
-   // @GET("ClientHomeContent/GetHomeContent")
+    // @GET("ClientHomeContent/GetHomeContent")
     @GET("ClientHomeContent/GetHomeContentV2")
     suspend fun fetchHomeData(
         @Query("pageNumber") pageNumber: Int?,
@@ -138,6 +138,8 @@ internal interface ApiService {
     suspend fun deleteFavorite(@Body body: AddtoFavBody): FavDataResponseModel
 
     @POST("ClientActivity/UserSession")
-    suspend fun userSession(@Body body:UserSessionBody):UserSessionResponse
+    suspend fun userSession(@Body body: UserSessionBody): UserSessionResponse
 
+    @POST("ClientActivity/PatchClickhistory")
+    suspend fun fetchPatchClickHistory(@Body body: HistoryModel): ClickHistoryModel
 }

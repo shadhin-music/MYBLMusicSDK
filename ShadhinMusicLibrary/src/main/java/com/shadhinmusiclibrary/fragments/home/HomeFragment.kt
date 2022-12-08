@@ -36,6 +36,7 @@ import com.shadhinmusiclibrary.data.model.podcast.EpisodeModel
 import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.fragments.history.ClientActivityViewModel
 import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying

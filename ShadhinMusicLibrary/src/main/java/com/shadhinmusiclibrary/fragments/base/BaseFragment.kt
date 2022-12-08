@@ -10,16 +10,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.data.IMusicModel
+import com.shadhinmusiclibrary.data.model.HistoryModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.di.FragmentEntryPoint
+import com.shadhinmusiclibrary.fragments.history.ClientActivityViewModel
 import com.shadhinmusiclibrary.library.player.ui.PlayerViewModel
 import com.shadhinmusiclibrary.utils.AppConstantUtils
+import kotlin.math.log
 
-internal open class BaseFragment : Fragment(), FragmentEntryPoint {
+internal open class BaseFragment : Fragment(),
+    FragmentEntryPoint {
+
     var argHomePatchItem: HomePatchItemModel? = null
     var argHomePatchDetail: HomePatchDetailModel? = null
     lateinit var playerViewModel: PlayerViewModel
+    lateinit var clientActViewModel: ClientActivityViewModel
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +42,16 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
             requireActivity(),
             injector.playerViewModelFactory
         )[PlayerViewModel::class.java]
+
+        clientActViewModel =
+            ViewModelProvider(
+                this,
+                injector.clientActivityVM
+            )[ClientActivityViewModel::class.java]
     }
 
     fun playItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {
-        
+
         (activity as? SDKMainActivity)?.setMusicPlayerInitData(mSongDetails, clickItemPosition)
     }
 
@@ -60,8 +72,6 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
     }
 
     fun patchMonitoring(argo: HomePatchItemModel) {
-        Toast.makeText(requireContext(), "" + argo.Code + " " + argo.Name, Toast.LENGTH_SHORT)
-            .show()
-        Log.e("BF", "userActivityMonitoring: " + argo.Code + " " + argo.Name)
+        clientActViewModel.fetchPatchClickHistory(HistoryModel().apply { patchCode = argo.Code })
     }
 }

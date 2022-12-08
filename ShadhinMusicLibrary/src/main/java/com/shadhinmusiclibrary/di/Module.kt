@@ -11,6 +11,7 @@ import com.shadhinmusiclibrary.fragments.amar_tunes.AmarTunesViewModelFactory
 import com.shadhinmusiclibrary.fragments.artist.*
 import com.shadhinmusiclibrary.fragments.create_playlist.CreatePlaylistViewModelFactory
 import com.shadhinmusiclibrary.fragments.fav.FavViewModelFactory
+import com.shadhinmusiclibrary.fragments.history.ClientActivityViewModelFactory
 import com.shadhinmusiclibrary.fragments.home.HomeViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.FeaturedPodcastViewModelFactory
 import com.shadhinmusiclibrary.fragments.podcast.PodcastViewModelFactory
@@ -111,6 +112,11 @@ internal class Module(private val applicationContext: Context) {
 
     private val artistAlbumApiService: ApiService = getApiShadhinMusicServiceV5withTokenAndClient()
     private val podcastApiService: ApiService = getApiShadhinMusicServiceV5withTokenAndClient()
+
+    private val clientActivityRep = ClientActivityContentRepository(
+        getApiShadhinMusicServiceV5withTokenAndClient()
+    )
+
     private val repositoryHomeContent: HomeContentRepository =
         HomeContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryArtistBannerContent: ArtistBannerContentRepository =
@@ -125,6 +131,9 @@ internal class Module(private val applicationContext: Context) {
         CreatePlaylistRepository(getApiShadhinMusicServiceV5withTokenAndClient())
     private val repositoryFavContentRepository: FavContentRepository =
         FavContentRepository(getApiShadhinMusicServiceV5withTokenAndClient())
+
+    val clientActivityVM: ClientActivityViewModelFactory
+        get() = ClientActivityViewModelFactory(clientActivityRep)
 
     val factoryHomeVM: HomeViewModelFactory
         get() = HomeViewModelFactory(repositoryHomeContent)
@@ -217,15 +226,15 @@ internal class Module(private val applicationContext: Context) {
 
     val downloadTitleMap: MutableMap<String, String>
         get() = SingleDownloadMap.getInstance()
-    private val _userSessionRepository:UserSessionRepository = UserSessionRepositoryImpl(getApiShadhinMusicServiceV5withTokenAndClient())
+    private val _userSessionRepository: UserSessionRepository =
+        UserSessionRepositoryImpl(getApiShadhinMusicServiceV5withTokenAndClient())
 
-    val userSessionRepository:UserSessionRepository
+    val userSessionRepository: UserSessionRepository
         get() = _userSessionRepository
 
 
     val playerViewModelFactory: PlayerViewModelFactory
-        get() = PlayerViewModelFactory(musicServiceController,userSessionRepository)
-
+        get() = PlayerViewModelFactory(musicServiceController, userSessionRepository)
 
 
 }
