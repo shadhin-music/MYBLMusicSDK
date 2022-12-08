@@ -281,6 +281,7 @@ internal class HomeFragment : BaseFragment(),
         selectedHomePatchItem: HomePatchItemModel
     ) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
+        userActivityMonitoring(selectedHomePatchItem)
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,
@@ -302,6 +303,7 @@ internal class HomeFragment : BaseFragment(),
 
     override fun onClickSeeAll(selectedHomePatchItem: HomePatchItemModel) {
 //        ShadhinMusicSdkCore.pressCountIncrement()
+        userActivityMonitoring(selectedHomePatchItem)
         val data = Bundle()
         data.putSerializable(
             AppConstantUtils.PatchItem,

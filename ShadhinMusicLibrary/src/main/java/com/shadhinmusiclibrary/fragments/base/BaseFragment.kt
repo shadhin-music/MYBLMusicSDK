@@ -1,7 +1,9 @@
 package com.shadhinmusiclibrary.fragments.base
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -54,5 +56,11 @@ internal open class BaseFragment : Fragment(), FragmentEntryPoint {
         } else {
             ivPlayPause.setImageResource(R.drawable.my_bl_sdk_ic_baseline_play_circle_filled_40)
         }
+    }
+
+    fun userActivityMonitoring(argo: HomePatchItemModel) {
+        Toast.makeText(requireContext(), "" + argo.Code + " " + argo.Name, Toast.LENGTH_SHORT)
+            .show()
+        Log.e("BF", "userActivityMonitoring: " + argo.Code + " " + argo.Name)
     }
 }
