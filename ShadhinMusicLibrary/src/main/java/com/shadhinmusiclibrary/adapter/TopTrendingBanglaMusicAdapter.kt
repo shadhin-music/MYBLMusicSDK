@@ -44,7 +44,7 @@ internal class TopTrendingBanglaMusicAdapter(val argHomePatchItem: HomePatchItem
             textViewName.text = argHomePatchItem!!.Data[absoluteAdapterPosition].artistName
             textArtist.text = argHomePatchItem!!.Data[absoluteAdapterPosition].titleName
             val imageView = itemView.findViewById(R.id.image) as ImageView
-            val url: String = argHomePatchItem!!.Data[absoluteAdapterPosition].imageUrl ?: ""
+            val url: String = argHomePatchItem.Data[absoluteAdapterPosition].imageUrl ?: ""
             Glide.with(itemView.context).load(url).into(imageView)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)

@@ -43,14 +43,14 @@ internal class ArtistOthersAlbumListAdapter(
         fun bindItems(artistAlbumModel: ArtistAlbumModelData) {
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
-            val url: String =
-                artistAlbumModel.imageUrl!!
+            val url: String? =
+                artistAlbumModel.imageUrl
             textView.text = artistAlbumModel.titleName
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
             textViewArtist.text = artistAlbumModel.artistName
             //Log.d("TAG","ImageUrl: " + url.replace("<\$size\$>","300"))
             Glide.with(mContext)
-                .load(url.replace("<\$size\$>", "300"))
+                .load(url?.replace("<\$size\$>", "300"))
                 .into(imageView)
 //            itemView.setOnClickListener {
 //                val manager: FragmentManager = (mContext as AppCompatActivity).supportFragmentManager

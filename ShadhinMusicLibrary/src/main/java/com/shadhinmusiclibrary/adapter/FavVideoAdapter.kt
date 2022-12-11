@@ -109,7 +109,9 @@ internal class FavVideoAdapter(
             subTitleTextView.text = allDownloads[absoluteAdapterPosition].artistName
 
             Glide.with(itemView.context)
-                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
+                .load(allDownloads[absoluteAdapterPosition].imageUrl?.let {
+                    UtilHelper.getImageUrlSize300(it)
+                })
                 .placeholder(R.drawable.my_bl_sdk_default_video)
                 .into(videoImage)
             val progressIndicator: CircularProgressIndicator = itemView.findViewById(R.id.progress)

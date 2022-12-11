@@ -49,11 +49,11 @@ internal class ReleaseAdapter(
             val textView: TextView = itemView.findViewById(R.id.tv_singer_name)
             val textViewArtist: TextView = itemView.findViewById(R.id.tv_song_length)
 
-            val url: String = homePatDetMod.imageUrl!!
+            val url: String? = homePatDetMod.imageUrl
             textView.text = homePatDetMod.titleName
             textViewArtist.text = homePatDetMod.artistName
             Glide.with(mContext)
-                .load(UtilHelper.getImageUrlSize300(url))
+                .load(url?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView)
         }
     }

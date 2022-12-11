@@ -107,7 +107,7 @@ internal class UserCreatedPlaylistHeaderAdapter(
                     homePatchDetail?.content_Id?.let { it1 ->
                         favViewModel.deleteFavContent(
                             it1,
-                            homePatchDetail?.content_Type ?: ""
+                            homePatchDetail.content_Type ?: ""
                         )
                     }
                     cacheRepository?.deleteFavoriteById(homePatchDetail?.content_Id.toString())

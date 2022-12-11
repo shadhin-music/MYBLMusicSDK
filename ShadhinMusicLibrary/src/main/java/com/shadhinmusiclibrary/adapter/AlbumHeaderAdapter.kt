@@ -101,26 +101,28 @@ internal class AlbumHeaderAdapter(
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(UtilHelper.getImageUrlSize300(homePatchDetail?.imageUrl!!))
+                .load(homePatchDetail?.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 itemView.findViewById(R.id.tv_current_album_name)
-            tvCurrentAlbumName.text = homePatchDetail.titleName ?: ""
-            if (homePatchDetail.titleName.isNullOrEmpty()) {
-                tvCurrentAlbumName.text = homePatchDetail.album_Name ?: ""
+            tvCurrentAlbumName.text = homePatchDetail?.titleName ?: ""
+            if (homePatchDetail?.titleName.isNullOrEmpty()) {
+                tvCurrentAlbumName.text = homePatchDetail?.album_Name ?: ""
             }
 //            if(root.Artist.isNullOrEmpty()){
 //                tvArtistName.text = rootDataContent?.AlbumName
 //            }
             tvArtistName =
                 itemView.findViewById(R.id.tv_artist_name)
-            tvArtistName.text = homePatchDetail.artistName
+            tvArtistName.text = homePatchDetail?.artistName
 
             ivFavorite = itemView.findViewById(R.id.iv_favorite)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
             menu = itemView.findViewById(R.id.iv_song_menu_icon)
             var isFav = false
-            val isAddedToFav = cacheRepository.getFavoriteById(homePatchDetail.content_Id)
+            val isAddedToFav = homePatchDetail?.let { it?.content_Id?.let { it1 ->
+                cacheRepository.getFavoriteById(it1)
+            } }
             if (isAddedToFav?.content_Id != null) {
                 ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                 isFav = true
@@ -131,35 +133,61 @@ internal class AlbumHeaderAdapter(
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
-                    favViewModel.deleteFavContent(
-                        homePatchDetail.content_Id,
-                        homePatchDetail.content_Type ?: ""
-                    )
-                    cacheRepository.deleteFavoriteById(homePatchDetail.content_Id)
+                    homePatchDetail?.let { it1 ->
+                        it1?.content_Id?.let { it2 ->
+                            favViewModel.deleteFavContent(
+                                it2,
+                                homePatchDetail?.content_Type ?: ""
+                            )
+                        }
+                    }
+                    homePatchDetail?.let { it1 -> it1?.content_Id?.let { it2 ->
+                        cacheRepository.deleteFavoriteById(it2)
+                    } }
                     Toast.makeText(mContext, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
-                    favViewModel.addFavContent(
-                        homePatchDetail.content_Id,
-                        homePatchDetail.content_Type ?: ""
-                    )
+                    homePatchDetail?.let { it1 ->
+                        it1?.content_Id?.let { it2 ->
+                            favViewModel.addFavContent(
+                                it2,
+                                homePatchDetail?.content_Type ?: ""
+                            )
+                        }
+                    }
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository.insertFavSingleContent(
                         FavDataModel().apply {
-                            content_Id = homePatchDetail.content_Id
-                            album_Id = homePatchDetail.album_Id
-                            albumImage = homePatchDetail.imageUrl
-                            artistName = homePatchDetail.artistName
-                            artist_Id = homePatchDetail.artist_Id
+                            content_Id = homePatchDetail?.content_Id.toString()
+                            album_Id = homePatchDetail?.album_Id
+                            albumImage = homePatchDetail?.imageUrl
+                            if (homePatchDetail != null) {
+                                artistName = homePatchDetail.artistName
+                            }
+                            if (homePatchDetail != null) {
+                                artist_Id = homePatchDetail.artist_Id
+                            }
                             clientValue = 2
-                            content_Type = homePatchDetail.content_Type
+                            if (homePatchDetail != null) {
+                                content_Type = homePatchDetail.content_Type
+                            }
                             fav = "1"
-                            imageUrl = homePatchDetail.imageUrl
-                            playingUrl = homePatchDetail.playingUrl
-                            rootContentId = homePatchDetail.rootContentId
-                            rootContentType = homePatchDetail.rootContentType
-                            titleName = homePatchDetail.titleName
+                            if (homePatchDetail != null) {
+                                imageUrl = homePatchDetail.imageUrl
+                            }
+                            if (homePatchDetail != null) {
+                                playingUrl = homePatchDetail.playingUrl
+                            }
+                            if (homePatchDetail != null) {
+                                rootContentId = homePatchDetail.rootContentId
+                            }
+                            if (homePatchDetail != null) {
+                                rootContentType = homePatchDetail.rootContentType
+                            }
+                            if (homePatchDetail != null) {
+                                titleName = homePatchDetail.titleName
+                            }
                             createDate = DateTime
                         }
                     )

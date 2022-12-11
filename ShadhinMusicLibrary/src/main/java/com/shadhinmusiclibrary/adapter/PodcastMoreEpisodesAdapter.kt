@@ -62,8 +62,7 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
                 if(index !=-1){
                     episode.removeAt(index)
                 }
-                /*episode.removeAt(0)
-                episode.addAll(episode)*/
+
                 val textView: TextView = itemView.findViewById(R.id.tvTitle)
                 textView.text= "More Episode"
                 val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
@@ -76,21 +75,7 @@ internal class PodcastMoreEpisodesAdapter(val data: DataModel?, val homeCallBack
             }
 
 
-//            val textViewName = itemView.findViewById(R.id.txt_name) as TextView
-//            val imageView2 = itemView.findViewById(R.id.image) as ImageView
-//            itemView.setOnClickListener {
-//                val manager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
-//                manager.beginTransaction()
-//                    .replace(R.id.container , PlaylistFragment.newInstance())
-//                    .commit()
-//            }
-//            val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
-//            entityId = banner.entityId
-            //getActorName(entityId!!)
 
-//            //textViewName.setText(banner.name)
-//            textViewName.text = LOADING_TXT
-//            textViewName.tag = banner.entityId
 
 
         }

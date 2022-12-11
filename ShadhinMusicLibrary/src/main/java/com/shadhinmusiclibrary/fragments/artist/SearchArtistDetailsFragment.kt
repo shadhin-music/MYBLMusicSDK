@@ -66,7 +66,7 @@ internal class SearchArtistDetailsFragment : BaseFragment(),
         super.onCreate(savedInstanceState)
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
-            searchArtistdata = (it.getSerializable("searchArtistdata") as SearchArtistDataModel?)!!
+            searchArtistdata = ((it.getSerializable("searchArtistdata") as SearchArtistDataModel?)!!)
         }
     }
 

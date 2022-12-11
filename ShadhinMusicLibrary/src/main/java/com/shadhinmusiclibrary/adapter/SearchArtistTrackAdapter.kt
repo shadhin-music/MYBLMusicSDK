@@ -82,7 +82,7 @@ internal class SearchArtistTrackAdapter(
             //textArtist.setText(data.Data[absoluteAdapterPosition].Artist)
             // textView.setText(data.Data[absoluteAdapterPosition].title)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(artistContent.imageUrl!!))
+                .load(artistContent.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView!!)
             val textTitle: TextView = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)

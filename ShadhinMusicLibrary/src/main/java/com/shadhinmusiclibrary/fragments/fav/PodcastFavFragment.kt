@@ -165,7 +165,7 @@ internal class PodcastFavFragment : BaseFragment(),
         artistname?.text = iSongTrack.artistName
         if (image != null) {
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url!!))
+                .load(url?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(image)
         }
 

@@ -48,10 +48,10 @@ internal class ArtistAlbumListAdapter(
             val url: String =
                 artistAlbumModel?.data?.get(absoluteAdapterPosition)?.imageUrl.toString()
             textView.text =
-                this@ArtistAlbumListAdapter.artistAlbumModel?.data!![absoluteAdapterPosition].titleName
+                this@ArtistAlbumListAdapter.artistAlbumModel?.data?.get(absoluteAdapterPosition)?.titleName
             val textViewArtist: TextView = itemView.findViewById(R.id.txt_name)
             textViewArtist.text =
-                this@ArtistAlbumListAdapter.artistAlbumModel.data[absoluteAdapterPosition].artistName
+                this@ArtistAlbumListAdapter.artistAlbumModel?.data?.get(absoluteAdapterPosition)?.artistName
             Glide.with(mContext)
                 .load(UtilHelper.getImageUrlSize300(url))
                 .into(imageView)

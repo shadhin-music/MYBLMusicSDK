@@ -160,7 +160,7 @@ internal class AllDownloadedAdapter(
         fun bindItems(mImusicItem: IMusicModel) {
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(mImusicItem.imageUrl!!))
+                .load(mImusicItem.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(sivSongIcon)
 
             tvSongName = itemView.findViewById(R.id.tv_song_name)

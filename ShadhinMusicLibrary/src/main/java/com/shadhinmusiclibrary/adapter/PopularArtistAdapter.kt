@@ -44,7 +44,7 @@ internal class PopularArtistAdapter(
             val url: String? = homePatchItem1.Data[absoluteAdapterPosition].imageUrl
             //Todo only url
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url!!))
+                .load(url?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView)
 
             textViewName.text = homePatchItem1.Data[absoluteAdapterPosition].artistName

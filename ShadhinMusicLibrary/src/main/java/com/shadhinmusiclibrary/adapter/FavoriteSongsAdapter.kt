@@ -156,7 +156,9 @@ internal class FavoriteSongsAdapter(
         fun bindItems() {
             val sivSongIcon: ImageView = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(allDownloads[absoluteAdapterPosition].imageUrl!!))
+                .load(allDownloads[absoluteAdapterPosition].imageUrl?.let {
+                    UtilHelper.getImageUrlSize300(it)
+                })
                 .into(sivSongIcon)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             tvSongName?.text = allDownloads[absoluteAdapterPosition].titleName

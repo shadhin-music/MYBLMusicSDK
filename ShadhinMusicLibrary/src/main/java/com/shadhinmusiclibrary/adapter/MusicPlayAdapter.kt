@@ -98,7 +98,7 @@ internal class MusicPlayAdapter(
                 ivCurrentPlayLiveImage.visibility =  GONE
             }
             Glide.with(itemView.context)
-                .load(UtilHelper.getImageUrlSize300(sMusicData.imageUrl!!))
+                .load(sMusicData.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .transition(DrawableTransitionOptions().crossFade(500))
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.DATA))
                 .placeholder(R.drawable.my_bl_sdk_default_song)

@@ -517,7 +517,25 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                 UtilHelper.getHomePatchDetailToSearchDataModel(searchData) as Serializable
             )
         }
+        val patchItemPodcastShow = Bundle().apply {
+            putSerializable(
+                AppConstantUtils.PatchItem,
+                searchData.content_Type?.let { HomePatchItemModel("", it,
+                    listOf(searchData) as List<HomePatchDetailModel>, "", "", 0, 0) }
+            )
+            putSerializable(
+                AppConstantUtils.PatchDetail,
+                UtilHelper.getHomePatchDetailToSearchPodcastShowDataModel(searchData) as Serializable
+            )
+        }
+//     if(searchData.rootContentType?.contains("PD") == true){
+//         setupNavGraphAndArg(
+//                    R.id.to_podcast_details,
+//                    patchItemPodcastShow
+//                )
+//     }
         when (searchData.rootContentType?.toUpperCase()) {
+
             DataContentType.CONTENT_TYPE_A -> {
                 //open artist details
                 setupNavGraphAndArg(
@@ -543,9 +561,11 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                 //open songs
                 setupNavGraphAndArg(
                     R.id.to_podcast_details,
-                    patchItem
+                     patchItemPodcastShow
                 )
+                Log.e("TAG","DATA: " + patchItemPodcastShow)
             }
+
             DataContentType.CONTENT_TYPE_PE -> {
                 //open podcast
                 setupNavGraphAndArg(

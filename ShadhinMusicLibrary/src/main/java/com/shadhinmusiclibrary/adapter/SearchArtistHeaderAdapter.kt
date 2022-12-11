@@ -82,7 +82,7 @@ internal class SearchArtistHeaderAdapter(
             val imageView: ImageView = itemView.findViewById(R.id.thumb)
             ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
 
-            val url: String = homePatchDetail!!.getImageUrl300Size()
+            val url: String = homePatchDetail.getImageUrl300Size()
             val textArtist: TextView = itemView.findViewById(R.id.name)
             textArtist.setText(homePatchDetail.Artist)
             val textView: ExpandableTextView? = itemView?.findViewById(R.id.tvDescription)

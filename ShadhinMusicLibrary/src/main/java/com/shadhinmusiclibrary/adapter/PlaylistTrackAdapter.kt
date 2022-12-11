@@ -112,7 +112,7 @@ internal class PlaylistTrackAdapter(
         fun bindTrackItem(mSongDetail: IMusicModel) {
             val sivSongIcon: ImageView = viewItem.findViewById(R.id.siv_song_icon)
             Glide.with(mContext)
-                .load(UtilHelper.getImageUrlSize300(mSongDetail.imageUrl!!))
+                .load(mSongDetail.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
             tvSongName!!.text = mSongDetail.titleName

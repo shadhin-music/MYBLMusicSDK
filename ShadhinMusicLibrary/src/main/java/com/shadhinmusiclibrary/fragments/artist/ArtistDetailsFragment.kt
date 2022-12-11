@@ -89,7 +89,12 @@ internal class ArtistDetailsFragment : BaseFragment(),
         }
         playerViewModel.currentMusicLiveData.observe(viewLifecycleOwner) { music ->
             if (music?.mediaId != null) {
-                artistTrackAdapter.setPlayingSong(music.mediaId!!)
+                music.mediaId.let {
+                    if (it != null) {
+                        artistTrackAdapter.setPlayingSong(it)
+                    }
+                }
+
             }
         }
     }
@@ -240,10 +245,12 @@ internal class ArtistDetailsFragment : BaseFragment(),
         if (argHomePatchDetail?.content_Id.isNullOrEmpty()) {
             argHomePatchDetail?.content_Id = argHomePatchDetail?.artist_Id ?: ""
         }
+         argHomePatchDetail.let {
+             it?.let { it1 -> artistHeaderAdapter.setData(it1) }
+         }
 
-        artistHeaderAdapter.setData(argHomePatchDetail!!)
         observeData()
-        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail!!.artist_Id
+        artistsYouMightLikeAdapter.artistIDToSkip = argHomePatchDetail?.artist_Id
         parentAdapter.notifyDataSetChanged()
         parentRecycler.scrollToPosition(0)
     }

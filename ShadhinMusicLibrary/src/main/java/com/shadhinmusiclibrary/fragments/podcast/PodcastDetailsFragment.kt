@@ -37,6 +37,7 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
+import java.lang.reflect.Type
 
 internal class PodcastDetailsFragment : BaseFragment(),
     HomeCallBack,
@@ -81,12 +82,14 @@ internal class PodcastDetailsFragment : BaseFragment(),
             contentType = Type.takeLast(2)
             contentId = it.content_Id
             selectedEpisodeID = it.album_Id ?: it.content_Id
+            Log.e("PDF", "getPodcastDetailsInitialize: "+ Type)
         }
         cacheRepository = CacheRepository(requireContext())
         setupViewModel()
         Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
+
         //Log.e("PDF", "getPodcastDetailsInitialize: "+ contentId)
-        if (selectedEpisodeID.isNullOrEmpty()) {
+        if (selectedEpisodeID.isEmpty()) {
             getPodcastShowDetailsInitialize()
             Log.e("PDF", "getPodcastShowDetailsInitialize")
         }else{
@@ -206,6 +209,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
     }
 
     private fun observePodcastShowData() {
+
         viewModel.fetchPodcastShowContent(podcastType, contentType, false)
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         /*viewModel.podcastDetailsContent.observe(viewLifecycleOwner) { response ->

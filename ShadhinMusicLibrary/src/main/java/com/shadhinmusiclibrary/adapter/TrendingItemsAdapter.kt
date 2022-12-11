@@ -36,8 +36,8 @@ internal class TrendingItemsAdapter(var data: List<TopTrendingDataModel>) :
             val songImage: ImageView = itemView.findViewById(R.id.song_img)
             val songName: TextView = itemView.findViewById(R.id.song_name)
             val artistName: TextView = itemView.findViewById(R.id.artist_name)
-            val url: String = data[position].imageUrl!!
-            Glide.with(context).load(UtilHelper.getImageUrlSize300(url)).into(songImage)
+            val url: String? = data[position].imageUrl
+            Glide.with(context).load(url?.let { UtilHelper.getImageUrlSize300(it) }).into(songImage)
             songName.text = data[position].titleName
             artistName.text = data[position].artistName
         }

@@ -54,7 +54,7 @@ internal class SearchArtistAdapter(
         fun bindItems(artistDetails: IMusicModel) {
             val imageView: CircleImageView = itemView.findViewById(R.id.artist_img)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(artistDetails.imageUrl!!))
+                .load(artistDetails.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
             textArtist.text = artistDetails.artistName

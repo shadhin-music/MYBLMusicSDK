@@ -122,7 +122,7 @@ internal class AlbumsTrackAdapter(
                 itemView.findViewById(R.id.progress)
             val downloaded: ImageView = itemView.findViewById(R.id.iv_song_type_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(dataSongDetail.imageUrl!!))
+                .load(dataSongDetail.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView!!)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)

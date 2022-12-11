@@ -123,7 +123,7 @@ internal class PodcastTrackAdapter(
             textDuration.text = iMusicModel.total_duration
             textArtistName.text = iMusicModel.artistName
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(iMusicModel.imageUrl!!))
+                .load(iMusicModel.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(image)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             tvSongName?.text = iMusicModel.titleName

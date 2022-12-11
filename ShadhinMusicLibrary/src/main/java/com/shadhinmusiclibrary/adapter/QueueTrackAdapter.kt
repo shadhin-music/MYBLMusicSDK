@@ -96,7 +96,7 @@ internal class QueueTrackAdapter(private val mItemClick: CommonSingleCallback) :
         fun bindItems(artistContent: IMusicModel) {
             val imageView: ShapeableImageView? = itemView.findViewById(R.id.siv_song_icon)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(artistContent.imageUrl!!))
+                .load(artistContent.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView!!)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             val textArtist: TextView = itemView.findViewById(R.id.tv_singer_name)

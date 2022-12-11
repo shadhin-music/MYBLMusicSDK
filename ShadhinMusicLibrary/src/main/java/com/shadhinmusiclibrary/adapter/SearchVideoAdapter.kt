@@ -53,7 +53,7 @@ internal class SearchVideoAdapter(
             val imageView: ImageView = itemView.findViewById(R.id.video_thumb)
             val textTitle: TextView = itemView.findViewById(R.id.song_name)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(searchVideodata.imageUrl!!))
+                .load(searchVideodata.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView)
             val textArtist: TextView = itemView.findViewById(R.id.artist_name)
             //  val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)

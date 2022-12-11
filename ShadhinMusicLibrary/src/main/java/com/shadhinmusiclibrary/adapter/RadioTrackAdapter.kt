@@ -78,7 +78,7 @@ internal class RadioTrackAdapter(private val radioCallback: RadioTrackCallBack) 
             rootId = mSongDetMod.content_Id
             sivRadioIcon?.let {
                 Glide.with(itemView.context)
-                    .load(UtilHelper.getImageUrlSize300(mSongDetMod.imageUrl!!))
+                    .load(mSongDetMod.imageUrl?.let { it1 -> UtilHelper.getImageUrlSize300(it1) })
                     .into(it)
             }
             tvRadioSongName?.text = mSongDetMod.titleName

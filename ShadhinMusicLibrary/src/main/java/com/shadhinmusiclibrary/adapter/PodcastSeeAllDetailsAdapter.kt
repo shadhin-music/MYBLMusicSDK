@@ -121,50 +121,6 @@ internal class PodcastSeeAllDetailsAdapter(
             recyclerView.adapter = PodcastSSTypeAdapter(patchItem.Data,podcastDetailsCallback)
         }
 
-//        private fun bindPlaylist(homePatchItem: HomePatchItemModel) {
-//            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
-//            val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-//            tvTitle.text = homePatchItem.Name
-//            seeAll.setOnClickListener {
-//                homeCallBack.onClickSeeAll(homePatchItem)
-//            }
-//            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
-//            recyclerView.layoutManager =
-//                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-//            recyclerView.adapter = HomeContentPlaylistAdapter(homePatchItem, homeCallBack)
-//        }
-
-//        private fun bindPopularPodcast(homePatchItem: HomePatchItemModel) {
-//            for (hoPatItem in homePatchItem.Data) {
-//                hoPatItem.apply {
-//                    isSeekAble = true
-//                }
-//            }
-//            val title: TextView = itemView.findViewById(R.id.tvTitle)
-//            title.text = homePatchItem.Name
-//            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
-//            recyclerView.layoutManager =
-//                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-//            recyclerView.adapter =
-//                HomePodcastAdapter(homePatchItem, homeCallBack, podcastTrackClick)
-//            val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
-//            seeAll.setOnClickListener {
-//                //PodcastDetailsFragment
-//                homeCallBack.onClickSeeAll(homePatchItem)
-//            }
-//
-//        }
-
-
-
-
-
-
-
-
-
-
-
 
 
         fun bind(homePatchItemModel: FeaturedPodcastDataModel) {
@@ -172,38 +128,10 @@ internal class PodcastSeeAllDetailsAdapter(
                     "PP"-> bindPP(homePatchItemModel)
                     "TN"-> bindTN(homePatchItemModel)
                     "SS"-> bindSS(homePatchItemModel)
-//                "search" -> bindSearch(homePatchItemModel)
-//                "Artist" -> bindArtist(homePatchItemModel, homeCallBack)
-//                "Playlist" -> bindPlaylist(homePatchItemModel)
-//                "Release" -> bindRelease(homePatchItemModel)
-//                "Track" -> bindRelease(homePatchItemModel)
-//                "Podcast" -> bindPopularPodcast(homePatchItemModel)
-//                "SmallVideo" -> bindTrendingMusic(homePatchItemModel)
-//                "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
-//                "download" -> bindDownload(homePatchItemModel)
-//                 "PodcastLive" -> bindBhoot(homePatchItemModel)
-//                "Playlist" -> bundRadio(homePatchItemModel)
-                //"Artist"->bindPopularBands(homePatchItemModel)
-//                "Artist" ->bindAd()
+
             }
 
-            /*when (dataModel) {
-                     dataModel-> bindArtist(dataModel!!)
- //                is DataModel.Search -> bindSearch()
- //                is DataModel.Artist -> bindArtist()
- //                is DataModel.TopTrending -> bindTopTrending()
- //                is DataModel.BrowseAll -> bindBrowseAll()
- //                is DataModel.Ad -> bindAd()
- //                is DataModel.Download -> bindDownload()
- //                is DataModel.PopularAmarTunes -> bindPopularAmarTunes()
- //                is DataModel.PopularBands -> bindPopularBands()
- //                is DataModel.MadeForYou -> bindMadeForYou()
- //                is DataModel.LatestRelease -> bindLatestRelease()
- //                is DataModel.PopularPodcast -> bindPopularPodcast()
- //                is DataModel.BlOffers -> bindBlOffers()
- //                is DataModel.TrendingMusicVideo -> bindTrendingMusic()
- ////                is DataModel.BlOffers -> bindBlOffers(dataModel)
-             }*/
+
         }
     }
 

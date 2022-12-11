@@ -335,6 +335,20 @@ internal object UtilHelper {
             isSeekAble = true
             titleName = searchData.titleName ?: ""
         }
+    fun getHomePatchDetailToSearchPodcastShowDataModel(searchData: IMusicModel) =
+        HomePatchDetailModel().apply {
+            album_Id = "" ?: ""
+            artist_Id = searchData.content_Id ?: ""
+            content_Id = "" ?: ""
+            content_Type = searchData.content_Type ?: ""
+            playingUrl = searchData.playingUrl ?: ""
+            album_Name = searchData.titleName ?: ""
+            total_duration = searchData.total_duration ?: ""
+            imageUrl = searchData.imageUrl ?: ""
+            artistName = searchData.artistName ?: ""
+            isSeekAble = true
+            titleName = searchData.titleName ?: ""
+        }
 
     fun getHomePatchItemToData(data: List<PodcastDetailsModel>): HomePatchItemModel {
         val mPatchDetail = mutableListOf<HomePatchDetailModel>()

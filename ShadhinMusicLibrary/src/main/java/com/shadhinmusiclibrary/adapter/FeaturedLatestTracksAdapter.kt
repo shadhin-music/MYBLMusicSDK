@@ -98,7 +98,7 @@ internal class FeaturedLatestTracksAdapter(
             val textDuration: TextView = itemView.findViewById(R.id.tv_song_length)
             tvSongName = itemView.findViewById(R.id.tv_song_name)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(mSongDetails.imageUrl!!))
+                .load(mSongDetails.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(imageView!!)
             tvSongName?.text = mSongDetails.titleName
             Log.e("TAG","Song: "+ mSongDetails.titleName )

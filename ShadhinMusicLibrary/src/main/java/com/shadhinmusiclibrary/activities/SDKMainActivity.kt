@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+
 import android.os.Bundle
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.Editable
@@ -1333,7 +1334,7 @@ internal class SDKMainActivity : BaseActivity(),
         artistname?.text = mSongDetails.artistName
         if (image != null) {
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(argHomePatchDetail?.imageUrl!!))
+                .load(argHomePatchDetail?.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(image)
         }
         val downloadImage: ImageView? = bottomSheetDialog.findViewById(R.id.imgDownload)
@@ -1462,10 +1463,12 @@ internal class SDKMainActivity : BaseActivity(),
 
         constraintFav?.setOnClickListener {
             if (isFav.equals(true)) {
-                favViewModel.deleteFavContent(
-                    mSongDetails.content_Id,
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.deleteFavContent(
+                        mSongDetails.content_Id,
+                        it1
+                    )
+                }
                 cacheRepository.deleteFavoriteById(mSongDetails.content_Id)
                 Toast.makeText(
                     applicationContext,
@@ -1476,10 +1479,12 @@ internal class SDKMainActivity : BaseActivity(),
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
             } else {
-                favViewModel.addFavContent(
-                    mSongDetails.content_Id,
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.addFavContent(
+                        mSongDetails.content_Id,
+                        it1
+                    )
+                }
                 val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
                 val formatedTime = SimpleDateFormat("HH:mm").format(Date())
                 val DateTime = "$formatedDate  $formatedTime"
@@ -1731,7 +1736,7 @@ internal class SDKMainActivity : BaseActivity(),
         artistname?.text = iSongTrack.artistName
         if (image != null) {
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(url!!))
+                .load(url?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(image)
         }
 
@@ -1992,7 +1997,7 @@ internal class SDKMainActivity : BaseActivity(),
                     .putExtra("contentID", mSongDetails.content_Id)
                 localBroadcastManager.sendBroadcast(localIntent)
             } else {
-                val mPlayingUrl = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl!!}"
+                val mPlayingUrl = "${Constants.FILE_BASE_URL}${mSongDetails.playingUrl}"
                 val downloadRequest: DownloadRequest =
                     DownloadRequest.Builder(mSongDetails.content_Id, mPlayingUrl.toUri())
                         .build()
@@ -2053,10 +2058,12 @@ internal class SDKMainActivity : BaseActivity(),
 
         constraintFav?.setOnClickListener {
             if (isFav == true) {
-                favViewModel.deleteFavContent(
-                    mSongDetails.content_Id,
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.deleteFavContent(
+                        mSongDetails.content_Id,
+                        it1
+                    )
+                }
                 cacheRepository.deleteFavoriteById(mSongDetails.content_Id)
                 Toast.makeText(
                     applicationContext,
@@ -2067,10 +2074,12 @@ internal class SDKMainActivity : BaseActivity(),
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
             } else {
-                favViewModel.addFavContent(
-                    mSongDetails.content_Id.toString(),
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.addFavContent(
+                        mSongDetails.content_Id.toString(),
+                        it1
+                    )
+                }
                 val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
                 val formatedTime = SimpleDateFormat("HH:mm").format(Date())
                 val DateTime = "$formatedDate  $formatedTime"
@@ -2125,11 +2134,11 @@ internal class SDKMainActivity : BaseActivity(),
         val artistname = bottomSheetDialog.findViewById<TextView>(R.id.desc)
         artistname?.text = mSongDetails.artistName ?: ""
         val image: ImageView? = bottomSheetDialog.findViewById(R.id.thumb)
-        val url = mSongDetails.imageUrl
+        val url: String? = mSongDetails.imageUrl
         val title: TextView? = bottomSheetDialog.findViewById(R.id.name)
         title?.text = mSongDetails.titleName ?: ""
         if (image != null) {
-            Glide.with(context).load(UtilHelper.getImageUrlSize300(url!!)).into(image)
+            Glide.with(context).load(url?.let { UtilHelper.getImageUrlSize300(it) }).into(image)
         }
         val imageArtist: ImageView? = bottomSheetDialog.findViewById(R.id.imgAlbum)
         val textAlbum: TextView? = bottomSheetDialog.findViewById(R.id.tvAlbums)
@@ -2243,10 +2252,12 @@ internal class SDKMainActivity : BaseActivity(),
 
         constraintFav?.setOnClickListener {
             if (isFav == true) {
-                favViewModel.deleteFavContent(
-                    mSongDetails.content_Id,
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.deleteFavContent(
+                        mSongDetails.content_Id,
+                        it1
+                    )
+                }
                 cacheRepository.deleteFavoriteById(mSongDetails.content_Id)
                 Toast.makeText(
                     applicationContext,
@@ -2257,10 +2268,12 @@ internal class SDKMainActivity : BaseActivity(),
                 favImage?.setImageResource(R.drawable.my_bl_sdk_ic_like)
                 isFav = false
             } else {
-                favViewModel.addFavContent(
-                    mSongDetails.content_Id,
-                    mSongDetails.content_Type!!
-                )
+                mSongDetails.content_Type?.let { it1 ->
+                    favViewModel.addFavContent(
+                        mSongDetails.content_Id,
+                        it1
+                    )
+                }
                 val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
                 val formatedTime = SimpleDateFormat("HH:mm").format(Date())
                 val DateTime = "$formatedDate  $formatedTime"

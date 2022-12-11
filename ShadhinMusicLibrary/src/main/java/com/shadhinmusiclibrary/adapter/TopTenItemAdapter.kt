@@ -60,7 +60,7 @@ internal class TopTenItemAdapter(
             val songName: TextView = itemView.findViewById(R.id.txt_title)
             val artistName: TextView = itemView.findViewById(R.id.txt_name)
             Glide.with(context)
-                .load(UtilHelper.getImageUrlSize300(iMusItem.imageUrl!!))
+                .load(iMusItem.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(songImage)
             songName.text = iMusItem.titleName
             artistName.text = iMusItem.artistName
