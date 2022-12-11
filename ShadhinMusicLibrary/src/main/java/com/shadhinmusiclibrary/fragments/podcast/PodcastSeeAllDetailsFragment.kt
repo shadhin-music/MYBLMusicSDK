@@ -83,21 +83,23 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
         viewModel.podcastSeeAllContent.observe(viewLifecycleOwner) { res ->
             dataAdapter = PodcastSeeAllDetailsAdapter(this, cacheRepository, favViewModel, injector)
            // progress.visibility = GONE
-            val recyclerView: RecyclerView = view?.findViewById(R.id.recyclerView)!!
+            val recyclerView: RecyclerView? = view?.findViewById(R.id.recyclerView)
             val layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = dataAdapter
-
-            for (item in res?.data?.data?.indices!!) {
-                if (isValidDesign(res.data.data[item].PatchType) == -1) {
-                    res.data.data[item].PatchType = ""
-                }
-                if (res.data.data[item].PatchType.isNotEmpty()) {
-                    res.data.data[item].let { it1 ->
-                        dataAdapter?.setData(listOf(it1))
-                        //dataAdapter?.notifyItemChanged(pageNum)
-                        dataAdapter?.notifyDataSetChanged()
+            recyclerView?.layoutManager = layoutManager
+            recyclerView?.adapter = dataAdapter
+            val dataRange = res.data?.data?.indices
+            if (dataRange != null) {
+                for (item in dataRange) {
+                    if (res.data.data.get(item).let { isValidDesign(it.PatchType) } == -1) {
+                        res?.data.data.get(item).PatchType = ""
+                    }
+                    if (res?.data.data.get(item).PatchType.isNotEmpty() == true) {
+                        res.data.data[item].let { it1 ->
+                            dataAdapter?.setData(listOf(it1))
+                            //dataAdapter?.notifyItemChanged(pageNum)
+                            dataAdapter?.notifyDataSetChanged()
+                        }
                     }
                 }
             }

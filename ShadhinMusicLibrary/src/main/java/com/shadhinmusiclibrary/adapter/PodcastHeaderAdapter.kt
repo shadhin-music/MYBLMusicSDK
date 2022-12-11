@@ -120,50 +120,71 @@ internal class PodcastHeaderAdapter(
                 .load(UtilHelper.getImageUrlSize300(url ?: ""))
                 .into(imageView)
             var isFav = false
-            val isAddedToFav =
-                cacheRepository?.getFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
-            if (isAddedToFav?.content_Id != null) {
-                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                isFav = true
-            } else {
-                ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                isFav = false
+
+            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
+                val isAddedToFav =
+                    cacheRepository?.getFavoriteById(contentId)
+                if (isAddedToFav?.content_Id != null) {
+                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                    isFav = true
+                } else {
+                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                    isFav = false
+                }
+
             }
+
 
             ivFavorite?.setOnClickListener {
                 if (isFav.equals(true)) {
+                    kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
+                        favViewModel.deleteFavContent(
+                           contentId,
+                            episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
+                        )
+                    }
 
-                    favViewModel.deleteFavContent(
-                        episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
-                        episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
-                    )
 
                     cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
                     Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
                     isFav = false
                 } else {
-                    favViewModel.addFavContent(
-                        episode?.get(position)?.TrackList?.get(0)?.content_Id.toString(),
-                        episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
-                    )
+                    kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
+                        favViewModel.addFavContent(
+                            contentId,
+                            episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
+                        )
+                    }
                     val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
                     val formatedTime = SimpleDateFormat("HH:mm").format(Date())
                     val DateTime = "$formatedDate  $formatedTime"
                     ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
                     cacheRepository?.insertFavSingleContent(
                         FavDataModel().apply {
-                            content_Id =
-                                episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
+                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
+                                content_Id = contentId
+                            }
+//                            content_Id =
+//                                episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
                             album_Id = episode?.get(position)?.Id.toString()
                             albumImage = episode?.get(position)?.ImageUrl
-                            artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
+                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.artistName?.let { artistname ->
+                                artistName =  artistname
+                            }
+                           // artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
                             artist_Id = ""
                             clientValue = 2
                             content_Type = episode?.get(position)?.ContentType.toString()
                             fav = "1"
-                            imageUrl = episode?.get(position)?.TrackList?.get(0)?.imageUrl
-                            playingUrl = episode?.get(position)?.TrackList?.get(0)?.playingUrl
+                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.imageUrl?.let { imageurl ->
+                                imageUrl =  imageurl
+                            }
+                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.playingUrl?.let { playingurl ->
+                                playingUrl =  playingurl
+                            }
+//                            imageUrl = episode?.get(position)?.TrackList?.get(0)?.imageUrl
+//                            playingUrl = episode?.get(position)?.TrackList?.get(0)?.playingUrl
                             rootContentId = ""
                             rootContentType = ""
                             titleName = episode?.get(position)?.Name
