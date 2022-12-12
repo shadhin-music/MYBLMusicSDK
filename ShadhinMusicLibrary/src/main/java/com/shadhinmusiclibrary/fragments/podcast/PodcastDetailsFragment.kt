@@ -85,6 +85,7 @@ internal class PodcastDetailsFragment : BaseFragment(),
             Log.e("PDF", "getPodcastDetailsInitialize: "+ Type)
         }
         cacheRepository = CacheRepository(requireContext())
+
         setupViewModel()
         Log.e("PDF", "getPodcastDetailsInitialize: "+ selectedEpisodeID)
 
@@ -96,7 +97,6 @@ internal class PodcastDetailsFragment : BaseFragment(),
             getPodcastDetailsInitialize()
             Log.e("PDF", "getPodcastDetailsInitialize")
         }
-
 
 
         setupAdapters()

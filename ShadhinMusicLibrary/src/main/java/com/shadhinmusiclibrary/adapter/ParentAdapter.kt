@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ internal class ParentAdapter(
             VIEW_PODCAST_LIVE -> R.layout.my_bl_sdk_item_bhoot_podcast
             VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
             VIEW_POPULAR_AMAR_TUNES -> R.layout.my_bl_sdk_item_popular_amar_tunes
+            VIEW_SHOW ->R.layout.my_bl_sdk_item_release_patch
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
@@ -76,7 +78,7 @@ internal class ParentAdapter(
             "amarTune" -> VIEW_POPULAR_AMAR_TUNES
             "download" -> VIEW_DOWNLOAD
             "PodcastLive" -> VIEW_PODCAST_LIVE
-//            "Artist" -> VIEW_AD
+            "Show" -> VIEW_SHOW
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
 //            is DataModel.Search -> VIEW_SEARCH
@@ -302,19 +304,19 @@ internal class ParentAdapter(
             }
         }
 
-        private fun bindPopularBands(homePatchItemModel: HomePatchItemModel) {
+        private fun bindPodcastShow(homePatchItemModel: HomePatchItemModel) {
             val seeAll: TextView = itemView.findViewById(R.id.tvSeeALL)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
             tvTitle.text = homePatchItemModel.Name
             seeAll.setOnClickListener {
-                //PopularArtistsFragment
                 homeCallBack.onClickSeeAll(homePatchItemModel)
+                Log.e("TAG","PATCH: "+ homePatchItemModel)
             }
 
             val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
             recyclerView.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-            // recyclerView.adapter = ArtistAdapter(homePatchItemModel, homeCallBack)
+             recyclerView.adapter = PodcastShowTypeAdapter(homePatchItemModel, homeCallBack)
         }
 
         private fun bindMadeForYou() {
@@ -371,6 +373,7 @@ internal class ParentAdapter(
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
                 "PodcastLive" -> bindBhoot(homePatchItemModel)
+                  "Show"->bindPodcastShow(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
@@ -411,6 +414,7 @@ internal class ParentAdapter(
         val VIEW_BL_MUSIC_OFFERS = 11
         val VIEW_TRENDING_MUSIC_VIDEO = 12
         val VIEW_PODCAST_LIVE = 13
+        val VIEW_SHOW= 14
         const val VIEW_TYPE = 10
     }
 }
