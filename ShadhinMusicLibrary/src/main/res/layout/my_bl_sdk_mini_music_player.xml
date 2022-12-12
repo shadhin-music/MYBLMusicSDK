@@ -17,6 +17,7 @@
         android:background="@drawable/my_bl_sdk_dialog_bg_top_left_right_radius_10dp"
         android:elevation="10dp"
         android:gravity="center"
+
         android:orientation="horizontal">
 
         <LinearLayout
