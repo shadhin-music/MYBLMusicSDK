@@ -632,8 +632,22 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.podcast_see_all_fragment
                 )
             }
+
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
+                DataContentType.CONTENT_TYPE_PS ->{
+                    //setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
+                        Bundle().apply {
+                            putSerializable(
+                                PatchItem,
+                                homePatchItem as Serializable
+                            )
+                        }, R.id.podcast_see_all_fragment
+                    )
+                    Log.e("TAG", "CHECKING: " + DataContentType)
+                }
                 DataContentType.CONTENT_TYPE_A -> {
                     //open artist details
                     setupNavGraphAndArg(

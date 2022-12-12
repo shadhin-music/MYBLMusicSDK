@@ -40,6 +40,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
 import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 import com.shadhinmusiclibrary.data.model.VideoModel
 import com.shadhinmusiclibrary.fragments.base.BaseFragment
+import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -171,6 +172,7 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         delay(2000)
                         observeData(searchText)
+                        mSuggestionAdapter?.swapCursor(cursor)
                         hideKeyboard(requireActivity())
                     }
                     observeDataTrendingItems("\"\"")
@@ -179,11 +181,11 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                     queryTextChangedJob?.cancel()
                     queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
                         delay(1000)
-//                        observeData(searchText)
+                        observeData(searchText)
                         observeData("\"\"")
-                        if (cursor != null) {
+
                             mSuggestionAdapter?.swapCursor(cursor)
-                        }
+                        //}
 //                        tvTrendingSearchItem.visibility = GONE
 //                        cvTrendingSearchItem.visibility = GONE
 //                        rvWeeklyTrending.visibility = GONE
@@ -197,11 +199,13 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                // val query: String = intent.getStringExtra(SearchManager.QUERY);
+                 var query: String? = requireActivity()?.intent?.getStringExtra(SearchManager.QUERY)
                 hideKeyboard(requireActivity())
-                searchText = query
+                if (query != null) {
+                    searchText = query
+                }
                 val suggestions = SearchRecentSuggestions(
-                    context,
+                   requireContext(),
                     MySuggestionProvider.AUTHORITY,
                     MySuggestionProvider.MODE
                 )
@@ -619,22 +623,31 @@ internal class SearchFragment : BaseFragment(), SearchItemCallBack {
                 startActivity(intent)
             }
             DataContentType.CONTENT_TYPE_S -> {
-                if (playerViewModel.currentMusic != null) {
-                    if ((songItem[clickItemPosition].rootContentType == playerViewModel.currentMusic?.rootType)) {
-                        if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
-                            playerViewModel.skipToQueueItem(clickItemPosition)
-                        } else {
-                            playerViewModel.togglePlayPause()
-                        }
-                    } else {
-                        playItem(
-                            songItem,
-                            clickItemPosition
-                        )
-                    }
-                } else {
-                    playItem(songItem, clickItemPosition)
-                }
+                playerViewModel.unSubscribe()
+                playerViewModel.subscribe(
+                    MusicPlayList(
+                        UtilHelper.getMusicListToSongDetailList(songItem),
+                        0
+                    ),
+                    false,
+                    clickItemPosition
+                )
+//                if (playerViewModel.currentMusic != null) {
+//                    if ((songItem[clickItemPosition].rootContentType == playerViewModel.currentMusic?.rootType)) {
+//                        if ((songItem[clickItemPosition].content_Id != playerViewModel.currentMusic?.mediaId)) {
+//                            playerViewModel.skipToQueueItem(clickItemPosition)
+//                        } else {
+//                            playerViewModel.togglePlayPause()
+//                        }
+//                    } else {
+//                        playItem(
+//                            songItem,
+//                            clickItemPosition
+//                        )
+//                    }
+//                } else {
+                   // playItem(songItem, clickItemPosition)
+               // }
             }
             DataContentType.CONTENT_TYPE_PT -> {
                 //play Podcast Track
