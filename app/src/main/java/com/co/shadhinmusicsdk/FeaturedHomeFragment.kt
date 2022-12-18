@@ -77,6 +77,7 @@ internal class FeaturedHomeFragment : Fragment() {
            // ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
 
         }
+        //back
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
 //
