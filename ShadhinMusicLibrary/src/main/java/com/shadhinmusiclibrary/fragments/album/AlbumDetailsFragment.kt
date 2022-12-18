@@ -151,35 +151,41 @@ internal class AlbumDetailsFragment : BaseFragment(),
 
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        albumViewModel.fetchAlbumContent(contentId)
-        albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
-            if (res.status == Status.SUCCESS) {
-                progressBar.visibility = GONE
-                if (res.data?.data != null && argHomePatchDetail != null) {
-                    albumsTrackAdapter.setData(
-                        res.data.data,
-                        argHomePatchDetail!!,
-                        playerViewModel.currentMusic?.mediaId
-                    )
-                    albumHeaderAdapter.setSongAndData(
-                        res.data.data,
-                        argHomePatchDetail!!,
-                        cacheRepository!!,
-                        favViewModel
-                    )
+        argHomePatchDetail?.let { homeDetails ->
+            albumViewModel.fetchAlbumContent(contentId)
+            albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
+                if (res.status == Status.SUCCESS) {
+                    progressBar.visibility = GONE
+                    if (res.data?.data != null && argHomePatchDetail != null) {
+                        homeDetails.titleName = res.data.name
+                        albumsTrackAdapter.setData(
+                            res.data.data,
+                            homeDetails,
+                            playerViewModel.currentMusic?.mediaId
+                        )
+                        albumHeaderAdapter.setSongAndData(
+                            res.data.data,
+                            homeDetails,
+                            cacheRepository!!,
+                            favViewModel
+                        )
+                    }
+                } else {
+                    progressBar.visibility = VISIBLE
                 }
-            } else {
-                progressBar.visibility = VISIBLE
             }
         }
-        viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
-        viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
-            if (res.status == Status.SUCCESS) {
-                artistAlbumsAdapter.setData(res.data)
-            } else {
-                viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
+
+            viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
+            viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
+                if (res.status == Status.SUCCESS) {
+
+                    artistAlbumsAdapter.setData(res.data)
+                } else {
+                    viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
+                }
             }
-        }
+
     }
 
     override fun onRootClickItem(mSongDetails: MutableList<IMusicModel>, clickItemPosition: Int) {

@@ -55,7 +55,7 @@ internal class ArtistHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: ArtistHeaderVH, position: Int) {
-        val shadhinSDKCallback:ShadhinSDKCallback? = null
+
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
@@ -64,14 +64,9 @@ internal class ArtistHeaderAdapter(
         holder.ivShareBtn?.setOnClickListener {
             val str = "${homePatchDetail?.artist_Id?:""}_${homePatchDetail?.content_Type?:""}"
 
-           // val  rccode =str.toBase64()//homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type?.toBase64()
-           // val encodedString: String = Base64.getEncoder().encodeToString(rccode.toByteArray())
            val code = UtilHelper.generateShareStrings(homePatchDetail?.artist_Id?:"", homePatchDetail?.content_Type?:"")
             sdkCallback?.onShare(code)
-        // Log.e("TAG","RCCODE: "+ homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type)
-//            Log.e("TAG", "RCCODE:  e ${rccode}" )
-//            Log.e("TAG","RCCODE: "+ rccode.fromBase64())
-            // itemClickCB.onRootClickItem(dataSongDetail, position)
+
         }
 
     }
