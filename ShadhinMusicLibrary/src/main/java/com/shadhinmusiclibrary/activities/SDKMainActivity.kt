@@ -74,6 +74,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
+import com.shadhinmusiclibrary.utils.share.ShareRC
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -183,6 +184,9 @@ internal class SDKMainActivity : BaseActivity(),
 
         //Will received request from Any page from MYBLL app
         val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
+        if(uiRequest == AppConstantUtils.RequesterRC){
+            handleRC()
+        }
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
             homeFragmentAccess()
         }
@@ -259,6 +263,13 @@ internal class SDKMainActivity : BaseActivity(),
         //  routeDataArtistType()
         Log.e("SDKMA", "onCreate: " + playerViewModel.isMediaDataAvailable())
         playerViewModel.startUserSession()
+    }
+
+    private fun handleRC() {
+        val rc =
+            intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
+        Log.i("onShare", "handleRC: ${ShareRC(rc)}")
+
     }
 
     val cacheRepository by lazy {

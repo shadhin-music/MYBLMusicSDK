@@ -1,12 +1,10 @@
 package com.shadhinmusiclibrary.utils.share
 
-import android.util.Log
 import com.shadhinmusiclibrary.data.IMusicModel
-import com.shadhinmusiclibrary.library.player.Constants
 import com.shadhinmusiclibrary.utils.fromBase64
 import com.shadhinmusiclibrary.utils.toBase64
 
-class ShareRC(private val code: String) : Share {
+class ShareRC(override val code: String) : Share {
     private val token: List<String>? by lazy { decodeToken() }
 
     override val contentId: String?
@@ -49,5 +47,5 @@ class ShareRC(private val code: String) : Share {
         }
     }
 
-
 }
+

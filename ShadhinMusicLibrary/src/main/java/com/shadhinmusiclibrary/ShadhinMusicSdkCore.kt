@@ -80,6 +80,18 @@ object ShadhinMusicSdkCore {
             }
         )
     }
+    @JvmStatic
+    fun openPatchFromRC(context: Context,rc:String){
+        context.startActivity(
+            Intent(
+                context,
+                SDKMainActivity::class.java
+            ).apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.RequesterRC)
+                putExtra(AppConstantUtils.DataContentRequestId, rc)
+            }
+        )
+    }
 
     @JvmStatic
     fun openRadio(reqContext: Context, radioId: String) {
@@ -88,34 +100,7 @@ object ShadhinMusicSdkCore {
         //todo for loop set seekable false
     }
 
-    @JvmStatic
-    fun handleShare(rcode:String, context: Context){
-        val rccode= rcode.fromBase64()
-        val content = rccode.split("_")
-        val contentId =content.get(0)
-        val contentType = content.get(1)
-        Log.e("TAG", "data: " + content.get(0))
-        Log.e("TAG", "data: " + content.get(1))
-//        val data = Bundle()
-//        data.putSerializable(
-//            AppConstantUtils.PatchItem,
-//           HomePatchItemModel("",contentType, listOf(),"","",0,0) as Serializable
-//        )
-//
-//         if (contentType.equals("A")){
-//             context.startActivity(
-//                 Intent(
-//                     context,
-//                     SDKMainActivity::class.java
-//                 ).apply {
-//                     putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Artist_Details)
-//                     putExtra(AppConstantUtils.PatchItem, data)
-//                     //putExtra(AppConstantUtils.PatchDetail, data)
-//                 }
-//             )
-//         }
 
-    }
 
     private fun getAndStartRadio(
         reqContext: Context,
