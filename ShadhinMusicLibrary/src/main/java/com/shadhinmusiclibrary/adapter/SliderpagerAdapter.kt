@@ -15,7 +15,7 @@ import com.shadhinmusiclibrary.data.model.HomePatchItemModel
 internal class SliderpagerAdapter(
     val homePatchDetailModel: MutableList<HomePatchDetailModel>,
     val homeCallBack: HomeCallBack,
-   val  homePatchItemModel: HomePatchItemModel
+    val homePatchItemModel: HomePatchItemModel
 ) :
     SliderViewAdapter<SliderpagerAdapter.SliderViewHolder>() {
 var sliderList: MutableList<HomePatchDetailModel> = homePatchDetailModel
@@ -27,7 +27,7 @@ var sliderList: MutableList<HomePatchDetailModel> = homePatchDetailModel
     override fun onCreateViewHolder(parent: ViewGroup?): SliderViewHolder {
 
         val inflate: View =
-            LayoutInflater.from(parent!!.context).inflate(R.layout.my_bl_sdk_banner_image_layout, null)
+            LayoutInflater.from(parent?.context).inflate(R.layout.my_bl_sdk_banner_image_layout, null)
 
         return SliderViewHolder(inflate)
     }
@@ -37,8 +37,12 @@ var sliderList: MutableList<HomePatchDetailModel> = homePatchDetailModel
         if (viewHolder != null) {
             val image = sliderList.get(position).bannerImage
           //  Log.e("TAG","DATA: "+ sliderList.get(position).imageUrl)
-            Glide.with(viewHolder.itemView).load(image?.replace("<\$size\$>", "984")).fitCenter()
-                .into(viewHolder.imageView)
+            viewHolder?.itemView?.let {
+                viewHolder?.imageView?.let { it1 ->
+                    Glide.with(it).load(image?.replace("<\$size\$>", "984")).fitCenter()
+                        .into(it1)
+                }
+            }
         }
         viewHolder?.imageView?.setOnClickListener {
             homeCallBack.onClickItemAndAllItem(position,homePatchItemModel)
@@ -48,6 +52,6 @@ var sliderList: MutableList<HomePatchDetailModel> = homePatchDetailModel
 
     class SliderViewHolder(itemView: View?) : SliderViewAdapter.ViewHolder(itemView) {
 
-        var imageView: ImageView = itemView!!.findViewById(R.id.imageViewMain)
+        var imageView: ImageView? = itemView?.findViewById(R.id.imageViewMain)
     }
 }

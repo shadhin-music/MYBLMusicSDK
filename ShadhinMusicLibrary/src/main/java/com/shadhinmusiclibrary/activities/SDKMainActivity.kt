@@ -604,6 +604,7 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.album_details_fragment
                     )
+                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
@@ -636,6 +637,7 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.s_type_details_fragment
                     )
+                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 homePatchDetail.content_Type?.contains("PD").toString() -> {
                     Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)

@@ -328,64 +328,20 @@ internal class ParentAdapter(
             lateinit var sliderView: SliderView
             lateinit var sliderAdapter: SliderpagerAdapter
             Log.e("TAG","DATA: "+ homePatchItemModel.Data as MutableList)
+
+            // on below line we are initializing our
+            // slider adapter and adding our list to it.
+            //sliderAdapter =SliderpagerAdapter(imageUrl)
             sliderView = itemView.findViewById(R.id.imageSlider)
             sliderAdapter = SliderpagerAdapter(homePatchItemModel.Data as MutableList, homeCallBack, homePatchItemModel)
             sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
-          //  sliderView.setSliderAdapter(sliderAdapter)
+            sliderView.setSliderAdapter(sliderAdapter)
             sliderView.setIndicatorEnabled(true)
-           // sliderView.scrollTimeInSec = 3
-            //sliderView.isAutoCycle = true
-           // sliderView.startAutoCycle()
-//
-//            var sliderDotspanel: LinearLayout
-//            var dotscount: Int
-//            var dots: Array<ImageView?>
-//            val viewPager = itemView.findViewById<ViewPager>(R.id.banner_viewpager)
-//
-//            sliderDotspanel = itemView.findViewById(R.id.pager_dots) as LinearLayout
-//
-//            val homeViewPagerAdapter = BannerPagerAdapter(mContext,homePatchItemModel.Data)
+//            sliderView.scrollTimeInSec = 3
+//            sliderView.isAutoCycle = true
+//            sliderView.startAutoCycle()
 //
 //
-//            viewPager.adapter = homeViewPagerAdapter
-
-//           val ivArrayDotsPager = homePatchItemModel.Data[]
-//
-//           // dotscount = homeViewPagerAdapter?.getCount()
-//            dots = ivArrayDotsPager?.let { arrayOfNulls(2) }!!
-//
-//            for (i in 0 until ivArrayDotsPager) {
-//                dots[i] = ImageView(mContext)
-//                dots[i]!!.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.default_dot))
-//                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT)
-//                params.setMargins(8, 0, 8, 0)
-//                sliderDotspanel.addView(dots[i], params)
-//            }
-//            dots[0]!!.setImageDrawable(ContextCompat.getDrawable(mContext,
-//                R.drawable.selected_dot))
-
-//            viewPager.addOnPageChangeListener(object : OnPageChangeListener {
-//                override fun onPageScrolled(
-//                    position: Int,
-//                    positionOffset: Float,
-//                    positionOffsetPixels: Int,
-//                ) {
-//                }
-//
-//                override fun onPageSelected(position: Int) {
-////                    for (i in 0 until ivArrayDotsPager) {
-////                        dots[i]!!.setImageDrawable(ContextCompat.getDrawable(mContext,
-////                            R.drawable.default_dot))
-////                    }
-////                   // dots[position]!!.setImageDrawable(ContextCompat.getDrawable(
-////                   mContext,
-////                        R.drawable.selected_dot))
-//                }
-//
-//                override fun onPageScrollStateChanged(state: Int) {}
-//            })
-
         }
 
         private fun bindLatestRelease() {

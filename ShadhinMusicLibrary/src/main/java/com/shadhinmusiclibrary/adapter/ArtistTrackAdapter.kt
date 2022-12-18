@@ -52,7 +52,6 @@ internal class ArtistTrackAdapter(
                 artistContent
             )
         }
-
         if (mArtistConData.isPlaying) {
             holder.tvSongName?.setTextColor(
                 ContextCompat.getColor(holder.context, R.color.my_sdk_color_primary)
