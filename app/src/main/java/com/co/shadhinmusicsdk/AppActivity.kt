@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.ShadhinSDKCallback
+import com.shadhinmusiclibrary.utils.share.ShareRC
 
 
 class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
@@ -88,7 +89,10 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     override fun onShare(rCode: String) {
-        Log.i("APPActivity", "isTokenValid:"+ rCode)
+        Log.i("onShare", "onShare: ${ShareRC(rCode)}")
+        Log.i("onShare", "onShare: ${ShareRC.generate(null,"PDBC")}")
+        Log.i("onShare", "onShare: ${ShareRC.generate("1234","A")}")
+
     }
 
 }
