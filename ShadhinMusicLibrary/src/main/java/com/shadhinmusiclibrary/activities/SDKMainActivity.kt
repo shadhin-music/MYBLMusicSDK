@@ -270,7 +270,6 @@ internal class SDKMainActivity : BaseActivity(),
         val shared = ShareRC(rc)
 
         if (shared.isPodcast) {
-
             setupNavGraphAndArg(
                 R.navigation.my_bl_sdk_nav_graph_common,
                 Bundle().apply {
@@ -298,6 +297,21 @@ internal class SDKMainActivity : BaseActivity(),
                                 details as Serializable
                             )
                         }, R.id.artist_details_fragment
+                    )
+                }
+                DataContentType.CONTENT_TYPE_R -> {
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
+                        Bundle().apply {
+                            val details = HomePatchDetailModel().apply {
+                                this.album_Id = shared.contentId?:""
+                                this.content_Type = shared.contentType
+                            }
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                details as Serializable
+                            )
+                        }, R.id.album_details_fragment
                     )
                 }
                 DataContentType.CONTENT_TYPE_S -> {
