@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
@@ -120,7 +121,6 @@ internal class PodcastHeaderAdapter(
                 .load(UtilHelper.getImageUrlSize300(url ?: ""))
                 .into(imageView)
             var isFav = false
-
             kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
                 val isAddedToFav =
                     cacheRepository?.getFavoriteById(contentId)
@@ -134,67 +134,85 @@ internal class PodcastHeaderAdapter(
 
             }
 
+            if(episode?.get(position)?.TrackList.isNullOrEmpty().equals(false)) {
 
-            ivFavorite?.setOnClickListener {
-                if (isFav.equals(true)) {
-                    kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
-                        favViewModel.deleteFavContent(
-                           contentId,
-                            episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
-                        )
-                    }
+                ivFavorite?.setOnClickListener {
+                    if (isFav.equals(true)) {
+                        kotlin.runCatching { episode?.get(position)?.TrackList?.first() }
+                            .getOrNull()?.content_Id?.let { contentId ->
+                            favViewModel.deleteFavContent(
+                                contentId,
+                                episode?.get(position)?.TrackList?.get(0)?.content_Type ?: ""
+                            )
+                        }
 
 
-                    cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
-                    Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
-                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
-                    isFav = false
-                } else {
-                    kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
-                        favViewModel.addFavContent(
-                            contentId,
-                            episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
-                        )
-                    }
-                    val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-                    val formatedTime = SimpleDateFormat("HH:mm").format(Date())
-                    val DateTime = "$formatedDate  $formatedTime"
-                    ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
-                    cacheRepository?.insertFavSingleContent(
-                        FavDataModel().apply {
-                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.content_Id?.let { contentId ->
-                                content_Id = contentId
-                            }
+                        cacheRepository?.deleteFavoriteById(episode?.get(position)?.TrackList?.get(0)?.content_Id.toString())
+                        Toast.makeText(context, "Removed from favorite", Toast.LENGTH_LONG).show()
+                        ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_favorite_border)
+                        isFav = false
+                    } else {
+                        kotlin.runCatching { episode?.get(position)?.TrackList?.first() }
+                            .getOrNull()?.content_Id?.let { contentId ->
+                            favViewModel.addFavContent(
+                                contentId,
+                                episode?.get(position)?.TrackList?.get(0)?.content_Type.toString()
+                            )
+                        }
+                        val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+                        val formatedTime = SimpleDateFormat("HH:mm").format(Date())
+                        val DateTime = "$formatedDate  $formatedTime"
+                        ivFavorite?.setImageResource(R.drawable.my_bl_sdk_ic_filled_favorite)
+                        cacheRepository?.insertFavSingleContent(
+                            FavDataModel().apply {
+                                kotlin.runCatching { episode?.get(position)?.TrackList?.first() }
+                                    .getOrNull()?.content_Id?.let { contentId ->
+                                    content_Id = contentId
+                                }
 //                            content_Id =
 //                                episode?.get(position)?.TrackList?.get(0)?.content_Id.toString()
-                            album_Id = episode?.get(position)?.Id.toString()
-                            albumImage = episode?.get(position)?.ImageUrl
-                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.artistName?.let { artistname ->
-                                artistName =  artistname
-                            }
-                           // artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
-                            artist_Id = ""
-                            clientValue = 2
-                            content_Type = episode?.get(position)?.ContentType.toString()
-                            fav = "1"
-                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.imageUrl?.let { imageurl ->
-                                imageUrl =  imageurl
-                            }
-                            kotlin.runCatching {episode?.get(position)?.TrackList?.first()}.getOrNull()?.playingUrl?.let { playingurl ->
-                                playingUrl =  playingurl
-                            }
+                                album_Id = episode?.get(position)?.Id.toString()
+                                albumImage = episode?.get(position)?.ImageUrl
+                                kotlin.runCatching { episode?.get(position)?.TrackList?.first() }
+                                    .getOrNull()?.artistName?.let { artistname ->
+                                    artistName = artistname
+                                }
+                                // artistName = episode?.get(position)?.TrackList?.get(0)?.artistName
+                                artist_Id = ""
+                                clientValue = 2
+                                content_Type = episode?.get(position)?.ContentType.toString()
+                                fav = "1"
+                                kotlin.runCatching { episode?.get(position)?.TrackList?.first() }
+                                    .getOrNull()?.imageUrl?.let { imageurl ->
+                                    imageUrl = imageurl
+                                }
+//                            if(episode?.get(position)?.TrackList?.get(0)?.playingUrl?.isNullOrEmpty()==false){
+//                                playingUrl = homePatchDetail?.playingUrl
+//                                Log.e("TAG","Playurl"+ playingUrl)
+//                            }else {
+                                kotlin.runCatching {
+                                    episode?.get(position)?.TrackList?.first()
+                                }.getOrNull()?.playingUrl?.let { playingurl ->
+                                    playingUrl = playingurl
+
+                                }
+                                //  }
 //                            imageUrl = episode?.get(position)?.TrackList?.get(0)?.imageUrl
 //                            playingUrl = episode?.get(position)?.TrackList?.get(0)?.playingUrl
-                            rootContentId = ""
-                            rootContentType = ""
-                            titleName = episode?.get(position)?.Name
-                            total_duration = ""
-                            createDate =DateTime
-                        }
-                    )
-                    isFav = true
-                    Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
+                                rootContentId = ""
+                                rootContentType = ""
+                                titleName =
+                                    episode?.get(position)?.Name ?: homePatchDetail?.titleName
+                                total_duration = ""
+                                createDate = DateTime
+                            }
+                        )
+                        isFav = true
+                        Toast.makeText(context, "Added to favorite", Toast.LENGTH_LONG).show()
+                    }
                 }
+            } else{
+               // Toast.makeText(context,"Track is empty",LENGTH_SHORT).show()
             }
         }
     }

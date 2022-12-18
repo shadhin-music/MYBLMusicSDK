@@ -1,5 +1,6 @@
 package com.shadhinmusiclibrary.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -203,7 +204,10 @@ internal class AlbumHeaderAdapter(
                                 rootContentType = homePatchDetail.rootContentType
                             }
                             if (homePatchDetail != null) {
-                                titleName = homePatchDetail.titleName
+                                titleName = homePatchDetail.titleName?:homePatchDetail.album_Name
+                                Log.e("TAG","NAME: " + homePatchDetail.album_Name )
+//                                Log.e("TAG","NAME123: " + dataSongDetail.get(absoluteAdapterPosition).album_Id)
+//                                Log.e("TAG","NAME123: " + dataSongDetail.get(absoluteAdapterPosition).album_Name)
                             }
                             createDate = DateTime
                         }
