@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.HomePatchDetailModel
@@ -23,6 +25,7 @@ import java.util.*
 internal class AlbumHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
     private val itemClickCB: CommonPlayControlCallback,
+    private val sdkCallback: ShadhinSDKCallback?,
 ) : RecyclerView.Adapter<AlbumHeaderAdapter.HeaderViewHolder>() {
 
     var cacheRepository: CacheRepository? = null
@@ -44,6 +47,18 @@ internal class AlbumHeaderAdapter(
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
             itemClickCB.onRootClickItem(dataSongDetail, position)
+        }
+        holder.ivShareBtn?.setOnClickListener {
+            val str = "${homePatchDetail?.artist_Id?:""}_${homePatchDetail?.content_Type?:""}"
+
+            // val  rccode =str.toBase64()//homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type?.toBase64()
+            // val encodedString: String = Base64.getEncoder().encodeToString(rccode.toByteArray())
+            val code = UtilHelper.generateShareStrings(homePatchDetail?.album_Id?:"", homePatchDetail?.content_Type?:"")
+            sdkCallback?.onShare(code)
+            // Log.e("TAG","RCCODE: "+ homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type)
+//            Log.e("TAG", "RCCODE:  e ${rccode}" )
+//            Log.e("TAG","RCCODE: "+ rccode.fromBase64())
+            // itemClickCB.onRootClickItem(dataSongDetail, position)
         }
     }
 
@@ -86,6 +101,7 @@ internal class AlbumHeaderAdapter(
         private lateinit var ivThumbCurrentPlayItem: ImageView
         private lateinit var tvCurrentAlbumName: TextView
         private lateinit var tvArtistName: TextView
+        var ivShareBtn: ImageView? = null
         val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
         val formatedTime = SimpleDateFormat("HH:mm").format(Date())
         val DateTime = "$formatedDate  $formatedTime"
@@ -97,7 +113,8 @@ internal class AlbumHeaderAdapter(
             cacheRepository: CacheRepository,
             favViewModel: FavViewModel
         ) {
-
+            ivShareBtn = itemView.findViewById(R.id.share_btn_fab)
+            ivShareBtn?.visibility = VISIBLE
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)

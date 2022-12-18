@@ -82,7 +82,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
         searchBar.setOnClickListener {
             openSearch()
         }
-        albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this)
+        albumHeaderAdapter = AlbumHeaderAdapter(argHomePatchDetail, this, injector.sdkCallback)
         albumsTrackAdapter = AlbumsTrackAdapter(this, this, cacheRepository)
         footerAdapter = HomeFooterAdapter()
         setupViewModel()
