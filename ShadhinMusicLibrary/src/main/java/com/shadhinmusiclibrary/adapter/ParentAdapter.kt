@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 
+
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.autoimageslider.SliderView
 import com.shadhinmusiclibrary.callBackService.DownloadClickCallBack
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.callBackService.PodcastTrackCallback
@@ -26,7 +28,7 @@ internal class ParentAdapter(
     var homeCallBack: HomeCallBack,
     val searchCb: SearchClickCallBack,
     val downloadClickCallBack: DownloadClickCallBack,
-    val podcastTrackClick: PodcastTrackCallback
+    val podcastTrackClick: PodcastTrackCallback,
     /*,val radioCallBack: RadioTrackCallBack*/
 ) : RecyclerView.Adapter<ParentAdapter.DataAdapterViewHolder>() {
     private var homeListData: MutableList<HomePatchItemModel> = mutableListOf()
@@ -46,6 +48,7 @@ internal class ParentAdapter(
             VIEW_DOWNLOAD -> R.layout.my_bl_sdk_item_my_fav
             VIEW_POPULAR_AMAR_TUNES -> R.layout.my_bl_sdk_item_popular_amar_tunes
             VIEW_SHOW ->R.layout.my_bl_sdk_item_release_patch
+            VIEW_BANNER ->R.layout.my_bl_sdk_banner
 //            VIEW_POPULAR_BANDS -> R.layout.item_top_trending
 //            VIEW_MADE_FOR_YOU -> R.layout.item_top_trending
 //            VIEW_LATEST_RELEASE -> R.layout.item_top_trending
@@ -79,6 +82,7 @@ internal class ParentAdapter(
             "download" -> VIEW_DOWNLOAD
             "PodcastLive" -> VIEW_PODCAST_LIVE
             "Show" -> VIEW_SHOW
+            "Discover"-> VIEW_BANNER
             //adapterData[0].data[0].Design -> VIEW_ARTIST
             //           is DataModel.Artist -> VIEW_ARTIST
 //            is DataModel.Search -> VIEW_SEARCH
@@ -319,13 +323,69 @@ internal class ParentAdapter(
              recyclerView.adapter = PodcastShowTypeAdapter(homePatchItemModel, homeCallBack)
         }
 
-        private fun bindMadeForYou() {
-            val title: TextView = itemView.findViewById(R.id.tvTitle)
-            title.text = "Made For You"
-            val recyclerView: RecyclerView = itemView.findViewById(R.id.recyclerView)
-            recyclerView.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-            //  recyclerView.adapter = TopTrendingAdapter(data)
+        private fun bindBanner(homePatchItemModel: HomePatchItemModel) {
+
+            lateinit var sliderView: SliderView
+            lateinit var sliderAdapter: SliderpagerAdapter
+            Log.e("TAG","DATA: "+ homePatchItemModel.Data as MutableList)
+            sliderView = itemView.findViewById(R.id.imageSlider)
+            sliderAdapter = SliderpagerAdapter(homePatchItemModel.Data as MutableList, homeCallBack, homePatchItemModel)
+            sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
+            sliderView.setSliderAdapter(sliderAdapter)
+            sliderView.setIndicatorEnabled(true)
+           // sliderView.scrollTimeInSec = 3
+            //sliderView.isAutoCycle = true
+           // sliderView.startAutoCycle()
+//
+//            var sliderDotspanel: LinearLayout
+//            var dotscount: Int
+//            var dots: Array<ImageView?>
+//            val viewPager = itemView.findViewById<ViewPager>(R.id.banner_viewpager)
+//
+//            sliderDotspanel = itemView.findViewById(R.id.pager_dots) as LinearLayout
+//
+//            val homeViewPagerAdapter = BannerPagerAdapter(mContext,homePatchItemModel.Data)
+//
+//
+//            viewPager.adapter = homeViewPagerAdapter
+
+//           val ivArrayDotsPager = homePatchItemModel.Data[]
+//
+//           // dotscount = homeViewPagerAdapter?.getCount()
+//            dots = ivArrayDotsPager?.let { arrayOfNulls(2) }!!
+//
+//            for (i in 0 until ivArrayDotsPager) {
+//                dots[i] = ImageView(mContext)
+//                dots[i]!!.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.default_dot))
+//                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT)
+//                params.setMargins(8, 0, 8, 0)
+//                sliderDotspanel.addView(dots[i], params)
+//            }
+//            dots[0]!!.setImageDrawable(ContextCompat.getDrawable(mContext,
+//                R.drawable.selected_dot))
+
+//            viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+//                override fun onPageScrolled(
+//                    position: Int,
+//                    positionOffset: Float,
+//                    positionOffsetPixels: Int,
+//                ) {
+//                }
+//
+//                override fun onPageSelected(position: Int) {
+////                    for (i in 0 until ivArrayDotsPager) {
+////                        dots[i]!!.setImageDrawable(ContextCompat.getDrawable(mContext,
+////                            R.drawable.default_dot))
+////                    }
+////                   // dots[position]!!.setImageDrawable(ContextCompat.getDrawable(
+////                   mContext,
+////                        R.drawable.selected_dot))
+//                }
+//
+//                override fun onPageScrollStateChanged(state: Int) {}
+//            })
+
         }
 
         private fun bindLatestRelease() {
@@ -374,6 +434,7 @@ internal class ParentAdapter(
                 "download" -> bindDownload(homePatchItemModel)
                 "PodcastLive" -> bindBhoot(homePatchItemModel)
                   "Show"->bindPodcastShow(homePatchItemModel)
+                "Discover"->bindBanner(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)
 //                "Artist" ->bindAd()
@@ -399,6 +460,8 @@ internal class ParentAdapter(
         }
     }
 
+
+
     public companion object {
         val VIEW_SEARCH = 0
         val VIEW_ARTIST = 1
@@ -415,6 +478,7 @@ internal class ParentAdapter(
         val VIEW_TRENDING_MUSIC_VIDEO = 12
         val VIEW_PODCAST_LIVE = 13
         val VIEW_SHOW= 14
+        val  VIEW_BANNER = 15
         const val VIEW_TYPE = 10
     }
 }

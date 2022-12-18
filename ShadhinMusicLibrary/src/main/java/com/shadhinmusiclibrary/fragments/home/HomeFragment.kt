@@ -271,6 +271,7 @@ internal class HomeFragment : BaseFragment(),
             "download" -> ParentAdapter.VIEW_DOWNLOAD
             "PodcastLive" -> ParentAdapter.VIEW_PODCAST_LIVE
             "Show" ->ParentAdapter.VIEW_PODCAST_LIVE
+            "Discover" ->ParentAdapter.VIEW_BANNER
             else -> {
                 -1
             }

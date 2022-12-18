@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'maven-publish'
     id 'kotlin-kapt'
+
 }
 
 android {
@@ -63,7 +64,10 @@ dependencies {
     //image to get color and set in player background
     implementation 'androidx.palette:palette:1.0.0'
     implementation "androidx.room:room-runtime:2.3.0"
+    implementation 'com.google.android.gms:play-services-fitness:21.1.0'
     kapt "androidx.room:room-compiler:2.3.0"
+
+
 }
 //For Maven Publish
 afterEvaluate {

@@ -29,6 +29,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
                 mLoginData.accessToken.toString(),
                 this
             )
+           // ShadhinMusicSdkCore.
         }
 //        val buttonHome: Button = findViewById(R.id.btn_click)
 //        buttonHome.setOnClickListener {
@@ -85,4 +86,9 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     override fun tokenStatus(isTokenValid: Boolean, error: String) {
         Log.i("APPActivity", "isTokenValid: $isTokenValid $error ")
     }
+
+    override fun onShare(rCode: String) {
+
+    }
+
 }

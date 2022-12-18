@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,12 +23,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.util.Base64Utils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
-import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
+import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.callBackService.HomeCallBack
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistContentModel
@@ -42,6 +45,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.Status
 import com.shadhinmusiclibrary.utils.UtilHelper
 import java.io.Serializable
+
 
 internal class ArtistDetailsFragment : BaseFragment(),
     HomeCallBack,
@@ -238,7 +242,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
 
     override fun onClickItemAndAllItem(
         itemPosition: Int,
-        selectedHomePatchItem: HomePatchItemModel
+        selectedHomePatchItem: HomePatchItemModel,
     ) {
         //  setAdapter(patch)
         argHomePatchDetail = selectedHomePatchItem.Data[itemPosition]
@@ -342,7 +346,7 @@ internal class ArtistDetailsFragment : BaseFragment(),
 
     override fun getCurrentVH(
         currentVH: RecyclerView.ViewHolder,
-        songDetails: MutableList<IMusicModel>
+        songDetails: MutableList<IMusicModel>,
     ) {
 //        val mSongDet = artistTrackAdapter.artistSongList
         val artistHeaderVH = currentVH as ArtistHeaderAdapter.ArtistHeaderVH
@@ -450,4 +454,9 @@ internal class ArtistDetailsFragment : BaseFragment(),
             argHomePatchDetail
         )
     }
+
+
+
+
+
 }

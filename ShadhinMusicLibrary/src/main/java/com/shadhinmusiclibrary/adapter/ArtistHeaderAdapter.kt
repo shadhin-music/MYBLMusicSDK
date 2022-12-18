@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.text.Html
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.shadhinmusiclibrary.R
+import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.callBackService.CommonPlayControlCallback
 import com.shadhinmusiclibrary.data.IMusicModel
 import com.shadhinmusiclibrary.data.model.ArtistBannerModel
@@ -25,8 +27,14 @@ import com.shadhinmusiclibrary.fragments.fav.FavViewModel
 import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.utils.ExpandableTextView
 import com.shadhinmusiclibrary.utils.UtilHelper
+import com.shadhinmusiclibrary.utils.fromBase64
+import com.shadhinmusiclibrary.utils.toBase64
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Base64.getDecoder
+
 
 internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
@@ -46,12 +54,27 @@ internal class ArtistHeaderAdapter(
     }
 
     override fun onBindViewHolder(holder: ArtistHeaderVH, position: Int) {
+        val shadhinSDKCallback:ShadhinSDKCallback? = null
         holder.bindItems(homePatchDetail)
         itemClickCB.getCurrentVH(holder, dataSongDetail)
         holder.ivPlayBtn?.setOnClickListener {
             itemClickCB.onRootClickItem(dataSongDetail, position)
         }
+        holder.ivShareBtn?.setOnClickListener {
+            val str = "${homePatchDetail?.artist_Id?:""}_${homePatchDetail?.content_Type?:""}"
+
+           // val  rccode =str.toBase64()//homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type?.toBase64()
+           // val encodedString: String = Base64.getEncoder().encodeToString(rccode.toByteArray())
+           UtilHelper.generateShareStrings(homePatchDetail?.artist_Id?:"", homePatchDetail?.content_Type?:"")
+        // Log.e("TAG","RCCODE: "+ homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type)
+//            Log.e("TAG", "RCCODE:  e ${rccode}" )
+//            Log.e("TAG","RCCODE: "+ rccode.fromBase64())
+            // itemClickCB.onRootClickItem(dataSongDetail, position)
+        }
+
     }
+
+
 
     override fun getItemViewType(position: Int) = VIEW_TYPE
 
@@ -61,7 +84,7 @@ internal class ArtistHeaderAdapter(
 
     fun setSongAndData(
         data: MutableList<ArtistContentDataModel>,
-        rootPatch: HomePatchDetailModel
+        rootPatch: HomePatchDetailModel,
     ) {
 //        this.dataSongDetail = mutableListOf()
         for (songItem in data) {
@@ -104,6 +127,7 @@ internal class ArtistHeaderAdapter(
     inner class ArtistHeaderVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.getContext()
         var ivPlayBtn: ImageView? = null
+        var ivShareBtn: ImageView? = null
         var ivFavorite: ImageView? = null
         val formatedDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
         val formatedTime = SimpleDateFormat("HH:mm").format(Date())
@@ -112,6 +136,7 @@ internal class ArtistHeaderAdapter(
             if (homePatchDetail != null) {
                 val imageView: ImageView = itemView.findViewById(R.id.thumb)
                 ivPlayBtn = itemView.findViewById(R.id.iv_play_btn)
+                ivShareBtn = itemView.findViewById(R.id.share_btn_fab)
                 ivFavorite = itemView.findViewById(R.id.favorite)
 //            val url: String = homePatchDetail!!.getImageUrl300Size()
                 val textArtist: TextView = itemView.findViewById(R.id.name)

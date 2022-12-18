@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.di
 
 import android.content.Context
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.data.remote.ApiLoginService
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.data.repository.*
@@ -236,5 +237,6 @@ internal class Module(private val applicationContext: Context) {
     val playerViewModelFactory: PlayerViewModelFactory
         get() = PlayerViewModelFactory(musicServiceController, userSessionRepository)
 
-
+    val sdkCallback:ShadhinSDKCallback?
+        get() = SingleCallback.INSTANCE
 }

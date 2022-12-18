@@ -12,6 +12,7 @@ internal object AppConstantUtils {
 
     const val SingleDataItem = "single_data_item"
     const val PatchItem = "patch_item"
+
     const val Artist = "artist"
     const val Album = "album"
     const val PatchDetail = "patch_detail"
@@ -27,7 +28,7 @@ internal object AppConstantUtils {
     const val DataContentRequestId = "DataContentRequestId"
     const val UI_Request_Type = "UIName"
     const val Requester_Name_Home = "HomeFragment"
-    const val Requester_Name_Fav_Artist = "FavArtistDetails"
+    const val Requester_Name_Artist_Details = "ArtistDetails"
     const val Requester_Name_Search = "SearchFragment"
     const val Requester_Name_Download = "DownloadFragment"
     const val Requester_Name_Watchlater = "WatchlaterFragment"

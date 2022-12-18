@@ -70,6 +70,7 @@ import com.shadhinmusiclibrary.library.player.utils.CacheRepository
 import com.shadhinmusiclibrary.library.player.utils.isPlaying
 import com.shadhinmusiclibrary.library.slidinguppanel.SlidingUpPanelLayout
 import com.shadhinmusiclibrary.utils.*
+import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
@@ -189,6 +190,9 @@ internal class SDKMainActivity : BaseActivity(),
         if (uiRequest == AppConstantUtils.Requester_Name_API) {
             patchFragmentAccess()
         }
+        if (uiRequest == AppConstantUtils.Requester_Name_Artist_Details) {
+            shareFragmentAccess()
+        }
         if (uiRequest == AppConstantUtils.Requester_Name_Search) {
             searchFragmentAccess()
         }
@@ -206,6 +210,9 @@ internal class SDKMainActivity : BaseActivity(),
         }
         if (uiRequest == AppConstantUtils.Requester_Name_CreatePlaylist) {
             createPlaylistFragmentAccess()
+        }
+        if (uiRequest == AppConstantUtils.Requester_Name_CreatedPlaylistDetails) {
+            createdPlaylistDetailsFragmentAccess()
         }
         if (uiRequest == AppConstantUtils.Requester_Name_CreatedPlaylistDetails) {
             createdPlaylistDetailsFragmentAccess()
@@ -268,6 +275,25 @@ internal class SDKMainActivity : BaseActivity(),
         )
     }
 
+    private fun shareFragmentAccess() {
+        val patch = intent.extras!!.getBundle(PatchItem)!!
+            .getSerializable(PatchItem) as HomePatchItemModel
+        val patchDetail = intent.extras!!.getBundle(PatchDetail)!!
+            .getSerializable(PatchDetail) as HomePatchDetailModel
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch
+                )
+                putSerializable(
+                    PatchDetail,
+                    patchDetail as Serializable
+                )
+            }, R.id.artist_details_fragment
+        )
+    }
     private fun downloadFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel

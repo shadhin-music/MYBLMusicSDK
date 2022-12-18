@@ -25,7 +25,7 @@ internal class PodcastSSTypeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.my_bl_sdk_podcast_ss_type, parent, false)
+            .inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 
@@ -43,10 +43,10 @@ internal class PodcastSSTypeAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val mContext = itemView.context
         fun bindItems() {
-            val textViewName = itemView.findViewById(R.id.title) as TextView
+            val textViewName = itemView.findViewById(R.id.txt_title) as TextView
            // val textViewSubtitle = itemView.findViewById(R.id.sub_title) as TextView
            // val show_des = itemView.findViewById(R.id.show_des) as TextView
-            val imageView = itemView.findViewById(R.id.content_img) as ImageView
+            val imageView = itemView.findViewById(R.id.image) as ImageView
 
             Glide.with(mContext)
                 .load(

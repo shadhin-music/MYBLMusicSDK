@@ -2,16 +2,21 @@ package com.shadhinmusiclibrary
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.activities.MusicActivity
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.APIResponse
+import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.di.ShadhinApp
 import com.shadhinmusiclibrary.di.single.RetrofitClient
+import com.shadhinmusiclibrary.di.single.SingleCallback
 import com.shadhinmusiclibrary.di.single.SingleMusicServiceConnection
 import com.shadhinmusiclibrary.di.single.SinglePlayerApiService
 import com.shadhinmusiclibrary.fragments.home.HomeFragment
@@ -19,16 +24,18 @@ import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.UtilsOkHttp
+import com.shadhinmusiclibrary.utils.fromBase64
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.Serializable
 
 @Keep
 object ShadhinMusicSdkCore {
     private var backPressCount = 0
     private var scope: CoroutineScope? = null
-
+    private var sdkCallback:ShadhinSDKCallback ?= null
     //get Music frangment
     @JvmStatic
     fun getMusicFragment(): Fragment {
@@ -46,11 +53,12 @@ object ShadhinMusicSdkCore {
      */
     @JvmStatic
     fun initializeSDK(context: Context, token: String, refSdkCall: ShadhinSDKCallback) {
+        SingleCallback.INSTANCE = refSdkCall
         scope = CoroutineScope(Dispatchers.IO)
         scope?.launch {
             val res = ShadhinApp.module(context).authRepository().login(token)
             withContext(Dispatchers.Main) {
-                refSdkCall.tokenStatus(res.first, res.second ?: "")
+                SingleCallback.INSTANCE?.tokenStatus(res.first, res.second ?: "")
             }
         }
     }
@@ -78,6 +86,35 @@ object ShadhinMusicSdkCore {
         //todo retrieve playlist tracks by api
         getAndStartRadio(reqContext, radioId)
         //todo for loop set seekable false
+    }
+
+    @JvmStatic
+    fun handleShare(rcode:String, context: Context){
+        val rccode= rcode.fromBase64()
+        val content = rccode.split("_")
+        val contentId =content.get(0)
+        val contentType = content.get(1)
+        Log.e("TAG", "data: " + content.get(0))
+        Log.e("TAG", "data: " + content.get(1))
+//        val data = Bundle()
+//        data.putSerializable(
+//            AppConstantUtils.PatchItem,
+//           HomePatchItemModel("",contentType, listOf(),"","",0,0) as Serializable
+//        )
+//
+//         if (contentType.equals("A")){
+//             context.startActivity(
+//                 Intent(
+//                     context,
+//                     SDKMainActivity::class.java
+//                 ).apply {
+//                     putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.Requester_Name_Artist_Details)
+//                     putExtra(AppConstantUtils.PatchItem, data)
+//                     //putExtra(AppConstantUtils.PatchDetail, data)
+//                 }
+//             )
+//         }
+
     }
 
     private fun getAndStartRadio(

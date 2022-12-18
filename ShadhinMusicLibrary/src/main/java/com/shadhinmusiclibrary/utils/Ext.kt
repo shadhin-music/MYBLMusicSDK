@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
+import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -27,6 +28,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Serializable
 import java.lang.reflect.Modifier
+import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -726,3 +728,13 @@ fun calculateVideoHeight(displayWidth:Int,videoWidth:Int,videoHeight:Int): Int {
 fun calculateVideoWidth(displayHeight:Int, videoHeight:Int, videoWidth:Int): Int {
     return rangeMap(videoWidth.toFloat(),0F,videoHeight.toFloat(),0F,displayHeight.toFloat()).toInt()
 }*/
+
+fun String.toBase64(): String {
+
+    return Base64.encodeToString(this.toByteArray(), android.util.Base64.DEFAULT)
+}
+
+
+fun String.fromBase64(): String {
+    return String(android.util.Base64.decode(this, android.util.Base64.DEFAULT),  StandardCharsets.UTF_8)
+}

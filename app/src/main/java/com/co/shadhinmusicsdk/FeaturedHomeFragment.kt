@@ -35,6 +35,7 @@ internal class FeaturedHomeFragment : Fragment() {
         val btnMusic: Button = requireView().findViewById(R.id.btnMusic)
         val cvRadioButton: CardView = requireView().findViewById(R.id.include_radio_layout)
         val btnRadioSeeAll: TextView = requireView().findViewById(R.id.btn_radio_see_all)
+        val btnShare: Button = requireView().findViewById(R.id.btnshare)
 
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
@@ -66,6 +67,9 @@ internal class FeaturedHomeFragment : Fragment() {
 
         btnMusic.setOnClickListener {
             ShadhinMusicSdkCore.openMusic(requireContext())
+        }
+        btnShare.setOnClickListener {
+            ShadhinMusicSdkCore.handleShare("NzBfQQ==",requireContext())
         }
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)

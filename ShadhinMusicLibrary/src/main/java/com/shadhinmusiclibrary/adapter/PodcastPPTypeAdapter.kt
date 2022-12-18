@@ -23,7 +23,7 @@ internal class PodcastPPTypeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.my_bl_sdk_podcast_pp_type_layout, parent, false)
+            .inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
         return ViewHolder(v)
     }
 

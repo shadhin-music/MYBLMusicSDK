@@ -516,4 +516,11 @@ internal object UtilHelper {
             }
         }
     }
+    fun generateShareStrings(iMusicModel:IMusicModel): String {
+        return generateShareStrings(iMusicModel.content_Id, iMusicModel.content_Type ?:"")
+    }
+    fun generateShareStrings(contentId: String, contentType: String): String {
+        val token = "${contentId}_${contentType}"
+        return token.toBase64()
+    }
 }
