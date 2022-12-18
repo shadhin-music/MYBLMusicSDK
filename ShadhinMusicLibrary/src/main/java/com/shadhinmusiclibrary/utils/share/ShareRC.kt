@@ -42,7 +42,7 @@ class ShareRC(override val code: String) : Share {
 
         @JvmStatic
         fun generate(contentId: String?, contentType: String?): ShareRC {
-            val token = "${contentId ?: "0000"}_${contentType ?: ""}".toBase64()
+            val token = "${contentId ?: ""}_${contentType ?: ""}".toBase64()
             return ShareRC(token)
         }
     }

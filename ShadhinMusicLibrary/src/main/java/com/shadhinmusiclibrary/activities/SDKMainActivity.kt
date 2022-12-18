@@ -184,7 +184,7 @@ internal class SDKMainActivity : BaseActivity(),
 
         //Will received request from Any page from MYBLL app
         val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
-        if(uiRequest == AppConstantUtils.RequesterRC){
+        if (uiRequest == AppConstantUtils.RequesterRC) {
             routeFromRC()
         }
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
@@ -266,10 +266,8 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun routeFromRC() {
-        val rc =
-            intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
+        val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         val shared = ShareRC(rc)
-        val contentType = shared.contentType?.uppercase()
 
         when (contentType) {
             DataContentType.CONTENT_TYPE_A -> {
@@ -307,7 +305,61 @@ internal class SDKMainActivity : BaseActivity(),
         }
 
     }
+        if (shared.isPodcast) {
 
+            setupNavGraphAndArg(
+                R.navigation.my_bl_sdk_nav_graph_common,
+                Bundle().apply {
+                    val details = HomePatchDetailModel().apply {
+                        this.content_Type = shared.contentType
+                    }
+                    putSerializable(
+                        AppConstantUtils.PatchDetail,
+                        details as Serializable
+                    )
+                }, R.id.podcast_details_fragment
+            )
+        } else {
+            when (shared.contentType?.uppercase()) {
+                DataContentType.CONTENT_TYPE_A -> {
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
+                        Bundle().apply {
+                            val details = HomePatchDetailModel().apply {
+                                this.artist_Id = shared.contentId ?: ""
+                                this.content_Type = shared.contentType
+                            }
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                details as Serializable
+                            )
+                        }, R.id.artist_details_fragment
+                    )
+                }
+                DataContentType.CONTENT_TYPE_S -> {
+                    //open songs
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
+                        Bundle().apply {
+
+                            val details = HomePatchDetailModel().apply {
+                                this.album_Id = shared.contentId ?: ""
+                                this.content_Type = shared.contentType
+                            }
+
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                details as Serializable
+                            )
+                        }, R.id.s_type_details_fragment
+                    )
+                }
+
+                else -> {}
+            }
+        }
+
+    }
 
 
     val cacheRepository by lazy {
@@ -343,6 +395,7 @@ internal class SDKMainActivity : BaseActivity(),
             }, R.id.artist_details_fragment
         )
     }
+
     private fun downloadFragmentAccess() {
         val patch = intent.extras!!.getBundle(PatchItem)!!
             .getSerializable(PatchItem) as HomePatchItemModel
@@ -653,7 +706,6 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.album_details_fragment
                     )
-                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
@@ -686,7 +738,6 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.s_type_details_fragment
                     )
-                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 homePatchDetail.content_Type?.contains("PD").toString() -> {
                     Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)

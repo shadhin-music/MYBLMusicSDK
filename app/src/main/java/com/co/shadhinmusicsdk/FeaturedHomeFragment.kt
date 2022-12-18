@@ -75,6 +75,12 @@ internal class FeaturedHomeFragment : Fragment() {
           //  val share = ShareRC.generate("16321","R")
            // Log.i("onShare", "onViewCreated: ${share}")
          ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+            //val share = ShareRC.generate("70","A")
+           // val share = ShareRC.generate(null,"PDBC")
+            //val share = ShareRC.generate(null,"PDJC")
+           // val share = ShareRC.generate(null,"PDJG")
+           // Log.i("onShare", "onViewCreated: ${share}")
+            //ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
 
         }
 //    private fun observeData() {
