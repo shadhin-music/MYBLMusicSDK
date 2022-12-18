@@ -83,7 +83,7 @@ internal class FeaturedHomeFragment : Fragment() {
                 ShareRC.generate("22087","R"),
                 ShareRC.generate("22087","R"),
                 ShareRC.generate("21902","R"),
-                ShareRC.generate("20605","R"),
+               // ShareRC.generate("20605","R"),
                 ShareRC.generate("98729","S"),
                 ShareRC.generate("91119","S"),
                 ShareRC.generate(null,"PDBC"),
@@ -92,7 +92,7 @@ internal class FeaturedHomeFragment : Fragment() {
             )
             val share = list[count]
             ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
-            if(count>=list.size){
+            if(count>=(list.size-1)){
                 count = 0
             }
             count ++
