@@ -33,7 +33,28 @@ internal class SongDetailModel : IMusicModel {
 
     @SerializedName("artist")
     @Expose
+    var artistA: String? = ""
+
+    @SerializedName("artistname")
+    @Expose
+    var artistB: String? = ""
+
+
     override var artistName: String? = null
+        get() {
+            return if(artistA.isNullOrEmpty()){
+                artistB
+            }else{
+                artistA
+            }
+        }
+    set(value) {
+        field = value
+        artistA = value
+    }
+
+
+
 
     @SerializedName("duration")
     @Expose
@@ -59,11 +80,14 @@ internal class SongDetailModel : IMusicModel {
     @Expose
     override var artist_Id: String? = null
 
+
+
     override var bannerImage: String? = null
 
     @SerializedName("AlbumId")
     @Expose
     override var album_Id: String? = null
+
     override var album_Name: String? = null
     override var rootContentId: String? = null
     override var rootContentType: String? = null

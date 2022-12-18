@@ -152,7 +152,15 @@ internal class AlbumDetailsFragment : BaseFragment(),
     private fun observeData(contentId: String, artistId: String, contentType: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
         argHomePatchDetail?.let { homeDetails ->
-            albumViewModel.fetchAlbumContent(contentId)
+
+
+            if(homeDetails.content_Type.equals("S",true)) {
+                albumViewModel.fetchSingleContent(homeDetails.content_Id)
+            }else{
+                albumViewModel.fetchAlbumContent(contentId)
+            }
+
+
             albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     progressBar.visibility = GONE
@@ -162,6 +170,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
                         homeDetails.album_Name = res.data.albumName
                         homeDetails.artistName = res.data.artistName
                         homeDetails.artist_Id = res.data.artistId
+                        homeDetails.titleName = kotlin.runCatching { res.data.data.first().titleName }.getOrNull()?:""
 
                         albumsTrackAdapter.setData(
                             res.data.data,
@@ -175,8 +184,9 @@ internal class AlbumDetailsFragment : BaseFragment(),
                             favViewModel
                         )
                        // albumHeaderAdapter.setData(homeDetails)
-                        artistAlbumsAdapter.homePatchItem = argHomePatchItem
-                        viewModelArtistAlbum.fetchArtistAlbum("r", res.data.artistId)
+                        if(res.data.artistId !=null) {
+                            viewModelArtistAlbum.fetchArtistAlbum("r", res.data.artistId)
+                        }
                     }
 
                 } else {

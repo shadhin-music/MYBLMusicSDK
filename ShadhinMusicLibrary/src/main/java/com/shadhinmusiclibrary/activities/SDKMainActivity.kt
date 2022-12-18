@@ -268,7 +268,7 @@ internal class SDKMainActivity : BaseActivity(),
     private fun routeFromRC() {
         val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         val shared = ShareRC(rc)
-
+        Log.i("onShare", "routeFromRC: ${shared}")
         if (shared.isPodcast) {
             setupNavGraphAndArg(
                 R.navigation.my_bl_sdk_nav_graph_common,
@@ -315,26 +315,23 @@ internal class SDKMainActivity : BaseActivity(),
                     )
                 }
                 DataContentType.CONTENT_TYPE_S -> {
-                    //open songs
                     setupNavGraphAndArg(
                         R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
-
                             val details = HomePatchDetailModel().apply {
-                                this.album_Id = shared.contentId ?: ""
+                                this.content_Id = shared.contentId ?: ""
                                 this.content_Type = shared.contentType
                             }
-
                             putSerializable(
                                 AppConstantUtils.PatchDetail,
                                 details as Serializable
                             )
-                        }, R.id.s_type_details_fragment
+                        }, R.id.album_details_fragment
                     )
                 }
 
 
-                DataContentType.CONTENT_TYPE_R -> {
+              /*  DataContentType.CONTENT_TYPE_R -> {
                     setupNavGraphAndArg(
                         R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
@@ -348,7 +345,7 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.album_details_fragment
                     )
-                }
+                }*/
             }
 
 

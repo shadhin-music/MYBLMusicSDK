@@ -25,6 +25,11 @@ internal interface ApiService {
         @Query("id") contentId: String,
     ): APIResponse<MutableList<SongDetailModel>>
 
+    @GET("Track/singletrack")
+    suspend fun fetchSingleContent(
+        @Query("id") contentId: String,
+    ): APIResponse<SongDetailModel>
+
     @GET("?method=artist.getinfo")
     suspend fun fetchArtistBiography(
         @Query("artist") artist: String?,

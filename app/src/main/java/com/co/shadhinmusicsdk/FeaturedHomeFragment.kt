@@ -70,18 +70,32 @@ internal class FeaturedHomeFragment : Fragment() {
         btnMusic.setOnClickListener {
             ShadhinMusicSdkCore.openMusic(requireContext())
         }
+        var count:Int = 0
         btnShare.setOnClickListener {
-          //  val share = ShareRC.generate("70","A")
-           // val share = ShareRC.generate("16321","R")
-            val share = ShareRC.generate("15787","R")
-           // Log.i("onShare", "onViewCreated: ${share}")
-         ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
-            //val share = ShareRC.generate("70","A")
-           // val share = ShareRC.generate(null,"PDBC")
-            //val share = ShareRC.generate(null,"PDJC")
-           // val share = ShareRC.generate(null,"PDJG")
-           // Log.i("onShare", "onViewCreated: ${share}")
-            //ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+
+            val list = listOf(
+                ShareRC.generate("70","A"),
+                ShareRC.generate("71","A"),
+                ShareRC.generate("72","A"),
+                ShareRC.generate("73","A"),
+                ShareRC.generate("16321","R"),
+                ShareRC.generate("15787","R"),
+                ShareRC.generate("22087","R"),
+                ShareRC.generate("22087","R"),
+                ShareRC.generate("21902","R"),
+                ShareRC.generate("20605","R"),
+                ShareRC.generate("98729","S"),
+                ShareRC.generate("91119","S"),
+                ShareRC.generate(null,"PDBC"),
+                ShareRC.generate(null,"PDJC"),
+                ShareRC.generate(null,"PDJG")
+            )
+            val share = list[count]
+            ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+            if(count>=list.size){
+                count = 0
+            }
+            count ++
 
         }
 //    private fun observeData() {

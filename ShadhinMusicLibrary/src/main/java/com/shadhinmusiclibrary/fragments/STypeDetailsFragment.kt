@@ -41,7 +41,7 @@ internal class STypeDetailsFragment : BaseFragment(),
         super.onViewCreated(view, savedInstanceState)
         footerAdapter = HomeFooterAdapter()
         listSongDetail = mutableListOf()
-        argHomePatchDetail!!.apply {
+        argHomePatchDetail?.apply {
             listSongDetail.add(
                 SongDetailModel()
             )

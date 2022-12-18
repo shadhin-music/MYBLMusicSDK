@@ -32,6 +32,11 @@ internal class AlbumViewModel(private val albumContentRepository: AlbumContentRe
         _albumContent.postValue(response)
     }
 
+    fun fetchSingleContent(contentId: String) = viewModelScope.launch {
+        val response = albumContentRepository.fetchSingleContent(contentId)
+        _albumContent.postValue(response)
+    }
+
     fun fetchPlaylistContent(contentId: String) = viewModelScope.launch {
         val response = albumContentRepository.fetchPlaylistContent(contentId)
         _albumContent.postValue(response)
