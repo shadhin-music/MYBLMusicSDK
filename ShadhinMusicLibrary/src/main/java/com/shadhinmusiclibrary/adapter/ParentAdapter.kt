@@ -331,7 +331,7 @@ internal class ParentAdapter(
             sliderView = itemView.findViewById(R.id.imageSlider)
             sliderAdapter = SliderpagerAdapter(homePatchItemModel.Data as MutableList, homeCallBack, homePatchItemModel)
             sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
-            sliderView.setSliderAdapter(sliderAdapter)
+          //  sliderView.setSliderAdapter(sliderAdapter)
             sliderView.setIndicatorEnabled(true)
            // sliderView.scrollTimeInSec = 3
             //sliderView.isAutoCycle = true

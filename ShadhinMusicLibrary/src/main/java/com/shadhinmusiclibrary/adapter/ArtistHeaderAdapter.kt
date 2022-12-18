@@ -39,7 +39,8 @@ import java.util.Base64.getDecoder
 internal class ArtistHeaderAdapter(
     var homePatchDetail: HomePatchDetailModel?,
     private val itemClickCB: CommonPlayControlCallback,
-    private val cacheRepository: CacheRepository?
+    private val cacheRepository: CacheRepository?,
+    private val sdkCallback: ShadhinSDKCallback?,
 ) : RecyclerView.Adapter<ArtistHeaderAdapter.ArtistHeaderVH>() {
     private var dataSongDetail: MutableList<IMusicModel> = mutableListOf()
     var bio: LastFmResult? = null
@@ -65,7 +66,8 @@ internal class ArtistHeaderAdapter(
 
            // val  rccode =str.toBase64()//homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type?.toBase64()
            // val encodedString: String = Base64.getEncoder().encodeToString(rccode.toByteArray())
-           UtilHelper.generateShareStrings(homePatchDetail?.artist_Id?:"", homePatchDetail?.content_Type?:"")
+           val code = UtilHelper.generateShareStrings(homePatchDetail?.artist_Id?:"", homePatchDetail?.content_Type?:"")
+            sdkCallback?.onShare(code)
         // Log.e("TAG","RCCODE: "+ homePatchDetail?.artist_Id+"_"+homePatchDetail?.content_Type)
 //            Log.e("TAG", "RCCODE:  e ${rccode}" )
 //            Log.e("TAG","RCCODE: "+ rccode.fromBase64())

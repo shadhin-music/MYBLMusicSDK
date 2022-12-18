@@ -88,7 +88,7 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
     }
 
     override fun onShare(rCode: String) {
-
+        Log.i("APPActivity", "isTokenValid:"+ rCode)
     }
 
 }

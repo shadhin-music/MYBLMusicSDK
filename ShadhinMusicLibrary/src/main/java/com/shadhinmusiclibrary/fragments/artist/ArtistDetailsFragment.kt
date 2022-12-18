@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +22,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.util.Base64Utils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.shadhinmusiclibrary.R
-import com.shadhinmusiclibrary.ShadhinSDKCallback
 import com.shadhinmusiclibrary.activities.SDKMainActivity
 import com.shadhinmusiclibrary.adapter.*
 import com.shadhinmusiclibrary.callBackService.CommonBottomCallback
@@ -113,7 +110,11 @@ internal class ArtistDetailsFragment : BaseFragment(),
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val config = ConcatAdapter.Config.Builder().apply { setIsolateViewTypes(false) }.build()
-        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail, this, cacheRepository)
+        artistHeaderAdapter = ArtistHeaderAdapter(argHomePatchDetail,
+            this,
+            cacheRepository,
+            injector.sdkCallback
+        )
         artistTrackAdapter = ArtistTrackAdapter(this, this, cacheRepository)
         artistAlbumsAdapter = ArtistAlbumsAdapter(argHomePatchItem, this)
         artistsYouMightLikeAdapter =
