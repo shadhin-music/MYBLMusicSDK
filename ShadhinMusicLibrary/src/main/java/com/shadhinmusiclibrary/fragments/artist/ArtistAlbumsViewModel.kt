@@ -17,7 +17,9 @@ internal class ArtistAlbumsViewModel (private val artistAlbumRepository: ArtistA
     val artistAlbumContent: LiveData<ApiResponse<ArtistAlbumModel>> = _artistAlbumContent
 
     fun fetchArtistAlbum(type: String,id:String) = viewModelScope.launch {
-        val response = artistAlbumRepository.fetchArtistAlbum(type,id)
-        _artistAlbumContent.postValue(response)
+        if(id.isNotEmpty()) {
+            val response = artistAlbumRepository.fetchArtistAlbum(type, id)
+            _artistAlbumContent.postValue(response)
+        }
     }
 }

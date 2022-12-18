@@ -14,7 +14,7 @@ import com.shadhinmusiclibrary.data.model.ArtistAlbumModel
 import com.shadhinmusiclibrary.utils.UtilHelper
 
 internal class ArtistAlbumListAdapter(
-    val homePatchItem: HomePatchItemModel,
+    val homePatchItem: HomePatchItemModel?,
     val artistAlbumModel: ArtistAlbumModel?,
     private val homeCallBack: HomeCallBack
 ) :
