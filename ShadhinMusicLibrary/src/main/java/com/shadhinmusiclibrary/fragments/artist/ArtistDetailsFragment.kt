@@ -204,12 +204,17 @@ internal class ArtistDetailsFragment : BaseFragment(),
             viewModelArtistSong.artistSongContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
                     if (res.data?.data != null) {
+                        homeDetails.artistName = res.data.name
+                        homeDetails.imageUrl = res.data.image
                         artistTrackAdapter.setArtistTrack(
                             res.data.data,
                             homeDetails,
                             playerViewModel.currentMusic?.mediaId
                         )
                         artistHeaderAdapter.setSongAndData(res.data.data, homeDetails)
+                        artistHeaderAdapter.setData(homeDetails)
+                        viewModel.fetchArtistBioData(homeDetails.artistName?:"")
+
                     }
                 } else {
                     showDialog()
@@ -250,8 +255,8 @@ internal class ArtistDetailsFragment : BaseFragment(),
         if (argHomePatchDetail?.content_Id.isNullOrEmpty()) {
             argHomePatchDetail?.content_Id = argHomePatchDetail?.artist_Id ?: ""
         }
-         argHomePatchDetail.let {
-             it?.let { it1 -> artistHeaderAdapter.setData(it1) }
+         argHomePatchDetail?.let {
+             artistHeaderAdapter.setData(it)
          }
 
         observeData()

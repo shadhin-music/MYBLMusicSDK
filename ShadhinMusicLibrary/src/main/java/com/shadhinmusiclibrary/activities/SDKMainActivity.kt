@@ -185,7 +185,7 @@ internal class SDKMainActivity : BaseActivity(),
         //Will received request from Any page from MYBLL app
         val uiRequest = intent.extras!!.get(AppConstantUtils.UI_Request_Type)
         if(uiRequest == AppConstantUtils.RequesterRC){
-            handleRC()
+            routeFromRC()
         }
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
             homeFragmentAccess()
@@ -265,12 +265,34 @@ internal class SDKMainActivity : BaseActivity(),
         playerViewModel.startUserSession()
     }
 
-    private fun handleRC() {
+    private fun routeFromRC() {
         val rc =
             intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
-        Log.i("onShare", "handleRC: ${ShareRC(rc)}")
+        val shared = ShareRC(rc)
+        val contentType = shared.contentType?.uppercase()
+
+        when (contentType) {
+            DataContentType.CONTENT_TYPE_A -> {
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.artist_Id = shared.contentId?:""
+                            this.content_Type = shared.contentType
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.artist_details_fragment
+                )
+            }
+            else ->{}
+        }
 
     }
+
+
 
     val cacheRepository by lazy {
         CacheRepository(this)

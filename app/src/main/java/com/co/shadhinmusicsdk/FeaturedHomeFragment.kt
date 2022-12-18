@@ -74,6 +74,7 @@ internal class FeaturedHomeFragment : Fragment() {
             val share = ShareRC.generate("70","A")
             Log.i("onShare", "onViewCreated: ${share}")
             ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+
         }
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
