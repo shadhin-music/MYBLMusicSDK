@@ -158,6 +158,11 @@ internal class AlbumDetailsFragment : BaseFragment(),
                     progressBar.visibility = GONE
                     if (res.data?.data != null && argHomePatchDetail != null) {
 
+                        homeDetails.imageUrl = res.data.albumImage
+                        homeDetails.album_Name = res.data.albumName
+                        homeDetails.artistName = res.data.artistName
+                        homeDetails.artist_Id = res.data.artistId
+
                         albumsTrackAdapter.setData(
                             res.data.data,
                             homeDetails,
@@ -169,7 +174,11 @@ internal class AlbumDetailsFragment : BaseFragment(),
                             cacheRepository!!,
                             favViewModel
                         )
+                       // albumHeaderAdapter.setData(homeDetails)
+                        artistAlbumsAdapter.homePatchItem = argHomePatchItem
+                        viewModelArtistAlbum.fetchArtistAlbum("r", res.data.artistId)
                     }
+
                 } else {
                     progressBar.visibility = VISIBLE
                 }
@@ -179,7 +188,6 @@ internal class AlbumDetailsFragment : BaseFragment(),
             viewModelArtistAlbum.fetchArtistAlbum("r", artistId)
             viewModelArtistAlbum.artistAlbumContent.observe(viewLifecycleOwner) { res ->
                 if (res.status == Status.SUCCESS) {
-
                     artistAlbumsAdapter.setData(res.data)
                 } else {
                     viewModelArtistAlbum.fetchArtistAlbum("r", artistId)

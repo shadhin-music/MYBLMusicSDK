@@ -12,5 +12,11 @@ internal data class APIResponse<ResultType>(
     val status: String,
     val total: Int,
     val type: Any,
-    val name:String
+    val name:String,
+    val albumName:String,
+    val artistName:String,
+    val artistId:String,
+    val albumImage:String,
+
+
 )
