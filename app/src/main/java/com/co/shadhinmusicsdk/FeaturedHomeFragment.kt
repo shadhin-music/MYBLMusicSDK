@@ -71,8 +71,8 @@ internal class FeaturedHomeFragment : Fragment() {
             ShadhinMusicSdkCore.openMusic(requireContext())
         }
         btnShare.setOnClickListener {
-            val share = ShareRC.generate("70","A")
-          //  val share = ShareRC.generate("16321","R")
+          //  val share = ShareRC.generate("70","A")
+            val share = ShareRC.generate("16321","R")
            // Log.i("onShare", "onViewCreated: ${share}")
          ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
             //val share = ShareRC.generate("70","A")
