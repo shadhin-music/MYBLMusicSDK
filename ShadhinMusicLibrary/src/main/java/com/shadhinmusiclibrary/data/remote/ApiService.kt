@@ -20,7 +20,7 @@ internal interface ApiService {
         @Query("isPaid") isPaid: Boolean?,
     ): HomeDataModel
 
-    @GET("Album/GetAlbumContent")
+    @GET("Album/GetAlbumDetailsFC")
     suspend fun fetchAlbumContent(
         @Query("id") contentId: String,
     ): APIResponse<MutableList<SongDetailModel>>
