@@ -269,42 +269,6 @@ internal class SDKMainActivity : BaseActivity(),
         val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         val shared = ShareRC(rc)
 
-        when (contentType) {
-            DataContentType.CONTENT_TYPE_A -> {
-                setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_common,
-                    Bundle().apply {
-                        val details = HomePatchDetailModel().apply {
-                            this.artist_Id = shared.contentId?:""
-                            this.content_Type = shared.contentType
-                        }
-                        putSerializable(
-                            AppConstantUtils.PatchDetail,
-                            details as Serializable
-                        )
-                    }, R.id.artist_details_fragment
-                )
-            }
-            DataContentType.CONTENT_TYPE_R -> {
-                setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_common,
-                    Bundle().apply {
-                        val details = HomePatchDetailModel().apply {
-                            this.album_Id = shared.contentId?:""
-                            this.content_Type = shared.contentType
-                        }
-                        putSerializable(
-                            AppConstantUtils.PatchDetail,
-                            details as Serializable
-                        )
-                    }, R.id.album_details_fragment
-                )
-            }
-
-            else ->{}
-        }
-
-    }
         if (shared.isPodcast) {
 
             setupNavGraphAndArg(
@@ -357,6 +321,26 @@ internal class SDKMainActivity : BaseActivity(),
 
                 else -> {}
             }
+<<<<<<< HEAD
+            DataContentType.CONTENT_TYPE_R -> {
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.album_Id = shared.contentId?:""
+                            this.content_Type = shared.contentType
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.album_details_fragment
+                )
+            }
+
+            else ->{}
+=======
+>>>>>>> origin/NavRC
         }
 
     }
@@ -706,6 +690,7 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.album_details_fragment
                     )
+                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 DataContentType.CONTENT_TYPE_P -> {
                     //open playlist
@@ -738,6 +723,7 @@ internal class SDKMainActivity : BaseActivity(),
                             )
                         }, R.id.s_type_details_fragment
                     )
+                    Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
                 }
                 homePatchDetail.content_Type?.contains("PD").toString() -> {
                     Log.e("TAG", "CHECKING: " + homePatchDetail.content_Type)
@@ -763,7 +749,7 @@ internal class SDKMainActivity : BaseActivity(),
 
             //See All Item Click event
             when (homePatchItem.ContentType.toUpperCase()) {
-                DataContentType.CONTENT_TYPE_PS ->{
+                DataContentType.CONTENT_TYPE_PS -> {
                     //setupNavGraphAndArg(R.navigation.my_bl_sdk_nav_graph_podcast_list_and_details,
                     setupNavGraphAndArg(
                         R.navigation.my_bl_sdk_nav_graph_common,
@@ -996,8 +982,8 @@ internal class SDKMainActivity : BaseActivity(),
                 tvSongName.text = currentItemHolder.sMusicData.titleName
                 tvSingerName.text = currentItemHolder.sMusicData.artistName
                 setMainPlayerBackgroundColor(getBitmapFromVH(currentItemHolder))
-                if(mSongDetails[clickItemPosition].trackType=="LM"){
-                    Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+                if (mSongDetails[clickItemPosition].trackType == "LM") {
+                    Log.e("TAG", "Clicked: " + mSongDetails[clickItemPosition].trackType)
                     ibtnRepeatSong.setImageResource(R.drawable.my_bl_sdk_ic_baseline_repeat_24)
                     ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
 
@@ -1067,9 +1053,9 @@ internal class SDKMainActivity : BaseActivity(),
                 }
                 PlaybackStateCompat.REPEAT_MODE_ONE -> {
 
-                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                    if (mSongDetails.get(clickItemPosition).trackType == "LM") {
                         setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_24)
-                    }else{
+                    } else {
                         setResource(
                             ibtnRepeatSong,
                             R.drawable.my_bl_sdk_ic_baseline_repeat_one_on_24
@@ -1086,9 +1072,9 @@ internal class SDKMainActivity : BaseActivity(),
                 }
                 PlaybackStateCompat.REPEAT_MODE_ALL -> {
 
-                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                    if (mSongDetails.get(clickItemPosition).trackType == "LM") {
                         setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_24)
-                    }else{
+                    } else {
                         setResource(ibtnRepeatSong, R.drawable.my_bl_sdk_ic_baseline_repeat_on_24)
                         ibtnShuffle.isEnabled = true
                         ibtnShuffle.setColorFilter(0)
@@ -1103,24 +1089,24 @@ internal class SDKMainActivity : BaseActivity(),
                     ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
                 }
                 PlaybackStateCompat.SHUFFLE_MODE_ALL -> {
-                    if (mSongDetails.get(clickItemPosition).trackType=="LM"){
+                    if (mSongDetails.get(clickItemPosition).trackType == "LM") {
                         ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_24)
-                    }else{
+                    } else {
                         ibtnShuffle.setImageResource(R.drawable.my_bl_sdk_ic_baseline_shuffle_on_24)
                     }
 
                 }
             }
         }
-        if(mSongDetails[clickItemPosition].trackType=="LM"){
-            Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+        if (mSongDetails[clickItemPosition].trackType == "LM") {
+            Log.e("TAG", "Clicked: " + mSongDetails[clickItemPosition].trackType)
             ibtnShuffle.isEnabled = false
             ibtnRepeatSong.isEnabled = false
             ibtnLibraryAdd.isEnabled = false
             ibtnDownload.isEnabled = false
             ibtnQueueMusic.isEnabled = false
-        }else{
-            Log.e("TAG","Clicked: "+ mSongDetails[clickItemPosition].trackType)
+        } else {
+            Log.e("TAG", "Clicked: " + mSongDetails[clickItemPosition].trackType)
             ibtnShuffle.isEnabled = true
             ibtnRepeatSong.isEnabled = true
             ibtnLibraryAdd.isEnabled = true
