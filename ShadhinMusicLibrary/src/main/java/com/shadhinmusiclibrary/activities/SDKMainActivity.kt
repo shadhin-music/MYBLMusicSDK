@@ -304,7 +304,7 @@ internal class SDKMainActivity : BaseActivity(),
                         R.navigation.my_bl_sdk_nav_graph_common,
                         Bundle().apply {
                             val details = HomePatchDetailModel().apply {
-                                this.album_Id = shared.contentId?:""
+                                this.album_Id = shared.contentId ?: ""
                                 this.content_Type = shared.contentType
                             }
                             putSerializable(
@@ -333,28 +333,26 @@ internal class SDKMainActivity : BaseActivity(),
                     )
                 }
 
-                else -> {}
-            }
-<<<<<<< HEAD
-            DataContentType.CONTENT_TYPE_R -> {
-                setupNavGraphAndArg(
-                    R.navigation.my_bl_sdk_nav_graph_common,
-                    Bundle().apply {
-                        val details = HomePatchDetailModel().apply {
-                            this.album_Id = shared.contentId?:""
-                            this.content_Type = shared.contentType
-                        }
-                        putSerializable(
-                            AppConstantUtils.PatchDetail,
-                            details as Serializable
-                        )
-                    }, R.id.album_details_fragment
-                )
+
+                DataContentType.CONTENT_TYPE_R -> {
+                    setupNavGraphAndArg(
+                        R.navigation.my_bl_sdk_nav_graph_common,
+                        Bundle().apply {
+                            val details = HomePatchDetailModel().apply {
+                                this.album_Id = shared.contentId ?: ""
+                                this.content_Type = shared.contentType
+                            }
+                            putSerializable(
+                                AppConstantUtils.PatchDetail,
+                                details as Serializable
+                            )
+                        }, R.id.album_details_fragment
+                    )
+                }
             }
 
-            else ->{}
-=======
->>>>>>> origin/NavRC
+
+
         }
 
     }
