@@ -72,9 +72,9 @@ internal class FeaturedHomeFragment : Fragment() {
         }
         btnShare.setOnClickListener {
 //            val share = ShareRC.generate("70","A")
-            val share = ShareRC.generate("16321","R")
-            Log.i("onShare", "onViewCreated: ${share}")
-            ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+          //  val share = ShareRC.generate("16321","R")
+           // Log.i("onShare", "onViewCreated: ${share}")
+           // ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
 
         }
 //    private fun observeData() {
