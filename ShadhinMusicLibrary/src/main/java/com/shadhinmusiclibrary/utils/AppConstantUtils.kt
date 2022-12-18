@@ -37,6 +37,7 @@ internal object AppConstantUtils {
     const val Requester_Name_CreatePlaylist = "CreatePlaylistFragment"
     const val Requester_Name_CreatedPlaylistDetails = "CreatedPlaylistDetails"
     const val Requester_Name_API = "AllMusic"
+    const val RequesterRC = "RC_CODE"
     const val PlaylistId = "PlaylistId"
     const val PlaylistName = "PlaylistName"
     const val PlaylistGradientId = "PlaylistGradientId"

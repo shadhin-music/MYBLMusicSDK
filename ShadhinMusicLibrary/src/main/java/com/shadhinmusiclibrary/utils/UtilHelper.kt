@@ -523,4 +523,5 @@ internal object UtilHelper {
         val token = "${contentId}_${contentType}"
         return token.toBase64()
     }
+
 }

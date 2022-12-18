@@ -12,8 +12,12 @@ internal data class ArtistContentModel(
     val message: String,
     val status: String,
     val total: Int,
-    val type: String
+    val type: String,
+    val name:String
+
+
 ) {
+
     fun getImageUrl300Size(): String {
         return this.image.replace("<\$size\$>", "300")
     }

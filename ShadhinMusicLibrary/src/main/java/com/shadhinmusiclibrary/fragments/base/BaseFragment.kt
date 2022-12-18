@@ -31,8 +31,7 @@ internal open class BaseFragment : Fragment(),
         super.onCreate(savedInstanceState)
         arguments?.let {
             argHomePatchItem = it.getSerializable(AppConstantUtils.PatchItem) as HomePatchItemModel?
-            argHomePatchDetail =
-                it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
+            argHomePatchDetail = it.getSerializable(AppConstantUtils.PatchDetail) as HomePatchDetailModel?
         }
         createPlayerVM()
     }

@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
 import com.shadhinmusiclibrary.ShadhinSDKCallback
+import com.shadhinmusiclibrary.utils.share.ShareRC
 
 
 class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
@@ -29,23 +30,9 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
                 mLoginData.accessToken.toString(),
                 this
             )
-           // ShadhinMusicSdkCore.
+
         }
-//        val buttonHome: Button = findViewById(R.id.btn_click)
-//        buttonHome.setOnClickListener {
-//            ShadhinMusicSdkCore.openMusic(this)
-//        }
-//        val buttonHome:Button = findViewById(R.id.buttonHome)
-//        val buttonAPI: Button = findViewById(R.id.buttonAPI)
-//        buttonHome.setOnClickListener {
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.app_home_fragment, ShadhinMusicSdkCore.getMusicFragment())
-//        transaction.commit()
-//        }
-//        Handler().postDelayed({
-//            startActivity(Intent(this, com.shadhinmusiclibrary.activities.MainActivity::class.java))
-//            finish()
-//        }, 1000)
+
 
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
@@ -87,8 +74,8 @@ class AppActivity : AppCompatActivity(), ShadhinSDKCallback {
         Log.i("APPActivity", "isTokenValid: $isTokenValid $error ")
     }
 
-    override fun onShare(rCode: String) {
-        Log.i("APPActivity", "isTokenValid:"+ rCode)
+    override fun onShare(rc: String) {
+        Log.i("onShare", "onShare: ${ShareRC(rc)}")
     }
 
 }

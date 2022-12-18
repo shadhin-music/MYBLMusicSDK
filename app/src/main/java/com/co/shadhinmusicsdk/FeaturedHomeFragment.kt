@@ -1,6 +1,7 @@
 package com.co.shadhinmusicsdk
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
+import com.shadhinmusiclibrary.utils.share.ShareRC
 
 
 internal class FeaturedHomeFragment : Fragment() {
@@ -69,7 +71,10 @@ internal class FeaturedHomeFragment : Fragment() {
             ShadhinMusicSdkCore.openMusic(requireContext())
         }
         btnShare.setOnClickListener {
-            ShadhinMusicSdkCore.handleShare("NzBfQQ==",requireContext())
+            val share = ShareRC.generate("70","A")
+            Log.i("onShare", "onViewCreated: ${share}")
+            ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+
         }
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
