@@ -157,6 +157,7 @@ internal class AlbumDetailsFragment : BaseFragment(),
                 if (res.status == Status.SUCCESS) {
                     progressBar.visibility = GONE
                     if (res.data?.data != null && argHomePatchDetail != null) {
+
                         albumsTrackAdapter.setData(
                             res.data.data,
                             homeDetails,
