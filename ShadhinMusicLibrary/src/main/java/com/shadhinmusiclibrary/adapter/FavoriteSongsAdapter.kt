@@ -174,7 +174,7 @@ internal class FavoriteSongsAdapter(
             downloaded.visibility = View.GONE
             downloaded.tag = 220
             val isDownloaded =
-                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].content_Id!!)
+                cacheRepository.isTrackDownloaded(allDownloads[absoluteAdapterPosition].content_Id)
                     ?: false
             if (isDownloaded) {
                 downloaded.visibility = View.VISIBLE

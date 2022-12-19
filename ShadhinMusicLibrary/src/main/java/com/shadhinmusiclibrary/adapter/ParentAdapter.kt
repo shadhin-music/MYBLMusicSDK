@@ -337,9 +337,9 @@ internal class ParentAdapter(
             sliderView.autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
             sliderView.setSliderAdapter(sliderAdapter)
             sliderView.setIndicatorEnabled(true)
-//            sliderView.scrollTimeInSec = 3
-//            sliderView.isAutoCycle = true
-//            sliderView.startAutoCycle()
+            sliderView.scrollTimeInSec = 2
+            sliderView.isAutoCycle = true
+            sliderView.startAutoCycle()
 //
 //
         }

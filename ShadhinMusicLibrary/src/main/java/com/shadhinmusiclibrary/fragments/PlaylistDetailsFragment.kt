@@ -122,27 +122,35 @@ internal class PlaylistDetailsFragment : BaseFragment(),
 
     private fun fetchOnlineData(contentId: String) {
         val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
-        albumViewModel.fetchPlaylistContent(contentId)
-        albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
-            if (res.data?.data != null && res.status == Status.SUCCESS) {
-                playlistTrackAdapter.setData(
-                    res.data.data,
-                    argHomePatchDetail!!,
-                    playerViewModel.currentMusic?.mediaId
-                )
-                playlistHeaderAdapter.setSongAndData(
-                    res.data.data,
-                    argHomePatchDetail!!
-                )
+        argHomePatchDetail?.let { homeDetails ->
+            albumViewModel.fetchPlaylistContent(contentId)
+            albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
+                if (res.data?.data != null && res.status == Status.SUCCESS) {
+// Log.e("TAG","DATA: "+ res.data.data[0].imageUrl)
+//                    homeDetails.imageUrl = res.data.image
+//                    homeDetails.album_Name = res.data.name
+//                    homeDetails.artistName = res.data.artistName
+//                    homeDetails.artist_Id = res.data.artistId
+//                    homeDetails.titleName =
+//                        kotlin.runCatching { res.data.data.first().titleName }.getOrNull() ?: ""
+                    playlistTrackAdapter.setData(
+                        res.data.data,
+                        homeDetails,
+                        playerViewModel.currentMusic?.mediaId
+                    )
+                    playlistHeaderAdapter.setSongAndData(
+                        res.data.data,
+                        homeDetails
+                    )
 //                updateAndSetAdapter(res!!.data!!.data)
-                progressBar.visibility = View.GONE
-            } else {
-                progressBar.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                } else {
+                    progressBar.visibility = View.GONE
 //                updateAndSetAdapter(mutableListOf())
+                }
             }
         }
     }
-
 //    private fun updateAndSetAdapter(songList: MutableList<SongDetailModel>) {
 //        updatedSongList = mutableListOf()
 //        for (songItem in songList) {
