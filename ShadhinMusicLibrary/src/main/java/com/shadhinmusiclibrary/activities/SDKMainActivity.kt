@@ -271,6 +271,10 @@ internal class SDKMainActivity : BaseActivity(),
 
 
 
+    private fun routeVideo(patch: HomePatchItemModel) {
+
+    }
+
     private fun routeHomePatch(patchCode: String?) {
 
         Log.i("routeHomePatch", "routeHomePatch: $patchCode")
@@ -281,7 +285,7 @@ internal class SDKMainActivity : BaseActivity(),
                 "SmallVideo" -> {}
             }
             Log.i("routeHomePatch", "patch: $patch")
-           
+
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
     }
@@ -296,7 +300,7 @@ internal class SDKMainActivity : BaseActivity(),
             }, R.id.release_list_fragment
         )
     }
-    
+
 
 
     private fun routeFromRC() {
