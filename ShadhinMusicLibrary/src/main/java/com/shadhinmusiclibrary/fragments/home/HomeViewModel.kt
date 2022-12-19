@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 internal class HomeViewModel(private val homeContentRepository: HomeContentRepository) :
     ViewModel() {
 
+    private val _isLoading:MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading:LiveData<Boolean> = _isLoading
 
     private val _homeContent: MutableLiveData<ApiResponse<HomeDataModel>> = MutableLiveData()
     val homeContent: LiveData<ApiResponse<HomeDataModel>> = _homeContent
@@ -34,11 +36,12 @@ internal class HomeViewModel(private val homeContentRepository: HomeContentRepos
 
 
     fun fetchPatchData(patchCode: String) = viewModelScope.launch {
-
+        _isLoading.postValue(true)
         val response = homeContentRepository.fetchPatchData(patchCode)
         if(response.status == Status.SUCCESS && response.data?.data !=null){
             _patchItem.postValue(response.data.data)
         }
+        _isLoading.postValue(false)
     }
 
 
