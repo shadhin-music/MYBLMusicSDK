@@ -272,26 +272,19 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
 
-
-
-
     private fun routeHomePatch(patchCode: String?) {
 
-        Log.i("routeHomePatch", "routeHomePatch: $patchCode")
         homeViewModel.patchItem.observe(this) { patch ->
-
-            when(patch.Design.trim()){
-                "Release" -> { routeRelease(patch)}
-                "SmallVideo" -> { routeVideo(patch)}
-                "Show"->{ routePodcastShow(patch) }
-                "Artist" ->{ routeArtist(patch)}
-                "Playlist" ->{ routePlaylist(patch)}
+            when (patch.Design.trim()) {
+                "Release" -> routeRelease(patch)
+                "SmallVideo" -> routeVideo(patch)
+                "Show" -> routePodcastShow(patch)
+                "Artist" -> routeArtist(patch)
+                "Playlist" -> routePlaylist(patch)
             }
-            Log.i("routeHomePatch", "patch: $patch")
-
         }
-        homeViewModel.isLoading.observe(this){ isLoading ->
-            progressBar.visibility = if(isLoading) View.VISIBLE else View.GONE
+        homeViewModel.isLoading.observe(this) { isLoading ->
+            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
     }
@@ -331,6 +324,7 @@ internal class SDKMainActivity : BaseActivity(),
             }, R.id.video_list_fragment
         )
     }
+
     private fun routePodcastShow(patch: HomePatchItemModel) {
         setupNavGraphAndArg(
             R.navigation.my_bl_sdk_nav_graph_common,
@@ -342,6 +336,7 @@ internal class SDKMainActivity : BaseActivity(),
             }, R.id.podcast_see_all_fragment
         )
     }
+
     private fun routeArtist(patch: HomePatchItemModel) {
         setupNavGraphAndArg(
             R.navigation.my_bl_sdk_nav_graph_common,
