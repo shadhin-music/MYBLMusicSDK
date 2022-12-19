@@ -38,6 +38,7 @@ internal class FeaturedHomeFragment : Fragment() {
         val cvRadioButton: CardView = requireView().findViewById(R.id.include_radio_layout)
         val btnRadioSeeAll: TextView = requireView().findViewById(R.id.btn_radio_see_all)
         val btnShare: Button = requireView().findViewById(R.id.btnshare)
+        val btnPatch: Button = requireView().findViewById(R.id.homePatch)
 
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
@@ -91,12 +92,17 @@ internal class FeaturedHomeFragment : Fragment() {
                 ShareRC.generate(null,"PDJG")
             )
             val share = list[count]
-            ShadhinMusicSdkCore.openPatchFromRC(requireContext(),share.code)
+            ShadhinMusicSdkCore.openFromRC(requireContext(),share.code)
             if(count>=(list.size-1)){
                 count = 0
             }
             count ++
 
+        }
+        btnPatch.setOnClickListener {
+            val share = ShareRC.generate("P030")
+            Log.i("routeHomePatch", "onViewCreated: $share")
+            ShadhinMusicSdkCore.openFromRC(requireContext(),share.code)
         }
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)

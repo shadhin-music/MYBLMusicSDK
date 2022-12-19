@@ -20,6 +20,11 @@ internal interface ApiService {
         @Query("isPaid") isPaid: Boolean?,
     ): HomeDataModel
 
+    @GET("patch/getpatchdata")
+    suspend fun fetchPatchData(
+        @Query("patchCode") patchCode: String,
+    ): PatchDataModel
+
     @GET("Album/GetAlbumDetailsFC")
     suspend fun fetchAlbumContent(
         @Query("id") contentId: String,

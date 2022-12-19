@@ -60,6 +60,7 @@ import com.shadhinmusiclibrary.download.MyBLDownloadService
 import com.shadhinmusiclibrary.download.room.DownloadedContent
 import com.shadhinmusiclibrary.fragments.create_playlist.CreateplaylistViewModel
 import com.shadhinmusiclibrary.fragments.fav.FavViewModel
+import com.shadhinmusiclibrary.fragments.home.HomeViewModel
 import com.shadhinmusiclibrary.library.discretescrollview.DSVOrientation
 import com.shadhinmusiclibrary.library.discretescrollview.DiscreteScrollView
 import com.shadhinmusiclibrary.library.discretescrollview.transform.ScaleTransformer
@@ -74,6 +75,7 @@ import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchDetail
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PatchItem
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistId
 import com.shadhinmusiclibrary.utils.AppConstantUtils.PlaylistName
+import com.shadhinmusiclibrary.utils.share.ShareCategory
 import com.shadhinmusiclibrary.utils.share.ShareRC
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -126,6 +128,7 @@ internal class SDKMainActivity : BaseActivity(),
     private lateinit var playerViewModel: PlayerViewModel
     private lateinit var viewModel: CreateplaylistViewModel
     private lateinit var favViewModel: FavViewModel
+    private lateinit var homeViewModel: HomeViewModel
     private lateinit var mainMusicPlayerAdapter: MusicPlayAdapter
     private lateinit var queueTrackAdapter: QueueTrackAdapter
     private lateinit var listData: MutableList<HomePatchDetailModel>
@@ -187,6 +190,7 @@ internal class SDKMainActivity : BaseActivity(),
         if (uiRequest == AppConstantUtils.RequesterRC) {
             routeFromRC()
         }
+
         if (uiRequest == AppConstantUtils.Requester_Name_Home) {
             homeFragmentAccess()
         }
@@ -265,93 +269,91 @@ internal class SDKMainActivity : BaseActivity(),
         playerViewModel.startUserSession()
     }
 
+
+    private fun routeHomePatch(patchCode: String?) {
+
+        Log.i("routeHomePatch", "routeHomePatch: $patchCode")
+        homeViewModel.patchItem.observe(this) { patch ->
+            Log.i("routeHomePatch", "patch: $patch")
+        }
+        patchCode?.let { homeViewModel.fetchPatchData(it) }
+    }
+
     private fun routeFromRC() {
         val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
         val shared = ShareRC(rc)
-        Log.i("onShare", "routeFromRC: ${shared}")
-        if (shared.isPodcast) {
-            setupNavGraphAndArg(
-                R.navigation.my_bl_sdk_nav_graph_common,
-                Bundle().apply {
-                    val details = HomePatchDetailModel().apply {
-                        this.content_Type = shared.contentType
-                    }
-                    putSerializable(
-                        AppConstantUtils.PatchDetail,
-                        details as Serializable
-                    )
-                }, R.id.podcast_details_fragment
-            )
-        } else {
-            when (shared.contentType?.uppercase()) {
-                DataContentType.CONTENT_TYPE_A -> {
-                    setupNavGraphAndArg(
-                        R.navigation.my_bl_sdk_nav_graph_common,
-                        Bundle().apply {
-                            val details = HomePatchDetailModel().apply {
-                                this.artist_Id = shared.contentId ?: ""
-                                this.content_Type = shared.contentType
-                            }
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                details as Serializable
-                            )
-                        }, R.id.artist_details_fragment
-                    )
-                }
-                DataContentType.CONTENT_TYPE_R -> {
-                    setupNavGraphAndArg(
-                        R.navigation.my_bl_sdk_nav_graph_common,
-                        Bundle().apply {
-                            val details = HomePatchDetailModel().apply {
-                                this.album_Id = shared.contentId ?: ""
-                                this.content_Type = shared.contentType
-                            }
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                details as Serializable
-                            )
-                        }, R.id.album_details_fragment
-                    )
-                }
-                DataContentType.CONTENT_TYPE_S -> {
-                    setupNavGraphAndArg(
-                        R.navigation.my_bl_sdk_nav_graph_common,
-                        Bundle().apply {
-                            val details = HomePatchDetailModel().apply {
-                                this.content_Id = shared.contentId ?: ""
-                                this.content_Type = shared.contentType
-                            }
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                details as Serializable
-                            )
-                        }, R.id.album_details_fragment
-                    )
-                }
-
-
-              /*  DataContentType.CONTENT_TYPE_R -> {
-                    setupNavGraphAndArg(
-                        R.navigation.my_bl_sdk_nav_graph_common,
-                        Bundle().apply {
-                            val details = HomePatchDetailModel().apply {
-                                this.album_Id = shared.contentId ?: ""
-                                this.content_Type = shared.contentType
-                            }
-                            putSerializable(
-                                AppConstantUtils.PatchDetail,
-                                details as Serializable
-                            )
-                        }, R.id.album_details_fragment
-                    )
-                }*/
-            }
-
-
-
+        when (shared.category) {
+            ShareCategory.PODCAST -> routePodcast(shared.id, shared.type)
+            ShareCategory.PATCH -> routeHomePatch(shared.id)
+            else -> routeContent(shared.id, shared.type)
         }
 
+    }
+
+    private fun routePodcast(id: String?, type: String?) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                val details = HomePatchDetailModel().apply {
+                    this.content_Type = type
+                }
+                putSerializable(
+                    AppConstantUtils.PatchDetail,
+                    details as Serializable
+                )
+            }, R.id.podcast_details_fragment
+        )
+    }
+
+    private fun routeContent(id: String?, type: String?) {
+        when (type?.uppercase()) {
+            DataContentType.CONTENT_TYPE_A -> {
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.artist_Id = id ?: ""
+                            this.content_Type = type
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.artist_details_fragment
+                )
+            }
+            DataContentType.CONTENT_TYPE_R -> {
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.album_Id = id ?: ""
+                            this.content_Type = type
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.album_details_fragment
+                )
+            }
+            DataContentType.CONTENT_TYPE_S -> {
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.content_Id = id ?: ""
+                            this.content_Type = type
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.album_details_fragment
+                )
+            }
+
+        }
     }
 
 
@@ -861,6 +863,11 @@ internal class SDKMainActivity : BaseActivity(),
             this,
             injector.factoryFavContentVM
         )[FavViewModel::class.java]
+
+        homeViewModel = ViewModelProvider(
+            this,
+            injector.factoryHomeVM
+        )[HomeViewModel::class.java]
     }
 
     private fun miniMusicPlayerHideShow(playing: Boolean) {
