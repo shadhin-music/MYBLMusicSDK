@@ -5,8 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.ShadhinMusicSdkCore
@@ -39,6 +42,7 @@ internal class FeaturedHomeFragment : Fragment() {
         val btnRadioSeeAll: TextView = requireView().findViewById(R.id.btn_radio_see_all)
         val btnShare: Button = requireView().findViewById(R.id.btnshare)
         val btnPatch: Button = requireView().findViewById(R.id.homePatch)
+        val autoCompleteTextView: AutoCompleteTextView = requireView().findViewById(R.id.patch_code)
 
         btnPopularArtist.setOnClickListener {
             ShadhinMusicSdkCore.openPatch(requireContext(), "RC203")
@@ -99,10 +103,18 @@ internal class FeaturedHomeFragment : Fragment() {
             count ++
 
         }
+
+        val testArray = arrayOf("P030","P050","P081","P030","P073","P050")
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(requireContext(), android.R.layout.select_dialog_item, testArray)
+        autoCompleteTextView.setAdapter(adapter)
+
         btnPatch.setOnClickListener {
-            val share = ShareRC.generate("P004")
-            Log.i("routeHomePatch", "onViewCreated: $share")
+            val code = autoCompleteTextView.text.toString().uppercase()
+            val share = ShareRC.generate(autoCompleteTextView.text.toString().uppercase())
             ShadhinMusicSdkCore.openFromRC(requireContext(),share.code)
+            Log.i("routeHomePatch", "onViewCreated: $share")
+            Toast.makeText(requireContext(),code.toString(),Toast.LENGTH_SHORT).show()
         }
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
