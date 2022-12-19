@@ -270,14 +270,21 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
 
+
     private fun routeHomePatch(patchCode: String?) {
 
         Log.i("routeHomePatch", "routeHomePatch: $patchCode")
         homeViewModel.patchItem.observe(this) { patch ->
+
+            when(patch.Design.trim()){
+                "Release" -> {}
+                "SmallVideo" -> {}
+            }
             Log.i("routeHomePatch", "patch: $patch")
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
     }
+
 
     private fun routeFromRC() {
         val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
