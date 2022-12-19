@@ -275,8 +275,20 @@ internal class SDKMainActivity : BaseActivity(),
         Log.i("routeHomePatch", "routeHomePatch: $patchCode")
         homeViewModel.patchItem.observe(this) { patch ->
             Log.i("routeHomePatch", "patch: $patch")
+           
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
+    }
+    private fun routeRelease(patch: HomePatchItemModel) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch
+                )
+            }, R.id.release_list_fragment
+        )
     }
 
     private fun routeFromRC() {
