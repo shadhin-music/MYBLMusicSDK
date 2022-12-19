@@ -2,6 +2,7 @@ package com.shadhinmusiclibrary.adapter
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -114,7 +115,7 @@ internal class AlbumHeaderAdapter(
             favViewModel: FavViewModel
         ) {
             ivShareBtn = itemView.findViewById(R.id.share_btn_fab)
-            ivShareBtn?.visibility = VISIBLE
+            ivShareBtn?.visibility = GONE
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)

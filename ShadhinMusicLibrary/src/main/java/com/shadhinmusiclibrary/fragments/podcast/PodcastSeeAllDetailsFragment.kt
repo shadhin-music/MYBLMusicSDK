@@ -13,10 +13,12 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shadhinmusiclibrary.R
 import com.shadhinmusiclibrary.activities.SDKMainActivity
+import com.shadhinmusiclibrary.adapter.HomeFooterAdapter
 import com.shadhinmusiclibrary.adapter.ParentAdapter
 import com.shadhinmusiclibrary.adapter.PodcastSeeAllDetailsAdapter
 import com.shadhinmusiclibrary.adapter.PodcastTNTypeAdapter
@@ -38,7 +40,7 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
     lateinit var viewModel: FeaturedPodcastViewModel
     private lateinit var navController: NavController
     private var dataAdapter: PodcastSeeAllDetailsAdapter? = null
-
+    private lateinit var footerAdapter: HomeFooterAdapter
     private fun setupViewModel() {
         viewModel =
             ViewModelProvider(
@@ -80,6 +82,8 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
                 injector.factoryFavContentVM
             )[FavViewModel::class.java]
         val cacheRepository = CacheRepository(requireContext())
+        footerAdapter = HomeFooterAdapter()
+
         viewModel.podcastSeeAllContent.observe(viewLifecycleOwner) { res ->
             dataAdapter = PodcastSeeAllDetailsAdapter(this, cacheRepository, favViewModel, injector)
            // progress.visibility = GONE
@@ -87,7 +91,10 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
             val layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView?.layoutManager = layoutManager
-            recyclerView?.adapter = dataAdapter
+            val config = ConcatAdapter.Config.Builder()
+                .setIsolateViewTypes(false)
+                .build()
+            val concatAdapter = ConcatAdapter(config,dataAdapter, footerAdapter)
             val dataRange = res.data?.data?.indices
             if (dataRange != null) {
                 for (item in dataRange) {
@@ -103,6 +110,8 @@ internal class PodcastSeeAllDetailsFragment : BaseFragment(),
                     }
                 }
             }
+
+            recyclerView?.adapter = concatAdapter
         }
     }
 
