@@ -277,7 +277,7 @@ internal class SDKMainActivity : BaseActivity(),
         homeViewModel.patchItem.observe(this) { patch ->
 
             when(patch.Design.trim()){
-                "Release" -> {}
+                "Release" -> { routeRelease(patch)}
                 "SmallVideo" -> {}
             }
             Log.i("routeHomePatch", "patch: $patch")
@@ -296,6 +296,7 @@ internal class SDKMainActivity : BaseActivity(),
             }, R.id.release_list_fragment
         )
     }
+    
 
 
     private fun routeFromRC() {
