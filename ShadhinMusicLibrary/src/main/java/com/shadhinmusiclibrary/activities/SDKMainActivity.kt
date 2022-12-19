@@ -271,6 +271,10 @@ internal class SDKMainActivity : BaseActivity(),
 
 
 
+    private fun routeVideo(patch: HomePatchItemModel) {
+
+    }
+
     private fun routeHomePatch(patchCode: String?) {
 
         Log.i("routeHomePatch", "routeHomePatch: $patchCode")
@@ -278,7 +282,7 @@ internal class SDKMainActivity : BaseActivity(),
 
             when(patch.Design.trim()){
                 "Release" -> {}
-                "SmallVideo" -> {}
+                "SmallVideo" -> routeVideo(patch)
             }
             Log.i("routeHomePatch", "patch: $patch")
         }
