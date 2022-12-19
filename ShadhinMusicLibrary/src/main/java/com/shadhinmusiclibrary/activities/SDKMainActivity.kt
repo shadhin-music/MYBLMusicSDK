@@ -124,6 +124,7 @@ internal class SDKMainActivity : BaseActivity(),
     private lateinit var ibtnLibraryAdd: ImageButton
     private lateinit var ibtnQueueMusic: ImageButton
     private lateinit var ibtnDownload: ImageButton
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var playerViewModel: PlayerViewModel
     private lateinit var viewModel: CreateplaylistViewModel
@@ -166,6 +167,7 @@ internal class SDKMainActivity : BaseActivity(),
         ibtnLibraryAdd = findViewById(R.id.ibtn_library_add)
         ibtnQueueMusic = findViewById(R.id.ibtn_queue_music)
         ibtnDownload = findViewById(R.id.ibtn_download)
+        progressBar = findViewById(R.id.progress_bar)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -287,6 +289,9 @@ internal class SDKMainActivity : BaseActivity(),
             }
             Log.i("routeHomePatch", "patch: $patch")
 
+        }
+        homeViewModel.isLoading.observe(this){ isLoading ->
+            progressBar.visibility = if(isLoading) View.VISIBLE else View.GONE
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
     }
