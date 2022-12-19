@@ -56,7 +56,7 @@ internal interface ApiService {
         @Query("id") id: String?,
     ): ArtistAlbumModel
 
-    @GET("Playlist/GetPlaylistContentById")
+    @GET("playlist/GetPlaylistContentByIdV2")
     suspend fun fetchGetPlaylistContentById(
         @Query("id") id: String,
     ): APIResponse<MutableList<SongDetailModel>>

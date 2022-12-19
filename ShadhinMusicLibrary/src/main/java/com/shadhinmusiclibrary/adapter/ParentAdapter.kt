@@ -389,7 +389,7 @@ internal class ParentAdapter(
                 "amarTune" -> bindPopularAmarTunes(homePatchItemModel)
                 "download" -> bindDownload(homePatchItemModel)
                 "PodcastLive" -> bindBhoot(homePatchItemModel)
-                  "Show"->bindPodcastShow(homePatchItemModel)
+                "Show"->bindPodcastShow(homePatchItemModel)
                 "Discover"->bindBanner(homePatchItemModel)
 //                "Playlist" -> bundRadio(homePatchItemModel)
                 //"Artist"->bindPopularBands(homePatchItemModel)

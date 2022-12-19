@@ -422,6 +422,22 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.album_details_fragment
                 )
             }
+            DataContentType.CONTENT_TYPE_P -> {
+                //open playlist
+                setupNavGraphAndArg(
+                    R.navigation.my_bl_sdk_nav_graph_common,
+                    Bundle().apply {
+                        val details = HomePatchDetailModel().apply {
+                            this.content_Id = id ?: ""
+                            this.content_Type = type
+                        }
+                        putSerializable(
+                            AppConstantUtils.PatchDetail,
+                            details as Serializable
+                        )
+                    }, R.id.playlist_details_fragment
+                )
+            }
 
         }
     }
@@ -2307,7 +2323,7 @@ internal class SDKMainActivity : BaseActivity(),
                         artist_Id = mSongDetails.artist_Id
                         clientValue = 2
                         content_Type = mSongDetails.content_Type
-                        content_Id = "1"
+                        fav ="1"
                         imageUrl = mSongDetails.imageUrl
                         playingUrl = mSongDetails.playingUrl
                         rootContentId = mSongDetails.rootContentId

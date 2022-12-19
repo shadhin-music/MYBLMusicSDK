@@ -126,13 +126,11 @@ internal class PlaylistDetailsFragment : BaseFragment(),
             albumViewModel.fetchPlaylistContent(contentId)
             albumViewModel.albumContent.observe(viewLifecycleOwner) { res ->
                 if (res.data?.data != null && res.status == Status.SUCCESS) {
-// Log.e("TAG","DATA: "+ res.data.data[0].imageUrl)
-//                    homeDetails.imageUrl = res.data.image
-//                    homeDetails.album_Name = res.data.name
-//                    homeDetails.artistName = res.data.artistName
-//                    homeDetails.artist_Id = res.data.artistId
-//                    homeDetails.titleName =
-//                        kotlin.runCatching { res.data.data.first().titleName }.getOrNull() ?: ""
+
+                    homeDetails.imageUrl = res.data.image
+                    homeDetails.titleName= res.data.name
+                    homeDetails.artistName =""
+
                     playlistTrackAdapter.setData(
                         res.data.data,
                         homeDetails,

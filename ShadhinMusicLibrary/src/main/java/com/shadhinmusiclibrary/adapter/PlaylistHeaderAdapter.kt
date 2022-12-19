@@ -85,7 +85,7 @@ internal class PlaylistHeaderAdapter(
             ivThumbCurrentPlayItem =
                 itemView.findViewById(R.id.iv_thumb_current_play_item)
             Glide.with(mContext)
-                .load(homePatchDetail?.imageUrl!!)
+                .load(homePatchDetail?.imageUrl)
                 .into(ivThumbCurrentPlayItem)
             tvCurrentAlbumName =
                 itemView.findViewById(R.id.tv_current_album_name)
@@ -138,7 +138,7 @@ internal class PlaylistHeaderAdapter(
                                 content_Id = homePatchDetail?.content_Id.toString()
                                 album_Id = homePatchDetail?.album_Id
                                 albumImage = homePatchDetail?.imageUrl
-                                artistName = homePatchDetail?.artistName
+                                artistName = homePatchDetail?.artistName?:""
                                 artist_Id = homePatchDetail?.artist_Id
                                 clientValue = 2
                                 content_Type = homePatchDetail?.content_Type.toString()

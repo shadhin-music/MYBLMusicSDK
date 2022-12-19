@@ -151,7 +151,7 @@ internal class PlaylistAdapter(
                 .load(mSongDetail.imageUrl?.let { UtilHelper.getImageUrlSize300(it) })
                 .into(sivSongIcon)
             tvSongName = viewItem.findViewById(R.id.tv_song_name)
-            tvSongName!!.text = mSongDetail.titleName
+            tvSongName?.text = mSongDetail.titleName
 
             val tvSingerName: TextView = viewItem.findViewById(R.id.tv_singer_name)
             tvSingerName.text = mSongDetail.artistName
