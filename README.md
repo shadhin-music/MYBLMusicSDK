@@ -102,8 +102,7 @@ Call destroySDK method when Root Activity will destroy
         super.onDestroy()
     }
   
-## Author
-Rezaul Khan, rezaulkhan.gakk@gmail.com
+
 
 [More about developer complany: Shadhin Music Limited <img src="https://shadhinmusic.com/img/shadhinlogo.svg" width="200" height="40" />](https://shadhinmusic.com)
 
