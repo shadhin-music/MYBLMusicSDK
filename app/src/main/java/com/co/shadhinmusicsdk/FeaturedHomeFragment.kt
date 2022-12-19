@@ -100,7 +100,7 @@ internal class FeaturedHomeFragment : Fragment() {
 
         }
         btnPatch.setOnClickListener {
-            val share = ShareRC.generate("P050")
+            val share = ShareRC.generate("P004")
             Log.i("routeHomePatch", "onViewCreated: $share")
             ShadhinMusicSdkCore.openFromRC(requireContext(),share.code)
         }
