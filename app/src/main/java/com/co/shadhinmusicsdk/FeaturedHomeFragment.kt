@@ -98,6 +98,7 @@ internal class FeaturedHomeFragment : Fragment() {
             count ++
 
         }
+        //back
 //    private fun observeData() {
 //        //  val progressBar: ProgressBar = requireView().findViewById(R.id.progress_bar)
 //
