@@ -271,9 +271,7 @@ internal class SDKMainActivity : BaseActivity(),
 
 
 
-    private fun routeVideo(patch: HomePatchItemModel) {
 
-    }
 
     private fun routeHomePatch(patchCode: String?) {
 
@@ -282,13 +280,29 @@ internal class SDKMainActivity : BaseActivity(),
 
             when(patch.Design.trim()){
                 "Release" -> { routeRelease(patch)}
-                "SmallVideo" -> {}
+                "SmallVideo" -> { routeVideo(patch)}
+                "Show"->{ routePodcastShow(patch) }
+                "Artist" ->{ routeArtist(patch)}
+                "Playlist" ->{ routePlaylist(patch)}
             }
             Log.i("routeHomePatch", "patch: $patch")
 
         }
         patchCode?.let { homeViewModel.fetchPatchData(it) }
     }
+
+    private fun routePlaylist(patch: HomePatchItemModel) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            }, R.id.playlist_list_fragment
+        )
+    }
+
     private fun routeRelease(patch: HomePatchItemModel) {
         setupNavGraphAndArg(
             R.navigation.my_bl_sdk_nav_graph_common,
@@ -301,7 +315,39 @@ internal class SDKMainActivity : BaseActivity(),
         )
     }
 
-
+    private fun routeVideo(patch: HomePatchItemModel) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            }, R.id.video_list_fragment
+        )
+    }
+    private fun routePodcastShow(patch: HomePatchItemModel) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            }, R.id.podcast_see_all_fragment
+        )
+    }
+    private fun routeArtist(patch: HomePatchItemModel) {
+        setupNavGraphAndArg(
+            R.navigation.my_bl_sdk_nav_graph_common,
+            Bundle().apply {
+                putSerializable(
+                    PatchItem,
+                    patch as Serializable
+                )
+            }, R.id.popular_artist_fragment
+        )
+    }
 
     private fun routeFromRC() {
         val rc = intent.extras?.getString(AppConstantUtils.DataContentRequestId) as String
