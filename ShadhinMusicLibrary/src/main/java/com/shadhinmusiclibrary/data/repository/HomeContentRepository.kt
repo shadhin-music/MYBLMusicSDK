@@ -7,6 +7,9 @@ internal class HomeContentRepository(private val apiService: ApiService) {
     suspend fun fetchHomeData(pageNumber: Int?, isPaid: Boolean?) = safeApiCall {
         apiService.fetchHomeData(pageNumber, isPaid)
     }
+    suspend fun fetchPatchData(patchCode: String) = safeApiCall {
+        apiService.fetchPatchData(patchCode)
+    }
 
     suspend fun rbtURL() = safeApiCall {
         apiService.rbtURL()

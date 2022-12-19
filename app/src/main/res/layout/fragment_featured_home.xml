@@ -20,7 +20,6 @@
             android:text="LatestRelease"
             android:textColor="#212121"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -33,7 +32,6 @@
             android:text="Featured Podcast"
             android:textColor="@color/my_sdk_color_white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnLatestRelease"
             tools:ignore="TextContrastCheck,TextContrastCheck" />
 
@@ -47,7 +45,6 @@
             android:text="popular artists"
             android:textColor="@color/my_sdk_color_white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnFeaturedPodcast"
             tools:ignore="TextContrastCheck,TextContrastCheck" />
 
@@ -61,7 +58,6 @@
             android:text="music videos"
             android:textColor="@color/my_sdk_color_white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnPopularArtists"
             tools:ignore="TextContrastCheck" />
 
@@ -75,21 +71,18 @@
             android:text="amar tunes All"
             android:textColor="@color/my_sdk_color_white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnMusicVideos"
             tools:ignore="TextContrastCheck,TextContrastCheck" />
 
         <Button
             android:id="@+id/btnWebview2"
-            android:layout_width="wrap_content"
+            android:layout_width="146dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_marginTop="8dp"
             android:padding="15dp"
             android:text="amar tunes All"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnWebview"
             tools:ignore="TextContrastCheck,TextContrastCheck" />
 
@@ -101,9 +94,9 @@
             android:padding="15dp"
             android:text="Open Music"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnWebview2"
             tools:ignore="MissingConstraints,TextContrastCheck,TextContrastCheck" />
+
         <Button
             android:id="@+id/btnshare"
             android:layout_width="wrap_content"
@@ -111,9 +104,8 @@
             android:layout_margin="16dp"
             android:padding="15dp"
             android:text="share"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnMusic"
+            app:layout_constraintTop_toBottomOf="@+id/homePatch"
             tools:ignore="MissingConstraints,TextContrastCheck,TextContrastCheck" />
 
         <include
@@ -141,5 +133,15 @@
             app:layout_constraintEnd_toEndOf="@+id/include_radio_layout"
             app:layout_constraintTop_toBottomOf="@+id/include_radio_layout"
             app:layout_constraintTop_toTopOf="@+id/btnMusic" />
+
+        <Button
+            android:id="@+id/homePatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="HomePatch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

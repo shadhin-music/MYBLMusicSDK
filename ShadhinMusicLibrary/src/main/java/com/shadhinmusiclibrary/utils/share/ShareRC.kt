@@ -7,17 +7,21 @@ import com.shadhinmusiclibrary.utils.toBase64
 class ShareRC(override val code: String) : Share {
     private val token: List<String>? by lazy { decodeToken() }
 
-    override val contentId: String?
+    override val id: String?
         get() = token?.first()
-    override val contentType: String?
+    override val type: String?
         get() = token?.last()
 
-    override val isPodcast: Boolean
-        get() = contentType?.contains("PD", true) ?: false
+    override val category: ShareCategory
+        get() = when{
+            type?.contains("PD",true) == true -> ShareCategory.PODCAST
+            type?.contains("Patch",true) == true -> ShareCategory.PATCH
+            else -> ShareCategory.CONTENTS
+        }
 
-    override val podcastSubType: String?
-        get() = if (isPodcast && (contentType?.length ?: 0) >= 4)
-            contentType?.substring(2, (contentType?.length ?: 0))
+    val podcastSubType: String?
+        get() = if (category == ShareCategory.PODCAST && (type?.length ?: 0) >= 4)
+            type?.substring(2, (type?.length ?: 0))
         else null
 
     private fun decodeToken(): List<String>? {
@@ -30,7 +34,7 @@ class ShareRC(override val code: String) : Share {
     }
 
     override fun toString(): String {
-        return "ShareRC(code='$code', contentId=$contentId, contentType=$contentType, isPodcast=$isPodcast, podcastSubType=$podcastSubType)"
+        return "ShareRC(code='$code', id=$id, type=$type, category=$category, podcastSubType=$podcastSubType)"
     }
 
 
@@ -43,6 +47,11 @@ class ShareRC(override val code: String) : Share {
         @JvmStatic
         fun generate(contentId: String?, contentType: String?): ShareRC {
             val token = "${contentId ?: ""}_${contentType ?: ""}".toBase64()
+            return ShareRC(token)
+        }
+        @JvmStatic
+        fun generate(patchCode:String?): ShareRC {
+            val token = "${patchCode ?: ""}_Patch".toBase64()
             return ShareRC(token)
         }
     }

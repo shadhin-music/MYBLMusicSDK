@@ -2,16 +2,12 @@ package com.shadhinmusiclibrary
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.fragment.app.Fragment
 import com.shadhinmusiclibrary.activities.MusicActivity
 import com.shadhinmusiclibrary.activities.SDKMainActivity
-import com.shadhinmusiclibrary.data.model.*
 import com.shadhinmusiclibrary.data.model.APIResponse
-import com.shadhinmusiclibrary.data.model.HomeDataModel
 import com.shadhinmusiclibrary.data.model.SongDetailModel
 import com.shadhinmusiclibrary.data.remote.ApiService
 import com.shadhinmusiclibrary.di.ShadhinApp
@@ -24,12 +20,10 @@ import com.shadhinmusiclibrary.library.player.data.model.MusicPlayList
 import com.shadhinmusiclibrary.utils.AppConstantUtils
 import com.shadhinmusiclibrary.utils.UtilHelper
 import com.shadhinmusiclibrary.utils.UtilsOkHttp
-import com.shadhinmusiclibrary.utils.fromBase64
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Serializable
 
 @Keep
 object ShadhinMusicSdkCore {
@@ -81,7 +75,19 @@ object ShadhinMusicSdkCore {
         )
     }
     @JvmStatic
-    fun openPatchFromRC(context: Context,rc:String){
+    fun openHomePatch(context: Context, patchCode: String) {
+        context.startActivity(
+            Intent(
+                context,
+                SDKMainActivity::class.java
+            ).apply {
+                putExtra(AppConstantUtils.UI_Request_Type, AppConstantUtils.RequesterHomePatch)
+                putExtra(AppConstantUtils.DataContentRequestId, patchCode)
+            }
+        )
+    }
+    @JvmStatic
+    fun openFromRC(context: Context, rc:String){
         context.startActivity(
             Intent(
                 context,
