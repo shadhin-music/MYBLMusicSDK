@@ -79,7 +79,6 @@ internal class FeaturedHomeFragment : Fragment() {
         btnShare.setOnClickListener {
 
             val list = listOf(
-                ShareRC.generate("6153","PDJG"),
                 ShareRC.generate("20141","P"),
                 ShareRC.generate("20139","P"),
                 ShareRC.generate("70","A"),

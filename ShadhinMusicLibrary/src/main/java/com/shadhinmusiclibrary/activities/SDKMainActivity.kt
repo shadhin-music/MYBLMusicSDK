@@ -366,7 +366,7 @@ internal class SDKMainActivity : BaseActivity(),
             R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 val details = HomePatchDetailModel().apply {
-                    this.content_Id = id?:""
+
                     this.content_Type = type
                 }
                 putSerializable(
