@@ -56,7 +56,6 @@ internal class PodcastMoreEpisodesListAdapter(
             val imageView: ShapeableImageView = itemView.findViewById(R.id.image)
             val textView: TextView = itemView.findViewById(R.id.txt_title)
             val url: String? = episode[position].ImageUrl
-
             textView.text = episode[position].Name
 
             Glide.with(mContext)
