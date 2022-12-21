@@ -281,6 +281,7 @@ internal class SDKMainActivity : BaseActivity(),
                 "Show" -> routePodcastShow(patch)
                 "Artist" -> routeArtist(patch)
                 "Playlist" -> routePlaylist(patch)
+
             }
         }
         homeViewModel.isLoading.observe(this) { isLoading ->
@@ -365,6 +366,7 @@ internal class SDKMainActivity : BaseActivity(),
             R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 val details = HomePatchDetailModel().apply {
+                    this.content_Id = id?:""
                     this.content_Type = type
                 }
                 putSerializable(
@@ -372,7 +374,10 @@ internal class SDKMainActivity : BaseActivity(),
                     details as Serializable
                 )
             }, R.id.podcast_details_fragment
+
         )
+        Log.e("TAG","DATA: "+type)
+        Log.e("TAG","DATA: "+ id)
     }
 
     private fun routeContent(id: String?, type: String?) {
@@ -438,6 +443,7 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.playlist_details_fragment
                 )
             }
+
 
         }
     }
