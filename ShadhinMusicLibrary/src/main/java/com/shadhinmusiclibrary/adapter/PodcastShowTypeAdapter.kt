@@ -19,10 +19,6 @@ internal class PodcastShowTypeAdapter(
     val podcastDetailsCallback: HomeCallBack
 ) : RecyclerView.Adapter<PodcastShowTypeAdapter.ViewHolder>() {
 
-
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_bl_sdk_top_trending_list, parent, false)
@@ -46,15 +42,20 @@ internal class PodcastShowTypeAdapter(
         fun bindItems() {
             val textViewName = itemView.findViewById(R.id.txt_title) as TextView
             val textViewArtist = itemView.findViewById(R.id.txt_name) as TextView
-            val imageView2 = itemView.findViewById(R.id.image) as ImageView
-
+            val imageView= itemView.findViewById(R.id.image) as ImageView
+            val imageViewPaid = itemView.findViewById(R.id.img_premium) as ImageView
+            if(patchItem.Data[absoluteAdapterPosition].isPaid == true){
+                imageViewPaid.visibility = View.VISIBLE
+            } else{
+                imageViewPaid.visibility = View.GONE
+            }
             Glide.with(mContext)
                 .load(
                     UtilHelper.getImageUrlSize300(
                         patchItem.Data[absoluteAdapterPosition].imageUrl ?: ""
                     )
                 )
-                .into(imageView2)
+                .into(imageView)
             textViewName.text = patchItem.Data[absoluteAdapterPosition].titleName
             textViewArtist.text = patchItem.Data[absoluteAdapterPosition].artistName
         }

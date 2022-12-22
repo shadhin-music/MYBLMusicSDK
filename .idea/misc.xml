@@ -88,6 +88,7 @@
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_fragment_search.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_fragment_user_playlist_details.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_fragment_watch_later.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_header_layout.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_item_all_genres.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_item_bhoot_podcast.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_item_my_fav.xml" value="0.1921875" />
@@ -96,6 +97,9 @@
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_item_search.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_item_you_might_like.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_latest_music_view_item.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_layout_child_comment_item.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_layout_podcast_comment.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_layout_podcast_comment_header.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_main_music_player.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_main_music_player2.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_my_playlist_item.xml" value="0.1921875" />
@@ -106,6 +110,7 @@
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_row_video_li.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_search_video_layout.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_top_trending_list.xml" value="0.1921875" />
+        <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_trending_music_video_list.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_video_bottomsheet_three_dot_menu.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_video_item_list.xml" value="0.1921875" />
         <entry key="..\:/Users/user/AndroidProject/MyBL/ShadhinMusicLibrary/src/main/res/layout/my_bl_sdk_video_lay_background.xml" value="0.1921875" />

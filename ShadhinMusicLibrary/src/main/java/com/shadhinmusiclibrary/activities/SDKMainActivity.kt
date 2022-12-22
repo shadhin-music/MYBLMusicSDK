@@ -84,7 +84,7 @@ import java.util.*
 internal class SDKMainActivity : BaseActivity(),
     ItemClickListener,
     CommonSingleCallback {
-
+    private var bottomSheetDialogPlaylist:BottomSheetDialog ?= null
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private var isPlayOrPause = false
@@ -269,6 +269,14 @@ internal class SDKMainActivity : BaseActivity(),
         //  routeDataArtistType()
         Log.e("SDKMA", "onCreate: " + playerViewModel.isMediaDataAvailable())
         playerViewModel.startUserSession()
+        viewModel.createPlaylist.observe(this) { res ->
+            Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_LONG).show()
+            Log.e("SDKMA", "onCreate123: called")
+        }
+        viewModel.songsAddedToPlaylist.observe(this) { res ->
+            Log.e("SDKMA", "onCreate: called")
+            Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_SHORT).show()
+        }
     }
 
 
@@ -281,6 +289,7 @@ internal class SDKMainActivity : BaseActivity(),
                 "Show" -> routePodcastShow(patch)
                 "Artist" -> routeArtist(patch)
                 "Playlist" -> routePlaylist(patch)
+
             }
         }
         homeViewModel.isLoading.observe(this) { isLoading ->
@@ -365,6 +374,7 @@ internal class SDKMainActivity : BaseActivity(),
             R.navigation.my_bl_sdk_nav_graph_common,
             Bundle().apply {
                 val details = HomePatchDetailModel().apply {
+
                     this.content_Type = type
                 }
                 putSerializable(
@@ -372,7 +382,10 @@ internal class SDKMainActivity : BaseActivity(),
                     details as Serializable
                 )
             }, R.id.podcast_details_fragment
+
         )
+        Log.e("TAG","DATA: "+type)
+        Log.e("TAG","DATA: "+ id)
     }
 
     private fun routeContent(id: String?, type: String?) {
@@ -438,6 +451,7 @@ internal class SDKMainActivity : BaseActivity(),
                     }, R.id.playlist_details_fragment
                 )
             }
+
 
         }
     }
@@ -1747,7 +1761,7 @@ internal class SDKMainActivity : BaseActivity(),
     }
 
     private fun gotoPlayList(context: Context, mSongDetails: IMusicModel) {
-        val bottomSheetDialogPlaylist =
+         bottomSheetDialogPlaylist =
             BottomSheetDialog(context, R.style.BottomSheetDialog)
         val contentView =
             inflate(
@@ -1755,15 +1769,15 @@ internal class SDKMainActivity : BaseActivity(),
                 R.layout.my_bl_sdk_bottomsheet_create_playlist_with_list,
                 null
             )
-        bottomSheetDialogPlaylist.setContentView(contentView)
-        bottomSheetDialogPlaylist.show()
+        bottomSheetDialogPlaylist?.setContentView(contentView)
+        bottomSheetDialogPlaylist?.show()
         val closeButton: ImageView? =
-            bottomSheetDialogPlaylist.findViewById(R.id.closeButton)
+            bottomSheetDialogPlaylist?.findViewById(R.id.closeButton)
         closeButton?.setOnClickListener {
-            bottomSheetDialogPlaylist.dismiss()
+            bottomSheetDialogPlaylist?.dismiss()
         }
         val recyclerView: RecyclerView? =
-            bottomSheetDialogPlaylist.findViewById(R.id.recyclerView)
+            bottomSheetDialogPlaylist?.findViewById(R.id.recyclerView)
         viewModel.getuserPlaylist()
         viewModel.getUserPlaylist.observe(this) { res ->
             recyclerView?.layoutManager =
@@ -1777,15 +1791,14 @@ internal class SDKMainActivity : BaseActivity(),
             }
         }
         val btnCreatePlaylist: AppCompatButton? =
-            bottomSheetDialogPlaylist.findViewById(R.id.btnCreatePlaylist)
+            bottomSheetDialogPlaylist?.findViewById(R.id.btnCreatePlaylist)
         btnCreatePlaylist?.setOnClickListener {
             openCreatePlaylist(context)
-            bottomSheetDialogPlaylist.dismiss()
+            bottomSheetDialogPlaylist?.dismiss()
         }
-        viewModel.createPlaylist.observe(this) { res ->
-            Toast.makeText(context, res.status.toString(), Toast.LENGTH_LONG).show()
-        }
+
     }
+
 
     private fun addQueue(context: Context, mSongDetails: MutableList<IMusicModel>) {
         queueTrackAdapter = QueueTrackAdapter(this)
@@ -2625,9 +2638,7 @@ internal class SDKMainActivity : BaseActivity(),
 
     private fun addSongsToPlaylist(mSongDetails: IMusicModel, id: String?) {
         id?.let { viewModel.songsAddedToPlaylist(it, mSongDetails.content_Id) }
-        viewModel.songsAddedToPlaylist.observe(this) { res ->
-            Toast.makeText(applicationContext, res.status.toString(), Toast.LENGTH_LONG).show()
-        }
+
     }
 
     override fun onClickItem(currentSong: IMusicModel, clickItemPosition: Int) {

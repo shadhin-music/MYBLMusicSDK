@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -30,6 +31,8 @@ internal class DownloadFragment : BaseFragment() {
         tabLayout = view.findViewById(R.id.tab)
         viewPager = view.findViewById(R.id.viewPager)
         tabLayout.tabGravity = TabLayout.GRAVITY_START
+        val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = "My Downloads"
         val adapter = DownlodViewPagerAdapter(
             requireContext(), childFragmentManager,
             tabLayout.tabCount
