@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -44,7 +45,8 @@ internal class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         tabLayout = view.findViewById(R.id.tab)
         viewPager = view.findViewById(R.id.viewPager)
-
+        val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
+        tvTitle.text = "My Favourites"
 
         val searchBar: AppCompatImageView = requireView().findViewById(R.id.search_bar)
         searchBar.setOnClickListener {

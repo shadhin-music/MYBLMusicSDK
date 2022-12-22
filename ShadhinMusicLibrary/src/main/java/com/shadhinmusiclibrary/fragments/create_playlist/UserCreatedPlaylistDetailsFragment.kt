@@ -357,7 +357,7 @@ internal class UserCreatedPlaylistDetailsFragment : PlaylistBaseFragment(),
         playlisttext?.text = "Delete Playlist"
         constraintPlaylist?.setOnClickListener {
             deletePlayList2(context, playlistId.toString())
-            Toast.makeText(context, "Removed Successfully", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "${mSongDetails.titleName} Removed Successfully", Toast.LENGTH_LONG).show()
             requireActivity().onBackPressed()
 //          viewModel.deleteUserSongFromPlaylist.observe(viewLifecycleOwner){
 //              res->

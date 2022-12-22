@@ -1,6 +1,7 @@
 package com.shadhinmusiclibrary.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,7 @@ internal class CreatePlaylistListAdapter(
 //        if(allDownloads[position].rootType.equals("S")){
         holder.itemView.setOnClickListener {
             itemClick.onClick(position, mSongDetails, data[position].id)
-//             Log.e("TAG","ALL Downloads: "+ allDownloads)
+            Log.e("TAG","ALL Downloads: "+ position)
         }
         //}
     }
